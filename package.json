@@ -1,5 +1,5 @@
 {
-	"name": "sveltar",
+	"name": "quantar",
 	"version": "0.0.1",
 	"scripts": {
 		"dev": "vite dev",
@@ -49,5 +49,9 @@
 	},
 	"svelte": "./dist/index.js",
 	"types": "./dist/index.d.ts",
-	"type": "module"
+	"type": "module",
+	"dependencies": {
+		"beercss": "^3.2.6",
+		"material-dynamic-colors": "^0.1.7"
+	}
 }

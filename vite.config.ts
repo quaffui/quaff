@@ -9,11 +9,18 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      $lib: path.resolve("./src/lib"),
-      $components: path.resolve("./src/lib/components"),
-      $composables: path.resolve("./src/lib/composables"),
-      $utils: path.resolve("./src/lib/utils"),
-      $css: path.resolve("./src/lib/css"),
+      $lib: path.resolve(__dirname, "./src/lib"),
+      $components: path.resolve(__dirname, "./src/lib/components"),
+      $composables: path.resolve(__dirname, "./src/lib/composables"),
+      $utils: path.resolve(__dirname, "./src/lib/utils"),
+      $css: path.resolve(__dirname, "./src/lib/css"),
+    },
+  },
+  css: {
+    preprocessorOptions: {
+      sass: {
+        additionalData: `@import "${path.resolve(__dirname, "./src/lib/css/index.sass")}"`,
+      },
     },
   },
 });
