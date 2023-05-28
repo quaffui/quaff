@@ -19,8 +19,6 @@
       "$components/*": ["src/lib/components/*"],
       "$composables": ["src/lib/composables"],
       "$composables/*": ["src/lib/composables/*"],
-      "$directives": ["src/lib/directives"],
-      "$directives/*": ["src/lib/directives/*"],
       "$utils": ["src/lib/utils"],
       "$utils/*": ["src/lib/utils/*"],
       "$css": ["src/lib/css"],
