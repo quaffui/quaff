@@ -1,9 +1,10 @@
 <script lang="ts">
   export let bordered: boolean = false,
-    fill: string | boolean | undefined = undefined,
+    fill: string | boolean | undefined,
     flat: boolean = false,
     round: boolean = false,
-    title: string | undefined = undefined;
+    title: string | undefined,
+    className: string | undefined;
 
   $: if (typeof fill === "string" && ["primary", "secondary", "tertiary"].includes(fill)) {
     fill = `var(--${fill})`;
@@ -16,11 +17,15 @@
       ? "var(--primary)"
       : fill;
 
-  $: classes =
-    "q-card" +
-    (bordered === true ? " border" : "") +
-    (flat === true ? " no-elevate" : "") +
-    (round === true ? " round" : "");
+  $: classes = [
+    "q-card",
+    bordered && "border",
+    flat && "no-elevate",
+    round && "round",
+    className
+  ].filter(Boolean).join(" ");
+
+  export {className as class};
 </script>
 
 <article class={classes} {...$$restProps} style="background-color: {fillColor};">
