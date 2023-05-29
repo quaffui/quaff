@@ -17,7 +17,3 @@
     </QCardActions>
   </QCard>
 </div>
-
-<style lang="scss" global>
-  @import "$css/index.sass";
-</style>
