@@ -1,24 +1,12 @@
-# create-svelte
+# Quaff
 
-Everything you need to build a Svelte library, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+Quaff is an experimental project utilizing [Beer CSS](https://www.beercss.com/) and parts of [Quasar Framework](https://quasar.dev/) as the base for Svelte components. This independent project is not endorsed by or affiliated with Beer CSS or Quasar Framework.
 
-Read more about creating a library [in the docs](https://kit.svelte.dev/docs/packaging).
-
-## Creating a project
-
-If you're seeing this, you've probably already done this step. Congrats!
-
-```bash
-# create a new project in the current directory
-npm create svelte@latest
-
-# create a new project in my-app
-npm create svelte@latest my-app
-```
+**This is merely a playground right now, don't expect anything usable!**
 
 ## Developing
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+Once you've installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
 
 ```bash
 npm run dev
@@ -27,11 +15,11 @@ npm run dev
 npm run dev -- --open
 ```
 
-Everything inside `src/lib` is part of your library, everything inside `src/routes` can be used as a showcase or preview app.
+Everything inside `src/lib` is part of the library, everything inside `src/routes` can be used as a showcase or preview app.
 
 ## Building
 
-To build your library:
+To build the library:
 
 ```bash
 npm run package
@@ -47,12 +35,9 @@ You can preview the production build with `npm run preview`.
 
 > To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
 
-## Publishing
+## Third-party Libraries
 
-Go into the `package.json` and give your package the desired name through the `"name"` option. Also consider adding a `"license"` field and point it to a `LICENSE` file which you can create from a template (one popular option is the [MIT license](https://opensource.org/license/mit/)).
+This project makes use of the following open source libraries:
 
-To publish your library to [npm](https://www.npmjs.com):
-
-```bash
-npm publish
-```
+- [Beer CSS](https://www.beercss.com/): Copyright (c) 2021 Beer css!. Licensed under the [MIT License](https://github.com/beercss/beercss/blob/main/LICENSE)
+- [Quasar Framework](https://quasar.dev/): Copyright (c) 2015-present Razvan Stoenescu. Licensed under the [MIT License](https://github.com/quasarframework/quasar/blob/dev/LICENSE)
