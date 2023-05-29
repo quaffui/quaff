@@ -1,10 +1,13 @@
 <script lang="ts">
+  import { stringifyClasses } from "$lib/utils/props";
+
   export let bordered: boolean = false,
-    fill: string | boolean | undefined,
+    fill: string | boolean | undefined = undefined,
     flat: boolean = false,
     round: boolean = false,
-    title: string | undefined,
-    className: string | undefined;
+    title: string | undefined = undefined,
+    className: string = "";
+  export { className as class };
 
   $: if (typeof fill === "string" && ["primary", "secondary", "tertiary"].includes(fill)) {
     fill = `var(--${fill})`;
@@ -17,15 +20,13 @@
       ? "var(--primary)"
       : fill;
 
-  $: classes = [
+  $: classes = stringifyClasses([
     "q-card",
     bordered && "border",
     flat && "no-elevate",
     round && "round",
-    className
-  ].filter(Boolean).join(" ");
-
-  export {className as class};
+    className,
+  ]);
 </script>
 
 <article class={classes} {...$$restProps} style="background-color: {fillColor};">

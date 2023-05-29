@@ -4,7 +4,8 @@
 
   export let align: QCardActionsProps["align"] = undefined,
     vertical: QCardActionsProps["vertical"] = false,
-    className: string | undefined;
+    className: string = "";
+  export { className as class };
 
   let props: QCardActionsProps;
   $: props = {
@@ -14,14 +15,9 @@
 
   $: alignClass = useAlign(props);
 
-  $: classes = [
-    "q-card__actions",
-    alignClass,
-    vertical && "row",
-    className
-  ].filter(Boolean).join(" ");
-
-  export {className as class};
+  $: classes = ["q-card__actions", alignClass, vertical && "row", className]
+    .filter(Boolean)
+    .join(" ");
 </script>
 
 <div class={classes} {...$$restProps}>
