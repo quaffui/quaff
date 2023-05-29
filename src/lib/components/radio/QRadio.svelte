@@ -2,9 +2,8 @@
   export let val: string = "",
     label: string = "",
     selected: any,
-    className: string | undefined;
-
-  export {className as class};
+    className: string = "";
+  export { className as class };
 </script>
 
 <label class={`radio ${className}`} {...$$restProps}>
