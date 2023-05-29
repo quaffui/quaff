@@ -5,6 +5,7 @@
   import QLinearProgress from "$lib/components/progress/QLinearProgress.svelte";
   import QCheckbox from "$lib/components/checkbox/QCheckbox.svelte";
   import QRadio from "$lib/components/radio/QRadio.svelte";
+  import QInput from "$lib/components/input/QInput.svelte";
 
   let option = "option2";
   let checkBox = false;
@@ -36,4 +37,15 @@
 
   <QRadio val="option1" label="Option 1" bind:selected={option} class="q-mt-md" />
   <QRadio val="option2" label="Option 2" bind:selected={option} class="q-mt-md" />
+  <QInput label="Default" class="q-mt-md" />
+  <QInput rounded label="Rounded" class="q-mt-md" />
+  <QInput bordered class="q-mt-md" label="Bordered with hint" hint="This is a hint" />
+  <QInput bordered class="q-mt-md" label="Error state" error errorMessage="A custom error message" />
+  <QInput outlined class="q-mt-md" label="Outlined" />
+  <QInput outlined class="q-mt-md" label="Outlined with prepended icon">
+    <i slot="prepend">search</i>
+  </QInput>
+  <QInput outlined class="q-mt-md" label="Rounded with appended icon">
+    <i slot="append">list</i>
+  </QInput>
 </div>
