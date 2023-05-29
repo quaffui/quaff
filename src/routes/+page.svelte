@@ -2,6 +2,11 @@
   import QCard from "$components/card/QCard.svelte";
   import QCardActions from "$lib/components/card/QCardActions.svelte";
   import QCardSection from "$lib/components/card/QCardSection.svelte";
+  import QLinearProgress from "$lib/components/progress/QLinearProgress.svelte";
+  import QCheckbox from "$lib/components/checkbox/QCheckbox.svelte";
+  import QRadio from "$lib/components/radio/QRadio.svelte";
+
+  let option = 'option2';
 </script>
 
 <div style="max-width: 30em; margin: auto">
@@ -16,8 +21,11 @@
       <button>Foo bar</button>
     </QCardActions>
   </QCard>
-</div>
 
-<style lang="scss" global>
-  @import "$css/index.sass";
-</style>
+  <QLinearProgress value={30} class="q-mt-md" />
+
+  <QCheckbox value={true} label="I'm good" class="q-mt-md" />
+
+  <QRadio val="option1" label="Option 1" bind:selected={option} class="q-mt-md" />
+  <QRadio val="option2" label="Option 2" bind:selected={option} class="q-mt-md" />
+</div>

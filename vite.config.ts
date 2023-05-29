@@ -15,12 +15,5 @@ export default defineConfig({
       $utils: path.resolve(__dirname, "./src/lib/utils"),
       $css: path.resolve(__dirname, "./src/lib/css"),
     },
-  },
-  css: {
-    preprocessorOptions: {
-      sass: {
-        additionalData: `@import "${path.resolve(__dirname, "./src/lib/css/index.sass")}"`,
-      },
-    },
-  },
+  }
 });
