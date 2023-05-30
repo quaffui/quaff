@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { stringifyClasses, stringifyStyles } from "$lib/utils/props";
+  import { stringifyClasses, stringifyStyles } from "$utils/props";
   import { type QSeparatorProps } from "./types";
 
   export let spacing: QSeparatorProps["spacing"] = "none",
@@ -9,8 +9,8 @@
     size: QSeparatorProps["size"] = "1px",
     text: QSeparatorProps["text"] = undefined,
     textAlign: QSeparatorProps["textAlign"] = vertical === true ? "middle" : "center",
-    className: QSeparatorProps["className"] = "",
-    styleName: QSeparatorProps["styleName"] = "";
+    className: QSeparatorProps["className"] = undefined,
+    styleName: QSeparatorProps["styleName"] = undefined;
   export { className as class };
   export { styleName as style };
 
@@ -56,11 +56,13 @@
     className,
   ]);
 
-  $: style =
-    stringifyStyles({
+  $: style = stringifyStyles(
+    {
       ...orientationStyle,
       opacity: "25%",
-    })?.concat(styleName) || styleName;
+    },
+    styleName
+  );
 </script>
 
 {#if text !== undefined}

@@ -1,25 +1,18 @@
 <script lang="ts">
   import useAlign, { type UseAlignProps } from "$lib/composables/use-align";
+  import { stringifyClasses } from "$utils/props";
   import { type QCardActionsProps } from "./types";
 
   export let align: QCardActionsProps["align"] = undefined,
     vertical: QCardActionsProps["vertical"] = false,
-    className: string = "";
+    className: QCardActionsProps["className"] = undefined;
   export { className as class };
 
-  let props: QCardActionsProps;
-  $: props = {
-    align,
-    vertical,
-  };
+  $: alignClass = useAlign(align);
 
-  $: alignClass = useAlign(props);
-
-  $: classes = ["q-card__actions", alignClass, vertical && "row", className]
-    .filter(Boolean)
-    .join(" ");
+  $: classes = stringifyClasses(["q-card__actions", alignClass, vertical && "row", className]);
 </script>
 
-<div class={classes} {...$$restProps}>
+<nav class={classes} {...$$restProps}>
   <slot />
-</div>
+</nav>

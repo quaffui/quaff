@@ -17,9 +17,7 @@ export interface UseAlignProps {
     | `${JustifyOptions} ${AlignOptions}`;
 }
 
-export default function useAlign<T extends UseAlignProps & { vertical?: boolean }>(props: T) {
-  const align = props.align === undefined ? "top left" : props.align;
-
+export default function useAlign(align: UseAlignProps["align"] = "top left") {
   const alignClass = align
     .split(" ")
     .map((a) => `${a}-align`)

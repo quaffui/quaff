@@ -1,7 +1,9 @@
 <script lang="ts">
-  export let value: boolean = false,
-    label: string = "",
-    className: string = "";
+  import { type QCheckboxProps } from "./types";
+
+  export let value: QCheckboxProps["value"] = false,
+    label: QCheckboxProps["label"] = "",
+    className: QCheckboxProps["className"] = undefined;
   export { className as class };
 </script>
 

@@ -1,4 +1,4 @@
-import { DefaultProps } from "$lib/utils/types";
+import { DefaultProps } from "$utils/types";
 
 interface QSeparatorPropsVertical extends DefaultProps {
   spacing: "none" | "sm" | "md" | "lg";

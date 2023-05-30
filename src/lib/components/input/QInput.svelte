@@ -1,13 +1,15 @@
 <script lang="ts">
-  export let bordered: boolean = false,
-    rounded: boolean = false,
-    filled: boolean = false,
-    outlined: boolean = false,
-    className: string | undefined = undefined,
-    hint: string | undefined = undefined,
-    label: string | undefined = undefined,
-    error: boolean = false,
-    errorMessage: string | undefined = undefined;
+  import { type QInputProps } from "./types";
+
+  export let bordered: QInputProps["bordered"] = false,
+    error: QInputProps["error"] = false,
+    errorMessage: QInputProps["errorMessage"] = undefined,
+    filled: QInputProps["filled"] = false,
+    hint: QInputProps["hint"] = undefined,
+    label: QInputProps["label"] = undefined,
+    outlined: QInputProps["outlined"] = false,
+    rounded: QInputProps["rounded"] = false,
+    className: QInputProps["className"] = undefined;
 
   let active = false;
 

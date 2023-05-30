@@ -1,6 +1,7 @@
-import { type UseAlignProps } from "$lib/composables/use-align.js";
+import { type UseAlignProps } from "$composables/use-align.js";
+import { type DefaultProps } from "$utils/types";
 
-export interface QCardProps {
+export interface QCardProps extends DefaultProps {
   bordered: boolean;
   fill?: string | boolean;
   flat: boolean;
@@ -8,10 +9,10 @@ export interface QCardProps {
   title?: string;
 }
 
-export interface QCardSectionProps {
+export interface QCardSectionProps extends DefaultProps {
   horizontal: boolean;
 }
 
-export interface QCardActionsProps extends UseAlignProps {
+export interface QCardActionsProps extends UseAlignProps, DefaultProps {
   vertical: boolean;
 }

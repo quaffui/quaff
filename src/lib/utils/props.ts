@@ -1,4 +1,7 @@
-export function stringifyStyles(styleObj: Record<string, string | number | null | undefined>) {
+export function stringifyStyles(
+  styleObj: Record<string, string | number | null | undefined>,
+  userStyles?: string
+) {
   const stylesArray = Object.entries(styleObj);
   const upperCaseRE = /[A-Z]/g;
   const toJoin: string[] = [];
@@ -17,6 +20,9 @@ export function stringifyStyles(styleObj: Record<string, string | number | null 
   if (toJoin.length === 0) {
     return null;
   }
+
+  userStyles && toJoin.push(userStyles);
+
   return toJoin.join("; ");
 }
 

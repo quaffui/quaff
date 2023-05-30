@@ -1,4 +1,4 @@
 export interface DefaultProps {
-  className: string;
-  styleName: string;
+  className?: string;
+  styleName?: string;
 }

@@ -30,6 +30,11 @@
       </div>
     </QCardSection>
     <QCardSection>
+      <h4>Linear Progress</h4>
+      <QLinearProgress value={30} class="q-mt-md" />
+      <QLinearProgress value={40} class="q-mt-md" from="right" rounded />
+    </QCardSection>
+    <QCardSection>
       <h4>Separators</h4>
       <div>
         <QSeparator spacing="md" />
@@ -44,7 +49,6 @@
     </QCardActions>
   </QCard>
 
-  <QLinearProgress value={30} class="q-mt-md" />
   <QInput label="Default" class="q-mt-md" />
   <QInput rounded label="Rounded" class="q-mt-md" />
   <QInput bordered class="q-mt-md" label="Bordered with hint" hint="This is a hint" />
