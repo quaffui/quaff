@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { stringifyClasses } from "$lib/utils/props";
   import { type QInputProps } from "./types";
 
   export let bordered: QInputProps["bordered"] = false,
@@ -9,13 +10,14 @@
     label: QInputProps["label"] = undefined,
     outlined: QInputProps["outlined"] = false,
     rounded: QInputProps["rounded"] = false,
+    value: QInputProps["value"],
     className: QInputProps["className"] = undefined;
 
   let active = false;
 
   $: hasBorder = bordered || rounded || outlined;
 
-  $: classes = [
+  $: classes = stringifyClasses([
     "field",
     label && "label",
     active && "active",
@@ -26,11 +28,12 @@
     filled && "fill",
     error && "invalid",
     className,
-  ]
-    .filter(Boolean)
-    .join(" ");
+  ]);
 
   let wrapper: HTMLElement | null = null;
+  let inputElement: HTMLInputElement | null = null;
+
+  $: value && updateInput(inputElement as HTMLInputElement);
 
   // originally from beercss
   function textWidth(element: HTMLElement, font: string): number {
@@ -52,8 +55,8 @@
   }
 
   // originally from beercss
-  function updateInput(target: Element) {
-    const input = target as HTMLInputElement;
+  function updateInput(target: HTMLInputElement) {
+    const input = target;
 
     if (!wrapper) {
       throw new Error("unexpected to not have element");
@@ -90,6 +93,8 @@
     type="text"
     on:focus={(e) => updateInput(e.currentTarget)}
     on:blur={(e) => updateInput(e.currentTarget)}
+    bind:value
+    bind:this={inputElement}
   />
 
   <slot name="append" />

@@ -9,4 +9,5 @@ export interface QInputProps extends DefaultProps {
   label?: string;
   outlined: boolean;
   rounded: boolean;
+  value: string;
 }
