@@ -20,6 +20,7 @@ export default defineConfig({
       $composables: path.resolve(__dirname, "./src/lib/composables"),
       $utils: path.resolve(__dirname, "./src/lib/utils"),
       $css: path.resolve(__dirname, "./src/lib/css"),
+      $stores: path.resolve(__dirname, "./src/lib/stores"),
     },
   },
   define: {

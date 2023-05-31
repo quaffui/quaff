@@ -22,7 +22,9 @@
       "$utils": ["src/lib/utils"],
       "$utils/*": ["src/lib/utils/*"],
       "$css": ["src/lib/css"],
-      "$css/*": ["src/lib/css/*"]
+      "$css/*": ["src/lib/css/*"],
+      "$stores": ["src/lib/stores"],
+      "$stores/*": ["src/lib/stores/*"]
     },
     "preserveValueImports": false,
     "verbatimModuleSyntax": false,
