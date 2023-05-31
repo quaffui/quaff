@@ -1,6 +1,6 @@
 <script lang="ts">
   import { stringifyClasses, stringifyStyles } from "$utils/props";
-  import { type QSeparatorProps } from "./types";
+  import { type QSeparatorProps } from "./props";
 
   export let spacing: QSeparatorProps["spacing"] = "none",
     inset: QSeparatorProps["inset"] = false,
@@ -38,7 +38,11 @@
         };
 
   $: insetStyle =
-    inset === true ? (vertical === true ? { paddingY: "16px" } : { paddingX: "16px" }) : undefined;
+    inset === true
+      ? vertical === true
+        ? { paddingBlock: "16px" }
+        : { paddingInline: "16px" }
+      : undefined;
 
   $: containerStyle = stringifyStyles({
     ...insetStyle,
@@ -59,7 +63,8 @@
   $: style = stringifyStyles(
     {
       ...orientationStyle,
-      opacity: "25%",
+      backgroundColor: "var(--outline)",
+      border: "none",
     },
     styleName
   );
