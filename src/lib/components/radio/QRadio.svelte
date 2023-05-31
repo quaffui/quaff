@@ -1,12 +1,14 @@
 <script lang="ts">
-  export let val: string = "",
-    label: string = "",
-    selected: any,
-    className: string = "";
-  export { className as class };
+  import { type QRadioProps } from "./props";
+
+  export let value: QRadioProps["value"] = "",
+    label: QRadioProps["label"] = "",
+    selected: QRadioProps["selected"],
+    userClasses: QRadioProps["userClasses"] = "";
+  export { userClasses as class };
 </script>
 
-<label class={`radio ${className}`} {...$$restProps}>
-  <input type="radio" bind:group={selected} value={val} />
+<label class={`radio ${userClasses}`} {...$$restProps}>
+  <input type="radio" bind:group={selected} {value} />
   <span>{label}</span>
 </label>

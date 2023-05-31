@@ -1,8 +1,8 @@
 <script lang="ts">
   import { stringifyClasses, stringifyStyles } from "$lib/utils/props";
-  import { type QListProps, QListDefaultProps } from "./props";
+  import { type QListProps, QListPropsDefaults } from "./props";
   import QSeparator from "../separator/QSeparator.svelte";
-  import { QSeparatorDefaultProps } from "../separator/props";
+  import { QSeparatorPropsDefaults } from "../separator/props";
 
   export let bordered: QListProps["bordered"] = false,
     roundedBorders: QListProps["roundedBorders"] = false,
@@ -10,7 +10,11 @@
     separator: QListProps["separator"] = false,
     separatorOptions: QListProps["separatorOptions"] = {},
     padding: QListProps["padding"] = false,
-    tag: QListProps["tag"] = "div";
+    tag: QListProps["tag"] = "div",
+    userClasses: QListProps["userClasses"] = undefined,
+    userStyles: QListProps["userStyles"] = undefined;
+  export { userClasses as class };
+  export { userStyles as style };
 
   let listComponent: HTMLSpanElement | null = null;
 
@@ -19,14 +23,15 @@
     bordered && "border",
     dense && "???",
     padding && "q-py-sm",
+    userClasses,
   ]);
 
-  $: style =
-    roundedBorders === true
-      ? stringifyStyles({
-          borderRadius: "0.25rem",
-        })
-      : undefined;
+  $: style = stringifyStyles(
+    {
+      borderRadius: roundedBorders === true ? "0.25rem" : undefined,
+    },
+    userStyles
+  );
 
   $: separator && listComponent && prepareChildren(listComponent);
 
@@ -41,7 +46,7 @@
         new QSeparator({
           target: separatorWrapper,
           props: {
-            ...QSeparatorDefaultProps,
+            ...QSeparatorPropsDefaults,
             ...separatorOptions,
           },
         });

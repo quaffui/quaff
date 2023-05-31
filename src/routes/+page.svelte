@@ -8,6 +8,7 @@
   import QInput from "$lib/components/input/QInput.svelte";
   import QSeparator from "$lib/components/separator/QSeparator.svelte";
   import { Quaff } from "$lib/stores/Quaff";
+  import QList from "$lib/components/list/QList.svelte";
 
   let option = "option2";
   let checkBox = false;
@@ -35,8 +36,8 @@
       <div>
         Value: {option}
       </div>
-      <QRadio val="option1" label="Option 1" bind:selected={option} class="q-mt-md" />
-      <QRadio val="option2" label="Option 2" bind:selected={option} class="q-mt-md" />
+      <QRadio value="option1" label="Option 1" bind:selected={option} class="q-mt-md" />
+      <QRadio value="option2" label="Option 2" bind:selected={option} class="q-mt-md" />
     </QCardSection>
     <QCardSection>
       <h4>Linear Progress</h4>
@@ -89,4 +90,16 @@
       <button>Foo bar</button>
     </QCardActions>
   </QCard>
+
+  <QList separator bordered padding separatorOptions={{ color: "teal" }} roundedBorders>
+    <div class="q-item">Hello world</div>
+    <div>Not a QItem</div>
+    <div class="q-item">foo</div>
+    <div class="q-item">bar</div>
+    <div class="q-item">
+      <div>I am outside</div>
+      <button>I am inside!</button>
+    </div>
+    <div class="q-item">Last item, no divider</div>
+  </QList>
 </div>

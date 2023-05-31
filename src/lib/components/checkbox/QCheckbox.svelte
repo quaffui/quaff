@@ -1,13 +1,13 @@
 <script lang="ts">
-  import { type QCheckboxProps } from "./types";
+  import { type QCheckboxProps } from "./props";
 
   export let value: QCheckboxProps["value"] = false,
     label: QCheckboxProps["label"] = "",
-    className: QCheckboxProps["className"] = undefined;
-  export { className as class };
+    userClasses: QCheckboxProps["userClasses"] = undefined;
+  export { userClasses as class };
 </script>
 
-<label class={`checkbox ${className}`} {...$$restProps}>
+<label class={`checkbox ${userClasses}`} {...$$restProps}>
   <input type="checkbox" bind:checked={value} />
   <span>{label}</span>
 </label>

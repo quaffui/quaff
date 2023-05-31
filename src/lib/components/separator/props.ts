@@ -1,6 +1,6 @@
-import { DefaultProps } from "$utils/types";
+import { NativeProps } from "$utils/types";
 
-interface QSeparatorPropsVertical extends DefaultProps {
+interface QSeparatorPropsVertical extends NativeProps {
   spacing: "none" | "sm" | "md" | "lg";
   inset: boolean;
   vertical: true;
@@ -10,7 +10,7 @@ interface QSeparatorPropsVertical extends DefaultProps {
   textAlign: "top" | "middle" | "bottom";
 }
 
-interface QSeparatorPropsHorizontal extends DefaultProps {
+interface QSeparatorPropsHorizontal extends NativeProps {
   spacing: "none" | "sm" | "md" | "lg";
   inset: boolean;
   vertical: false;
@@ -21,3 +21,13 @@ interface QSeparatorPropsHorizontal extends DefaultProps {
 }
 
 export type QSeparatorProps = QSeparatorPropsHorizontal | QSeparatorPropsVertical;
+
+export const QSeparatorPropsDefaults: QSeparatorProps = {
+  spacing: "sm",
+  inset: false,
+  vertical: false,
+  color: undefined,
+  size: "1px",
+  text: undefined,
+  textAlign: "center",
+};

@@ -1,16 +1,16 @@
 <script lang="ts">
   import { stringifyClasses, stringifyStyles } from "$utils/props";
-  import { type QCardProps } from "./types";
+  import { type QCardProps } from "./props";
 
   export let bordered: QCardProps["bordered"] = false,
     fill: QCardProps["fill"] = undefined,
     flat: QCardProps["flat"] = false,
     round: QCardProps["round"] = false,
     title: QCardProps["title"] = undefined,
-    className: QCardProps["className"] = undefined,
-    styleName: QCardProps["styleName"] = undefined;
-  export { className as class };
-  export { styleName as style };
+    userClasses: QCardProps["userClasses"] = undefined,
+    userStyles: QCardProps["userStyles"] = undefined;
+  export { userClasses as class };
+  export { userStyles as style };
 
   $: fillProp =
     fill === undefined || fill === false
@@ -28,11 +28,11 @@
     bordered && "border",
     flat && "no-elevate",
     round && "round",
-    className,
+    userClasses,
     fillProp?.class,
   ]);
 
-  $: style = fillProp?.backgroundColor ? stringifyStyles(fillProp, styleName) : undefined;
+  $: style = fillProp?.backgroundColor ? stringifyStyles(fillProp, userStyles) : undefined;
 </script>
 
 <article class={classes} {...$$restProps} {style}>

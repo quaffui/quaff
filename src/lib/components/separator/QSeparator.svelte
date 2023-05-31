@@ -9,10 +9,10 @@
     size: QSeparatorProps["size"] = "1px",
     text: QSeparatorProps["text"] = undefined,
     textAlign: QSeparatorProps["textAlign"] = vertical === true ? "middle" : "center",
-    className: QSeparatorProps["className"] = undefined,
-    styleName: QSeparatorProps["styleName"] = undefined;
-  export { className as class };
-  export { styleName as style };
+    userClasses: QSeparatorProps["userClasses"] = undefined,
+    userStyles: QSeparatorProps["userStyles"] = undefined;
+  export { userClasses as class };
+  export { userStyles as style };
 
   $: spacingClass =
     (spacing === "sm"
@@ -57,7 +57,7 @@
     "q-separator--" + orientationClass,
     spacingClass,
     color,
-    className,
+    userClasses,
   ]);
 
   $: style = stringifyStyles(
@@ -66,7 +66,7 @@
       backgroundColor: "var(--outline)",
       border: "none",
     },
-    styleName
+    userStyles
   );
 </script>
 

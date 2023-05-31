@@ -17,6 +17,10 @@ export interface UseAlignProps {
     | `${JustifyOptions} ${AlignOptions}`;
 }
 
+export const UseAlignPropsDefaults: UseAlignProps = {
+  align: "top left",
+};
+
 export default function useAlign(align: UseAlignProps["align"] = "top left") {
   const alignClass = align
     .split(" ")

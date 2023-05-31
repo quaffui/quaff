@@ -1,6 +1,7 @@
-import { QSeparatorProps } from "../separator/props";
+import { NativePropsDefaults, type NativeProps } from "$lib/utils/types";
+import { type QSeparatorProps } from "../separator/props";
 
-export interface QListProps {
+export interface QListProps extends NativeProps {
   bordered: boolean;
   roundedBorders: boolean;
   dense: boolean;
@@ -17,7 +18,7 @@ export interface QListProps {
   tag?: string;
 }
 
-export const QListDefaultProps: QListProps = {
+export const QListPropsDefaults: QListProps = {
   bordered: false,
   roundedBorders: false,
   dense: false,
@@ -25,4 +26,5 @@ export const QListDefaultProps: QListProps = {
   separatorOptions: {},
   padding: false,
   tag: "div",
+  ...NativePropsDefaults,
 };

@@ -1,6 +1,6 @@
 <script lang="ts">
   import { stringifyClasses } from "$lib/utils/props";
-  import { type QInputProps } from "./types";
+  import { type QInputProps } from "./props";
 
   export let bordered: QInputProps["bordered"] = false,
     error: QInputProps["error"] = false,
@@ -11,7 +11,7 @@
     outlined: QInputProps["outlined"] = false,
     rounded: QInputProps["rounded"] = false,
     value: QInputProps["value"],
-    className: QInputProps["className"] = undefined;
+    userClasses: QInputProps["userClasses"] = undefined;
 
   let active = false;
 
@@ -27,7 +27,7 @@
     rounded && "round",
     filled && "fill",
     error && "invalid",
-    className,
+    userClasses,
   ]);
 
   let wrapper: HTMLElement | null = null;
@@ -83,7 +83,7 @@
     }
   }
 
-  export { className as class };
+  export { userClasses as class };
 </script>
 
 <div bind:this={wrapper} class={classes} {...$$restProps}>
