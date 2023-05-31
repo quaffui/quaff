@@ -7,6 +7,7 @@
   import QRadio from "$lib/components/radio/QRadio.svelte";
   import QInput from "$lib/components/input/QInput.svelte";
   import QSeparator from "$lib/components/separator/QSeparator.svelte";
+  import { Quaff } from "$lib/stores/Quaff";
 
   let option = "option2";
   let checkBox = false;
@@ -15,6 +16,13 @@
 
 <div style="max-width: 30em; margin: auto">
   <QCard bordered title="Hello world">
+    <QCardSection>
+      <h4>Quaff object</h4>
+      <div>
+        Value: {JSON.stringify($Quaff)}
+      </div>
+      <button on:click={() => Quaff.toggleDarkMode()}>Click to toggle dark mode !</button>
+    </QCardSection>
     <QCardSection>
       <h4>CheckBox</h4>
       <div>
