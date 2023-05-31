@@ -17,12 +17,21 @@ function quaff() {
     //TODO iconSet: {},
   });
 
-  const toggleDarkMode = () =>
-    update((q) => {
+  const toggleDarkMode = () => {
+    return update((q) => {
       q.dark = !q.dark;
+
+      let body = document.querySelector("body");
+
+      if (q.dark === true) {
+        body && body.classList.add("dark");
+      } else {
+        body && body.classList.remove("dark");
+      }
 
       return q;
     });
+  };
 
   return {
     subscribe,
