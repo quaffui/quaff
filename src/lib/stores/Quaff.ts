@@ -1,13 +1,5 @@
-import { writable } from "svelte/store";
-
-function dark() {
-  const { subscribe, set, update } = writable(false);
-
-  return {
-    subscribe,
-    toggle: () => update((val) => !val),
-  };
-}
+import { writable, derived } from "svelte/store";
+import { page } from "$app/stores";
 
 function quaff() {
   const { subscribe, set, update } = writable({
@@ -39,4 +31,19 @@ function quaff() {
   };
 }
 
-export const Quaff = quaff();
+const quaffStore = quaff();
+
+export const Quaff = derived([quaffStore, page], ([$quaff, $page]) => {
+  return {
+    version: $quaff.version,
+    router: $page,
+    dark: {
+      isActive: $quaff.dark,
+      toggle: quaffStore.toggleDarkMode,
+    },
+    subscribe: {
+      quaff: quaffStore.subscribe,
+      page: page.subscribe,
+    },
+  };
+});

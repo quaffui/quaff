@@ -16,13 +16,13 @@
 </script>
 
 <div style="max-width: 30em; margin: auto">
-  <QCard bordered title="Hello world">
+  <QCard bordered title={`Quaff version ${$Quaff.version}`}>
     <QCardSection>
       <h4>Quaff object</h4>
       <div>
         Value: {JSON.stringify($Quaff)}
       </div>
-      <button on:click={() => Quaff.toggleDarkMode()}>Click to toggle dark mode !</button>
+      <button on:click={() => $Quaff.dark.toggle()}>Click to toggle dark mode !</button>
     </QCardSection>
     <QCardSection>
       <h4>CheckBox</h4>
@@ -88,6 +88,7 @@
     <QCardActions align="between">
       <button>Foo bar</button>
       <button>Foo bar</button>
+      <a href="/about">Go to About</a>
     </QCardActions>
   </QCard>
 
