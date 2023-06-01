@@ -60,6 +60,7 @@
       </div>
       <div>
         <QInput bind:value={input} label="Default" class="q-mt-md" />
+        <QInput bind:value={input} label="Disabled" class="q-mt-md" disabled />
         <QInput bind:value={input} rounded label="Rounded" class="q-mt-md" />
         <QInput
           bind:value={input}
@@ -86,7 +87,7 @@
       </div>
     </QCardSection>
     <QCardActions align="between">
-      <button>Foo bar</button>
+      <button class="q-btn" disabled>Foo bar</button>
       <button>Foo bar</button>
       <a href="/about">Go to About</a>
     </QCardActions>

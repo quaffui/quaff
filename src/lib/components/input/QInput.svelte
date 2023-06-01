@@ -3,6 +3,7 @@
   import { type QInputProps } from "./props";
 
   export let bordered: QInputProps["bordered"] = false,
+    disabled: QInputProps["disabled"] = false,
     error: QInputProps["error"] = false,
     errorMessage: QInputProps["errorMessage"] = undefined,
     filled: QInputProps["filled"] = false,
@@ -12,12 +13,14 @@
     rounded: QInputProps["rounded"] = false,
     value: QInputProps["value"],
     userClasses: QInputProps["userClasses"] = undefined;
+  export { userClasses as class };
 
   let active = false;
 
   $: hasBorder = bordered || rounded || outlined;
 
   $: classes = stringifyClasses([
+    "q-input",
     "field",
     label && "label",
     active && "active",
@@ -27,6 +30,7 @@
     rounded && "round",
     filled && "fill",
     error && "invalid",
+    disabled && "disabled",
     userClasses,
   ]);
 
@@ -82,8 +86,6 @@
       input.style.clipPath = "";
     }
   }
-
-  export { userClasses as class };
 </script>
 
 <div bind:this={wrapper} class={classes} {...$$restProps}>

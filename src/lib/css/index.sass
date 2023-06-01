@@ -73,3 +73,13 @@ $spaces: ("none": $space-none, "xs": $space-xs, "sm": $space-sm, "md": $space-md
 
 .stretch-align
   justify-content: stretch
+
+.q-item,
+.q-tab,
+.q-input,
+.q-btn
+  &.disabled
+    opacity: 50%
+    cursor: not-allowed
+    & *
+      pointer-events: none
