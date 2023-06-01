@@ -10,6 +10,7 @@
   import QSeparator from "$lib/components/separator/QSeparator.svelte";
   import { Quaff } from "$lib/stores/Quaff";
   import QList from "$lib/components/list/QList.svelte";
+  import QToolbar from "$lib/components/toolbar/QToolbar.svelte";
 
   let option = "option2";
   let checkBox = false;
@@ -100,6 +101,17 @@
       <QBtn class="q-ma-sm" label="Round" round />
       <QBtn class="q-ma-sm" label="Flat" flat />
     </QCardSection>
+    <QCardSection>
+      <h4>Toolbar</h4>
+      <QToolbar class="text-primary q-mt-md">
+        <QBtn icon="menu" flat round />
+        <h5 class="max center-align">Title</h5>
+        <QBtn flat round icon="attach_file" />
+        <QBtn flat round icon="today" />
+        <QBtn flat round icon="more_vert" />
+      </QToolbar>
+    </QCardSection>
+
     <QCardActions align="between">
       <button class="q-btn" disabled>Foo bar</button>
       <button>Foo bar</button>
