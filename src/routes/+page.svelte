@@ -9,6 +9,7 @@
   import QSeparator from "$lib/components/separator/QSeparator.svelte";
   import { Quaff } from "$lib/stores/Quaff";
   import QList from "$lib/components/list/QList.svelte";
+  import QBtn from "$lib/components/button/QBtn.svelte";
 
   let option = "option2";
   let checkBox = false;
@@ -85,6 +86,18 @@
           <i slot="append">list</i>
         </QInput>
       </div>
+    </QCardSection>
+    <QCardSection>
+      <h4>Buttons</h4>
+      <QBtn class="q-ma-sm" icon="favorite" label="Using Label" />
+      <QBtn class="q-ma-sm">
+        <span>Using</span><span style="color: blue">slot</span>
+      </QBtn>
+      <QBtn class="q-ma-sm" label="loading" loading />
+      <QBtn class="q-ma-sm" icon="add" label="Disabled" disable />
+      <QBtn class="q-ma-sm" label="Unelevated" unelevated />
+      <QBtn class="q-ma-sm" label="Outline" outline />
+      <QBtn class="q-ma-sm" label="Round" round />
     </QCardSection>
     <QCardActions align="between">
       <button class="q-btn" disabled>Foo bar</button>
