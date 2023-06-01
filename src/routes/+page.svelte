@@ -6,10 +6,10 @@
   import QCheckbox from "$lib/components/checkbox/QCheckbox.svelte";
   import QRadio from "$lib/components/radio/QRadio.svelte";
   import QInput from "$lib/components/input/QInput.svelte";
+  import QBtn from "$lib/components/button/QBtn.svelte";
   import QSeparator from "$lib/components/separator/QSeparator.svelte";
   import { Quaff } from "$lib/stores/Quaff";
   import QList from "$lib/components/list/QList.svelte";
-  import QBtn from "$lib/components/button/QBtn.svelte";
 
   let option = "option2";
   let checkBox = false;
@@ -98,6 +98,7 @@
       <QBtn class="q-ma-sm" label="Unelevated" unelevated />
       <QBtn class="q-ma-sm" label="Outline" outline />
       <QBtn class="q-ma-sm" label="Round" round />
+      <QBtn class="q-ma-sm" label="Flat" flat />
     </QCardSection>
     <QCardActions align="between">
       <button class="q-btn" disabled>Foo bar</button>

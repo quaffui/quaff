@@ -20,5 +20,6 @@ export const QCardPropsDefaults: QBtnProps = {
   disable: false,
   loading: false,
   unelevated: false,
+  outline: false,
   ...NativePropsDefaults,
 };

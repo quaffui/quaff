@@ -9,14 +9,17 @@
     unelevated: QBtnProps["unelevated"] = undefined,
     outline: QBtnProps["outline"] = undefined,
     round: QBtnProps["round"] = undefined,
+    flat: QBtnProps["flat"] = undefined,
     userClasses: QBtnProps["userClasses"] = undefined;
   export { userClasses as class };
 
   $: classes = stringifyClasses([
     "q-btn",
-    !unelevated && "small-elevate",
+    !unelevated && !flat && "small-elevate",
     !round && "small-round",
     outline && "border",
+    flat && "transparent",
+    !$$slots.default && !label && "circle",
     userClasses,
   ]);
 </script>
@@ -31,6 +34,8 @@
   {/if}
 
   <slot>
+    {#if label}
     <span>{label}</span>
+    {/if}
   </slot>
 </button>
