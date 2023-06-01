@@ -102,6 +102,7 @@
   <slot name="append" />
 
   {#if label}
+    <!-- svelte-ignore a11y-label-has-associated-control -->
     <label class={active ? "active" : ""}>{label}</label>
   {/if}
   {#if hint}
