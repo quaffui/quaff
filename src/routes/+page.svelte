@@ -1,4 +1,6 @@
 <script lang="ts">
+  import QAvatar from "./../lib/components/avatar/QAvatar.svelte";
+  import QItemSection from "./../lib/components/list/QItemSection.svelte";
   import QCard from "$components/card/QCard.svelte";
   import QCardActions from "$lib/components/card/QCardActions.svelte";
   import QCardSection from "$lib/components/card/QCardSection.svelte";
@@ -12,6 +14,11 @@
   import QList from "$lib/components/list/QList.svelte";
   import QToolbar from "$lib/components/toolbar/QToolbar.svelte";
   import QItem from "$lib/components/list/QItem.svelte";
+
+  const defaultIcon = "help",
+    defaultAvatar = "https://placehold.co/40",
+    defaultThumbnail = "https://placehold.co/56",
+    defaultVideo = "https://placehold.co/114x64";
 
   let option = "option2";
   let checkBox = false;
@@ -122,16 +129,18 @@
   <QCard title="List">
     <QList separator bordered separatorOptions={{ spacing: "none", text: "sep" }} roundedBorders>
       <QItem>
-        <i>home</i>
+        <QItemSection avatar>
+          <i>home</i>
+        </QItemSection>
         <div>Hello world</div>
       </QItem>
       <div>Not a QItem</div>
       <QItem to="/about">
-        <i>home</i>
+        <i>help</i>
         <div>With a link using "to"</div>
       </QItem>
       <QItem href="/about">
-        <i>home</i>
+        <i>help</i>
         <div>With a link using "href"</div>
       </QItem>
       <QItem>
@@ -146,5 +155,32 @@
       </QItem>
       <QItem>Last item, no divider</QItem>
     </QList>
+  </QCard>
+  <QCard title="Avatar">
+    <QCardSection>
+      <h6>Sizes</h6>
+      <div class="flex between-align" style="align-items: center">
+        <QAvatar shape="circle" size="xs" />
+        <QAvatar shape="circle" size="sm" />
+        <QAvatar shape="circle" />
+        <QAvatar shape="circle" size="lg" />
+        <QAvatar shape="circle" size="xl" />
+      </div>
+    </QCardSection>
+    <QCardSection>
+      <h6>Shapes</h6>
+      <div class="flex between-align" style="align-items: center">
+        <QAvatar shape="circle" />
+        <QAvatar shape="rounded" />
+        <QAvatar shape="top-round" />
+        <QAvatar shape="bottom-left-round" />
+      </div>
+    </QCardSection>
+    <QCardSection>
+      <h6>Video</h6>
+      <div class="flex between-align" style="align-items: center">
+        <QAvatar shape="top-right-round" video />
+      </div>
+    </QCardSection>
   </QCard>
 </div>
