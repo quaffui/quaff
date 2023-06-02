@@ -14,6 +14,7 @@
   import QList from "$lib/components/list/QList.svelte";
   import QToolbar from "$lib/components/toolbar/QToolbar.svelte";
   import QItem from "$lib/components/list/QItem.svelte";
+  import QTooltip from "$lib/components/tooltip/QTooltip.svelte";
 
   let option = "option2";
   let checkBox = false;
@@ -185,6 +186,30 @@
         <QAvatar shape="rounded" size="lg" video />
         <QAvatar shape="left-round" size="lg" video />
         <QAvatar shape="top-right-round" size="lg" video />
+      </div>
+    </QCardSection>
+  </QCard>
+  <QCard title="Tooltip">
+    <QCardSection>
+      <h6>Default</h6>
+      <div class="flex between-align" style="align-items: center">
+        <QBtn label="Button with Tooltip">
+          <QTooltip>Awesome</QTooltip>
+        </QBtn>
+      </div>
+    </QCardSection>
+    <QCardSection>
+      <h6>With position</h6>
+      <div class="flex between-align" style="align-items: center">
+        <QBtn label="Right">
+          <QTooltip position="right">Awesome</QTooltip>
+        </QBtn>
+        <QBtn label="Left">
+          <QTooltip position="left">Awesome</QTooltip>
+        </QBtn>
+        <QBtn label="Top">
+          <QTooltip position="top">Awesome</QTooltip>
+        </QBtn>
       </div>
     </QCardSection>
   </QCard>
