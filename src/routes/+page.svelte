@@ -8,6 +8,7 @@
   import QRadio from "$lib/components/radio/QRadio.svelte";
   import QInput from "$lib/components/input/QInput.svelte";
   import QBtn from "$lib/components/button/QBtn.svelte";
+  import QToggle from "$lib/components/toggle/QToggle.svelte";
   import QSeparator from "$lib/components/separator/QSeparator.svelte";
   import { Quaff } from "$lib/stores/Quaff";
   import QList from "$lib/components/list/QList.svelte";
@@ -110,6 +111,13 @@
     <QBtn class="q-ma-sm" label="Outline" outline />
     <QBtn class="q-ma-sm" label="Round" round />
     <QBtn class="q-ma-sm" label="Flat" flat />
+  </QCard>
+  <QCard title="Toggle">
+    <QToggle bind:value={checkBox} class="q-ma-sm" />
+    <QToggle bind:value={checkBox} class="q-ma-sm" label="With label" />
+    <QToggle bind:value={checkBox} class="q-ma-sm" icon="favorite" label="With icon" />
+    <QToggle bind:value={checkBox} class="q-ma-sm" leftLabel label="Left label" />
+    <QToggle bind:value={checkBox} class="q-ma-sm" disable label="Disable" />
   </QCard>
   <QCard title="Toolbar">
     <QToolbar class="text-primary q-mt-md">
