@@ -2,7 +2,6 @@
   import QAvatar from "./../lib/components/avatar/QAvatar.svelte";
   import QItemSection from "./../lib/components/list/QItemSection.svelte";
   import QCard from "$components/card/QCard.svelte";
-  import QCardActions from "$lib/components/card/QCardActions.svelte";
   import QCardSection from "$lib/components/card/QCardSection.svelte";
   import QLinearProgress from "$lib/components/progress/QLinearProgress.svelte";
   import QCheckbox from "$lib/components/checkbox/QCheckbox.svelte";
