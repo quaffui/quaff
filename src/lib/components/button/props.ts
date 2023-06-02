@@ -2,7 +2,7 @@ import { UseAlignPropsDefaults, type UseAlignProps } from "$composables/use-alig
 import { NativePropsDefaults, type NativeProps } from "$utils/types";
 
 export interface QBtnProps extends NativeProps {
-  flat: boolean;
+  flat?: boolean;
   round?: boolean;
   label?: string;
   icon?: string;

@@ -33,9 +33,8 @@
     <a class="loader small white" />
   {/if}
 
-  <slot>
-    {#if label}
-    <span>{label}</span>
-    {/if}
-  </slot>
+  {#if label}
+  <span>{label}</span>
+  {/if}
+  <slot />
 </button>
