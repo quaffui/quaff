@@ -163,29 +163,29 @@
     <QCardSection>
       <h6>Sizes</h6>
       <div class="flex between-align" style="align-items: center">
-        <QAvatar shape="circle" size="xs" />
-        <QAvatar shape="circle" size="sm" />
-        <QAvatar shape="circle" />
-        <QAvatar shape="circle" size="lg" />
-        <QAvatar shape="circle" size="xl" />
+        <QAvatar src="/cocktail.jpg" shape="circle" size="xs" />
+        <QAvatar src="/cocktail.jpg" shape="circle" size="sm" />
+        <QAvatar src="/cocktail.jpg" shape="circle" />
+        <QAvatar src="/cocktail.jpg" shape="circle" size="lg" />
+        <QAvatar src="/cocktail.jpg" shape="circle" size="xl" />
       </div>
     </QCardSection>
     <QCardSection>
       <h6>Shapes</h6>
       <div class="flex between-align" style="align-items: center">
-        <QAvatar shape="circle" />
-        <QAvatar shape="rounded" />
-        <QAvatar shape="top-round" />
-        <QAvatar shape="bottom-left-round" />
+        <QAvatar src="/cocktail.jpg" shape="circle" />
+        <QAvatar src="/cocktail.jpg" shape="rounded" />
+        <QAvatar src="/cocktail.jpg" shape="top-round" />
+        <QAvatar src="/cocktail.jpg" shape="bottom-left-round" />
       </div>
     </QCardSection>
     <QCardSection>
       <h6>Video</h6>
       <div class="flex between-align" style="align-items: center">
-        <QAvatar shape="circle" size="lg" video />
-        <QAvatar shape="rounded" size="lg" video />
-        <QAvatar shape="left-round" size="lg" video />
-        <QAvatar shape="top-right-round" size="lg" video />
+        <QAvatar src="/sea.mp4" shape="circle" size="lg" video />
+        <QAvatar src="/sea.mp4" shape="rounded" size="lg" video />
+        <QAvatar src="/sea.mp4" shape="left-round" size="lg" video />
+        <QAvatar src="/sea.mp4" shape="top-right-round" size="lg" video />
       </div>
     </QCardSection>
   </QCard>

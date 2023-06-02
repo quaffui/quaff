@@ -22,7 +22,6 @@ export interface QAvatarProps extends NativeProps {
 export const QAvatarPropsDefault = {
   shape: "circle",
   size: "md",
-  src: "https://www.beercss.com/beer-and-woman.jpg",
   video: false,
   ...NativePropsDefaults,
 };

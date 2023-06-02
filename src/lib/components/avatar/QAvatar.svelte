@@ -1,10 +1,10 @@
 <script lang="ts">
   import { stringifyClasses, stringifyStyles } from "$lib/utils/props";
-  import { QAvatarPropsDefault, type QAvatarProps } from "./props";
+  import type { QAvatarProps } from "./props";
 
   export let shape: QAvatarProps["shape"] = "circle",
     size: QAvatarProps["size"] = "md",
-    src: QAvatarProps["src"] = "https://www.beercss.com/beer-and-woman.jpg",
+    src: QAvatarProps["src"],
     video: QAvatarProps["video"] = false,
     userClasses: QAvatarProps["userClasses"] = undefined,
     userStyles: QAvatarProps["userStyles"] = undefined;
@@ -19,10 +19,6 @@
     shape.includes("left") && "left-round",
     shape.includes("right") && "right-round",
   ]);
-
-  $: if (video === true && src === QAvatarPropsDefault.src) {
-    src = "https://www.beercss.com/dance.mp4";
-  }
 
   $: sizeClass =
     size === "xs"
