@@ -34,7 +34,7 @@
   {/if}
 
   {#if label}
-  <span>{label}</span>
+    <span>{label}</span>
   {/if}
   <slot />
 </button>
