@@ -4,7 +4,7 @@
 
   export let shape: QAvatarProps["shape"] = "circle",
     size: QAvatarProps["size"] = "md",
-    src: QAvatarProps["src"] = "https://placehold.co/40",
+    src: QAvatarProps["src"] = "https://www.beercss.com/beer-and-woman.jpg",
     video: QAvatarProps["video"] = false,
     userClasses: QAvatarProps["userClasses"] = undefined,
     userStyles: QAvatarProps["userStyles"] = undefined;
@@ -30,7 +30,7 @@
       : size === "sm"
       ? "small"
       : size === "md"
-      ? video === true
+      ? video === true || shape.includes("round")
         ? "medium"
         : ""
       : size === "lg"

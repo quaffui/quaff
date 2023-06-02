@@ -15,11 +15,6 @@
   import QToolbar from "$lib/components/toolbar/QToolbar.svelte";
   import QItem from "$lib/components/list/QItem.svelte";
 
-  const defaultIcon = "help",
-    defaultAvatar = "https://placehold.co/40",
-    defaultThumbnail = "https://placehold.co/56",
-    defaultVideo = "https://placehold.co/114x64";
-
   let option = "option2";
   let checkBox = false;
   let input = "";
@@ -179,7 +174,10 @@
     <QCardSection>
       <h6>Video</h6>
       <div class="flex between-align" style="align-items: center">
-        <QAvatar shape="top-right-round" video />
+        <QAvatar shape="circle" size="lg" video />
+        <QAvatar shape="rounded" size="lg" video />
+        <QAvatar shape="left-round" size="lg" video />
+        <QAvatar shape="top-right-round" size="lg" video />
       </div>
     </QCardSection>
   </QCard>
