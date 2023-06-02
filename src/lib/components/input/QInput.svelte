@@ -3,7 +3,7 @@
   import { type QInputProps } from "./props";
 
   export let bordered: QInputProps["bordered"] = false,
-    disabled: QInputProps["disabled"] = false,
+    disable: QInputProps["disable"] = false,
     error: QInputProps["error"] = false,
     errorMessage: QInputProps["errorMessage"] = undefined,
     filled: QInputProps["filled"] = false,
@@ -30,7 +30,7 @@
     rounded && "round",
     filled && "fill",
     error && "invalid",
-    disabled && "disabled",
+    disable && "disabled",
     userClasses,
   ]);
 
@@ -97,6 +97,7 @@
     on:blur={(e) => updateInput(e.currentTarget)}
     bind:value
     bind:this={inputElement}
+    tabindex={disable === true ? -1 : 0}
   />
 
   <slot name="append" />
