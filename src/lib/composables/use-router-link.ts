@@ -19,12 +19,12 @@ export const UseRouterLinkPropsDefaults: UseRouterLinkProps = {
 export default function <T extends UseRouterLinkProps>(props: T) {
   const hasLink = props.to !== undefined || props.href !== undefined;
 
+  const linkClasses = stringifyClasses(["q-link", props.disable && "disable"]);
+
   const linkAttributes = {
     href: props.to || props.href,
     "data-sveltkit-reload": props.replace === true ? "" : undefined,
   };
-
-  const linkClasses = stringifyClasses(["q-link", props.disable && "disable"]);
 
   return {
     hasLink,

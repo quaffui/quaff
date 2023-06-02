@@ -38,10 +38,7 @@ export interface QItemProps extends UseRouterLinkProps {
   active: boolean;
   clickable: boolean;
   dense: boolean;
-  insetLevel?: number;
   tabindex: string | number;
-  focused: boolean;
-  manualFocus: boolean;
 }
 
 export const QItemPropsDefaults: QItemProps = {
@@ -49,9 +46,6 @@ export const QItemPropsDefaults: QItemProps = {
   active: false,
   clickable: false,
   dense: false,
-  insetLevel: undefined,
   tabindex: 0,
-  focused: false,
-  manualFocus: false,
   ...UseRouterLinkPropsDefaults,
 };
