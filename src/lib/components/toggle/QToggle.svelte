@@ -1,5 +1,6 @@
 <script lang="ts">
   import { stringifyClasses } from "$lib/utils/props";
+  import { onMount } from "svelte";
   import { type QToggleProps } from "./props";
 
   export let value: QToggleProps["value"],
@@ -19,22 +20,14 @@
 
   $: classesInner = stringifyClasses(["switch", icon && "icon"]);
 
-  function forwardClick(node: HTMLElement) {
-    function handleClick() {
-      node.querySelector("label")?.click();
+  function toggle() {
+    if (disable !== true) {
+      value = !value;
     }
-
-    node.addEventListener("click", handleClick);
-
-    return {
-      destroy() {
-        node.removeEventListener("click", handleClick);
-      },
-    };
   }
 </script>
 
-<div use:forwardClick class={classes} aria-disabled={disable} {...$$restProps}>
+<div on:click={toggle} class={classes} aria-disabled={disable} {...$$restProps}>
   <label class={classesInner}>
     <input bind:checked={value} type="checkbox" disabled={disable} />
     <span>
@@ -67,6 +60,10 @@
       .label {
         opacity: 0.5;
       }
+    }
+
+    & * {
+      pointer-events: none;
     }
   }
 </style>
