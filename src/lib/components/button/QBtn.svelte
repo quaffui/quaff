@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { stringifyClasses } from "$lib/utils/props";
+  import { createClasses } from "$lib/utils/props";
   import { type QBtnProps } from "./props";
 
   export let icon: QBtnProps["icon"] = undefined,
@@ -13,7 +13,7 @@
     userClasses: QBtnProps["userClasses"] = undefined;
   export { userClasses as class };
 
-  $: classes = stringifyClasses([
+  $: classes = createClasses([
     "q-btn",
     !unelevated && !flat && "small-elevate",
     !round && "small-round",
@@ -24,7 +24,7 @@
   ]);
 </script>
 
-<button class={classes} {...$$restProps} disabled={disable}>
+<button class={classes} {...$$restProps} disabled={disable} on:click>
   {#if icon && !loading}
     <i>{icon}</i>
   {/if}
