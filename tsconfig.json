@@ -24,7 +24,9 @@
       "$css": ["src/lib/css"],
       "$css/*": ["src/lib/css/*"],
       "$stores": ["src/lib/stores"],
-      "$stores/*": ["src/lib/stores/*"]
+      "$stores/*": ["src/lib/stores/*"],
+      "$helpers": ["src/lib/helpers"],
+      "$helpers/*": ["src/lib/helpers/*"]
     },
     "preserveValueImports": false,
     "verbatimModuleSyntax": false,
