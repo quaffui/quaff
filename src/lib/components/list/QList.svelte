@@ -3,6 +3,7 @@
   import { type QListProps, QListPropsDefaults } from "./props";
   import QSeparator from "../separator/QSeparator.svelte";
   import { QSeparatorPropsDefaults } from "../separator/props";
+  import { onMount, setContext } from "svelte";
 
   export let bordered: QListProps["bordered"] = false,
     roundedBorders: QListProps["roundedBorders"] = false,
@@ -16,7 +17,14 @@
   export { userClasses as class };
   export { userStyles as style };
 
-  let listComponent: HTMLSpanElement | null = null;
+  $: setContext("separator", separator === true ? separatorOptions : undefined);
+  let startIndex = -1;
+  setContext("setIndex", {
+    index: () => {
+      startIndex += 1;
+      return startIndex;
+    },
+  });
 
   $: classes = stringifyClasses([
     "q-list",
@@ -32,31 +40,8 @@
     },
     userStyles
   );
-
-  $: separator && listComponent && prepareChildren(listComponent);
-
-  function prepareChildren(list: Element) {
-    const children = Array.from(list.children);
-
-    children.forEach((child, index) => {
-      if (child.classList.contains("q-item") && index !== 0) {
-        let separatorWrapper = document.createElement("div");
-        separatorWrapper.classList.add("q-item--separator");
-
-        new QSeparator({
-          target: separatorWrapper,
-          props: {
-            ...QSeparatorPropsDefaults,
-            ...separatorOptions,
-          },
-        });
-
-        child.parentNode?.insertBefore(separatorWrapper, child);
-      }
-    });
-  }
 </script>
 
-<svelte:element this={tag} class={classes} bind:this={listComponent} {style}>
+<svelte:element this={tag} class={classes} {style}>
   <slot />
 </svelte:element>

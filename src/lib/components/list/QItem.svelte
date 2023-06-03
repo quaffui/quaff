@@ -1,7 +1,9 @@
 <script lang="ts">
+  import QSeparator from "$lib/components/separator/QSeparator.svelte";
   import useRouterLink from "$lib/composables/use-router-link";
   import { stringifyClasses, stringifyStyles } from "$lib/utils/props";
-  import { type QItemProps } from "./props";
+  import { getContext } from "svelte";
+  import { type QListProps, type QItemProps } from "./props";
 
   export let tag: QItemProps["tag"] = "div",
     active: QItemProps["active"] = false,
@@ -21,6 +23,8 @@
     activeClass,
     replace,
   }));
+
+  $: separatorOptions = getContext<QListProps["separatorOptions"] | undefined>("separator");
 
   $: isActionable = clickable === true || hasLink === true || tag === "label";
 
@@ -46,8 +50,13 @@
     tabindex: isClickable == true ? Number(tabindex) || 0 : undefined,
     "aria-disabled": isActionable === true ? true : undefined,
   };
+
+  const { index } = getContext<{ index: () => number }>("setIndex");
 </script>
 
+{#if separatorOptions !== undefined && index() !== 0}
+  <QSeparator {...separatorOptions} />
+{/if}
 {#if linkAttributes.href !== undefined}
   <a {...attributes} {...linkAttributes}>
     <slot />

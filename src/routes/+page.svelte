@@ -18,6 +18,7 @@
 
   let option = "option2";
   let checkBox = false;
+  let toggle = false;
   let input = "";
 </script>
 
@@ -114,11 +115,14 @@
     <QBtn class="q-ma-sm" label="Flat" flat />
   </QCard>
   <QCard title="Toggle">
-    <QToggle bind:value={checkBox} class="q-ma-sm" />
-    <QToggle bind:value={checkBox} class="q-ma-sm" label="With label" />
-    <QToggle bind:value={checkBox} class="q-ma-sm" icon="favorite" label="With icon" />
-    <QToggle bind:value={checkBox} class="q-ma-sm" leftLabel label="Left label" />
-    <QToggle bind:value={checkBox} class="q-ma-sm" disable label="Disable" />
+    <div>
+      Value: {toggle}
+    </div>
+    <QToggle bind:value={toggle} class="q-ma-sm" />
+    <QToggle bind:value={toggle} class="q-ma-sm" label="With label" />
+    <QToggle bind:value={toggle} class="q-ma-sm" icon="favorite" label="With icon" />
+    <QToggle bind:value={toggle} class="q-ma-sm" leftLabel label="Left label" />
+    <QToggle bind:value={toggle} class="q-ma-sm" disable label="Disable" />
   </QCard>
   <QCard title="Toolbar">
     <QToolbar class="text-primary q-mt-md">
@@ -137,11 +141,11 @@
         </QItemSection>
         <div>Hello world</div>
       </QItem>
-      <div>Not a QItem</div>
       <QItem to="/about">
         <i>help</i>
         <div>With a link using "to"</div>
       </QItem>
+      <div>Not a QItem</div>
       <QItem href="/about">
         <i>help</i>
         <div>With a link using "href"</div>
@@ -156,7 +160,10 @@
           <i>delete</i>
         </a>
       </QItem>
-      <QItem>Last item, no divider</QItem>
+      <QItem>
+        <i class="red-text">close</i>
+        Last item, no divider
+      </QItem>
     </QList>
   </QCard>
   <QCard title="Avatar">
