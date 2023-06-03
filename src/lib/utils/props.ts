@@ -1,4 +1,4 @@
-export function stringifyStyles(
+export function createStyles(
   styleObj: Record<string, string | number | null | undefined>,
   userStyles?: string
 ) {
@@ -26,11 +26,11 @@ export function stringifyStyles(
   return toJoin.join("; ");
 }
 
-export function stringifyClasses(classes: any[]) {
+export function createClasses(classes: any[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-/* export function stringifyClasses(...classes: (string | [string, boolean])[]) {
+/* export function createClasses(...classes: (string | [string, boolean])[]) {
   let finalClasses: string[] = [];
   for (const val of classes) {
     if (typeof val === "string") {

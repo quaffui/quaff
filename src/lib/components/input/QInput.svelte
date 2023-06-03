@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { stringifyClasses } from "$lib/utils/props";
+  import { createClasses } from "$lib/utils/props";
   import { type QInputProps } from "./props";
 
   export let bordered: QInputProps["bordered"] = false,
@@ -19,7 +19,7 @@
 
   $: hasBorder = bordered || rounded || outlined;
 
-  $: classes = stringifyClasses([
+  $: classes = createClasses([
     "q-input",
     "field",
     label && "label",

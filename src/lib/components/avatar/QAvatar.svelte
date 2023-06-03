@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { stringifyClasses, stringifyStyles } from "$lib/utils/props";
+  import { createClasses, createStyles } from "$lib/utils/props";
   import type { QAvatarProps } from "./props";
 
   export let shape: QAvatarProps["shape"] = "circle",
@@ -11,7 +11,7 @@
   export { userClasses as class };
   export { userStyles as style };
 
-  $: shapeClass = stringifyClasses([
+  $: shapeClass = createClasses([
     shape === "circle" && "circle",
     shape === "rounded" && "round",
     shape.includes("top") && "top-round",
@@ -35,11 +35,11 @@
       ? "extra"
       : undefined;
 
-  $: classes = stringifyClasses([shapeClass, sizeClass, userClasses]);
+  $: classes = createClasses([shapeClass, sizeClass, userClasses]);
 
   $: style =
     sizeClass === undefined
-      ? stringifyStyles(
+      ? createStyles(
           {
             width: size,
             height: size,

@@ -1,7 +1,7 @@
 <script lang="ts">
   import QSeparator from "$lib/components/separator/QSeparator.svelte";
   import useRouterLink from "$lib/composables/use-router-link";
-  import { stringifyClasses, stringifyStyles } from "$lib/utils/props";
+  import { createClasses, createStyles } from "$lib/utils/props";
   import { getContext } from "svelte";
   import { type QListProps, type QItemProps } from "./props";
 
@@ -30,7 +30,7 @@
 
   $: isClickable = disable !== true && isActionable === true;
 
-  $: classes = stringifyClasses([
+  $: classes = createClasses([
     "q-item row q-pl-sm",
     hasLink && active && "q-item--active",
     hasLink && active && activeClass,
@@ -38,7 +38,7 @@
     linkClasses,
   ]);
 
-  $: style = stringifyStyles({
+  $: style = createStyles({
     minHeight: dense ? "32px" : undefined,
     margin: "0",
     padding: "0.75rem",

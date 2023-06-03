@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { stringifyClasses, stringifyStyles } from "$utils/props";
+  import { createClasses, createStyles } from "$utils/props";
   import { type QCardProps } from "./props";
 
   export let bordered: QCardProps["bordered"] = false,
@@ -23,7 +23,7 @@
       ? { class: `${fill}-container` }
       : { class: fill };
 
-  $: classes = stringifyClasses([
+  $: classes = createClasses([
     "q-card",
     bordered && "border",
     flat && "no-elevate",
@@ -32,7 +32,7 @@
     fillProp?.class,
   ]);
 
-  $: style = fillProp?.backgroundColor ? stringifyStyles(fillProp, userStyles) : undefined;
+  $: style = fillProp?.backgroundColor ? createStyles(fillProp, userStyles) : undefined;
 </script>
 
 <article class={classes} {...$$restProps} {style}>

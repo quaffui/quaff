@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { stringifyClasses, stringifyStyles } from "$utils/props";
+  import { createClasses, createStyles } from "$utils/props";
   import { type QSeparatorProps } from "./props";
 
   export let spacing: QSeparatorProps["spacing"] = "none",
@@ -44,7 +44,7 @@
         : { paddingInline: "16px" }
       : undefined;
 
-  $: containerStyle = stringifyStyles({
+  $: containerStyle = createStyles({
     ...insetStyle,
     display: "flex",
     alignItems: "center",
@@ -52,7 +52,7 @@
     [vertical === true ? "height" : "width"]: "100%",
   });
 
-  $: classes = stringifyClasses([
+  $: classes = createClasses([
     "q-separator",
     "q-separator--" + orientationClass,
     spacingClass,
@@ -60,7 +60,7 @@
     userClasses,
   ]);
 
-  $: style = stringifyStyles(
+  $: style = createStyles(
     {
       ...orientationStyle,
       backgroundColor: "var(--outline)",

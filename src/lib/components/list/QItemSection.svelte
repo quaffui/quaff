@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { stringifyClasses, stringifyStyles } from "$lib/utils/props";
+  import { createClasses, createStyles } from "$lib/utils/props";
   import { type QItemSectionProps } from "./props";
 
   export let thumbnail: QItemSectionProps["thumbnail"] = false,
@@ -7,7 +7,7 @@
     icon: QItemSectionProps["icon"] = false,
     avatar: QItemSectionProps["avatar"] = false;
 
-  $: classes = stringifyClasses([
+  $: classes = createClasses([
     `q-item__section`,
     icon
       ? "q-item__section--icon"
@@ -20,7 +20,7 @@
       : undefined,
   ]);
 
-  $: styles = stringifyStyles({});
+  $: styles = createStyles({});
 </script>
 
 <div class={classes}>

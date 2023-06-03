@@ -1,4 +1,4 @@
-import { stringifyClasses } from "$lib/utils/props";
+import { createClasses } from "$lib/utils/props";
 
 export interface UseRouterLinkProps {
   href?: string;
@@ -19,7 +19,7 @@ export const UseRouterLinkPropsDefaults: UseRouterLinkProps = {
 export default function <T extends UseRouterLinkProps>(props: T) {
   const hasLink = props.to !== undefined || props.href !== undefined;
 
-  const linkClasses = stringifyClasses(["q-link", props.disable && "disable"]);
+  const linkClasses = createClasses(["q-link", props.disable && "disable"]);
 
   const linkAttributes = {
     href: props.to || props.href,

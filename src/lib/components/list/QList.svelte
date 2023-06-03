@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { stringifyClasses, stringifyStyles } from "$lib/utils/props";
+  import { createClasses, createStyles } from "$lib/utils/props";
   import { type QListProps, QListPropsDefaults } from "./props";
   import QSeparator from "../separator/QSeparator.svelte";
   import { QSeparatorPropsDefaults } from "../separator/props";
@@ -26,7 +26,7 @@
     },
   });
 
-  $: classes = stringifyClasses([
+  $: classes = createClasses([
     "q-list",
     bordered && "border",
     dense && "???",
@@ -34,7 +34,7 @@
     userClasses,
   ]);
 
-  $: style = stringifyStyles(
+  $: style = createStyles(
     {
       borderRadius: roundedBorders === true ? "0.25rem" : undefined,
     },

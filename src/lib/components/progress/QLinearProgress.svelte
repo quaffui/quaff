@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { stringifyClasses, stringifyStyles } from "$lib/utils/props";
+  import { createClasses, createStyles } from "$lib/utils/props";
   import { type QLinearProgressProps } from "./props";
 
   export let value: QLinearProgressProps["value"] = 0,
@@ -14,10 +14,10 @@
     borderRadius: rounded ? "12px" : "0",
   };
 
-  $: containerClasses = stringifyClasses(["small-space", "border", userClasses]);
-  $: progressClasses = stringifyClasses(["progress", from]);
+  $: containerClasses = createClasses(["small-space", "border", userClasses]);
+  $: progressClasses = createClasses(["progress", from]);
 
-  $: containerStyle = stringifyStyles(roundedStyle, userStyles);
+  $: containerStyle = createStyles(roundedStyle, userStyles);
   $: progressStyle =
     from === "right"
       ? `clip-path: polygon(100% 0%, 100% 100%, ${100 - value}% 100%, ${100 - value}% 0%);`

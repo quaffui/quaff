@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { stringifyClasses } from "$lib/utils/props";
+  import { createClasses } from "$lib/utils/props";
   import { onMount } from "svelte";
   import { type QToggleProps } from "./props";
 
@@ -11,14 +11,14 @@
     userClasses: QToggleProps["userClasses"] = undefined;
   export { userClasses as class };
 
-  $: classes = stringifyClasses([
+  $: classes = createClasses([
     "q-toggle",
     leftLabel && "reverse",
     disable && "disable",
     userClasses,
   ]);
 
-  $: classesInner = stringifyClasses(["switch", icon && "icon"]);
+  $: classesInner = createClasses(["switch", icon && "icon"]);
 
   function toggle() {
     if (disable !== true) {
