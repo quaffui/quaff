@@ -20,4 +20,11 @@
   <QDrawer slot="drawerRight" side="right" class="secondary" bind:this={rightDrawer}>
     Hello world
   </QDrawer>
+  <div class="tertiary-container">
+    <h1>
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptates sed quo illo minima,
+      delectus laborum amet commodi consequuntur voluptatum nihil incidunt perspiciatis maiores
+      aliquam expedita harum autem nulla quidem dolorem.
+    </h1>
+  </div>
 </QLayout>

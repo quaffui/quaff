@@ -8,16 +8,22 @@
     userClasses: QToolbarProps["userClasses"] = undefined;
   export { userClasses as class };
 
-  $: classes = createClasses(["q-toolbar", "fill", inset && "q-toolbar--inset", userClasses]);
-
   $: ctx = getContext<AppbarContext | undefined>("header");
 
+  $: classes = createClasses([
+    ctx && "q-header",
+    "q-toolbar",
+    "fill",
+    inset && "q-toolbar--inset",
+    userClasses,
+  ]);
+
   $: style = createStyles({
-    top: "0px",
-    left: "0px",
-    right: "0px",
+    top: ctx !== undefined ? "0px" : undefined,
+    left: ctx !== undefined ? "0px" : undefined,
+    right: ctx !== undefined ? "0px" : undefined,
     transition: "all var(--speed3)",
-    position: ctx?.fixed === true ? "fixed" : "absolute",
+    position: ctx !== undefined ? (ctx?.fixed === true ? "fixed" : "absolute") : undefined,
     width: "100%",
   });
 </script>
