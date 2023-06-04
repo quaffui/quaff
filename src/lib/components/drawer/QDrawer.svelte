@@ -4,6 +4,7 @@
   import { getContext } from "svelte";
   import { type QDrawerProps } from "./props";
   import { type DrawerContext } from "../layout/QLayout.svelte";
+  import { clickOutside } from "$lib/helpers";
 
   export let value: QDrawerProps["value"] = false,
     side: QDrawerProps["side"] = "left",
@@ -26,6 +27,8 @@
     userStyles: QDrawerProps["userStyles"] = undefined;
   export { userClasses as class, userStyles as style };
 
+  let canHideOnClickOutside = false;
+
   $: belowBreakpoint =
     (behavior === "mobile") === true ||
     (behavior !== "desktop" && /** TODO: Get Layout width */ 1300 <= breakpoint);
@@ -35,6 +38,14 @@
   $: size = isMini === true ? miniWidth : width;
 
   $: hideOnRouteChange = persistent !== true || overlay === true;
+
+  $: if (value === true && persistent !== true && overlay !== true) {
+    setTimeout(() => {
+      canHideOnClickOutside = true;
+    }, 50);
+  } else {
+    canHideOnClickOutside = false;
+  }
 
   export const show = () => {
     if (value === true) return;
@@ -68,7 +79,7 @@
 
   $: style = createStyles(
     {
-      transition: "var(--speed3) all,0s background-color",
+      transition: "all var(--speed3), 0s background-color",
       width: `${size}px`,
       left: side === "left" ? "0px" : undefined,
       right: side === "right" ? "0px" : undefined,
@@ -87,7 +98,11 @@
     <slot />
   </dialog>
 {:else}
-  <div class={classes} {style}>
+  <div
+    use:clickOutside={() => (canHideOnClickOutside === true ? hide() : null)}
+    class={classes}
+    {style}
+  >
     <slot />
   </div>
 {/if}
