@@ -16,7 +16,7 @@
     <QBtn flat round icon="today" />
     <QBtn icon="menu" flat round on:click={() => rightDrawer?.toggle()} />
   </QToolbar>
-  <QDrawer bind:this={leftDrawer} slot="drawerLeft" class="primary">Hello world</QDrawer>
+  <QDrawer mini bind:this={leftDrawer} slot="drawerLeft" class="primary">Hello world</QDrawer>
   <QDrawer slot="drawerRight" side="right" class="secondary" bind:this={rightDrawer}>
     Hello world
   </QDrawer>

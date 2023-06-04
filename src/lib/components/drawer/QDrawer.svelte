@@ -73,6 +73,7 @@
     "q-drawer",
     side,
     value && "active",
+    mini && "mini",
     ctx?.offset?.top && "offset-top",
     userClasses,
   ]);
