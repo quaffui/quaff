@@ -39,7 +39,7 @@
 
   $: hideOnRouteChange = persistent !== true || overlay === true;
 
-  $: if (value === true && persistent !== true && overlay !== true) {
+  $: if (value === true && persistent !== true) {
     setTimeout(() => {
       canHideOnClickOutside = true;
     }, 50);
@@ -71,6 +71,7 @@
 
   $: classes = createClasses([
     "q-drawer",
+    mini ? "q-pa-sm" : "q-pa-md",
     side,
     value && "active",
     mini && "mini",
@@ -83,17 +84,30 @@
     {
       transition: "all var(--speed3), 0s background-color",
       width: `${size}px`,
-      height: "100%",
+      height: `calc(100% - ${ctx?.offset?.top ? 64 : 0}px - ${ctx?.offset?.bottom ? 64 : 0}px)`,
       left: side === "left" ? "0px" : "auto",
       right: side === "right" ? "0px" : "auto",
       top: ctx?.offset?.top === true ? "64px" : "0px",
       bottom: ctx?.offset?.bottom === true ? "64px" : "0px",
       position: ctx?.fixed === true ? "fixed" : "absolute",
+      borderRadius: getBorderRadius(side, ctx),
       transform:
         value === true ? "translate(0)" : side === "left" ? "translate(-100%)" : "translate(100%)",
     },
     userStyles
   );
+
+  $: console.log({ side, ctx });
+
+  function getBorderRadius(sideProp: typeof side, context: typeof ctx) {
+    return sideProp === "left"
+      ? `0px ${context?.offset.top !== false ? 16 : 0}px ${
+          context?.offset.bottom !== false ? 16 : 0
+        }px 0px`
+      : `${context?.offset.top !== false ? 16 : 0}px 0px 0px ${
+          context?.offset.bottom !== false ? 16 : 0
+        }px`;
+  }
 </script>
 
 <div
