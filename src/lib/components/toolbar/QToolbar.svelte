@@ -1,15 +1,27 @@
 <script lang="ts">
-  import { stringifyClasses } from "$lib/utils/props";
+  import { createClasses, createStyles } from "$lib/utils/props";
+  import { getContext } from "svelte";
   import { type QToolbarProps } from "./props";
+  import { type AppbarContext } from "../layout/QLayout.svelte";
 
   export let inset: QToolbarProps["inset"] = false,
     userClasses: QToolbarProps["userClasses"] = undefined;
   export { userClasses as class };
 
-  $: classes = stringifyClasses(["q-toolbar", inset && "q-toolbar--inset", userClasses]);
+  $: classes = createClasses(["q-toolbar", "fill", inset && "q-toolbar--inset", userClasses]);
+
+  $: ctx = getContext<AppbarContext | undefined>("header");
+
+  $: style = createStyles({
+    top: 0,
+    left: ctx?.offset?.left === true ? "300px" : "0px",
+    right: ctx?.offset?.right === true ? "300px" : "0px",
+    position: ctx?.fixed === true ? "fixed" : "absolute",
+    width: "100%",
+  });
 </script>
 
-<header class={`fill ${userClasses}`} role="toolbar" {...$$restProps}>
+<header class={classes} {style} role="toolbar" {...$$restProps}>
   <nav>
     <slot />
   </nav>

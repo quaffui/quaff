@@ -1,4 +1,5 @@
 <script lang="ts">
+  import QLayout from "./../lib/components/layout/QLayout.svelte";
   import QAvatar from "./../lib/components/avatar/QAvatar.svelte";
   import QItemSection from "./../lib/components/list/QItemSection.svelte";
   import QCard from "$components/card/QCard.svelte";
@@ -15,6 +16,7 @@
   import QToolbar from "$lib/components/toolbar/QToolbar.svelte";
   import QItem from "$lib/components/list/QItem.svelte";
   import QTooltip from "$lib/components/tooltip/QTooltip.svelte";
+  import QDrawer from "$lib/components/drawer/QDrawer.svelte";
 
   let option = "option2";
   let checkBox = false;
@@ -141,12 +143,12 @@
         </QItemSection>
         <div>Hello world</div>
       </QItem>
-      <QItem to="/about">
+      <QItem to="/test">
         <i>help</i>
         <div>With a link using "to"</div>
       </QItem>
       <div>Not a QItem</div>
-      <QItem href="/about">
+      <QItem href="/test">
         <i>help</i>
         <div>With a link using "href"</div>
       </QItem>
