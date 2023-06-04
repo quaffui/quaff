@@ -13,9 +13,10 @@
   $: ctx = getContext<AppbarContext | undefined>("header");
 
   $: style = createStyles({
-    top: 0,
-    left: ctx?.offset?.left === true ? "300px" : "0px",
-    right: ctx?.offset?.right === true ? "300px" : "0px",
+    top: "0px",
+    left: "0px",
+    right: "0px",
+    transition: "all var(--speed3)",
     position: ctx?.fixed === true ? "fixed" : "absolute",
     width: "100%",
   });
@@ -30,5 +31,15 @@
 <style lang="scss">
   .q-toolbar--inset {
     padding-left: 58px;
+  }
+
+  .q-toolbar:has(~ div.q-drawer.left.active:not(.offset-top)) {
+    left: 300px !important;
+    width: calc(100% - 300px) !important;
+  }
+
+  .q-toolbar:has(~ div.q-drawer.right.active:not(.offset-top)) {
+    right: 300px !important;
+    width: calc(100% - 300px) !important;
   }
 </style>

@@ -8,7 +8,7 @@
   let rightDrawer: QDrawer | null = null;
 </script>
 
-<QLayout>
+<QLayout view="lHh LpR fFf">
   <QToolbar slot="header" class="text-primary">
     <QBtn icon="menu" flat round on:click={() => leftDrawer?.toggle()} />
     <h5 class="max center-align">Title</h5>

@@ -56,9 +56,16 @@
     hide();
   }
 
-  $: classes = createClasses([side, value && "active", userClasses]);
-
   $: ctx = getContext<DrawerContext | undefined>(side === "left" ? "drawerLeft" : "drawerRight");
+
+  $: classes = createClasses([
+    "q-drawer",
+    side,
+    value && "active",
+    ctx?.offset?.top && "offset-top",
+    userClasses,
+  ]);
+
   $: style = createStyles(
     {
       transition: "var(--speed3) all,0s background-color",
