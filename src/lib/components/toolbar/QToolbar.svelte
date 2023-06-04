@@ -39,23 +39,23 @@
     padding-left: 58px;
   }
 
-  .q-toolbar:has(~ div.q-drawer.left.active:not(.offset-top):not(.mini)) {
-    left: 300px !important;
-    width: calc(100% - 300px) !important;
-  }
-
-  .q-toolbar:has(~ div.q-drawer.right.active:not(.offset-top):not(.mini)) {
-    right: 300px !important;
-    width: calc(100% - 300px) !important;
-  }
-
-  .q-toolbar:has(~ div.q-drawer.left.active.mini:not(.offset-top)) {
-    left: 57px !important;
-    width: calc(100% - 57px) !important;
-  }
-
-  .q-toolbar:has(~ div.q-drawer.right.active.mini:not(.offset-top)) {
-    right: 57px !important;
-    width: calc(100% - 57px) !important;
+  .q-header {
+    z-index: 2000;
+    &:has(~ div.q-drawer.left.active:not(.offset-top):not(.mini)) {
+      left: 300px !important;
+      width: calc(100% - 300px) !important;
+    }
+    &:has(~ div.q-drawer.right.active:not(.offset-top):not(.mini)) {
+      right: 300px !important;
+      width: calc(100% - 300px) !important;
+    }
+    &:has(~ div.q-drawer.left.active.mini:not(.offset-top)) {
+      left: 57px !important;
+      width: calc(100% - 57px) !important;
+    }
+    &:has(~ div.q-drawer.right.active.mini:not(.offset-top)) {
+      right: 57px !important;
+      width: calc(100% - 57px) !important;
+    }
   }
 </style>

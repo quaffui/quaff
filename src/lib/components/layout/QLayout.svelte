@@ -64,7 +64,7 @@
         top: $$slots.header && top[2].toLowerCase() === "h",
         bottom: $$slots.footer && bottom[2].toLowerCase() === "f",
       },
-      fixed: [top[2], middle[2], bottom[2]].includes("L"),
+      fixed: [top[2], middle[2], bottom[2]].includes("R"),
     };
 
     return {
@@ -101,21 +101,22 @@
 </div>
 
 <style lang="scss">
-  :global(.q-layout > :not(.q-drawer, .q-toolbar, .q-footer)) {
+  :global(.q-layout > :not(.q-drawer, .q-header, .q-footer)) {
     transition: padding var(--speed3);
+    height: 100%;
     &:has(~ .q-header) {
       padding-top: 64px;
     }
-    &:has(~ .q-drawer.left.active:not(.mini)) {
+    &:has(~ .q-drawer.left.active:not(.mini, .overlay)) {
       padding-left: 300px;
     }
-    &:has(~ .q-drawer.left.active.mini) {
+    &:has(~ .q-drawer.left.active.mini:not(.overlay)) {
       padding-left: 57px;
     }
-    &:has(~ .q-drawer.right.active:not(.mini)) {
+    &:has(~ .q-drawer.right.active:not(.mini, .overlay)) {
       padding-right: 300px;
     }
-    &:has(~ .q-drawer.right.active.mini) {
+    &:has(~ .q-drawer.right.active.mini:not(.overlay)) {
       padding-right: 57px;
     }
   }

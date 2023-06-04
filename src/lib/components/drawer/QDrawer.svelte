@@ -74,6 +74,7 @@
     side,
     value && "active",
     mini && "mini",
+    overlay && "overlay",
     ctx?.offset?.top && "offset-top",
     userClasses,
   ]);
@@ -82,8 +83,9 @@
     {
       transition: "all var(--speed3), 0s background-color",
       width: `${size}px`,
-      left: side === "left" ? "0px" : undefined,
-      right: side === "right" ? "0px" : undefined,
+      height: "100%",
+      left: side === "left" ? "0px" : "auto",
+      right: side === "right" ? "0px" : "auto",
       top: ctx?.offset?.top === true ? "64px" : "0px",
       bottom: ctx?.offset?.bottom === true ? "64px" : "0px",
       position: ctx?.fixed === true ? "fixed" : "absolute",
@@ -94,16 +96,10 @@
   );
 </script>
 
-{#if overlay === true}
-  <dialog class={classes} {style}>
-    <slot />
-  </dialog>
-{:else}
-  <div
-    use:clickOutside={() => (canHideOnClickOutside === true ? hide() : null)}
-    class={classes}
-    {style}
-  >
-    <slot />
-  </div>
-{/if}
+<div
+  use:clickOutside={() => (canHideOnClickOutside === true ? hide() : null)}
+  class={classes}
+  {style}
+>
+  <slot />
+</div>
