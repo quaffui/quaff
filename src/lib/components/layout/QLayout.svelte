@@ -85,39 +85,17 @@
 </script>
 
 <div class={classes} {style} on:scroll on:resize>
-  <slot />
-  {#if $$slots.header}
-    <slot name="header" />
-  {/if}
   {#if $$slots.drawerLeft}
     <slot name="drawerLeft" />
   {/if}
   {#if $$slots.drawerRight}
     <slot name="drawerRight" />
   {/if}
+  {#if $$slots.header}
+    <slot name="header" />
+  {/if}
   {#if $$slots.footer}
     <slot name="footer" />
   {/if}
+  <slot name="content" />
 </div>
-
-<style lang="scss">
-  :global(.q-layout > :not(.q-drawer, .q-header, .q-footer)) {
-    transition: padding var(--speed3);
-    height: 100%;
-    &:has(~ .q-header) {
-      padding-top: 64px;
-    }
-    &:has(~ .q-drawer.left.active:not(.mini, .overlay)) {
-      padding-left: 300px;
-    }
-    &:has(~ .q-drawer.left.active.mini:not(.overlay)) {
-      padding-left: 57px;
-    }
-    &:has(~ .q-drawer.right.active:not(.mini, .overlay)) {
-      padding-right: 300px;
-    }
-    &:has(~ .q-drawer.right.active.mini:not(.overlay)) {
-      padding-right: 57px;
-    }
-  }
-</style>
