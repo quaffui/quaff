@@ -1,5 +1,5 @@
 .q-layout
-  .q-header
+  & > .q-header
     z-index: 2000
     position: absolute
     top: 0px
@@ -7,7 +7,11 @@
     right: 0px
     & ~ :not(.q-header, .q-footer, .q-drawer)
       padding-top: 64px
-  .q-drawer
+    &.fixed
+      position: fixed
+      &::before
+        margin: 0
+  & > .q-drawer
     z-index: 1000
   & > :not(.q-header, .q-footer, .q-drawer)
     height: 100%
