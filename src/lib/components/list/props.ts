@@ -33,7 +33,7 @@ export const QListPropsDefaults: QListProps = {
   ...NativePropsDefaults,
 };
 
-export interface QItemProps extends UseRouterLinkProps {
+export interface QItemProps extends UseRouterLinkProps, NativeProps {
   tag: string;
   active: boolean;
   clickable: boolean;
@@ -48,4 +48,20 @@ export const QItemPropsDefaults: QItemProps = {
   dense: false,
   tabindex: 0,
   ...UseRouterLinkPropsDefaults,
+  ...NativePropsDefaults,
+};
+
+export interface QItemSectionProps extends NativeProps {
+  thumbnail: boolean;
+  video: boolean;
+  icon: boolean;
+  avatar: boolean;
+}
+
+export const QItemSectionProps: QItemSectionProps = {
+  thumbnail: false,
+  video: false,
+  icon: false,
+  avatar: false,
+  ...NativePropsDefaults,
 };
