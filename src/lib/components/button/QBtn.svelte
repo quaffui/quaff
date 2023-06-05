@@ -10,6 +10,7 @@
     outline: QBtnProps["outline"] = undefined,
     round: QBtnProps["round"] = undefined,
     flat: QBtnProps["flat"] = undefined,
+    to: QBtnProps["to"] = undefined,
     userClasses: QBtnProps["userClasses"] = undefined;
   export { userClasses as class };
 
@@ -22,19 +23,40 @@
     !$$slots.default && !label && "circle",
     userClasses,
   ]);
+
+  function openLink() {}
 </script>
 
-<button class={classes} {...$$restProps} disabled={disable} on:click>
-  {#if icon && !loading}
-    <i>{icon}</i>
-  {/if}
+{#if to !== undefined}
+  <a href={to}>
+    <button class={classes} {...$$restProps} disabled={disable} on:click>
+      {#if icon && !loading}
+        <i>{icon}</i>
+      {/if}
 
-  {#if loading}
-    <a class="loader small white" />
-  {/if}
+      {#if loading}
+        <a class="loader small white" />
+      {/if}
 
-  {#if label}
-    <span>{label}</span>
-  {/if}
-  <slot />
-</button>
+      {#if label}
+        <span>{label}</span>
+      {/if}
+      <slot />
+    </button>
+  </a>
+{:else}
+  <button class={classes} {...$$restProps} disabled={disable} on:click>
+    {#if icon && !loading}
+      <i>{icon}</i>
+    {/if}
+
+    {#if loading}
+      <a class="loader small white" />
+    {/if}
+
+    {#if label}
+      <span>{label}</span>
+    {/if}
+    <slot />
+  </button>
+{/if}

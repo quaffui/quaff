@@ -10,6 +10,7 @@ export interface QBtnProps extends NativeProps {
   loading?: boolean;
   unelevated?: boolean;
   outline?: boolean;
+  to?: string;
 }
 
 export const QCardPropsDefaults: QBtnProps = {
@@ -21,5 +22,6 @@ export const QCardPropsDefaults: QBtnProps = {
   loading: false,
   unelevated: false,
   outline: false,
+  to: undefined,
   ...NativePropsDefaults,
 };
