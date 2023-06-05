@@ -1,0 +1,42 @@
+.q-layout
+  .q-header
+    z-index: 2000
+    position: absolute
+    top: 0px
+    left: 0px
+    right: 0px
+    & ~ :not(.q-header, .q-footer, .q-drawer)
+      padding-top: 64px
+  .q-drawer
+    z-index: 1000
+  & > :not(.q-header, .q-footer, .q-drawer)
+    height: 100%
+    transition: padding var(--speed3)
+
+.q-drawer.active
+  &:not(.offset-top)
+    &.left
+      &.mini  ~ .q-header
+        left: 57px
+        width: calc(100% - 57px)
+      &:not(.mini) ~ .q-header
+        left: 300px
+        width: calc(100% - 300px)
+    &.right
+      &.mini  ~ .q-header
+        right: 57px
+        width: calc(100% - 57px)
+      &:not(.mini) ~ .q-header
+        right: 300px
+        width: calc(100% - 300px)
+  &:not(.overlay)
+    &.left
+      &.mini  ~ :not(.q-header, .q-footer, .q-drawer)
+        padding-left: 57px
+      &:not(.mini) ~ :not(.q-header, .q-footer, .q-drawer)
+        padding-left: 300px
+    &.right
+      &.mini  ~ :not(.q-header, .q-footer, .q-drawer)
+        padding-right: 57px
+      &:not(.mini) ~ :not(.q-header, .q-footer, .q-drawer)
+        padding-right: 300px
