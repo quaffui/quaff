@@ -180,6 +180,12 @@
       </div>
     </QCardSection>
     <QCardSection>
+      <h6>Custom sizes</h6>
+      <div class="flex between-align" style="align-items: center">
+        <QAvatar src="/cocktail.jpg" shape="circle" size="5rem" />
+      </div>
+    </QCardSection>
+    <QCardSection>
       <h6>Shapes</h6>
       <div class="flex between-align" style="align-items: center">
         <QAvatar src="/cocktail.jpg" shape="circle" />
