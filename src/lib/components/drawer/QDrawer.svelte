@@ -83,13 +83,9 @@
     userClasses,
   ]);
 
-  $: console.log(getBorderRadiusClasses(side, ctx));
-
   $: style = createStyles(
     {
       width: `${size}px`,
-      transform:
-        value === true ? "translate(0)" : side === "left" ? "translate(-100%)" : "translate(100%)",
     },
     userStyles
   );
