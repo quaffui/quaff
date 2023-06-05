@@ -77,36 +77,29 @@
     mini && "mini",
     overlay && "overlay",
     ctx?.offset?.top && "offset-top",
+    ctx?.offset?.bottom && "offset-bottom",
+    ctx?.fixed && "fixed",
+    getBorderRadiusClasses(side, ctx),
     userClasses,
   ]);
 
+  $: console.log(getBorderRadiusClasses(side, ctx));
+
   $: style = createStyles(
     {
-      transition: "all var(--speed3), 0s background-color",
       width: `${size}px`,
-      height: `calc(100% - ${ctx?.offset?.top ? 64 : 0}px - ${ctx?.offset?.bottom ? 64 : 0}px)`,
-      left: side === "left" ? "0px" : "auto",
-      right: side === "right" ? "0px" : "auto",
-      top: ctx?.offset?.top === true ? "64px" : "0px",
-      bottom: ctx?.offset?.bottom === true ? "64px" : "0px",
-      position: ctx?.fixed === true ? "fixed" : "absolute",
-      borderRadius: getBorderRadius(side, ctx),
       transform:
         value === true ? "translate(0)" : side === "left" ? "translate(-100%)" : "translate(100%)",
     },
     userStyles
   );
 
-  $: console.log({ side, ctx });
-
-  function getBorderRadius(sideProp: typeof side, context: typeof ctx) {
-    return sideProp === "left"
-      ? `0px ${context?.offset.top !== false ? 16 : 0}px ${
-          context?.offset.bottom !== false ? 16 : 0
-        }px 0px`
-      : `${context?.offset.top !== false ? 16 : 0}px 0px 0px ${
-          context?.offset.bottom !== false ? 16 : 0
-        }px`;
+  function getBorderRadiusClasses(sideProp: typeof side, context: typeof ctx) {
+    let prefix = "border-radius" + (sideProp === "left" ? "__right" : "__left");
+    return createClasses([
+      context?.offset?.top !== false ? prefix + "--top" : undefined,
+      context?.offset?.bottom !== false ? prefix + "--bottom" : undefined,
+    ]);
   }
 </script>
 
@@ -117,3 +110,59 @@
 >
   <slot />
 </div>
+
+<style lang="scss">
+  .q-drawer {
+    height: 100%;
+    position: absolute;
+    top: 0px;
+    right: auto;
+    bottom: 0px;
+    left: auto;
+    transition: all var(--speed3), 0s background-color;
+    &.fixed {
+      position: fixed;
+    }
+    &.left {
+      left: 0px;
+      transform: translate(-100%);
+    }
+    &.right {
+      right: 0px;
+      transform: translate(100%);
+    }
+    &.active {
+      transform: translate(0);
+    }
+    &.offset- {
+      &top {
+        top: 64px;
+        height: calc(100% - 64px);
+        &.offset-bottom {
+          height: calc(100% - 128px);
+        }
+      }
+      &bottom {
+        bottom: 64px;
+      }
+    }
+    &.border-radius {
+      &__left {
+        &--top {
+          border-top-left-radius: 16px;
+        }
+        &--bottom {
+          border-bottom-left-radius: 16px;
+        }
+      }
+      &__right {
+        &--top {
+          border-top-right-radius: 16px;
+        }
+        &--bottom {
+          border-bottom-right-radius: 16px;
+        }
+      }
+    }
+  }
+</style>
