@@ -1,6 +1,7 @@
 <script lang="ts">
   import QBtn from "$lib/components/button/QBtn.svelte";
   import QDrawer from "$lib/components/drawer/QDrawer.svelte";
+  import QFooter from "$lib/components/footer/QFooter.svelte";
   import QLayout from "$lib/components/layout/QLayout.svelte";
   import QToolbar from "$lib/components/toolbar/QToolbar.svelte";
 
@@ -8,8 +9,8 @@
   let rightDrawer: QDrawer | null = null;
 </script>
 
-<QLayout view="lHh LpR fFf">
-  <QToolbar slot="header" class="text-primary">
+<QLayout view="lHh LpR fFr">
+  <QToolbar slot="header" class="primary-container">
     <QBtn icon="menu" flat round on:click={() => leftDrawer?.toggle()} />
     <h5 class="max center-align">Title</h5>
     <QBtn flat round icon="attach_file" />
@@ -27,4 +28,22 @@
       aliquam expedita harum autem nulla quidem dolorem.
     </h1>
   </div>
+  <QFooter slot="footer" class="secondary-container">
+    <button class="circle transparent">
+      <i>check_box</i>
+    </button>
+    <button class="circle transparent">
+      <i>brush</i>
+    </button>
+    <button class="circle transparent">
+      <i>mic</i>
+    </button>
+    <button class="circle transparent">
+      <i>image</i>
+    </button>
+    <div class="max" />
+    <button class="square round primary">
+      <i>add</i>
+    </button>
+  </QFooter>
 </QLayout>

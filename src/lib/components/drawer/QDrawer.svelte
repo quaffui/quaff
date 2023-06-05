@@ -136,11 +136,12 @@
         top: 64px;
         height: calc(100% - 64px);
         &.offset-bottom {
-          height: calc(100% - 128px);
+          height: calc(100% - 64px - 80px);
         }
       }
       &bottom {
-        bottom: 64px;
+        bottom: 80px;
+        height: calc(100% - 80px);
       }
     }
     &.border-radius {
