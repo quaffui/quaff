@@ -21,7 +21,7 @@
     <QBtn icon="menu" flat round on:click={() => rightDrawer?.toggle()} />
   </QToolbar>
   <QDrawer mini bind:this={leftDrawer} slot="drawerLeft" class="primary">
-    <QList>
+    <QList dense>
       <QItem>
         <QBtn flat class="circle transparent">
           <i>check_box</i>
@@ -45,25 +45,36 @@
     </QList>
   </QDrawer>
   <QDrawer overlay slot="drawerRight" side="right" class="secondary" bind:this={rightDrawer}>
-    <h5>This is beautiful</h5>
     <QList separator>
       <QItem to="/">
         <QItemSection avatar>
           <i>home</i>
         </QItemSection>
-        <div>Return home</div>
+        <QItemSection>Return home, oh god this is a long text</QItemSection>
       </QItem>
       <QItem to="/">
         <QItemSection avatar>
           <i>home</i>
         </QItemSection>
-        <div>Return home</div>
+        <QItemSection>Return home</QItemSection>
       </QItem>
       <QItem to="/">
         <QItemSection avatar>
           <i>home</i>
         </QItemSection>
-        <div>Return home</div>
+        <QItemSection>Return home</QItemSection>
+      </QItem>
+      <QItem to="/">
+        <QItemSection avatar>
+          <i>home</i>
+        </QItemSection>
+        <QItemSection>Return home</QItemSection>
+      </QItem>
+      <QItem to="/">
+        <QItemSection avatar>
+          <i>home</i>
+        </QItemSection>
+        <QItemSection>Return home</QItemSection>
       </QItem>
     </QList>
   </QDrawer>

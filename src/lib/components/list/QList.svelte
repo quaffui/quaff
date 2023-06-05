@@ -27,7 +27,7 @@
   $: classes = createClasses([
     "q-list",
     bordered && "border",
-    dense && "???",
+    dense && "dense",
     padding && "q-py-sm",
     roundedBorders && "rounded-borders",
     userClasses,

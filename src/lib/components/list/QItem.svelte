@@ -65,6 +65,10 @@
 {/if}
 
 <style lang="scss">
+  :global(.q-list.dense > .q-item, .q-item.dense) {
+    min-height: 32px;
+    padding: 0;
+  }
   .q-item {
     margin: 0;
     padding: 0.75em;
