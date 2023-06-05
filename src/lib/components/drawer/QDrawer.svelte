@@ -116,6 +116,7 @@
     bottom: 0px;
     left: auto;
     transition: all var(--speed3), 0s background-color;
+    z-index: 1000;
     &.fixed {
       position: fixed;
     }

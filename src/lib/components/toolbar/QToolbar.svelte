@@ -19,12 +19,7 @@
   ]);
 
   $: style = createStyles({
-    top: ctx !== undefined ? "0px" : undefined,
-    left: ctx !== undefined ? "0px" : undefined,
-    right: ctx !== undefined ? "0px" : undefined,
-    transition: "all var(--speed3)",
     position: ctx !== undefined ? (ctx?.fixed === true ? "fixed" : "absolute") : undefined,
-    width: "100%",
   });
 </script>
 
@@ -35,27 +30,11 @@
 </header>
 
 <style lang="scss">
-  .q-toolbar--inset {
-    padding-left: 58px;
-  }
-
-  .q-header {
-    z-index: 2000;
-    &:has(~ div.q-drawer.left.active:not(.offset-top):not(.mini)) {
-      left: 300px !important;
-      width: calc(100% - 300px) !important;
-    }
-    &:has(~ div.q-drawer.right.active:not(.offset-top):not(.mini)) {
-      right: 300px !important;
-      width: calc(100% - 300px) !important;
-    }
-    &:has(~ div.q-drawer.left.active.mini:not(.offset-top)) {
-      left: 57px !important;
-      width: calc(100% - 57px) !important;
-    }
-    &:has(~ div.q-drawer.right.active.mini:not(.offset-top)) {
-      right: 57px !important;
-      width: calc(100% - 57px) !important;
+  .q-toolbar {
+    width: 100%;
+    transition: all var(--speed3);
+    &--inset {
+      padding-left: 58px;
     }
   }
 </style>
