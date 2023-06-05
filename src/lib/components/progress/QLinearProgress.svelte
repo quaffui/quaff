@@ -7,8 +7,7 @@
     rounded: QLinearProgressProps["rounded"] = false,
     userClasses: QLinearProgressProps["userClasses"] = undefined,
     userStyles: QLinearProgressProps["userStyles"] = undefined;
-  export { userClasses as class };
-  export { userStyles as style };
+  export { userClasses as class, userStyles as style };
 
   $: roundedStyle = {
     borderRadius: rounded ? "12px" : "0",

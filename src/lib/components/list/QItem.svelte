@@ -14,7 +14,8 @@
     to: QItemProps["to"] = undefined,
     disable: QItemProps["disable"] = false,
     activeClass: QItemProps["activeClass"] = undefined,
-    replace: QItemProps["replace"] = false;
+    replace: QItemProps["replace"] = false,
+    userClasses: QItemProps["userClasses"] = undefined;
 
   $: ({ hasLink, linkAttributes, linkClasses } = useRouterLink({
     href,
@@ -32,23 +33,19 @@
 
   $: classes = createClasses([
     "q-item row q-pl-sm",
+    dense && "dense",
     hasLink && active && "q-item--active",
     hasLink && active && activeClass,
     isClickable && "wave",
     linkClasses,
+    userClasses,
   ]);
-
-  $: style = createStyles({
-    minHeight: dense ? "32px" : undefined,
-    margin: "0",
-    padding: "0.75rem",
-  });
 
   $: attributes = {
     class: classes,
-    style,
     tabindex: isClickable == true ? Number(tabindex) || 0 : undefined,
     "aria-disabled": isActionable === true ? true : undefined,
+    ...$$restProps,
   };
 
   const { index } = getContext<{ index: () => number }>("setIndex");
@@ -66,3 +63,13 @@
     <slot />
   </div>
 {/if}
+
+<style lang="scss">
+  .q-item {
+    margin: 0;
+    padding: 0.75em;
+    &.dense {
+      min-height: 32px;
+    }
+  }
+</style>

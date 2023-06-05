@@ -30,11 +30,9 @@
     vertical === true
       ? {
           width: size,
-          flex: "1 1 auto",
         }
       : {
           height: size,
-          flex: "1 1 auto",
         };
 
   $: insetStyle =
@@ -63,8 +61,6 @@
   $: style = createStyles(
     {
       ...orientationStyle,
-      backgroundColor: "var(--outline)",
-      border: "none",
     },
     userStyles
   );
@@ -85,3 +81,11 @@
     <hr class={classes} {style} aria-orientation={orientationClass} />
   </div>
 {/if}
+
+<style lang="scss">
+  .q-separator {
+    background-color: var(--outline);
+    border: none;
+    flex: 1 1 auto;
+  }
+</style>

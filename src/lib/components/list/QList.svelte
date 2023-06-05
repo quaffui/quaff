@@ -12,10 +12,8 @@
     separatorOptions: QListProps["separatorOptions"] = {},
     padding: QListProps["padding"] = false,
     tag: QListProps["tag"] = "div",
-    userClasses: QListProps["userClasses"] = undefined,
-    userStyles: QListProps["userStyles"] = undefined;
+    userClasses: QListProps["userClasses"] = undefined;
   export { userClasses as class };
-  export { userStyles as style };
 
   $: setContext("separator", separator === true ? separatorOptions : undefined);
   let startIndex = -1;
@@ -31,17 +29,17 @@
     bordered && "border",
     dense && "???",
     padding && "q-py-sm",
+    roundedBorders && "rounded-borders",
     userClasses,
   ]);
-
-  $: style = createStyles(
-    {
-      borderRadius: roundedBorders === true ? "0.25rem" : undefined,
-    },
-    userStyles
-  );
 </script>
 
-<svelte:element this={tag} class={classes} {style}>
+<svelte:element this={tag} class={classes} {...$$restProps}>
   <slot />
 </svelte:element>
+
+<style lang="scss">
+  .rounded-borders {
+    border-radius: 0.25rem;
+  }
+</style>

@@ -1,11 +1,13 @@
 <script lang="ts">
-  import { createClasses, createStyles } from "$lib/utils/props";
+  import { createClasses } from "$lib/utils/props";
   import { type QItemSectionProps } from "./props";
 
   export let thumbnail: QItemSectionProps["thumbnail"] = false,
     video: QItemSectionProps["video"] = false,
     icon: QItemSectionProps["icon"] = false,
-    avatar: QItemSectionProps["avatar"] = false;
+    avatar: QItemSectionProps["avatar"] = false,
+    userClasses: QItemSectionProps["userClasses"] = undefined;
+  export { userClasses as class };
 
   $: classes = createClasses([
     `q-item__section`,
@@ -18,12 +20,11 @@
       : video
       ? "q-item__section--video"
       : undefined,
+    userClasses,
   ]);
-
-  $: styles = createStyles({});
 </script>
 
-<div class={classes}>
+<div class={classes} {...$$restProps}>
   <slot />
 </div>
 
