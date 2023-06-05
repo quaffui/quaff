@@ -68,6 +68,7 @@
   .q-item {
     margin: 0;
     padding: 0.75em;
+    min-width: 100%;
     &.dense {
       min-height: 32px;
     }

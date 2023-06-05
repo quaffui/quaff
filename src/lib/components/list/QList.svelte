@@ -39,6 +39,12 @@
 </svelte:element>
 
 <style lang="scss">
+  .q-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
   .rounded-borders {
     border-radius: 0.25rem;
   }

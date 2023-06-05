@@ -3,6 +3,9 @@
   import QDrawer from "$lib/components/drawer/QDrawer.svelte";
   import QFooter from "$lib/components/footer/QFooter.svelte";
   import QLayout from "$lib/components/layout/QLayout.svelte";
+  import QItem from "$lib/components/list/QItem.svelte";
+  import QItemSection from "$lib/components/list/QItemSection.svelte";
+  import QList from "$lib/components/list/QList.svelte";
   import QToolbar from "$lib/components/toolbar/QToolbar.svelte";
 
   let leftDrawer: QDrawer | null = null;
@@ -17,9 +20,52 @@
     <QBtn flat round icon="today" />
     <QBtn icon="menu" flat round on:click={() => rightDrawer?.toggle()} />
   </QToolbar>
-  <QDrawer mini bind:this={leftDrawer} slot="drawerLeft" class="primary">Hello world</QDrawer>
+  <QDrawer mini bind:this={leftDrawer} slot="drawerLeft" class="primary">
+    <QList>
+      <QItem>
+        <QBtn flat class="circle transparent">
+          <i>check_box</i>
+        </QBtn>
+      </QItem>
+      <QItem>
+        <QBtn flat class="circle transparent">
+          <i>brush</i>
+        </QBtn>
+      </QItem>
+      <QItem>
+        <QBtn flat class="circle transparent">
+          <i>mic</i>
+        </QBtn>
+      </QItem>
+      <QItem>
+        <QBtn flat class="circle transparent">
+          <i>image</i>
+        </QBtn>
+      </QItem>
+    </QList>
+  </QDrawer>
   <QDrawer overlay slot="drawerRight" side="right" class="secondary" bind:this={rightDrawer}>
-    Hello world
+    <h5>This is beautiful</h5>
+    <QList separator>
+      <QItem to="/">
+        <QItemSection avatar>
+          <i>home</i>
+        </QItemSection>
+        <div>Return home</div>
+      </QItem>
+      <QItem to="/">
+        <QItemSection avatar>
+          <i>home</i>
+        </QItemSection>
+        <div>Return home</div>
+      </QItem>
+      <QItem to="/">
+        <QItemSection avatar>
+          <i>home</i>
+        </QItemSection>
+        <div>Return home</div>
+      </QItem>
+    </QList>
   </QDrawer>
   <div slot="content" class="tertiary-container" style="height: 200%">
     <h1>
@@ -29,21 +75,21 @@
     </h1>
   </div>
   <QFooter slot="footer" class="secondary-container">
-    <button class="circle transparent">
+    <QBtn flat class="circle transparent">
       <i>check_box</i>
-    </button>
-    <button class="circle transparent">
+    </QBtn>
+    <QBtn flat class="circle transparent">
       <i>brush</i>
-    </button>
-    <button class="circle transparent">
+    </QBtn>
+    <QBtn flat class="circle transparent">
       <i>mic</i>
-    </button>
-    <button class="circle transparent">
+    </QBtn>
+    <QBtn flat class="circle transparent">
       <i>image</i>
-    </button>
+    </QBtn>
     <div class="max" />
-    <button class="square round primary">
+    <QBtn class="square round primary">
       <i>add</i>
-    </button>
+    </QBtn>
   </QFooter>
 </QLayout>
