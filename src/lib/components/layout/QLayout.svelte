@@ -22,8 +22,8 @@
   import { createClasses, createStyles } from "$lib/utils/props";
 
   export let view: QLayoutProps["view"] = "hhh lpr fff",
-    userClasses: QLayoutProps["userClasses"],
-    userStyles: QLayoutProps["userStyles"];
+    userClasses: QLayoutProps["userClasses"] = undefined,
+    userStyles: QLayoutProps["userStyles"] = undefined;
   export { userClasses as class, userStyles as style };
 
   $: style = createStyles({

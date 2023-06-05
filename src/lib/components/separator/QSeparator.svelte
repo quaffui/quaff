@@ -67,7 +67,7 @@
 </script>
 
 {#if text !== undefined}
-  <div style={containerStyle}>
+  <div class="q-separator__wrapper" style={containerStyle}>
     {#if (vertical === true && textAlign !== "top") || (vertical === false && textAlign !== "left")}
       <hr class={classes} {style} aria-orientation={orientationClass} />
     {/if}
@@ -77,7 +77,7 @@
     {/if}
   </div>
 {:else}
-  <div style={containerStyle}>
+  <div class="q-separator__wrapper" style={containerStyle}>
     <hr class={classes} {style} aria-orientation={orientationClass} />
   </div>
 {/if}

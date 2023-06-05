@@ -16,6 +16,7 @@
     activeClass: QItemProps["activeClass"] = undefined,
     replace: QItemProps["replace"] = false,
     userClasses: QItemProps["userClasses"] = undefined;
+  export { userClasses as class };
 
   $: ({ hasLink, linkAttributes, linkClasses } = useRouterLink({
     href,
@@ -67,7 +68,10 @@
 <style lang="scss">
   :global(.q-list.dense > .q-item, .q-item.dense) {
     min-height: 32px;
-    padding: 0;
+    padding-block: 0;
+  }
+  :global(.q-separator__wrapper + .q-item) {
+    margin-top: 0 !important;
   }
   .q-item {
     margin: 0;
