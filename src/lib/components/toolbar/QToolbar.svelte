@@ -14,16 +14,13 @@
     ctx && "q-header",
     "q-toolbar",
     "fill",
+    ctx?.fixed && "fixed",
     inset && "q-toolbar--inset",
     userClasses,
   ]);
-
-  $: style = createStyles({
-    position: ctx !== undefined ? (ctx?.fixed === true ? "fixed" : "absolute") : undefined,
-  });
 </script>
 
-<header class={classes} {style} role="toolbar" {...$$restProps}>
+<header class={classes} role="toolbar" {...$$restProps}>
   <nav>
     <slot />
   </nav>
@@ -32,6 +29,7 @@
 <style lang="scss">
   .q-toolbar {
     width: 100%;
+    height: 64px;
     transition: all var(--speed3);
     &--inset {
       padding-left: 58px;
