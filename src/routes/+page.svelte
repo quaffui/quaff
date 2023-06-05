@@ -115,6 +115,7 @@
     <QBtn class="q-ma-sm" label="Outline" outline />
     <QBtn class="q-ma-sm" label="Round" round />
     <QBtn class="q-ma-sm" label="Flat" flat />
+    <QBtn class="q-ma-sm" icon="open_in_new" label="With router link" to="/layout" />
   </QCard>
   <QCard title="Toggle">
     <div>
@@ -143,12 +144,12 @@
         </QItemSection>
         <div>Hello world</div>
       </QItem>
-      <QItem to="/test">
+      <QItem to="/layout">
         <i>help</i>
         <div>With a link using "to"</div>
       </QItem>
       <div>Not a QItem</div>
-      <QItem href="/test">
+      <QItem href="/layout">
         <i>help</i>
         <div>With a link using "href"</div>
       </QItem>
