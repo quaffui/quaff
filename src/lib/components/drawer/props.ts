@@ -4,11 +4,11 @@ export interface QDrawerProps extends NativeProps {
   value: boolean;
   side: "left" | "right";
 
-  width: number;
+  width: number | string;
 
   mini: boolean;
   miniToOverlay: boolean;
-  miniWidth: number;
+  miniWidth: number | string;
   noMiniAnimation: boolean;
 
   breakpoint: number;
@@ -34,7 +34,7 @@ export const QDrawerPropsDefaults: QDrawerProps = {
 
   mini: false,
   miniToOverlay: false,
-  miniWidth: 57,
+  miniWidth: 88,
   noMiniAnimation: false,
 
   breakpoint: 1023,

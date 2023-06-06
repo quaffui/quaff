@@ -1,8 +1,8 @@
 @import "./layout"
 
-body > div:first-child
-  height: 100vh
-  width: 100vw
+html, body, body > div:first-child
+  height: 100%
+  width: 100%
 
 $space-base: 16px !default
 $space-x-base: $space-base !default
@@ -81,6 +81,9 @@ $spaces: ("none": $space-none, "xs": $space-xs, "sm": $space-sm, "md": $space-md
 
 .reverse
   flex-direction: row-reverse
+
+.column
+  flex-direction: column
 
 .q-item,
 .q-tab,

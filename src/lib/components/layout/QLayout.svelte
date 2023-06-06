@@ -22,15 +22,19 @@
   import { createClasses, createStyles } from "$lib/utils/props";
 
   export let view: QLayoutProps["view"] = "hhh lpr fff",
+    leftDrawerWidth: QLayoutProps["leftDrawerWidth"] = 300,
+    rightDrawerWidth: QLayoutProps["rightDrawerWidth"] = 300,
     userClasses: QLayoutProps["userClasses"] = undefined,
     userStyles: QLayoutProps["userStyles"] = undefined;
   export { userClasses as class, userStyles as style };
 
   $: style = createStyles({
-    width: "100%",
-    minWidth: "100%",
-    height: "100%",
-    minHeight: "100%",
+    "--left-drawer-width": isNaN(Number(leftDrawerWidth))
+      ? leftDrawerWidth
+      : `${leftDrawerWidth}px`,
+    "--right-drawer-width": isNaN(Number(rightDrawerWidth))
+      ? rightDrawerWidth
+      : `${rightDrawerWidth}px`,
     userStyles,
   });
 

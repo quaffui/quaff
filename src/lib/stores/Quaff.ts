@@ -1,12 +1,26 @@
 import { writable, derived } from "svelte/store";
 import { page } from "$app/stores";
+import { browser } from "$app/environment";
 
 function quaff() {
   const { subscribe, set, update } = writable({
     version: __QUAFF_VERSION__,
-    dark: false,
+    dark: true,
     //TODO lang: {},
     //TODO iconSet: {},
+  });
+
+  subscribe(($quaff) => {
+    if (browser) {
+      $quaff.dark = localStorage.current_mode === "light" ? false : true;
+
+      let body = document.querySelector("body");
+      if ($quaff.dark === true) {
+        body && body.classList.add("dark");
+      } else {
+        body && body.classList.remove("dark");
+      }
+    }
   });
 
   const toggleDarkMode = () => {
@@ -20,6 +34,8 @@ function quaff() {
       } else {
         body && body.classList.remove("dark");
       }
+
+      localStorage.current_mode = q.dark === true ? "dark" : "light";
 
       return q;
     });

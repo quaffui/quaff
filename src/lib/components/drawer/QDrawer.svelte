@@ -1,7 +1,7 @@
 <script lang="ts">
   import { navigating } from "$app/stores";
   import { createClasses, createStyles } from "$lib/utils/props";
-  import { getContext, onMount } from "svelte";
+  import { createEventDispatcher, getContext, onMount } from "svelte";
   import { type QDrawerProps } from "./props";
   import { type DrawerContext } from "../layout/QLayout.svelte";
   import { clickOutside } from "$lib/helpers";
@@ -35,7 +35,8 @@
 
   $: isMini = mini === true && belowBreakpoint !== true;
 
-  $: size = isMini === true ? miniWidth : width;
+  $: size = ctx === undefined ? (isMini === true ? miniWidth : width).toString() : undefined;
+  $: widthStyle = size && (isNaN(Number(size)) ? size : `${size}px`);
 
   $: hideOnRouteChange = persistent !== true || overlay === true;
 
@@ -77,6 +78,7 @@
     value && "active",
     mini && "mini",
     overlay && "overlay",
+    bordered && "bordered",
     ctx?.offset?.top && "offset-top",
     ctx?.offset?.bottom && "offset-bottom",
     ctx?.fixed && "fixed",
@@ -84,12 +86,9 @@
     userClasses,
   ]);
 
-  $: style = createStyles(
-    {
-      width: `${size}px`,
-    },
-    userStyles
-  );
+  $: style = createStyles({
+    [side === "left" ? "--leftDrawerWidth" : "--rightDrawerWidth"]: widthStyle,
+  });
 
   function getBorderRadiusClasses(sideProp: typeof side, context: typeof ctx) {
     let prefix = "border-radius" + (sideProp === "left" ? "__right" : "__left");
@@ -124,6 +123,9 @@
     &.left {
       left: 0px;
       transform: translate(-100%);
+      &.bordered {
+        border-right: 0.0625rem solid var(--outline);
+      }
     }
     &.right {
       right: 0px;

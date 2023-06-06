@@ -1,9 +1,7 @@
 <script lang="ts">
-  import { createClasses, createStyles } from "$lib/utils/props";
-  import { type QListProps, QListPropsDefaults } from "./props";
-  import QSeparator from "../separator/QSeparator.svelte";
-  import { QSeparatorPropsDefaults } from "../separator/props";
-  import { onMount, setContext } from "svelte";
+  import { createClasses } from "$lib/utils/props";
+  import { type QListProps } from "./props";
+  import { setContext } from "svelte";
 
   export let bordered: QListProps["bordered"] = false,
     roundedBorders: QListProps["roundedBorders"] = false,
@@ -44,6 +42,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    width: 100%;
   }
   .rounded-borders {
     border-radius: 0.25rem;

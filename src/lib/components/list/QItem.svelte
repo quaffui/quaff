@@ -4,6 +4,7 @@
   import { createClasses, createStyles } from "$lib/utils/props";
   import { getContext } from "svelte";
   import { type QListProps, type QItemProps } from "./props";
+  import { Quaff } from "$lib/stores/Quaff";
 
   export let tag: QItemProps["tag"] = "div",
     active: QItemProps["active"] = false,
@@ -32,12 +33,18 @@
 
   $: isClickable = disable !== true && isActionable === true;
 
+  $: isActive =
+    to === "/"
+      ? $Quaff.router.url.pathname === to
+      : $Quaff.router.url.pathname.slice(0, (to || "").length) === to;
+
   $: classes = createClasses([
     "q-item row q-pl-sm",
     dense && "dense",
     hasLink && active && "q-item--active",
     hasLink && active && activeClass,
-    isClickable && "wave",
+    isActive && "active",
+    //isClickable && "wave",
     linkClasses,
     userClasses,
   ]);
@@ -70,13 +77,12 @@
     min-height: 32px;
     padding-block: 0;
   }
-  :global(.q-separator__wrapper + .q-item) {
-    margin-top: 0 !important;
-  }
   .q-item {
+    margin-top: 0 !important;
     margin: 0;
     padding: 0.75em;
     min-width: 100%;
+    max-height: 60px;
     &.dense {
       min-height: 32px;
     }

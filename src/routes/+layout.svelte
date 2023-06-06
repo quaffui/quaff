@@ -12,18 +12,16 @@
   import QList from "$lib/components/list/QList.svelte";
   import QItem from "$lib/components/list/QItem.svelte";
   import QItemSection from "$lib/components/list/QItemSection.svelte";
+  import QIcon from "$lib/components/icon/QIcon.svelte";
 
   $: console.log($Quaff);
-
-  let leftDrawer: QDrawer | null = null;
 </script>
 
 {#if $Quaff.router.route.id === "/layout"}
   <slot />
 {:else}
-  <QLayout>
-    <QToolbar slot="header" class="primary-container">
-      <QBtn icon="menu" flat round on:click={() => leftDrawer?.toggle()} />
+  <QLayout leftDrawerWidth="120">
+    <QToolbar slot="header" class="surface small-elevate">
       <h5 class="max center-align">Quaff</h5>
       <QBtn
         icon={$Quaff.dark.isActive ? "light_mode" : "dark_mode"}
@@ -34,46 +32,37 @@
       <QBtn icon="help" flat round />
     </QToolbar>
     <QDrawer
+      value={true}
       slot="drawerLeft"
-      bind:this={leftDrawer}
-      class="primary-container"
-      overlay
+      class="surface no-round"
+      mini
+      persistent
+      bordered
       style="z-index: 1500"
     >
       <QList>
-        <QItem to="/">
-          <QItemSection avatar>
-            <i>home</i>
-          </QItemSection>
+        <QItem class="column center-align round" to="/" style="gap: 0.25em">
+          <QIcon name="home" />
           <QItemSection>Home</QItemSection>
         </QItem>
-        <QItem to="/components">
-          <QItemSection avatar>
-            <i>grid_view</i>
-          </QItemSection>
+        <QItem class="column center-align round" to="/components" style="gap: 0.25em">
+          <QIcon name="grid_view" />
           <QItemSection>Components</QItemSection>
         </QItem>
-        <QItem to="/utils">
-          <QItemSection avatar>
-            <i>construction</i>
-          </QItemSection>
+        <QItem class="column center-align round" to="/utils" style="gap: 0.25em">
+          <QIcon name="construction" />
           <QItemSection>Quaff utils</QItemSection>
         </QItem>
-        <QItem to="/dev">
-          <QItemSection avatar>
-            <i>code</i>
-          </QItemSection>
+        <QItem class="column center-align round" to="/dev" style="gap: 0.25em">
+          <QIcon name="code" />
           <QItemSection>Dev tests</QItemSection>
         </QItem>
-        <QItem to="/layout">
-          <QItemSection avatar>
-            <i>dashboard_customize</i>
-          </QItemSection>
+        <QItem class="column center-align round" to="/layout" style="gap: 0.25em">
+          <QIcon name="dashboard_customize" />
           <QItemSection>Layout tests</QItemSection>
         </QItem>
       </QList>
     </QDrawer>
-    <QDrawer slot="drawerRight" />
     <div slot="content">
       <slot />
     </div>

@@ -1,5 +1,14 @@
+
+:root
+  --left-drawer-width: 300px
+  --right-drawer-width: 300px
+
 .q-layout
   position: relative
+  width: 100%
+  minWidth: 100%
+  height: 100%
+  minHeight: 100%
   & > .q-header
     z-index: 2000
     position: absolute
@@ -15,6 +24,14 @@
         margin: 0
   & > .q-drawer
     z-index: 1000
+    & > .q-list > .q-item
+      & > i
+        transition: var(--speed1) padding linear
+      &:is(:hover, :focus, .active) > i
+        background-color: var(--secondary-container)
+        color: var(--on-secondary-container)
+        padding: 0 1rem
+        font-variation-settings: "FILL" 1, "wght" 400, "opsz" 24
   & > .q-footer
     z-index: 2000
     position: absolute
@@ -30,47 +47,31 @@
         margin: 0
   & > :not(.q-header, .q-footer, .q-drawer)
     height: 100%
+    overflow: auto
     transition: padding var(--speed3)
 
-.q-drawer.active
-  &:not(.offset-top)
-    &.left
-      &.mini ~ .q-header
-        left: 57px
-        width: calc(100% - 57px)
-      &:not(.mini) ~ .q-header
-        left: 300px
-        width: calc(100% - 300px)
-    &.right
-      &.mini ~ .q-header
-        right: 57px
-        width: calc(100% - 57px)
-      &:not(.mini) ~ .q-header
-        right: 300px
-        width: calc(100% - 300px)
-  &:not(.offset-bottom)
-    &.left
-      &.mini ~ .q-footer
-        left: 57px
-        width: calc(100% - 57px)
-      &:not(.mini) ~ .q-footer
-        left: 300px
-        width: calc(100% - 300px)
-    &.right
-      &.mini ~ .q-footer
-        right: 57px
-        width: calc(100% - 57px)
-      &:not(.mini) ~ .q-footer
-        right: 300px
-        width: calc(100% - 300px)
-  &:not(.overlay)
-    &.left
-      &.mini ~ :not(.q-header, .q-footer, .q-drawer)
-        padding-left: 57px
-      &:not(.mini) ~ :not(.q-header, .q-footer, .q-drawer)
-        padding-left: 300px
-    &.right
-      &.mini ~ :not(.q-header, .q-footer, .q-drawer)
-        padding-right: 57px
-      &:not(.mini) ~ :not(.q-header, .q-footer, .q-drawer)
-        padding-right: 300px
+.q-drawer
+  &.left
+    width: var(--left-drawer-width)
+  &.right
+    width: var(--right-drawer-width)
+  &.active
+    &:not(.offset-top)
+      &.left ~ .q-header
+        left: var(--left-drawer-width)
+        width: calc(100% - var(--left-drawer-width))
+      &.right ~ .q-header
+        right: var(--right-drawer-width)
+        width: calc(100% - var(--right-drawer-width))
+    &:not(.offset-bottom)
+      &.left ~ .q-footer
+        left: var(--left-drawer-width)
+        width: calc(100% - var(--left-drawer-width))
+      &.right ~ .q-footer
+        right: var(--right-drawer-width)
+        width: calc(100% - var(--right-drawer-width))
+    &:not(.overlay)
+      &.left ~ :not(.q-header, .q-footer, .q-drawer)
+        padding-left: var(--left-drawer-width)
+      &.right ~ :not(.q-header, .q-footer, .q-drawer)
+        padding-right: var(--right-drawer-width)
