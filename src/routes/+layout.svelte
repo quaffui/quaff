@@ -35,6 +35,7 @@
       value={true}
       slot="drawerLeft"
       class="surface no-round"
+      railbar
       mini
       persistent
       bordered

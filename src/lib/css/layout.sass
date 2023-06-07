@@ -24,7 +24,7 @@
         margin: 0
   & > .q-drawer
     z-index: 1000
-    & > .q-list > .q-item
+    &.q-railbar > .q-list > .q-item
       & > i
         transition: var(--speed1) padding linear
       &:is(:hover, :focus, .active) > i
@@ -32,6 +32,11 @@
         color: var(--on-secondary-container)
         padding: 0 1rem
         font-variation-settings: "FILL" 1, "wght" 400, "opsz" 24
+    &:not(.q-railbar) > .q-list > .q-item.q-link
+      &:is(.active)
+        background-color: var(--surface-variant)
+      &:not(.active):is(:hover)
+        background-color: var(--inverse-on-surface)
   & > .q-footer
     z-index: 2000
     position: absolute

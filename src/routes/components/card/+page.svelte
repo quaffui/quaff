@@ -1,4 +1,4 @@
 <script lang="ts">
 </script>
 
-<h1>Components</h1>
+<h1>CARD</h1>
