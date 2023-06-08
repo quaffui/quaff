@@ -22,6 +22,7 @@
   import { setContext } from "svelte";
   import { type QLayoutProps } from "./props";
   import { createClasses, createStyles } from "$lib/utils/props";
+  import ContextReseter from "../private/ContextReseter.svelte";
 
   export let view: QLayoutProps["view"] = "hhh lpr fff",
     leftDrawerWidth: QLayoutProps["leftDrawerWidth"] = 300,
@@ -121,5 +122,7 @@
   {#if $$slots.footer}
     <slot name="footer" />
   {/if}
-  <slot name="content" />
+  <ContextReseter keys={["header", "footer", "leftDrawer", "rightDrawer"]}>
+    <slot name="content" />
+  </ContextReseter>
 </div>
