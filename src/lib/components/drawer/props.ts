@@ -3,14 +3,8 @@ import { NativePropsDefaults, type NativeProps } from "$lib/utils/types";
 export interface QDrawerProps extends NativeProps {
   value: boolean;
   side: "left" | "right";
-  railbar: boolean;
 
   width: number | string;
-
-  mini: boolean;
-  miniToOverlay: boolean;
-  miniWidth: number | string;
-  noMiniAnimation: boolean;
 
   breakpoint: number;
   showIfAbove: boolean;
@@ -30,14 +24,8 @@ export interface QDrawerProps extends NativeProps {
 export const QDrawerPropsDefaults: QDrawerProps = {
   value: false,
   side: "left",
-  railbar: false,
 
   width: 300,
-
-  mini: false,
-  miniToOverlay: false,
-  miniWidth: 88,
-  noMiniAnimation: false,
 
   breakpoint: 1023,
   showIfAbove: false,

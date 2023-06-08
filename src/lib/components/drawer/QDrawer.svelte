@@ -8,12 +8,7 @@
 
   export let value: QDrawerProps["value"] = false,
     side: QDrawerProps["side"] = "left",
-    railbar: QDrawerProps["railbar"] = false,
     width: QDrawerProps["width"] = 300,
-    mini: QDrawerProps["mini"] = false,
-    miniToOverlay: QDrawerProps["miniToOverlay"] = false,
-    miniWidth: QDrawerProps["miniWidth"] = 57,
-    noMiniAnimation: QDrawerProps["noMiniAnimation"] = false,
     breakpoint: QDrawerProps["breakpoint"] = 1023,
     showIfAbove: QDrawerProps["showIfAbove"] = false,
     behavior: QDrawerProps["behavior"] = "default",
@@ -34,10 +29,7 @@
     (behavior === "mobile") === true ||
     (behavior !== "desktop" && /** TODO: Get Layout width */ 1300 <= breakpoint);
 
-  $: isMini = mini === true && belowBreakpoint !== true;
-
-  $: size = ctx === undefined ? (isMini === true ? miniWidth : width).toString() : undefined;
-  $: widthStyle = size && (isNaN(Number(size)) ? size : `${size}px`);
+  $: widthStyle = ctx === undefined ? (isNaN(Number(width)) ? width : `${width}px`) : undefined;
 
   $: hideOnRouteChange = persistent !== true || overlay === true;
 
@@ -78,11 +70,8 @@
   $: classes = createClasses([
     "q-drawer",
     "surface",
-    railbar && "q-railbar",
     side,
     value && "active",
-    mini || railbar ? "q-pa-sm" : "q-pa-md",
-    (mini || railbar) && "mini",
     overlay && "overlay",
     bordered && "bordered",
     ctx?.offset?.top && "offset-top",
@@ -105,23 +94,13 @@
   }
 </script>
 
-{#if railbar}
-  <nav
-    use:clickOutside={() => (canHideOnClickOutside === true ? hide() : null)}
-    class={classes}
-    {style}
-  >
-    <slot />
-  </nav>
-{:else}
-  <div
-    use:clickOutside={() => (canHideOnClickOutside === true ? hide() : null)}
-    class={classes}
-    {style}
-  >
-    <slot />
-  </div>
-{/if}
+<div
+  use:clickOutside={() => (canHideOnClickOutside === true ? hide() : null)}
+  class={classes}
+  {style}
+>
+  <slot />
+</div>
 
 <style lang="scss">
   .q-drawer {
