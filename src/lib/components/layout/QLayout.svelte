@@ -33,6 +33,12 @@
   export { userClasses as class, userStyles as style };
 
   $: style = createStyles({
+    "--left-railbar-width": isNaN(Number(leftRailbarWidth))
+      ? leftRailbarWidth
+      : `${leftRailbarWidth}px`,
+    "--right-railbar-width": isNaN(Number(rightRailbarWidth))
+      ? rightRailbarWidth
+      : `${rightRailbarWidth}px`,
     "--left-drawer-width": isNaN(Number(leftDrawerWidth))
       ? leftDrawerWidth
       : `${leftDrawerWidth}px`,

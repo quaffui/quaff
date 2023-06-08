@@ -2,6 +2,7 @@
   import QBtn from "$lib/components/button/QBtn.svelte";
   import QDrawer from "$lib/components/drawer/QDrawer.svelte";
   import QFooter from "$lib/components/footer/QFooter.svelte";
+  import QIcon from "$lib/components/icon/QIcon.svelte";
   import QLayout from "$lib/components/layout/QLayout.svelte";
   import QItem from "$lib/components/list/QItem.svelte";
   import QItemSection from "$lib/components/list/QItemSection.svelte";
@@ -13,7 +14,7 @@
   let rightDrawer: QDrawer | null = null;
 </script>
 
-<QLayout view="lHh LpR fFr">
+<QLayout view="hHh LpR fFr" leftRailbarWidth="120">
   <QToolbar slot="header" class="primary-container">
     <QBtn icon="menu" flat round on:click={() => leftDrawer?.toggle()} />
     <h5 class="max center-align">
@@ -23,27 +24,27 @@
     <QBtn flat round icon="today" />
     <QBtn icon="menu" flat round on:click={() => rightDrawer?.toggle()} />
   </QToolbar>
-  <QRailbar slot="railbarLeft" bordered>
-    <QList dense>
-      <QItem>
-        <QBtn flat class="circle transparent">
-          <i>check_box</i>
-        </QBtn>
+  <QRailbar slot="railbarLeft" bordered width="120">
+    <QList>
+      <QItem class="column center-align round" to="/" style="gap: 0.25em">
+        <QIcon name="home" />
+        <QItemSection>Home</QItemSection>
       </QItem>
-      <QItem>
-        <QBtn flat class="circle transparent">
-          <i>brush</i>
-        </QBtn>
+      <QItem class="column center-align round" to="/components" style="gap: 0.25em">
+        <QIcon name="grid_view" />
+        <QItemSection>Components</QItemSection>
       </QItem>
-      <QItem>
-        <QBtn flat class="circle transparent">
-          <i>mic</i>
-        </QBtn>
+      <QItem class="column center-align round" to="/utils" style="gap: 0.25em">
+        <QIcon name="construction" />
+        <QItemSection>Quaff utils</QItemSection>
       </QItem>
-      <QItem>
-        <QBtn flat class="circle transparent">
-          <i>image</i>
-        </QBtn>
+      <QItem class="column center-align round" to="/dev" style="gap: 0.25em">
+        <QIcon name="code" />
+        <QItemSection>Dev tests</QItemSection>
+      </QItem>
+      <QItem class="column center-align round" to="/layout" style="gap: 0.25em">
+        <QIcon name="dashboard_customize" />
+        <QItemSection>Layout tests</QItemSection>
       </QItem>
     </QList>
   </QRailbar>

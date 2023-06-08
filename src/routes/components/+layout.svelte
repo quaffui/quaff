@@ -27,15 +27,4 @@
   ];
 </script>
 
-<QLayout>
-  <QDrawer slot="drawerLeft" persistent value={true} class="surface" style="left: 120px">
-    <QList>
-      {#each components as { name, to }}
-        <QItem class="round" {to}>{name}</QItem>
-      {/each}
-    </QList>
-  </QDrawer>
-  <div slot="content">
-    <slot />
-  </div>
-</QLayout>
+<slot />
