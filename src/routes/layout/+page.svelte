@@ -6,6 +6,7 @@
   import QItem from "$lib/components/list/QItem.svelte";
   import QItemSection from "$lib/components/list/QItemSection.svelte";
   import QList from "$lib/components/list/QList.svelte";
+  import QRailbar from "$lib/components/railbar/QRailbar.svelte";
   import QToolbar from "$lib/components/toolbar/QToolbar.svelte";
 
   let leftDrawer: QDrawer | null = null;
@@ -22,7 +23,7 @@
     <QBtn flat round icon="today" />
     <QBtn icon="menu" flat round on:click={() => rightDrawer?.toggle()} />
   </QToolbar>
-  <QDrawer mini bind:this={leftDrawer} slot="drawerLeft" class="primary">
+  <QRailbar slot="railbarLeft" bordered>
     <QList dense>
       <QItem>
         <QBtn flat class="circle transparent">
@@ -45,8 +46,66 @@
         </QBtn>
       </QItem>
     </QList>
+  </QRailbar>
+  <QDrawer overlay slot="drawerLeft" side="left" class="secondary" bind:this={leftDrawer}>
+    <QList separator>
+      <QItem to="/">
+        <QItemSection avatar>
+          <i>home</i>
+        </QItemSection>
+        <QItemSection>Return home, oh god this is a long text</QItemSection>
+      </QItem>
+      <QItem to="/">
+        <QItemSection avatar>
+          <i>home</i>
+        </QItemSection>
+        <QItemSection>Return home</QItemSection>
+      </QItem>
+      <QItem to="/">
+        <QItemSection avatar>
+          <i>home</i>
+        </QItemSection>
+        <QItemSection>Return home</QItemSection>
+      </QItem>
+      <QItem to="/">
+        <QItemSection avatar>
+          <i>home</i>
+        </QItemSection>
+        <QItemSection>Return home</QItemSection>
+      </QItem>
+      <QItem to="/">
+        <QItemSection avatar>
+          <i>home</i>
+        </QItemSection>
+        <QItemSection>Return home</QItemSection>
+      </QItem>
+    </QList>
   </QDrawer>
-  <QDrawer overlay slot="drawerRight" side="right" class="secondary" bind:this={rightDrawer}>
+  <QRailbar slot="railbarRight" bordered side="right">
+    <QList dense>
+      <QItem>
+        <QBtn flat class="circle transparent">
+          <i>check_box</i>
+        </QBtn>
+      </QItem>
+      <QItem>
+        <QBtn flat class="circle transparent">
+          <i>brush</i>
+        </QBtn>
+      </QItem>
+      <QItem>
+        <QBtn flat class="circle transparent">
+          <i>mic</i>
+        </QBtn>
+      </QItem>
+      <QItem>
+        <QBtn flat class="circle transparent">
+          <i>image</i>
+        </QBtn>
+      </QItem>
+    </QList>
+  </QRailbar>
+  <QDrawer slot="drawerRight" side="right" class="secondary" bind:this={rightDrawer}>
     <QList separator>
       <QItem to="/">
         <QItemSection avatar>

@@ -5,6 +5,8 @@
       bottom: boolean;
     };
     fixed: boolean;
+    railbar: boolean;
+    drawer: boolean;
   }
 
   export interface AppbarContext {
@@ -24,6 +26,8 @@
   export let view: QLayoutProps["view"] = "hhh lpr fff",
     leftDrawerWidth: QLayoutProps["leftDrawerWidth"] = 300,
     rightDrawerWidth: QLayoutProps["rightDrawerWidth"] = 300,
+    leftRailbarWidth: QLayoutProps["leftRailbarWidth"] = 88,
+    rightRailbarWidth: QLayoutProps["rightDrawerWidth"] = 88,
     userClasses: QLayoutProps["userClasses"] = undefined,
     userStyles: QLayoutProps["userStyles"] = undefined;
   export { userClasses as class, userStyles as style };
@@ -42,33 +46,37 @@
 
   function prepareCtx(viewProp: typeof view) {
     const [top, middle, bottom] = viewProp.split(" ");
-    const header = {
+    const header: AppbarContext = {
       offset: {
         left: $$slots.drawerLeft && top[0].toLowerCase() === "l",
         right: $$slots.drawerRight && top[2].toLowerCase() === "r",
       },
       fixed: top.includes("H"),
     };
-    const footer = {
+    const footer: AppbarContext = {
       offset: {
         left: $$slots.drawerLeft && bottom[0].toLowerCase() === "l",
         right: $$slots.drawerRight && bottom[2].toLowerCase() === "r",
       },
       fixed: bottom.includes("F"),
     };
-    const drawerLeft = {
+    const drawerLeft: DrawerContext = {
       offset: {
         top: $$slots.header && top[0].toLowerCase() === "h",
         bottom: $$slots.footer && bottom[0].toLowerCase() === "f",
       },
       fixed: [top[0], middle[0], bottom[0]].includes("L"),
+      railbar: $$slots.railbarLeft === true,
+      drawer: $$slots.drawerLeft === true,
     };
-    const drawerRight = {
+    const drawerRight: DrawerContext = {
       offset: {
         top: $$slots.header && top[2].toLowerCase() === "h",
         bottom: $$slots.footer && bottom[2].toLowerCase() === "f",
       },
       fixed: [top[2], middle[2], bottom[2]].includes("R"),
+      railbar: $$slots.railbarRight === true,
+      drawer: $$slots.drawerRight === true,
     };
 
     return {
@@ -89,6 +97,12 @@
 </script>
 
 <div class={classes} {style} on:scroll on:resize>
+  {#if $$slots.railbarLeft}
+    <slot name="railbarLeft" />
+  {/if}
+  {#if $$slots.railbarRight}
+    <slot name="railbarRight" />
+  {/if}
   {#if $$slots.drawerLeft}
     <slot name="drawerLeft" />
   {/if}

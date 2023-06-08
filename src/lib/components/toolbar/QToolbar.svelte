@@ -13,6 +13,7 @@
   $: classes = createClasses([
     ctx && "q-header",
     "q-toolbar",
+    "surface",
     ctx?.fixed && "fixed",
     inset && "q-toolbar--inset",
     userClasses,

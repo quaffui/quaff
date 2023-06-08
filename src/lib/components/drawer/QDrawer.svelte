@@ -73,8 +73,11 @@
 
   $: ctx = getContext<DrawerContext | undefined>(side === "left" ? "drawerLeft" : "drawerRight");
 
+  $: console.log("Drawer", { ctx });
+
   $: classes = createClasses([
     "q-drawer",
+    "surface",
     railbar && "q-railbar",
     side,
     value && "active",
@@ -122,20 +125,21 @@
 
 <style lang="scss">
   .q-drawer {
-    height: 100%;
+    z-index: 1998;
     position: absolute;
     top: 0px;
     right: auto;
     bottom: 0px;
     left: auto;
+    height: 100%;
     transition: all var(--speed3), 0s background-color;
-    z-index: 1000;
     &.fixed {
       position: fixed;
     }
     &.left {
       left: 0px;
       transform: translate(-100%);
+      width: var(--left-drawer-width);
       &.bordered {
         border-right: 0.0625rem solid var(--outline);
       }
@@ -143,6 +147,11 @@
     &.right {
       right: 0px;
       transform: translate(100%);
+      width: var(--right-drawer-width);
+
+      &.bordered {
+        border-left: 0.0625rem solid var(--outline);
+      }
     }
     &.active {
       transform: translate(0);

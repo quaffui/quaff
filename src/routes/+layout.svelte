@@ -1,9 +1,9 @@
 <script lang="ts">
-  import "../lib/css/index.sass";
   import "beercss/dist/cdn/beer.min.css";
   import "beercss/dist/cdn/material-symbols-outlined.woff2";
   import "beercss/dist/cdn/material-symbols-rounded.woff2";
   import "beercss/dist/cdn/material-symbols-sharp.woff2";
+  import "../lib/css/index.scss";
   import { Quaff } from "$stores/Quaff";
   import QLayout from "$lib/components/layout/QLayout.svelte";
   import QToolbar from "$lib/components/toolbar/QToolbar.svelte";
@@ -13,8 +13,6 @@
   import QItem from "$lib/components/list/QItem.svelte";
   import QItemSection from "$lib/components/list/QItemSection.svelte";
   import QIcon from "$lib/components/icon/QIcon.svelte";
-
-  $: console.log($Quaff);
 </script>
 
 {#if $Quaff.router.route.id === "/layout"}
