@@ -19,9 +19,12 @@ body.dark {
   --on-background: rgb(var(--on-background-dark));
   --surface: rgb(var(--surface-dark));
   --on-surface: rgb(var(--on-surface-dark));
+  --on-surface-2: rgba(var(--on-surface-dark), 0.08);
+  --on-surface-4: rgba(var(--on-surface-dark), 0.12);
   --surface-variant: rgb(var(--surface-variant-dark));
   --on-surface-variant: rgb(var(--on-surface-variant-dark));
   --on-surface-variant-2: rgba(var(--on-surface-variant-dark), 0.08);
+  --on-surface-variant-4: rgba(var(--on-surface-variant-dark), 0.12);
   --outline: rgb(var(--outline-dark));
   --inverse-on-surface: rgb(var(--inverse-on-surface-dark));
   --inverse-surface: rgb(var(--inverse-surface-dark));

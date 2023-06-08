@@ -19,9 +19,12 @@
   --on-background: rgb(var(--on-background-light));
   --surface: rgb(var(--surface-light));
   --on-surface: rgb(var(--on-surface-light));
+  --on-surface-2: rgba(var(--on-surface-light), 0.08);
+  --on-surface-4: rgba(var(--on-surface-light), 0.12);
   --surface-variant: rgb(var(--surface-variant-light));
   --on-surface-variant: rgb(var(--on-surface-variant-light));
   --on-surface-variant-2: rgba(var(--on-surface-variant-light), 0.08);
+  --on-surface-variant-4: rgba(var(--on-surface-variant-light), 0.12);
   --outline: rgb(var(--outline-light));
   --inverse-on-surface: rgb(var(--inverse-on-surface-light));
   --inverse-surface: rgb(var(--inverse-surface-light));
