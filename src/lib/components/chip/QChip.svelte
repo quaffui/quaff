@@ -62,7 +62,7 @@
 <style lang="scss">
   .q-chip.disabled {
     border-color: var(--on-surface);
-    opacity: 25%;
+    opacity: 50%;
     pointer-events: none;
   }
 </style>
