@@ -247,6 +247,14 @@
       </div>
     </QCardSection>
     <QCardSection>
+      <h6>Size</h6>
+      <div class="flex column" style="align-items: center; gap: 1em">
+        <QChip content="I'm small" size="small" />
+        <QChip content="I'm medium (default)" size="medium" />
+        <QChip content="I'm large" size="large" />
+      </div>
+    </QCardSection>
+    <QCardSection>
       <h6>With icons</h6>
       <div class="flex column" style="align-items: center; gap: 1em">
         <QChip content="With left icon" icon="check" />
