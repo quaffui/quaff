@@ -37,7 +37,7 @@
   $: tab = typeof tabindex === "string" ? parseInt(tabindex, 10) : tabindex;
 </script>
 
-<a {href} class={classes} tabindex={tab} {...$$restProps} on:click>
+<a {href} class={classes} tabindex={tab} {...$$restProps} on:click aria-disabled={disable}>
   {#if $$slots.leading}
     <slot name="leading" />
   {:else if img}
