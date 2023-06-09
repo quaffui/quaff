@@ -104,7 +104,7 @@
 
 <style lang="scss">
   .q-drawer {
-    z-index: 1998;
+    z-index: 97;
     position: absolute;
     top: 0px;
     right: auto;

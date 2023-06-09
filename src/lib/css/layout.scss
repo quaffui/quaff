@@ -24,7 +24,7 @@
 }
 
 .q-layout > .q-header {
-  z-index: 2000;
+  z-index: 99;
   position: absolute;
   top: 0px;
   right: 0px;
@@ -45,7 +45,7 @@
 }
 
 .q-layout > .q-footer {
-  z-index: 2000;
+  z-index: 99;
   position: absolute;
   top: auto;
   right: 0px;
@@ -66,7 +66,7 @@
 }
 
 .q-layout > .q-railbar {
-  z-index: 1999;
+  z-index: 98;
   position: absolute;
   top: 0px;
   right: auto;
@@ -105,17 +105,16 @@
       left: var(--left-railbar-width);
 
       &.active {
-  
         &:not(.offset-top) ~ .q-header {
           left: calc(var(--left-railbar-width) + var(--left-drawer-width));
           width: calc(100% - var(--left-railbar-width) - var(--left-drawer-width));
         }
-  
+
         &:not(.offset-bottom) ~ .q-footer {
           left: calc(var(--left-railbar-width) + var(--left-drawer-width));
           width: calc(100% - var(--left-railbar-width) - var(--left-drawer-width));
         }
-  
+
         &:not(.overlay) ~ :not(.q-header, .q-footer, .q-railbar, .q-drawer) {
           padding-left: calc(var(--left-railbar-width) + var(--left-drawer-width));
         }
@@ -147,18 +146,18 @@
 
     & ~ .q-drawer.right {
       right: var(--right-railbar-width);
-      
+
       &.active {
         &:not(.offset-top) ~ .q-header {
           right: calc(var(--right-railbar-width) + var(--right-drawer-width));
           width: calc(100% - var(--right-railbar-width) - var(--right-drawer-width));
         }
-  
+
         &:not(.offset-bottom) ~ .q-footer {
           right: calc(var(--right-railbar-width) + var(--right-drawer-width));
           width: calc(100% - var(--right-railbar-width) - var(--right-drawer-width));
         }
-  
+
         &:not(.overlay) ~ :not(.q-header, .q-footer, .q-railbar, .q-drawer) {
           padding-right: calc(var(--right-railbar-width) + var(--right-drawer-width));
         }
@@ -250,9 +249,9 @@
       width: 100%;
       height: 100%;
       opacity: 0;
-      transform: scaleX(.32);
-      transition-duration: .2s;
-      transition-property: transform,opacity;
+      transform: scaleX(0.32);
+      transition-duration: 0.2s;
+      transition-property: transform, opacity;
       transition-timing-function: linear;
       border-radius: 100px;
       background: var(--secondary-container);
@@ -268,7 +267,7 @@
         transform: scaleX(1);
       }
     }
-    
+
     &:hover {
       background-color: var(--on-surface-variant-2);
       font-variation-settings: "GRAD" 50;

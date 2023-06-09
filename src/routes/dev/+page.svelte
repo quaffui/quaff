@@ -1,5 +1,4 @@
 <script lang="ts">
-  import QLayout from "$components/layout/QLayout.svelte";
   import QAvatar from "$components/avatar/QAvatar.svelte";
   import QItemSection from "$components/list/QItemSection.svelte";
   import QCard from "$components/card/QCard.svelte";
@@ -16,16 +15,31 @@
   import QToolbar from "$components/toolbar/QToolbar.svelte";
   import QItem from "$components/list/QItem.svelte";
   import QTooltip from "$components/tooltip/QTooltip.svelte";
-  import QDrawer from "$components/drawer/QDrawer.svelte";
   import QChip from "$lib/components/chip/QChip.svelte";
+  import QDialog from "$lib/components/dialog/QDialog.svelte";
 
   let option = "option2";
   let checkBox = false;
   let toggle = false;
   let input = "";
+
+  let dialog1 = false;
+  let dialog2 = false;
+  let dialog3 = false;
+  let dialog4 = false;
+  let dialog5 = false;
+  let dialog6 = false;
+  let dialog7 = false;
+  let dialogElement1: QDialog | null = null;
+  let dialogElement2: QDialog | null = null;
+  let dialogElement3: QDialog | null = null;
+  let dialogElement4: QDialog | null = null;
+  let dialogElement5: QDialog | null = null;
+  let dialogElement6: QDialog | null = null;
+  let dialogElement7: QDialog | null = null;
 </script>
 
-<div style="max-width: 30em; margin: auto;">
+<div style="max-width: 40em; margin: auto;">
   <QCard title="The quaff object">
     <QCardSection>
       <h6>Version</h6>
@@ -296,6 +310,109 @@
           on:click={() => alert("OMG, you actually did it")}
         />
       </div>
+    </QCardSection>
+  </QCard>
+  <QCard title="Dialogs">
+    <QCardSection>
+      <h6>Basics</h6>
+      <QDialog
+        bind:this={dialogElement1}
+        btnContent="Default dialog"
+        on:btnClick={() => dialogElement1?.show()}
+      >
+        <h5>This is a dialog</h5>
+        <div>Some text here</div>
+        <nav class="right-align">
+          <QBtn on:click={dialogElement1?.hide} label="Cancel" />
+          <QBtn on:click={dialogElement1?.hide} label="Confirm" />
+        </nav>
+      </QDialog>
+      <QDialog
+        modal
+        bind:this={dialogElement2}
+        btnContent="Modal dialog"
+        on:btnClick={() => dialogElement2?.show()}
+      >
+        <h5>This is a modal dialog</h5>
+        <div>Some text here</div>
+        <nav class="right-align">
+          <QBtn on:click={dialogElement2?.hide} label="Cancel" />
+          <QBtn on:click={dialogElement2?.hide} label="Confirm" />
+        </nav>
+      </QDialog>
+      <QDialog
+        modal
+        bind:this={dialogElement3}
+        btnContent="Persistent dialog"
+        on:btnClick={() => dialogElement3?.show()}
+        persistent
+      >
+        <h5>This is a dialog</h5>
+        <div>This time, I am persistent</div>
+        <nav class="right-align">
+          <QBtn on:click={dialogElement3?.hide} label="Cancel" />
+          <QBtn on:click={dialogElement3?.hide} label="Confirm" />
+        </nav>
+      </QDialog>
+    </QCardSection>
+    <QCardSection>
+      <h6>Position</h6>
+      <QDialog
+        modal
+        bind:this={dialogElement4}
+        btnContent="Top"
+        position="top"
+        on:btnClick={() => dialogElement4?.show()}
+      >
+        <h5>This is a dialog</h5>
+        <div>I'm chilling on top!</div>
+        <nav class="right-align">
+          <QBtn on:click={dialogElement4?.hide} label="Cancel" />
+          <QBtn on:click={dialogElement4?.hide} label="Confirm" />
+        </nav>
+      </QDialog>
+      <QDialog
+        modal
+        bind:this={dialogElement5}
+        btnContent="Right"
+        position="right"
+        on:btnClick={() => dialogElement5?.show()}
+      >
+        <h5>This is a dialog</h5>
+        <div>I'm chilling on right!</div>
+        <nav class="right-align">
+          <QBtn on:click={dialogElement5?.hide} label="Cancel" />
+          <QBtn on:click={dialogElement5?.hide} label="Confirm" />
+        </nav>
+      </QDialog>
+      <QDialog
+        modal
+        bind:this={dialogElement6}
+        btnContent="Bottom"
+        position="bottom"
+        on:btnClick={() => dialogElement6?.show()}
+      >
+        <h5>This is a dialog</h5>
+        <div>I'm chilling on bottom!</div>
+        <nav class="right-align">
+          <QBtn on:click={dialogElement6?.hide} label="Cancel" />
+          <QBtn on:click={dialogElement6?.hide} label="Confirm" />
+        </nav>
+      </QDialog>
+      <QDialog
+        modal
+        bind:this={dialogElement7}
+        btnContent="Left"
+        position="left"
+        on:btnClick={() => dialogElement7?.show()}
+      >
+        <h5>This is a dialog</h5>
+        <div>I'm chilling on left!</div>
+        <nav class="right-align">
+          <QBtn on:click={dialogElement7?.hide} label="Cancel" />
+          <QBtn on:click={dialogElement7?.hide} label="Confirm" />
+        </nav>
+      </QDialog>
     </QCardSection>
   </QCard>
 </div>
