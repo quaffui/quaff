@@ -22,7 +22,7 @@ export interface QDrawerProps extends NativeProps {
 }
 
 export const QDrawerPropsDefaults: QDrawerProps = {
-  value: false,
+  value: true,
   side: "left",
 
   width: 300,

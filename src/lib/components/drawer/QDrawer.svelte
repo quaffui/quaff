@@ -6,7 +6,7 @@
   import { type DrawerContext } from "../layout/QLayout.svelte";
   import { clickOutside } from "$lib/helpers";
 
-  export let value: QDrawerProps["value"] = false,
+  export let value: QDrawerProps["value"] = true,
     side: QDrawerProps["side"] = "left",
     width: QDrawerProps["width"] = 300,
     breakpoint: QDrawerProps["breakpoint"] = 1023,
