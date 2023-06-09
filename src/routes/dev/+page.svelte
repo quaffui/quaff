@@ -17,6 +17,7 @@
   import QItem from "$components/list/QItem.svelte";
   import QTooltip from "$components/tooltip/QTooltip.svelte";
   import QDrawer from "$components/drawer/QDrawer.svelte";
+  import QChip from "$lib/components/chip/QChip.svelte";
 
   let option = "option2";
   let checkBox = false;
@@ -226,6 +227,66 @@
         <QBtn label="Top">
           <QTooltip position="top">Awesome</QTooltip>
         </QBtn>
+      </div>
+    </QCardSection>
+  </QCard>
+  <QCard title="Chips">
+    <QCardSection>
+      <h6>Default</h6>
+      <div class="flex around-align" style="align-items: center">
+        <QChip content="With content" />
+        <QChip>With default slot</QChip>
+      </div>
+    </QCardSection>
+    <QCardSection>
+      <h6>Styles</h6>
+      <div class="flex around-align" style="align-items: center">
+        <QChip content="I'm outlined" outlined />
+        <QChip content="I'm rounded" round />
+        <QChip content="I'm disabled" disable />
+      </div>
+    </QCardSection>
+    <QCardSection>
+      <h6>With icons</h6>
+      <div class="flex column" style="align-items: center; gap: 1em">
+        <QChip content="With left icon" icon="check" />
+        <QChip content="With right icon" iconRight="close" />
+        <QChip content="With both icons" icon="check" iconRight="close" />
+      </div>
+    </QCardSection>
+    <QCardSection>
+      <h6>With images</h6>
+      <div class="flex column" style="align-items: center; gap: 1em">
+        <QChip content="With left image" icon="img:/cocktail.jpg" />
+        <QChip content="With right image" outlined iconRight="img:/cocktail.jpg" />
+        <QChip content="With both images" icon="img:/cocktail.jpg" iconRight="img:/cocktail.jpg" />
+        <QChip content="With left image, rounded" round icon="img:/cocktail.jpg" />
+        <QChip content="With left image, responsive" responsive icon="img:/cocktail.jpg" />
+        <QChip
+          content="With left image, rounded and responsive!"
+          round
+          responsive
+          icon="img:/cocktail.jpg"
+        />
+      </div>
+    </QCardSection>
+    <QCardSection>
+      <h6>Click event</h6>
+      <div class="flex column" style="align-items: center; gap: 1em">
+        <QChip
+          class="tertiary-container"
+          content="Click on me!"
+          responsive
+          icon="img:/cocktail.jpg"
+          on:click={() => alert("OMG, you actually did it")}
+        />
+        <QChip
+          content="Can't click on me, now!"
+          responsive
+          disable
+          icon="img:/cocktail.jpg"
+          on:click={() => alert("OMG, you actually did it")}
+        />
       </div>
     </QCardSection>
   </QCard>
