@@ -1,4 +1,5 @@
 <script lang="ts">
+  import QTab from "./../../lib/components/tabs/QTab.svelte";
   import QAvatar from "$components/avatar/QAvatar.svelte";
   import QItemSection from "$components/list/QItemSection.svelte";
   import QCard from "$components/card/QCard.svelte";
@@ -17,11 +18,13 @@
   import QTooltip from "$components/tooltip/QTooltip.svelte";
   import QChip from "$lib/components/chip/QChip.svelte";
   import QDialog from "$lib/components/dialog/QDialog.svelte";
+  import QTabs from "$lib/components/tabs/QTabs.svelte";
 
   let option = "option2";
   let checkBox = false;
   let toggle = false;
   let input = "";
+  let activeTab = "foo";
 
   let dialog1 = false;
   let dialog2 = false;
@@ -413,6 +416,43 @@
           <QBtn on:click={dialogElement7?.hide} label="Confirm" />
         </nav>
       </QDialog>
+    </QCardSection>
+  </QCard>
+  <QCard title="Tabs">
+    <QCardSection>
+      Value: {activeTab}
+    </QCardSection>
+    <QCardSection>
+      <QTabs bind:value={activeTab}>
+        <QTab name="hello">Hello</QTab>
+        <QTab name="world">World</QTab>
+        <QTab name="foo">Foo</QTab>
+        <QTab name="bar">Bar</QTab>
+      </QTabs>
+    </QCardSection>
+    <QCardSection>
+      <QTabs bind:value={activeTab} smallIndicator>
+        <QTab name="hello">Hello</QTab>
+        <QTab name="world">World</QTab>
+        <QTab name="foo">Foo</QTab>
+        <QTab name="bar">Bar</QTab>
+      </QTabs>
+    </QCardSection>
+    <QCardSection>
+      <QTabs bind:value={activeTab}>
+        <QTab icon="home" name="hello">Hello</QTab>
+        <QTab icon="help" name="world">World</QTab>
+        <QTab icon="favorite" name="foo">Foo</QTab>
+        <QTab icon="star" name="bar">Bar</QTab>
+      </QTabs>
+    </QCardSection>
+    <QCardSection>
+      <QTabs bind:value={activeTab} vertical>
+        <QTab icon="home" name="hello">Hello</QTab>
+        <QTab icon="help" name="world">World</QTab>
+        <QTab icon="favorite" name="foo">Foo</QTab>
+        <QTab icon="star" name="bar">Bar</QTab>
+      </QTabs>
     </QCardSection>
   </QCard>
 </div>

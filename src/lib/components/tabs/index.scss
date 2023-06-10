@@ -1,0 +1,51 @@
+.q-tabs {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  
+  & > .q-tab {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1 0 0;
+    cursor: pointer;
+
+    & > .q-icon {
+      margin-right: 8px;
+    }
+  }
+
+  &.vertical-tabs > .q-tab {
+    flex-direction: column;
+
+    & > .q-icon {
+      margin: 0 0 4px 0
+    }
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: auto;
+    right: auto;
+    bottom: 0;
+    left: calc(var(--active-tab-index) * (100% / var(--tab-count)));
+    width: calc(var(--indicator-width) / var(--tab-count));
+    height: 3px;
+    background: var(--primary);
+    transition: all 0.3s linear;
+    border-radius: 3px 3px 0px 0px;
+    opacity: 0;
+  }
+
+  &:not(.hidden-indicator)::after {
+    opacity: 1;
+  }
+
+  &.small-indicator::after {
+    left: calc((var(--active-tab-index) + 0.5) * (100% / var(--tab-count)));
+    transform: translateX(-50%);
+  }
+}
