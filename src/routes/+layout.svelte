@@ -15,6 +15,9 @@
   import QIcon from "$lib/components/icon/QIcon.svelte";
   import QRailbar from "$lib/components/railbar/QRailbar.svelte";
 
+  export let data;
+  if (data.isDark) $Quaff.dark.set(true);
+
   const components = [
     {
       name: "App bar",
@@ -38,7 +41,7 @@
 {#if $Quaff.router.route.id === "/layout"}
   <slot />
 {:else}
-  <QLayout leftRailbarWidth="120">
+  <QLayout class="main-layout" leftRailbarWidth="120">
     <QToolbar slot="header" class="surface small-elevate">
       <h5 class="max center-align">Quaff</h5>
       <QBtn

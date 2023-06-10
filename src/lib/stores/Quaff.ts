@@ -2,25 +2,15 @@ import { writable, derived } from "svelte/store";
 import { page } from "$app/stores";
 import { browser } from "$app/environment";
 
+const getCookieValue = (cookie: string, name: string): string | null =>
+  cookie.match("(^|;)\\s*" + name + "\\s*=\\s*([^;]+)")?.pop() || null;
+
 function quaff() {
   const { subscribe, set, update } = writable({
     version: __QUAFF_VERSION__,
-    dark: true,
+    dark: false,
     //TODO lang: {},
-    //TODO iconSet: {},
-  });
-
-  subscribe(($quaff) => {
-    if (browser) {
-      $quaff.dark = localStorage.current_mode === "light" ? false : true;
-
-      let body = document.querySelector("body");
-      if ($quaff.dark === true) {
-        body && body.classList.add("dark");
-      } else {
-        body && body.classList.remove("dark");
-      }
-    }
+    //TODO? iconSet: {},
   });
 
   const toggleDarkMode = () => {
@@ -35,7 +25,16 @@ function quaff() {
         body && body.classList.remove("dark");
       }
 
-      localStorage.current_mode = q.dark === true ? "dark" : "light";
+      let mode = q.dark === true ? "dark" : "light";
+      document.cookie = `current_mode=${mode};max-age=31536000;path="/"`;
+
+      return q;
+    });
+  };
+
+  const setDarkMode = (newVal: boolean) => {
+    return update((q) => {
+      q.dark = newVal;
 
       return q;
     });
@@ -43,11 +42,12 @@ function quaff() {
 
   return {
     subscribe,
+    setDarkMode,
     toggleDarkMode,
   };
 }
 
-const quaffStore = quaff();
+export const quaffStore = quaff();
 
 export const Quaff = derived([quaffStore, page], ([$quaff, $page]) => {
   return {
@@ -56,6 +56,7 @@ export const Quaff = derived([quaffStore, page], ([$quaff, $page]) => {
     dark: {
       isActive: $quaff.dark,
       toggle: quaffStore.toggleDarkMode,
+      set: quaffStore.setDarkMode,
     },
     subscribe: {
       quaff: quaffStore.subscribe,
