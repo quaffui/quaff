@@ -1,4 +1,6 @@
 import { createClasses } from "$lib/utils/props";
+import { Quaff } from "$lib/stores/Quaff";
+import type { Page } from "@sveltejs/kit";
 
 export interface UseRouterLinkProps {
   href?: string;
@@ -15,6 +17,15 @@ export const UseRouterLinkPropsDefaults: UseRouterLinkProps = {
   activeClass: undefined,
   replace: false,
 };
+
+export function isRouteActive(
+  router: Page<Record<string, string>, string | null>,
+  to: string | undefined
+) {
+  return to === "/"
+    ? router.url.pathname === to
+    : router.url.pathname.slice(0, (to || "").length) === to;
+}
 
 export default function <T extends UseRouterLinkProps>(props: T) {
   const hasLink = props.to !== undefined || props.href !== undefined;

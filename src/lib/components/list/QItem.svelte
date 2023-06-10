@@ -1,6 +1,6 @@
 <script lang="ts">
   import QSeparator from "$lib/components/separator/QSeparator.svelte";
-  import useRouterLink from "$lib/composables/use-router-link";
+  import useRouterLink, { isRouteActive } from "$lib/composables/use-router-link";
   import { createClasses, createStyles } from "$lib/utils/props";
   import { getContext } from "svelte";
   import type { QListProps, QItemProps } from "./props";
@@ -33,10 +33,7 @@
 
   $: isClickable = disable !== true && isActionable === true;
 
-  $: isActive =
-    to === "/"
-      ? $Quaff.router.url.pathname === to
-      : $Quaff.router.url.pathname.slice(0, (to || "").length) === to;
+  $: isActive = isRouteActive($Quaff.router, to);
 
   $: classes = createClasses([
     "q-item row q-pl-sm",
