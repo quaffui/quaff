@@ -1,17 +1,17 @@
 <script lang="ts">
+  import { Quaff } from "$stores/Quaff";
   import { getContext } from "svelte";
   import type { QTabProps } from "./props";
   import type { Writable } from "svelte/store";
   import { createClasses } from "$lib/utils/props";
   import QIcon from "../icon/QIcon.svelte";
-  import QBtn from "../button/QBtn.svelte";
+  import { isRouteActive } from "$lib/composables/use-router-link";
 
-  export let name: QTabProps["name"],
+  export let name: QTabProps["name"] = undefined,
     to: QTabProps["to"] = undefined,
     icon: QTabProps["icon"] = undefined,
-    userClasses: QTabProps["userClasses"],
-    userStyles: QTabProps["userStyles"];
-  export { userClasses as class, userStyles as style };
+    userClasses: QTabProps["userClasses"];
+  export { userClasses as class };
 
   let index = 1;
   let indexContext = getContext<{
@@ -23,35 +23,46 @@
 
   let activeStore = getContext<
     Writable<{
-      name: string;
+      name?: string;
       index: number;
     }>
   >("activeTab");
 
-  $: if (name === $activeStore.name) {
+  $: isActive = to !== undefined ? isRouteActive($Quaff.router, to) : name === $activeStore.name;
+
+  $: if (isActive) {
     setActive();
   }
 
   $: classes = createClasses([
     "q-tab q-pa-sm",
-    name === $activeStore.name
-      ? "active primary-text on-surface-text"
-      : "surface on-surface-variant-text",
+    isActive ? "active primary-text on-surface-text" : "surface on-surface-variant-text",
+    userClasses,
   ]);
 
   function setActive() {
-    activeStore.set({
-      name,
-      index: index - 1,
-    });
+    if (index !== $activeStore.index) {
+      $activeStore = { name, index };
+    }
   }
 </script>
 
-<div class={classes} on:click={setActive} on:keyup on:keydown on:keypress>
-  {#if icon}
-    <QIcon name={icon} />
-  {:else if $$slots.icon}
-    <slot name="icon" />
-  {/if}
-  <slot />
-</div>
+{#if to !== undefined}
+  <a href={to} class={classes} on:click={setActive} on:keyup on:keydown on:keypress>
+    {#if icon}
+      <QIcon name={icon} />
+    {:else if $$slots.icon}
+      <slot name="icon" />
+    {/if}
+    <slot />
+  </a>
+{:else}
+  <div class={classes} on:click={setActive} on:keyup on:keydown on:keypress>
+    {#if icon}
+      <QIcon name={icon} />
+    {:else if $$slots.icon}
+      <slot name="icon" />
+    {/if}
+    <slot />
+  </div>
+{/if}

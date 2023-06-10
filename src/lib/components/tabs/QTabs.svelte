@@ -3,8 +3,9 @@
   import type { QTabsProps } from "./props";
   import { createClasses, createStyles } from "$lib/utils/props";
   import { writable } from "svelte/store";
+  import { browser } from "$app/environment";
 
-  export let value: QTabsProps["value"],
+  export let value: QTabsProps["value"] = undefined,
     vertical: QTabsProps["vertical"] = false,
     round: QTabsProps["round"] = false,
     smallIndicator: QTabsProps["smallIndicator"] = false,
@@ -53,7 +54,7 @@
     {
       "--tab-count": QTabCount || 1,
       "--indicator-width": smallIndicator ? "33%" : "100%",
-      "--active-tab-index": $activeTabStore.index,
+      "--active-tab-index": $activeTabStore.index - 1,
     },
     userStyles
   );

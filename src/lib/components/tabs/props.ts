@@ -1,7 +1,7 @@
 import { NativePropsDefaults, type NativeProps } from "$lib/utils/types";
 
 export interface QTabsProps extends NativeProps {
-  value: string;
+  value?: string;
 
   vertical: boolean;
   round: boolean;
@@ -9,7 +9,7 @@ export interface QTabsProps extends NativeProps {
 }
 
 export const QTabsPropsDefaults: QTabsProps = {
-  value: "" /** No default value */,
+  value: undefined,
 
   vertical: false,
   round: false,
@@ -19,14 +19,14 @@ export const QTabsPropsDefaults: QTabsProps = {
 };
 
 export interface QTabProps extends NativeProps {
-  name: string;
+  name?: string;
   to?: string;
 
   icon?: string;
 }
 
 export const QTabPropsDefaults: QTabProps = {
-  name: "" /** No default value */,
+  name: undefined,
   to: undefined,
 
   icon: undefined,

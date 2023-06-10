@@ -4,22 +4,26 @@
   align-items: center;
   justify-content: center;
   gap: 0;
-  
+
   & > .q-tab {
     display: flex;
     align-items: center;
     justify-content: center;
     flex: 1 0 0;
     cursor: pointer;
-
+  
     & > .q-icon {
       margin-right: 8px;
+    }
+
+    &:hover {
+      background: var(--on-surface-variant-2) !important;
     }
   }
 
   &.vertical-tabs > .q-tab {
     flex-direction: column;
-
+  
     & > .q-icon {
       margin: 0 0 4px 0
     }
