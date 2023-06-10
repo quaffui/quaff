@@ -1,7 +1,7 @@
 <script lang="ts">
   import { createClasses } from "$lib/utils/props";
   import { createEventDispatcher, onDestroy, onMount } from "svelte";
-  import { type QDialogProps } from "./props";
+  import type { QDialogProps } from "./props";
   import QBtn from "../button/QBtn.svelte";
   import { clickOutsideDialog } from "$lib/helpers";
 

@@ -2,8 +2,8 @@
   import { navigating } from "$app/stores";
   import { createClasses, createStyles } from "$lib/utils/props";
   import { getContext } from "svelte";
-  import { type QDrawerProps } from "./props";
-  import { type DrawerContext } from "../layout/QLayout.svelte";
+  import type { QDrawerProps } from "./props";
+  import type { DrawerContext } from "../layout/QLayout.svelte";
   import { clickOutside } from "$lib/helpers";
 
   export let value: QDrawerProps["value"] = true,

@@ -1,7 +1,7 @@
 <script lang="ts">
   import { getContext } from "svelte";
-  import { type QRailbarProps } from "./props";
-  import { type DrawerContext } from "../layout/QLayout.svelte";
+  import type { QRailbarProps } from "./props";
+  import type { DrawerContext } from "../layout/QLayout.svelte";
   import { createClasses, createStyles } from "$lib/utils/props";
   import { isNumber } from "$lib/utils/types";
 

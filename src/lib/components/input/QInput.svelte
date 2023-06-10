@@ -1,6 +1,6 @@
 <script lang="ts">
   import { createClasses } from "$lib/utils/props";
-  import { type QInputProps } from "./props";
+  import type { QInputProps } from "./props";
 
   export let bordered: QInputProps["bordered"] = false,
     disable: QInputProps["disable"] = false,

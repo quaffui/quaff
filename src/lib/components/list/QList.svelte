@@ -1,6 +1,6 @@
 <script lang="ts">
   import { createClasses } from "$lib/utils/props";
-  import { type QListProps } from "./props";
+  import type { QListProps } from "./props";
   import { setContext } from "svelte";
 
   export let bordered: QListProps["bordered"] = false,

@@ -30,7 +30,7 @@
     },
     "preserveValueImports": false,
     "verbatimModuleSyntax": false,
-    "importsNotUsedAsValues": "preserve"
+    "importsNotUsedAsValues": "error"
   },
   "exclude": ["./dist/**/*"]
 }

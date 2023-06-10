@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { type QCheckboxProps } from "./props";
+  import type { QCheckboxProps } from "./props";
 
   export let value: QCheckboxProps["value"] = false,
     label: QCheckboxProps["label"] = "",

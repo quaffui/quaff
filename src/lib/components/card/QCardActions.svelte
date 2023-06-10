@@ -1,7 +1,7 @@
 <script lang="ts">
   import useAlign, { type UseAlignProps } from "$lib/composables/use-align";
   import { createClasses } from "$utils/props";
-  import { type QCardActionsProps } from "./props";
+  import type { QCardActionsProps } from "./props";
 
   export let align: QCardActionsProps["align"] = undefined,
     vertical: QCardActionsProps["vertical"] = false,

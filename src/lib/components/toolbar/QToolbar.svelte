@@ -1,8 +1,8 @@
 <script lang="ts">
   import { createClasses, createStyles } from "$lib/utils/props";
   import { getContext } from "svelte";
-  import { type QToolbarProps } from "./props";
-  import { type AppbarContext } from "../layout/QLayout.svelte";
+  import type { QToolbarProps } from "./props";
+  import type { AppbarContext } from "../layout/QLayout.svelte";
 
   export let inset: QToolbarProps["inset"] = false,
     userClasses: QToolbarProps["userClasses"] = undefined;

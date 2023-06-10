@@ -1,6 +1,6 @@
 <script lang="ts">
   import { createClasses, createStyles } from "$utils/props";
-  import { type QSeparatorProps } from "./props";
+  import type { QSeparatorProps } from "./props";
 
   export let spacing: QSeparatorProps["spacing"] = "none",
     inset: QSeparatorProps["inset"] = false,

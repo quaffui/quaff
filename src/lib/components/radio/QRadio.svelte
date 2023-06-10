@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { type QRadioProps } from "./props";
+  import type { QRadioProps } from "./props";
 
   export let value: QRadioProps["value"] = "",
     label: QRadioProps["label"] = "",

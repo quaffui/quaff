@@ -20,7 +20,7 @@
 
 <script lang="ts">
   import { setContext } from "svelte";
-  import { type QLayoutProps } from "./props";
+  import type { QLayoutProps } from "./props";
   import { createClasses, createStyles } from "$lib/utils/props";
   import ContextReseter from "../private/ContextReseter.svelte";
 

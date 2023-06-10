@@ -1,6 +1,6 @@
 <script lang="ts">
   import { createClasses } from "$lib/utils/props";
-  import { type QChipProps } from "./props";
+  import type { QChipProps } from "./props";
 
   export let content: QChipProps["content"] = undefined,
     icon: QChipProps["icon"] = undefined,

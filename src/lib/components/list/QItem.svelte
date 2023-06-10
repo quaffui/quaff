@@ -3,7 +3,7 @@
   import useRouterLink from "$lib/composables/use-router-link";
   import { createClasses, createStyles } from "$lib/utils/props";
   import { getContext } from "svelte";
-  import { type QListProps, type QItemProps } from "./props";
+  import type { QListProps, type QItemProps } from "./props";
   import { Quaff } from "$lib/stores/Quaff";
 
   export let tag: QItemProps["tag"] = "div",

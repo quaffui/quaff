@@ -1,6 +1,6 @@
 <script lang="ts">
   import { createClasses } from "$lib/utils/props";
-  import { type QTooltipProps } from "./props";
+  import type { QTooltipProps } from "./props";
 
   export let position: QTooltipProps["position"] = "bottom",
     userClasses: QTooltipProps["userClasses"] = "";

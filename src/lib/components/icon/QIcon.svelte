@@ -1,7 +1,7 @@
 <script lang="ts">
   import useSize from "$lib/composables/use-size";
   import { createClasses } from "$lib/utils/props";
-  import { type QIconProps } from "./props";
+  import type { QIconProps } from "./props";
 
   export let size: QIconProps["size"] = "md",
     name: QIconProps["name"] = undefined,

@@ -1,6 +1,6 @@
 <script lang="ts">
   import { createClasses } from "$lib/utils/props";
-  import { type QBtnProps } from "./props";
+  import type { QBtnProps } from "./props";
 
   export let icon: QBtnProps["icon"] = undefined,
     label: QBtnProps["label"] = undefined,

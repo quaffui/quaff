@@ -1,8 +1,8 @@
 <script lang="ts">
   import { getContext } from "svelte";
-  import { type QFooterProps } from "./props";
+  import type { QFooterProps } from "./props";
   import { createClasses } from "$lib/utils/props";
-  import { type AppbarContext } from "../layout/QLayout.svelte";
+  import type { AppbarContext } from "../layout/QLayout.svelte";
 
   export let value: QFooterProps["value"] = false,
     bordered: QFooterProps["bordered"] = false,

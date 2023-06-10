@@ -1,6 +1,6 @@
 <script lang="ts">
   import { createClasses } from "$lib/utils/props";
-  import { type QItemSectionProps } from "./props";
+  import type { QItemSectionProps } from "./props";
 
   export let thumbnail: QItemSectionProps["thumbnail"] = false,
     video: QItemSectionProps["video"] = false,
