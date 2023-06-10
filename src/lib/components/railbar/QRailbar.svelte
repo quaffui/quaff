@@ -14,8 +14,6 @@
 
   $: ctx = getContext<DrawerContext | undefined>(side === "left" ? "drawerLeft" : "drawerRight");
 
-  $: console.log("Railbar", { ctx });
-
   $: classes = createClasses([
     "q-railbar",
     "surface",

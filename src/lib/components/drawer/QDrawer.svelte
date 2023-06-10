@@ -65,8 +65,6 @@
 
   $: ctx = getContext<DrawerContext | undefined>(side === "left" ? "drawerLeft" : "drawerRight");
 
-  $: console.log("Drawer", { ctx });
-
   $: classes = createClasses([
     "q-drawer",
     "surface",
