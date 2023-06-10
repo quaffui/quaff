@@ -1,6 +1,5 @@
 <script lang="ts">
-  import QCard from "$lib/components/card/QCard.svelte";
-  import QCardSection from "$lib/components/card/QCardSection.svelte";
+  import { QCard, QCardSection } from "$lib";
 </script>
 
 <div class="grid" style="min-height: 400px; margin: 1rem">

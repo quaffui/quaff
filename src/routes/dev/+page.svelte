@@ -1,24 +1,26 @@
 <script lang="ts">
-  import QTab from "./../../lib/components/tabs/QTab.svelte";
-  import QAvatar from "$components/avatar/QAvatar.svelte";
-  import QItemSection from "$components/list/QItemSection.svelte";
-  import QCard from "$components/card/QCard.svelte";
-  import QCardSection from "$components/card/QCardSection.svelte";
-  import QLinearProgress from "$components/progress/QLinearProgress.svelte";
-  import QCheckbox from "$components/checkbox/QCheckbox.svelte";
-  import QRadio from "$components/radio/QRadio.svelte";
-  import QInput from "$components/input/QInput.svelte";
-  import QBtn from "$components/button/QBtn.svelte";
-  import QToggle from "$components/toggle/QToggle.svelte";
-  import QSeparator from "$components/separator/QSeparator.svelte";
+  import {
+    QDialog,
+    QCard,
+    QCardSection,
+    QCheckbox,
+    QRadio,
+    QLinearProgress,
+    QSeparator,
+    QInput,
+    QBtn,
+    QToggle,
+    QToolbar,
+    QList,
+    QItem,
+    QItemSection,
+    QAvatar,
+    QTooltip,
+    QChip,
+    QTabs,
+    QTab,
+  } from "$lib";
   import { Quaff } from "$lib/stores/Quaff";
-  import QList from "$components/list/QList.svelte";
-  import QToolbar from "$components/toolbar/QToolbar.svelte";
-  import QItem from "$components/list/QItem.svelte";
-  import QTooltip from "$components/tooltip/QTooltip.svelte";
-  import QChip from "$lib/components/chip/QChip.svelte";
-  import QDialog from "$lib/components/dialog/QDialog.svelte";
-  import QTabs from "$lib/components/tabs/QTabs.svelte";
 
   let option = "option2";
   let checkBox = false;

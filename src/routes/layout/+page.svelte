@@ -1,14 +1,16 @@
 <script lang="ts">
-  import QBtn from "$lib/components/button/QBtn.svelte";
-  import QDrawer from "$lib/components/drawer/QDrawer.svelte";
-  import QFooter from "$lib/components/footer/QFooter.svelte";
-  import QIcon from "$lib/components/icon/QIcon.svelte";
-  import QLayout from "$lib/components/layout/QLayout.svelte";
-  import QItem from "$lib/components/list/QItem.svelte";
-  import QItemSection from "$lib/components/list/QItemSection.svelte";
-  import QList from "$lib/components/list/QList.svelte";
-  import QRailbar from "$lib/components/railbar/QRailbar.svelte";
-  import QToolbar from "$lib/components/toolbar/QToolbar.svelte";
+  import {
+    QDrawer,
+    QLayout,
+    QToolbar,
+    QBtn,
+    QRailbar,
+    QList,
+    QItem,
+    QIcon,
+    QItemSection,
+    QFooter,
+  } from "$lib";
 
   let leftDrawer: QDrawer | null = null;
   let rightDrawer: QDrawer | null = null;

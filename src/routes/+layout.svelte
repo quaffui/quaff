@@ -5,15 +5,17 @@
   import "beercss/dist/cdn/material-symbols-sharp.woff2";
   import "../lib/css/index.scss";
   import { Quaff } from "$stores/Quaff";
-  import QLayout from "$lib/components/layout/QLayout.svelte";
-  import QToolbar from "$lib/components/toolbar/QToolbar.svelte";
-  import QBtn from "$lib/components/button/QBtn.svelte";
-  import QDrawer from "$lib/components/drawer/QDrawer.svelte";
-  import QList from "$lib/components/list/QList.svelte";
-  import QItem from "$lib/components/list/QItem.svelte";
-  import QItemSection from "$lib/components/list/QItemSection.svelte";
-  import QIcon from "$lib/components/icon/QIcon.svelte";
-  import QRailbar from "$lib/components/railbar/QRailbar.svelte";
+  import {
+    QLayout,
+    QToolbar,
+    QBtn,
+    QRailbar,
+    QList,
+    QItem,
+    QIcon,
+    QItemSection,
+    QDrawer,
+  } from "$lib";
 
   export let data;
   if (data.isDark) $Quaff.dark.set(true);
