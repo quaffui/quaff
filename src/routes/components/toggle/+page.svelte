@@ -4,11 +4,11 @@
 
 <div class="grid" style="min-height: 400px; margin: 1rem">
   <QCard class="s6 flex center-align primary-container">
-    <h1 class="large" slot="title">Card</h1>
+    <h1 class="large" slot="title">Toggle</h1>
   </QCard>
   <QCard class="s6 q-mt-none secondary-container flex center-align">
     <QCardSection class="flex center-align">
-      <h3>Card description</h3>
+      <h3>Toggle description</h3>
     </QCardSection>
   </QCard>
 </div>
