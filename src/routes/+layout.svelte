@@ -18,28 +18,117 @@
     QItemSection,
     QDrawer,
   } from "$lib";
-
-  export let data;
-  if (data.isDark) $Quaff.dark.set(true);
+  import { isRouteActive } from "$lib/composables/use-router-link";
 
   const components = [
     {
-      name: "App bar",
-      to: "/components/appbar",
+      name: "Avatar",
+      to: "/components/avatar",
+    },
+    {
+      name: "Button",
+      to: "/components/button",
     },
     {
       name: "Card",
       to: "/components/card",
     },
     {
+      name: "Checkbox",
+      to: "/components/checkbox",
+    },
+    {
+      name: "Chip",
+      to: "/components/chip",
+    },
+    {
+      name: "Dialog",
+      to: "/components/dialog",
+    },
+    {
+      name: "Drawer",
+      to: "/components/drawer",
+    },
+    {
+      name: "Footer",
+      to: "/components/footer",
+    },
+    {
+      name: "Icon",
+      to: "/components/icon",
+    },
+    {
+      name: "Input",
+      to: "/components/input",
+    },
+    {
       name: "Layout",
       to: "/components/layout",
     },
     {
-      name: "The $Quaff object",
-      to: "/components/quaff",
+      name: "List",
+      to: "/components/list",
+    },
+    {
+      name: "Progress",
+      to: "/components/progress",
+    },
+    {
+      name: "Radio",
+      to: "/components/radio",
+    },
+    {
+      name: "Railbar",
+      to: "/components/railbar",
+    },
+    {
+      name: "Separator",
+      to: "/components/separator",
+    },
+    {
+      name: "Tabs",
+      to: "/components/tabs",
+    },
+    {
+      name: "Toggle",
+      to: "/components/toggle",
+    },
+    {
+      name: "Toolbar",
+      to: "/components/toolbar",
+    },
+    {
+      name: "Tooltip",
+      to: "/components/tooltip",
     },
   ];
+  const quaffUtils = [
+    {
+      name: "The $Quaff object",
+      to: "/utils/quaff",
+    },
+  ];
+
+  let selectedRailbarItem: "components" | "utils" | null = isRouteActive(
+    $Quaff.router,
+    "/components"
+  )
+    ? "components"
+    : isRouteActive($Quaff.router, "/utils")
+    ? "utils"
+    : null;
+
+  $: showDrawer = selectedRailbarItem !== null;
+
+  $: drawerContent =
+    selectedRailbarItem === "components"
+      ? components
+      : selectedRailbarItem === "utils"
+      ? quaffUtils
+      : [];
+
+  export let data;
+  if (data.isDark) $Quaff.dark.set(true);
 </script>
 
 <svelte:head>
@@ -65,31 +154,56 @@
     </QToolbar>
     <QRailbar slot="railbarLeft" class="surface no-round" bordered>
       <QList>
-        <QItem class="column center-align round" to="/" style="gap: 0.25em">
+        <QItem
+          class="column center-align round"
+          to="/"
+          style="gap: 0.25em"
+          on:click={() => (selectedRailbarItem = null)}
+        >
           <QIcon name="home" />
           <QItemSection>Home</QItemSection>
         </QItem>
-        <QItem class="column center-align round" to="/components" style="gap: 0.25em">
+        <QItem
+          class="column center-align round"
+          to="/components"
+          style="gap: 0.25em"
+          on:click={() => (selectedRailbarItem = "components")}
+        >
           <QIcon name="grid_view" />
           <QItemSection>Components</QItemSection>
         </QItem>
-        <QItem class="column center-align round" to="/utils" style="gap: 0.25em">
+        <QItem
+          class="column center-align round"
+          to="/utils"
+          style="gap: 0.25em"
+          on:click={() => (selectedRailbarItem = "utils")}
+        >
           <QIcon name="construction" />
           <QItemSection>Quaff utils</QItemSection>
         </QItem>
-        <QItem class="column center-align round" to="/dev" style="gap: 0.25em">
+        <QItem
+          class="column center-align round"
+          to="/dev"
+          style="gap: 0.25em"
+          on:click={() => (selectedRailbarItem = null)}
+        >
           <QIcon name="code" />
           <QItemSection>Dev tests</QItemSection>
         </QItem>
-        <QItem class="column center-align round" to="/layout" style="gap: 0.25em">
+        <QItem
+          class="column center-align round"
+          to="/layout"
+          style="gap: 0.25em"
+          on:click={() => (selectedRailbarItem = null)}
+        >
           <QIcon name="dashboard_customize" />
           <QItemSection>Layout tests</QItemSection>
         </QItem>
       </QList>
     </QRailbar>
-    <QDrawer slot="drawerLeft" persistent value={true}>
+    <QDrawer class="q-pa-sm" slot="drawerLeft" persistent value={showDrawer}>
       <QList>
-        {#each components as { name, to }}
+        {#each drawerContent as { name, to }}
           <QItem class="round" {to}>{name}</QItem>
         {/each}
       </QList>

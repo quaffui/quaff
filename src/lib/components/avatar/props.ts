@@ -12,10 +12,12 @@ export type QAvatarShapeOptions =
   | "bottom-left-round"
   | "bottom-right-round";
 
+export type QAvatarSizeOptions = "xs" | "sm" | "md" | "lg" | "xl" | string;
+
 export interface QAvatarProps extends NativeProps {
   shape: QAvatarShapeOptions;
-  size: "xs" | "sm" | "md" | "lg" | "xl" | string;
-  src: string;
+  size: QAvatarSizeOptions;
+  src?: string;
   video: boolean;
 }
 

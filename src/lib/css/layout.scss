@@ -73,6 +73,7 @@
   bottom: 0px;
   left: auto;
   height: 100%;
+  overflow: auto;
   transition: all var(--speed3);
 
   &.fixed {
@@ -196,6 +197,8 @@
 }
 
 .q-layout > .q-drawer {
+  overflow: auto;
+
   &.offset {
     &-top {
       top: var(--header-height);

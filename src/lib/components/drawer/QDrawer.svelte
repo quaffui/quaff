@@ -55,7 +55,6 @@
   };
 
   export const toggle = () => {
-    console.log("debug");
     value = !value;
   };
 

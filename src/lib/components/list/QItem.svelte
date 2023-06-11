@@ -5,6 +5,7 @@
   import { getContext } from "svelte";
   import type { QListProps, QItemProps } from "./props";
   import { Quaff } from "$lib/stores/Quaff";
+  import { fade } from "svelte/transition";
 
   export let tag: QItemProps["tag"] = "div",
     active: QItemProps["active"] = false,
@@ -60,11 +61,12 @@
   <QSeparator {...separatorOptions} />
 {/if}
 {#if linkAttributes.href !== undefined}
-  <a {...attributes} {...linkAttributes}>
+  <!-- svelte-ignore a11y-missing-attribute -->
+  <a {...attributes} {...linkAttributes} {...$$restProps} on:mouseenter on:mouseleave on:click>
     <slot />
   </a>
 {:else}
-  <div {...attributes}>
+  <div {...attributes} {...$$restProps} on:mouseenter on:mouseleave on:click>
     <slot />
   </div>
 {/if}

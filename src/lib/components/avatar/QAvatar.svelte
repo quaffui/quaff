@@ -4,7 +4,7 @@
 
   export let shape: QAvatarProps["shape"] = "circle",
     size: QAvatarProps["size"] = "md",
-    src: QAvatarProps["src"],
+    src: QAvatarProps["src"] = undefined,
     video: QAvatarProps["video"] = false,
     userClasses: QAvatarProps["userClasses"] = undefined,
     userStyles: QAvatarProps["userStyles"] = undefined;
@@ -54,7 +54,11 @@
   <video class={classes} {style} autoplay loop playsinline {...$$restProps}>
     <source {src} type="video/mp4" />
   </video>
-{:else}
+{:else if src !== undefined}
   <!-- svelte-ignore a11y-missing-attribute -->
   <img class={classes} {style} {src} {...$$restProps} />
+{:else}
+  <div class="flex center-align middle-align {classes}" {style} {...$$restProps}>
+    <slot />
+  </div>
 {/if}
