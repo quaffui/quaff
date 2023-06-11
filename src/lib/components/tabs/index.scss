@@ -39,7 +39,7 @@
     width: calc(var(--indicator-width) / var(--tab-count));
     height: 3px;
     background: var(--primary);
-    transition: all 0.3s linear;
+    transition: all 0.3s cubic-bezier(0.77,0,0.18,1);
     border-radius: 3px 3px 0px 0px;
     opacity: 0;
   }
