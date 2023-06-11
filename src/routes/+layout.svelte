@@ -3,6 +3,8 @@
   import "beercss/dist/cdn/material-symbols-outlined.woff2";
   import "beercss/dist/cdn/material-symbols-rounded.woff2";
   import "beercss/dist/cdn/material-symbols-sharp.woff2";
+  import Prism from "prismjs";
+  import "prism-svelte";
   import "../lib/css/index.scss";
   import { Quaff } from "$stores/Quaff";
   import {
@@ -39,6 +41,13 @@
     },
   ];
 </script>
+
+<svelte:head>
+  <link
+    href="https://cdn.jsdelivr.net/npm/prism-themes@1.4.0/themes/prism-material-dark.css"
+    rel="stylesheet"
+  />
+</svelte:head>
 
 {#if $Quaff.router.route.id === "/layout"}
   <slot />

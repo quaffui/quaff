@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Prism from "prismjs";
   import {
     QDialog,
     QCard,
@@ -21,6 +22,7 @@
     QTab,
   } from "$lib";
   import { Quaff } from "$lib/stores/Quaff";
+  import { highlight } from "prismjs";
 
   let option = "option2";
   let checkBox = false;
