@@ -23,6 +23,8 @@
   } from "$lib";
   import { Quaff } from "$lib/stores/Quaff";
   import { highlight } from "prismjs";
+  import QBreadcrumbs from "$lib/components/breadcrumbs/QBreadcrumbs.svelte";
+  import QBreadcrumbsEl from "$lib/components/breadcrumbs/QBreadcrumbsEl.svelte";
 
   let option = "option2";
   let checkBox = false;
@@ -471,6 +473,53 @@
         <QTab icon="code" to="/dev">Dev</QTab>
         <QTab icon="dashboard_customize" to="/layout">Layout tests</QTab>
       </QTabs>
+    </QCardSection>
+  </QCard>
+  <QCard title="Breadcrumbs">
+    <QCardSection>
+      <h6>Default breadcrumbs</h6>
+      <QBreadcrumbs>
+        <QBreadcrumbsEl>Hello</QBreadcrumbsEl>
+        <QBreadcrumbsEl>World</QBreadcrumbsEl>
+        <QBreadcrumbsEl>Foo</QBreadcrumbsEl>
+        <QBreadcrumbsEl>Bar</QBreadcrumbsEl>
+      </QBreadcrumbs>
+    </QCardSection>
+    <QCardSection>
+      <h6>With icons</h6>
+      <QBreadcrumbs>
+        <QBreadcrumbsEl icon="home">Hello</QBreadcrumbsEl>
+        <QBreadcrumbsEl icon="favorite">World</QBreadcrumbsEl>
+        <QBreadcrumbsEl icon="star">Foo</QBreadcrumbsEl>
+        <QBreadcrumbsEl icon="help">Bar</QBreadcrumbsEl>
+      </QBreadcrumbs>
+    </QCardSection>
+    <QCardSection>
+      <h6>Custom separator</h6>
+      <h6 class="small q-ml-md">With text</h6>
+      <QBreadcrumbs separator="|">
+        <QBreadcrumbsEl>Hello</QBreadcrumbsEl>
+        <QBreadcrumbsEl>World</QBreadcrumbsEl>
+        <QBreadcrumbsEl>Foo</QBreadcrumbsEl>
+        <QBreadcrumbsEl>Bar</QBreadcrumbsEl>
+      </QBreadcrumbs>
+      <h6 class="small q-ml-md">With icon</h6>
+      <QBreadcrumbs separator="icon:chevron_right">
+        <QBreadcrumbsEl>Hello</QBreadcrumbsEl>
+        <QBreadcrumbsEl>World</QBreadcrumbsEl>
+        <QBreadcrumbsEl>Foo</QBreadcrumbsEl>
+        <QBreadcrumbsEl>Bar</QBreadcrumbsEl>
+      </QBreadcrumbs>
+    </QCardSection>
+    <QCardSection>
+      <h6>With links</h6>
+      <QBreadcrumbs>
+        <QBreadcrumbsEl icon="home" to="/">Home</QBreadcrumbsEl>
+        <QBreadcrumbsEl icon="grid_view" to="/components">Components</QBreadcrumbsEl>
+        <QBreadcrumbsEl icon="construction" to="/utils">Utils</QBreadcrumbsEl>
+        <QBreadcrumbsEl icon="code" to="/dev">Dev</QBreadcrumbsEl>
+        <QBreadcrumbsEl icon="dashboard_customize" to="/layout">Layout tests</QBreadcrumbsEl>
+      </QBreadcrumbs>
     </QCardSection>
   </QCard>
 </div>
