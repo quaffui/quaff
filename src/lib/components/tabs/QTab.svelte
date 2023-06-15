@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Quaff } from "$stores/Quaff";
-  import { getContext } from "svelte";
+  import { getContext, hasContext } from "svelte";
   import type { QTabProps } from "./props";
   import type { Writable } from "svelte/store";
   import { createClasses } from "$lib/utils/props";
@@ -14,9 +14,15 @@
   export { userClasses as class };
 
   let index = 1;
+
+  if (!hasContext("QTabCount")) {
+    console.warn("QTab should be used inside QTabs");
+  }
+
   let indexContext = getContext<{
     index: () => number;
   }>("QTabCount");
+
   $: if (indexContext) {
     index = indexContext.index();
   }

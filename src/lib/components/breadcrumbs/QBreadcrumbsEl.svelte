@@ -17,6 +17,9 @@
   export { userClasses as class };
 
   const index = getIndex();
+  if (index === undefined) {
+    console.warn("QBreadcrumbEl should be used inside QBreadcrumb");
+  }
   const activeColor = getContext<string>("activeColor");
   const separator = getContext<{ type: string; color: string; gutter: string }>("separator");
 

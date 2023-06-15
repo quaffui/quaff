@@ -1,4 +1,4 @@
-import { getContext, setContext } from "svelte";
+import { getContext, hasContext, setContext } from "svelte";
 
 export function setIndex(index: number) {
   setContext("index", {
@@ -7,9 +7,15 @@ export function setIndex(index: number) {
       return index;
     },
   });
+
+  return index;
 }
 
 export function getIndex() {
+  if (!hasContext("index")) {
+    return undefined;
+  }
+
   const { index } = getContext<{
     index: () => number;
   }>("index");

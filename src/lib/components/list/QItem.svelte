@@ -5,7 +5,7 @@
   import { getContext } from "svelte";
   import type { QListProps, QItemProps } from "./props";
   import { Quaff } from "$lib/stores/Quaff";
-  import { fade } from "svelte/transition";
+  import { getIndex } from "$lib/composables/use-index";
 
   export let tag: QItemProps["tag"] = "div",
     active: QItemProps["active"] = false,
@@ -54,10 +54,13 @@
     ...$$restProps,
   };
 
-  const { index } = getContext<{ index: () => number }>("setIndex");
+  const index = getIndex();
+  if (!index) {
+    console.warn("QItem should be used inside QList");
+  }
 </script>
 
-{#if separatorOptions !== undefined && index() !== 0}
+{#if separatorOptions !== undefined && index !== 0}
   <QSeparator {...separatorOptions} />
 {/if}
 {#if linkAttributes.href !== undefined}

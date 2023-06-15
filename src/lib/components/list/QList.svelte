@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { setIndex } from "$lib/composables/use-index";
   import { createClasses } from "$lib/utils/props";
   import type { QListProps } from "./props";
   import { setContext } from "svelte";
@@ -14,13 +15,9 @@
   export { userClasses as class };
 
   $: setContext("separator", separator === true ? separatorOptions : undefined);
+
   let startIndex = -1;
-  setContext("setIndex", {
-    index: () => {
-      startIndex += 1;
-      return startIndex;
-    },
-  });
+  setIndex(startIndex);
 
   $: classes = createClasses([
     "q-list",
