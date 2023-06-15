@@ -1,31 +1,6 @@
-export interface QAvatarProp {
-  name: string;
-  type: string;
-  default?: any;
-  description: string;
-  clickableType?: true;
-  optional?: true;
-}
+import type { QComponentDocs } from "../private/ApiDoc.svelte";
 
-export interface QAvatarSlot {
-  name: string;
-  description: string;
-}
-
-export interface QAvatarType {
-  name: string;
-  description: string;
-}
-
-export let QAvatarDocs: {
-  name: string;
-  description: string;
-  docs: {
-    props: QAvatarProp[];
-    slots: QAvatarSlot[];
-    types: QAvatarType[];
-  };
-} = {
+export let QAvatarDocs: QComponentDocs = {
   name: "QAvatar",
   description:
     "Avatars can be used in many different ways as with icons or for user profile images/videos, for example. They can have many different shapes, the default one being a circle.",
