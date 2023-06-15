@@ -9,5 +9,5 @@ export const NativePropsDefaults: NativeProps = {
 };
 
 export function isNumber(input: any): input is number {
-  return typeof input === "number" || !isNaN(parseInt(input, 10));
+  return typeof input === "number" || !isNaN(Number(input));
 }
