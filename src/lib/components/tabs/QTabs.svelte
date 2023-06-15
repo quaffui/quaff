@@ -9,8 +9,8 @@
     vertical: QTabsProps["vertical"] = false,
     round: QTabsProps["round"] = false,
     smallIndicator: QTabsProps["smallIndicator"] = false,
-    userClasses: QTabsProps["userClasses"],
-    userStyles: QTabsProps["userStyles"];
+    userClasses: QTabsProps["userClasses"] = undefined,
+    userStyles: QTabsProps["userStyles"] = undefined;
   export { userClasses as class, userStyles as style };
 
   // Hide indicator until it's mounted

@@ -10,7 +10,7 @@
   export let name: QTabProps["name"] = undefined,
     to: QTabProps["to"] = undefined,
     icon: QTabProps["icon"] = undefined,
-    userClasses: QTabProps["userClasses"];
+    userClasses: QTabProps["userClasses"] = undefined;
   export { userClasses as class };
 
   let index = 1;
