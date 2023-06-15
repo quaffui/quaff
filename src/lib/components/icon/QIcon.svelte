@@ -1,6 +1,7 @@
 <script lang="ts">
   import useSize from "$lib/composables/use-size";
-  import { createClasses } from "$lib/utils/props";
+  import { createClasses, createStyles } from "$lib/utils/props";
+  import { isNumber } from "$lib/utils/types";
   import type { QIconProps } from "./props";
 
   export let size: QIconProps["size"] = "md",
@@ -11,8 +12,11 @@
     img: QIconProps["img"] = undefined,
     imgAttributes: QIconProps["imgAttributes"] = {},
     color: QIconProps["color"] = undefined,
-    userClasses: QIconProps["userClasses"] = undefined;
-  export { userClasses as class };
+    userClasses: QIconProps["userClasses"] = undefined,
+    userStyles: QIconProps["userStyles"] = undefined;
+  export { userClasses as class, userStyles as style };
+
+  $: sizeStyle = useSize(size) === null ? (isNumber(size) ? `${size}px` : size) : undefined;
 
   $: classes = createClasses([
     "q-icon",
@@ -23,13 +27,20 @@
     userClasses,
   ]);
 
+  $: style = createStyles(
+    {
+      "---size": sizeStyle,
+    },
+    userStyles
+  );
+
   $: imgAttrs = {
     alt: "Quaff Image Icon",
     ...imgAttributes,
   };
 </script>
 
-<i class={classes}>
+<i class={classes} {style}>
   {#if name !== undefined}
     {name}
   {:else if img !== undefined}

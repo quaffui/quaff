@@ -1,7 +1,7 @@
 import { type NativeProps, NativePropsDefaults } from "$lib/utils/types";
 
 export interface QIconProps extends NativeProps {
-  size: "xs" | "sm" | "md" | "lg" | "xl";
+  size: "xs" | "sm" | "md" | "lg" | "xl" | string | number;
   type: "outlined" | "sharp" | "rounded";
   name?: string;
   fill: boolean;
