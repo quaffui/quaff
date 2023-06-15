@@ -1,4 +1,4 @@
-import type { QComponentDocs } from "../private/ApiDoc.svelte";
+import type { QComponentDocs } from "$utils/types";
 
 export let QAvatarDocs: QComponentDocs = {
   name: "QAvatar",

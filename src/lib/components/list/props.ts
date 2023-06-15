@@ -1,5 +1,5 @@
 import { NativePropsDefaults, type NativeProps } from "$lib/utils/types";
-import { type QSeparatorProps } from "../separator/props";
+import type { QSeparatorProps } from "../separator/props";
 import {
   UseRouterLinkPropsDefaults,
   type UseRouterLinkProps,

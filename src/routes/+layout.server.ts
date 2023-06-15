@@ -1,4 +1,6 @@
-export function load({ cookies }) {
+import type { ServerLoadEvent } from "@sveltejs/kit";
+
+export function load({ cookies }: ServerLoadEvent) {
   const theme = cookies.get("current_mode");
 
   return {

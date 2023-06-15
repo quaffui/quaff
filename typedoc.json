@@ -1,0 +1,4 @@
+{
+  "entryPoints": ["src/lib/components/index.ts", "src/lib/components/*/*.svelte"],
+  "out": "./docs"
+}

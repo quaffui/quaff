@@ -1,40 +1,8 @@
-<script lang="ts" context="module">
-  export interface QComponentDocs {
-    name: string;
-    description: string;
-    docs: {
-      props: QComponentProp[];
-      slots: QComponentSlot[];
-      types: QComponentType[];
-    };
-  }
-
-  export interface QComponentProp {
-    name: string;
-    type: string;
-    default?: any;
-    description: string;
-    clickableType?: true;
-    optional?: true;
-  }
-
-  export interface QComponentSlot {
-    name: string;
-    description: string;
-  }
-
-  export interface QComponentType {
-    name: string;
-    description: string;
-  }
-</script>
-
 <script lang="ts">
   import { capitalize } from "$lib/utils/string";
   import {
     QCard,
     QCardSection,
-    QAvatar,
     QIcon,
     QTabs,
     QTab,
@@ -43,6 +11,12 @@
     QItem,
     QItemSection,
   } from "$lib";
+  import type {
+    QComponentDocs,
+    QComponentProp,
+    QComponentSlot,
+    QComponentType,
+  } from "$utils/types";
 
   export let QComponentDocs: QComponentDocs;
 

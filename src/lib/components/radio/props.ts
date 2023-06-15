@@ -1,4 +1,5 @@
-import { type NativeProps, NativePropsDefaults } from "$lib/utils/types";
+import type { NativeProps } from "$lib/utils/types";
+import { NativePropsDefaults } from "$lib/utils/types";
 
 export interface QRadioProps extends NativeProps {
   value: string;

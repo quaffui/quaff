@@ -1,4 +1,4 @@
-import { NativeProps } from "$utils/types";
+import type { NativeProps } from "$utils/types";
 
 interface QSeparatorPropsVertical extends NativeProps {
   spacing: "none" | "sm" | "md" | "lg";

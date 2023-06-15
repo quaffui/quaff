@@ -1,4 +1,4 @@
-import { type NativeProps } from "$lib/utils/types";
+import type { NativeProps } from "$lib/utils/types";
 
 export interface QLayoutProps extends NativeProps {
   //prettier-ignore
