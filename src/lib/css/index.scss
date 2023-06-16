@@ -1,6 +1,9 @@
 @import "./layout";
 @import "$css/theme/theme";
 
+@import "$components/breadcrumbs";
+@import "$components/chip";
+@import "$components/list";
 @import "$components/tabs";
 
 html,
