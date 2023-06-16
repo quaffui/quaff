@@ -41,6 +41,14 @@ export let QAvatarDocs: QComponentDocs = {
         description: "The default slot can be used to display initials inside the avatar.",
       },
     ],
+    methods: [],
+    events: [
+      {
+        name: "click",
+        type: "(e: MouseEvent) => void",
+        description: "Emitted when the user clicks on the avatar.",
+      },
+    ],
     types: [
       {
         name: "QAvatarShapeOptions",

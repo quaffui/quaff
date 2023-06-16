@@ -51,14 +51,14 @@
 
 {#if video === true}
   <!-- svelte-ignore a11y-media-has-caption -->
-  <video class={classes} {style} autoplay loop playsinline {...$$restProps}>
+  <video class={classes} {style} autoplay loop playsinline {...$$restProps} on:click>
     <source {src} type="video/mp4" />
   </video>
 {:else if src !== undefined}
   <!-- svelte-ignore a11y-missing-attribute -->
-  <img class={classes} {style} {src} {...$$restProps} />
+  <img class={classes} {style} {src} {...$$restProps} on:click />
 {:else}
-  <div class="flex center-align middle-align {classes}" {style} {...$$restProps}>
+  <div class="flex center-align middle-align {classes}" {style} {...$$restProps} on:click>
     <slot />
   </div>
 {/if}
