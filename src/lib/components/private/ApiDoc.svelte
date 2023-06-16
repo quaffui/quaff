@@ -13,6 +13,7 @@
   } from "$lib";
   import type {
     QComponentDocs,
+    QComponentEvents,
     QComponentProp,
     QComponentSlot,
     QComponentType,
@@ -22,8 +23,15 @@
 
   let api: keyof QComponentDocs["docs"] = "props";
 
-  function isProp(doc: QComponentProp | QComponentSlot | QComponentType): doc is QComponentProp {
+  function isProp(
+    doc: QComponentProp | QComponentSlot | QComponentType | QComponentEvents
+  ): doc is QComponentProp {
     return api === "props";
+  }
+  function isEvent(
+    doc: QComponentProp | QComponentSlot | QComponentType | QComponentEvents
+  ): doc is QComponentEvents {
+    return api === "events";
   }
 </script>
 
@@ -62,8 +70,8 @@
       </h5>
       <QTabs bind:value={api} class="no-margin">
         {#each Object.entries(QComponentDocs.docs) as [tabName, _tabDoc]}
-          {#if _tabDoc !== undefined}
-            <QTab name={tabName}>
+          {#if _tabDoc.length !== 0}
+            <QTab name={tabName} style="min-width: 100px">
               <h6>{capitalize(tabName)}</h6>
             </QTab>
           {/if}
@@ -88,6 +96,10 @@
                       {doc.optional ? "?" : ""}: {doc.type} = {doc.default}
                     </span>
                   {/if}
+                {:else if isEvent(doc)}
+                  <span class="prop-type">
+                    : {doc.type}
+                  </span>
                 {/if}
               </span>
             </QItemSection>

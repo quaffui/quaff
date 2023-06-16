@@ -14,6 +14,8 @@ export interface QComponentDocs {
   docs: {
     props: QComponentProp[];
     slots: QComponentSlot[];
+    methods: QComponentMethod[];
+    events: QComponentEvent[];
     types: QComponentType[];
   };
 }
@@ -34,6 +36,18 @@ export interface QComponentSlot {
 
 export interface QComponentType {
   name: string;
+  description: string;
+}
+
+export interface QComponentEvent {
+  name: string;
+  type: string;
+  description: string;
+}
+
+export interface QComponentMethod {
+  name: string;
+  type: string;
   description: string;
 }
 
