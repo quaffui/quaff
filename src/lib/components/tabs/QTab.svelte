@@ -54,7 +54,15 @@
 </script>
 
 {#if to !== undefined}
-  <a href={to} class={classes} on:click={setActive} on:keyup on:keydown on:keypress>
+  <a
+    href={to}
+    class={classes}
+    on:click={setActive}
+    on:keyup
+    on:keydown
+    on:keypress
+    {...$$restProps}
+  >
     {#if icon}
       <QIcon name={icon} />
     {:else if $$slots.icon}
@@ -63,7 +71,7 @@
     <slot />
   </a>
 {:else}
-  <div class={classes} on:click={setActive} on:keyup on:keydown on:keypress>
+  <div class={classes} on:click={setActive} on:keyup on:keydown on:keypress {...$$restProps}>
     {#if icon}
       <QIcon name={icon} />
     {:else if $$slots.icon}
