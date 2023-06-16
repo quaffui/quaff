@@ -1,8 +1,7 @@
 <script lang="ts">
   import { createClasses } from "$lib/utils/props";
-  import { setContext } from "svelte";
+  import { onMount, setContext } from "svelte";
   import type { QBreadcrumbsProps } from "./props";
-  import { setIndex } from "$lib/composables/use-index";
 
   export let separator: QBreadcrumbsProps["separator"] = "/",
     gutter: QBreadcrumbsProps["gutter"] = "sm",
@@ -11,15 +10,16 @@
     userClasses: QBreadcrumbsProps["userClasses"] = undefined;
   export { userClasses as class };
 
+  let breadcrumbElement: HTMLDivElement | null = null;
+
+  onMount(() => breadcrumbElement?.querySelector("*:first-child")?.remove());
+
   setContext("activeColor", activeColor);
   setContext("separator", { type: separator, color: separatorColor, gutter });
-
-  let elIndex = -1;
-  setIndex(elIndex);
 
   $: classes = createClasses(["q-breadcrumbs flex center-align middle-align", userClasses]);
 </script>
 
-<div class={classes}>
+<div class={classes} bind:this={breadcrumbElement}>
   <slot />
 </div>

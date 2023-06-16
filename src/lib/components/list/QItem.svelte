@@ -1,11 +1,10 @@
 <script lang="ts">
   import QSeparator from "$lib/components/separator/QSeparator.svelte";
   import useRouterLink, { isRouteActive } from "$lib/composables/use-router-link";
-  import { createClasses, createStyles } from "$lib/utils/props";
+  import { createClasses } from "$lib/utils/props";
   import { getContext } from "svelte";
   import type { QListProps, QItemProps } from "./props";
   import { Quaff } from "$lib/stores/Quaff";
-  import { getIndex } from "$lib/composables/use-index";
 
   export let tag: QItemProps["tag"] = "div",
     active: QItemProps["active"] = false,
@@ -53,14 +52,9 @@
     "aria-disabled": isActionable === true ? true : undefined,
     ...$$restProps,
   };
-
-  const index = getIndex();
-  if (!index) {
-    console.warn("QItem should be used inside QList");
-  }
 </script>
 
-{#if separatorOptions !== undefined && index !== 0}
+{#if separatorOptions !== undefined}
   <QSeparator {...separatorOptions} />
 {/if}
 {#if linkAttributes.href !== undefined}
@@ -73,20 +67,3 @@
     <slot />
   </div>
 {/if}
-
-<style lang="scss">
-  :global(.q-list.dense > .q-item, .q-item.dense) {
-    min-height: 32px;
-    padding-block: 0;
-  }
-  .q-item {
-    margin-top: 0 !important;
-    margin: 0;
-    padding: 0.75em;
-    min-width: 100%;
-    max-height: 60px;
-    &.dense {
-      min-height: 32px;
-    }
-  }
-</style>

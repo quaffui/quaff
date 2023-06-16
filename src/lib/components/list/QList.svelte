@@ -2,7 +2,7 @@
   import { setIndex } from "$lib/composables/use-index";
   import { createClasses } from "$lib/utils/props";
   import type { QListProps } from "./props";
-  import { setContext } from "svelte";
+  import { onMount, setContext } from "svelte";
 
   export let bordered: QListProps["bordered"] = false,
     roundedBorders: QListProps["roundedBorders"] = false,
@@ -14,10 +14,11 @@
     userClasses: QListProps["userClasses"] = undefined;
   export { userClasses as class };
 
-  $: setContext("separator", separator === true ? separatorOptions : undefined);
+  let listElement: HTMLElement | null = null;
 
-  let startIndex = -1;
-  setIndex(startIndex);
+  onMount(() => listElement?.querySelector(".q-separator__wrapper:first-child")?.remove());
+
+  $: setContext("separator", separator === true ? separatorOptions : undefined);
 
   $: classes = createClasses([
     "q-list",
@@ -29,19 +30,6 @@
   ]);
 </script>
 
-<svelte:element this={tag} class={classes} {...$$restProps}>
+<svelte:element this={tag} class={classes} {...$$restProps} bind:this={listElement}>
   <slot />
 </svelte:element>
-
-<style lang="scss">
-  .q-list {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-  }
-  .rounded-borders {
-    border-radius: 0.25rem;
-  }
-</style>

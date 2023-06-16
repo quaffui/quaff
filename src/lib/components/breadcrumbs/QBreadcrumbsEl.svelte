@@ -1,7 +1,6 @@
 <script lang="ts">
   import { getContext } from "svelte";
   import type { QBreadcrumbsElProps } from "./props";
-  import { getIndex } from "$lib/composables/use-index";
   import QIcon from "../icon/QIcon.svelte";
   import { createClasses } from "$lib/utils/props";
   import { isRouteActive } from "$lib/composables/use-router-link";
@@ -16,10 +15,6 @@
     userClasses: QBreadcrumbsElProps["userClasses"] = undefined;
   export { userClasses as class };
 
-  const index = getIndex();
-  if (index === undefined) {
-    console.warn("QBreadcrumbEl should be used inside QBreadcrumb");
-  }
   const activeColor = getContext<string>("activeColor");
   const separator = getContext<{ type: string; color: string; gutter: string }>("separator");
 
@@ -33,15 +28,13 @@
   ]);
 </script>
 
-{#if index !== 0}
-  <div class="q-breadcrumb__separator q-px-{separator.gutter}">
-    {#if separator.type.startsWith("icon:")}
-      <QIcon name={separator.type.replace("icon:", "")} size="1rem" />
-    {:else}
-      {separator.type}
-    {/if}
-  </div>
-{/if}
+<div class="q-breadcrumb__separator q-px-{separator.gutter}">
+  {#if separator.type.startsWith("icon:")}
+    <QIcon name={separator.type.replace("icon:", "")} size="1rem" />
+  {:else}
+    {separator.type}
+  {/if}
+</div>
 
 {#if href !== undefined || to !== undefined}
   <a href={href || to} class={classes}>
