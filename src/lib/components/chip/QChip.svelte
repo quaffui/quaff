@@ -58,11 +58,3 @@
     <i class="small">{iconRight}</i>
   {/if}
 </a>
-
-<style lang="scss">
-  .q-chip.disabled {
-    border-color: var(--on-surface);
-    opacity: 50%;
-    pointer-events: none;
-  }
-</style>

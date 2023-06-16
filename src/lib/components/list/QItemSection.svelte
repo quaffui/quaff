@@ -27,25 +27,3 @@
 <div class={classes} {...$$restProps}>
   <slot />
 </div>
-
-<style lang="scss">
-  .q-item__section {
-    display: flex;
-    flex: 10000 1 0%;
-    flex-direction: column;
-    justify-content: center;
-    align-items: start;
-    &--video {
-      max-width: 114px;
-      height: 64px;
-    }
-    &--avatar,
-    &--icon {
-      max-width: 24px;
-    }
-    &--thumbnail {
-      max-width: 56px;
-      height: 56px;
-    }
-  }
-</style>
