@@ -52,6 +52,7 @@
 
 <style lang="scss">
   .q-icon {
+    overflow: visible;
     &__outlined {
       --font-icon: "Material Symbols Outlined";
     }
