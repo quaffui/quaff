@@ -1,27 +1,26 @@
-import { UseAlignPropsDefaults, type UseAlignProps } from "$composables/use-align.js";
 import { NativePropsDefaults, type NativeProps } from "$utils/types";
 
 export interface QBtnProps extends NativeProps {
-  flat?: boolean;
-  round?: boolean;
-  label?: string;
+  disable: boolean;
+  flat: boolean;
   icon?: string;
-  disable?: boolean;
-  loading?: boolean;
-  unelevated?: boolean;
-  outline?: boolean;
+  label?: string;
+  loading: boolean;
+  outline: boolean;
+  round: boolean;
   to?: string;
+  unelevated: boolean;
 }
 
 export const QCardPropsDefaults: QBtnProps = {
-  flat: false,
-  round: false,
-  label: undefined,
-  icon: undefined,
   disable: false,
+  flat: false,
+  icon: undefined,
+  label: undefined,
   loading: false,
-  unelevated: false,
   outline: false,
+  round: false,
   to: undefined,
+  unelevated: false,
   ...NativePropsDefaults,
 };
