@@ -4,12 +4,12 @@
 
   export let icon: QBtnProps["icon"] = undefined,
     label: QBtnProps["label"] = undefined,
-    disable: QBtnProps["disable"] = undefined,
-    loading: QBtnProps["loading"] = undefined,
-    unelevated: QBtnProps["unelevated"] = undefined,
-    outline: QBtnProps["outline"] = undefined,
-    round: QBtnProps["round"] = undefined,
-    flat: QBtnProps["flat"] = undefined,
+    disable: QBtnProps["disable"] = false,
+    loading: QBtnProps["loading"] = false,
+    unelevated: QBtnProps["unelevated"] = false,
+    outline: QBtnProps["outline"] = false,
+    round: QBtnProps["round"] = true,
+    flat: QBtnProps["flat"] = false,
     to: QBtnProps["to"] = undefined,
     userClasses: QBtnProps["userClasses"] = undefined;
   export { userClasses as class };
