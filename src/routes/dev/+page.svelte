@@ -9,6 +9,7 @@
     QLinearProgress,
     QSeparator,
     QInput,
+    QSelect,
     QBtn,
     QToggle,
     QToolbar,
@@ -31,6 +32,9 @@
   let toggle = false;
   let input = "";
   let activeTab = "foo";
+  let select = "";
+  let selectMultiple: string[] = [];
+  let options = ["Cats", "Dogs", "Capybaras"];
 
   let dialog1 = false;
   let dialog2 = false;
@@ -126,6 +130,50 @@
       <QInput bind:value={input} outlined class="q-mt-md" label="Rounded with appended icon">
         <i slot="append">list</i>
       </QInput>
+    </div>
+  </QCard>
+  <QCard title="Select">
+    <div>
+      <QSelect bind:value={select} {options} label="Default" class="q-mt-md" />
+      <QSelect bind:value={selectMultiple} {options} label="Multiple" class="q-mt-md" multiple />
+      <QSelect bind:value={select} {options} label="Disabled" class="q-mt-md" disable />
+      <QSelect bind:value={select} {options} rounded label="Rounded" class="q-mt-md" disable />
+      <QSelect
+        bind:value={select}
+        {options}
+        bordered
+        class="q-mt-md"
+        label="Bordered with hint"
+        hint="This is a hint"
+      />
+      <QSelect
+        bind:value={select}
+        {options}
+        bordered
+        class="q-mt-md"
+        label="Error state"
+        error
+        errorMessage="A custom error message"
+      />
+      <QSelect bind:value={select} {options} outlined class="q-mt-md" label="Outlined" />
+      <QSelect
+        bind:value={select}
+        {options}
+        outlined
+        class="q-mt-md"
+        label="Outlined with prepended icon"
+      >
+        <i slot="prepend">favorite</i>
+      </QSelect>
+      <QSelect
+        bind:value={select}
+        {options}
+        rounded
+        class="q-mt-md"
+        label="Rounded with appended icon"
+      >
+        <i slot="append">list</i>
+      </QSelect>
     </div>
   </QCard>
   <QCard title="Buttons">

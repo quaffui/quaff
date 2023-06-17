@@ -10,6 +10,7 @@ import QDrawer from "./drawer/QDrawer.svelte";
 import QFooter from "./footer/QFooter.svelte";
 import QIcon from "./icon/QIcon.svelte";
 import QInput from "./input/QInput.svelte";
+import QSelect from "./select/QSelect.svelte";
 import QLayout from "./layout/QLayout.svelte";
 import QList from "./list/QList.svelte";
 import QItem from "./list/QItem.svelte";
@@ -37,6 +38,7 @@ export {
   QFooter,
   QIcon,
   QInput,
+  QSelect,
   QLayout,
   QList,
   QItem,
