@@ -20,9 +20,9 @@ function quaff() {
       let body = document.querySelector("body");
 
       if (q.dark === true) {
-        body && body.classList.add("dark");
+        body && body.classList.replace("light", "dark");
       } else {
-        body && body.classList.remove("dark");
+        body && body.classList.replace("dark", "light");
       }
 
       let mode = q.dark === true ? "dark" : "light";
