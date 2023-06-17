@@ -1,14 +1,22 @@
 <script lang="ts">
-  import { QCard, QCardSection } from "$lib";
+  import { QRadio } from "$lib";
+  import { QRadioDocs } from "$lib/components/radio/docs";
+  import ApiDoc from "$lib/components/private/ApiDoc.svelte";
+  import ApiDocSection from "$lib/components/private/ApiDocSection.svelte";
+  let selectedValue = "option1";
 </script>
 
-<div class="grid" style="min-height: 400px; margin: 1rem">
-  <QCard class="s6 flex center-align primary-container">
-    <h1 class="large" slot="title">Radio</h1>
-  </QCard>
-  <QCard class="s6 q-mt-none secondary-container flex center-align">
-    <QCardSection class="flex center-align">
-      <h3>Radio description</h3>
-    </QCardSection>
-  </QCard>
-</div>
+<ApiDoc QComponentDocs={QRadioDocs} usagePath="radio">
+  <QRadio slot="display" value="option1" selected={selectedValue} label="Option 1" />
+
+  <div slot="usage">
+    <ApiDocSection title="Radio Group">
+      <QRadio class="q-ma-sm" value="option1" bind:selected={selectedValue} label="Option 1" />
+      <QRadio class="q-ma-sm" value="option2" bind:selected={selectedValue} label="Option 2" />
+    </ApiDocSection>
+
+    <ApiDocSection title="Disabled Radio Button">
+      <QRadio class="q-ma-sm" value="option3" label="Option 3" disable />
+    </ApiDocSection>
+  </div>
+</ApiDoc>
