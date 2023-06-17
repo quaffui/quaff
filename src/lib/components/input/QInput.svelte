@@ -1,5 +1,6 @@
 <script lang="ts">
   import { createClasses } from "$lib/utils/props";
+  import { textWidth } from "$lib/utils/fields";
   import type { QInputProps } from "./props";
 
   export let bordered: QInputProps["bordered"] = false,
@@ -38,25 +39,6 @@
   let inputElement: HTMLInputElement | null = null;
 
   $: value && updateInput(inputElement as HTMLInputElement);
-
-  // originally from beercss
-  function textWidth(element: HTMLElement, font: string): number {
-    if (element.offsetWidth > 0) return element.offsetWidth;
-    let _canvas = (
-      document.querySelector("canvas[data-quaff]") as HTMLCanvasElement | null
-    )?.getContext("2d");
-
-    if (!_canvas) {
-      const canvasElement = document.createElement("canvas");
-      canvasElement.style.display = "none";
-      canvasElement.setAttribute("data-quaff", "");
-      document.body.append(canvasElement);
-      _canvas = canvasElement.getContext("2d");
-    }
-
-    _canvas!.font = font;
-    return _canvas!.measureText(element.textContent!).width;
-  }
 
   // originally from beercss
   function updateInput(target: HTMLInputElement) {
