@@ -155,6 +155,7 @@
     bind:this={inputElement}
     tabindex={disable === true ? -1 : 0}
     readonly
+    disabled={disable}
   />
 
   <i class="arrow-toggle" class:has-append={$$slots.append}
