@@ -82,6 +82,10 @@
       to: "/components/railbar",
     },
     {
+      name: "Select",
+      to: "/components/select",
+    },
+    {
       name: "Separator",
       to: "/components/separator",
     },

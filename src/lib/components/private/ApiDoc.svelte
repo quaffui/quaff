@@ -1,6 +1,7 @@
 <script lang="ts">
   import { capitalize } from "$lib/utils/string";
   import {
+    QBtn,
     QCard,
     QCardSection,
     QIcon,
@@ -20,6 +21,8 @@
   } from "$utils/types";
 
   export let QComponentDocs: QComponentDocs;
+
+  export let usagePath: string | undefined = undefined;
 
   let api: keyof QComponentDocs["docs"] = "props";
 
@@ -109,6 +112,26 @@
       </QList>
     </QCardSection>
   </QCard>
+  {#if $$slots.usage}
+    <div class="s12 q-pa-md">
+      <div class="heading-usage">
+        <h4 class="q-my-xl">Usage</h4>
+        {#if usagePath}
+          <QBtn
+            to={encodeURI(
+              `https://github.com/Rubatissimo-coding/quaff/tree/main/src/routes/components/${usagePath}/+page.svelte`
+            )}
+            rounded
+            icon="code"
+            outline
+          />
+        {/if}
+      </div>
+
+      <slot name="usage" />
+    </div>
+  {/if}
+
   <slot />
 </div>
 
@@ -123,5 +146,10 @@
         opacity: 1;
       }
     }
+  }
+
+  .heading-usage {
+    display: flex;
+    align-items: center;
   }
 </style>
