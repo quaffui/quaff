@@ -41,6 +41,13 @@
       <QBtn class="q-ma-sm" label="Flat" flat />
     </ApiDocSection>
 
+    <ApiDocSection title="Size">
+      <QBtn class="q-ma-sm" size="sm" label="Small" unelevated />
+      <QBtn class="q-ma-sm" label="Medium" unelevated />
+      <QBtn class="q-ma-sm" size="lg" label="Large" unelevated />
+      <QBtn class="q-ma-sm" size="xl" label="Extra Large" unelevated />
+    </ApiDocSection>
+
     <ApiDocSection title="Button with Router Link">
       <QBtn class="q-ma-sm" icon="open_in_new" label="With router link" to="/layout" />
     </ApiDocSection>

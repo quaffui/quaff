@@ -11,8 +11,15 @@
     round: QBtnProps["round"] = true,
     flat: QBtnProps["flat"] = false,
     to: QBtnProps["to"] = undefined,
+    size: QBtnProps["size"] = undefined,
     userClasses: QBtnProps["userClasses"] = undefined;
   export { userClasses as class };
+
+  const sizeMap = {
+    sm: "small",
+    lg: "large",
+    xl: "extra",
+  };
 
   $: classes = createClasses([
     "q-btn",
@@ -21,6 +28,7 @@
     outline && "border",
     flat && "transparent",
     !$$slots.default && !label && "circle",
+    size && size !== "md" ? sizeMap[size] : null,
     userClasses,
   ]);
 

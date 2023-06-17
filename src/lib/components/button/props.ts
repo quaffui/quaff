@@ -10,6 +10,7 @@ export interface QBtnProps extends NativeProps {
   round: boolean;
   to?: string;
   unelevated: boolean;
+  size?: "sm" | "md" | "lg" | "xl";
 }
 
 export const QCardPropsDefaults: QBtnProps = {
@@ -22,5 +23,6 @@ export const QCardPropsDefaults: QBtnProps = {
   round: false,
   to: undefined,
   unelevated: false,
+  size: "md",
   ...NativePropsDefaults,
 };
