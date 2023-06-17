@@ -5,11 +5,13 @@ export interface QRadioProps extends NativeProps {
   value: string;
   label: string;
   selected: any;
+  disable: boolean;
 }
 
 export const QRadioPropsDefaults: QRadioProps = {
   value: "",
   label: "",
   selected: undefined,
+  disable: false,
   ...NativePropsDefaults,
 };
