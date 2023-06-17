@@ -1,28 +1,28 @@
 <script lang="ts">
   import { QCard, QCardSection, QInput } from "$lib";
   import { QInputDocs } from "$lib/components/input/docs";
-  import ApiDoc from "$lib/components/private/ApiDoc.svelte";
-  import ApiDocSection from "$lib/components/private/ApiDocSection.svelte";
+  import QDocs from "$lib/components/private/QDocs.svelte";
+  import QDocsSection from "$lib/components/private/QDocsSection.svelte";
   let input = "";
 </script>
 
-<ApiDoc QComponentDocs={QInputDocs} usagePath="input">
+<QDocs QComponentDocs={QInputDocs} usagePath="input">
   <QInput slot="display" bind:value={input} label="Default" class="q-mt-md" />
 
   <div slot="usage">
-    <ApiDocSection title="State">
+    <QDocsSection title="State">
       <QInput bind:value={input} label="Default" class="q-mt-md" />
       <QInput bind:value={input} label="Disabled" class="q-mt-md" disable />
-    </ApiDocSection>
+    </QDocsSection>
 
-    <ApiDocSection title="Styles">
+    <QDocsSection title="Styles">
       <QInput bind:value={input} label="Bordered" class="q-mt-md" bordered />
       <QInput bind:value={input} label="Rounded" class="q-mt-md" rounded />
       <QInput bind:value={input} label="Outlined" class="q-mt-md" outlined />
       <QInput bind:value={input} label="Filled" class="q-mt-md" filled />
-    </ApiDocSection>
+    </QDocsSection>
 
-    <ApiDocSection title="Validation and Hints">
+    <QDocsSection title="Validation and Hints">
       <QInput bind:value={input} label="With Hint" class="q-mt-md" hint="This is a hint" />
       <QInput
         bind:value={input}
@@ -31,15 +31,15 @@
         error
         errorMessage="A custom error message"
       />
-    </ApiDocSection>
+    </QDocsSection>
 
-    <ApiDocSection title="Slots">
+    <QDocsSection title="Slots">
       <QInput bind:value={input} label="Prepended Icon">
         <i slot="prepend">search</i>
       </QInput>
       <QInput bind:value={input} label="Appended Icon">
         <i slot="append">list</i>
       </QInput>
-    </ApiDocSection>
+    </QDocsSection>
   </div>
-</ApiDoc>
+</QDocs>

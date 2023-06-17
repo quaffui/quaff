@@ -3,8 +3,8 @@
 
   export let value: QRadioProps["value"] = "",
     label: QRadioProps["label"] = "",
-    selected: QRadioProps["selected"],
-    disable: QRadioProps["disable"],
+    selected: QRadioProps["selected"] = undefined,
+    disable: QRadioProps["disable"] = false,
     userClasses: QRadioProps["userClasses"] = "";
   export { userClasses as class };
 </script>

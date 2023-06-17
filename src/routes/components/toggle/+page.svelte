@@ -1,32 +1,32 @@
 <script lang="ts">
   import QToggle from "$lib/components/toggle/QToggle.svelte";
   import { QToggleDocs } from "$lib/components/toggle/docs";
-  import ApiDoc from "$lib/components/private/ApiDoc.svelte";
-  import ApiDocSection from "$lib/components/private/ApiDocSection.svelte";
+  import QDocs from "$lib/components/private/QDocs.svelte";
+  import QDocsSection from "$lib/components/private/QDocsSection.svelte";
 
   let toggle = false;
 </script>
 
-<ApiDoc QComponentDocs={QToggleDocs} usagePath="toggle">
+<QDocs QComponentDocs={QToggleDocs} usagePath="toggle">
   <QToggle slot="display" bind:value={toggle} class="q-ma-sm" />
 
   <div slot="usage">
-    <ApiDocSection title="Default Toggle">
+    <QDocsSection title="Default Toggle">
       <QToggle bind:value={toggle} class="q-ma-sm" />
-    </ApiDocSection>
+    </QDocsSection>
 
-    <ApiDocSection title="Toggle with label">
+    <QDocsSection title="Toggle with label">
       <QToggle bind:value={toggle} class="q-ma-sm" label="With label" />
       <QToggle bind:value={toggle} class="q-ma-sm" icon="favorite" label="With icon" />
-    </ApiDocSection>
+    </QDocsSection>
 
-    <ApiDocSection title="Toggle with label position">
+    <QDocsSection title="Toggle with label position">
       <QToggle bind:value={toggle} class="q-ma-sm" leftLabel label="Left label" />
       <QToggle bind:value={toggle} class="q-ma-sm" rightLabel label="Right label" />
-    </ApiDocSection>
+    </QDocsSection>
 
-    <ApiDocSection title="Disabled state">
+    <QDocsSection title="Disabled state">
       <QToggle bind:value={toggle} class="q-ma-sm" disable label="Disable" />
-    </ApiDocSection>
+    </QDocsSection>
   </div>
-</ApiDoc>
+</QDocs>

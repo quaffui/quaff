@@ -2,7 +2,7 @@
   import { QCard, QCardSection, QCardActions, QBtn } from "$lib";
   import { QCardDocs, QCardSectionDocs, QCardActionsDocs } from "$lib/components/card/docs";
   import QDocs from "$lib/components/private/QDocs.svelte";
-  import ApiDocSection from "$lib/components/private/QDocsSection.svelte";
+  import QDocsSection from "$lib/components/private/QDocsSection.svelte";
 </script>
 
 <QDocs QComponentDocs={[QCardDocs, QCardSectionDocs, QCardActionsDocs]} usagePath="card">
@@ -11,7 +11,7 @@
   </QCard>
 
   <div slot="usage">
-    <ApiDocSection title="Card Variants">
+    <QDocsSection title="Card Variants">
       <QCard class="q-ma-sm" title="Bordered Card" bordered>
         <QCardSection>This is a card with a border.</QCardSection>
       </QCard>
@@ -23,9 +23,9 @@
       <QCard class="q-ma-sm" title="Round Card" round>
         <QCardSection>This is a round card.</QCardSection>
       </QCard>
-    </ApiDocSection>
+    </QDocsSection>
 
-    <ApiDocSection title="Card with different sections">
+    <QDocsSection title="Card with different sections">
       <QCard class="q-ma-sm" title="Card with Horizontal Section">
         <QCardSection horizontal>This is a card with a horizontal section.</QCardSection>
       </QCard>
@@ -37,12 +37,12 @@
           <QBtn label="Button 2" />
         </QCardActions>
       </QCard>
-    </ApiDocSection>
+    </QDocsSection>
 
-    <ApiDocSection title="Card with fill color">
+    <QDocsSection title="Card with fill color">
       <QCard class="q-ma-sm" title="Card with fill color" fill="#00aaff">
         <QCardSection>This is a card with a fill color.</QCardSection>
       </QCard>
-    </ApiDocSection>
+    </QDocsSection>
   </div>
 </QDocs>

@@ -37,15 +37,15 @@
   }
 </script>
 
-{#each QComponentDocs as apiDocument, index}
+{#each QComponentDocs as QDocsument, index}
   <QCard class="q-px-none q-pb-none">
     <div slot="title" class="flex between-align middle-align q-px-md">
       <h5>
         <QIcon name="info" />
-        <span class="q-ml-md">{apiDocument.name} API</span>
+        <span class="q-ml-md">{QDocsument.name} API</span>
       </h5>
       <QTabs bind:value={api[index]} class="no-margin">
-        {#each Object.entries(apiDocument.docs) as [tabName, _tabDoc]}
+        {#each Object.entries(QDocsument.docs) as [tabName, _tabDoc]}
           {#if _tabDoc.length !== 0}
             <QTab name={tabName} style="min-width: 100px">
               <h6>{capitalize(tabName)}</h6>
@@ -57,7 +57,7 @@
     <QSeparator />
     <QCardSection>
       <QList separator>
-        {#each apiDocument.docs[api[index]] as doc}
+        {#each QDocsument.docs[api[index]] as doc}
           <QItem>
             <QItemSection>
               <span class="small-padding surface-variant small-round">

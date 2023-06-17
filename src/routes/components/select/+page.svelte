@@ -1,8 +1,8 @@
 <script lang="ts">
   import { QSelect, QBtn } from "$lib";
   import { QSelectDocs } from "$components/select/docs";
-  import ApiDoc from "$lib/components/private/QDocs.svelte";
-  import ApiDocSection from "$lib/components/private/QDocsSection.svelte";
+  import QDocs from "$lib/components/private/QDocs.svelte";
+  import QDocsSection from "$lib/components/private/QDocsSection.svelte";
 
   let options = ["Cats", "Dogs", "Capybaras"];
   let value = "";
@@ -10,7 +10,7 @@
   let selectMultiple: string[] = [];
 </script>
 
-<ApiDoc QComponentDocs={QSelectDocs} usagePath="select">
+<QDocs QComponentDocs={QSelectDocs} usagePath="select">
   <QSelect slot="display" label="Favorite animal" {options} {value} />
 
   <div class="s12 q-pa-md">
@@ -19,20 +19,20 @@
       <QBtn rounded icon="code" outline />
     </div>
 
-    <ApiDocSection title="State">
+    <QDocsSection title="State">
       <QSelect bind:value={select} {options} label="Default" class="q-mt-md" />
       <QSelect bind:value={select} {options} label="Disabled" class="q-mt-md" disable />
       <QSelect bind:value={selectMultiple} {options} label="Multiple" class="q-mt-md" multiple />
-    </ApiDocSection>
+    </QDocsSection>
 
-    <ApiDocSection title="Style">
+    <QDocsSection title="Style">
       <QSelect bind:value={select} {options} label="Bordered" class="q-mt-md" bordered />
       <QSelect bind:value={select} {options} label="Rounded" class="q-mt-md" rounded />
       <QSelect bind:value={select} {options} label="Outlined" class="q-mt-md" outlined />
       <QSelect bind:value={select} {options} label="Filled" class="q-mt-md" filled />
-    </ApiDocSection>
+    </QDocsSection>
 
-    <ApiDocSection title="Validation and Hints">
+    <QDocsSection title="Validation and Hints">
       <QSelect
         bind:value={select}
         {options}
@@ -48,18 +48,18 @@
         error
         errorMessage="A custom error message"
       />
-    </ApiDocSection>
+    </QDocsSection>
 
-    <ApiDocSection title="Slots">
+    <QDocsSection title="Slots">
       <QSelect bind:value={select} {options} label="Prepended Icon">
         <i slot="prepend">favorite</i>
       </QSelect>
       <QSelect bind:value={select} {options} label="Appended Icon">
         <i slot="append">list</i>
       </QSelect>
-    </ApiDocSection>
+    </QDocsSection>
   </div>
-</ApiDoc>
+</QDocs>
 
 <style lang="scss">
   .heading {
