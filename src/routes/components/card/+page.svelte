@@ -1,11 +1,11 @@
 <script lang="ts">
   import { QCard, QCardSection, QCardActions, QBtn } from "$lib";
-  import { QCardDocs } from "$lib/components/card/docs";
-  import ApiDoc from "$lib/components/private/ApiDoc.svelte";
-  import ApiDocSection from "$lib/components/private/ApiDocSection.svelte";
+  import { QCardDocs, QCardSectionDocs, QCardActionsDocs } from "$lib/components/card/docs";
+  import QDocs from "$lib/components/private/QDocs.svelte";
+  import ApiDocSection from "$lib/components/private/QDocsSection.svelte";
 </script>
 
-<ApiDoc QComponentDocs={QCardDocs} usagePath="card">
+<QDocs QComponentDocs={[QCardDocs, QCardSectionDocs, QCardActionsDocs]} usagePath="card">
   <QCard slot="display" title="Default Card">
     <QCardSection>This is a card with a default configuration.</QCardSection>
   </QCard>
@@ -45,4 +45,4 @@
       </QCard>
     </ApiDocSection>
   </div>
-</ApiDoc>
+</QDocs>

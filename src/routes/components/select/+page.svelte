@@ -1,8 +1,8 @@
 <script lang="ts">
   import { QSelect, QBtn } from "$lib";
   import { QSelectDocs } from "$components/select/docs";
-  import ApiDoc from "$lib/components/private/ApiDoc.svelte";
-  import ApiDocSection from "$lib/components/private/ApiDocSection.svelte";
+  import ApiDoc from "$lib/components/private/QDocs.svelte";
+  import ApiDocSection from "$lib/components/private/QDocsSection.svelte";
 
   let options = ["Cats", "Dogs", "Capybaras"];
   let value = "";

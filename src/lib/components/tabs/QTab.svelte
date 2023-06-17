@@ -40,6 +40,9 @@
     setActive();
   }
 
+  let tag: "div" | "a";
+  $: tag = to === undefined ? "div" : "a";
+
   $: classes = createClasses([
     "q-tab q-pa-sm",
     isActive ? "active primary-text on-surface-text" : "surface on-surface-variant-text",
@@ -53,30 +56,20 @@
   }
 </script>
 
-{#if to !== undefined}
-  <a
-    href={to}
-    class={classes}
-    on:click={setActive}
-    on:keyup
-    on:keydown
-    on:keypress
-    {...$$restProps}
-  >
-    {#if icon}
-      <QIcon name={icon} />
-    {:else if $$slots.icon}
-      <slot name="icon" />
-    {/if}
-    <slot />
-  </a>
-{:else}
-  <div class={classes} on:click={setActive} on:keyup on:keydown on:keypress {...$$restProps}>
-    {#if icon}
-      <QIcon name={icon} />
-    {:else if $$slots.icon}
-      <slot name="icon" />
-    {/if}
-    <slot />
-  </div>
-{/if}
+<svelte:element
+  this={tag}
+  href={to}
+  class={classes}
+  on:click={setActive}
+  on:keyup
+  on:keydown
+  on:keypress
+  {...$$restProps}
+>
+  {#if icon}
+    <QIcon name={icon} />
+  {:else if $$slots.icon}
+    <slot name="icon" />
+  {/if}
+  <slot />
+</svelte:element>
