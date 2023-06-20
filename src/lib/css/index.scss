@@ -79,16 +79,17 @@ $spaces: (
     margin-top: $value;
     margin-bottom: $value;
   }
+  .q-gap-#{$space} {
+    gap: $value;
+  }
 }
-.q-mt-auto,
-.q-my-auto {
+.q-mt-auto {
   margin-top: auto;
 }
 .q-ml-auto {
   margin-left: auto;
 }
-.q-mb-auto,
-.q-my-auto {
+.q-mb-auto {
   margin-bottom: auto;
 }
 .q-mr-auto {
@@ -98,6 +99,11 @@ $spaces: (
   margin-left: auto;
   margin-right: auto;
 }
+.q-my-auto {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
 .flex {
   display: flex;
 }
@@ -119,6 +125,14 @@ $spaces: (
 .column {
   flex-direction: column;
 }
+
+.no-overflow {
+  overflow: hidden;
+}
+.scroll {
+  overflow: scroll;
+}
+
 .q-item,
 .q-tab,
 .q-input,
