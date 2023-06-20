@@ -61,6 +61,12 @@ export let QInputDocs: QComponentDocs = {
         description: "Whether the input component has rounded corners.",
       },
       {
+        name: "dense",
+        type: "boolean",
+        optional: true,
+        description: "Whether the input component has a smaller (dense) size.",
+      },
+      {
         name: "value",
         type: "string",
         default: "",

@@ -22,6 +22,10 @@
       <QInput bind:value={input} label="Filled" class="q-mt-md" filled />
     </QDocsSection>
 
+    <QDocsSection title="Dense">
+      <QInput bind:value={input} label="Dense" class="q-mt-md" bordered dense />
+    </QDocsSection>
+
     <QDocsSection title="Validation and Hints">
       <QInput bind:value={input} label="With Hint" class="q-mt-md" hint="This is a hint" />
       <QInput

@@ -32,6 +32,10 @@
       <QSelect bind:value={select} {options} label="Filled" class="q-mt-md" filled />
     </QDocsSection>
 
+    <QDocsSection title="Dense">
+      <QSelect bind:value={select} {options} label="Dense" class="q-mt-md" bordered dense />
+    </QDocsSection>
+
     <QDocsSection title="Validation and Hints">
       <QSelect
         bind:value={select}

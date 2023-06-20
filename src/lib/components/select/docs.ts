@@ -78,6 +78,12 @@ export let QSelectDocs: QComponentDocs = {
         default: false,
         description: "Whether the select component has rounded corners.",
       },
+      {
+        name: "dense",
+        type: "boolean",
+        optional: true,
+        description: "Whether the select component has a smaller (dense) size.",
+      },
     ],
     slots: [],
     methods: [],

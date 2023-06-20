@@ -4,6 +4,7 @@
   import type { QInputProps } from "./props";
 
   export let bordered: QInputProps["bordered"] = false,
+    dense: QInputProps["dense"] = false,
     disable: QInputProps["disable"] = false,
     error: QInputProps["error"] = false,
     errorMessage: QInputProps["errorMessage"] = undefined,
@@ -25,6 +26,7 @@
     "field",
     label && "label",
     active && "active",
+    dense && "small",
     $$slots.prepend && "prefix",
     $$slots.append && "suffix",
     hasBorder && "border",

@@ -2,6 +2,7 @@ import type { NativeProps } from "$utils/types";
 
 export interface QInputProps extends NativeProps {
   bordered: boolean;
+  dense?: boolean;
   disable: boolean;
   error: boolean;
   errorMessage?: string;
@@ -12,8 +13,10 @@ export interface QInputProps extends NativeProps {
   rounded: boolean;
   value: string;
 }
+
 export const QInputPropsDefaults = {
   bordered: false,
+  dense: false,
   disable: false,
   error: false,
   errorMessage: undefined,

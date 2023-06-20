@@ -7,6 +7,7 @@ export interface QSelectProps extends NativeProps {
   multiple?: boolean;
   options: QSelectOption[];
   bordered?: boolean;
+  dense?: boolean;
   disable: boolean;
   error: boolean;
   errorMessage?: string;
@@ -19,6 +20,7 @@ export interface QSelectProps extends NativeProps {
 
 export const QSelectPropsDefaults = {
   bordered: false,
+  dense: false,
   disable: false,
   error: false,
   errorMessage: undefined,
