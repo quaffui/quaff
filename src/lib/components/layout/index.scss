@@ -182,6 +182,11 @@
   }
 
   & > .q-list > .q-item {
+    flex-direction: column;
+    border-radius: 2rem;
+    align-items: center;
+    justify-content: center;
+
     & > i {
       transition: var(--speed1) padding linear;
       padding-inline: 0.25em;
@@ -198,6 +203,7 @@
 
 .q-layout > .q-drawer {
   overflow: auto;
+  padding: 8px;
 
   &.offset {
     &-top {
@@ -245,21 +251,23 @@
   }
 
   & > .q-list > .q-item.q-link {
+    border-radius: 2rem;
+
     &::before {
+      content: "";
       position: absolute;
       bottom: 0;
       left: 0;
       width: 100%;
       height: 100%;
       opacity: 0;
+      border-radius: inherit;
+      background: var(--secondary-container);
+      z-index: -1;
       transform: scaleX(0.32);
       transition-duration: 0.2s;
       transition-property: transform, opacity;
       transition-timing-function: linear;
-      border-radius: 100px;
-      background: var(--secondary-container);
-      content: "";
-      z-index: -1;
     }
 
     &.active {

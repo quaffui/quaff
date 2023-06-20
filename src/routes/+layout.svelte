@@ -158,17 +158,11 @@
     </QToolbar>
     <QRailbar slot="railbarLeft" class="surface no-round" bordered>
       <QList>
-        <QItem
-          class="column center-align round"
-          to="/"
-          style="gap: 0.25em"
-          on:click={() => (selectedRailbarItem = null)}
-        >
+        <QItem to="/" style="gap: 0.25em" on:click={() => (selectedRailbarItem = null)}>
           <QIcon name="home" />
           <QItemSection>Home</QItemSection>
         </QItem>
         <QItem
-          class="column center-align round"
           to="/components"
           style="gap: 0.25em"
           on:click={() => (selectedRailbarItem = "components")}
@@ -176,39 +170,24 @@
           <QIcon name="grid_view" />
           <QItemSection>Components</QItemSection>
         </QItem>
-        <QItem
-          class="column center-align round"
-          to="/utils"
-          style="gap: 0.25em"
-          on:click={() => (selectedRailbarItem = "utils")}
-        >
+        <QItem to="/utils" style="gap: 0.25em" on:click={() => (selectedRailbarItem = "utils")}>
           <QIcon name="construction" />
           <QItemSection>Quaff utils</QItemSection>
         </QItem>
-        <QItem
-          class="column center-align round"
-          to="/dev"
-          style="gap: 0.25em"
-          on:click={() => (selectedRailbarItem = null)}
-        >
+        <QItem to="/dev" style="gap: 0.25em" on:click={() => (selectedRailbarItem = null)}>
           <QIcon name="code" />
           <QItemSection>Dev tests</QItemSection>
         </QItem>
-        <QItem
-          class="column center-align round"
-          to="/layout"
-          style="gap: 0.25em"
-          on:click={() => (selectedRailbarItem = null)}
-        >
+        <QItem to="/layout" style="gap: 0.25em" on:click={() => (selectedRailbarItem = null)}>
           <QIcon name="dashboard_customize" />
           <QItemSection>Layout tests</QItemSection>
         </QItem>
       </QList>
     </QRailbar>
-    <QDrawer class="q-pa-sm" slot="drawerLeft" persistent value={showDrawer}>
+    <QDrawer slot="drawerLeft" persistent value={showDrawer}>
       <QList>
         {#each drawerContent as { name, to }}
-          <QItem class="round" {to}>{name}</QItem>
+          <QItem {to}>{name}</QItem>
         {/each}
       </QList>
     </QDrawer>
