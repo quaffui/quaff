@@ -35,7 +35,13 @@
       ? "extra"
       : undefined;
 
-  $: classes = createClasses([shapeClass, sizeClass, userClasses]);
+  $: classes = createClasses([
+    "q-avatar",
+    $$slots.default && "no-overflow upper large-text",
+    shapeClass,
+    sizeClass,
+    userClasses,
+  ]);
 
   $: style =
     sizeClass === undefined
