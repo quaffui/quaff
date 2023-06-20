@@ -1,6 +1,6 @@
 <script lang="ts">
   import { createClasses } from "$lib/utils/props";
-  import { createEventDispatcher, onDestroy, onMount } from "svelte";
+  import { createEventDispatcher } from "svelte";
   import type { QDialogProps } from "./props";
   import QBtn from "../button/QBtn.svelte";
   import { clickOutsideDialog } from "$lib/helpers";
@@ -13,21 +13,17 @@
     persistent: QDialogProps["persistent"] = false,
     userClasses: QDialogProps["userClasses"] = undefined;
   export { userClasses as class };
+  export { hide, show, toggle };
 
-  let canHideOnClickOutside = false;
+  const emit = createEventDispatcher();
+  let dialogElement: HTMLDialogElement | null = null;
   let lateValue = false;
 
   $: setTimeout(() => {
     lateValue = value;
   }, 50);
 
-  $: if (value === true && persistent !== true) {
-    setTimeout(() => {
-      canHideOnClickOutside = true;
-    }, 50);
-  } else {
-    canHideOnClickOutside = false;
-  }
+  $: canHideOnClickOutside = lateValue === true && persistent !== true;
 
   $: positionClass = ["top", "right", "bottom", "left"].includes(position) ? position : undefined;
 
@@ -40,43 +36,41 @@
     userClasses,
   ]);
 
-  let dialogElement: HTMLDialogElement | null = null;
-  const emit = createEventDispatcher();
+  $: value === true
+    ? modal
+      ? dialogElement?.showModal()
+      : dialogElement?.show()
+    : dialogElement?.close();
 
-  $: if (value === false) {
-    dialogElement?.close();
-  } else {
-    console.log({ modal });
-    modal === true ? dialogElement?.showModal() : dialogElement?.show();
-  }
-
-  export function hide() {
+  function hide() {
     if (value === true) {
       value = false;
     }
   }
-
-  export function show() {
+  function show() {
     if (value === false) {
       value = true;
     }
   }
-
-  export function toggle() {
+  function toggle() {
     value = !value;
+  }
+
+  function addAnimation() {
+    if (persistent && lateValue) {
+      dialogElement?.classList.add("animating");
+
+      setTimeout(() => {
+        dialogElement?.classList.remove("animating");
+      }, 150);
+    }
   }
 
   function handleKeyboardHide(e: Event) {
     if (canHideOnClickOutside) {
       hide();
     } else {
-      if (persistent) {
-        dialogElement?.classList.add("animating");
-
-        setTimeout(() => {
-          dialogElement?.classList.remove("animating");
-        }, 150);
-      }
+      addAnimation();
       e.preventDefault();
     }
   }
@@ -85,13 +79,7 @@
     if (canHideOnClickOutside) {
       hide();
     } else {
-      if (persistent && lateValue) {
-        dialogElement?.classList.add("animating");
-
-        setTimeout(() => {
-          dialogElement?.classList.remove("animating");
-        }, 150);
-      }
+      addAnimation();
     }
   }
 </script>
@@ -101,6 +89,7 @@
     {btnContent}
   </slot>
 </QBtn>
+
 <dialog
   use:clickOutsideDialog={handleClickHide}
   class={classes}
@@ -111,33 +100,3 @@
 >
   <slot />
 </dialog>
-
-<style lang="scss">
-  dialog.q-dialog {
-    animation-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
-
-    &:is(.left, .right, .top, .bottom) {
-      border-radius: 0;
-    }
-    &.modal::backdrop {
-      display: block;
-      background-color: rgba(0, 0, 0, 0.5);
-    }
-
-    &.animating {
-      animation: shake 0.15s;
-    }
-  }
-
-  @keyframes shake {
-    0% {
-      scale: 1;
-    }
-    50% {
-      scale: 1.04;
-    }
-    100% {
-      scale: 1;
-    }
-  }
-</style>

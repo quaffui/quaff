@@ -1,0 +1,27 @@
+dialog.q-dialog {
+  animation-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
+
+  &:is(.left, .right, .top, .bottom) {
+    border-radius: 0;
+  }
+  &.modal::backdrop {
+    display: block;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+
+  &.animating {
+    animation: shake 0.15s;
+  }
+}
+
+@keyframes shake {
+  0% {
+    scale: 1;
+  }
+  50% {
+    scale: 1.04;
+  }
+  100% {
+    scale: 1;
+  }
+}
