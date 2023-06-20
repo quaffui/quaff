@@ -37,7 +37,7 @@
 
   $: classes = createClasses([
     "q-avatar",
-    $$slots.default && "no-overflow upper large-text",
+    $$slots.default && "no-overflow upper large-text no-select",
     shapeClass,
     sizeClass,
     userClasses,

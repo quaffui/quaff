@@ -133,6 +133,13 @@ $spaces: (
   overflow: scroll;
 }
 
+.no-select {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
 .q-item,
 .q-tab,
 .q-input,

@@ -12,7 +12,7 @@
     <QDocsSection title="Default slot">
       <div class="flex q-gap-lg middle-align">
         <QAvatar class="green">GR</QAvatar>
-        <QAvatar class="red5">Rgfojzfigzbfoa</QAvatar>
+        <QAvatar class="red5">RD</QAvatar>
         <QAvatar class="primary">PR</QAvatar>
         <QAvatar class="primary-container">PC</QAvatar>
       </div>
