@@ -47,7 +47,7 @@
   let inputElement: HTMLInputElement | null = null;
   let isMenuOpen = false;
   let wasClicked = false;
-  let wasOptionClicked = false;
+  let preventClose = false;
 
   $: value && updateInput(inputElement as HTMLInputElement);
 
@@ -91,9 +91,10 @@
   }
 
   function handleBlur(target: HTMLInputElement) {
-    if (!multiple) {
+    if (!multiple && !preventClose) {
       isMenuOpen = false;
     }
+    preventClose = false;
 
     updateInput(target);
   }
@@ -124,6 +125,7 @@
     }
 
     value = optionValue;
+    isMenuOpen = false;
   }
 
   function handleClickOutside(event: MouseEvent) {
@@ -171,9 +173,8 @@
       <a
         href={multiple ? "javascript:void(0)" : undefined}
         class:selected={selectedOptions[idx]}
-        on:click={(e) => select(e, option)}
-        on:mousedown={() => (wasOptionClicked = true)}
-        >{typeof option === "string" ? option : option.value}</a
+        on:mousedown={() => (preventClose = true)}
+        on:click={(e) => select(e, option)}>{typeof option === "string" ? option : option.value}</a
       >
     {/each}
   </menu>
