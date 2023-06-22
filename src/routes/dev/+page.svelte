@@ -21,11 +21,13 @@
     QChip,
     QTabs,
     QTab,
+    QIcon,
   } from "$lib";
   import { Quaff } from "$lib/stores/Quaff";
   import { highlight } from "prismjs";
   import QBreadcrumbs from "$lib/components/breadcrumbs/QBreadcrumbs.svelte";
   import QBreadcrumbsEl from "$lib/components/breadcrumbs/QBreadcrumbsEl.svelte";
+  import QCardActions from "$lib/components/card/QCardActions.svelte";
 
   let option = "option2";
   let checkBox = false;
@@ -297,6 +299,25 @@
         </QBtn>
         <QBtn label="Top">
           <QTooltip position="top">Awesome</QTooltip>
+        </QBtn>
+      </div>
+    </QCardSection>
+    <QCardSection>
+      <h6>Rich tooltip</h6>
+      <div class="flex between-align" style="align-items: center">
+        <QBtn label="I'm rich">
+          <QTooltip position="right" class="q-pa-none">
+            <QCard title="Wow this is a card" class="primary-container no-round">
+              <QCardSection class="middle-align">
+                <QIcon name="help" class="q-mr-md" />
+                I'm inside the tooltip
+              </QCardSection>
+              <QCardActions>
+                <QBtn>Cancel</QBtn>
+                <QBtn>Confirm</QBtn>
+              </QCardActions>
+            </QCard>
+          </QTooltip>
         </QBtn>
       </div>
     </QCardSection>
