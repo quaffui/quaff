@@ -4,6 +4,7 @@ import { fileURLToPath } from "url";
 import parseInterface, { ParsedProp } from "./parse-interface.js";
 import parseDefaults, { ParsedDefault } from "./parse-defaults.js";
 import prettier from "prettier";
+import parseType from "../types/parseTypes.js";
 
 async function formatCode(code: string) {
   const options = await prettier.resolveConfig(path.join(process.cwd(), ".prettierrc"));
@@ -12,6 +13,7 @@ async function formatCode(code: string) {
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.resolve(dirname, "../../src/lib/components");
+const docTypes = path.resolve(dirname, "../types.json");
 
 async function run() {
   const componentDirs = fs
@@ -25,6 +27,8 @@ async function run() {
     if (fs.existsSync(propsFilePath)) {
       console.log("processing", propsFilePath);
       const parsedInterface = parseInterface(propsFilePath);
+      parseType(propsFilePath, docTypes);
+
       let contents = "";
 
       Object.keys(parsedInterface).forEach((varName) => {

@@ -1,0 +1,80 @@
+export const QDrawerDocsProps = [
+  {
+    name: "value",
+    type: "boolean",
+    description: "",
+    default: true,
+  },
+  {
+    name: "side",
+    type: '"left" | "right"',
+    description: "",
+    default: "left",
+  },
+  {
+    name: "width",
+    type: "string | number",
+    description: "",
+    default: 300,
+  },
+  {
+    name: "breakpoint",
+    type: "number",
+    description: "",
+    default: 1023,
+  },
+  {
+    name: "showIfAbove",
+    type: "boolean",
+    description: "",
+    default: false,
+  },
+  {
+    name: "behavior",
+    type: '"default" | "desktop" | "mobile"',
+    description: "",
+    default: "default",
+  },
+  {
+    name: "bordered",
+    type: "boolean",
+    description: "",
+    default: false,
+  },
+  {
+    name: "elevated",
+    type: "boolean",
+    description: "",
+    default: false,
+  },
+  {
+    name: "overlay",
+    type: "boolean",
+    description: "",
+    default: false,
+  },
+  {
+    name: "persistent",
+    type: "boolean",
+    description: "",
+    default: false,
+  },
+  {
+    name: "noSwipeOpen",
+    type: "boolean",
+    description: "",
+    default: false,
+  },
+  {
+    name: "noSwipeClose",
+    type: "boolean",
+    description: "",
+    default: false,
+  },
+  {
+    name: "noSwipeBackdrop",
+    type: "boolean",
+    description: "",
+    default: false,
+  },
+];
