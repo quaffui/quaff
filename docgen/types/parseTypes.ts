@@ -16,7 +16,12 @@ export default function parseType(fileName: string, typesPath: string) {
     if (ts.isTypeAliasDeclaration(node) || ts.isInterfaceDeclaration(node)) {
       const name = node.name.text;
       if (!name.includes("Props")) {
-        const declaration = node.getText().replace(";", "").trim();
+        const declaration = node
+          .getText()
+          .replace("; ", ", ")
+          .replace(";", "")
+          .replace("export ", "")
+          .trim();
 
         types[name] = declaration;
       }

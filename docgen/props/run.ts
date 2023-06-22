@@ -13,7 +13,7 @@ async function formatCode(code: string) {
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.resolve(dirname, "../../src/lib/components");
-const docTypes = path.resolve(dirname, "../types.json");
+const docTypes = path.resolve(dirname, "../../src/lib/utils/types.json");
 
 async function run() {
   const componentDirs = fs

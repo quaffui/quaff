@@ -19,6 +19,13 @@
     QItemSection,
   } from "$lib";
 
+  import Prism from "prismjs";
+  import "prismjs/themes/prism-twilight.css";
+  import "prismjs/components/prism-typescript";
+
+  import Types from "$utils/types.json";
+  import QTooltip from "../tooltip/QTooltip.svelte";
+
   export let QComponentDocs: QComponentDocs[];
 
   let api: (keyof QComponentDocs["docs"])[] = QComponentDocs.map((doc) => "props");
@@ -34,6 +41,19 @@
     index: number
   ): doc is QComponentEvent {
     return api[index] === "events";
+  }
+
+  function getType(type: string) {
+    type = type.replace("[]", "");
+    let found = type in Types ? Types[type as keyof typeof Types] : undefined;
+
+    let prism = Prism.highlight(
+      found || "/* Couldn't find this type */",
+      Prism.languages.typescript,
+      "typescript"
+    );
+    console.log({ type, found, prism });
+    return prism;
   }
 </script>
 
@@ -65,7 +85,12 @@
                 {#if isProp(doc, index)}
                   {#if doc.clickableType === true}
                     <!-- svelte-ignore a11y-click-events-have-key-events -->
-                    <span class="prop-type clickable" on:click={() => (api[index] = "types")}>
+                    <span class="prop-type clickable">
+                      <QTooltip class="q-pa-none">
+                        <pre class="language-typescript"><code
+                            >{@html getType(doc.type).trim()}</code
+                          ></pre>
+                      </QTooltip>
                       {doc.optional ? "?" : ""}: {doc.type} = {doc.default}
                     </span>
                   {:else}
@@ -87,3 +112,15 @@
     </QCardSection>
   </QCard>
 {/each}
+
+<style>
+  .clickable {
+    cursor: pointer;
+  }
+
+  pre[class*="language-"] {
+    margin: 0;
+    padding: 1em;
+    border-radius: inherit;
+  }
+</style>

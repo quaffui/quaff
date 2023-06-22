@@ -1,0 +1,7 @@
+.q-tooltip {
+  z-index: 9999;
+}
+
+:hover > .q-tooltip.tooltip:not(.active) {
+  opacity: 0;
+}

@@ -1,7 +1,0 @@
-{
-  "QAvatarShapeOptions": "export type QAvatarShapeOptions =\r\n  | \"circle\"\r\n  | \"rounded\"\r\n  | \"top-round\"\r\n  | \"left-round\"\r\n  | \"right-round\"\r\n  | \"bottom-round\"\r\n  | \"top-left-round\"\r\n  | \"top-right-round\"\r\n  | \"bottom-left-round\"\r\n  | \"bottom-right-round\"",
-  "QAvatarSizeOptions": "export type QAvatarSizeOptions = \"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\" | string",
-  "QBreadcrumbsGutterOptions": "export type QBreadcrumbsGutterOptions = \"none\" | \"sm\" | \"md\" | \"lg\"",
-  "QLayoutEvents": "export type QLayoutEvents = \"resize\" | \"scroll\" | \"scrollHeight\"",
-  "QSelectOption": "export type QSelectOption = string | { label: string value: string };"
-}
