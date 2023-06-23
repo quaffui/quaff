@@ -1,15 +1,15 @@
 import { NativePropsDefaults, type NativeProps } from "$utils/types";
 
 export interface QBtnProps extends NativeProps {
-  disable: boolean;
-  flat: boolean;
+  disable?: boolean;
+  flat?: boolean;
   icon?: string;
   label?: string;
-  loading: boolean;
-  outline: boolean;
-  round: boolean;
+  loading?: boolean;
+  outline?: boolean;
+  round?: boolean;
   to?: string;
-  unelevated: boolean;
+  unelevated?: boolean;
   size?: "sm" | "md" | "lg" | "xl";
 }
 

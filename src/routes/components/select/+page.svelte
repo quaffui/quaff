@@ -3,6 +3,7 @@
   import { QSelectDocs } from "$components/select/docs";
   import QDocs from "$lib/components/private/QDocs.svelte";
   import QDocsSection from "$lib/components/private/QDocsSection.svelte";
+  import snippets from "./docs.snippets";
 
   let options = ["Cats", "Dogs", "Capybaras"];
   let value = "";
@@ -19,24 +20,24 @@
       <QBtn rounded icon="code" outline />
     </div>
 
-    <QDocsSection title="State">
+    <QDocsSection {snippets} title="State">
       <QSelect bind:value={select} {options} label="Default" class="q-mt-md" />
       <QSelect bind:value={select} {options} label="Disabled" class="q-mt-md" disable />
       <QSelect bind:value={selectMultiple} {options} label="Multiple" class="q-mt-md" multiple />
     </QDocsSection>
 
-    <QDocsSection title="Style">
+    <QDocsSection {snippets} title="Style">
       <QSelect bind:value={select} {options} label="Bordered" class="q-mt-md" bordered />
       <QSelect bind:value={select} {options} label="Rounded" class="q-mt-md" rounded />
       <QSelect bind:value={select} {options} label="Outlined" class="q-mt-md" outlined />
       <QSelect bind:value={select} {options} label="Filled" class="q-mt-md" filled />
     </QDocsSection>
 
-    <QDocsSection title="Dense">
+    <QDocsSection {snippets} title="Dense">
       <QSelect bind:value={select} {options} label="Dense" class="q-mt-md" bordered dense />
     </QDocsSection>
 
-    <QDocsSection title="Validation and Hints">
+    <QDocsSection {snippets} title="Validation and Hints">
       <QSelect
         bind:value={select}
         {options}
@@ -54,7 +55,7 @@
       />
     </QDocsSection>
 
-    <QDocsSection title="Slots">
+    <QDocsSection {snippets} title="Slots">
       <QSelect bind:value={select} {options} label="Prepended Icon">
         <i slot="prepend">favorite</i>
       </QSelect>

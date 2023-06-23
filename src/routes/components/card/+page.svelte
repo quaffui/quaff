@@ -3,6 +3,7 @@
   import { QCardDocs, QCardSectionDocs, QCardActionsDocs } from "$lib/components/card/docs";
   import QDocs from "$lib/components/private/QDocs.svelte";
   import QDocsSection from "$lib/components/private/QDocsSection.svelte";
+  import snippets from "./docs.snippets";
 </script>
 
 <QDocs QComponentDocs={[QCardDocs, QCardSectionDocs, QCardActionsDocs]} usagePath="card">
@@ -11,7 +12,7 @@
   </QCard>
 
   <div slot="usage">
-    <QDocsSection title="Card Variants">
+    <QDocsSection {snippets} title="Card Variants">
       <QCard class="q-ma-sm" title="Bordered Card" bordered>
         <QCardSection>This is a card with a border.</QCardSection>
       </QCard>
@@ -25,7 +26,7 @@
       </QCard>
     </QDocsSection>
 
-    <QDocsSection title="Card with different sections">
+    <QDocsSection {snippets} title="Card with different sections">
       <QCard class="q-ma-sm" title="Card with Horizontal Section">
         <QCardSection horizontal>This is a card with a horizontal section.</QCardSection>
       </QCard>
@@ -39,7 +40,7 @@
       </QCard>
     </QDocsSection>
 
-    <QDocsSection title="Card with fill color">
+    <QDocsSection {snippets} title="Card with fill color">
       <QCard class="q-ma-sm" title="Card with fill color" fill="#00aaff">
         <QCardSection>This is a card with a fill color.</QCardSection>
       </QCard>

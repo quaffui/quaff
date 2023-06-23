@@ -3,13 +3,14 @@
   import { QAvatarDocs } from "$components/avatar/docs";
   import QDocs from "$lib/components/private/QDocs.svelte";
   import QDocsSection from "$lib/components/private/QDocsSection.svelte";
+  import snippets from "./docs.snippets";
 </script>
 
 <QDocs QComponentDocs={QAvatarDocs} usagePath="avatar">
   <QAvatar slot="display" src="/cocktail.jpg" size="5rem" />
 
   <div slot="usage">
-    <QDocsSection title="Default slot">
+    <QDocsSection {snippets} title="Default slot">
       <div class="flex q-gap-lg middle-align">
         <QAvatar class="green">GR</QAvatar>
         <QAvatar class="red5">RD</QAvatar>
@@ -18,7 +19,7 @@
       </div>
     </QDocsSection>
 
-    <QDocsSection title="Avatar Sizes">
+    <QDocsSection {snippets} title="Avatar Sizes">
       <div class="flex q-gap-lg middle-align">
         <QAvatar src="/cocktail.jpg" size="xs" />
         <QAvatar src="/cocktail.jpg" size="sm" />
@@ -28,13 +29,13 @@
       </div>
     </QDocsSection>
 
-    <QDocsSection title="Custom Avatar Sizes">
+    <QDocsSection {snippets} title="Custom Avatar Sizes">
       <div class="flex q-gap-lg middle-align">
         <QAvatar src="/cocktail.jpg" size="5rem" />
       </div>
     </QDocsSection>
 
-    <QDocsSection title="Avatar Shapes">
+    <QDocsSection {snippets} title="Avatar Shapes">
       <div class="flex q-gap-lg middle-align">
         <QAvatar src="/cocktail.jpg" />
         <QAvatar src="/cocktail.jpg" shape="rounded" />
@@ -43,7 +44,7 @@
       </div>
     </QDocsSection>
 
-    <QDocsSection title="Avatar Videos">
+    <QDocsSection {snippets} title="Avatar Videos">
       <div class="flex q-gap-lg middle-align">
         <QAvatar src="/sea.mp4" size="lg" video />
         <QAvatar src="/sea.mp4" shape="rounded" size="lg" video />

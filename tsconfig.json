@@ -3,6 +3,7 @@
   "compilerOptions": {
     "allowJs": true,
     "checkJs": false,
+    "lib": ["es2021", "es2022", "es2023"],
     "outDir": "./dist",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
@@ -32,5 +33,6 @@
     "verbatimModuleSyntax": false,
     "importsNotUsedAsValues": "error"
   },
-  "exclude": ["./dist/**/*"]
+  "exclude": ["./dist/**/*"],
+  "include": ["./docgen/**/*", "./src/**/*"]
 }

@@ -3,6 +3,8 @@
   import { QInputDocs } from "$lib/components/input/docs";
   import QDocs from "$lib/components/private/QDocs.svelte";
   import QDocsSection from "$lib/components/private/QDocsSection.svelte";
+  import snippets from "./docs.snippets";
+
   let input = "";
 </script>
 
@@ -10,23 +12,23 @@
   <QInput slot="display" bind:value={input} label="Default" class="q-mt-md" />
 
   <div slot="usage">
-    <QDocsSection title="State">
+    <QDocsSection {snippets} title="State">
       <QInput bind:value={input} label="Default" class="q-mt-md" />
       <QInput bind:value={input} label="Disabled" class="q-mt-md" disable />
     </QDocsSection>
 
-    <QDocsSection title="Styles">
+    <QDocsSection {snippets} title="Styles">
       <QInput bind:value={input} label="Bordered" class="q-mt-md" bordered />
       <QInput bind:value={input} label="Rounded" class="q-mt-md" rounded />
       <QInput bind:value={input} label="Outlined" class="q-mt-md" outlined />
       <QInput bind:value={input} label="Filled" class="q-mt-md" filled />
     </QDocsSection>
 
-    <QDocsSection title="Dense">
+    <QDocsSection {snippets} title="Dense">
       <QInput bind:value={input} label="Dense" class="q-mt-md" bordered dense />
     </QDocsSection>
 
-    <QDocsSection title="Validation and Hints">
+    <QDocsSection {snippets} title="Validation and Hints">
       <QInput bind:value={input} label="With Hint" class="q-mt-md" hint="This is a hint" />
       <QInput
         bind:value={input}
@@ -37,7 +39,7 @@
       />
     </QDocsSection>
 
-    <QDocsSection title="Slots">
+    <QDocsSection {snippets} title="Slots">
       <QInput bind:value={input} label="Prepended Icon">
         <i slot="prepend">search</i>
       </QInput>

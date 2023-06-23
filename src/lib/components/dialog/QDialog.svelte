@@ -7,6 +7,7 @@
 
   export let value: QDialogProps["value"] = false,
     btnContent: QDialogProps["btnContent"] = "",
+    btnAttrs: QDialogProps["btnAttrs"] = {},
     position: QDialogProps["position"] = "default",
     modal: QDialogProps["modal"] = false,
     fullscreen: QDialogProps["fullscreen"] = false,
@@ -84,7 +85,7 @@
   }
 </script>
 
-<QBtn on:click={() => emit("btnClick")}>
+<QBtn {...btnAttrs} on:click={() => emit("btnClick")}>
   <slot name="button">
     {btnContent}
   </slot>
