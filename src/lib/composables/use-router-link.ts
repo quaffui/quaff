@@ -30,7 +30,7 @@ export function isRouteActive(
 export default function <T extends UseRouterLinkProps>(props: T) {
   const hasLink = props.to !== undefined || props.href !== undefined;
 
-  const linkClasses = createClasses(["q-link", props.disable && "disable"]);
+  const linkClasses = createClasses([hasLink && "q-link", props.disable && "disable"]);
 
   const linkAttributes = {
     href: props.to || props.href,

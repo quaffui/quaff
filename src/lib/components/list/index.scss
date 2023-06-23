@@ -12,6 +12,10 @@
   &.dense {
     min-height: 32px;
     padding-block: 0;
+
+    & > .q-item {
+      min-height: 32px;
+    }
   }
 
   & > .q-separator__wrapper:first-child {
@@ -20,34 +24,77 @@
 }
 
 .q-item {
+  min-width: 100%;
+  min-height: 56px;
   margin-top: 0 !important;
   margin: 0;
-  padding: 0.75em;
-  min-width: 100%;
-  max-height: 60px;
+  padding: 8px 24px 8px 16px;
+  gap: 16px;
 
-  &.dense {
-    min-height: 32px;
-    padding-block: 0;
+  &.row.wave {
+    padding: 8px 24px 8px 16px;
+
+    &.multiline {
+      padding-block: 12px;
+    }
+  }
+
+  &.multiline {
+    padding-block: 12px;
+
+    &
+      > :is(
+        .q-item__section--avatar,
+        .q-item__section--icon,
+        .q-item__section--thumbnail,
+        .q-item__section--trailingIcon,
+        .q-item__section--trailingText
+      ) {
+      align-self: start;
+    }
+
+    & > .q-item__section--video {
+      margin-left: -16px !important;
+      padding-block: 0;
+    }
   }
 }
 
 .q-item__section {
   display: flex;
-  flex: 10000 1 0%;
-  flex-direction: column;
-  justify-content: center;
-  align-items: start;
+
   &--video {
-    max-width: 114px;
-    height: 64px;
+    margin-left: -8px;
+    padding-block: 4px;
+
+    & video {
+      width: 114px;
+      height: 64px;
+      object-fit: cover;
+      object-position: center;
+    }
   }
-  &--avatar,
+
+  &--avatar {
+    height: 40px;
+    width: 40px;
+  }
   &--icon {
-    max-width: 24px;
+    height: 24px;
+    width: 24px;
   }
-  &--thumbnail {
-    max-width: 56px;
+
+  &--thumbnail img {
+    width: 56px;
     height: 56px;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  &--content {
+    flex-direction: column;
+    flex: 10000 1 0;
+    justify-content: center;
+    align-items: start;
   }
 }

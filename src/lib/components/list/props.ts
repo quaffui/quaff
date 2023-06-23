@@ -51,17 +51,20 @@ export const QItemPropsDefaults: QItemProps = {
   ...NativePropsDefaults,
 };
 
+export type QItemSectionTypes =
+  | "thumbnail"
+  | "video"
+  | "avatar"
+  | "icon"
+  | "trailingIcon"
+  | "trailingText"
+  | "content";
+
 export interface QItemSectionProps extends NativeProps {
-  thumbnail: boolean;
-  video: boolean;
-  icon: boolean;
-  avatar: boolean;
+  type: QItemSectionTypes;
 }
 
-export const QItemSectionProps: QItemSectionProps = {
-  thumbnail: false,
-  video: false,
-  icon: false,
-  avatar: false,
+export const QItemSectionPropsDefaults: QItemSectionProps = {
+  type: "content",
   ...NativePropsDefaults,
 };

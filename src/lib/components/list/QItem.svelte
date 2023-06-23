@@ -2,9 +2,10 @@
   import QSeparator from "$lib/components/separator/QSeparator.svelte";
   import useRouterLink, { isRouteActive } from "$lib/composables/use-router-link";
   import { createClasses } from "$lib/utils/props";
-  import { getContext } from "svelte";
+  import { getContext, setContext } from "svelte";
   import type { QListProps, QItemProps } from "./props";
   import { Quaff } from "$lib/stores/Quaff";
+  import { writable } from "svelte/store";
 
   export let tag: QItemProps["tag"] = "div",
     active: QItemProps["active"] = false,
@@ -18,6 +19,9 @@
     replace: QItemProps["replace"] = false,
     userClasses: QItemProps["userClasses"] = undefined;
   export { userClasses as class };
+
+  let hasMultiplLines = writable(false);
+  setContext("hasMultipleLines", hasMultiplLines);
 
   $: ({ hasLink, linkAttributes, linkClasses } = useRouterLink({
     href,
@@ -36,12 +40,13 @@
   $: isActive = isRouteActive($Quaff.router, to);
 
   $: classes = createClasses([
-    "q-item row q-pl-sm",
+    "q-item row",
+    $hasMultiplLines && "multiline",
     dense && "dense",
     hasLink && active && "q-item--active",
     hasLink && active && activeClass,
     isActive && "active",
-    //isClickable && "wave",
+    isClickable && "wave",
     linkClasses,
     userClasses,
   ]);
@@ -49,7 +54,7 @@
   $: attributes = {
     class: classes,
     tabindex: isClickable == true ? Number(tabindex) || 0 : undefined,
-    "aria-disabled": isActionable === true ? true : undefined,
+    "aria-disabled": isActionable === true && disable === true ? true : undefined,
     ...$$restProps,
   };
 </script>

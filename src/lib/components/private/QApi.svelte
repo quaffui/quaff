@@ -79,7 +79,7 @@
       <QList separator>
         {#each QDocsument.docs[api[index]] as doc}
           <QItem>
-            <QItemSection>
+            <div class="small-padding" style="flex: 1 1 0; max-width: 25%">
               <span class="small-padding surface-variant small-round">
                 <b>{doc.name}</b>
                 {#if isProp(doc, index)}
@@ -104,8 +104,8 @@
                   </span>
                 {/if}
               </span>
-            </QItemSection>
-            <QItemSection>{doc.description}</QItemSection>
+            </div>
+            <div>{doc.description}</div>
           </QItem>
         {/each}
       </QList>

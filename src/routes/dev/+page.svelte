@@ -211,35 +211,75 @@
     </QToolbar>
   </QCard>
   <QCard title="List">
-    <QList separator bordered separatorOptions={{ spacing: "none", text: "sep" }} roundedBorders>
+    <QList separator bordered roundedBorders>
       <QItem>
-        <QItemSection avatar>
-          <i>home</i>
+        <QItemSection type="icon">
+          <QIcon name="home" />
         </QItemSection>
-        <div>Hello world</div>
+        <QItemSection type="content">
+          <svelte:fragment slot="headline">Leading icon, Trailing helper text</svelte:fragment>
+        </QItemSection>
+        <QItemSection type="trailingText">100+</QItemSection>
       </QItem>
       <QItem to="/layout">
-        <i>help</i>
-        <div>With a link using "to"</div>
+        <QItemSection type="avatar">
+          <QAvatar class="primary-container">JD</QAvatar>
+        </QItemSection>
+        <QItemSection type="content">
+          <svelte:fragment slot="headline">With a link, and an avatar</svelte:fragment>
+          <svelte:fragment slot="line1">Using "to"</svelte:fragment>
+        </QItemSection>
       </QItem>
       <div>Not a QItem</div>
       <QItem href="/layout">
-        <i>help</i>
-        <div>With a link using "href"</div>
+        <QItemSection type="icon">
+          <QIcon name="help" color="light-blue" />
+        </QItemSection>
+        <QItemSection type="content">
+          <svelte:fragment slot="headline">With a link</svelte:fragment>
+          <svelte:fragment slot="line1">Using "href"</svelte:fragment>
+          <svelte:fragment slot="line2">But I have multiple lines</svelte:fragment>
+        </QItemSection>
       </QItem>
       <QItem>
-        <i class="light-green-text">check_circle</i>
-        <div class="max">Some text here</div>
-        <a>
-          <i>edit</i>
-        </a>
-        <a>
-          <i>delete</i>
-        </a>
+        <QItemSection type="avatar">
+          <QAvatar class="primary-container">JD</QAvatar>
+        </QItemSection>
+        <QItemSection type="content">
+          <svelte:fragment slot="headline">With an avatar</svelte:fragment>
+          <svelte:fragment slot="line1">Using "href", I'm also a helper text</svelte:fragment>
+          <svelte:fragment slot="line2">But I have multiple lines</svelte:fragment>
+          <svelte:fragment slot="line3">Wow, three lines</svelte:fragment>
+        </QItemSection>
+        <QItemSection type="trailingIcon">
+          <QIcon name="edit" />
+        </QItemSection>
       </QItem>
       <QItem>
-        <i class="red-text">close</i>
-        Last item, no divider
+        <QItemSection type="thumbnail">
+          <img src="/cocktail.jpg" alt="" />
+        </QItemSection>
+        <QItemSection type="content">
+          <svelte:fragment slot="headline">With an image</svelte:fragment>
+          <svelte:fragment slot="line1">And with a checkbox</svelte:fragment>
+        </QItemSection>
+        <QItemSection type="trailingIcon">
+          <QCheckbox />
+        </QItemSection>
+      </QItem>
+      <QItem>
+        <QItemSection type="video">
+          <!-- svelte-ignore a11y-media-has-caption -->
+          <video autoplay loop playsinline>
+            <source src="/sea.mp4" type="video/mp4" />
+          </video>
+        </QItemSection>
+        <QItemSection type="content">
+          <svelte:fragment slot="headline">With a video</svelte:fragment>
+          <svelte:fragment slot="line1">And with a trailing helper text</svelte:fragment>
+          <svelte:fragment slot="line2">I also have multiple lines</svelte:fragment>
+        </QItemSection>
+        <QItemSection type="trailingText">100+</QItemSection>
       </QItem>
     </QList>
   </QCard>

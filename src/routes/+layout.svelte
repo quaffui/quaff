@@ -185,7 +185,7 @@
       </QList>
     </QRailbar>
     <QDrawer slot="drawerLeft" persistent value={showDrawer}>
-      <QList>
+      <QList dense>
         {#each drawerContent as { name, to }}
           <QItem {to}>{name}</QItem>
         {/each}
