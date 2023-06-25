@@ -1,6 +1,8 @@
 <script>
   import QDialog from "../dialog/QDialog.svelte";
   import QTooltip from "../tooltip/QTooltip.svelte";
+  import { Prism } from "prismjs";
+  import "prism-svelte";
 
   export let title, snippets;
 
@@ -43,7 +45,7 @@
           {tooltipContent}
         </QTooltip>
         <!-- svelte-ignore a11y-click-events-have-key-events -->
-        <pre class="language-html" on:click={copySnippet}><code>{@html snippets[title].html}</code
+        <pre class="language-svelte" on:click={copySnippet}><code>{@html snippets[title].html}</code
           ></pre>
       </div>
     </QDialog>

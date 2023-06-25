@@ -11,7 +11,7 @@
   <QBtn slot="display" icon="star">Star me on Github</QBtn>
 
   <div slot="usage">
-    <QDocsSection title="Default Buttons" {snippets}>
+    <QDocsSection {snippets} title="Default Buttons">
       <QBtn class="q-ma-sm" icon="favorite" label="Using Label" />
 
       <QBtn class="q-ma-sm">
@@ -19,13 +19,13 @@
       </QBtn>
     </QDocsSection>
 
-    <QDocsSection title="Loading State Buttons" {snippets}>
+    <QDocsSection {snippets} title="Loading State Buttons">
       <QBtn class="q-ma-sm" label="loading" loading />
 
       <QBtn class="q-ma-sm" icon="refresh" loading />
     </QDocsSection>
 
-    <QDocsSection title="Disabled State Buttons" {snippets}>
+    <QDocsSection {snippets} title="Disabled State Buttons">
       <QBtn class="q-ma-sm" icon="add" label="Disabled" disable />
 
       <QBtn class="q-ma-sm" disable>
@@ -33,7 +33,7 @@
       </QBtn>
     </QDocsSection>
 
-    <QDocsSection title="Button Variants" {snippets}>
+    <QDocsSection {snippets} title="Button Variants">
       <QBtn class="q-ma-sm" label="Unelevated" unelevated />
 
       <QBtn class="q-ma-sm" label="Outline" outline />
@@ -43,14 +43,14 @@
       <QBtn class="q-ma-sm" label="Flat" flat />
     </QDocsSection>
 
-    <QDocsSection title="Size" {snippets}>
+    <QDocsSection {snippets} title="Size">
       <QBtn class="q-ma-sm" size="sm" label="Small" unelevated />
       <QBtn class="q-ma-sm" label="Medium" unelevated />
       <QBtn class="q-ma-sm" size="lg" label="Large" unelevated />
       <QBtn class="q-ma-sm" size="xl" label="Extra Large" unelevated />
     </QDocsSection>
 
-    <QDocsSection title="Button with Router Link" {snippets}>
+    <QDocsSection {snippets} title="Button with Router Link">
       <QBtn class="q-ma-sm" icon="open_in_new" label="With router link" to="/layout" />
     </QDocsSection>
   </div>

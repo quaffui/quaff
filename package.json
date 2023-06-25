@@ -59,7 +59,6 @@
   "type": "module",
   "dependencies": {
     "beercss": "^3.2.6",
-    "cheerio": "1.0.0-rc.12",
     "material-dynamic-colors": "^0.1.7",
     "prism-svelte": "0.5.0",
     "prismjs": "^1.29.0"
