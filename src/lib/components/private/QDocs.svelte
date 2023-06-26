@@ -1,10 +1,9 @@
 <script lang="ts">
-  import { QBtn, QCard, QCardSection } from "$lib";
+  import { QCard, QCardSection } from "$lib";
   import type { QComponentDocs } from "$utils/types";
   import QApi from "./QApi.svelte";
 
   export let QComponentDocs: QComponentDocs | QComponentDocs[];
-  export let usagePath: string | undefined = undefined;
 
   let principalDocument = Array.isArray(QComponentDocs) ? QComponentDocs[0] : QComponentDocs;
 </script>
@@ -43,16 +42,6 @@
     <div class="s12 q-pa-md">
       <div class="heading-usage">
         <h4 class="q-my-xl">Usage</h4>
-        {#if usagePath}
-          <QBtn
-            to={encodeURI(
-              `https://github.com/Rubatissimo-coding/quaff/tree/main/src/routes/components/${usagePath}/+page.svelte`
-            )}
-            rounded
-            icon="code"
-            outline
-          />
-        {/if}
       </div>
 
       <slot name="usage" />

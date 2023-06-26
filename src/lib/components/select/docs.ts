@@ -94,11 +94,5 @@ export let QSelectDocs: QComponentDocs = {
         description: "Emitted when the value of the select component changes.",
       },
     ],
-    types: [
-      {
-        name: "QSelectOption",
-        description: "string | { label: string; value: string }",
-      },
-    ],
   },
 };

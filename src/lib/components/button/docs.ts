@@ -77,6 +77,5 @@ export let QBtnDocs: QComponentDocs = {
         description: "Emitted when the user clicks on the button.",
       },
     ],
-    types: [],
   },
 };

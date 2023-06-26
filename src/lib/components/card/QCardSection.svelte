@@ -9,6 +9,6 @@
   $: classes = createClasses(["q-card__section", "q-pa-sm", horizontal && "row", userClasses]);
 </script>
 
-<div class={classes} {...$$restProps}>
+<div class={classes} {...$$restProps} on:scroll>
   <slot />
 </div>

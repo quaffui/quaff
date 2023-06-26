@@ -78,9 +78,12 @@
     userClasses,
   ]);
 
-  $: style = createStyles({
-    [side === "left" ? "--leftDrawerWidth" : "--rightDrawerWidth"]: widthStyle,
-  });
+  $: style = createStyles(
+    {
+      [side === "left" ? "--leftDrawerWidth" : "--rightDrawerWidth"]: widthStyle,
+    },
+    userStyles
+  );
 
   function getBorderRadiusClasses(sideProp: typeof side, context: typeof ctx) {
     let prefix = "border-radius" + (sideProp === "left" ? "__right" : "__left");

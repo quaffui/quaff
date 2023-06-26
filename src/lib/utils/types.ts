@@ -16,7 +16,6 @@ export interface QComponentDocs {
     slots: QComponentSlot[];
     methods: QComponentMethod[];
     events: QComponentEvent[];
-    types: QComponentType[];
   };
 }
 

@@ -46,6 +46,5 @@ export let QToggleDocs: QComponentDocs = {
         description: "Emitted when the user changes the value of the toggle.",
       },
     ],
-    types: [],
   },
 };

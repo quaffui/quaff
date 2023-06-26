@@ -122,7 +122,7 @@
   {#if $$slots.footer}
     <slot name="footer" />
   {/if}
-  <ContextReseter keys={["header", "footer", "leftDrawer", "rightDrawer"]}>
+  <ContextReseter keys={["header", "footer", "drawerLeft", "drawerRight"]}>
     <slot name="content" />
   </ContextReseter>
 </div>

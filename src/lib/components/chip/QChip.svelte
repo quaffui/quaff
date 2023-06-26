@@ -12,7 +12,7 @@
     outlined: QChipProps["outlined"] = false,
     size: QChipProps["size"] = "medium",
     tabindex: QChipProps["tabindex"] = undefined,
-    href: QChipProps["href"] = "javascript:void(0)",
+    href: QChipProps["href"] = undefined,
     userClasses: QChipProps["userClasses"] = undefined;
   export { userClasses as class };
 
@@ -53,7 +53,7 @@
   {#if $$slots.trailing}
     <slot name="trailing" />
   {:else if imgRight}
-    <img class={imgClass} src={imgRight} alt="Chip trailing" />
+    <img class="trailing {imgClass}" src={imgRight} alt="Chip trailing" />
   {:else if iconRight}
     <i class="small">{iconRight}</i>
   {/if}

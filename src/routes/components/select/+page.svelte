@@ -11,7 +11,7 @@
   let selectMultiple: string[] = [];
 </script>
 
-<QDocs QComponentDocs={QSelectDocs} usagePath="select">
+<QDocs QComponentDocs={QSelectDocs}>
   <QSelect slot="display" label="Favorite animal" {options} {value} />
 
   <div class="s12 q-pa-md">

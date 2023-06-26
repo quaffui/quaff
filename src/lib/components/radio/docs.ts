@@ -37,6 +37,5 @@ export let QRadioDocs: QComponentDocs = {
         description: "Emitted when the radio button is selected.",
       },
     ],
-    types: [],
   },
 };

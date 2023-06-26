@@ -7,7 +7,7 @@
   import snippets from "./docs.snippets";
 </script>
 
-<QDocs QComponentDocs={QBtnDocs} usagePath="button">
+<QDocs QComponentDocs={QBtnDocs}>
   <QBtn slot="display" icon="star">Star me on Github</QBtn>
 
   <div slot="usage">

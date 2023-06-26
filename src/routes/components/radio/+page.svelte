@@ -8,7 +8,7 @@
   let selectedValue = "option1";
 </script>
 
-<QDocs QComponentDocs={QRadioDocs} usagePath="radio">
+<QDocs QComponentDocs={QRadioDocs}>
   <QRadio slot="display" value="option1" selected={selectedValue} label="Option 1" />
 
   <div slot="usage">

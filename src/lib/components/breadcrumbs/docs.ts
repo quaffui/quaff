@@ -44,11 +44,5 @@ export let QBreadcrumbsDocs: QComponentDocs = {
     ],
     methods: [],
     events: [],
-    types: [
-      {
-        name: "QBreadcrumbsGutterOptions",
-        description: "none | sm | md | lg",
-      },
-    ],
   },
 };

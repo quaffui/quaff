@@ -30,6 +30,6 @@
   ]);
 </script>
 
-<svelte:element this={tag} class={classes} {...$$restProps} bind:this={listElement}>
+<svelte:element this={tag} class={classes} {...$$restProps} bind:this={listElement} on:scroll>
   <slot />
 </svelte:element>

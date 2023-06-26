@@ -8,7 +8,7 @@
   let input = "";
 </script>
 
-<QDocs QComponentDocs={QInputDocs} usagePath="input">
+<QDocs QComponentDocs={QInputDocs}>
   <QInput slot="display" bind:value={input} label="Default" class="q-mt-md" />
 
   <div slot="usage">

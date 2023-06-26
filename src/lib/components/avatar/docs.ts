@@ -49,16 +49,5 @@ export let QAvatarDocs: QComponentDocs = {
         description: "Emitted when the user clicks on the avatar.",
       },
     ],
-    types: [
-      {
-        name: "QAvatarShapeOptions",
-        description:
-          "circle | rounded | top-round | left-round | right-round | bottom-round | top-left-round | top-right-round | bottom-left-round | bottom-right-round",
-      },
-      {
-        name: "QAvatarSizeOptions",
-        description: "xs | sm | md | lg | xl | string | number",
-      },
-    ],
   },
 };

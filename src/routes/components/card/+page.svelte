@@ -6,7 +6,7 @@
   import snippets from "./docs.snippets";
 </script>
 
-<QDocs QComponentDocs={[QCardDocs, QCardSectionDocs, QCardActionsDocs]} usagePath="card">
+<QDocs QComponentDocs={[QCardDocs, QCardSectionDocs, QCardActionsDocs]}>
   <QCard slot="display" title="Default Card">
     <QCardSection>This is a card with a default configuration.</QCardSection>
   </QCard>

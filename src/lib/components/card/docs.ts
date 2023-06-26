@@ -47,7 +47,6 @@ export let QCardDocs: QComponentDocs = {
     ],
     methods: [],
     events: [],
-    types: [],
   },
 };
 
@@ -71,7 +70,6 @@ export let QCardSectionDocs: QComponentDocs = {
     ],
     methods: [],
     events: [],
-    types: [],
   },
 };
 
@@ -95,6 +93,5 @@ export let QCardActionsDocs: QComponentDocs = {
     ],
     methods: [],
     events: [],
-    types: [],
   },
 };

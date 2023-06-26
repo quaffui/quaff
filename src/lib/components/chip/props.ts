@@ -13,7 +13,7 @@ export interface QChipProps extends NativeProps {
   size: "small" | "medium" | "large";
 
   tabindex?: string | number;
-  href: string;
+  href?: string;
 }
 
 export const QChipPropsDefaults: QChipProps = {
@@ -29,7 +29,7 @@ export const QChipPropsDefaults: QChipProps = {
   size: "medium",
 
   tabindex: undefined,
-  href: "javascript:void(0)",
+  href: undefined,
 
   ...NativePropsDefaults,
 };

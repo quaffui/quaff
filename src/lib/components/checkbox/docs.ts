@@ -31,6 +31,5 @@ export let QCheckboxDocs: QComponentDocs = {
         description: "Emitted when the checkbox is checked or unchecked.",
       },
     ],
-    types: [],
   },
 };

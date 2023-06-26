@@ -82,6 +82,5 @@ export let QInputDocs: QComponentDocs = {
         description: "Emitted when the user types in the input component.",
       },
     ],
-    types: [],
   },
 };
