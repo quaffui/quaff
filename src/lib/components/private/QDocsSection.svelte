@@ -12,7 +12,9 @@
   async function copySnippet() {
     try {
       if (navigator.clipboard.write) {
-        await navigator.clipboard.write(snippets[title].text);
+        let blob = new Blob([snippets[title].text], { type: "text/plain" });
+        let item = new ClipboardItem({ "text/plain": blob });
+        await navigator.clipboard.write([item]);
       } else {
         await navigator.clipboard.writeText(snippets[title].text);
       }
@@ -22,6 +24,7 @@
         tooltipContent = "Copy";
       }, 3000);
     } catch (e) {
+      console.log({ e });
       tooltipContent = "Error while copying...";
       setTimeout(() => {
         tooltipContent = "Copy";
@@ -41,11 +44,13 @@
       modal
     >
       <div>
+        <h4>{title}</h4>
         <QTooltip position="right">
           {tooltipContent}
         </QTooltip>
         <!-- svelte-ignore a11y-click-events-have-key-events -->
-        <pre class="language-svelte" on:click={copySnippet}><code>{@html snippets[title].html}</code
+        <pre class="language-svelte" on:click={copySnippet}><code
+            >{@html snippets[title].html || "/* No snippet found */"}</code
           ></pre>
       </div>
     </QDialog>
