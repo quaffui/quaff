@@ -3,8 +3,22 @@ import ts from "typescript";
 export type ParsedProp = {
   name: string;
   type: string;
+  optional: boolean;
   description?: string;
 };
+
+function isOptionalProp(declaration: ts.Declaration) {
+  if (ts.isPropertySignature(declaration)) {
+    return !!declaration.questionToken;
+  } else return false;
+}
+
+function getJSDocComment(declaration: ts.Declaration) {
+  if (ts.isPropertySignature(declaration)) {
+    let com = ts.getJSDocCommentsAndTags(declaration)[0].comment;
+    return typeof com === "string" ? com : Array.isArray(com) ? com.join("\n") : "";
+  } else return "";
+}
 
 export default function parseInterface(fileName: string) {
   let program = ts.createProgram([fileName], { allowJs: true });
@@ -28,32 +42,35 @@ export default function parseInterface(fileName: string) {
       let allProps = getAllProperties(symbol, checker);
 
       allProps.map((prop) => {
-        let curProp: ParsedProp = { name: "", type: "" };
+        let curProp: ParsedProp = { name: "", type: "", optional: false };
 
         if (prop.declarations && prop.declarations.length > 0) {
           curProp.name = prop.getName();
           curProp.type = checker.typeToString(
             checker.getTypeOfSymbolAtLocation(prop, prop.declarations[0])
           );
+          curProp.optional = isOptionalProp(prop.declarations[0]);
+          curProp.description = getJSDocComment(prop.declarations[0]);
 
-          let commentRanges = ts.getLeadingCommentRanges(
-            prop.declarations[0].getSourceFile().getFullText(),
-            prop.declarations[0].getFullStart()
-          );
-          let jsDocComments =
-            commentRanges
-              ?.filter(
-                (range) =>
-                  range.kind === ts.SyntaxKind.MultiLineCommentTrivia && range.hasTrailingNewLine
-              )
-              .map((range) =>
-                prop.declarations![0].getSourceFile().getFullText().substring(range.pos, range.end)
-              )
-              .join("\n") || "";
-
-          curProp.description = jsDocComments
-            .replace(/\/\*\*\n\s*\*\s*/, "")
-            .replace(/\n\s+\*\/$/, "");
+          //let commentRanges = ts.getLeadingCommentRanges(
+          //  prop.declarations[0].getSourceFile().getFullText(),
+          //  prop.declarations[0].getFullStart()
+          //);
+          //
+          //let jsDocComments =
+          //  commentRanges
+          //    ?.filter(
+          //      (range) =>
+          //        range.kind === ts.SyntaxKind.MultiLineCommentTrivia && range.hasTrailingNewLine
+          //    )
+          //    .map((range) =>
+          //      prop.declarations![0].getSourceFile().getFullText().substring(range.pos, range.end)
+          //    )
+          //    .join("\n") || "";
+          //
+          //curProp.description = jsDocComments
+          //  .replace(/\/\*\*\n\s*\*\s*/, "")
+          //  .replace(/\n\s+\*\/$/, "");
         }
 
         props.push(curProp);

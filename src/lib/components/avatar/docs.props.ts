@@ -2,21 +2,27 @@ export const QAvatarDocsProps = [
   {
     name: "shape",
     type: "QAvatarShapeOptions",
-    description: "",
+    optional: false,
+    description: "Shape of the avatar.\r\nYAY.",
   },
   {
     name: "size",
     type: "string",
-    description: "",
+    optional: false,
+    description:
+      'Size of the avatar, can be a custom size using CSS units. If no unit is specified, "px" will be used.',
   },
   {
     name: "src",
     type: "string",
-    description: "",
+    optional: true,
+    description:
+      "Source of the image to use as the avatar. Can be a url or a path to a local file.",
   },
   {
     name: "video",
     type: "boolean",
-    description: "",
+    optional: false,
+    description: 'If set to true, will use the "src" prop as a video source.',
   },
 ];
