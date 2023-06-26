@@ -50,7 +50,7 @@
         </QTooltip>
         <!-- svelte-ignore a11y-click-events-have-key-events -->
         <pre class="language-svelte" on:click={copySnippet}><code
-            >{@html snippets[title].html || "/* No snippet found */"}</code
+            >{@html snippets[title]?.html || "/* No snippet found */"}</code
           ></pre>
       </div>
     </QDialog>
