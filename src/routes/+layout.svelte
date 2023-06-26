@@ -145,7 +145,7 @@
 {#if $Quaff.router.route.id === "/layout"}
   <slot />
 {:else}
-  <QLayout class="main-layout" leftRailbarWidth="120">
+  <QLayout class="main-layout" leftRailbarWidth="120" leftDrawerWidth="15rem">
     <QToolbar slot="header" class="surface small-elevate">
       <h5 class="max center-align">Quaff</h5>
       <QBtn
