@@ -1,5 +1,5 @@
-import { UseAlignPropsDefaults, type UseAlignProps } from "$composables/use-align.js";
-import { NativePropsDefaults, type NativeProps } from "$utils/types";
+import type { UseAlignProps } from "$lib/composables/use-align";
+import type { NativeProps } from "$lib/utils/types";
 
 export interface QCardProps extends NativeProps {
   /**
@@ -48,9 +48,3 @@ export interface QCardActionsProps extends UseAlignProps, NativeProps {
    */
   vertical: boolean;
 }
-
-export const QCardActionsProps: QCardActionsProps = {
-  vertical: false,
-  ...UseAlignPropsDefaults,
-  ...NativePropsDefaults,
-};
