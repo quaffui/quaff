@@ -14,10 +14,10 @@
   $: shapeClass = createClasses([
     shape === "circle" && "circle",
     shape === "rounded" && "round",
-    shape.includes("top") && "top-round",
-    shape.includes("bottom") && "bottom-round",
-    shape.includes("left") && "left-round",
-    shape.includes("right") && "right-round",
+    shape!.includes("top") && "top-round",
+    shape!.includes("bottom") && "bottom-round",
+    shape!.includes("left") && "left-round",
+    shape!.includes("right") && "right-round",
   ]);
 
   $: sizeClass =
@@ -26,7 +26,7 @@
       : size === "sm"
       ? "small"
       : size === "md"
-      ? video === true || shape.includes("round")
+      ? video === true || shape!.includes("round")
         ? "medium"
         : ""
       : size === "lg"

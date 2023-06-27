@@ -18,26 +18,25 @@ export type QAvatarSizeOptions = "xs" | "sm" | "md" | "lg" | "xl" | string;
 export interface QAvatarProps extends NativeProps {
   /**
    * Shape of the avatar.
-   * YAY.
+   * @default circle
    */
-  shape: QAvatarShapeOptions;
+  shape?: QAvatarShapeOptions;
+
   /**
    * Size of the avatar, can be a custom size using CSS units. If no unit is specified, "px" will be used.
+   * @default md
    */
-  size: QAvatarSizeOptions;
+  size?: QAvatarSizeOptions;
+
   /**
    * Source of the image to use as the avatar. Can be a url or a path to a local file.
+   * @default undefined
    */
   src?: string;
+
   /**
    * If set to true, will use the "src" prop as a video source.
+   * @default false
    */
-  video: boolean;
+  video?: boolean;
 }
-
-export const QAvatarPropsDefault = {
-  shape: "circle",
-  size: "md",
-  video: false,
-  ...NativePropsDefaults,
-};
