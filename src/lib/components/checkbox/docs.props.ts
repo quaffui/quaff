@@ -4,7 +4,7 @@ export const QCheckboxDocsProps = [
     type: "boolean",
     optional: false,
     clickableType: false,
-    description: "",
+    description: "Controls the checked state of the checkbox.",
     default: "",
   },
   {
@@ -12,15 +12,15 @@ export const QCheckboxDocsProps = [
     type: "string",
     optional: true,
     clickableType: false,
-    description: "",
-    default: "",
+    description: "Sets the label for the checkbox.",
+    default: "undefined",
   },
   {
     name: "disable",
     type: "boolean",
     optional: true,
     clickableType: false,
-    description: "",
-    default: "",
+    description: "Puts the checkbox in a disabled state, making it unclickable.",
+    default: "false",
   },
 ];
