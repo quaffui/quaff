@@ -3,7 +3,7 @@
   "compilerOptions": {
     "allowJs": true,
     "checkJs": false,
-    "lib": ["es2021", "es2022", "es2023"],
+    "lib": ["es2021", "es2022", "es2023", "dom"],
     "outDir": "./dist",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,

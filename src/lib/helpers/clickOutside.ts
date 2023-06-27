@@ -24,7 +24,7 @@ export function clickOutsideDialog(node: HTMLDialogElement, onEventFunction: () 
       rect.top <= event.clientY &&
       event.clientY <= rect.top + rect.height &&
       rect.left <= event.clientX &&
-      event.clientY <= rect.left + rect.width;
+      event.clientX <= rect.left + rect.width;
 
     if (isInDialog === false && node.open === true) {
       onEventFunction();
