@@ -19,7 +19,7 @@
   $: img = icon?.startsWith("img:") ? icon.slice(4) : undefined;
   $: imgRight = iconRight?.startsWith("img:") ? iconRight.slice(4) : undefined;
 
-  $: sizeClass = ["small", "large"].includes(size) ? size : undefined;
+  $: sizeClass = ["small", "large"].includes(size!) ? size : undefined;
 
   $: classes = createClasses([
     "q-chip",
