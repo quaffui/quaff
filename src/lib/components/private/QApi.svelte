@@ -91,7 +91,7 @@
         {/each}
       </QTabs>
     </div>
-    <QCardSection style="height: 400px; overflow-y: scroll">
+    <QCardSection style="max-height: 400px; overflow-y: scroll">
       <QList separator bordered style="overflow:hidden">
         {#each QDocument.docs[api[index]] as doc}
           <QItem style="overflow: visible">
@@ -112,23 +112,21 @@
                 <span class=" small-padding surface-variant small-round">
                   <b>{doc.name}</b>
                   {#if isProp(doc, index)}
+                    {doc.optional ? "?" : ""}
                     {#if doc.clickableType === true}
                       <!-- svelte-ignore a11y-click-events-have-key-events -->
                       <span
                         class="prop-type clickable"
                         on:click={() => isProp(doc, index) && handleDrawer(QDocument, doc)}
                       >
-                        {doc.optional ? "?" : ""}: {doc.type}{doc.default === ""
-                          ? ""
-                          : ` = ${doc.default}`}
+                        : {doc.type}
                       </span>
                     {:else}
                       <span class="prop-type">
-                        {doc.optional ? "?" : ""}: {doc.type}{doc.default === ""
-                          ? ""
-                          : ` = ${doc.default}`}
+                        : {doc.type}
                       </span>
                     {/if}
+                    {doc.default === "" ? "" : ` = ${doc.default}`}
                   {:else if isEvent(doc, index)}
                     <span class="prop-type">
                       : {doc.type}
