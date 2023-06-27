@@ -2,32 +2,50 @@ import { UseAlignPropsDefaults, type UseAlignProps } from "$composables/use-alig
 import { NativePropsDefaults, type NativeProps } from "$utils/types";
 
 export interface QCardProps extends NativeProps {
-  bordered: boolean;
+  /**
+   * Puts a border around the card.
+   * @default false
+   */
+  bordered?: boolean;
+
+  /**
+   * Defines the fill color of the card.
+   * @default undefined
+   */
   fill?: string | boolean;
-  flat: boolean;
-  round: boolean;
+
+  /**
+   * Makes the card flat, removing its elevation.
+   * @default false
+   */
+  flat?: boolean;
+
+  /**
+   * Adds rounded corners to the card.
+   * @default false
+   */
+  round?: boolean;
+
+  /**
+   * Sets the title of the card.
+   * @default undefined
+   */
   title?: string;
 }
 
-export const QCardPropsDefaults: QCardProps = {
-  bordered: false,
-  fill: undefined,
-  flat: false,
-  round: false,
-  title: undefined,
-  ...NativePropsDefaults,
-};
-
 export interface QCardSectionProps extends NativeProps {
-  horizontal: boolean;
+  /**
+   * Lays out the section content horizontally.
+   * @default false
+   */
+  horizontal?: boolean;
 }
 
-export const QCardSectionPropsDefaults: QCardSectionProps = {
-  horizontal: false,
-  ...NativePropsDefaults,
-};
-
 export interface QCardActionsProps extends UseAlignProps, NativeProps {
+  /**
+   * Lays out the action items vertically.
+   * @default false
+   */
   vertical: boolean;
 }
 

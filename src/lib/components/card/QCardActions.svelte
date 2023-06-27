@@ -1,5 +1,5 @@
 <script lang="ts">
-  import useAlign, { type UseAlignProps } from "$lib/composables/use-align";
+  import useAlign from "$lib/composables/use-align";
   import { createClasses } from "$utils/props";
   import type { QCardActionsProps } from "./props";
 
