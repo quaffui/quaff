@@ -4,7 +4,7 @@
   import { createClasses } from "$lib/utils/props";
   import type { AppbarContext } from "../layout/QLayout.svelte";
 
-  export let value: QFooterProps["value"] = false,
+  export let value: QFooterProps["value"] = true,
     bordered: QFooterProps["bordered"] = false,
     elevated: QFooterProps["elevated"] = false,
     height: QFooterProps["height"] = undefined,
