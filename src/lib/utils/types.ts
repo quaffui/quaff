@@ -24,8 +24,8 @@ export interface QComponentProp {
   type: string;
   default?: any;
   description: string;
-  clickableType?: true;
-  optional?: true;
+  clickableType?: boolean;
+  optional?: boolean;
 }
 
 export interface QComponentSlot {
