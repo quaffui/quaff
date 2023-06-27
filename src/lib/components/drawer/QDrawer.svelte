@@ -27,7 +27,7 @@
 
   $: belowBreakpoint =
     (behavior === "mobile") === true ||
-    (behavior !== "desktop" && /** TODO: Get Layout width */ 1300 <= breakpoint);
+    (behavior !== "desktop" && /** TODO: Get Layout width */ 1300 <= breakpoint!);
 
   $: widthStyle = ctx === undefined ? (isNaN(Number(width)) ? width : `${width}px`) : undefined;
 
