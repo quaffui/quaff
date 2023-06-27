@@ -5,19 +5,38 @@ export type ParsedProp = {
   type: string;
   optional: boolean;
   description?: string;
+  default?: string;
+  clickableType?: boolean;
 };
-
-function isOptionalProp(declaration: ts.Declaration) {
-  if (ts.isPropertySignature(declaration)) {
-    return !!declaration.questionToken;
-  } else return false;
-}
 
 function getJSDocComment(declaration: ts.Declaration) {
   if (ts.isPropertySignature(declaration)) {
-    let com = ts.getJSDocCommentsAndTags(declaration)[0].comment;
-    return typeof com === "string" ? com : Array.isArray(com) ? com.join("\n") : "";
-  } else return "";
+    let comment = ts.getJSDocCommentsAndTags(declaration)[0];
+
+    if (comment) {
+      const commentText = comment.getText();
+      const commentLines = commentText
+        .split("\n")
+        .map((line) => line.replaceAll(/\/|\*/g, "").trim())
+        .filter(Boolean);
+
+      const mainCommentLines = commentLines.filter((line) => !line.startsWith("@default"));
+      const defaultCommentLines = commentLines.filter((line) => line.startsWith("@default"));
+
+      const description = mainCommentLines.join("\n");
+      const defaultValue =
+        defaultCommentLines.length > 0 ? defaultCommentLines[0].split("@default")[1].trim() : "";
+
+      return {
+        description,
+        default: defaultValue,
+      };
+    }
+  }
+  return {
+    description: "",
+    default: "",
+  };
 }
 
 export default function parseInterface(fileName: string) {
@@ -35,46 +54,26 @@ export default function parseInterface(fileName: string) {
     if (ts.isInterfaceDeclaration(node)) {
       let symbol = checker.getSymbolAtLocation(node.name)!;
 
-      const interfaceName = symbol.getName();
       let props: ParsedProp[] = [];
+      const interfaceName = symbol.getName();
       componentsToProps[interfaceName] = props;
 
-      let allProps = getAllProperties(symbol, checker);
-
-      allProps.map((prop) => {
+      for (const member of node.members) {
         let curProp: ParsedProp = { name: "", type: "", optional: false };
+        if (ts.isPropertySignature(member) || ts.isPropertyDeclaration(member)) {
+          curProp.name = member.name.getText();
+          curProp.type = member.getText().split(": ").at(-1)?.replace(";", "") || "";
+          curProp.optional = !!member.questionToken;
 
-        if (prop.declarations && prop.declarations.length > 0) {
-          curProp.name = prop.getName();
-          curProp.type = checker.typeToString(
-            checker.getTypeOfSymbolAtLocation(prop, prop.declarations[0])
-          );
-          curProp.optional = isOptionalProp(prop.declarations[0]);
-          curProp.description = getJSDocComment(prop.declarations[0]);
+          let type = checker.getTypeAtLocation(member);
+          curProp.clickableType =
+            type.aliasSymbol !== undefined || curProp.type !== checker.typeToString(type);
 
-          //let commentRanges = ts.getLeadingCommentRanges(
-          //  prop.declarations[0].getSourceFile().getFullText(),
-          //  prop.declarations[0].getFullStart()
-          //);
-          //
-          //let jsDocComments =
-          //  commentRanges
-          //    ?.filter(
-          //      (range) =>
-          //        range.kind === ts.SyntaxKind.MultiLineCommentTrivia && range.hasTrailingNewLine
-          //    )
-          //    .map((range) =>
-          //      prop.declarations![0].getSourceFile().getFullText().substring(range.pos, range.end)
-          //    )
-          //    .join("\n") || "";
-          //
-          //curProp.description = jsDocComments
-          //  .replace(/\/\*\*\n\s*\*\s*/, "")
-          //  .replace(/\n\s+\*\/$/, "");
+          curProp = { ...curProp, ...getJSDocComment(member) };
+
+          props.push(curProp);
         }
-
-        props.push(curProp);
-      });
+      }
     }
 
     ts.forEachChild(node, visit);

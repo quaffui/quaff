@@ -1,8 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
-import parseInterface, { ParsedProp } from "./parse-interface.js";
-import parseDefaults, { ParsedDefault } from "./parse-defaults.js";
+import parseInterface from "./parse-interface.js";
 import prettier from "prettier";
 import parseType from "../types/parseTypes.js";
 
@@ -32,19 +31,7 @@ async function run() {
       let contents = "";
 
       Object.keys(parsedInterface).forEach((varName) => {
-        function getResult(currentProp: ParsedProp, currentDefaults: ParsedDefault[]) {
-          const defaultEntry = currentDefaults.find(
-            (curDefault) => currentProp.name && curDefault.name === currentProp.name
-          );
-
-          return { ...currentProp, default: defaultEntry?.value };
-        }
-
-        const parsedDefaults = parseDefaults(propsFilePath, varName);
-
-        const interfaceResults = parsedInterface[varName].map((prop) =>
-          getResult(prop, parsedDefaults)
-        );
+        const interfaceResults = parsedInterface[varName];
 
         contents += `export const ${varName.replace(/Props$/, "DocsProps")} = ${JSON.stringify(
           interfaceResults,
