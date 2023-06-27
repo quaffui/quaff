@@ -44,6 +44,7 @@
   {#if name !== undefined}
     {name}
   {:else if img !== undefined}
+    <!-- svelte-ignore a11y-missing-attribute -->
     <img src={img} {...imgAttrs} />
   {:else if svg !== undefined}
     <slot />
