@@ -6,7 +6,7 @@
   import { clickOutsideDialog } from "$lib/helpers";
 
   export let value: QDialogProps["value"] = false,
-    btnContent: QDialogProps["btnContent"] = "",
+    btnContent: QDialogProps["btnContent"] = undefined,
     btnAttrs: QDialogProps["btnAttrs"] = {},
     position: QDialogProps["position"] = "default",
     modal: QDialogProps["modal"] = false,
@@ -21,12 +21,12 @@
   let lateValue = false;
 
   $: setTimeout(() => {
-    lateValue = value;
+    lateValue = value!;
   }, 50);
 
   $: canHideOnClickOutside = lateValue === true && persistent !== true;
 
-  $: positionClass = ["top", "right", "bottom", "left"].includes(position) ? position : undefined;
+  $: positionClass = ["top", "right", "bottom", "left"].includes(position!) ? position : undefined;
 
   $: classes = createClasses([
     "q-dialog",
@@ -87,7 +87,7 @@
 
 <QBtn {...btnAttrs} on:click={() => emit("btnClick")}>
   <slot name="button">
-    {btnContent}
+    {btnContent || ""}
   </slot>
 </QBtn>
 
