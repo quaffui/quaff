@@ -31,8 +31,6 @@
     size && size !== "md" ? sizeMap[size] : null,
     userClasses,
   ]);
-
-  function openLink() {}
 </script>
 
 {#if to !== undefined}

@@ -1,28 +1,65 @@
-import { NativePropsDefaults, type NativeProps } from "$utils/types";
+import type { NativeProps } from "$utils/types";
+
+export type QBtnSizeOptions = "sm" | "md" | "lg" | "xl";
 
 export interface QBtnProps extends NativeProps {
+  /**
+   * Puts the button in a disabled state, making it unclickable.
+   * @default false
+   */
   disable?: boolean;
-  flat?: boolean;
-  icon?: string;
-  label?: string;
-  loading?: boolean;
-  outline?: boolean;
-  round?: boolean;
-  to?: string;
-  unelevated?: boolean;
-  size?: "sm" | "md" | "lg" | "xl";
-}
 
-export const QCardPropsDefaults: QBtnProps = {
-  disable: false,
-  flat: false,
-  icon: undefined,
-  label: undefined,
-  loading: false,
-  outline: false,
-  round: false,
-  to: undefined,
-  unelevated: false,
-  size: "md",
-  ...NativePropsDefaults,
-};
+  /**
+   * Use flat design for the button, removing its elevation and background-color.
+   * @default false
+   */
+  flat?: boolean;
+
+  /**
+   * Name of the leading icon to use for the button.
+   * @default undefined
+   */
+  icon?: string;
+
+  /**
+   * Text to use for the button.
+   * @default undefined
+   */
+  label?: string;
+
+  /**
+   * Puts the button in a loading state, adding a loader as the leading icon.
+   * @default false
+   */
+  loading?: boolean;
+
+  /**
+   * Use outline design for the button, adding a border around it.
+   * @default false
+   */
+  outline?: boolean;
+
+  /**
+   * Use round design for the button, adding a border-radius to it.
+   * @default true
+   */
+  round?: boolean;
+
+  /**
+   * Makes the button navigational. Can be used with the router (e.g to="/home") or as a normal href attribute (e.g to="#section-id").
+   *  @default undefined
+   */
+  to?: string;
+
+  /**
+   * Removes the button's elevation.
+   * @default false
+   */
+  unelevated?: boolean;
+
+  /**
+   * Size of the button.
+   * @default md
+   */
+  size?: QBtnSizeOptions;
+}
