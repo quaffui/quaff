@@ -109,9 +109,9 @@ export const QDialogDocsProps = [
   },
   {
     name: "position",
-    type: '"default" | "top" | "right" | "bottom" | "left"',
+    type: "QDialogPositionOptions",
     optional: true,
-    clickableType: false,
+    clickableType: true,
     description: "The position of the dialog relative to the viewport.",
     default: '"default"',
   },

@@ -26,7 +26,7 @@ export interface QDialogProps extends NativeProps {
    * The position of the dialog relative to the viewport.
    * @default "default"
    */
-  position?: "default" | "top" | "right" | "bottom" | "left";
+  position?: QDialogPositionOptions;
 
   /**
    * Determines whether the dialog is displayed as a modal or not.
