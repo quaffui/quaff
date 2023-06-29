@@ -15,6 +15,7 @@
   height: 100%;
   min-width: 100%;
   min-height: 100%;
+  overflow: hidden;
 
   & > :not(.q-header, .q-footer, .q-railbar, .q-drawer) {
     height: 100%;
@@ -24,12 +25,21 @@
 }
 
 .q-layout > .q-header {
-  z-index: 99;
+  z-index: 4;
   position: absolute;
   top: 0px;
   right: 0px;
   bottom: auto;
   left: 0px;
+  height: var(--header-height);
+  min-height: unset;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+
+  & > nav {
+    height: 100%;
+    min-height: unset;
+  }
 
   &.fixed {
     position: fixed;
@@ -45,12 +55,21 @@
 }
 
 .q-layout > .q-footer {
-  z-index: 99;
+  z-index: 2;
   position: absolute;
   top: auto;
   right: 0px;
   bottom: 0px;
   left: 0px;
+  height: var(--footer-height);
+  min-height: unset;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+
+  & > nav {
+    height: 100%;
+    min-height: unset;
+  }
 
   &.fixed {
     position: fixed;
@@ -66,7 +85,7 @@
 }
 
 .q-layout > .q-railbar {
-  z-index: 98;
+  z-index: 3;
   position: absolute;
   top: 0px;
   right: auto;
@@ -104,6 +123,8 @@
 
     & ~ .q-drawer.left {
       left: var(--left-railbar-width);
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
 
       &.active {
         &:not(.offset-top) ~ .q-header {
@@ -147,6 +168,8 @@
 
     & ~ .q-drawer.right {
       right: var(--right-railbar-width);
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
 
       &.active {
         &:not(.offset-top) ~ .q-header {
@@ -174,10 +197,27 @@
       &.offset-bottom {
         height: calc(100% - var(--header-height) - var(--footer-height));
       }
+
+      &.left {
+        border-top-left-radius: 0;
+      }
+
+      &.right {
+        border-top-right-radius: 0;
+      }
     }
+
     &-bottom {
       bottom: var(--footer-height);
       height: calc(100% - var(--footer-height));
+
+      &.left {
+        border-bottom-left-radius: 0;
+      }
+
+      &.right {
+        border-bottom-right-radius: 0;
+      }
     }
   }
 
@@ -187,6 +227,7 @@
     align-items: center;
     justify-content: center;
     padding: 0 8px;
+    gap: 0.25em;
 
     &.wave::after {
       all: unset;
@@ -211,39 +252,28 @@
 }
 
 .q-layout > .q-drawer {
-  overflow: auto;
-  padding: 8px;
-
-  &.offset {
-    &-top {
-      top: var(--header-height);
-      height: calc(100% - var(--header-height));
-    }
-
-    &-bottom {
-      bottom: var(--footer-height);
-      height: calc(100% - var(--footer-height));
-    }
-  }
-
   &.active {
+    &.overlay {
+      z-index: 5;
+    }
+
     &:not(.offset-top) {
-      &.left ~ .q-header {
+      &.left:not(.overlay) ~ .q-header {
         left: var(--left-drawer-width);
         width: calc(100% - var(--left-drawer-width));
       }
-      &.right ~ .q-header {
+      &.right:not(.overlay) ~ .q-header {
         right: var(--right-drawer-width);
         width: calc(100% - var(--right-drawer-width));
       }
     }
 
     &:not(.offset-bottom) {
-      &.left ~ .q-footer {
+      &.left:not(.overlay) ~ .q-footer {
         left: var(--left-drawer-width);
         width: calc(100% - var(--left-drawer-width));
       }
-      &.right ~ .q-footer {
+      &.right:not(.overlay) ~ .q-footer {
         right: var(--right-drawer-width);
         width: calc(100% - var(--right-drawer-width));
       }
