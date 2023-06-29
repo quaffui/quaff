@@ -8,24 +8,17 @@
     bordered: QFooterProps["bordered"] = false,
     elevated: QFooterProps["elevated"] = false,
     height: QFooterProps["height"] = undefined,
-    userClasses: QFooterProps["userClasses"] = undefined;
-  export { userClasses as class };
+    userClasses: QFooterProps["userClasses"] = undefined,
+    userStyles: QFooterProps["userStyles"] = undefined;
+  export { userClasses as class, userStyles as style };
 
   $: ctx = getContext<AppbarContext>("footer");
 
   $: classes = createClasses(["q-footer", ctx?.fixed && "fixed", userClasses]);
 </script>
 
-<footer class={classes}>
+<footer class={classes} style={userStyles}>
   <nav>
     <slot />
   </nav>
 </footer>
-
-<style lang="scss">
-  .q-footer {
-    width: 100%;
-    height: 5rem;
-    transition: all var(--speed3);
-  }
-</style>
