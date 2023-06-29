@@ -17,7 +17,7 @@ function getJSDocComment(declaration: ts.Declaration) {
       const commentText = comment.getText();
       const commentLines = commentText
         .split("\n")
-        .map((line) => line.replaceAll(/\/|\*/g, "").trim())
+        .map((line) => line.replaceAll(/\/\*|\*\/|\*/g, "").trim())
         .filter(Boolean);
 
       const mainCommentLines = commentLines.filter((line) => !line.startsWith("@default"));
