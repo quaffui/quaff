@@ -6,22 +6,23 @@ export function createStyles(
   const upperCaseRE = /[A-Z]/g;
   const toJoin: string[] = [];
 
-  for (let [userStyles, styleVal] of stylesArray) {
+  for (let [styleName, styleVal] of stylesArray) {
     if (styleVal === undefined || styleVal === null) {
       continue;
     }
 
-    if (upperCaseRE.test(userStyles)) {
-      userStyles = userStyles.replace(upperCaseRE, "-$&").toLowerCase();
+    if (upperCaseRE.test(styleName)) {
+      styleName = styleName.replace(upperCaseRE, "-$&").toLowerCase();
     }
 
-    toJoin.push(`${userStyles}: ${styleVal}`);
-  }
-  if (toJoin.length === 0) {
-    return null;
+    toJoin.push(`${styleName}: ${styleVal}`);
   }
 
   userStyles && toJoin.push(userStyles);
+
+  if (toJoin.length === 0) {
+    return null;
+  }
 
   return toJoin.join("; ");
 }
