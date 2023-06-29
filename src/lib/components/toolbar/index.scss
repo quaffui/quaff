@@ -1,0 +1,7 @@
+.q-toolbar {
+  width: 100%;
+  transition: all var(--speed3);
+  &--inset {
+    padding-left: 58px;
+  }
+}
