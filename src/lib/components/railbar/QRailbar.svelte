@@ -30,7 +30,7 @@
 
   $: style = createStyles(
     {
-      [`${side}RailbarWidth`]: widthStyle,
+      [`--${side}-railbar-width`]: widthStyle,
     },
     userStyles
   );
