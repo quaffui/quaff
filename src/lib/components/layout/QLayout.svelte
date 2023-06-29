@@ -25,29 +25,35 @@
   import ContextReseter from "../private/ContextReseter.svelte";
 
   export let view: QLayoutProps["view"] = "hhh lpr fff",
-    leftDrawerWidth: QLayoutProps["leftDrawerWidth"] = 300,
-    rightDrawerWidth: QLayoutProps["rightDrawerWidth"] = 300,
-    leftRailbarWidth: QLayoutProps["leftRailbarWidth"] = 88,
-    rightRailbarWidth: QLayoutProps["rightDrawerWidth"] = 88,
+    headerHeight: QLayoutProps["headerHeight"] = "64px",
+    footerHeight: QLayoutProps["footerHeight"] = "80px",
+    leftDrawerWidth: QLayoutProps["leftDrawerWidth"] = "300px",
+    rightDrawerWidth: QLayoutProps["rightDrawerWidth"] = "300px",
+    leftRailbarWidth: QLayoutProps["leftRailbarWidth"] = "88px",
+    rightRailbarWidth: QLayoutProps["rightDrawerWidth"] = "88px",
     userClasses: QLayoutProps["userClasses"] = undefined,
     userStyles: QLayoutProps["userStyles"] = undefined;
   export { userClasses as class, userStyles as style };
 
-  $: style = createStyles({
-    "--left-railbar-width": isNaN(Number(leftRailbarWidth))
-      ? leftRailbarWidth
-      : `${leftRailbarWidth}px`,
-    "--right-railbar-width": isNaN(Number(rightRailbarWidth))
-      ? rightRailbarWidth
-      : `${rightRailbarWidth}px`,
-    "--left-drawer-width": isNaN(Number(leftDrawerWidth))
-      ? leftDrawerWidth
-      : `${leftDrawerWidth}px`,
-    "--right-drawer-width": isNaN(Number(rightDrawerWidth))
-      ? rightDrawerWidth
-      : `${rightDrawerWidth}px`,
-    userStyles,
-  });
+  $: style = createStyles(
+    {
+      "--header-height": isNaN(Number(headerHeight)) ? headerHeight : `${headerHeight}px`,
+      "--footer-height": isNaN(Number(footerHeight)) ? footerHeight : `${footerHeight}px`,
+      "--left-railbar-width": isNaN(Number(leftRailbarWidth))
+        ? leftRailbarWidth
+        : `${leftRailbarWidth}px`,
+      "--right-railbar-width": isNaN(Number(rightRailbarWidth))
+        ? rightRailbarWidth
+        : `${rightRailbarWidth}px`,
+      "--left-drawer-width": isNaN(Number(leftDrawerWidth))
+        ? leftDrawerWidth
+        : `${leftDrawerWidth}px`,
+      "--right-drawer-width": isNaN(Number(rightDrawerWidth))
+        ? rightDrawerWidth
+        : `${rightDrawerWidth}px`,
+    },
+    userStyles
+  );
 
   $: classes = createClasses(["q-layout", userClasses]);
 
