@@ -61,7 +61,7 @@ export const QBtnDocsProps = [
     optional: true,
     clickableType: false,
     description:
-      'Makes the button navigational. Can be used with the router (e.g to="home") or as a normal href attribute (e.g to="#section-id").',
+      'Makes the button navigational. Can be used with the router (e.g to="/home") or as a normal href attribute (e.g to="#section-id").',
     default: "undefined",
   },
   {

@@ -87,7 +87,7 @@ export const QChipDocsProps = [
     optional: true,
     clickableType: false,
     description:
-      'Makes the chip navigational. Can be used with the router (e.g to="home") or as a normal href attribute (e.g to="#section-id").',
+      'Makes the chip navigational. Can be used with the router (e.g to="/home") or as a normal href attribute (e.g to="#section-id").',
     default: "undefined",
   },
 ];

@@ -7,4 +7,12 @@ export const QToolbarDocsProps = [
     description: "",
     default: "",
   },
+  {
+    name: "height",
+    type: "string | number",
+    optional: false,
+    clickableType: false,
+    description: "",
+    default: "",
+  },
 ];

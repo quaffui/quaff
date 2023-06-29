@@ -6,7 +6,7 @@ export const QBreadcrumbsDocsProps = [
     clickableType: false,
     description:
       'Separator to use between the breadcrumb elements. To use an icon, prefix with "icon:" followed by the name of the icon.',
-    default: "",
+    default: "/",
   },
   {
     name: "gutter",
@@ -69,7 +69,7 @@ export const QBreadcrumbsElDocsProps = [
     optional: true,
     clickableType: false,
     description:
-      'Makes the breadcrumb element navigational. Can be used with the router (e.g to="home") or as a normal href attribute (e.g to="#section-id")',
+      'Makes the breadcrumb element navigational. Can be used with the router (e.g to="/home") or as a normal href attribute (e.g to="#section-id")',
     default: "undefined",
   },
   {
@@ -78,7 +78,7 @@ export const QBreadcrumbsElDocsProps = [
     optional: true,
     clickableType: false,
     description:
-      'Also makes the breadcrumb element navigational. Can be used with the router (e.g to="home") or as a normal href attribute (e.g to="#section-id")',
+      'Also makes the breadcrumb element navigational. Can be used with the router (e.g to="/home") or as a normal href attribute (e.g to="#section-id")',
     default: "undefined",
   },
   {
