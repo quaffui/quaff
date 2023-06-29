@@ -12,9 +12,10 @@
   export { userClasses as class };
   export { userStyles as style };
 
+  let fillProp: { class?: string; backgroundColor?: string };
   $: fillProp =
     fill === undefined || fill === false
-      ? undefined
+      ? {}
       : fill === true || fill === ""
       ? { class: "primary-container" }
       : fill.startsWith("#")
@@ -32,7 +33,7 @@
     fillProp?.class,
   ]);
 
-  $: style = fillProp?.backgroundColor ? createStyles(fillProp, userStyles) : undefined;
+  $: style = createStyles({ ...fillProp }, userStyles);
 </script>
 
 <article class={classes} {...$$restProps} {style}>
