@@ -158,27 +158,23 @@
     </QToolbar>
     <QRailbar slot="railbarLeft" class="surface no-round" bordered>
       <QList>
-        <QItem to="/" style="gap: 0.25em" on:click={() => (selectedRailbarItem = null)}>
+        <QItem to="/" on:click={() => (selectedRailbarItem = null)}>
           <QIcon name="home" />
           <QItemSection>Home</QItemSection>
         </QItem>
-        <QItem
-          to="/components"
-          style="gap: 0.25em"
-          on:click={() => (selectedRailbarItem = "components")}
-        >
+        <QItem to="/components" on:click={() => (selectedRailbarItem = "components")}>
           <QIcon name="grid_view" />
           <QItemSection>Components</QItemSection>
         </QItem>
-        <QItem to="/utils" style="gap: 0.25em" on:click={() => (selectedRailbarItem = "utils")}>
+        <QItem to="/utils" on:click={() => (selectedRailbarItem = "utils")}>
           <QIcon name="construction" />
           <QItemSection>Quaff utils</QItemSection>
         </QItem>
-        <QItem to="/dev" style="gap: 0.25em" on:click={() => (selectedRailbarItem = null)}>
+        <QItem to="/dev" on:click={() => (selectedRailbarItem = null)}>
           <QIcon name="code" />
           <QItemSection>Dev tests</QItemSection>
         </QItem>
-        <QItem to="/layout" style="gap: 0.25em" on:click={() => (selectedRailbarItem = null)}>
+        <QItem to="/layout" on:click={() => (selectedRailbarItem = null)}>
           <QIcon name="dashboard_customize" />
           <QItemSection>Layout tests</QItemSection>
         </QItem>
