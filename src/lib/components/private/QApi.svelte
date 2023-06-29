@@ -98,6 +98,7 @@
             {#if isProp(doc, index) && doc.clickableType}
               <QDrawer
                 side="right"
+                class="no-padding"
                 style="height: fit-content; max-height: 400%; overflow: auto"
                 bind:value={drawer[QDocument.name][doc.name]}
                 width="50%"
@@ -134,7 +135,7 @@
                   {/if}
                 </span>
               </div>
-              <div slot="line1" class="q-mt-sm">{doc.description}</div>
+              <div slot="line1" class="q-mt-sm prop-description">{@html doc.description}</div>
             </QItemSection>
           </QItem>
         {/each}
@@ -162,5 +163,9 @@
     margin: 0;
     padding: 1em;
     border-radius: inherit;
+  }
+
+  :global(.prop-description > a:hover) {
+    color: var(--primary);
   }
 </style>
