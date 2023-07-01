@@ -24,8 +24,8 @@
   let footer = true;
   let leftRailbar = true;
   let leftDrawer = true;
-  let rightRailbar = true;
-  let rightDrawer = true;
+  let rightRailbar = false;
+  let rightDrawer = false;
 
   $: snippets = snippet(view, [header, footer, leftRailbar, leftDrawer, rightRailbar, rightDrawer]);
 
