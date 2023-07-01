@@ -8,7 +8,7 @@
     loading: QBtnProps["loading"] = false,
     unelevated: QBtnProps["unelevated"] = false,
     outline: QBtnProps["outline"] = false,
-    round: QBtnProps["round"] = true,
+    rectangle: QBtnProps["rectangle"] = false,
     flat: QBtnProps["flat"] = false,
     to: QBtnProps["to"] = undefined,
     size: QBtnProps["size"] = undefined,
@@ -24,7 +24,7 @@
   $: classes = createClasses([
     "q-btn",
     !unelevated && !flat && "small-elevate",
-    !round && "small-round",
+    rectangle && "small-round",
     outline && "border",
     flat && "transparent",
     !$$slots.default && !label && "circle",

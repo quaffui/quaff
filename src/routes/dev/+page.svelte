@@ -187,7 +187,7 @@
     <QBtn class="q-ma-sm" icon="add" label="Disabled" disable />
     <QBtn class="q-ma-sm" label="Unelevated" unelevated />
     <QBtn class="q-ma-sm" label="Outline" outline />
-    <QBtn class="q-ma-sm" label="Round" round />
+    <QBtn class="q-ma-sm" label="Rectangle" rectangle />
     <QBtn class="q-ma-sm" label="Flat" flat />
     <QBtn class="q-ma-sm" icon="open_in_new" label="With router link" to="/layout" />
   </QCard>
@@ -203,11 +203,11 @@
   </QCard>
   <QCard title="Toolbar">
     <QToolbar class="text-primary q-mt-md">
-      <QBtn icon="menu" flat round />
+      <QBtn icon="menu" flat />
       <h5 class="max center-align">Title</h5>
-      <QBtn flat round icon="attach_file" />
-      <QBtn flat round icon="today" />
-      <QBtn flat round icon="more_vert" />
+      <QBtn flat icon="attach_file" />
+      <QBtn flat icon="today" />
+      <QBtn flat icon="more_vert" />
     </QToolbar>
   </QCard>
   <QCard title="List">

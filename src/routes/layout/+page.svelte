@@ -18,13 +18,13 @@
 
 <QLayout view="hHh LpR fFr" leftRailbarWidth="120">
   <QToolbar slot="header" class="primary-container">
-    <QBtn icon="menu" flat round on:click={() => leftDrawer?.toggle()} />
+    <QBtn icon="menu" flat on:click={() => leftDrawer?.toggle()} />
     <h5 class="max center-align">
       <a href="/">Go home</a>
     </h5>
-    <QBtn flat round icon="attach_file" />
-    <QBtn flat round icon="today" />
-    <QBtn icon="menu" flat round on:click={() => rightDrawer?.toggle()} />
+    <QBtn flat icon="attach_file" />
+    <QBtn flat icon="today" />
+    <QBtn icon="menu" flat on:click={() => rightDrawer?.toggle()} />
   </QToolbar>
   <QRailbar slot="railbarLeft" bordered width="120">
     <QList>

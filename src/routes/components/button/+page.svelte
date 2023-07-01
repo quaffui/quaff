@@ -38,7 +38,7 @@
 
       <QBtn class="q-ma-sm" label="Outline" outline />
 
-      <QBtn class="q-ma-sm" label="Round" round />
+      <QBtn class="q-ma-sm" label="Rectangle" rectangle />
 
       <QBtn class="q-ma-sm" label="Flat" flat />
     </QDocsSection>

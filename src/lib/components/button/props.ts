@@ -40,10 +40,10 @@ export interface QBtnProps extends NativeProps {
   outline?: boolean;
 
   /**
-   * Use round design for the button, adding a border-radius to it.
-   * @default true
+   * Use rectangle design for the button, removing the large border-radius.
+   * @default false
    */
-  round?: boolean;
+  rectangle?: boolean;
 
   /**
    * Makes the button navigational. Can be used with the router (e.g to="/home") or as a normal href attribute (e.g to="#section-id").

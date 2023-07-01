@@ -154,7 +154,7 @@
         round
         on:click={() => $Quaff.dark.toggle()}
       />
-      <QBtn icon="help" flat round />
+      <QBtn icon="help" flat />
     </QToolbar>
     <QRailbar slot="railbarLeft" class="surface no-round" bordered>
       <QList>
