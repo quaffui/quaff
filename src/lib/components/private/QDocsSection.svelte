@@ -3,6 +3,7 @@
   import QTooltip from "../tooltip/QTooltip.svelte";
   import { Prism } from "prismjs";
   import "prism-svelte";
+  import QBtn from "../button/QBtn.svelte";
 
   export let title, snippets;
 
@@ -44,12 +45,12 @@
       modal
     >
       <div>
-        <h4>{title}</h4>
-        <QTooltip position="right">
-          {tooltipContent}
-        </QTooltip>
+        <div class="flex between-align middle-align">
+          <h4>{title}</h4>
+          <QBtn size="sm" icon="content_copy" outline on:click={copySnippet}>{tooltipContent}</QBtn>
+        </div>
         <!-- svelte-ignore a11y-click-events-have-key-events -->
-        <pre class="language-svelte" on:click={copySnippet}><code
+        <pre class="language-svelte"><code
             >{@html snippets[title]?.html || "/* No snippet found */"}</code
           ></pre>
       </div>
@@ -59,10 +60,7 @@
 </div>
 
 <style>
-  :global(.snippet-dialog) {
-    overflow: visible;
-  }
   pre {
-    cursor: pointer;
+    max-height: 400px;
   }
 </style>
