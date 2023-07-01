@@ -31,9 +31,11 @@ function parseSvelteFile(svelteFilePath: string) {
 }
 
 export function parseSnippets() {
+  const componentsToIgnore = ["layout"];
+
   const componentDirs = fs
     .readdirSync(rootDir, { withFileTypes: true })
-    .filter((dirent) => dirent.isDirectory())
+    .filter((dirent) => dirent.isDirectory() && !componentsToIgnore.includes(dirent.name))
     .map((dirent) => dirent.name);
 
   for (const dir of componentDirs) {

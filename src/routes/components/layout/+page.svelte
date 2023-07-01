@@ -15,24 +15,26 @@
   import QToolbar from "$lib/components/toolbar/QToolbar.svelte";
   import { createStyles } from "$lib/utils/props";
 
-  import snippets from "./docs.snippets";
+  import { snippet } from "./docs.snippets";
 
   let displayLeftDrawer = false;
   let view: QLayoutProps["view"] = "hhh lpr fff";
 
   let header = true;
   let footer = true;
-  let leftRailBar = true;
+  let leftRailbar = true;
   let leftDrawer = true;
-  let rightRailBar = true;
+  let rightRailbar = true;
   let rightDrawer = true;
+
+  $: snippets = snippet(view, [header, footer, leftRailbar, leftDrawer, rightRailbar, rightDrawer]);
 
   $: style =
     createStyles({
       "--header-height": header ? "64px" : "0px",
       "--footer-height": footer ? "80px" : "0px",
-      "--left-railbar-width": leftRailBar ? "88px" : "0px",
-      "--right-railbar-width": rightRailBar ? "88px" : "0px",
+      "--left-railbar-width": leftRailbar ? "88px" : "0px",
+      "--right-railbar-width": rightRailbar ? "88px" : "0px",
       "--left-drawer-width": leftDrawer ? "300px" : "0px",
       "--right-drawer-width": rightDrawer ? "300px" : "0px",
     }) || undefined;
@@ -102,7 +104,7 @@
             {/if}
           </QToolbar>
 
-          <QRailbar style={display(leftRailBar)} slot="railbarLeft" bordered>
+          <QRailbar style={display(leftRailbar)} slot="railbarLeft" bordered>
             <QList>
               <QItem to="#">
                 <QIcon name="home" />
@@ -122,7 +124,7 @@
               </QItem>
             </QList>
           </QRailbar>
-          <QRailbar style={display(rightRailBar)} slot="railbarRight" side="right" bordered>
+          <QRailbar style={display(rightRailbar)} slot="railbarRight" side="right" bordered>
             <QList>
               <QItem to="#">
                 <QIcon name="home" />
@@ -213,8 +215,8 @@
             style="height: fit-content; width: fit-content"
           >
             <QToggle label="Header" bind:value={header} />
-            <QToggle label="Left Railbar" bind:value={leftRailBar} />
-            <QToggle label="Right Railbar" bind:value={rightRailBar} />
+            <QToggle label="Left Railbar" bind:value={leftRailbar} />
+            <QToggle label="Right Railbar" bind:value={rightRailbar} />
             <QToggle label="Left Drawer" bind:value={leftDrawer} />
             <QToggle label="Right Drawer" bind:value={rightDrawer} />
             <QToggle label="Footer" bind:value={footer} />
