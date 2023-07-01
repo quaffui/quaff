@@ -1,9 +1,6 @@
 <script>
-  import QDialog from "../dialog/QDialog.svelte";
-  import QTooltip from "../tooltip/QTooltip.svelte";
-  import { Prism } from "prismjs";
+  import { QBtn, QDialog } from "$lib";
   import "prism-svelte";
-  import QBtn from "../button/QBtn.svelte";
 
   export let title, snippets;
 
@@ -37,24 +34,27 @@
 <div style="margin-bottom:48px">
   <div class="row q-mb-md">
     <h5>{title}</h5>
-    <QDialog
-      class="snippet-dialog"
-      bind:value={dialog}
-      btnAttrs={{ outline: true, icon: "code", class: "circle" }}
-      on:btnClick={() => (dialog = true)}
-      modal
-    >
-      <div>
-        <div class="flex between-align middle-align">
-          <h4>{title}</h4>
-          <QBtn size="sm" icon="content_copy" outline on:click={copySnippet}>{tooltipContent}</QBtn>
+    {#if snippets}
+      <QDialog
+        class="snippet-dialog"
+        bind:value={dialog}
+        btnAttrs={{ outline: true, icon: "code", class: "circle" }}
+        on:btnClick={() => (dialog = true)}
+        modal
+      >
+        <div>
+          <div class="flex between-align middle-align">
+            <h4>{title}</h4>
+            <QBtn size="sm" icon="content_copy" outline on:click={copySnippet}>
+              {tooltipContent}
+            </QBtn>
+          </div>
+          <pre class="language-svelte"><code
+              >{@html snippets[title]?.html || "/* No snippet found */"}</code
+            ></pre>
         </div>
-        <!-- svelte-ignore a11y-click-events-have-key-events -->
-        <pre class="language-svelte"><code
-            >{@html snippets[title]?.html || "/* No snippet found */"}</code
-          ></pre>
-      </div>
-    </QDialog>
+      </QDialog>
+    {/if}
   </div>
   <slot />
 </div>
