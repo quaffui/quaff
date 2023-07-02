@@ -94,6 +94,10 @@
       to: "/components/tabs",
     },
     {
+      name: "Table",
+      to: "/components/table",
+    },
+    {
       name: "Toggle",
       to: "/components/toggle",
     },

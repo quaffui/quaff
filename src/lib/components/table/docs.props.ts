@@ -1,0 +1,42 @@
+export const QTableDocsProps = [
+  {
+    name: "columns",
+    type: "QTableColumn[]",
+    optional: false,
+    clickableType: false,
+    description: "Column definitions of the Table",
+    default: "",
+  },
+  {
+    name: "rows",
+    type: "QTableRow[]",
+    optional: false,
+    clickableType: false,
+    description: "Rows of the Table",
+    default: "",
+  },
+  {
+    name: "flat",
+    type: "boolean",
+    optional: true,
+    clickableType: false,
+    description: "Uses flat design (no shadow)",
+    default: "",
+  },
+  {
+    name: "bordered",
+    type: "boolean",
+    optional: true,
+    clickableType: false,
+    description: "Adds a border around the table",
+    default: "",
+  },
+  {
+    name: "dense",
+    type: "boolean",
+    optional: false,
+    clickableType: false,
+    description: "Shows the Table in dense mode (takes up less space)",
+    default: "",
+  },
+];
