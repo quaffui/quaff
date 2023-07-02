@@ -43,11 +43,11 @@
   let numberOf: number = rows.length;
 
   $: numberFrom = rowsPerPage * page - rowsPerPage + 1;
-  $: numberTo = rowsPerPage * page;
+  $: numberTo = rowsPerPage * page > rows.length ? rows.length : rowsPerPage * page;
   $: numberOf = rows.length;
   $: rowsPaginated = rowsSorted.slice(numberFrom - 1, numberTo);
   $: {
-    if (rowsPerPage * page > rows.length) {
+    if (rowsPerPage * (page - 1) >= rows.length) {
       page = 1;
     }
   }
