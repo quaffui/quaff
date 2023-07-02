@@ -1,33 +1,53 @@
 import type { NativeProps } from "$lib/utils/types";
-import type { QTableColumn, QTableRow } from "./types.js";
-import { NativePropsDefaults } from "$lib/utils/types";
+
+export type QTableColumn = {
+  name: string;
+  required?: boolean;
+  label: string;
+  align?: "left" | "center" | "right";
+  field: string | ((row: QTableRow) => string);
+  format?: (val: string) => string;
+  sortable?: boolean;
+  sort?: (a: string, b: string) => number;
+};
+
+export type QTableRow = {
+  [key: string]: string | number;
+};
+
+export type QTableSort = {
+  columnField: string | ((row: QTableRow) => string);
+  type: "asc" | "desc";
+} | null;
 
 export interface QTableProps extends NativeProps {
   /**
-   * Column definitions of the Table
+   * Column definitions of the table.
+   * @default []
    */
   columns: QTableColumn[];
+
   /**
-   * Rows of the Table
+   * Rows of the table.
+   * @default []
    */
   rows: QTableRow[];
+
   /**
-   * Uses flat design (no shadow)
+   * Uses flat design, removing the box-shadow around the table.
+   * @default false
    */
   flat?: boolean;
+
   /**
-   * Adds a border around the table
+   * Adds a border around the table.
+   * @default false
    */
   bordered?: boolean;
+
   /**
-   * Shows the Table in dense mode (takes up less space)
+   * Shows the Table in dense mode (takes up less space).
+   * @default false
    */
   dense: boolean;
 }
-
-export const QTablePropsDefaults: QTableProps = {
-  columns: [],
-  rows: [],
-  dense: false,
-  ...NativePropsDefaults,
-};
