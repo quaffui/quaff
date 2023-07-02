@@ -66,8 +66,15 @@ export default function parseInterface(fileName: string) {
           curProp.optional = !!member.questionToken;
 
           let type = checker.getTypeAtLocation(member);
-          curProp.clickableType =
-            type.aliasSymbol !== undefined || curProp.type !== checker.typeToString(type);
+
+          if (member.type && ts.isArrayTypeNode(member.type)) {
+            const elementTypeNode = member.type!.elementType;
+
+            curProp.clickableType = ts.isTypeReferenceNode(elementTypeNode);
+          } else {
+            curProp.clickableType =
+              type.aliasSymbol !== undefined || curProp.type !== checker.typeToString(type);
+          }
 
           curProp = { ...curProp, ...getJSDocComment(member) };
 
