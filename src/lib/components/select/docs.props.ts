@@ -19,7 +19,7 @@ export const QSelectDocsProps = [
     name: "options",
     type: "QSelectOption[]",
     optional: false,
-    clickableType: false,
+    clickableType: true,
     description: "",
     default: "",
   },

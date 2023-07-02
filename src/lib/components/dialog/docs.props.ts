@@ -48,12 +48,12 @@ export const QBtnDocsProps = [
     default: "false",
   },
   {
-    name: "round",
+    name: "rectangle",
     type: "boolean",
     optional: true,
     clickableType: false,
-    description: "Use round design for the button, adding a border-radius to it.",
-    default: "true",
+    description: "Use rectangle design for the button, removing the large border-radius.",
+    default: "false",
   },
   {
     name: "to",
