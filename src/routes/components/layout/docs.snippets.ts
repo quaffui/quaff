@@ -1,7 +1,5 @@
 import type { QLayoutProps } from "$lib/components/layout/props";
 import { capitalize } from "$lib/utils/string";
-import Prism from "prismjs";
-import "prism-svelte";
 
 export const snippet = (
   view: QLayoutProps["view"],
@@ -88,15 +86,9 @@ ${
     footer ? "\n" + footerSnippet + "\n" : ""
   }</Qlayout>`;
 
+  console.log(resultSnippet);
+
   return {
-    "Trying different layouts": {
-      text: resultSnippet,
-      html: Prism.highlight(resultSnippet, Prism.languages.svelte, "svelte").replaceAll(
-        `<span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span><span class="token punctuation">"</span></span>`,
-        ""
-      ),
-    },
+    "Trying different layouts": resultSnippet,
   };
 };
-
-export default {};
