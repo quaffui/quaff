@@ -7,14 +7,19 @@
     QComponentType,
     QComponentEvent,
   } from "$lib/utils/types";
-  import { QCard, QIcon, QTabs, QTab, QCardSection, QList, QItem, QItemSection } from "$lib";
-
-  import Prism from "prismjs";
-  import "prismjs/themes/prism-twilight.css";
-  import "prismjs/components/prism-typescript";
-
+  import {
+    QCard,
+    QIcon,
+    QTabs,
+    QTab,
+    QCardSection,
+    QList,
+    QItem,
+    QItemSection,
+    QDrawer,
+    QCodeBlock,
+  } from "$lib";
   import Types from "$utils/types.json";
-  import QDrawer from "../drawer/QDrawer.svelte";
 
   export let QComponentDocs: QComponentDocs[];
 
@@ -27,7 +32,7 @@
       ),
     ])
   );
-  let drawerContent: string = "";
+  let drawerContent: string | undefined = "";
 
   function isProp(
     doc: QComponentProp | QComponentSlot | QComponentType | QComponentEvent,
@@ -45,18 +50,11 @@
   function getType(type: string) {
     type = type.replace("[]", "");
     let found = type in Types ? Types[type as keyof typeof Types] : undefined;
-
-    let prism = Prism.highlight(
-      found || "/* Couldn't find this type */",
-      Prism.languages.typescript,
-      "typescript"
-    );
-    console.log({ type, found, prism });
-    return prism;
+    return found;
   }
 
   function handleDrawer(QDocument: QComponentDocs, doc: QComponentProp) {
-    let content = getType(doc.type).trim();
+    let content = getType(doc.type);
     if (!drawer[QDocument.name][doc.name]) {
       drawerContent = content;
       drawer[QDocument.name][doc.name] = true;
@@ -99,13 +97,11 @@
               <QDrawer
                 side="right"
                 class="no-padding"
-                style="height: fit-content; max-height: 400%; overflow: auto"
+                style="height: fit-content; max-height: 400%; overflow: auto; border-top-left-radius: 0.5em; border-bottom-left-radius: 0.5em"
                 bind:value={drawer[QDocument.name][doc.name]}
                 width="50%"
               >
-                <pre class="language-typescript" style="height: 100%"><code
-                    style="white-space: pre-line">{@html drawerContent}</code
-                  ></pre>
+                <QCodeBlock language="ts" code={drawerContent} />
               </QDrawer>
             {/if}
             <QItemSection type="content" style="overflow: visible">

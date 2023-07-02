@@ -1,34 +1,10 @@
 <script>
-  import { QBtn, QDialog } from "$lib";
-  import "prism-svelte";
+  import { QDialog } from "$lib";
+  import QCodeBlock from "../codeBlock/QCodeBlock.svelte";
 
   export let title, snippets;
 
   let dialog = false;
-  let tooltipContent = "Copy";
-
-  async function copySnippet() {
-    try {
-      if (navigator.clipboard.write) {
-        let blob = new Blob([snippets[title].text], { type: "text/plain" });
-        let item = new ClipboardItem({ "text/plain": blob });
-        await navigator.clipboard.write([item]);
-      } else {
-        await navigator.clipboard.writeText(snippets[title].text);
-      }
-
-      tooltipContent = "Copied!";
-      setTimeout(() => {
-        tooltipContent = "Copy";
-      }, 3000);
-    } catch (e) {
-      console.log({ e });
-      tooltipContent = "Error while copying...";
-      setTimeout(() => {
-        tooltipContent = "Copy";
-      }, 3000);
-    }
-  }
 </script>
 
 <div style="margin-bottom:48px">
@@ -42,17 +18,7 @@
         on:btnClick={() => (dialog = true)}
         modal
       >
-        <div>
-          <div class="flex between-align middle-align">
-            <h4>{title}</h4>
-            <QBtn size="sm" icon="content_copy" outline on:click={copySnippet}>
-              {tooltipContent}
-            </QBtn>
-          </div>
-          <pre class="language-svelte"><code
-              >{@html snippets[title]?.html || "/* No snippet found */"}</code
-            ></pre>
-        </div>
+        <QCodeBlock code={snippets[title]} language="svelte" {title} copiable />
       </QDialog>
     {/if}
   </div>

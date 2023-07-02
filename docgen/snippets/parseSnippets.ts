@@ -42,19 +42,13 @@ export function parseSnippets() {
     const dirPath = path.resolve(rootDir, dir);
     const pageFilePath = path.resolve(dirPath, "+page.svelte");
 
-    let snippets: Record<string, { text: string; html: string }> = {};
+    let snippets: Record<string, string> = {};
 
     if (fs.existsSync(pageFilePath)) {
       const sections = parseSvelteFile(pageFilePath);
 
       sections.forEach(({ title, content }) => {
-        snippets[title] = {
-          text: content,
-          html: Prism.highlight(content, Prism.languages.svelte, "svelte").replaceAll(
-            `<span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span><span class="token punctuation">"</span></span>`,
-            ""
-          ),
-        };
+        snippets[title] = content;
       });
     }
 
