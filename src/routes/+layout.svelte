@@ -170,6 +170,10 @@
           <QIcon name="grid_view" />
           <QItemSection>Components</QItemSection>
         </QItem>
+        <QItem to="/grid" on:click={() => (selectedRailbarItem = null)}>
+          <QIcon name="grid_on" />
+          <QItemSection>Grid</QItemSection>
+        </QItem>
         <QItem to="/utils" on:click={() => (selectedRailbarItem = "utils")}>
           <QIcon name="construction" />
           <QItemSection>Quaff utils</QItemSection>

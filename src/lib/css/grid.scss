@@ -1,0 +1,48 @@
+// Grid variables
+$grid-columns: 12;
+$gutter-xs: 4px;
+$gutter-sm: 8px;
+$gutter-md: 16px;
+$gutter-lg: 24px;
+$gutter-xl: 48px;
+
+// Responsive breakpoints
+$breakpoints: (
+  xs: 0px,
+  sm: 600px,
+  md: 960px,
+  lg: 1280px,
+  xl: 1920px
+);
+
+.row {
+  display: grid;
+  grid-template-columns: repeat($grid-columns, 1fr);
+  grid-gap: 0;
+
+  // Gutter classes
+  &.q-gutter-xs { grid-gap: $gutter-xs; }
+  &.q-gutter-sm { grid-gap: $gutter-sm; }
+  &.q-gutter-md { grid-gap: $gutter-md; }
+  &.q-gutter-lg { grid-gap: $gutter-lg; }
+  &.q-gutter-xl { grid-gap: $gutter-xl; }
+  &.q-gutter-none { grid-gap: 0px; }
+
+  // Column classes for all sizes
+  @for $i from 1 through $grid-columns {
+    & > .col-#{$i} {
+      grid-column: span #{$i};
+    }
+  }
+
+  // Column classes for each breakpoint
+  @each $breakpoint, $min-width in $breakpoints {
+    @media (min-width: #{$min-width}) {
+      @for $i from 1 through $grid-columns {
+        & > .col-#{$breakpoint}-#{$i} {
+          grid-column: span #{$i};
+        }
+      }
+    }
+  }
+}
