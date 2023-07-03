@@ -40,7 +40,7 @@
   $: isActive = isRouteActive($Quaff.router, to);
 
   $: classes = createClasses([
-    "q-item row",
+    "q-item",
     $hasMultiplLines && "multiline",
     dense && "dense",
     hasLink && active && "q-item--active",
