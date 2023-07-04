@@ -3,9 +3,8 @@
   import "beercss/dist/cdn/material-symbols-outlined.woff2";
   import "beercss/dist/cdn/material-symbols-rounded.woff2";
   import "beercss/dist/cdn/material-symbols-sharp.woff2";
-  import Prism from "prismjs";
-  import "prism-svelte";
   import "../lib/css/index.scss";
+
   import { Quaff } from "$stores/Quaff";
   import {
     QLayout,
