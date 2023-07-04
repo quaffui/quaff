@@ -85,7 +85,7 @@
   }
 </script>
 
-<QBtn {...btnAttrs} on:click={() => emit("btnClick")}>
+<QBtn {...btnAttrs} on:click={() => (value = !value)} on:click={(event) => emit("btnClick", event)}>
   <slot name="button">
     {btnContent || ""}
   </slot>
