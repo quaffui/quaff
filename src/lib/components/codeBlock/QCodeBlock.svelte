@@ -45,8 +45,8 @@
 
 <div class="q-code-block">
   {#if copiable}
-    <div class="flex between-align middle-align">
-      <h4>{title}</h4>
+    <div class="flex between-align middle-align q-pb-sm">
+      <h4 class="q-ma-none q-pr-lg">{title}</h4>
       <QBtn
         class="{btnColor}-border {btnColor}-text"
         size="sm"
