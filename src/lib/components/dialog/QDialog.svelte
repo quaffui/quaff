@@ -14,7 +14,6 @@
     persistent: QDialogProps["persistent"] = false,
     userClasses: QDialogProps["userClasses"] = undefined;
   export { userClasses as class };
-  export { hide, show, toggle };
 
   const emit = createEventDispatcher();
   let dialogElement: HTMLDialogElement | null = null;
@@ -43,17 +42,17 @@
       : dialogElement?.show()
     : dialogElement?.close();
 
-  function hide() {
+  export function hide() {
     if (value === true) {
       value = false;
     }
   }
-  function show() {
+  export function show() {
     if (value === false) {
       value = true;
     }
   }
-  function toggle() {
+  export function toggle() {
     value = !value;
   }
 
