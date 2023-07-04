@@ -6,6 +6,7 @@
   import { clickOutsideDialog } from "$lib/helpers";
 
   export let value: QDialogProps["value"] = false,
+    noBtn: QDialogProps["noBtn"] = false,
     btnContent: QDialogProps["btnContent"] = undefined,
     btnAttrs: QDialogProps["btnAttrs"] = {},
     position: QDialogProps["position"] = "default",
@@ -84,11 +85,17 @@
   }
 </script>
 
-<QBtn {...btnAttrs} on:click={() => (value = !value)} on:click={(event) => emit("btnClick", event)}>
-  <slot name="button">
-    {btnContent || ""}
-  </slot>
-</QBtn>
+{#if noBtn === false}
+  <QBtn
+    {...btnAttrs}
+    on:click={() => (value = !value)}
+    on:click={(event) => emit("btnClick", event)}
+  >
+    <slot name="button">
+      {btnContent || ""}
+    </slot>
+  </QBtn>
+{/if}
 
 <dialog
   use:clickOutsideDialog={handleClickHide}
