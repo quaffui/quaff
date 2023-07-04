@@ -37,6 +37,10 @@
     &.multiline {
       padding-block: 12px;
     }
+
+    &::after {
+      background-image: radial-gradient(circle, rgb(150 150 150 / 0.2) 1%, transparent 1%);
+    }
   }
 
   &.multiline {
