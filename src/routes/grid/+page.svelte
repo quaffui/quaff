@@ -11,7 +11,9 @@
 
   <div class="row">
     {#each Array(4) as _, idx}
-      <div class="col-xs-12 col-md-6 col-lg-3 {idx % 2 === 0 ? 'primary' : 'secondary'}">
+      <div
+        class="col-xs-12 col-md-6 col-lg-3 {idx % 2 === 0 ? 'primary' : 'secondary'} center-align"
+      >
         col-xs-12 col-md-6 col-lg-3
       </div>
     {/each}
@@ -24,14 +26,19 @@
     md, lg, xl or none.
   </p>
 
-  {#each ["xs", "sm", "md", "lg", "xl", "none"] as size}
+  {#each ["xs", "sm", "md", "lg", "xl", "none"] as size, index}
     <h4>{size}</h4>
 
     <div class="row q-gutter-{size}">
-      <div class="col-6 primary">col-6</div>
-      <div class="col-6 primary">col-6</div>
-      <div class="col-6 primary">col-6</div>
-      <div class="col-6 primary">col-6</div>
+      <div class="border center-align col-6 primary">col-6</div>
+      <div class="border center-align col-6 secondary">col-6</div>
+      <div class="border center-align col-4 primary">col-4</div>
+      <div class="border center-align col-4 secondary">col-4</div>
+      <div class="border center-align col-4 primary">col-4</div>
+      <div class="border center-align col-3 primary">col-3</div>
+      <div class="border center-align col-3 secondary">col-3</div>
+      <div class="border center-align col-3 primary">col-3</div>
+      <div class="border center-align col-3 secondary">col-3</div>
     </div>
   {/each}
 
