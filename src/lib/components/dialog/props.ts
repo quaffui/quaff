@@ -11,6 +11,12 @@ export interface QDialogProps extends NativeProps {
   value?: boolean;
 
   /**
+   * Wether the dialog should have a trigger button or not.
+   * @default false
+   */
+  noBtn?: boolean;
+
+  /**
    * The content to be displayed on the dialog button.
    * @default undefined
    */
