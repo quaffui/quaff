@@ -89,7 +89,7 @@
         {/each}
       </QTabs>
     </div>
-    <QCardSection style="max-height: 400px; overflow-y: scroll">
+    <QCardSection style="max-height: 416px; overflow-y: scroll">
       <QList separator bordered style="overflow:hidden">
         {#each QDocument.docs[api[index]] as doc}
           <QItem style="overflow: visible">
