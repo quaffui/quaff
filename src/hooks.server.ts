@@ -1,7 +1,7 @@
 import type { Handle } from "@sveltejs/kit";
 
 export const handle: Handle = async ({ event, resolve }) => {
-  let stored_mode = event.cookies.get("current_mode");
+  let stored_mode = event.cookies.get("current_mode") || "light";
 
   const response = await resolve(event, {
     transformPageChunk: ({ html }) => html.replace('class=""', `class="${stored_mode}"`),

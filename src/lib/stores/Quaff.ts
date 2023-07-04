@@ -1,9 +1,5 @@
 import { writable, derived } from "svelte/store";
 import { page } from "$app/stores";
-import { browser } from "$app/environment";
-
-const getCookieValue = (cookie: string, name: string): string | null =>
-  cookie.match("(^|;)\\s*" + name + "\\s*=\\s*([^;]+)")?.pop() || null;
 
 function quaff() {
   const { subscribe, set, update } = writable({
@@ -26,7 +22,7 @@ function quaff() {
       }
 
       let mode = q.dark === true ? "dark" : "light";
-      document.cookie = `current_mode=${mode};max-age=31536000;path="/"`;
+      document.cookie = `current_mode=${mode}; max-age=31536000; path="/"; SameSite=strict`;
 
       return q;
     });
