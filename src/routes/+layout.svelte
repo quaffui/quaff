@@ -115,6 +115,7 @@
       to: "/utils/quaff",
     },
   ];
+  let contentEl: HTMLDivElement | null = null;
 
   let selectedRailbarItem: "components" | "utils" | null = isRouteActive(
     $Quaff.router,
@@ -190,11 +191,13 @@
     <QDrawer slot="drawerLeft" persistent value={showDrawer}>
       <QList dense>
         {#each drawerContent as { name, to }}
-          <QItem {to}>{name}</QItem>
+          <QItem {to} on:click={() => contentEl?.scrollTo({ top: 0, behavior: "smooth" })}
+            >{name}</QItem
+          >
         {/each}
       </QList>
     </QDrawer>
-    <div slot="content">
+    <div bind:this={contentEl} slot="content">
       <slot />
     </div>
   </QLayout>
