@@ -151,7 +151,7 @@ export const QListDocsProps = [
   },
   {
     name: "separatorOptions",
-    type: 'QSeparatorProps["textAlign"]\n  };',
+    type: 'QSeparatorProps["textAlign"]\r\n  };',
     optional: false,
     clickableType: true,
     description: "",

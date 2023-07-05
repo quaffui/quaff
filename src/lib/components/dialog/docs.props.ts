@@ -92,6 +92,14 @@ export const QDialogDocsProps = [
     default: "false",
   },
   {
+    name: "noBtn",
+    type: "boolean",
+    optional: true,
+    clickableType: false,
+    description: "Wether the dialog should have a trigger button or not.",
+    default: "false",
+  },
+  {
     name: "btnContent",
     type: "string",
     optional: true,
