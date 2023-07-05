@@ -97,7 +97,7 @@
               <QDrawer
                 side="right"
                 class="no-padding"
-                style="height: fit-content; max-height: 400%; overflow: auto; border-top-left-radius: 0.5em; border-bottom-left-radius: 0.5em"
+                style="height: fit-content; max-height: 400%; overflow: auto; border-radius: 0;"
                 bind:value={drawer[QDocument.name][doc.name]}
                 width="50%"
               >
