@@ -1,14 +1,9 @@
 <script lang="ts">
   import QBtn from "$lib/components/button/QBtn.svelte";
-  import QCard from "$lib/components/card/QCard.svelte";
-  import QCardActions from "$lib/components/card/QCardActions.svelte";
-  import QCardSection from "$lib/components/card/QCardSection.svelte";
-  import QCheckbox from "$lib/components/checkbox/QCheckbox.svelte";
   import QDialog from "$lib/components/dialog/QDialog.svelte";
   import { QDialogDocs } from "$lib/components/dialog/docs";
   import QDocs from "$lib/components/private/QDocs.svelte";
   import QDocsSection from "$lib/components/private/QDocsSection.svelte";
-  import QToggle from "$lib/components/toggle/QToggle.svelte";
   import DialogContent from "./DialogContent.svelte";
   import snippets from "./docs.snippets";
 
@@ -18,45 +13,49 @@
   }
 
   let exampleDialog: Dialog = {
-    el: null,
-    value: false,
-  };
-  let topDialog: Dialog = {
-    el: null,
-    value: false,
-  };
-  let defaultDialog: Dialog = {
-    el: null,
-    value: false,
-  };
-  let rightDialog: Dialog = {
-    el: null,
-    value: false,
-  };
-  let bottomDialog: Dialog = {
-    el: null,
-    value: false,
-  };
-  let leftDialog: Dialog = {
-    el: null,
-    value: false,
-  };
-  let modalDialog: Dialog = {
-    el: null,
-    value: false,
-  };
-  let persistentDialog: Dialog = {
-    el: null,
-    value: false,
-  };
-  let fullscreenDialog: Dialog = {
-    el: null,
-    value: false,
-  };
-  let methodsDialog: Dialog = {
-    el: null,
-    value: false,
-  };
+      el: null,
+      value: false,
+    },
+    topDialog: Dialog = {
+      el: null,
+      value: false,
+    },
+    defaultDialog: Dialog = {
+      el: null,
+      value: false,
+    },
+    rightDialog: Dialog = {
+      el: null,
+      value: false,
+    },
+    bottomDialog: Dialog = {
+      el: null,
+      value: false,
+    },
+    leftDialog: Dialog = {
+      el: null,
+      value: false,
+    },
+    modalDialog: Dialog = {
+      el: null,
+      value: false,
+    },
+    persistentDialog: Dialog = {
+      el: null,
+      value: false,
+    },
+    fullscreenDialog: Dialog = {
+      el: null,
+      value: false,
+    },
+    methodsDialog: Dialog = {
+      el: null,
+      value: false,
+    },
+    btnAttrsDialog: Dialog = {
+      el: null,
+      value: false,
+    };
 </script>
 
 <QDocs QComponentDocs={QDialogDocs}>
@@ -133,13 +132,24 @@
       </QDialog>
     </QDocsSection>
 
-    <QDocsSection {snippets} title="Methods and noBtn">
+    <QDocsSection {snippets} title="noBtn and programmatic toggle">
       <QDialog bind:this={methodsDialog.el} bind:value={methodsDialog.value} noBtn persistent>
         <DialogContent dialogEl={methodsDialog.el} />
       </QDialog>
       <QBtn on:click={() => methodsDialog.el?.show()}>Show</QBtn>
       <QBtn on:click={() => methodsDialog.el?.hide()}>Hide</QBtn>
       <QBtn on:click={() => methodsDialog.el?.toggle()}>Toggle</QBtn>
+    </QDocsSection>
+
+    <QDocsSection {snippets} title="Custom button attributes">
+      <QDialog
+        bind:this={btnAttrsDialog.el}
+        bind:value={btnAttrsDialog.value}
+        btnContent="Custom button styles"
+        btnAttrs={{ icon: "star", rectangle: true, outline: true }}
+      >
+        <DialogContent dialogEl={btnAttrsDialog.el} />
+      </QDialog>
     </QDocsSection>
   </div>
 </QDocs>
