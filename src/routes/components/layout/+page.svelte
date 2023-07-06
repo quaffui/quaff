@@ -10,6 +10,7 @@
   import QList from "$lib/components/list/QList.svelte";
   import QDocs from "$lib/components/private/QDocs.svelte";
   import QDocsSection from "$lib/components/private/QDocsSection.svelte";
+  import QRadio from "$lib/components/radio/QRadio.svelte";
   import QRailbar from "$lib/components/railbar/QRailbar.svelte";
   import QToggle from "$lib/components/toggle/QToggle.svelte";
   import QToolbar from "$lib/components/toolbar/QToolbar.svelte";
@@ -18,7 +19,12 @@
   import { snippet } from "./docs.snippets";
 
   let displayLeftDrawer = false;
-  let view: QLayoutProps["view"] = "hhh lpr fff";
+  let viewArr = [
+    ["h", "h", "h"],
+    ["l", "p", "r"],
+    ["f", "f", "f"],
+  ];
+  $: view = viewArr.map((v) => v.join("")).join(" ") as QLayoutProps["view"];
 
   let header = true;
   let footer = true;
@@ -45,6 +51,14 @@
 
   let leftDrawerShown = true;
   let rightDrawerShown = true;
+
+  $: if (!leftDrawer) {
+    leftDrawerShown = false;
+  } else if (!rightDrawer) {
+    rightDrawerShown = false;
+  }
+
+  $: console.log({ rightDrawerShown });
 </script>
 
 <QDocs QComponentDocs={QLayoutDocs}>
@@ -98,7 +112,29 @@
             {#if leftDrawer}
               <QBtn icon="menu" flat on:click={() => (leftDrawerShown = !leftDrawerShown)} />
             {/if}
-            <div class="max flex center-align">Header</div>
+            <div class="flex column">
+              <QRadio bind:selected={viewArr[0][0]} value="h" label="h" />
+              <QRadio class="no-margin" bind:selected={viewArr[0][0]} value="l" label="l" />
+            </div>
+            <div class="max flex column middle-align">
+              <QRadio
+                style="width: fit-content"
+                bind:selected={viewArr[0][1]}
+                value="h"
+                label="h"
+              />
+              <QRadio
+                style="width: fit-content"
+                class=" no-margin"
+                bind:selected={viewArr[0][1]}
+                value="H"
+                label="H"
+              />
+            </div>
+            <div class="flex column">
+              <QRadio bind:selected={viewArr[0][2]} value="h" label="h" />
+              <QRadio class="no-margin" bind:selected={viewArr[0][2]} value="r" label="r" />
+            </div>
             {#if rightDrawer}
               <QBtn icon="menu" flat on:click={() => (rightDrawerShown = !rightDrawerShown)} />
             {/if}
@@ -203,7 +239,29 @@
             {#if leftDrawer}
               <QBtn icon="menu" flat on:click={() => (leftDrawerShown = !leftDrawerShown)} />
             {/if}
-            <div class="max flex center-align">Footer</div>
+            <div class="flex column">
+              <QRadio bind:selected={viewArr[2][0]} value="f" label="f" />
+              <QRadio class="no-margin" bind:selected={viewArr[2][0]} value="l" label="l" />
+            </div>
+            <div class="max flex column middle-align">
+              <QRadio
+                style="width: fit-content"
+                bind:selected={viewArr[2][1]}
+                value="f"
+                label="f"
+              />
+              <QRadio
+                style="width: fit-content"
+                class=" no-margin"
+                bind:selected={viewArr[2][1]}
+                value="F"
+                label="F"
+              />
+            </div>
+            <div class="flex column">
+              <QRadio bind:selected={viewArr[2][2]} value="f" label="f" />
+              <QRadio class="no-margin" bind:selected={viewArr[2][2]} value="r" label="r" />
+            </div>
             {#if rightDrawer}
               <QBtn icon="menu" flat on:click={() => (rightDrawerShown = !rightDrawerShown)} />
             {/if}
