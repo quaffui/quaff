@@ -16,6 +16,13 @@
     };
     fixed: boolean;
   }
+
+  export type LayoutContext = Readable<{
+    header: AppbarContext;
+    footer: AppbarContext;
+    drawerLeft: DrawerContext;
+    drawerRight: DrawerContext;
+  }>;
 </script>
 
 <script lang="ts">
@@ -23,6 +30,8 @@
   import type { QLayoutProps } from "./props";
   import { createClasses, createStyles } from "$lib/utils/props";
   import ContextReseter from "../private/ContextReseter.svelte";
+  import { derived, writable } from "svelte/store";
+  import type { Readable } from "svelte/store";
 
   export let view: QLayoutProps["view"] = "hhh lpr fff",
     headerHeight: QLayoutProps["headerHeight"] = "64px",
@@ -100,13 +109,10 @@
     };
   }
 
-  $: ctx = prepareCtx(view);
-  $: if (ctx !== undefined) {
-    setContext("header", ctx.header);
-    setContext("footer", ctx.footer);
-    setContext("drawerLeft", ctx.drawerLeft);
-    setContext("drawerRight", ctx.drawerRight);
-  }
+  let viewStore = writable(view);
+  $: viewStore.set(view);
+  let ctx: LayoutContext = derived(viewStore, ($view) => prepareCtx($view));
+  setContext("layout", ctx);
 </script>
 
 <div class={classes} {style} on:scroll on:resize>

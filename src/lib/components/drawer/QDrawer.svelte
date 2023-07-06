@@ -3,7 +3,7 @@
   import { createClasses, createStyles } from "$lib/utils/props";
   import { getContext } from "svelte";
   import type { QDrawerProps } from "./props";
-  import type { DrawerContext } from "../layout/QLayout.svelte";
+  import type { DrawerContext, LayoutContext } from "../layout/QLayout.svelte";
   import { clickOutside } from "$lib/helpers";
 
   export let value: QDrawerProps["value"] = true,
@@ -62,7 +62,10 @@
     hide();
   }
 
-  $: ctx = getContext<DrawerContext | undefined>(side === "left" ? "drawerLeft" : "drawerRight");
+  let ctx = getContext<LayoutContext | undefined>("layout");
+
+  let drawerType: "drawerLeft" | "drawerRight";
+  $: drawerType = side === "left" ? "drawerLeft" : "drawerRight";
 
   $: classes = createClasses([
     "q-drawer",
@@ -71,10 +74,10 @@
     value && "active",
     overlay && "overlay",
     bordered && "bordered",
-    ctx?.offset?.top && "offset-top",
-    ctx?.offset?.bottom && "offset-bottom",
-    ctx?.fixed && "fixed",
-    getBorderRadiusClasses(side, ctx),
+    $ctx && $ctx[drawerType].offset.top && "offset-top",
+    $ctx && $ctx[drawerType].offset.bottom && "offset-bottom",
+    $ctx && $ctx[drawerType].fixed && "fixed",
+    getBorderRadiusClasses(side, $ctx),
     userClasses,
   ]);
 
@@ -85,11 +88,11 @@
     userStyles
   );
 
-  function getBorderRadiusClasses(sideProp: typeof side, context: typeof ctx) {
+  function getBorderRadiusClasses(sideProp: typeof side, context: typeof $ctx) {
     let prefix = "border-radius" + (sideProp === "left" ? "__right" : "__left");
     return createClasses([
-      context?.offset?.top !== false ? prefix + "--top" : undefined,
-      context?.offset?.bottom !== false ? prefix + "--bottom" : undefined,
+      context && context[drawerType].offset.top !== false ? prefix + "--top" : undefined,
+      context && context[drawerType].offset.bottom !== false ? prefix + "--bottom" : undefined,
     ]);
   }
 </script>

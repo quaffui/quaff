@@ -86,8 +86,6 @@ ${
     footer ? "\n" + footerSnippet + "\n" : ""
   }</Qlayout>`;
 
-  console.log(resultSnippet);
-
   return {
     "Trying different layouts": resultSnippet,
   };

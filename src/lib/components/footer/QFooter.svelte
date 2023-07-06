@@ -2,7 +2,7 @@
   import { getContext } from "svelte";
   import type { QFooterProps } from "./props";
   import { createClasses } from "$lib/utils/props";
-  import type { AppbarContext } from "../layout/QLayout.svelte";
+  import type { AppbarContext, LayoutContext } from "../layout/QLayout.svelte";
 
   export let value: QFooterProps["value"] = true,
     bordered: QFooterProps["bordered"] = false,
@@ -12,9 +12,9 @@
     userStyles: QFooterProps["userStyles"] = undefined;
   export { userClasses as class, userStyles as style };
 
-  $: ctx = getContext<AppbarContext>("footer");
+  let ctx = getContext<LayoutContext | undefined>("layout");
 
-  $: classes = createClasses(["q-footer", ctx?.fixed && "fixed", userClasses]);
+  $: classes = createClasses(["q-footer", $ctx && $ctx.footer.fixed && "fixed", userClasses]);
 </script>
 
 <footer class={classes} style={userStyles}>

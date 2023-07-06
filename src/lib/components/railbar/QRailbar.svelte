@@ -1,7 +1,7 @@
 <script lang="ts">
   import { getContext } from "svelte";
   import type { QRailbarProps } from "./props";
-  import type { DrawerContext } from "../layout/QLayout.svelte";
+  import type { DrawerContext, LayoutContext } from "../layout/QLayout.svelte";
   import { createClasses, createStyles } from "$lib/utils/props";
   import { isNumber } from "$lib/utils/types";
 
@@ -12,17 +12,20 @@
     userStyles: QRailbarProps["userStyles"] = undefined;
   export { userClasses as class, userStyles as style };
 
-  $: ctx = getContext<DrawerContext | undefined>(side === "left" ? "drawerLeft" : "drawerRight");
+  let ctx = getContext<LayoutContext | undefined>("layout");
+
+  let drawerType: "drawerLeft" | "drawerRight";
+  $: drawerType = side === "left" ? "drawerLeft" : "drawerRight";
 
   $: classes = createClasses([
     "q-railbar",
     "surface",
     side,
     bordered && "bordered",
-    ctx?.offset?.top && "offset-top",
-    ctx?.offset?.bottom && "offset-bottom",
-    ctx?.fixed && "fixed",
-    getBorderRadiusClasses(side, ctx),
+    $ctx && $ctx[drawerType].offset.top && "offset-top",
+    $ctx && $ctx[drawerType].offset.bottom && "offset-bottom",
+    $ctx && $ctx[drawerType].fixed && "fixed",
+    getBorderRadiusClasses(side, $ctx),
     userClasses,
   ]);
 
@@ -35,11 +38,19 @@
     userStyles
   );
 
-  function getBorderRadiusClasses(sideProp: typeof side, context: typeof ctx) {
+  function getBorderRadiusClasses(sideProp: typeof side, context: typeof $ctx) {
     let prefix = "border-radius" + (sideProp === "left" ? "__right" : "__left");
     return createClasses([
-      context?.offset?.top !== false && context?.drawer === false ? prefix + "--top" : undefined,
-      context?.offset?.bottom !== false && context?.drawer === false
+      context &&
+      context[drawerType].offset.top !== false &&
+      context &&
+      context[drawerType].drawer === false
+        ? prefix + "--top"
+        : undefined,
+      context &&
+      context[drawerType].offset.bottom !== false &&
+      context &&
+      context[drawerType].drawer === false
         ? prefix + "--bottom"
         : undefined,
     ]);
