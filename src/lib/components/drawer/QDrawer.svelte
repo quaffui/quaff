@@ -3,7 +3,7 @@
   import { createClasses, createStyles } from "$lib/utils/props";
   import { getContext } from "svelte";
   import type { QDrawerProps } from "./props";
-  import type { DrawerContext, LayoutContext } from "../layout/QLayout.svelte";
+  import type { LayoutContext } from "../layout/QLayout.svelte";
   import { clickOutside } from "$lib/helpers";
 
   export let value: QDrawerProps["value"] = true,
@@ -33,7 +33,7 @@
 
   $: hideOnRouteChange = persistent !== true || overlay === true;
 
-  $: if (value === true && persistent !== true) {
+  $: if (value === true && (persistent !== true || overlay === true)) {
     setTimeout(() => {
       canHideOnClickOutside = true;
     }, 50);
@@ -77,7 +77,7 @@
     $ctx && $ctx[drawerType].offset.top && "offset-top",
     $ctx && $ctx[drawerType].offset.bottom && "offset-bottom",
     $ctx && $ctx[drawerType].fixed && "fixed",
-    getBorderRadiusClasses(side, $ctx),
+    getBorderRadiusClasses(side, overlay, $ctx),
     userClasses,
   ]);
 
@@ -88,12 +88,26 @@
     userStyles
   );
 
-  function getBorderRadiusClasses(sideProp: typeof side, context: typeof $ctx) {
+  function getBorderRadiusClasses(
+    sideProp: typeof side,
+    overlayProp: typeof overlay,
+    context: typeof $ctx
+  ) {
     let prefix = "border-radius" + (sideProp === "left" ? "__right" : "__left");
-    return createClasses([
-      context && context[drawerType].offset.top !== false ? prefix + "--top" : undefined,
-      context && context[drawerType].offset.bottom !== false ? prefix + "--bottom" : undefined,
-    ]);
+
+    const shouldHaveRadius = (pos: "top" | "bottom") => {
+      // This isn't a layout
+      if (!context) return undefined;
+
+      let appbarEl = pos === "top" ? context["header"] : context["footer"];
+      // There's a visible header/footer and the drawer doesn't have an offset top/bottom
+      if (appbarEl && appbarEl.display && !context[drawerType].offset[pos] && !overlayProp)
+        return undefined;
+
+      return `${prefix}--${pos}`;
+    };
+
+    return createClasses([shouldHaveRadius("top"), shouldHaveRadius("bottom")]);
   }
 </script>
 

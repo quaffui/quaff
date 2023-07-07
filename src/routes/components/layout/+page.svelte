@@ -45,10 +45,6 @@
       "--right-drawer-width": rightDrawer ? "300px" : "0px",
     }) || undefined;
 
-  $: display = (val: boolean) => {
-    return val ? undefined : "display: none";
-  };
-
   let leftDrawerShown = true;
   let rightDrawerShown = true;
 
@@ -108,7 +104,11 @@
     <QDocsSection {snippets} title="Trying different layouts">
       <QCard bordered class="no-padding" style="height: 80vh">
         <QLayout {view} {style}>
-          <QToolbar style={display(header)} slot="header" class="small-elevate">
+          <QToolbar
+            style={header ? undefined : "display: none;"}
+            slot="header"
+            class="small-elevate"
+          >
             {#if leftDrawer}
               <QBtn icon="menu" flat on:click={() => (leftDrawerShown = !leftDrawerShown)} />
             {/if}
@@ -140,7 +140,7 @@
             {/if}
           </QToolbar>
 
-          <QRailbar style={display(leftRailbar)} slot="railbarLeft" bordered>
+          <QRailbar style={leftRailbar ? undefined : "display: none;"} slot="railbarLeft" bordered>
             <QList>
               <QItem to="#">
                 <QIcon name="home" />
@@ -160,7 +160,12 @@
               </QItem>
             </QList>
           </QRailbar>
-          <QRailbar style={display(rightRailbar)} slot="railbarRight" side="right" bordered>
+          <QRailbar
+            style={rightRailbar ? undefined : "display: none;"}
+            slot="railbarRight"
+            side="right"
+            bordered
+          >
             <QList>
               <QItem to="#">
                 <QIcon name="home" />
@@ -182,10 +187,11 @@
           </QRailbar>
 
           <QDrawer
-            style={display(leftDrawer)}
+            style={leftDrawer ? undefined : "display: none;"}
             slot="drawerLeft"
             bordered
             persistent
+            overlay
             bind:value={leftDrawerShown}
           >
             <QList>
@@ -208,7 +214,7 @@
             </QList>
           </QDrawer>
           <QDrawer
-            style={display(rightDrawer)}
+            style={rightDrawer ? undefined : "display: none;"}
             slot="drawerRight"
             side="right"
             bordered
@@ -235,7 +241,7 @@
             </QList>
           </QDrawer>
 
-          <QFooter style={display(footer)} slot="footer">
+          <QFooter style={footer ? undefined : "display: none;"} slot="footer">
             {#if leftDrawer}
               <QBtn icon="menu" flat on:click={() => (leftDrawerShown = !leftDrawerShown)} />
             {/if}

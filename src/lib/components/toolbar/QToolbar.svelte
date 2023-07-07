@@ -13,18 +13,24 @@
 
   let ctx = getContext<LayoutContext | undefined>("layout");
 
-  $: console.log($ctx?.header);
-
   $: classes = createClasses([
     $ctx?.header && "q-header",
     "q-toolbar",
     "surface",
-    $ctx?.header.fixed && "fixed",
+    $ctx?.header?.fixed && "fixed",
     inset && "q-toolbar--inset",
     userClasses,
   ]);
 
   $: heightStyle = ctx === undefined ? (isNumber(height) ? `${height}px` : height) : undefined;
+
+  $: if ($ctx?.header !== undefined) {
+    if (userStyles?.includes("display: none")) {
+      $ctx.header.display = false;
+    } else {
+      $ctx.header.display = true;
+    }
+  }
 
   $: style = createStyles(
     {

@@ -10,16 +10,13 @@
   }
 
   export interface AppbarContext {
-    offset: {
-      left: boolean;
-      right: boolean;
-    };
+    display: boolean;
     fixed: boolean;
   }
 
   export type LayoutContext = Readable<{
-    header: AppbarContext;
-    footer: AppbarContext;
+    header?: AppbarContext;
+    footer?: AppbarContext;
     drawerLeft: DrawerContext;
     drawerRight: DrawerContext;
   }>;
@@ -68,20 +65,18 @@
 
   function prepareCtx(viewProp: typeof view) {
     const [top, middle, bottom] = viewProp.split(" ");
-    const header: AppbarContext = {
-      offset: {
-        left: $$slots.drawerLeft && top[0].toLowerCase() === "l",
-        right: $$slots.drawerRight && top[2].toLowerCase() === "r",
-      },
-      fixed: top.includes("H"),
-    };
-    const footer: AppbarContext = {
-      offset: {
-        left: $$slots.drawerLeft && bottom[0].toLowerCase() === "l",
-        right: $$slots.drawerRight && bottom[2].toLowerCase() === "r",
-      },
-      fixed: bottom.includes("F"),
-    };
+    const header: AppbarContext | undefined = $$slots.header
+      ? {
+          display: true,
+          fixed: top.includes("H"),
+        }
+      : undefined;
+    const footer: AppbarContext | undefined = $$slots.footer
+      ? {
+          display: true,
+          fixed: bottom.includes("F"),
+        }
+      : undefined;
     const drawerLeft: DrawerContext = {
       offset: {
         top: $$slots.header && top[0].toLowerCase() === "h",
@@ -109,9 +104,8 @@
     };
   }
 
-  let viewStore = writable(view);
-  $: viewStore.set(view);
-  let ctx: LayoutContext = derived(viewStore, ($view) => prepareCtx($view));
+  let ctx: LayoutContext = writable(prepareCtx(view));
+  $: $ctx = prepareCtx(view);
   setContext("layout", ctx);
 </script>
 

@@ -45,45 +45,10 @@
       &.offset-bottom {
         height: calc(100% - var(--header-height) - var(--footer-height));
       }
-
-      &.left {
-        border-top-left-radius: 0;
-      }
-
-      &.right {
-        border-top-right-radius: 0;
-      }
     }
     &-bottom {
       bottom: var(--footer-height);
       height: calc(100% - var(--footer-height));
-
-      &.left {
-        border-bottom-left-radius: 0;
-      }
-
-      &.right {
-        border-bottom-right-radius: 0;
-      }
-    }
-  }
-
-  &.border-radius {
-    &__left {
-      &--top {
-        border-top-left-radius: 16px;
-      }
-      &--bottom {
-        border-bottom-left-radius: 16px;
-      }
-    }
-    &__right {
-      &--top {
-        border-top-right-radius: 16px;
-      }
-      &--bottom {
-        border-bottom-right-radius: 16px;
-      }
     }
   }
 }

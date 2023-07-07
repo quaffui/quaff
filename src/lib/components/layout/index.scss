@@ -25,7 +25,7 @@
 }
 
 .q-layout > .q-header {
-  z-index: 4;
+  z-index: 3;
   position: absolute;
   top: 0px;
   right: 0px;
@@ -48,14 +48,10 @@
       margin: 0;
     }
   }
-
-  & ~ :not(.q-header, .q-footer, .q-railbar, .q-drawer) {
-    padding-top: var(--header-height);
-  }
 }
 
 .q-layout > .q-footer {
-  z-index: 2;
+  z-index: 3;
   position: absolute;
   top: auto;
   right: 0px;
@@ -85,7 +81,7 @@
 }
 
 .q-layout > .q-railbar {
-  z-index: 3;
+  z-index: 2;
   position: absolute;
   top: 0px;
   right: auto;
@@ -115,6 +111,10 @@
     &.bordered {
       border-left: 0.0625rem solid var(--outline);
     }
+  }
+
+  &:not(.offset-top, .offset-bottom) {
+    z-index: 4;
   }
 
   & > .q-list > .q-item {
@@ -148,8 +148,32 @@
 }
 
 .q-layout > .q-drawer {
-  z-index: 1;
   //TODO Problems with z-index between multiple layouts
+  z-index: 1;
+  border-radius: 0;
+
+  &:not(.offset-top, .offset-bottom) {
+    z-index: 4;
+  }
+
+  &.border-radius {
+    &__left {
+      &--top {
+        border-top-left-radius: 16px;
+      }
+      &--bottom {
+        border-bottom-left-radius: 16px;
+      }
+    }
+    &__right {
+      &--top {
+        border-top-right-radius: 16px;
+      }
+      &--bottom {
+        border-bottom-right-radius: 16px;
+      }
+    }
+  }
 
   & > .q-list > .q-item.q-link {
     border-radius: 2rem;
@@ -276,8 +300,6 @@ $elements: (
       &:not(.offset-#{$pos}) ~ .q-#{$el},
       & ~ .q-drawer.left {
         left: $L_Railbar;
-        border-top-left-radius: 0;
-        border-bottom-left-radius: 0;
       }
 
       & ~ .q-drawer.active.left:not(.offset-#{$pos}, .overlay) ~ .q-#{$el} {
@@ -288,8 +310,6 @@ $elements: (
       &:not(.offset-#{$pos}) ~ .q-#{$el},
       & ~ .q-drawer.right {
         right: $R_Railbar;
-        border-top-right-radius: 0;
-        border-bottom-right-radius: 0;
       }
 
       & ~ .q-drawer.active.right:not(.offset-#{$pos}, .overlay) ~ .q-#{$el} {
@@ -332,6 +352,11 @@ $elements: (
     }
 
     & > .q-railbar.right:not(.offset-#{$pos}, [style="display: none"]) {
+      // Right railbar
+      & ~ .q-#{$el} {
+        width: without($R_Railbar);
+      }
+
       & ~ .q-drawer.active:not(.offset-#{$pos}, .overlay) {
         @include include-drawers(without($R_Railbar), $pos, $el);
       }
@@ -358,14 +383,6 @@ $elements: (
       &.offset-#{$pos} {
         #{$pos}: var(--#{$el}-height);
         height: calc(100% - var(--#{$el}-height));
-
-        &.left {
-          border-#{$pos}-left-radius: 0;
-        }
-
-        &.right {
-          border-#{$pos}-right-radius: 0;
-        }
       }
     }
   }
