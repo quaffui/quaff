@@ -1,3 +1,5 @@
+import { convertCase } from "./string";
+
 export function createStyles(
   styleObj: Record<string, string | number | null | undefined>,
   userStyles?: string
@@ -11,9 +13,7 @@ export function createStyles(
       continue;
     }
 
-    if (upperCaseRE.test(styleName)) {
-      styleName = styleName.replace(upperCaseRE, "-$&").toLowerCase();
-    }
+    styleName = convertCase(styleName, "camel", "kebab");
 
     toJoin.push(`${styleName}: ${styleVal}`);
   }
