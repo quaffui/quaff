@@ -19,6 +19,13 @@
   } from "$lib";
   import { isRouteActive } from "$lib/composables/use-router-link";
 
+  import { QTheme } from "$stores/QTheme";
+  import { onMount } from "svelte";
+
+  onMount(() => {
+    QTheme.apply();
+  });
+
   const components = [
     {
       name: "Avatar",
