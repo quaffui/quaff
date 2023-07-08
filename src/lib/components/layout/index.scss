@@ -33,8 +33,7 @@
   left: 0px;
   height: var(--header-height);
   min-height: unset;
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
+  border-radius: 0;
 
   & > nav {
     height: 100%;
@@ -59,8 +58,7 @@
   left: 0px;
   height: var(--footer-height);
   min-height: unset;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
+  border-radius: 0;
 
   & > nav {
     height: 100%;
