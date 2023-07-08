@@ -25,7 +25,7 @@
 }
 
 .q-layout > .q-header {
-  z-index: 3;
+  z-index: 103;
   position: absolute;
   top: 0px;
   right: 0px;
@@ -50,7 +50,7 @@
 }
 
 .q-layout > .q-footer {
-  z-index: 3;
+  z-index: 103;
   position: absolute;
   top: auto;
   right: 0px;
@@ -79,7 +79,7 @@
 }
 
 .q-layout > .q-railbar {
-  z-index: 2;
+  z-index: 102;
   position: absolute;
   top: 0px;
   right: auto;
@@ -88,6 +88,10 @@
   height: 100%;
   overflow: auto;
   transition: all var(--speed3);
+
+  &.above {
+    z-index: 105;
+  }
 
   &.fixed {
     position: fixed;
@@ -109,10 +113,6 @@
     &.bordered {
       border-left: 0.0625rem solid var(--outline);
     }
-  }
-
-  &:not(.offset-top, .offset-bottom) {
-    z-index: 4;
   }
 
   & > .q-list > .q-item {
@@ -147,11 +147,11 @@
 
 .q-layout > .q-drawer {
   //TODO Problems with z-index between multiple layouts
-  z-index: 1;
+  z-index: 101;
   border-radius: 0;
 
-  &:not(.offset-top, .offset-bottom) {
-    z-index: 4;
+  &.above {
+    z-index: 104;
   }
 
   &.border-radius {

@@ -64,6 +64,22 @@
 
   let ctx = getContext<LayoutContext | undefined>("layout");
 
+  function prepareZIndexClass(
+    context: NonNullable<typeof $ctx>,
+    overlayProp: typeof overlay,
+    sideProp: typeof side
+  ) {
+    let drawer = sideProp === "left" ? context.drawerLeft : context.drawerRight;
+
+    let pos: keyof typeof drawer.offset;
+    for (pos of ["top", "bottom"] as const) {
+      if (!drawer.offset[pos] && overlayProp) {
+        drawer.overlay = true;
+        return "above";
+      }
+    }
+  }
+
   let drawerType: "drawerLeft" | "drawerRight";
   $: drawerType = side === "left" ? "drawerLeft" : "drawerRight";
 
@@ -78,6 +94,7 @@
     $ctx && $ctx[drawerType].offset.bottom && "offset-bottom",
     $ctx && $ctx[drawerType].fixed && "fixed",
     getBorderRadiusClasses(side, overlay, $ctx),
+    $ctx && prepareZIndexClass($ctx, overlay, side),
     userClasses,
   ]);
 

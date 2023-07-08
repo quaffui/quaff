@@ -191,7 +191,6 @@
             slot="drawerLeft"
             bordered
             persistent
-            overlay
             bind:value={leftDrawerShown}
           >
             <QList>
@@ -273,18 +272,44 @@
             {/if}
           </QFooter>
 
-          <div
-            slot="content"
-            class="flex column q-gap-sm center middle"
-            style="height: fit-content; width: fit-content"
-          >
-            <QToggle label="Header" bind:value={header} />
-            <QToggle label="Left Railbar" bind:value={leftRailbar} />
-            <QToggle label="Right Railbar" bind:value={rightRailbar} />
-            <QToggle label="Left Drawer" bind:value={leftDrawer} />
-            <QToggle label="Right Drawer" bind:value={rightDrawer} />
-            <QToggle label="Footer" bind:value={footer} />
-          </div>
+          <QList slot="content">
+            <QItem>
+              <QItemSection type="toggle">
+                <QToggle bind:value={header} />
+              </QItemSection>
+              <QItemSection>Header</QItemSection>
+            </QItem>
+            <QItem>
+              <QItemSection type="toggle">
+                <QToggle bind:value={leftRailbar} />
+              </QItemSection>
+              <QItemSection>Left Railbar</QItemSection>
+            </QItem>
+            <QItem>
+              <QItemSection type="toggle">
+                <QToggle bind:value={rightRailbar} />
+              </QItemSection>
+              <QItemSection>Right Railbar</QItemSection>
+            </QItem>
+            <QItem>
+              <QItemSection type="toggle">
+                <QToggle bind:value={leftDrawer} />
+              </QItemSection>
+              <QItemSection>Left Drawer</QItemSection>
+            </QItem>
+            <QItem>
+              <QItemSection type="toggle">
+                <QToggle bind:value={rightDrawer} />
+              </QItemSection>
+              <QItemSection>Right Drawer</QItemSection>
+            </QItem>
+            <QItem>
+              <QItemSection type="toggle">
+                <QToggle bind:value={footer} />
+              </QItemSection>
+              <QItemSection>Footer</QItemSection>
+            </QItem>
+          </QList>
         </QLayout>
       </QCard>
     </QDocsSection>

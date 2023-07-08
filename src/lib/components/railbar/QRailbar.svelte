@@ -26,6 +26,7 @@
     $ctx && $ctx[drawerType].offset.bottom && "offset-bottom",
     $ctx && $ctx[drawerType].fixed && "fixed",
     getBorderRadiusClasses(side, $ctx),
+    $ctx && prepareZIndexClass($ctx, side),
     userClasses,
   ]);
 
@@ -54,6 +55,17 @@
         ? prefix + "--bottom"
         : undefined,
     ]);
+  }
+
+  function prepareZIndexClass(context: NonNullable<typeof $ctx>, sideProp: typeof side) {
+    let drawer = sideProp === "left" ? context.drawerLeft : context.drawerRight;
+
+    let pos: keyof typeof drawer.offset;
+    for (pos of ["top", "bottom"] as const) {
+      if (!drawer.offset[pos] && drawer.overlay) {
+        return "above";
+      }
+    }
   }
 </script>
 

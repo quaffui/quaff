@@ -7,6 +7,7 @@
     fixed: boolean;
     railbar: boolean;
     drawer: boolean;
+    overlay: boolean;
   }
 
   export interface AppbarContext {
@@ -27,7 +28,7 @@
   import type { QLayoutProps } from "./props";
   import { createClasses, createStyles } from "$lib/utils/props";
   import ContextReseter from "../private/ContextReseter.svelte";
-  import { derived, writable } from "svelte/store";
+  import { writable } from "svelte/store";
   import type { Readable } from "svelte/store";
 
   export let view: QLayoutProps["view"] = "hhh lpr fff",
@@ -85,6 +86,7 @@
       fixed: [top[0], middle[0], bottom[0]].includes("L"),
       railbar: $$slots.railbarLeft === true,
       drawer: $$slots.drawerLeft === true,
+      overlay: false,
     };
     const drawerRight: DrawerContext = {
       offset: {
@@ -94,6 +96,7 @@
       fixed: [top[2], middle[2], bottom[2]].includes("R"),
       railbar: $$slots.railbarRight === true,
       drawer: $$slots.drawerRight === true,
+      overlay: false,
     };
 
     return {
@@ -128,7 +131,7 @@
   {#if $$slots.footer}
     <slot name="footer" />
   {/if}
-  <ContextReseter keys={["header", "footer", "drawerLeft", "drawerRight"]}>
+  <ContextReseter keys="layout">
     <slot name="content" />
   </ContextReseter>
 </div>
