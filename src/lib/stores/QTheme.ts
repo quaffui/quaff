@@ -24,7 +24,7 @@ async function prepareThemeColors(from: string) {
 }
 
 /* const defaultThemeColors = await prepareThemeColors("/cocktail.jpg"); */
-const defaultThemeColors = await prepareThemeColors("#0655CA");
+const defaultThemeColors = await prepareThemeColors("#3499E7");
 
 function themeBuilder() {
   const { subscribe, set, update } = writable(defaultThemeColors);
