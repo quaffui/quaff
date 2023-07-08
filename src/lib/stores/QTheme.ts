@@ -1,6 +1,7 @@
 import { writable } from "svelte/store";
 import materialDynamicColors from "material-dynamic-colors";
 import { convertCase } from "$lib/utils/string";
+import QColors from "$lib/utils/colors";
 
 type CSSDynamicColor =
   `${keyof IMaterialDynamicColorsThemeColor}-${keyof IMaterialDynamicColorsTheme}`;
@@ -50,7 +51,7 @@ function themeBuilder() {
       for (colorName in $themeColors) {
         root.style.setProperty(
           `--${convertCase(colorName, "camel", "kebab")}`,
-          $themeColors[colorName]
+          QColors.hexToRgb($themeColors[colorName]).join(", ")
         );
       }
 
