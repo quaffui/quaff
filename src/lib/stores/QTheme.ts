@@ -3,11 +3,47 @@ import materialDynamicColors from "material-dynamic-colors";
 import { convertCase } from "$lib/utils/string";
 import QColors from "$lib/utils/colors";
 
+interface IMaterialDynamicColorsThemeColorFormatted {
+  primary: string;
+  "on-primary": string;
+  "primary-container": string;
+  "on-primary-container": string;
+  secondary: string;
+  "on-secondary": string;
+  "secondary-container": string;
+  "on-secondary-container": string;
+  tertiary: string;
+  "on-tertiary": string;
+  "tertiary-container": string;
+  "on-tertiary-container": string;
+  error: string;
+  "error-container": string;
+  "on-error": string;
+  "on-error-container": string;
+  background: string;
+  "on-background": string;
+  surface: string;
+  "on-surface": string;
+  "surface-variant": string;
+  "on-surface-variant": string;
+  outline: string;
+  "inverse-on-surface": string;
+  "inverse-surface": string;
+  "inverse-primary": string;
+  shadow: string;
+}
+
+interface IMaterialDynamicColorsThemeFormatted {
+  light: IMaterialDynamicColorsThemeColorFormatted;
+  dark: IMaterialDynamicColorsThemeColorFormatted;
+}
+
 type CSSDynamicColor =
-  `${keyof IMaterialDynamicColorsThemeColor}-${keyof IMaterialDynamicColorsTheme}`;
+  `${keyof IMaterialDynamicColorsThemeColorFormatted}-${keyof IMaterialDynamicColorsThemeFormatted}`;
 
 async function prepareThemeColors(from: string) {
   let theme: IMaterialDynamicColorsTheme = await materialDynamicColors(from);
+
   //@ts-ignore
   const themeColors: Record<CSSDynamicColor, string> = {};
 
@@ -15,7 +51,13 @@ async function prepareThemeColors(from: string) {
   for (mode in theme) {
     let color: keyof IMaterialDynamicColorsThemeColor;
     for (color in theme[mode]) {
-      let cssColor: CSSDynamicColor = `${color}-${mode}`;
+      let colorFormatted = convertCase(
+        color,
+        "camel",
+        "kebab"
+      ) as keyof IMaterialDynamicColorsThemeColorFormatted;
+
+      let cssColor: CSSDynamicColor = `${colorFormatted}-${mode}`;
       themeColors[cssColor] = theme[mode][color];
     }
   }
@@ -50,7 +92,7 @@ function themeBuilder() {
       let colorName: CSSDynamicColor;
       for (colorName in $themeColors) {
         root.style.setProperty(
-          `--${convertCase(colorName, "camel", "kebab")}`,
+          `--${colorName}`,
           QColors.hexToRgb($themeColors[colorName]).join(", ")
         );
       }
@@ -58,7 +100,6 @@ function themeBuilder() {
       return $themeColors;
     });
   };
-
   return {
     subscribe,
     setThemeColors,
