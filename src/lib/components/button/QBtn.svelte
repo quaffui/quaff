@@ -23,12 +23,12 @@
 
   $: classes = createClasses([
     "q-btn",
-    !unelevated && !flat && "small-elevate",
-    rectangle && "small-round",
-    outline && "border",
-    flat && "transparent",
-    !$$slots.default && !label && "circle",
-    size && size !== "md" ? sizeMap[size] : null,
+    !unelevated && !flat && "q-btn--elevate",
+    rectangle && "q-btn--rectangle",
+    outline && "q-btn--outline",
+    flat && "q-btn--flat",
+    !$$slots.default && !label && "q-btn--round",
+    size && `q-btn--${size}`,
     userClasses,
   ]);
 </script>
@@ -41,7 +41,7 @@
       {/if}
 
       {#if loading}
-        <a class="loader small white" />
+        <a class="q-btn__loader" />
       {/if}
 
       {#if label}
@@ -57,7 +57,7 @@
     {/if}
 
     {#if loading}
-      <a class="loader small white" />
+      <a class="q-btn__loader" />
     {/if}
 
     {#if label}
@@ -66,3 +66,47 @@
     <slot />
   </button>
 {/if}
+
+<style lang="scss">
+  @import "$beercss";
+
+  .q-btn {
+    &--elevate {
+      @extend .small-elevate;
+    }
+
+    &--rectangle {
+      @extend .small-round;
+    }
+
+    &--outline {
+      @extend .border;
+    }
+
+    &--flat {
+      @extend .transparent;
+    }
+
+    &--round {
+      @extend .circle;
+    }
+
+    &--sm {
+      @extend .small;
+    }
+
+    &--lg {
+      @extend .large;
+    }
+
+    &--xl {
+      @extend .extra;
+    }
+
+    &__loader {
+      @extend .loader;
+      @extend .small;
+      @extend .white;
+    }
+  }
+</style>
