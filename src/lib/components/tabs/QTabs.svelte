@@ -55,8 +55,6 @@
       : `${$activeTabStore.size}px`;
   });
 
-  $: console.log($activeTabStore);
-
   $: style = createStyles(
     {
       "--tab-count": QTabCount || 1,

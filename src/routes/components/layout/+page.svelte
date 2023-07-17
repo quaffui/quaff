@@ -53,8 +53,6 @@
   } else if (!rightDrawer) {
     rightDrawerShown = false;
   }
-
-  $: console.log({ rightDrawerShown });
 </script>
 
 <QDocs QComponentDocs={QLayoutDocs}>
