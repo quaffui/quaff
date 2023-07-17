@@ -4,6 +4,12 @@ export function capitalize(str: string, eachWord: boolean = false) {
   return eachWord ? str.split(" ").map(cap).join(" ") : cap(str);
 }
 
+export function uncapitalize(str: string, eachWord: boolean = false) {
+  const uncap = (str: string) => str.charAt(0).toLowerCase() + str.slice(1);
+
+  return eachWord ? str.split(" ").map(uncap).join(" ") : uncap(str);
+}
+
 const cases = {
   camel: "",
   pascal: "",
@@ -43,11 +49,12 @@ export function convertCase(str: string, fromCase: keyof typeof cases, toCase: k
       }
       break;
     case "pascal":
+      let uncap = uncapitalize(str);
       if (toCase === "camel") {
-        return str.charAt(0).toLowerCase() + str.slice(1);
+        return uncap;
       }
       if (toCase === "kebab" || toCase === "snake") {
-        return convertToKebabSnakeCase(str, toCase);
+        return convertToKebabSnakeCase(uncap, toCase);
       }
       break;
     case "snake":
