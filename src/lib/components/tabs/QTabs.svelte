@@ -2,12 +2,11 @@
   import { onMount, setContext } from "svelte";
   import type { QTabsProps } from "./props";
   import { createClasses, createStyles } from "$lib/utils/props";
-  import { writable } from "svelte/store";
+  import { derived, writable } from "svelte/store";
 
   export let value: QTabsProps["value"] = undefined,
-    vertical: QTabsProps["vertical"] = false,
+    variant: QTabsProps["variant"] = "primary",
     round: QTabsProps["round"] = false,
-    smallIndicator: QTabsProps["smallIndicator"] = false,
     userClasses: QTabsProps["userClasses"] = undefined,
     userStyles: QTabsProps["userStyles"] = undefined;
   export { userClasses as class, userStyles as style };
@@ -30,30 +29,40 @@
     },
   });
 
-  let activeTabStore = writable({ name: value, index: 0 });
+  let activeTabStore = writable({ name: value, index: 0, size: 0, position: 0 });
   $: activeTabStore.update(($active) => {
     $active.name = value;
 
     return $active;
   });
   setContext("activeTab", activeTabStore);
+  setContext("variant", variant);
 
   $: value = $activeTabStore.name;
 
   $: classes = createClasses([
     "q-tabs",
-    vertical && "vertical-tabs",
+    variant === "vertical" && "vertical-tabs",
     round && "round",
-    smallIndicator && "small-indicator",
+    variant === "primary" && "small-indicator",
     hidden && "hidden-indicator",
     userClasses,
   ]);
 
+  let indicatorWidth = derived(activeTabStore, ($activeTabStore) => {
+    return variant === "primary"
+      ? `calc(${$activeTabStore.size}px + 8px)`
+      : `${$activeTabStore.size}px`;
+  });
+
+  $: console.log($activeTabStore);
+
   $: style = createStyles(
     {
       "--tab-count": QTabCount || 1,
-      "--indicator-width": smallIndicator ? "33%" : "100%",
+      "--indicator-size": $indicatorWidth,
       "--active-tab-index": $activeTabStore.index - 1,
+      "--indicator-position": $activeTabStore.position,
     },
     userStyles
   );

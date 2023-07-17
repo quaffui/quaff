@@ -1,19 +1,19 @@
 import { NativePropsDefaults, type NativeProps } from "$lib/utils/types";
 
+export type QTabsVariants = "primary" | "secondary" | "vertical";
+
 export interface QTabsProps extends NativeProps {
   value?: string;
 
-  vertical: boolean;
+  variant: QTabsVariants;
   round: boolean;
-  smallIndicator: boolean;
 }
 
 export const QTabsPropsDefaults: QTabsProps = {
   value: undefined,
 
-  vertical: false,
+  variant: "primary",
   round: false,
-  smallIndicator: false,
 
   ...NativePropsDefaults,
 };

@@ -538,7 +538,7 @@
       Value: {activeTab}
     </QCardSection>
     <QCardSection>
-      <h6>Binding tabs</h6>
+      <h6>Primary tabs</h6>
       <QTabs bind:value={activeTab}>
         <QTab name="hello">Hello</QTab>
         <QTab name="world">World</QTab>
@@ -547,12 +547,21 @@
       </QTabs>
     </QCardSection>
     <QCardSection>
-      <h6>With small indicator</h6>
-      <QTabs bind:value={activeTab} smallIndicator>
+      <h6>Secondary tabs</h6>
+      <QTabs bind:value={activeTab} variant="secondary">
         <QTab name="hello">Hello</QTab>
         <QTab name="foo">Foo</QTab>
         <QTab name="world">World</QTab>
         <QTab name="bar">Bar</QTab>
+      </QTabs>
+    </QCardSection>
+    <QCardSection>
+      <h6>Vertical tabs</h6>
+      <QTabs bind:value={activeTab} variant="vertical">
+        <QTab icon="favorite" name="foo">Foo</QTab>
+        <QTab icon="star" name="bar">Bar</QTab>
+        <QTab icon="home" name="hello">Hello</QTab>
+        <QTab icon="help" name="world">World</QTab>
       </QTabs>
     </QCardSection>
     <QCardSection>
@@ -565,17 +574,8 @@
       </QTabs>
     </QCardSection>
     <QCardSection>
-      <h6>With icon and vertical</h6>
-      <QTabs bind:value={activeTab} vertical>
-        <QTab icon="favorite" name="foo">Foo</QTab>
-        <QTab icon="star" name="bar">Bar</QTab>
-        <QTab icon="home" name="hello">Hello</QTab>
-        <QTab icon="help" name="world">World</QTab>
-      </QTabs>
-    </QCardSection>
-    <QCardSection>
       <h6>With router links</h6>
-      <QTabs vertical smallIndicator>
+      <QTabs>
         <QTab icon="home" to="/">Home</QTab>
         <QTab icon="grid_view" to="/components">Components</QTab>
         <QTab icon="construction" to="/utils">Utils</QTab>

@@ -2,30 +2,48 @@
   position: relative;
   display: flex;
   align-items: center;
-  justify-content: center;
   gap: 0;
+  max-width: 100%;
+  overflow: auto;
+  scroll-behavior: smooth;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 
   & > .q-tab {
+    box-sizing: border-box;
+    height: 48px;
+    min-width: max-content;
     display: flex;
     align-items: center;
     justify-content: center;
-    flex: 1 0 0;
-    cursor: pointer;
+    flex: 1;
+    background-color: unset;
+    border-radius: 0;
+    gap: 0;
 
     & > .q-icon {
       margin-right: 8px;
     }
 
-    &:hover {
-      background: var(--on-surface-variant-2) !important;
+    &:is(:hover, :focus)::after {
+      background-image: radial-gradient(circle, var(--on-surface-variant-2) 1%, transparent 1%);
     }
   }
 
-  &.vertical-tabs > .q-tab {
+  &.vertical-tabs {
     flex-direction: column;
+    min-height: calc(var(--tab-count) * 48px);
+    width: fit-content;
+    align-items: stretch;
 
-    & > .q-icon {
-      margin: 0 0 4px 0;
+    &::after {
+      top: var(--indicator-position);
+      right: 0;
+      bottom: auto;
+      left: auto;
+      width: 2px;
+      height: var(--indicator-size);
     }
   }
 
@@ -35,12 +53,12 @@
     top: auto;
     right: auto;
     bottom: 0;
-    left: calc(var(--active-tab-index) * (100% / var(--tab-count)));
-    width: calc(var(--indicator-width) / var(--tab-count));
-    height: 3px;
+    left: var(--indicator-position);
+    width: var(--indicator-size);
+    height: 2px;
+    border-radius: 0;
     background: var(--primary);
     transition: all 0.3s cubic-bezier(0.77, 0, 0.18, 1);
-    border-radius: 3px 3px 0px 0px;
     opacity: 0;
   }
 
@@ -49,7 +67,9 @@
   }
 
   &.small-indicator::after {
-    left: calc((var(--active-tab-index) + 0.5) * (100% / var(--tab-count)));
+    left: var(--indicator-position);
     transform: translateX(-50%);
+    height: 3px;
+    border-radius: 3px 3px 0px 0px;
   }
 }
