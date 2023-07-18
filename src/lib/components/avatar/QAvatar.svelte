@@ -11,6 +11,8 @@
   export { userClasses as class };
   export { userStyles as style };
 
+  $: isBasicSize = ["xs", "sm", "md", "lg", "xl"].includes(size!);
+
   $: shapeClass = createClasses([
     shape === "circle" && "circle",
     shape === "rounded" && "round",
@@ -20,39 +22,20 @@
     shape!.includes("right") && "right-round",
   ]);
 
-  $: sizeClass =
-    size === "xs"
-      ? "tiny"
-      : size === "sm"
-      ? "small"
-      : size === "md"
-      ? video === true || shape!.includes("round")
-        ? "medium"
-        : ""
-      : size === "lg"
-      ? "large"
-      : size === "xl"
-      ? "extra"
-      : undefined;
-
-  $: classes = createClasses([
-    "q-avatar",
-    $$slots.default && "no-overflow upper large-text no-select",
-    shapeClass,
-    sizeClass,
+  $: classes = createClasses([shapeClass, isBasicSize && size], {
+    component: "QAvatar",
     userClasses,
-  ]);
+  });
 
-  $: style =
-    sizeClass === undefined
-      ? createStyles(
-          {
-            width: size,
-            height: size,
-          },
-          userStyles
-        )
-      : userStyles;
+  $: style = !isBasicSize
+    ? createStyles(
+        {
+          width: size,
+          height: size,
+        },
+        userStyles
+      )
+    : userStyles;
 </script>
 
 {#if video === true}
@@ -64,7 +47,7 @@
   <!-- svelte-ignore a11y-missing-attribute -->
   <img class={classes} {style} {src} {...$$restProps} on:click />
 {:else}
-  <div class="flex center-align middle-align {classes}" {style} {...$$restProps} on:click>
+  <div class={classes} {style} {...$$restProps} on:click>
     <slot />
   </div>
 {/if}

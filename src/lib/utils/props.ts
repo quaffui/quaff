@@ -27,8 +27,25 @@ export function createStyles(
   return toJoin.join("; ");
 }
 
-export function createClasses(classes: any[]) {
-  return classes.filter(Boolean).join(" ");
+interface CreateClassOptions {
+  component?: string;
+  userClasses?: string;
+}
+
+export function createClasses(classes: any[], options: CreateClassOptions = {}): string {
+  const filtered = classes.filter(Boolean);
+
+  let formattedClasses = options.component
+    ? filtered.map((c) => `${convertCase(options.component!, "pascal", "kebab")}--${c}`)
+    : filtered;
+
+  let withUserClasses = options.userClasses
+    ? [...formattedClasses, options.userClasses]
+    : formattedClasses;
+
+  return options.component
+    ? [convertCase(options.component!, "pascal", "kebab"), ...withUserClasses].join(" ")
+    : withUserClasses.join(" ");
 }
 
 /* export function createClasses(...classes: (string | [string, boolean])[]) {
