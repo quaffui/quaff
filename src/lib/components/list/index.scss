@@ -31,6 +31,11 @@
   padding: 8px 24px 8px 16px;
   gap: 16px;
 
+  & .q-avatar {
+    height: 40px;
+    width: 40px;
+  }
+
   &.wave {
     padding: 8px 24px 8px 16px;
 
