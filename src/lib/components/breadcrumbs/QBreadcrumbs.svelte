@@ -12,12 +12,15 @@
 
   let breadcrumbElement: HTMLDivElement | null = null;
 
-  onMount(() => breadcrumbElement?.querySelector("*:first-child")?.remove());
+  onMount(() => breadcrumbElement?.firstChild?.remove());
 
   setContext("activeColor", activeColor);
   setContext("separator", { type: separator, color: separatorColor, gutter });
 
-  $: classes = createClasses(["q-breadcrumbs flex center-align middle-align", userClasses]);
+  $: classes = createClasses([], {
+    component: "QBreadcrumbs",
+    userClasses,
+  });
 </script>
 
 <div class={classes} bind:this={breadcrumbElement}>

@@ -1,3 +1,13 @@
-.q-breadcrumbs > .q-breadcrumb__separator:first-child {
-  display: none;
+.q-breadcrumbs {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &__el > .q-icon {
+    @extend .q-mr-xs;
+  }
+
+  &__separator:first-child {
+    display: none;
+  }
 }
