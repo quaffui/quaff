@@ -5,7 +5,6 @@ export function createStyles(
   userStyles?: string
 ) {
   const stylesArray = Object.entries(styleObj);
-  const upperCaseRE = /[A-Z]/g;
   const toJoin: string[] = [];
 
   for (let [styleName, styleVal] of stylesArray) {
@@ -29,38 +28,33 @@ export function createStyles(
 
 interface CreateClassOptions {
   component?: string;
+  element?: string;
   userClasses?: string;
+  quaffClasses?: any[];
 }
 
-export function createClasses(classes: any[], options: CreateClassOptions = {}): string {
-  const filtered = classes.filter(Boolean);
+export function createClasses(
+  modifiers: any[],
+  options: CreateClassOptions = { userClasses: "", quaffClasses: [] }
+): string {
+  let component: string | undefined, element: string | undefined;
 
-  let formattedClasses = options.component
-    ? filtered.map((c) => `${convertCase(options.component!, "pascal", "kebab")}--${c}`)
-    : filtered;
+  const userClasses = options.userClasses?.trim();
+  const quaffClasses = options.quaffClasses?.length && createClasses(options.quaffClasses);
+  const baseClasses = `${quaffClasses || ""} ${userClasses || ""}`.trim();
 
-  let withUserClasses = options.userClasses
-    ? [...formattedClasses, options.userClasses]
-    : formattedClasses;
-
-  return options.component
-    ? [convertCase(options.component!, "pascal", "kebab"), ...withUserClasses].join(" ")
-    : withUserClasses.join(" ");
-}
-
-/* export function createClasses(...classes: (string | [string, boolean])[]) {
-  let finalClasses: string[] = [];
-  for (const val of classes) {
-    if (typeof val === "string") {
-      finalClasses.push(val);
-    } else {
-      const [userClasses, shouldAdd] = val;
-
-      if (shouldAdd) {
-        finalClasses.push(userClasses);
-      }
-    }
+  if (options.component !== undefined) {
+    component = convertCase(options.component, "pascal", "kebab");
+  }
+  if (component && options.element) {
+    element = `${component}__${options.element}`;
   }
 
-  return finalClasses.length !== 0 ? finalClasses.filter(Boolean).join(" ") : undefined;
-} */
+  const filteredModifiers = modifiers.filter(Boolean);
+
+  let withModifiers = component
+    ? filteredModifiers.map((modifier) => `${element || component}--${modifier}`)
+    : filteredModifiers;
+
+  return [element || component, ...withModifiers, baseClasses].filter(Boolean).join(" ").trim();
+}
