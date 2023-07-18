@@ -15,20 +15,28 @@
     userClasses: QBreadcrumbsElProps["userClasses"] = undefined;
   export { userClasses as class };
 
+  const component = "QBreadcrumbs";
+
   const activeColor = getContext<string>("activeColor");
   const separator = getContext<{ type: string; color: string; gutter: string }>("separator");
 
   $: isActive = isRouteActive($Quaff.router, href || to);
 
-  $: classes = createClasses([
-    "q-breadcrumbs__el flex center-align middle-align",
-    isActive && `${activeColor}-text`,
-    isActive && activeClass,
+  $: classes = createClasses([isActive && activeClass], {
+    component,
+    element: "el",
+    quaffClasses: [isActive && `${activeColor}-text`],
     userClasses,
-  ]);
+  });
+
+  $: separatorClasses = createClasses([], {
+    component,
+    element: "separator",
+    quaffClasses: [`q-px-${separator.gutter}`],
+  });
 </script>
 
-<div class="q-breadcrumb__separator q-px-{separator.gutter}">
+<div class={separatorClasses}>
   {#if separator.type.startsWith("icon:")}
     <QIcon name={separator.type.replace("icon:", "")} size="1rem" />
   {:else}
@@ -39,7 +47,7 @@
 {#if href !== undefined || to !== undefined}
   <a href={href || to} class={classes}>
     {#if icon !== undefined}
-      <QIcon name={icon} size="1rem" class="q-mr-xs" />
+      <QIcon name={icon} size="1rem" />
     {:else if $$slots.icon}
       <slot name="icon" />
     {/if}
@@ -51,7 +59,7 @@
 {:else}
   <svelte:element this={tag} class={classes}>
     {#if icon !== undefined}
-      <QIcon name={icon} size="1rem" class="q-mr-xs" />
+      <QIcon name={icon} size="1rem" />
     {:else if $$slots.icon}
       <slot name="icon" />
     {/if}
