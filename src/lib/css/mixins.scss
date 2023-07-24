@@ -1,0 +1,26 @@
+@mixin loader($size: none, $color: none) {
+  ---translate-y: 0;
+
+  display: inline-block;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  border: 0.25rem solid var(--primary);
+  clip-path: polygon(50% 50%, 0% 0%, 50% 0%, 50% 0%, 50% 0%, 50% 0%, 50% 0%, 50% 0%, 50% 0%);
+  animation: 1.6s to-loader linear infinite;
+  background: none !important;
+
+  @if $size == 'small' {
+    width: 1.5rem;
+    height: 1.5rem;
+    border-width: 0.1875rem;
+  } @else if $size == 'large' {
+    width: 3.5rem;
+    height: 3.5rem;
+    border-width: 0.3125rem;
+  }
+
+  @if $color != none {
+    border-color: #{$color};
+  }
+}
