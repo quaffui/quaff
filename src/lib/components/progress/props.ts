@@ -6,6 +6,14 @@ export interface QLinearProgressProps extends NativeProps {
   rounded: boolean;
 }
 
+export interface QCircularProgressProps extends NativeProps {
+  value: number;
+  indeterminate: boolean;
+  size: string | number;
+  color?: string;
+  thickness: number;
+}
+
 export const QLinearProgressPropsDefaults = {
   value: 0,
   from: "left",

@@ -1,0 +1,18 @@
+$icon-font: "Material Symbols Outlined";
+
+.q-icon {
+  overflow: visible;
+  font-family: $icon-font;
+
+  &--outlined {
+    $icon-font: "Material Symbols Outlined";
+  }
+
+  &--rounded {
+    $icon-font: "Material Symbols Rounded";
+  }
+
+  &--sharp {
+    $icon-font: "Material Symbols Sharp";
+  }
+}

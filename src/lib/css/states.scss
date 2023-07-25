@@ -1,0 +1,91 @@
+// DISABLED
+.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+
+  pointer-events: none;
+}
+
+// BORDERED
+@mixin border($color) {
+  border: 0.0625rem solid $color;
+}
+
+// ELEVATED
+.elevate {
+  &-none {
+    box-shadow: none;
+  }
+
+  @mixin elevate($strength, $position) {
+    $coeff: 1;
+    @if $position == "top" {
+      $coeff: -1;
+    }
+    $elevate: 0.125rem * $strength;
+
+    &-#{$position} {
+      box-shadow: 0 $elevate * $coeff $elevate 0 rgb(0, 0, 0, 0.24 + 0.08 * $strength);
+    }
+  }
+
+  $elevations: (
+    "sm": 1,
+    "md": 2,
+    "lg": 3,
+  );
+
+  @each $elevation, $value in $elevations {
+    &-#{$elevation} {
+      @include elevate($value, "top");
+      @include elevate($value, "bottom");
+    }
+  }
+}
+
+// TRANSPARENT
+@mixin transparent($ripple: false) {
+  background-color: transparent;
+  background: transparent;
+  color: inherit;
+
+  &:is(:focus, :hover) > .q-icon {
+    font-variation-settings: "FILL" 1;
+  }
+
+  @if $ripple {
+    &::after {
+      background-image: radial-gradient(circle, rgb(150, 150, 150, 0.2) 1%, transparent 1%);
+    }
+  }
+}
+
+// WITH RIPPLE EFFECT
+.ripple {
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    border-radius: inherit;
+    background-position: center;
+    opacity: 0;
+    transition: none;
+    background-image: radial-gradient(circle, rgb(255, 255, 255, 0.4) 1%, transparent 1%);
+  }
+
+  &:is(:focus, :hover)::after {
+    background-size: 15000%;
+    opacity: 1;
+    transition: var(--speed2) background-size linear;
+  }
+
+  &:active::after {
+    background-size: 5000%;
+    opacity: 0;
+    transition: none;
+  }
+}

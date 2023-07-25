@@ -1,5 +1,7 @@
 <script lang="ts">
   import { createClasses } from "$lib/utils/props";
+  import QIcon from "../icon/QIcon.svelte";
+  import QCircularProgress from "../progress/QCircularProgress.svelte";
   import type { QBtnProps } from "./props";
 
   export let icon: QBtnProps["icon"] = undefined,
@@ -15,54 +17,45 @@
     userClasses: QBtnProps["userClasses"] = undefined;
   export { userClasses as class };
 
-  const sizeMap = {
-    sm: "small",
-    lg: "large",
-    xl: "extra",
-  };
+  let tag: "a" | "div";
+  $: tag = to !== undefined ? "a" : "div";
 
-  $: classes = createClasses([
-    "q-btn",
-    !unelevated && !flat && "small-elevate",
-    rectangle && "small-round",
-    outline && "border",
-    flat && "transparent",
-    !$$slots.default && !label && "circle",
-    size && size !== "md" ? sizeMap[size] : null,
-    userClasses,
-  ]);
+  $: classes = createClasses(
+    [
+      unelevated && "unelevated",
+      rectangle && "rectangle",
+      outline && "outlined",
+      flat && "flat",
+      !$$slots.default && !label && "circle",
+      size && size !== "md" && size,
+    ],
+    {
+      component: "QBtn",
+      userClasses,
+    }
+  );
 </script>
 
-{#if to !== undefined}
-  <a href={to}>
-    <button class={classes} {...$$restProps} disabled={disable} on:click>
-      {#if icon && !loading}
-        <i>{icon}</i>
-      {/if}
+<svelte:element
+  this={tag}
+  role="button"
+  href={to}
+  class={classes}
+  aria-disabled={disable || undefined}
+  tabindex={disable ? -1 : 0}
+  {...$$restProps}
+  on:click
+>
+  {#if icon && !loading}
+    <QIcon name={icon} class="q-btn__icon" />
+  {/if}
 
-      {#if loading}
-        <a class="loader small white" />
-      {/if}
+  {#if loading}
+    <QCircularProgress indeterminate class="q-btn__loader" />
+  {/if}
 
-      {#if label}
-        <span>{label}</span>
-      {/if}
-      <slot />
-    </button>
-  </a>
-{:else}
-  <button class={classes} {...$$restProps} disabled={disable} on:click>
-    {#if icon && !loading}
-      <i>{icon}</i>
-    {/if}
-
-    {#if loading}
-      <a class="loader small white" />
-    {/if}
-
-    {#if label}
-      <span>{label}</span>
-    {/if}
-    <slot />
-  </button>
-{/if}
+  {#if label}
+    <span>{label}</span>
+  {/if}
+  <slot />
+</svelte:element>
