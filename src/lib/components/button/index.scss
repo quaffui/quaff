@@ -47,6 +47,7 @@
   &.q-btn--outlined {
     @include transparent($ripple: true);
     @include border(var(--primary));
+    color: var(--primary);
   }
 
   &.q-btn--unelevated {

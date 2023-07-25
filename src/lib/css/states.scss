@@ -9,7 +9,6 @@
 // BORDERED
 @mixin border($color) {
   border: 0.0625rem solid $color;
-  color: $color;
 }
 
 // ELEVATED
