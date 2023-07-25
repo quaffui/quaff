@@ -26,7 +26,7 @@ export function createStyles(
   return toJoin.join("; ");
 }
 
-interface CreateClassOptions {
+interface CreateClassesOptions {
   component?: string;
   element?: string;
   userClasses?: string;
@@ -35,7 +35,7 @@ interface CreateClassOptions {
 
 export function createClasses(
   modifiers: any[],
-  options: CreateClassOptions = { userClasses: "", quaffClasses: [] }
+  options: CreateClassesOptions = { userClasses: "", quaffClasses: [] }
 ): string {
   let component: string | undefined, element: string | undefined;
 

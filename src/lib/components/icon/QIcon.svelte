@@ -50,18 +50,3 @@
     <slot />
   {/if}
 </i>
-
-<style lang="scss">
-  .q-icon {
-    overflow: visible;
-    &__outlined {
-      --font-icon: "Material Symbols Outlined";
-    }
-    &__rounded {
-      --font-icon: "Material Symbols Rounded";
-    }
-    &__sharp {
-      --font-icon: "Material Symbols Sharp";
-    }
-  }
-</style>
