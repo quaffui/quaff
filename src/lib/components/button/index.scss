@@ -1,0 +1,75 @@
+.q-btn {
+  position: relative;
+  cursor: pointer;
+  text-decoration: none;
+  border: none;
+  font-family: inherit;
+  outline: inherit;
+  box-sizing: content-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 2.5rem;
+  min-width: 2.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--on-primary);
+  padding: 0 1.5rem;
+  background-color: var(--primary);
+  margin: 0 0.5rem;
+  border-radius: 1.25rem;
+  transition: var(--speed3) transform, var(--speed3) border-radius, var(--speed3) padding;
+  user-select: none;
+  gap: 1rem;
+  line-height: normal;
+  @extend .elevate-sm-bottom;
+  @extend .ripple;
+
+  $sizeMap: (
+    "sm": -1,
+    "lg": 1,
+    "xl": 2,
+  );
+
+  @each $size, $val in $sizeMap {
+    &.q-btn--#{$size} {
+      height: 2.5rem + 0.5 * $val;
+      min-width: 2.5rem + 0.5 * $val;
+      border-radius: 1.25rem + 0.25 * $val;
+      font-size: 1rem + 0.125 * $val;
+    }
+  }
+
+  &.q-btn[aria-disabled] {
+    @extend .disabled;
+  }
+
+  &.q-btn--outlined {
+    @include transparent($ripple: true);
+    @include border(var(--primary));
+  }
+
+  &.q-btn--unelevated {
+    @extend .elevate-none;
+  }
+
+  &.q-btn--flat {
+    @include transparent($ripple: true);
+    @extend .elevate-none;
+  }
+
+  &.q-btn--rectangle {
+    border-radius: 0.5rem;
+  }
+
+  &.q-btn--circle {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    padding: 0;
+  }
+
+  & > :is(.q-icon, .q-circular-progress) {
+    margin: 0 -0.5rem;
+  }
+}
