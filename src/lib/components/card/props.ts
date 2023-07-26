@@ -1,6 +1,8 @@
 import type { UseAlignProps } from "$lib/composables/use-align";
 import type { NativeProps } from "$lib/utils/types";
 
+export type QCardFillColors = "primary" | "secondary" | "tertiary";
+
 export interface QCardProps extends NativeProps {
   /**
    * Puts a border around the card.
@@ -12,7 +14,7 @@ export interface QCardProps extends NativeProps {
    * Defines the fill color of the card.
    * @default undefined
    */
-  fill?: string | boolean;
+  fill?: boolean | QCardFillColors;
 
   /**
    * Makes the card flat, removing its elevation.

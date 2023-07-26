@@ -1,0 +1,53 @@
+// QCard
+.q-card {
+  display: block;
+  border-radius: 0.75rem;
+  transition: var(--speed-3) transform, var(--speed-3) padding, var(--speed-3) border-radius;
+  @include padding("a", "md");
+  @extend .elevate-sm-bottom;
+
+  &.q-card--bordered {
+    box-sizing: border-box;
+    @include border();
+    @extend .elevate-none;
+  }
+
+  &.q-card--flat {
+    @extend .elevate-none;
+  }
+
+  &.q-card--rounded {
+    border-radius: 2rem;
+  }
+
+  & > .q-card__title {
+    @include margin("b");
+  }
+}
+
+// QCardSection
+.q-card > .q-card__section {
+  @include padding;
+
+  &.q-card__section--horizontal {
+    @extend .row;
+    border-radius: 0;
+
+    &:not(.q-card__title + .q-card__section) {
+      @include margin("t");
+    }
+  }
+}
+
+// QCardActions
+.q-card > .q-card__actions {
+  display: flex;
+
+  &.q-card__actions--vertical {
+    flex-direction: column;
+  }
+
+  &:not(+ .q-card__title) {
+    @include margin("t");
+  }
+}

@@ -6,7 +6,11 @@
     userClasses: QCardSectionProps["userClasses"] = undefined;
   export { userClasses as class };
 
-  $: classes = createClasses(["q-card__section", "q-pa-sm", horizontal && "row", userClasses]);
+  $: classes = createClasses([horizontal && "horizontal"], {
+    component: "q-card",
+    element: "section",
+    userClasses,
+  });
 </script>
 
 <div class={classes} {...$$restProps} on:scroll>
