@@ -10,7 +10,12 @@
 
   $: alignClass = useAlign(align);
 
-  $: classes = createClasses(["q-card__actions", alignClass, vertical && "row", userClasses]);
+  $: classes = createClasses([vertical && "vertical"], {
+    component: "q-card",
+    element: "actions",
+    quaffClasses: [alignClass],
+    userClasses,
+  });
 </script>
 
 <nav class={classes} {...$$restProps}>
