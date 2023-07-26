@@ -1,5 +1,6 @@
 <script lang="ts">
   import { createClasses } from "$lib/utils/props";
+  import QIcon from "../icon/QIcon.svelte";
   import type { QChipProps } from "./props";
 
   export let content: QChipProps["content"] = undefined,
@@ -10,7 +11,7 @@
     vertical: QChipProps["vertical"] = false,
     round: QChipProps["round"] = false,
     outlined: QChipProps["outlined"] = false,
-    size: QChipProps["size"] = "medium",
+    size: QChipProps["size"] = "md",
     tabindex: QChipProps["tabindex"] = undefined,
     href: QChipProps["href"] = undefined,
     userClasses: QChipProps["userClasses"] = undefined;
@@ -19,31 +20,38 @@
   $: img = icon?.startsWith("img:") ? icon.slice(4) : undefined;
   $: imgRight = iconRight?.startsWith("img:") ? iconRight.slice(4) : undefined;
 
-  $: sizeClass = ["small", "large"].includes(size!) ? size : undefined;
+  $: sizeClass = ["sm", "lg"].includes(size!) ? size : undefined;
 
-  $: classes = createClasses([
-    "q-chip",
-    "chip",
-    disable && "disabled",
-    vertical && "vertical",
-    round && "round",
-    (outlined || disable) && "border",
-    sizeClass,
-    userClasses,
-  ]);
+  $: classes = createClasses(
+    [vertical && "vertical", round && "rounded", (outlined || disable) && "bordered", sizeClass],
+    {
+      component: "q-chip",
+      userClasses,
+    }
+  );
 
-  $: imgClass = createClasses([responsive && "responsive"]);
+  $: imgClass = createClasses([responsive && "responsive"], {
+    component: "q-chip",
+    element: "img",
+  });
 
   $: tab = typeof tabindex === "string" ? parseInt(tabindex, 10) : tabindex;
 </script>
 
-<a {href} class={classes} tabindex={tab} {...$$restProps} on:click aria-disabled={disable}>
+<a
+  {href}
+  class={classes}
+  tabindex={tab}
+  {...$$restProps}
+  on:click
+  aria-disabled={disable || undefined}
+>
   {#if $$slots.leading}
     <slot name="leading" />
   {:else if img}
     <img class={imgClass} src={img} alt="Chip leading" />
   {:else if icon}
-    <i class="small">{icon}</i>
+    <QIcon name={icon} class="q-chip__icon" />
   {/if}
   {#if content}
     {content}
@@ -53,8 +61,8 @@
   {#if $$slots.trailing}
     <slot name="trailing" />
   {:else if imgRight}
-    <img class="trailing {imgClass}" src={imgRight} alt="Chip trailing" />
+    <img class="{imgClass} q-chip__img--trailing" src={imgRight} alt="Chip trailing" />
   {:else if iconRight}
-    <i class="small">{iconRight}</i>
+    <QIcon name={iconRight} class="q-chip__icon" />
   {/if}
 </a>

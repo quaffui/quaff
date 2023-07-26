@@ -41,6 +41,8 @@
       <QBtn class="q-ma-sm" label="Rectangle" rectangle />
 
       <QBtn class="q-ma-sm" label="Flat" flat />
+
+      <QBtn class="q-ma-sm" label="With image" icon="img:/cocktail.jpg" />
     </QDocsSection>
 
     <QDocsSection {snippets} title="Size">
