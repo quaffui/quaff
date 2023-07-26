@@ -10,10 +10,10 @@
 
 <div style="margin: 1rem">
   <div class="grid" style="min-height: 400px">
-    <QCard class="s12 l6 flex center-align primary-container">
+    <QCard class="s12 l6 flex center-align" fill="primary">
       <h1 class="large no-margin" slot="title">{principalDocument.name}</h1>
     </QCard>
-    <QCard class="s12 l6 q-mt-none q-pa-none secondary-container">
+    <QCard class="s12 l6 q-mt-none q-pa-none" fill="secondary">
       <QCardSection class="no-padding">
         <div
           class="flex center-align middle-align"
