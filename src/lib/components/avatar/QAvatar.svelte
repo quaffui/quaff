@@ -23,7 +23,7 @@
   ]);
 
   $: classes = createClasses([shapeClass, isBasicSize && size], {
-    component: "QAvatar",
+    component: "q-avatar",
     userClasses,
   });
 

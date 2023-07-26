@@ -30,7 +30,7 @@
       size && size !== "md" && size,
     ],
     {
-      component: "QBtn",
+      component: "q-btn",
       userClasses,
     }
   );

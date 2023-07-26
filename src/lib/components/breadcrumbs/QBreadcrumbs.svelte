@@ -18,7 +18,7 @@
   setContext("separator", { type: separator, color: separatorColor, gutter });
 
   $: classes = createClasses([], {
-    component: "QBreadcrumbs",
+    component: "q-breadcrumbs",
     userClasses,
   });
 </script>

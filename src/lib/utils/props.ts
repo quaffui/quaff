@@ -37,15 +37,13 @@ export function createClasses(
   modifiers: any[],
   options: CreateClassesOptions = { userClasses: "", quaffClasses: [] }
 ): string {
-  let component: string | undefined, element: string | undefined;
-
   const userClasses = options.userClasses?.trim();
   const quaffClasses = options.quaffClasses?.length && createClasses(options.quaffClasses);
   const baseClasses = `${quaffClasses || ""} ${userClasses || ""}`.trim();
 
-  if (options.component !== undefined) {
-    component = convertCase(options.component, "pascal", "kebab");
-  }
+  let component = options.component,
+    element: string | undefined;
+
   if (component && options.element) {
     element = `${component}__${options.element}`;
   }

@@ -14,7 +14,7 @@
   $: spinnerSize = isNumber(size) ? `${size}px` : size;
 
   $: classes = createClasses([indeterminate && "indeterminate"], {
-    component: "QCircularProgress",
+    component: "q-circular-progress",
     quaffClasses: [color && `${color}-text`],
     userClasses,
   });
