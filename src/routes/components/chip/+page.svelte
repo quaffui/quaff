@@ -21,9 +21,9 @@
 
     <QDocsSection {snippets} title="Chip Sizes">
       <div class="flex q-gap-lg middle-align">
-        <QChip content="Small Chip" size="small" />
+        <QChip content="Small Chip" size="sm" />
         <QChip content="Medium Chip" />
-        <QChip content="Large Chip" size="large" />
+        <QChip content="Large Chip" size="lg" />
       </div>
     </QDocsSection>
 
