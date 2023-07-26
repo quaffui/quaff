@@ -1,0 +1,65 @@
+// Spaces
+@mixin padding($pos: "a", $size: "sm") {
+  $position: map.get($positions, $pos);
+  $space: map.get($spaces, $size);
+
+  padding#{$position}: $space;
+}
+
+@mixin margin($pos: "a", $size: "sm") {
+  $position: map.get($positions, $pos);
+  $space: map.get($spaces, $size);
+
+  margin#{$position}: $space;
+}
+
+//States
+@mixin elevate($strength, $position) {
+  $coeff: 1;
+  @if $position == "top" {
+    $coeff: -1;
+  }
+  $elevate: 0.125rem * $strength;
+
+  &-#{$position} {
+    box-shadow: 0 $elevate * $coeff $elevate 0 rgb(0, 0, 0, 0.24 + 0.08 * $strength);
+  }
+}
+
+@mixin border($color: var(--outline)) {
+  border: 0.0625rem solid $color;
+}
+
+@mixin transparent($ripple: false) {
+  background-color: transparent;
+  background: transparent;
+  color: inherit;
+
+  &:is(:focus, :hover) > .q-icon {
+    font-variation-settings: "FILL" 1;
+  }
+
+  @if $ripple {
+    &::after {
+      background-image: radial-gradient(circle, rgb(150, 150, 150, 0.2) 1%, transparent 1%);
+    }
+  }
+}
+
+//Layout
+@mixin include-drawers($baseWidth, $pos, $el) {
+  // Left drawer
+  &.left ~ .q-#{$el} {
+    width: calc(#{$baseWidth} - #{$L_Drawer});
+  }
+
+  // Right drawer
+  &.right ~ .q-#{$el} {
+    width: calc(#{$baseWidth} - #{$R_Drawer});
+  }
+
+  // Left drawer + Right drawer
+  &.left ~ .q-drawer.active.right:not(.offset-#{$pos}, .overlay) {
+    width: calc(#{$baseWidth} - #{$LR_Drawer});
+  }
+}

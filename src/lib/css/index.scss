@@ -1,10 +1,45 @@
+@use "sass:map";
+
+$space-base: 16px !default;
+$space-x-base: $space-base !default;
+$space-y-base: $space-base !default;
+
+$space-none: 0 !default;
+$space-xs: 0.25rem !default;
+$space-sm: 0.5rem !default;
+$space-md: 1rem !default;
+$space-lg: 1.5rem !default;
+$space-xl: 2rem !default;
+
+$spaces: (
+  "auto": auto,
+  "none": $space-none,
+  "xs": $space-xs,
+  "sm": $space-sm,
+  "md": $space-md,
+  "lg": $space-lg,
+  "xl": $space-xl,
+) !default;
+
+$positions: (
+  "t": -top,
+  "r": -right,
+  "b": -bottom,
+  "l": -left,
+  "x": -inline,
+  "y": -block,
+  "a": "",
+);
+
 @import "./theme/theme";
-@import "./grid.scss";
+@import "./mixins";
+@import "./grid";
 @import "./states";
 
 @import "$components/avatar";
 @import "$components/breadcrumbs";
 @import "$components/button";
+@import "$components/card";
 @import "$components/chip";
 @import "$components/dialog";
 @import "$components/drawer";
@@ -22,96 +57,23 @@ body {
   height: 100%;
   width: 100%;
 }
-$space-base: 16px !default;
-$space-x-base: $space-base !default;
-$space-y-base: $space-base !default;
 
-$space-none: 0px !default;
-$space-xs: 4px !default;
-$space-sm: 8px !default;
-$space-md: 16px !default;
-$space-lg: 24px !default;
-$space-xl: 32px !default;
+@each $spaceName, $spaceVal in $spaces {
+  @each $posName, $_ in $positions {
+    .q-p#{$posName}-#{$spaceName} {
+      @include padding($posName, $spaceName);
+    }
 
-$spaces: (
-  "none": $space-none,
-  "xs": $space-xs,
-  "sm": $space-sm,
-  "md": $space-md,
-  "lg": $space-lg,
-  "xl": $space-xl,
-) !default;
+    .q-m#{$posName}-#{$spaceName} {
+      @include margin($posName, $spaceName);
+    }
+  }
 
-@each $space, $value in $spaces {
-  .q-pa-#{$space} {
-    padding: $value $value;
+  @if $spaceName != "auto" {
+    .q-gap-#{$spaceName} {
+      gap: $spaceVal;
+    }
   }
-  .q-pl-#{$space} {
-    padding-left: $value;
-  }
-  .q-pr-#{$space} {
-    padding-right: $value;
-  }
-  .q-pt-#{$space} {
-    padding-top: $value;
-  }
-  .q-pb-#{$space} {
-    padding-bottom: $value;
-  }
-  .q-px-#{$space} {
-    padding-left: $value;
-    padding-right: $value;
-  }
-  .q-py-#{$space} {
-    padding-top: $value;
-    padding-bottom: $value;
-  }
-  .q-ma-#{$space} {
-    margin: $value $value;
-  }
-  .q-ml-#{$space} {
-    margin-left: $value;
-  }
-  .q-mr-#{$space} {
-    margin-right: $value;
-  }
-  .q-mt-#{$space} {
-    margin-top: $value;
-  }
-  .q-mb-#{$space} {
-    margin-bottom: $value;
-  }
-  .q-mx-#{$space} {
-    margin-left: $value;
-    margin-right: $value;
-  }
-  .q-my-#{$space} {
-    margin-top: $value;
-    margin-bottom: $value;
-  }
-  .q-gap-#{$space} {
-    gap: $value;
-  }
-}
-.q-mt-auto {
-  margin-top: auto;
-}
-.q-ml-auto {
-  margin-left: auto;
-}
-.q-mb-auto {
-  margin-bottom: auto;
-}
-.q-mr-auto {
-  margin-right: auto;
-}
-.q-mx-auto {
-  margin-left: auto;
-  margin-right: auto;
-}
-.q-my-auto {
-  margin-top: auto;
-  margin-bottom: auto;
 }
 
 .flex {
@@ -148,17 +110,4 @@ $spaces: (
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-}
-
-.q-item,
-.q-tab,
-.q-input,
-.q-btn {
-  &.disabled {
-    opacity: 50%;
-    cursor: not-allowed;
-    & * {
-      pointer-events: none;
-    }
-  }
 }

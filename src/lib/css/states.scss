@@ -7,26 +7,15 @@
 }
 
 // BORDERED
-@mixin border($color) {
-  border: 0.0625rem solid $color;
+.border {
+  @include border;
 }
 
 // ELEVATED
+
 .elevate {
   &-none {
     box-shadow: none;
-  }
-
-  @mixin elevate($strength, $position) {
-    $coeff: 1;
-    @if $position == "top" {
-      $coeff: -1;
-    }
-    $elevate: 0.125rem * $strength;
-
-    &-#{$position} {
-      box-shadow: 0 $elevate * $coeff $elevate 0 rgb(0, 0, 0, 0.24 + 0.08 * $strength);
-    }
   }
 
   $elevations: (
@@ -44,20 +33,8 @@
 }
 
 // TRANSPARENT
-@mixin transparent($ripple: false) {
-  background-color: transparent;
-  background: transparent;
-  color: inherit;
-
-  &:is(:focus, :hover) > .q-icon {
-    font-variation-settings: "FILL" 1;
-  }
-
-  @if $ripple {
-    &::after {
-      background-image: radial-gradient(circle, rgb(150, 150, 150, 0.2) 1%, transparent 1%);
-    }
-  }
+.transparent {
+  @include transparent;
 }
 
 // WITH RIPPLE EFFECT
