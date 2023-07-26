@@ -1,13 +1,20 @@
+// QBreadcrumbs
 .q-breadcrumbs {
   display: flex;
   align-items: center;
   justify-content: center;
 
-  &__el > .q-icon {
-    @extend .q-mr-xs;
-  }
-
   &__separator:first-child {
     display: none;
+  }
+}
+
+// QBreadcrumbsEl
+.q-breadcrumbs.q-breadcrumbs__el {
+  display: flex;
+  align-items: center;
+
+  & > .q-icon {
+    @include margin("r");
   }
 }
