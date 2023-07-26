@@ -15,22 +15,20 @@
     userClasses: QBreadcrumbsElProps["userClasses"] = undefined;
   export { userClasses as class };
 
-  const component = "QBreadcrumbs";
-
   const activeColor = getContext<string>("activeColor");
   const separator = getContext<{ type: string; color: string; gutter: string }>("separator");
 
   $: isActive = isRouteActive($Quaff.router, href || to);
 
   $: classes = createClasses([isActive && activeClass], {
-    component,
+    component: "q-breadcrumbs",
     element: "el",
     quaffClasses: [isActive && `${activeColor}-text`],
     userClasses,
   });
 
   $: separatorClasses = createClasses([], {
-    component,
+    component: "q-breadcrumbs",
     element: "separator",
     quaffClasses: [`q-px-${separator.gutter}`],
   });
