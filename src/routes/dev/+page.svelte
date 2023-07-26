@@ -1,5 +1,4 @@
 <script lang="ts">
-  import Prism from "prismjs";
   import {
     QDialog,
     QCard,
@@ -24,7 +23,6 @@
     QIcon,
   } from "$lib";
   import { Quaff } from "$lib/stores/Quaff";
-  import { highlight } from "prismjs";
   import QBreadcrumbs from "$lib/components/breadcrumbs/QBreadcrumbs.svelte";
   import QBreadcrumbsEl from "$lib/components/breadcrumbs/QBreadcrumbsEl.svelte";
   import QCardActions from "$lib/components/card/QCardActions.svelte";
