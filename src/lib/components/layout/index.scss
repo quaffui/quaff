@@ -240,23 +240,6 @@ $elements: (
   @return calc(100% - #{$toSub});
 }
 
-@mixin include-drawers($baseWidth, $pos, $el) {
-  // Left drawer
-  &.left ~ .q-#{$el} {
-    width: calc(#{$baseWidth} - #{$L_Drawer});
-  }
-
-  // Right drawer
-  &.right ~ .q-#{$el} {
-    width: calc(#{$baseWidth} - #{$R_Drawer});
-  }
-
-  // Left drawer + Right drawer
-  &.left ~ .q-drawer.active.right:not(.offset-#{$pos}, .overlay) {
-    width: calc(#{$baseWidth} - #{$LR_Drawer});
-  }
-}
-
 // Offset for content
 .q-layout {
   & > .q-header ~ :not(.q-header, .q-footer, .q-drawer, .q-railbar) {
