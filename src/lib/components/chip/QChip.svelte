@@ -49,7 +49,7 @@
   {#if $$slots.leading}
     <slot name="leading" />
   {:else if img}
-    <img class={imgClass} src={img} alt="Chip leading" />
+    <img class={imgClass} src={img} alt="{content || 'Slotted'} chip" />
   {:else if icon}
     <QIcon name={icon} class="q-chip__icon" />
   {/if}
@@ -61,7 +61,11 @@
   {#if $$slots.trailing}
     <slot name="trailing" />
   {:else if imgRight}
-    <img class="{imgClass} q-chip__img--trailing" src={imgRight} alt="Chip trailing" />
+    <img
+      class="{imgClass} q-chip__img--trailing"
+      src={imgRight}
+      alt="{content || 'Slotted'} chip"
+    />
   {:else if iconRight}
     <QIcon name={iconRight} class="q-chip__icon" />
   {/if}
