@@ -21,21 +21,25 @@
 
   $: hasBorder = bordered || rounded || outlined;
 
-  $: classes = createClasses([
-    "q-input",
-    "field",
-    label && "label",
-    active && "active",
-    dense && "small",
-    $$slots.prepend && "prefix",
-    $$slots.append && "suffix",
-    hasBorder && "border",
-    rounded && "round",
-    filled && "fill",
-    error && "invalid",
-    disable && "disabled",
-    userClasses,
-  ]);
+  $: classes = createClasses(
+    [
+      label && "label",
+      active && "active",
+      dense && "dense",
+      $$slots.prepend && "prepend",
+      $$slots.append && "append",
+      hasBorder && "has-border",
+      bordered && "bordered",
+      rounded && "rounded",
+      filled && "filled",
+      error && "error",
+      disable && "disabled",
+    ],
+    {
+      component: "q-input",
+      userClasses,
+    }
+  );
 
   let wrapper: HTMLElement | null = null;
   let inputElement: HTMLInputElement | null = null;
@@ -88,11 +92,11 @@
 
   {#if label}
     <!-- svelte-ignore a11y-label-has-associated-control -->
-    <label class={active ? "active" : ""}>{label}</label>
+    <label class="q-input__label {active ? 'q-input__label--active' : ''}">{label}</label>
   {/if}
   {#if hint}
-    <span class="helper">{hint}</span>
+    <span class="q-input__helper">{hint}</span>
   {:else if error && errorMessage}
-    <span class="error">{errorMessage}</span>
+    <span class="q-input__error">{errorMessage}</span>
   {/if}
 </div>
