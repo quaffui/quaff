@@ -255,7 +255,7 @@
       </QItem>
       <QItem>
         <QItemSection type="thumbnail">
-          <img src="/cocktail.jpg" alt="" />
+          <img src="/cocktail.jpg" alt="Pink and yellow cocktails with a straws and mint leaves" />
         </QItemSection>
         <QItemSection type="content">
           <svelte:fragment slot="headline">With an image</svelte:fragment>
@@ -379,9 +379,9 @@
     <QCardSection>
       <h6>Size</h6>
       <div class="flex column" style="align-items: center; gap: 1em">
-        <QChip content="I'm small" size="small" />
-        <QChip content="I'm medium (default)" size="medium" />
-        <QChip content="I'm large" size="large" />
+        <QChip content="I'm small" size="sm" />
+        <QChip content="I'm medium (default)" size="md" />
+        <QChip content="I'm large" size="lg" />
       </div>
     </QCardSection>
     <QCardSection>

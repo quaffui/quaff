@@ -1,10 +1,83 @@
-.q-chip.disabled {
-  border-color: var(--on-surface);
-  opacity: 50%;
-  pointer-events: none;
+// QChip
+.q-chip {
+  box-sizing: content-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 2.5rem;
+  min-width: 2.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  background-color: var(--secondary);
+  color: var(--on-secondary);
+  text-transform: none;
+  border-radius: 0.5em;
+  transition: var(--speed3) transform, var(--speed3) border-radius, var(--speed3) padding;
+  line-height: normal;
+  text-decoration: none;
+  cursor: pointer;
+  border: none;
+
+  @extend .ripple;
+  @extend .no-select;
+  @include padding("x", "md");
+  @include margin("x");
+  @include gap("md");
+  @include btn-image("chip");
+
+  &.q-chip--sm {
+    height: 2rem;
+    min-width: 2rem;
+  }
+
+  &.q-chip--lg {
+    height: 3rem;
+    min-width: 3rem;
+  }
+
+  &.q-chip--bordered {
+    @include transparent($ripple: true);
+    @include border(var(--secondary));
+    color: var(--secondary);
+  }
+
+  &.q-chip--rounded {
+    border-radius: 1.25rem;
+
+    &.q-chip--sm {
+      border-radius: 1rem;
+    }
+
+    &.q-chip--lg {
+      border-radius: 1.5rem;
+    }
+  }
+
+  &.q-chip--filled {
+    background-color: var(--secondary-container);
+    color: var(--on-secondary-container);
+    border: none;
+  }
+
+  &.q-chip--vertical {
+    flex-direction: column;
+    height: auto;
+    max-height: none;
+    
+    @include padding("y");
+    @include gap("xs");
+  }
+
+  &.q-chip[aria-disabled=true] {
+    @extend .disabled;
+    &.q-chip--bordered {
+      border-color: var(--on-surface);
+    }
+  }
 }
 
-.q-chip img.trailing.responsive {
-  margin-left: -0.5rem;
-  margin-right: -1rem;
+// QChip icons
+.q-chip > .q-icon {
+  --size: 1.25rem;
+  margin-inline: -0.5rem
 }

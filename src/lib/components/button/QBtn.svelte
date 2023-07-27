@@ -47,7 +47,15 @@
   on:click
 >
   {#if icon && !loading}
-    <QIcon name={icon} class="q-btn__icon" />
+    {#if icon.startsWith("img:")}
+      <img
+        src={icon.replace("img:", "")}
+        class="q-btn__img q-btn__img--responsive"
+        alt="{label || 'Slotted'} button"
+      />
+    {:else}
+      <QIcon name={icon} class="q-btn__icon" />
+    {/if}
   {/if}
 
   {#if loading}

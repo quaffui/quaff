@@ -73,4 +73,6 @@
   & > :is(.q-icon, .q-circular-progress) {
     margin: 0 -0.5rem;
   }
+
+  @include btn-image;
 }

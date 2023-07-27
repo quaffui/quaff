@@ -1,5 +1,7 @@
 import type { NativeProps } from "$lib/utils/types";
 
+export type QChipSizeOptions = "sm" | "md" | "lg";
+
 export interface QChipProps extends NativeProps {
   /**
    * The content inside the chip. Will overwrite the default slot.
@@ -53,7 +55,7 @@ export interface QChipProps extends NativeProps {
    * Size of the chip.
    * @default small
    */
-  size?: "small" | "medium" | "large";
+  size?: QChipSizeOptions;
 
   /**
    * Tabindex of the chip.
