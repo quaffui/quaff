@@ -3,7 +3,13 @@
   opacity: 0.5;
   cursor: not-allowed;
 
-  pointer-events: none;
+  & * {
+    pointer-events: none;
+  }
+
+  &::after {
+    all: unset
+  }
 }
 
 // BORDERED

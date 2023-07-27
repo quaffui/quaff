@@ -24,7 +24,7 @@
         <img
           class="responsive medium"
           src="/beer-splash.jpeg"
-          alt=""
+          alt="Close-up of the content of a glass of beer"
           style="filter:brightness(0.3)"
         />
       </QCardSection>
