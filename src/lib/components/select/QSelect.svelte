@@ -27,21 +27,25 @@
 
   $: hasBorder = bordered || rounded || outlined;
 
-  $: classes = createClasses([
-    "q-select",
-    "field",
-    label && "label",
-    active && "active",
-    dense && "small",
-    $$slots.prepend && "prefix",
-    $$slots.append && "suffix",
-    hasBorder && "border",
-    rounded && "round",
-    filled && "fill",
-    error && "invalid",
-    disable && "disabled",
-    userClasses,
-  ]);
+  $: classes = createClasses(
+    [
+      "q-select",
+      label && "label",
+      active && "active",
+      dense && "dense",
+      $$slots.prepend && "prepend",
+      $$slots.append && "append",
+      hasBorder && "has-border",
+      rounded && "rounded",
+      filled && "filled",
+      error && "error",
+      disable && "disabled",
+    ],
+    {
+      component: "q-select",
+      userClasses,
+    }
+  );
 
   let wrapper: HTMLElement | null = null;
   let inputElement: HTMLInputElement | null = null;
@@ -162,65 +166,31 @@
     disabled={disable}
   />
 
-  <i class="arrow-toggle" class:has-append={$$slots.append}
+  <i class="q-select__arrow-toggle" class:q-select__arrow-toggle--has-append={$$slots.append}
     >{`arrow_drop_${isMenuOpen ? "up" : "down"}`}</i
   >
 
   <slot name="append" />
 
-  <menu class:active={isMenuOpen}>
+  <div class="q-select__menu {isMenuOpen ? 'q-select__menu--active' : ''}">
     {#each options as option, idx}
       <a
         href={multiple ? "javascript:void(0)" : undefined}
-        class:selected={selectedOptions[idx]}
+        class="q-select__option {selectedOptions[idx] ? 'q-select__option--selected' : ''}"
         on:mousedown={() => (preventClose = true)}
         on:click={(e) => select(e, option)}>{typeof option === "string" ? option : option.value}</a
       >
     {/each}
-  </menu>
+  </div>
 
   {#if label}
     <!-- svelte-ignore a11y-label-has-associated-control -->
-    <label class={active ? "active" : ""}>{label}</label>
+    <label class="q-select__label {active ? 'q-select__label--active' : ''}">{label}</label>
   {/if}
 
   {#if hint}
-    <span class="helper">{hint}</span>
+    <span class="q-select__helper">{hint}</span>
   {:else if error && errorMessage}
-    <span class="error">{errorMessage}</span>
+    <span class="q-select__error">{errorMessage}</span>
   {/if}
 </div>
-
-<style lang="scss">
-  .q-select {
-    .selected {
-      color: var(--primary);
-    }
-
-    input:read-only {
-      cursor: pointer;
-    }
-
-    menu {
-      opacity: 0;
-      visibility: hidden;
-      transform: scale(0.8) translateY(120%);
-      transition: opacity var(--speed2), transform var(--speed2), visibility 0s var(--speed2);
-
-      &.active {
-        opacity: 1;
-        visibility: visible;
-        transform: scale(1) translateY(100%);
-        transition: opacity var(--speed2), transform var(--speed2), visibility 0s 0s;
-      }
-    }
-
-    .arrow-toggle {
-      cursor: pointer;
-
-      &.has-append {
-        right: 3rem;
-      }
-    }
-  }
-</style>
