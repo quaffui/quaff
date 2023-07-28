@@ -12,7 +12,7 @@ $breakpoints: (
   sm: 600px,
   md: 960px,
   lg: 1280px,
-  xl: 1920px
+  xl: 1920px,
 );
 
 .row {
@@ -21,12 +21,29 @@ $breakpoints: (
   grid-gap: 0;
 
   // Gutter classes
-  &.q-gutter-xs { grid-gap: $gutter-xs; }
-  &.q-gutter-sm { grid-gap: $gutter-sm; }
-  &.q-gutter-md { grid-gap: $gutter-md; }
-  &.q-gutter-lg { grid-gap: $gutter-lg; }
-  &.q-gutter-xl { grid-gap: $gutter-xl; }
-  &.q-gutter-none { grid-gap: 0px; }
+  &.q-gutter-xs {
+    grid-gap: $gutter-xs;
+  }
+
+  &.q-gutter-sm {
+    grid-gap: $gutter-sm;
+  }
+
+  &.q-gutter-md {
+    grid-gap: $gutter-md;
+  }
+
+  &.q-gutter-lg {
+    grid-gap: $gutter-lg;
+  }
+
+  &.q-gutter-xl {
+    grid-gap: $gutter-xl;
+  }
+
+  &.q-gutter-none {
+    grid-gap: 0px;
+  }
 
   // Column classes for all sizes
   @for $i from 1 through $grid-columns {
