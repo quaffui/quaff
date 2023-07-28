@@ -1,0 +1,27 @@
+.q-toggle {
+  $root: &;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8em;
+  cursor: pointer;
+
+  &--disable {
+    cursor: not-allowed;
+
+    #{$root}__label {
+      opacity: 0.5;
+    }
+  }
+
+  &__inner {
+    @include selection(switch);
+  }
+
+  &__label {
+    font-size: 1rem;
+  }
+
+  & * {
+    pointer-events: none;
+  }
+}
