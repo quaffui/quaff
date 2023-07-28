@@ -1,0 +1,34 @@
+.q-select {
+  @include field;
+
+  &__option--selected {
+    color: var(--primary);
+  }
+
+  input:read-only {
+    cursor: pointer;
+  }
+
+  &__menu {
+    @include menu;
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(0.8) translateY(120%);
+    transition: opacity var(--speed2), transform var(--speed2), visibility 0s var(--speed2);
+
+    &--active {
+      opacity: 1;
+      visibility: visible;
+      transform: scale(1) translateY(100%);
+      transition: opacity var(--speed2), transform var(--speed2), visibility 0s 0s;
+    }
+  }
+
+  & &__arrow-toggle {
+    cursor: pointer;
+
+    &--has-append {
+      right: 3rem;
+    }
+  }
+}
