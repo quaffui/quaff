@@ -1,0 +1,184 @@
+// type can be: checkbox, radio or switch
+@mixin selection($type) {
+  width: auto;
+  height: auto;
+  line-height: normal;
+  white-space: nowrap;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+
+  @if $type == checkbox or $type == radio {
+    > input {
+      width: 1.5rem;
+      height: 1.5rem;
+      opacity: 0;
+    }
+
+    > span:not(:empty) {
+      padding-left: 0.25rem;
+    }
+
+    > input:is(:focus, :hover) + span::before {
+      background-color: var(--active);
+      box-shadow: 0 0 0 0.5rem var(--active);
+    }
+
+    > input:checked + span::before,
+    &--icon > input:checked + span > i {
+      color: var(--primary);
+    }
+  }
+
+  > span {
+    display: inline-flex;
+    align-items: center;
+    color: var(--on-background);
+    font-size: 0.875rem;
+  }
+
+  // the second selector was actually .icon > span > i before refactoring
+  > span::before,
+  &--icon > span > i {
+    font-family: var(--font-icon);
+    font-weight: normal;
+    font-style: normal;
+    font-size: 1.5rem;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    font-feature-settings: "liga";
+    -webkit-font-smoothing: antialiased;
+    vertical-align: middle;
+    text-align: center;
+    overflow: hidden;
+    width: 1.5rem;
+    height: 1.5rem;
+    box-sizing: border-box;
+    margin: 0 auto;
+    outline: none;
+    color: var(--primary);
+    position: absolute;
+    left: -1.5rem;
+    background-color: transparent;
+    border-radius: 50%;
+    user-select: none;
+    z-index: 1;
+    box-shadow: 0 0 0 0 var(--active);
+    transition: var(--speed1) all;
+  }
+
+  @if $type == switch {
+    > input {
+      width: 3.25rem;
+      height: 2rem;
+      opacity: 0;
+    }
+
+    > span::before,
+    &--icon > span > i {
+      position: absolute;
+      left: 0;
+      top: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: var(--speed2) all;
+      font-size: 1rem;
+      user-select: none;
+      min-width: auto;
+      content: "";
+      color: var(--surface-variant);
+      background-color: var(--outline);
+      transform: translate(-3rem, -50%) scale(0.6);
+    }
+
+    &--icon > span > i {
+      transform: translate(-3rem, -50%) scale(1);
+    }
+
+    > input:is(:focus, :hover) + span::before,
+    &--icon > input:is(:focus, :hover) + span > i {
+      box-shadow: 0 0 0 0.5rem var(--active);
+    }
+
+    > input:checked + span::after {
+      border: none;
+      background-color: var(--primary);
+    }
+
+    > input:checked + span::before,
+    &--icon > input:checked + span > i {
+      content: "check";
+      color: var(--primary);
+      background-color: var(--on-primary);
+      transform: translate(-1.75rem, -50%) scale(1);
+    }
+
+    > span::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 50%;
+      background-color: var(--active);
+      border: 0.125rem solid var(--outline);
+      box-sizing: border-box;
+      width: 3.25rem;
+      height: 2rem;
+      border-radius: 2rem;
+      transform: translate(-3.25rem, -50%);
+    }
+  }
+
+  @if $type == checkbox {
+    > span::before {
+      content: "check_box_outline_blank";
+    }
+
+    > input:checked + span::before {
+      content: "check_box";
+      font-variation-settings: "FILL" 1;
+    }
+  }
+
+  @if $type == radio {
+    > span::before {
+      content: "radio_button_unchecked";
+    }
+
+    > input:checked + span::before {
+      content: "radio_button_checked";
+    }
+  }
+
+  &--icon > span::before {
+    content: "" !important;
+    font-variation-settings: unset !important;
+  }
+
+  // selectors were just for .icon (...) before refactoring
+  &--icon > input:checked + span > i:first-child,
+  &--icon > span > i:last-child {
+    opacity: 0;
+  }
+
+  // selectors were just for .icon (...) before refactoring
+  &--icon > input:checked + span > i:last-child,
+  &--icon > span > i:first-child {
+    opacity: 1;
+  }
+
+  > input:disabled + span {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  & + & {
+    margin-left: 0.5rem;
+  }
+}

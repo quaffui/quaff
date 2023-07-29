@@ -11,14 +11,14 @@
     userClasses: QToggleProps["userClasses"] = undefined;
   export { userClasses as class };
 
-  $: classes = createClasses([
-    "q-toggle",
-    leftLabel && "reverse",
-    disable && "disable",
+  $: classes = createClasses([leftLabel && "reversed", disable && "disabled", userClasses], {
+    component: "q-toggle",
     userClasses,
-  ]);
+  });
 
-  $: classesInner = createClasses(["switch", icon && "icon"]);
+  $: classesInner = createClasses([icon && "icon"], {
+    component: "q-toggle__inner",
+  });
 
   function toggle() {
     if (disable !== true) {
@@ -37,33 +37,8 @@
     </span>
   </label>
   {#if label}
-    <span class="label">
+    <span class="q-toggle__label">
       {label}
     </span>
   {/if}
 </div>
-
-<style lang="scss">
-  .q-toggle {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.8em;
-    cursor: pointer;
-
-    .label {
-      font-size: 1rem;
-    }
-
-    &.disable {
-      cursor: not-allowed;
-
-      .label {
-        opacity: 0.5;
-      }
-    }
-
-    & * {
-      pointer-events: none;
-    }
-  }
-</style>
