@@ -1,6 +1,7 @@
 @import "mixins/field.scss";
 @import "mixins/menu.scss";
 @import "mixins/selection.scss";
+@import "mixins/table.scss";
 
 // Spaces
 @mixin padding($pos: "a", $size: "sm") {
