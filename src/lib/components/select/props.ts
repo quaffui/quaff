@@ -3,7 +3,7 @@ import { type NativeProps } from "$utils/types";
 export type QSelectOption = string | { label: string; value: string };
 
 export interface QSelectProps extends NativeProps {
-  value: string | string[];
+  value: string | string[] | number | number[];
   multiple?: boolean;
   options: QSelectOption[];
   bordered?: boolean;
