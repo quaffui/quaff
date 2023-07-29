@@ -1,9 +1,12 @@
 <script lang="ts">
   import { QCard, QCardSection } from "$lib";
-  import type { QComponentDocs } from "$utils/types";
+  import { Quaff } from "$lib/stores/Quaff";
   import QApi from "./QApi.svelte";
+  import type { QComponentDocs } from "$utils/types";
 
   export let QComponentDocs: QComponentDocs | QComponentDocs[];
+
+  $: isDark = $Quaff.dark.isActive;
 
   let principalDocument = Array.isArray(QComponentDocs) ? QComponentDocs[0] : QComponentDocs;
 </script>
@@ -23,9 +26,9 @@
         </div>
         <img
           class="responsive medium"
-          src="/beer-splash.jpeg"
+          src="/beer-splash-{isDark ? 'dark' : 'light'}.jpg"
           alt="Close-up of the content of a glass of beer"
-          style="filter:brightness(0.3)"
+          style={isDark ? "filter:brightness(0.3)" : ""}
         />
       </QCardSection>
       <QCardSection class="flex center-align middle-align">
