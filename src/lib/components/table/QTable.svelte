@@ -4,7 +4,7 @@
   import QIcon from "../icon/QIcon.svelte";
   import QSelect from "../select/QSelect.svelte";
   import type { QTableProps } from "./props";
-  import type { QTableColumn, QTableRow, QTableSort } from "./types";
+  import type { QTableColumn, QTableRow, QTableSort } from "./props";
 
   export let columns: QTableProps["columns"] = [],
     rows: QTableProps["rows"] = [],
@@ -25,15 +25,16 @@
     value: e.toString(),
   }));
 
-  $: classes = createClasses([
-    "q-table",
-    "border",
-    flat && "flat",
-    bordered && "bordered",
-    !dense && "medium-space",
-    dense && "small-space dense",
+  $: classes = createClasses([], {
+    component: "q-table",
     userClasses,
-  ]);
+  });
+
+  $: classesTable = createClasses([flat && "flat", bordered && "bordered", dense && "dense"], {
+    component: "q-table",
+    element: "table",
+    userClasses,
+  });
 
   let sort: QTableSort = null;
   let rowsSorted: QTableRow[] = rows;
@@ -112,8 +113,8 @@
   }
 </script>
 
-<div class="q-table-container">
-  <table class={classes}>
+<div class={classes}>
+  <table class={classesTable}>
     <thead>
       <tr>
         {#each columns as column}
@@ -125,7 +126,7 @@
             {#if allowsSort(column)}
               <QIcon
                 name={sort?.type !== "desc" ? "keyboard_arrow_up" : "keyboard_arrow_down"}
-                class={hasSort(column, sort) ? "has-sort" : ""}
+                class="q-icon {hasSort(column, sort) ? 'q-icon--sort' : ''}"
               />
             {/if}
 
@@ -141,114 +142,38 @@
         <tr>
           {#each columns as column}
             <slot name="body-cell" {column} {row} style={getCellStyle(column)}>
-              <td style={getCellStyle(column)}>{getField(column.field, row)}</td>
+              <td class="q-table__body-cell" style={getCellStyle(column)}
+                >{getField(column.field, row)}</td
+              >
             </slot>
           {/each}
         </tr>
       {/each}
     </tbody>
   </table>
-  <div class="grid">
-    <div class="s12 q-table-footer">
-      Records&nbsp;per&nbsp;page:
-      <QSelect
-        class="records-per-page-select"
-        dense
-        outlined
-        options={rowsPerPageOptions}
-        bind:value={rowsPerPage}
-      />
-      {numberFrom}-{numberTo}&nbsp;of&nbsp;{numberOf}
-      <QBtn
-        icon="chevron_left"
-        size="sm"
-        flat
-        disable={page === 1}
-        on:click={() => (page = page - 1)}
-      />
-      <QBtn
-        icon="chevron_right"
-        size="sm"
-        flat
-        disable={page * rowsPerPage >= rows.length}
-        on:click={() => (page = page + 1)}
-      />
-    </div>
+  <div class="q-table__footer q-mt-lg">
+    Records&nbsp;per&nbsp;page:
+    <QSelect
+      class="q-table__footer-records-per-page-select"
+      dense
+      outlined
+      options={rowsPerPageOptions}
+      bind:value={rowsPerPage}
+    />
+    {numberFrom}-{numberTo}&nbsp;of&nbsp;{numberOf}
+    <QBtn
+      icon="chevron_left"
+      size="sm"
+      flat
+      disable={page === 1}
+      on:click={() => (page = page - 1)}
+    />
+    <QBtn
+      icon="chevron_right"
+      size="sm"
+      flat
+      disable={page * rowsPerPage >= rows.length}
+      on:click={() => (page = page + 1)}
+    />
   </div>
 </div>
-
-<style lang="scss">
-  .q-table {
-    border-radius: 0.75rem;
-    box-shadow: var(--elevate1);
-
-    th {
-      font-weight: 600;
-
-      :global(.q-icon) {
-        position: relative;
-        top: -1px;
-        opacity: 0;
-      }
-
-      :global(.q-icon.has-sort) {
-        opacity: 1;
-      }
-
-      &:hover {
-        :global(.q-icon:not(.has-sort)) {
-          opacity: 0.5;
-        }
-        :global(.q-icon.has-sort) {
-          opacity: 0.8;
-        }
-      }
-    }
-
-    tr:last-child :global(td) {
-      border-bottom: none;
-    }
-
-    &.flat {
-      box-shadow: none;
-    }
-
-    &.bordered {
-      border: 1px solid var(--outline);
-
-      tr:last-child td {
-        border-bottom: none;
-      }
-    }
-
-    &.dense.no-space {
-      border-radius: 0.5rem;
-
-      :global(th),
-      :global(td) {
-        padding: 0.25rem;
-      }
-    }
-
-    > * {
-      border-radius: 0;
-    }
-  }
-
-  .q-table-footer {
-    display: flex;
-    justify-content: end;
-    align-items: center;
-
-    :global(.q-select.field) {
-      margin-bottom: 0 !important;
-      margin-left: 1em;
-      margin-right: 1em;
-    }
-  }
-
-  :global(.records-per-page-select) {
-    width: 80px;
-    display: inline-block;
-  }
-</style>
