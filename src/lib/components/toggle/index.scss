@@ -5,12 +5,16 @@
   gap: 0.8em;
   cursor: pointer;
 
-  &--disable {
+  &--disabled {
     cursor: not-allowed;
 
     #{$root}__label {
       opacity: 0.5;
     }
+  }
+
+  &--reversed {
+    flex-direction: row-reverse;
   }
 
   &__inner {

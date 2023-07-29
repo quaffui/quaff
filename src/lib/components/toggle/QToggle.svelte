@@ -11,7 +11,7 @@
     userClasses: QToggleProps["userClasses"] = undefined;
   export { userClasses as class };
 
-  $: classes = createClasses([leftLabel && "reverse", disable && "disable", userClasses], {
+  $: classes = createClasses([leftLabel && "reversed", disable && "disabled", userClasses], {
     component: "q-toggle",
     userClasses,
   });
