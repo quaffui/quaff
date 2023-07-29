@@ -40,6 +40,7 @@ $positions: (
 @import "$components/breadcrumbs";
 @import "$components/button";
 @import "$components/card";
+@import "$components/checkbox";
 @import "$components/chip";
 @import "$components/dialog";
 @import "$components/drawer";
@@ -49,8 +50,10 @@ $positions: (
 @import "$components/layout";
 @import "$components/list";
 @import "$components/progress";
+@import "$components/radio";
 @import "$components/select";
 @import "$components/tabs";
+@import "$components/toggle";
 @import "$components/toolbar";
 @import "$components/tooltip";
 

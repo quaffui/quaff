@@ -63,12 +63,12 @@
     flex-direction: column;
     height: auto;
     max-height: none;
-    
+
     @include padding("y");
     @include gap("xs");
   }
 
-  &.q-chip[aria-disabled=true] {
+  &.q-chip[aria-disabled="true"] {
     @extend .disabled;
     &.q-chip--bordered {
       border-color: var(--on-surface);
@@ -79,5 +79,5 @@
 // QChip icons
 .q-chip > .q-icon {
   --size: 1.25rem;
-  margin-inline: -0.5rem
+  margin-inline: -0.5rem;
 }
