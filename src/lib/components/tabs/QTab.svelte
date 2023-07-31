@@ -14,7 +14,7 @@
   export { userClasses as class };
 
   let index = 1;
-  let tabEl: HTMLElement | null = null;
+  let tabEl: HTMLElement;
 
   if (!hasContext("QTabCount")) {
     console.warn("QTab should be used inside QTabs");
