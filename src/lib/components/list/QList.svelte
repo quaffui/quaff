@@ -14,9 +14,9 @@
     userClasses: QListProps["userClasses"] = undefined;
   export { userClasses as class };
 
-  let listElement: HTMLElement | null = null;
+  let listElement: HTMLElement;
 
-  onMount(() => listElement?.querySelector(".q-separator__wrapper:first-child")?.remove());
+  onMount(() => listElement.querySelector(".q-separator__wrapper:first-child")?.remove());
 
   $: setContext("separator", separator === true ? separatorOptions : undefined);
 

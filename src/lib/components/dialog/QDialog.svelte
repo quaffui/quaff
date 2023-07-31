@@ -5,7 +5,7 @@
   import QBtn from "../button/QBtn.svelte";
   import { clickOutsideDialog } from "$lib/helpers";
 
-  export let value: QDialogProps["value"] = false,
+  export let value: QDialogProps["value"] = true,
     noBtn: QDialogProps["noBtn"] = false,
     btnContent: QDialogProps["btnContent"] = undefined,
     btnAttrs: QDialogProps["btnAttrs"] = {},
@@ -17,14 +17,9 @@
   export { userClasses as class };
 
   const emit = createEventDispatcher();
-  let dialogElement: HTMLDialogElement | null = null;
-  let lateValue = false;
+  let dialogElement: HTMLDialogElement;
 
-  $: setTimeout(() => {
-    lateValue = value!;
-  }, 50);
-
-  $: canHideOnClickOutside = lateValue === true && persistent !== true;
+  $: canHideOnClickOutside = value === true && persistent !== true;
 
   $: positionClass = ["top", "right", "bottom", "left"].includes(position!) ? position : undefined;
 
@@ -53,12 +48,13 @@
       value = true;
     }
   }
-  export function toggle() {
+  export function toggle(e: MouseEvent) {
     value = !value;
+    e.stopPropagation();
   }
 
   function addAnimation() {
-    if (persistent && lateValue) {
+    if (persistent && value === true) {
       dialogElement?.classList.add("animating");
 
       setTimeout(() => {
@@ -86,11 +82,7 @@
 </script>
 
 {#if noBtn === false}
-  <QBtn
-    {...btnAttrs}
-    on:click={() => (value = !value)}
-    on:click={(event) => emit("btnClick", event)}
-  >
+  <QBtn {...btnAttrs} on:click={toggle} on:click={(event) => emit("btnClick", event)}>
     <slot name="button">
       {btnContent || ""}
     </slot>
