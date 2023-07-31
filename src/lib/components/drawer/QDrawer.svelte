@@ -23,7 +23,7 @@
     userStyles: QDrawerProps["userStyles"] = undefined;
   export { userClasses as class, userStyles as style };
 
-  let canHideOnClickOutside = false;
+  $: canHideOnClickOutside = (value === true && persistent === false) || overlay === true;
 
   $: belowBreakpoint =
     (behavior === "mobile") === true ||
@@ -33,29 +33,22 @@
 
   $: hideOnRouteChange = persistent !== true || overlay === true;
 
-  $: if (value === true && (persistent !== true || overlay === true)) {
-    setTimeout(() => {
-      canHideOnClickOutside = true;
-    }, 50);
-  } else {
-    canHideOnClickOutside = false;
-  }
-
-  export const show = () => {
-    if (value === true) return;
-
-    value = true;
+  export const show = (e?: MouseEvent) => {
+    if (value !== true) {
+      value = true;
+      e && e.stopPropagation();
+    }
   };
 
   export const hide = () => {
-    if (value === false) return;
-
-    canHideOnClickOutside = false;
-    value = false;
+    if (value === true && canHideOnClickOutside === true) {
+      value = false;
+    }
   };
 
-  export const toggle = () => {
+  export const toggle = (e?: MouseEvent) => {
     value = !value;
+    e && e.stopPropagation();
   };
 
   $: if ($navigating && hideOnRouteChange) {
@@ -128,10 +121,6 @@
   }
 </script>
 
-<div
-  use:clickOutside={() => (canHideOnClickOutside === true ? hide() : null)}
-  class={classes}
-  {style}
->
+<div use:clickOutside={hide} class={classes} {style}>
   <slot />
 </div>

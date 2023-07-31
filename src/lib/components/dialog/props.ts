@@ -6,9 +6,9 @@ export type QDialogPositionOptions = "default" | "top" | "right" | "bottom" | "l
 export interface QDialogProps extends NativeProps {
   /**
    * The value indicating whether the dialog is visible or hidden.
-   * @default false
+   * @default true
    */
-  value?: boolean;
+  value: boolean;
 
   /**
    * Wether the dialog should have a trigger button or not.

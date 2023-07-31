@@ -10,9 +10,9 @@
     userClasses: QBreadcrumbsProps["userClasses"] = undefined;
   export { userClasses as class };
 
-  let breadcrumbElement: HTMLDivElement | null = null;
+  let breadcrumbElement: HTMLDivElement;
 
-  onMount(() => breadcrumbElement?.firstChild?.remove());
+  onMount(() => breadcrumbElement.firstChild?.remove());
 
   setContext("activeColor", activeColor);
   setContext("separator", { type: separator, color: separatorColor, gutter });

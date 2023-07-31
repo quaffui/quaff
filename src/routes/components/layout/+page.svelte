@@ -18,6 +18,7 @@
 
   import { snippet } from "./docs.snippets";
 
+  let displayLeftDrawerElement: QDrawer;
   let displayLeftDrawer = false;
   let viewArr = [
     ["h", "h", "h"],
@@ -45,7 +46,10 @@
       "--right-drawer-width": rightDrawer ? "300px" : "0px",
     }) || undefined;
 
+  let leftDrawerElement: QDrawer;
   let leftDrawerShown = true;
+
+  let rightDrawerElement: QDrawer;
   let rightDrawerShown = true;
 
   $: if (!leftDrawer) {
@@ -58,10 +62,17 @@
 <QDocs QComponentDocs={QLayoutDocs}>
   <QLayout slot="display" view="lhh lpr lfr" headerHeight="50px" footerHeight="50px">
     <QToolbar slot="header" class="surface small-elevate no-round">
-      <QBtn icon="menu" flat on:click={() => (displayLeftDrawer = !displayLeftDrawer)} />
+      <QBtn icon="menu" flat on:click={displayLeftDrawerElement.toggle} />
       <h3 class="small max center-align">Header</h3>
     </QToolbar>
-    <QDrawer slot="drawerLeft" overlay bind:value={displayLeftDrawer} bordered class="no-round">
+    <QDrawer
+      slot="drawerLeft"
+      overlay
+      bind:value={displayLeftDrawer}
+      bordered
+      class="no-round"
+      bind:this={displayLeftDrawerElement}
+    >
       <QList dense>
         <QItem to="#">
           <QIcon name="home" />
@@ -108,7 +119,7 @@
             class="small-elevate"
           >
             {#if leftDrawer}
-              <QBtn icon="menu" flat on:click={() => (leftDrawerShown = !leftDrawerShown)} />
+              <QBtn icon="menu" flat on:click={leftDrawerElement.toggle} />
             {/if}
             <div class="flex column">
               <QRadio bind:selected={viewArr[0][0]} value="h" label="h" />
@@ -134,7 +145,7 @@
               <QRadio class="no-margin" bind:selected={viewArr[0][2]} value="r" label="r" />
             </div>
             {#if rightDrawer}
-              <QBtn icon="menu" flat on:click={() => (rightDrawerShown = !rightDrawerShown)} />
+              <QBtn icon="menu" flat on:click={rightDrawerElement.toggle} />
             {/if}
           </QToolbar>
 
@@ -190,6 +201,7 @@
             bordered
             persistent
             bind:value={leftDrawerShown}
+            bind:this={leftDrawerElement}
           >
             <QList>
               <QItem to="#">
@@ -217,6 +229,7 @@
             bordered
             persistent
             bind:value={rightDrawerShown}
+            bind:this={rightDrawerElement}
           >
             <QList>
               <QItem to="#">
@@ -240,7 +253,7 @@
 
           <QFooter style={footer ? undefined : "display: none;"} slot="footer">
             {#if leftDrawer}
-              <QBtn icon="menu" flat on:click={() => (leftDrawerShown = !leftDrawerShown)} />
+              <QBtn icon="menu" flat on:click={leftDrawerElement.toggle} />
             {/if}
             <div class="flex column">
               <QRadio bind:selected={viewArr[2][0]} value="f" label="f" />
@@ -266,7 +279,7 @@
               <QRadio class="no-margin" bind:selected={viewArr[2][2]} value="r" label="r" />
             </div>
             {#if rightDrawer}
-              <QBtn icon="menu" flat on:click={() => (rightDrawerShown = !rightDrawerShown)} />
+              <QBtn icon="menu" flat on:click={rightDrawerElement.toggle} />
             {/if}
           </QFooter>
 
