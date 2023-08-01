@@ -1,8 +1,10 @@
 <script lang="ts">
   import { createClasses } from "$lib/utils/props";
+  import { createEventDispatcher } from "svelte";
   import QIcon from "../icon/QIcon.svelte";
   import QCircularProgress from "../progress/QCircularProgress.svelte";
   import type { QBtnProps } from "./props";
+  import { activationHandler } from "$lib/helpers/activationHandler";
 
   export let icon: QBtnProps["icon"] = undefined,
     label: QBtnProps["label"] = undefined,
@@ -16,6 +18,8 @@
     size: QBtnProps["size"] = undefined,
     userClasses: QBtnProps["userClasses"] = undefined;
   export { userClasses as class };
+
+  const emit = createEventDispatcher();
 
   let tag: "a" | "div";
   $: tag = to !== undefined ? "a" : "div";
@@ -38,13 +42,13 @@
 
 <svelte:element
   this={tag}
+  use:activationHandler={{ disable, callback: (e) => emit("activated", e) }}
   role="button"
   href={to}
   class={classes}
   aria-disabled={disable || undefined}
   tabindex={disable ? -1 : 0}
   {...$$restProps}
-  on:click
 >
   {#if icon && !loading}
     {#if icon.startsWith("img:")}
