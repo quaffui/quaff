@@ -61,7 +61,7 @@ export interface QChipProps extends NativeProps {
    * Tabindex of the chip.
    * @default undefined
    */
-  tabindex?: string | number;
+  tabindex?: number;
 
   /**
    * Makes the chip navigational. Can be used with the router (e.g to="/home") or as a normal href attribute (e.g to="#section-id").
