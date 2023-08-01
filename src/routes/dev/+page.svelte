@@ -177,12 +177,23 @@
     </div>
   </QCard>
   <QCard title="Buttons">
-    <QBtn class="q-ma-sm" icon="favorite" label="Using Label" />
+    <QBtn
+      class="q-ma-sm"
+      icon="favorite"
+      label="Using Label"
+      on:activated={() => alert("Hey you clicked")}
+    />
     <QBtn class="q-ma-sm">
       <span>Using</span><span style="color: blue">slot</span>
     </QBtn>
     <QBtn class="q-ma-sm" label="loading" loading />
-    <QBtn class="q-ma-sm" icon="add" label="Disabled" disable />
+    <QBtn
+      class="q-ma-sm"
+      icon="add"
+      label="Disabled"
+      disable
+      on:activated={() => alert("Hey you clicked")}
+    />
     <QBtn class="q-ma-sm" label="Unelevated" unelevated />
     <QBtn class="q-ma-sm" label="Outline" outline />
     <QBtn class="q-ma-sm" label="Rectangle" rectangle />
@@ -416,14 +427,14 @@
           content="Click on me!"
           responsive
           icon="img:/cocktail.jpg"
-          on:click={() => alert("OMG, you actually did it")}
+          on:activated={() => alert("OMG, you actually did it")}
         />
         <QChip
           content="Can't click on me, now!"
           responsive
           disable
           icon="img:/cocktail.jpg"
-          on:click={() => alert("OMG, you actually did it")}
+          on:activated={() => alert("OMG, you actually did it")}
         />
       </div>
     </QCardSection>

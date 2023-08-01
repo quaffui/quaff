@@ -1,5 +1,7 @@
 <script lang="ts">
+  import { activationHandler } from "$lib/helpers/activationHandler";
   import { createClasses } from "$lib/utils/props";
+  import { createEventDispatcher } from "svelte";
   import QIcon from "../icon/QIcon.svelte";
   import type { QChipProps } from "./props";
 
@@ -16,6 +18,8 @@
     href: QChipProps["href"] = undefined,
     userClasses: QChipProps["userClasses"] = undefined;
   export { userClasses as class };
+
+  const emit = createEventDispatcher();
 
   $: img = icon?.startsWith("img:") ? icon.slice(4) : undefined;
   $: imgRight = iconRight?.startsWith("img:") ? iconRight.slice(4) : undefined;
@@ -35,15 +39,15 @@
     element: "img",
   });
 
-  $: tab = typeof tabindex === "string" ? parseInt(tabindex, 10) : tabindex;
+  $: tab = disable ? -1 : tabindex ?? 0;
 </script>
 
 <a
+  use:activationHandler={{ disable, callback: (e) => emit("activated", e) }}
   {href}
   class={classes}
   tabindex={tab}
   {...$$restProps}
-  on:click
   aria-disabled={disable || undefined}
 >
   {#if $$slots.leading}
