@@ -118,8 +118,6 @@
   ];
   let contentEl: HTMLDivElement;
 
-  $: console.log($Quaff.router.url.pathname);
-
   let selectedRailbarItem: "components" | "utils" | null;
   $: selectedRailbarItem = isRouteActive($Quaff.router, "/components")
     ? "components"
