@@ -82,7 +82,7 @@
 </script>
 
 {#if noBtn === false}
-  <QBtn {...btnAttrs} on:activated={toggle} on:activated={(event) => emit("btnClick", event)}>
+  <QBtn {...btnAttrs} on:activated={toggle} on:activated={(event) => emit("btnActivated", event)}>
     <slot name="button">
       {btnContent || ""}
     </slot>
