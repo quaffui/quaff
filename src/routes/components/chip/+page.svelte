@@ -55,8 +55,8 @@
 
     <QDocsSection {snippets} title="Chips with Custom Tabindex">
       <div class="flex q-gap-lg middle-align">
-        <QChip tabindex="2" content="Tabindex 2 Chip" />
-        <QChip tabindex="3" content="Tabindex 3 Chip" />
+        <QChip tabindex={2} content="Tabindex 2 Chip" />
+        <QChip tabindex={3} content="Tabindex 3 Chip" />
       </div>
     </QDocsSection>
   </div>
