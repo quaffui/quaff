@@ -1,5 +1,4 @@
 import { createClasses } from "$lib/utils/props";
-import { Quaff } from "$lib/stores/Quaff";
 import type { Page } from "@sveltejs/kit";
 
 export interface UseRouterLinkProps {
