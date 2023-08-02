@@ -136,9 +136,9 @@
       <QDialog bind:this={methodsDialog.el} bind:value={methodsDialog.value} noBtn persistent>
         <DialogContent dialogEl={methodsDialog.el} />
       </QDialog>
-      <QBtn on:click={() => methodsDialog.el?.show()}>Show</QBtn>
-      <QBtn on:click={() => methodsDialog.el?.hide()}>Hide</QBtn>
-      <QBtn on:click={() => methodsDialog.el?.toggle()}>Toggle</QBtn>
+      <QBtn on:activated={methodsDialog.el?.show}>Show</QBtn>
+      <QBtn on:activated={methodsDialog.el?.hide}>Hide</QBtn>
+      <QBtn on:activated={methodsDialog.el?.toggle}>Toggle</QBtn>
     </QDocsSection>
 
     <QDocsSection {snippets} title="Custom button attributes">

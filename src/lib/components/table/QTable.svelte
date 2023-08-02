@@ -166,14 +166,14 @@
       size="sm"
       flat
       disable={page === 1}
-      on:click={() => (page = page - 1)}
+      on:activated={() => (page = page - 1)}
     />
     <QBtn
       icon="chevron_right"
       size="sm"
       flat
       disable={page * rowsPerPage >= rows.length}
-      on:click={() => (page = page + 1)}
+      on:activated={() => (page = page + 1)}
     />
   </div>
 </div>

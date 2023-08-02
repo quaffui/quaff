@@ -155,7 +155,7 @@
         icon={$Quaff.dark.isActive ? "light_mode" : "dark_mode"}
         flat
         round
-        on:click={$Quaff.dark.toggle}
+        on:activated={$Quaff.dark.toggle}
       />
       <QBtn icon="help" flat />
     </QToolbar>

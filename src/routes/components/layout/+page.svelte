@@ -62,7 +62,7 @@
 <QDocs QComponentDocs={QLayoutDocs}>
   <QLayout slot="display" view="lhh lpr lfr" headerHeight="50px" footerHeight="50px">
     <QToolbar slot="header" class="surface small-elevate no-round">
-      <QBtn icon="menu" flat on:click={displayLeftDrawerElement.toggle} />
+      <QBtn icon="menu" flat on:activated={displayLeftDrawerElement.toggle} />
       <h3 class="small max center-align">Header</h3>
     </QToolbar>
     <QDrawer
@@ -119,7 +119,7 @@
             class="small-elevate"
           >
             {#if leftDrawer}
-              <QBtn icon="menu" flat on:click={leftDrawerElement.toggle} />
+              <QBtn icon="menu" flat on:activated={leftDrawerElement.toggle} />
             {/if}
             <div class="flex column">
               <QRadio bind:selected={viewArr[0][0]} value="h" label="h" />
@@ -145,7 +145,7 @@
               <QRadio class="no-margin" bind:selected={viewArr[0][2]} value="r" label="r" />
             </div>
             {#if rightDrawer}
-              <QBtn icon="menu" flat on:click={rightDrawerElement.toggle} />
+              <QBtn icon="menu" flat on:activated={rightDrawerElement.toggle} />
             {/if}
           </QToolbar>
 
@@ -253,7 +253,7 @@
 
           <QFooter style={footer ? undefined : "display: none;"} slot="footer">
             {#if leftDrawer}
-              <QBtn icon="menu" flat on:click={leftDrawerElement.toggle} />
+              <QBtn icon="menu" flat on:activated={leftDrawerElement.toggle} />
             {/if}
             <div class="flex column">
               <QRadio bind:selected={viewArr[2][0]} value="f" label="f" />
@@ -279,7 +279,7 @@
               <QRadio class="no-margin" bind:selected={viewArr[2][2]} value="r" label="r" />
             </div>
             {#if rightDrawer}
-              <QBtn icon="menu" flat on:click={rightDrawerElement.toggle} />
+              <QBtn icon="menu" flat on:activated={rightDrawerElement.toggle} />
             {/if}
           </QFooter>
 

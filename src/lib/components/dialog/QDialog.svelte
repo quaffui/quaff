@@ -48,7 +48,7 @@
       value = true;
     }
   }
-  export function toggle(e: MouseEvent) {
+  export function toggle(e: CustomEvent<MouseEvent | KeyboardEvent>) {
     value = !value;
     e.stopPropagation();
   }
@@ -82,7 +82,7 @@
 </script>
 
 {#if noBtn === false}
-  <QBtn {...btnAttrs} on:click={toggle} on:click={(event) => emit("btnClick", event)}>
+  <QBtn {...btnAttrs} on:activated={toggle} on:activated={(event) => emit("btnClick", event)}>
     <slot name="button">
       {btnContent || ""}
     </slot>

@@ -33,7 +33,7 @@
 
   $: hideOnRouteChange = persistent !== true || overlay === true;
 
-  export const show = (e?: MouseEvent) => {
+  export const show = (e?: CustomEvent<MouseEvent | KeyboardEvent>) => {
     if (value !== true) {
       value = true;
       e && e.stopPropagation();
@@ -46,7 +46,7 @@
     }
   };
 
-  export const toggle = (e?: MouseEvent) => {
+  export const toggle = (e?: CustomEvent<MouseEvent | KeyboardEvent>) => {
     value = !value;
     e && e.stopPropagation();
   };

@@ -19,7 +19,7 @@
     userClasses: QBtnProps["userClasses"] = undefined;
   export { userClasses as class };
 
-  const emit = createEventDispatcher();
+  const emit = createEventDispatcher<{ activated: MouseEvent | KeyboardEvent }>();
 
   let tag: "a" | "div";
   $: tag = to !== undefined ? "a" : "div";

@@ -1,11 +1,10 @@
-type Event = MouseEvent | KeyboardEvent;
 interface Options {
   disable: boolean | undefined;
-  callback: (e: Event) => void;
+  callback: (e: MouseEvent | KeyboardEvent) => void;
 }
 
 export function activationHandler(node: HTMLElement, { disable, callback }: Options) {
-  function handleEvent(event: Event) {
+  function handleEvent(event: MouseEvent | KeyboardEvent) {
     if (disable) {
       event.preventDefault();
       event.stopPropagation();

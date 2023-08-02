@@ -28,7 +28,7 @@
     </div>
   </QCardSection>
   <QCardActions align="right">
-    <QBtn on:click={() => dialogEl?.hide()}>Cancel</QBtn>
-    <QBtn on:click={() => dialogEl?.hide()} disable={!exampleCheckbox}>Save</QBtn>
+    <QBtn on:activated={dialogEl?.hide}>Cancel</QBtn>
+    <QBtn on:activated={dialogEl?.hide} disable={!exampleCheckbox}>Save</QBtn>
   </QCardActions>
 </QCard>

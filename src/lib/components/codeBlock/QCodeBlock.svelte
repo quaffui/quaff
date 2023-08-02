@@ -52,7 +52,7 @@
         size="sm"
         icon="content_copy"
         outline
-        on:click={copyCode}
+        on:activated={copyCode}
       >
         {btnContent}
       </QBtn>
