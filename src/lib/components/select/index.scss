@@ -14,13 +14,19 @@
     opacity: 0;
     visibility: hidden;
     transform: scale(0.8) translateY(120%);
-    transition: opacity var(--speed2), transform var(--speed2), visibility 0s var(--speed2);
+    transition:
+      opacity var(--speed2),
+      transform var(--speed2),
+      visibility 0s var(--speed2);
 
     &--active {
       opacity: 1;
       visibility: visible;
       transform: scale(1) translateY(100%);
-      transition: opacity var(--speed2), transform var(--speed2), visibility 0s 0s;
+      transition:
+        opacity var(--speed2),
+        transform var(--speed2),
+        visibility 0s 0s;
     }
   }
 

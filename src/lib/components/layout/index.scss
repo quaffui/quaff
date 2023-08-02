@@ -140,7 +140,10 @@
       background-color: var(--secondary-container);
       color: var(--on-secondary-container);
       padding: 0 1rem;
-      font-variation-settings: "FILL" 1, "wght" 400, "opsz" 24;
+      font-variation-settings:
+        "FILL" 1,
+        "wght" 400,
+        "opsz" 24;
     }
   }
 }

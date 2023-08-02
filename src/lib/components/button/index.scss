@@ -18,7 +18,10 @@
   background-color: var(--primary);
   margin: 0 0.5rem;
   border-radius: 1.25rem;
-  transition: var(--speed3) transform, var(--speed3) border-radius, var(--speed3) padding;
+  transition:
+    var(--speed3) transform,
+    var(--speed3) border-radius,
+    var(--speed3) padding;
   user-select: none;
   gap: 1rem;
   line-height: normal;

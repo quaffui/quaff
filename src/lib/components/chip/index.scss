@@ -12,7 +12,10 @@
   color: var(--on-secondary);
   text-transform: none;
   border-radius: 0.5em;
-  transition: var(--speed3) transform, var(--speed3) border-radius, var(--speed3) padding;
+  transition:
+    var(--speed3) transform,
+    var(--speed3) border-radius,
+    var(--speed3) padding;
   line-height: normal;
   text-decoration: none;
   cursor: pointer;

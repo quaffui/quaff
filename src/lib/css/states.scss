@@ -2,8 +2,9 @@
 .disabled {
   opacity: 0.5;
   cursor: not-allowed;
-  
-  &::before, &::after {
+
+  &::before,
+  &::after {
     all: unset;
   }
 }
