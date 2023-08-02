@@ -3,7 +3,10 @@
   object-fit: cover;
   object-position: center;
   aspect-ratio: 1;
-  transition: var(--speed3) transform, var(--speed3) border-radius, var(--speed3) padding;
+  transition:
+    var(--speed3) transform,
+    var(--speed3) border-radius,
+    var(--speed3) padding;
   border-radius: 0;
 
   display: flex;

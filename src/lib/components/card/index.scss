@@ -2,7 +2,10 @@
 .q-card {
   display: block;
   border-radius: 0.75rem;
-  transition: var(--speed-3) transform, var(--speed-3) padding, var(--speed-3) border-radius;
+  transition:
+    var(--speed-3) transform,
+    var(--speed-3) padding,
+    var(--speed-3) border-radius;
   @include padding("a", "md");
   @extend .elevate-sm-bottom;
 

@@ -22,7 +22,9 @@
   text-align: left;
   border-radius: 0.25rem;
   transform: scale(0.8) translateY(120%);
-  transition: var(--speed2) all, 0s background-color;
+  transition:
+    var(--speed2) all,
+    0s background-color;
 
   &--active {
     opacity: 1;
