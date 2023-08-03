@@ -59,8 +59,8 @@
   "type": "module",
   "dependencies": {
     "beercss": "^3.2.13",
+    "highlight.js": "^11.8.0",
     "material-dynamic-colors": "^1.0.1",
-    "prism-svelte": "0.5.0",
-    "prismjs": "^1.29.0"
+    "svelte-highlight": "^7.3.0"
   }
 }
