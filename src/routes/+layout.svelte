@@ -138,13 +138,6 @@
   if (data.isDark) $Quaff.dark.set(true);
 </script>
 
-<svelte:head>
-  <link
-    href="https://cdn.jsdelivr.net/npm/prism-themes@1.4.0/themes/prism-material-dark.css"
-    rel="stylesheet"
-  />
-</svelte:head>
-
 {#if $Quaff.router.route.id === "/layout"}
   <slot />
 {:else}
