@@ -1,10 +1,9 @@
 <script lang="ts">
-  import Prism from "prismjs";
-  import "prismjs/themes/prism-twilight.css";
-  import "prismjs/components/prism-typescript";
-  import "prism-svelte";
-  import type { QCodeBlockProps } from "./props";
+  import Highlight from "svelte-highlight";
+  import typescript from "svelte-highlight/languages/typescript";
+  import "svelte-highlight/styles/material.css";
   import { QBtn } from "$lib";
+  import type { QCodeBlockProps } from "./props";
 
   export let language: QCodeBlockProps["language"],
     code: QCodeBlockProps["code"] = "/* No code found */",
@@ -13,8 +12,6 @@
 
   let btnContent = "Copy";
   let btnColor = "primary";
-
-  $: highlighted = Prism.highlight(code!, Prism.languages[language], language);
 
   async function copyCode() {
     try {
@@ -45,8 +42,10 @@
 
 <div class="q-code-block">
   {#if copiable}
-    <div class="flex between-align middle-align q-pb-sm">
-      <h4 class="q-ma-none q-pr-lg">{title}</h4>
+    <div class="flex between-align {title ? 'middle' : 'right'}-align q-pb-sm">
+      {#if title}
+        <h4 class="q-ma-none q-pr-lg">{title}</h4>
+      {/if}
       <QBtn
         class="{btnColor}-border {btnColor}-text"
         size="sm"
@@ -60,7 +59,7 @@
   {:else if title}
     <h4>{title}</h4>
   {/if}
-  <pre class="language-svelte"><code>{@html highlighted}</code></pre>
+  <Highlight language={typescript} {code} />
 </div>
 
 <style>
