@@ -1,9 +1,10 @@
 import { writable, derived } from "svelte/store";
 import { page } from "$app/stores";
+import version from "$lib/helpers/version";
 
 function quaff() {
   const { subscribe, set, update } = writable({
-    version: __QUAFF_VERSION__,
+    version,
     dark: false,
     //TODO lang: {},
     //TODO? iconSet: {},
