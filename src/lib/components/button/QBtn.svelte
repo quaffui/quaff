@@ -48,6 +48,7 @@
   class={classes}
   aria-disabled={disable || undefined}
   tabindex={disable ? -1 : 0}
+  on:click
   {...$$restProps}
 >
   {#if icon && !loading}
