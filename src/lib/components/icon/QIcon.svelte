@@ -25,7 +25,7 @@
 
   $: style = createStyles(
     {
-      "---size": sizeStyle,
+      "--size": sizeStyle,
     },
     userStyles
   );
