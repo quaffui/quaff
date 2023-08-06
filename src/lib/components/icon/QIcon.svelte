@@ -1,6 +1,7 @@
 <script lang="ts">
   import { createClasses, createStyles } from "$lib/utils/props";
   import { isNumber } from "$lib/utils/types";
+  import { Size, sizes } from "$lib/composables/use-size";
   import type { QIconProps } from "./props";
 
   export let size: QIconProps["size"] = "md",
@@ -15,9 +16,19 @@
     userStyles: QIconProps["userStyles"] = undefined;
   export { userClasses as class, userStyles as style };
 
-  $: sizeStyle = isNumber(size) ? `${size}px` : undefined;
+  let sizeStyle: string | undefined;
 
-  $: classes = createClasses([type, filled && "filled", size], {
+  $: {
+    if (isNumber(size)) {
+      sizeStyle = `${size}px`;
+    } else if (typeof size === "string") {
+      sizeStyle = size;
+    } else {
+      sizeStyle = undefined;
+    }
+  }
+
+  $: classes = createClasses([type, filled && "filled", sizes.includes(size as Size) && size], {
     component: "q-icon",
     userClasses,
     quaffClasses: [color && `text-${color}`],
