@@ -45,3 +45,18 @@
     </QDocsSection>
   </div>
 </QDocs>
+
+<style lang="scss">
+  // @todo: remove as soon as we have .text-<color> classes etc.
+  :global(.text-green) {
+    color: #4caf50;
+  }
+
+  :global(.text-purple) {
+    color: #9c27b0;
+  }
+
+  :global(.text-blue) {
+    color: #2196f3;
+  }
+</style>
