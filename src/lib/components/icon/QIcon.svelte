@@ -6,7 +6,7 @@
   export let size: QIconProps["size"] = "md",
     name: QIconProps["name"] = undefined,
     type: QIconProps["type"] = "outlined",
-    fill: QIconProps["fill"] = false,
+    filled: QIconProps["filled"] = false,
     svg: QIconProps["svg"] = undefined,
     img: QIconProps["img"] = undefined,
     imgAttributes: QIconProps["imgAttributes"] = {},
@@ -17,7 +17,7 @@
 
   $: sizeStyle = isNumber(size) ? `${size}px` : undefined;
 
-  $: classes = createClasses([type, fill && "fill", size], {
+  $: classes = createClasses([type, filled && "filled", size], {
     component: "q-icon",
     userClasses,
     quaffClasses: [color && `text-${color}`],
