@@ -21,7 +21,7 @@
   $: {
     if (isNumber(size)) {
       sizeStyle = `${size}px`;
-    } else if (typeof size === "string") {
+    } else if (typeof size === "string" && !sizes.includes(size as Size)) {
       sizeStyle = size;
     } else {
       sizeStyle = undefined;
