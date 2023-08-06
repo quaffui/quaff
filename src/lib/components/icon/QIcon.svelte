@@ -1,5 +1,4 @@
 <script lang="ts">
-  import useSize from "$lib/composables/use-size";
   import { createClasses, createStyles } from "$lib/utils/props";
   import { isNumber } from "$lib/utils/types";
   import type { QIconProps } from "./props";
@@ -16,16 +15,13 @@
     userStyles: QIconProps["userStyles"] = undefined;
   export { userClasses as class, userStyles as style };
 
-  $: sizeStyle = useSize(size) === null ? (isNumber(size) ? `${size}px` : size) : undefined;
+  $: sizeStyle = isNumber(size) ? `${size}px` : undefined;
 
-  $: classes = createClasses([
-    "q-icon",
-    `q-icon__${type}`,
-    fill && "fill",
-    useSize(size),
-    color && `${color}-text`,
+  $: classes = createClasses([type, fill && "fill", size], {
+    component: "q-icon",
     userClasses,
-  ]);
+    quaffClasses: [color && `text-${color}`],
+  });
 
   $: style = createStyles(
     {
