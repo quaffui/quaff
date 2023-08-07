@@ -5,7 +5,7 @@ export const snippet = (
   view: QLayoutProps["view"],
   [header, footer, leftRailbar, leftDrawer, rightRailbar, rightDrawer]: boolean[]
 ) => {
-  const headerSnippet = `  <QToolbar slot="header" class="small-elevate">
+  const headerSnippet = `  <QToolbar slot="header" class="elevate-2">
 ${
   leftDrawer
     ? '    <QBtn icon="menu" flat on:click={() => (leftDrawerShown = !leftDrawerShown)} />\n'

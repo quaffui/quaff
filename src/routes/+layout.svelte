@@ -143,7 +143,7 @@
   <slot />
 {:else}
   <QLayout class="main-layout" leftRailbarWidth="120" leftDrawerWidth="15rem">
-    <QToolbar slot="header" class="surface small-elevate">
+    <QToolbar slot="header" class="elevate-2">
       <QToolbarTitle>Quaff</QToolbarTitle>
       <QBtn
         icon={$Quaff.dark.isActive ? "light_mode" : "dark_mode"}
