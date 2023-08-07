@@ -1,18 +1,75 @@
-$icon-font: "Material Symbols Outlined";
-
 .q-icon {
+  --font: "Material Symbols Outlined";
+  --size: 1.5rem;
   overflow: visible;
-  font-family: $icon-font;
+  font-family: var(--font);
+  font-weight: normal;
+  font-style: normal;
+  font-size: var(--size);
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  font-feature-settings: "liga";
+  -webkit-font-smoothing: antialiased;
+  vertical-align: middle;
+  text-align: center;
+  overflow: hidden;
+  width: var(--size);
+  min-width: var(--size);
+  height: var(--size);
+  min-height: var(--size);
+  box-sizing: content-box;
+  line-height: normal;
 
   &--outlined {
-    $icon-font: "Material Symbols Outlined";
+    --font: "Material Symbols Outlined";
   }
 
   &--rounded {
-    $icon-font: "Material Symbols Rounded";
+    --font: "Material Symbols Rounded";
   }
 
   &--sharp {
-    $icon-font: "Material Symbols Sharp";
+    --font: "Material Symbols Sharp";
+  }
+
+  &--xs {
+    --size: 1rem;
+  }
+
+  &--sm {
+    --size: 1.25rem;
+  }
+
+  &--lg {
+    --size: 1.75rem;
+  }
+
+  &--xl {
+    --size: 2rem;
+  }
+
+  > :is(img, svg) {
+    width: 100%;
+    height: 100%;
+    background-size: 100%;
+    border-radius: inherit;
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: inherit;
+  }
+
+  &.filled
+  // we might need these selectors later:
+  // a.row:is(:hover, :focus) > i,
+  // .transparent:is(:hover, :focus) > i
+  {
+    font-variation-settings: "FILL" 1;
   }
 }

@@ -1,0 +1,633 @@
+$red6: #f44336;
+
+$red1: #ffebee;
+
+$red2: #ffcdd2;
+
+$red3: #ef9a9a;
+
+$red4: #e57373;
+
+$red5: #ef5350;
+
+$red7: #e53935;
+
+$red8: #d32f2f;
+
+$red9: #c62828;
+
+$red10: #b71c1c;
+
+$pink6: #e91e63;
+
+$pink1: #fce4ec;
+
+$pink2: #f8bbd0;
+
+$pink3: #f48fb1;
+
+$pink4: #f06292;
+
+$pink5: #ec407a;
+
+$pink7: #d81b60;
+
+$pink8: #c2185b;
+
+$pink9: #ad1457;
+
+$pink10: #880e4f;
+
+$purple6: #9c27b0;
+
+$purple1: #f3e5f5;
+
+$purple2: #e1bee7;
+
+$purple3: #ce93d8;
+
+$purple4: #ba68c8;
+
+$purple5: #ab47bc;
+
+$purple7: #8e24aa;
+
+$purple8: #7b1fa2;
+
+$purple9: #6a1b9a;
+
+$purple10: #4a148c;
+
+$deep-purple6: #673ab7;
+
+$deep-purple1: #ede7f6;
+
+$deep-purple2: #d1c4e9;
+
+$deep-purple3: #b39ddb;
+
+$deep-purple4: #9575cd;
+
+$deep-purple5: #7e57c2;
+
+$deep-purple7: #5e35b1;
+
+$deep-purple8: #512da8;
+
+$deep-purple9: #4527a0;
+
+$deep-purple10: #311b92;
+
+$indigo6: #3f51b5;
+
+$indigo1: #e8eaf6;
+
+$indigo2: #c5cae9;
+
+$indigo3: #9fa8da;
+
+$indigo4: #7986cb;
+
+$indigo5: #5c6bc0;
+
+$indigo7: #3949ab;
+
+$indigo8: #303f9f;
+
+$indigo9: #283593;
+
+$indigo10: #1a237e;
+
+$blue6: #2196f3;
+
+$blue1: #e3f2fd;
+
+$blue2: #bbdefb;
+
+$blue3: #90caf9;
+
+$blue4: #64b5f6;
+
+$blue5: #42a5f5;
+
+$blue7: #1e88e5;
+
+$blue8: #1976d2;
+
+$blue9: #1565c0;
+
+$blue10: #0d47a1;
+
+$light-blue6: #03a9f4;
+
+$light-blue1: #e1f5fe;
+
+$light-blue2: #b3e5fc;
+
+$light-blue3: #81d4fa;
+
+$light-blue4: #4fc3f7;
+
+$light-blue5: #29b6f6;
+
+$light-blue7: #039be5;
+
+$light-blue8: #0288d1;
+
+$light-blue9: #0277bd;
+
+$light-blue10: #01579b;
+
+$cyan6: #00bcd4;
+
+$cyan1: #e0f7fa;
+
+$cyan2: #b2ebf2;
+
+$cyan3: #80deea;
+
+$cyan4: #4dd0e1;
+
+$cyan5: #26c6da;
+
+$cyan7: #00acc1;
+
+$cyan8: #0097a7;
+
+$cyan9: #00838f;
+
+$cyan10: #006064;
+
+$teal6: #009688;
+
+$teal1: #e0f2f1;
+
+$teal2: #b2dfdb;
+
+$teal3: #80cbc4;
+
+$teal4: #4db6ac;
+
+$teal5: #26a69a;
+
+$teal7: #00897b;
+
+$teal8: #00796b;
+
+$teal9: #00695c;
+
+$teal10: #004d40;
+
+$green6: #4caf50;
+
+$green1: #e8f5e9;
+
+$green2: #c8e6c9;
+
+$green3: #a5d6a7;
+
+$green4: #81c784;
+
+$green5: #66bb6a;
+
+$green7: #43a047;
+
+$green8: #388e3c;
+
+$green9: #2e7d32;
+
+$green10: #1b5e20;
+
+$light-green6: #8bc34a;
+
+$light-green1: #f1f8e9;
+
+$light-green2: #dcedc8;
+
+$light-green3: #c5e1a5;
+
+$light-green4: #aed581;
+
+$light-green5: #9ccc65;
+
+$light-green7: #7cb342;
+
+$light-green8: #689f38;
+
+$light-green9: #558b2f;
+
+$light-green10: #33691e;
+
+$lime6: #cddc39;
+
+$lime1: #f9fbe7;
+
+$lime2: #f0f4c3;
+
+$lime3: #e6ee9c;
+
+$lime4: #dce775;
+
+$lime5: #d4e157;
+
+$lime7: #c0ca33;
+
+$lime8: #afb42b;
+
+$lime9: #9e9d24;
+
+$lime10: #827717;
+
+$yellow6: #ffeb3b;
+
+$yellow1: #fffde7;
+
+$yellow2: #fff9c4;
+
+$yellow3: #fff59d;
+
+$yellow4: #fff176;
+
+$yellow5: #ffee58;
+
+$yellow7: #fdd835;
+
+$yellow8: #fbc02d;
+
+$yellow9: #f9a825;
+
+$yellow10: #f57f17;
+
+$amber6: #ffc107;
+
+$amber1: #fff8e1;
+
+$amber2: #ffecb3;
+
+$amber3: #ffe082;
+
+$amber4: #ffd54f;
+
+$amber5: #ffca28;
+
+$amber7: #ffb300;
+
+$amber8: #ffa000;
+
+$amber9: #ff8f00;
+
+$amber10: #ff6f00;
+
+$orange6: #ff9800;
+
+$orange1: #fff3e0;
+
+$orange2: #ffe0b2;
+
+$orange3: #ffcc80;
+
+$orange4: #ffb74d;
+
+$orange5: #ffa726;
+
+$orange7: #fb8c00;
+
+$orange8: #f57c00;
+
+$orange9: #ef6c00;
+
+$orange10: #e65100;
+
+$deep-orange6: #ff5722;
+
+$deep-orange1: #fbe9e7;
+
+$deep-orange2: #ffccbc;
+
+$deep-orange3: #ffab91;
+
+$deep-orange4: #ff8a65;
+
+$deep-orange5: #ff7043;
+
+$deep-orange7: #f4511e;
+
+$deep-orange8: #e64a19;
+
+$deep-orange9: #d84315;
+
+$deep-orange10: #bf360c;
+
+$brown6: #795548;
+
+$brown1: #efebe9;
+
+$brown2: #d7ccc8;
+
+$brown3: #bcaaa4;
+
+$brown4: #a1887f;
+
+$brown5: #8d6e63;
+
+$brown7: #6d4c41;
+
+$brown8: #5d4037;
+
+$brown9: #4e342e;
+
+$brown10: #3e2723;
+
+$blue-grey6: #607d8b;
+
+$blue-grey1: #eceff1;
+
+$blue-grey2: #cfd8dc;
+
+$blue-grey3: #b0bec5;
+
+$blue-grey4: #90a4ae;
+
+$blue-grey5: #78909c;
+
+$blue-grey7: #546e7a;
+
+$blue-grey8: #455a64;
+
+$blue-grey9: #37474f;
+
+$blue-grey10: #263238;
+
+$grey6: #9e9e9e;
+
+$grey1: #fafafa;
+
+$grey2: #f5f5f5;
+
+$grey3: #eee;
+
+$grey4: #e0e0e0;
+
+$grey5: #bdbdbd;
+
+$grey7: #757575;
+
+$grey8: #616161;
+
+$grey9: #424242;
+
+$grey10: #212121;
+
+$colors-list: (
+  "red": (
+    $red1,
+    $red2,
+    $red3,
+    $red4,
+    $red5,
+    $red6,
+    $red7,
+    $red8,
+    $red9,
+    $red10,
+  ),
+  "pink": (
+    $pink1,
+    $pink2,
+    $pink3,
+    $pink4,
+    $pink5,
+    $pink6,
+    $pink7,
+    $pink8,
+    $pink9,
+    $pink10,
+  ),
+  "purple": (
+    $purple1,
+    $purple2,
+    $purple3,
+    $purple4,
+    $purple5,
+    $purple6,
+    $purple7,
+    $purple8,
+    $purple9,
+    $purple10,
+  ),
+  "deep-purple": (
+    $deep-purple1,
+    $deep-purple2,
+    $deep-purple3,
+    $deep-purple4,
+    $deep-purple5,
+    $deep-purple6,
+    $deep-purple7,
+    $deep-purple8,
+    $deep-purple9,
+    $deep-purple10,
+  ),
+  "indigo": (
+    $indigo1,
+    $indigo2,
+    $indigo3,
+    $indigo4,
+    $indigo5,
+    $indigo6,
+    $indigo7,
+    $indigo8,
+    $indigo9,
+    $indigo10,
+  ),
+  "blue": (
+    $blue1,
+    $blue2,
+    $blue3,
+    $blue4,
+    $blue5,
+    $blue6,
+    $blue7,
+    $blue8,
+    $blue9,
+    $blue10,
+  ),
+  "light-blue": (
+    $light-blue1,
+    $light-blue2,
+    $light-blue3,
+    $light-blue4,
+    $light-blue5,
+    $light-blue6,
+    $light-blue7,
+    $light-blue8,
+    $light-blue9,
+    $light-blue10,
+  ),
+  "cyan": (
+    $cyan1,
+    $cyan2,
+    $cyan3,
+    $cyan4,
+    $cyan5,
+    $cyan6,
+    $cyan7,
+    $cyan8,
+    $cyan9,
+    $cyan10,
+  ),
+  "teal": (
+    $teal1,
+    $teal2,
+    $teal3,
+    $teal4,
+    $teal5,
+    $teal6,
+    $teal7,
+    $teal8,
+    $teal9,
+    $teal10,
+  ),
+  "green": (
+    $green1,
+    $green2,
+    $green3,
+    $green4,
+    $green5,
+    $green6,
+    $green7,
+    $green8,
+    $green9,
+    $green10,
+  ),
+  "light-green": (
+    $light-green1,
+    $light-green2,
+    $light-green3,
+    $light-green4,
+    $light-green5,
+    $light-green6,
+    $light-green7,
+    $light-green8,
+    $light-green9,
+    $light-green10,
+  ),
+  "lime": (
+    $lime1,
+    $lime2,
+    $lime3,
+    $lime4,
+    $lime5,
+    $lime6,
+    $lime7,
+    $lime8,
+    $lime9,
+    $lime10,
+  ),
+  "yellow": (
+    $yellow1,
+    $yellow2,
+    $yellow3,
+    $yellow4,
+    $yellow5,
+    $yellow6,
+    $yellow7,
+    $yellow8,
+    $yellow9,
+    $yellow10,
+  ),
+  "amber": (
+    $amber1,
+    $amber2,
+    $amber3,
+    $amber4,
+    $amber5,
+    $amber6,
+    $amber7,
+    $amber8,
+    $amber9,
+    $amber10,
+  ),
+  "orange": (
+    $orange1,
+    $orange2,
+    $orange3,
+    $orange4,
+    $orange5,
+    $orange6,
+    $orange7,
+    $orange8,
+    $orange9,
+    $orange10,
+  ),
+  "deep-orange": (
+    $deep-orange1,
+    $deep-orange2,
+    $deep-orange3,
+    $deep-orange4,
+    $deep-orange5,
+    $deep-orange6,
+    $deep-orange7,
+    $deep-orange8,
+    $deep-orange9,
+    $deep-orange10,
+  ),
+  "brown": (
+    $brown1,
+    $brown2,
+    $brown3,
+    $brown4,
+    $brown5,
+    $brown6,
+    $brown7,
+    $brown8,
+    $brown9,
+    $brown10,
+  ),
+  "blue-grey": (
+    $blue-grey1,
+    $blue-grey2,
+    $blue-grey3,
+    $blue-grey4,
+    $blue-grey5,
+    $blue-grey6,
+    $blue-grey7,
+    $blue-grey8,
+    $blue-grey9,
+    $blue-grey10,
+  ),
+  "grey": (
+    $grey1,
+    $grey2,
+    $grey3,
+    $grey4,
+    $grey5,
+    $grey6,
+    $grey7,
+    $grey8,
+    $grey9,
+    $grey10,
+  ),
+);
+
+@each $color-name, $color-values in $colors-list {
+  @for $i from 1 through length($color-values) {
+    $color: nth($color-values, $i);
+
+    $text-selector: ".text-#{$color-name}-#{$i}";
+    $bg-selector: ".bg-#{$color-name}-#{$i}";
+
+    // Color 6 is also the "default" color
+    @if $i == 6 {
+      $text-selector: ".text-#{$color-name}, #{$text-selector}";
+      $bg-selector: ".bg-#{$color-name}, #{$bg-selector}";
+    }
+
+    #{$text-selector} {
+      color: $color;
+    }
+
+    #{$bg-selector} {
+      background-color: $color;
+    }
+  }
+}

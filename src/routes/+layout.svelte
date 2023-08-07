@@ -9,6 +9,7 @@
   import {
     QLayout,
     QToolbar,
+    QToolbarTitle,
     QBtn,
     QRailbar,
     QList,
@@ -142,8 +143,8 @@
   <slot />
 {:else}
   <QLayout class="main-layout" leftRailbarWidth="120" leftDrawerWidth="15rem">
-    <QToolbar slot="header" class="surface small-elevate">
-      <h5 class="max center-align">Quaff</h5>
+    <QToolbar slot="header" class="elevate-2">
+      <QToolbarTitle>Quaff</QToolbarTitle>
       <QBtn
         icon={$Quaff.dark.isActive ? "light_mode" : "dark_mode"}
         flat
@@ -165,6 +166,10 @@
         <QItem to="/grid">
           <QIcon name="grid_on" />
           <QItemSection>Grid</QItemSection>
+        </QItem>
+        <QItem to="/colors">
+          <QIcon name="palette" />
+          <QItemSection>Colors</QItemSection>
         </QItem>
         <QItem to="/utils">
           <QIcon name="construction" />

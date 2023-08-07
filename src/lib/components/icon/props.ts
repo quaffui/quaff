@@ -25,7 +25,7 @@ export interface QIconProps extends NativeProps {
    * Determines whether the icon should be filled.
    * @default false
    */
-  fill: boolean;
+  filled: boolean;
 
   /**
    * The SVG content for the icon.

@@ -14,6 +14,7 @@
   import QRailbar from "$lib/components/railbar/QRailbar.svelte";
   import QToggle from "$lib/components/toggle/QToggle.svelte";
   import QToolbar from "$lib/components/toolbar/QToolbar.svelte";
+  import QToolbarTitle from "$lib/components/toolbar/QToolbarTitle.svelte";
   import { createStyles } from "$lib/utils/props";
 
   import { snippet } from "./docs.snippets";
@@ -61,9 +62,9 @@
 
 <QDocs QComponentDocs={QLayoutDocs}>
   <QLayout slot="display" view="lhh lpr lfr" headerHeight="50px" footerHeight="50px">
-    <QToolbar slot="header" class="surface small-elevate no-round">
+    <QToolbar slot="header" class="elevate-2">
       <QBtn icon="menu" flat on:click={displayLeftDrawerElement.toggle} />
-      <h3 class="small max center-align">Header</h3>
+      <QToolbarTitle>Header</QToolbarTitle>
     </QToolbar>
     <QDrawer
       slot="drawerLeft"
@@ -113,11 +114,7 @@
     <QDocsSection {snippets} title="Trying different layouts">
       <QCard bordered class="no-padding" style="height: 80vh">
         <QLayout {view} {style}>
-          <QToolbar
-            style={header ? undefined : "display: none;"}
-            slot="header"
-            class="small-elevate"
-          >
+          <QToolbar style={header ? undefined : "display: none;"} slot="header" class="elevate-2">
             {#if leftDrawer}
               <QBtn icon="menu" flat on:click={leftDrawerElement.toggle} />
             {/if}

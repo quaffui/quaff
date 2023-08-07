@@ -12,6 +12,7 @@
     QBtn,
     QToggle,
     QToolbar,
+    QToolbarTitle,
     QList,
     QItem,
     QItemSection,
@@ -213,7 +214,7 @@
   <QCard title="Toolbar">
     <QToolbar class="text-primary q-mt-md">
       <QBtn icon="menu" flat />
-      <h5 class="max center-align">Title</h5>
+      <QToolbarTitle>Title</QToolbarTitle>
       <QBtn flat icon="attach_file" />
       <QBtn flat icon="today" />
       <QBtn flat icon="more_vert" />

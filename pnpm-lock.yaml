@@ -19,6 +19,18 @@ dependencies:
     version: 7.3.0
 
 devDependencies:
+  '@fontsource/material-symbols-outlined':
+    specifier: ^5.0.6
+    version: 5.0.7
+  '@fontsource/material-symbols-rounded':
+    specifier: ^5.0.6
+    version: 5.0.7
+  '@fontsource/material-symbols-sharp':
+    specifier: ^5.0.6
+    version: 5.0.7
+  '@fontsource/roboto':
+    specifier: ^5.0.7
+    version: 5.0.8
   '@sveltejs/adapter-auto':
     specifier: ^2.1.0
     version: 2.1.0(@sveltejs/kit@1.22.4)
@@ -373,6 +385,22 @@ packages:
   /@eslint/js@8.46.0:
     resolution: {integrity: sha512-a8TLtmPi8xzPkCbp/OGFUo5yhRkHM2Ko9kOWP4znJr0WAhWyThaw3PnwX4vOTWOAMsV2uRt32PPDcEz63esSaA==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    dev: true
+
+  /@fontsource/material-symbols-outlined@5.0.7:
+    resolution: {integrity: sha512-7In4SJEG4uxlz7Q+US29VljzQFRdcOpqiQPRqPYhLCz7jZM2FePy7UXexYIoZmK9HaTAbJSN0FtINVAEqiokbQ==}
+    dev: true
+
+  /@fontsource/material-symbols-rounded@5.0.7:
+    resolution: {integrity: sha512-jJnz8B8Vs+WSgWFg7Hgi38AFBCjm11s3HQz3g5iT+n0aT21MjvkQZYUZwRCfuVUsDbZ+gX1UhsDk2iGE0IQbxA==}
+    dev: true
+
+  /@fontsource/material-symbols-sharp@5.0.7:
+    resolution: {integrity: sha512-iqCmwlqgP3hE7gwzrgsazJ64wJcbOTNEG10XK61lWOJnQP6o31NviGP9kQmZOAC1bWFmYInpQ9CaGEmGyv1l9Q==}
+    dev: true
+
+  /@fontsource/roboto@5.0.8:
+    resolution: {integrity: sha512-XxPltXs5R31D6UZeLIV1td3wTXU3jzd3f2DLsXI8tytMGBkIsGcc9sIyiupRtA8y73HAhuSCeweOoBqf6DbWCA==}
     dev: true
 
   /@humanwhocodes/config-array@0.11.10:
