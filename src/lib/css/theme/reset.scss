@@ -11,8 +11,7 @@
 
 body {
   color: var(--on-background);
-  // old variable: --body
-  background-color: var(--background);
+  background-color: var(--body);
   overflow-x: hidden;
 }
 
