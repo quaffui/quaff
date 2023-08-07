@@ -167,6 +167,10 @@
           <QIcon name="grid_on" />
           <QItemSection>Grid</QItemSection>
         </QItem>
+        <QItem to="/colors">
+          <QIcon name="palette" />
+          <QItemSection>Colors</QItemSection>
+        </QItem>
         <QItem to="/utils">
           <QIcon name="construction" />
           <QItemSection>Quaff utils</QItemSection>
