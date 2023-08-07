@@ -9,6 +9,7 @@
   import {
     QLayout,
     QToolbar,
+    QToolbarTitle,
     QBtn,
     QRailbar,
     QList,
@@ -143,7 +144,7 @@
 {:else}
   <QLayout class="main-layout" leftRailbarWidth="120" leftDrawerWidth="15rem">
     <QToolbar slot="header" class="surface small-elevate">
-      <h5 class="max center-align">Quaff</h5>
+      <QToolbarTitle>Quaff</QToolbarTitle>
       <QBtn
         icon={$Quaff.dark.isActive ? "light_mode" : "dark_mode"}
         flat

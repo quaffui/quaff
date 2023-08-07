@@ -3,6 +3,7 @@
     QDrawer,
     QLayout,
     QToolbar,
+    QToolbarTitle,
     QBtn,
     QRailbar,
     QList,
@@ -19,9 +20,9 @@
 <QLayout view="hHh LpR fFr" leftRailbarWidth="120">
   <QToolbar slot="header" class="primary-container">
     <QBtn icon="menu" flat on:click={() => leftDrawer?.toggle()} />
-    <h5 class="max center-align">
+    <QToolbarTitle>
       <a href="/">Go home</a>
-    </h5>
+    </QToolbarTitle>
     <QBtn flat icon="attach_file" />
     <QBtn flat icon="today" />
     <QBtn icon="menu" flat on:click={() => rightDrawer?.toggle()} />
