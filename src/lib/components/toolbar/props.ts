@@ -11,3 +11,12 @@ export const QToolbarPropsDefaults: QToolbarProps = {
   height: "64px",
   ...NativePropsDefaults,
 };
+
+export interface QToolbarTitleProps extends NativeProps {
+  shrink: boolean;
+}
+
+export const QToolbarTitlePropsDefaults: QToolbarTitleProps = {
+  shrink: false,
+  ...NativePropsDefaults,
+};

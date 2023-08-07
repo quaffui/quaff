@@ -14,6 +14,7 @@
   import QRailbar from "$lib/components/railbar/QRailbar.svelte";
   import QToggle from "$lib/components/toggle/QToggle.svelte";
   import QToolbar from "$lib/components/toolbar/QToolbar.svelte";
+  import QToolbarTitle from "$lib/components/toolbar/QToolbarTitle.svelte";
   import { createStyles } from "$lib/utils/props";
 
   import { snippet } from "./docs.snippets";
@@ -63,7 +64,7 @@
   <QLayout slot="display" view="lhh lpr lfr" headerHeight="50px" footerHeight="50px">
     <QToolbar slot="header" class="surface small-elevate no-round">
       <QBtn icon="menu" flat on:click={displayLeftDrawerElement.toggle} />
-      <h3 class="small max center-align">Header</h3>
+      <QToolbarTitle>Header</QToolbarTitle>
     </QToolbar>
     <QDrawer
       slot="drawerLeft"

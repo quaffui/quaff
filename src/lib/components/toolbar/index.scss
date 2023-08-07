@@ -1,7 +1,29 @@
 .q-toolbar {
   width: 100%;
   transition: all var(--speed3);
+  background-color: var(--surface);
+
+  nav {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    white-space: nowrap;
+    gap: 1rem;
+  }
+
   &--inset {
     padding-left: 58px;
+  }
+}
+
+.q-toolbar-title {
+  display: flex;
+  flex: auto;
+  font-size: 1.75rem;
+  font-weight: 400;
+  justify-content: center;
+
+  &--shrink {
+    flex: unset;
   }
 }
