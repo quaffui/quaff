@@ -62,7 +62,7 @@
 
 <QDocs QComponentDocs={QLayoutDocs}>
   <QLayout slot="display" view="lhh lpr lfr" headerHeight="50px" footerHeight="50px">
-    <QToolbar slot="header" class="surface small-elevate no-round">
+    <QToolbar slot="header" class="elevate-2">
       <QBtn icon="menu" flat on:click={displayLeftDrawerElement.toggle} />
       <QToolbarTitle>Header</QToolbarTitle>
     </QToolbar>
@@ -114,11 +114,7 @@
     <QDocsSection {snippets} title="Trying different layouts">
       <QCard bordered class="no-padding" style="height: 80vh">
         <QLayout {view} {style}>
-          <QToolbar
-            style={header ? undefined : "display: none;"}
-            slot="header"
-            class="small-elevate"
-          >
+          <QToolbar style={header ? undefined : "display: none;"} slot="header" class="elevate-2">
             {#if leftDrawer}
               <QBtn icon="menu" flat on:click={leftDrawerElement.toggle} />
             {/if}
