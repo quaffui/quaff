@@ -14,7 +14,7 @@
       <QDialog
         class="snippet-dialog"
         bind:value={dialog}
-        btnAttrs={{ outline: true, icon: "code", class: "circle" }}
+        btnAttrs={{ outline: true, round: true, icon: "code" }}
         on:btnClick={() => (dialog = true)}
         modal
       >

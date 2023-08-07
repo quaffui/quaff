@@ -46,6 +46,12 @@ export interface QBtnProps extends NativeProps {
   rectangle?: boolean;
 
   /**
+   * Use round design for the button, giving it a circular shape.
+   * @default false
+   */
+  round?: boolean;
+
+  /**
    * Makes the button navigational. Can be used with the router (e.g to="/home") or as a normal href attribute (e.g to="#section-id").
    *  @default undefined
    */
