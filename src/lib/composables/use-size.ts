@@ -1,4 +1,9 @@
-export const useSizeClasses = {
+export type Size = "xs" | "sm" | "md" | "lg" | "xl";
+
+export const sizes: Size[] = ["xs", "sm", "md", "lg", "xl"];
+
+// @todo change classes or deprecate
+export const useSizeClasses: { [key in Size]: string } = {
   xs: "tiny",
   sm: "small",
   md: "",

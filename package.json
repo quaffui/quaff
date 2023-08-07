@@ -33,6 +33,10 @@
     "svelte": "^4.0.0"
   },
   "devDependencies": {
+    "@fontsource/material-symbols-outlined": "^5.0.6",
+    "@fontsource/material-symbols-rounded": "^5.0.6",
+    "@fontsource/material-symbols-sharp": "^5.0.6",
+    "@fontsource/roboto": "^5.0.7",
     "@sveltejs/adapter-auto": "^2.1.0",
     "@sveltejs/kit": "^1.22.4",
     "@sveltejs/package": "^2.2.0",

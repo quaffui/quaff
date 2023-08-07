@@ -1,0 +1,57 @@
+// https://m3.material.io/styles/elevation/tokens
+
+:root {
+  --elevate0: 0 0 0 0 rgb(0 0 0 / 0);
+  --elevate1: 0 0.0625rem 0.0625rem 0 rgb(0 0 0 / 0.2); /* 1dp */
+  --elevate2: 0 0.125rem 0.125rem 0 rgb(0 0 0 / 0.32); /* 3dp */
+  --elevate3: 0 0.25rem 0.25rem 0 rgb(0 0 0 / 0.4); /* 6dp */
+  --elevate4: 0 0.375rem 0.375rem 0 rgb(0 0 0 / 0.48); /* 8dp */
+  --elevate5: 0 0.5rem 0.5rem 0 rgb(0 0 0 / 0.56); /* 12dp */
+}
+
+.elevate-0 {
+  box-shadow: var(--elevate0);
+}
+
+.elevate-1 {
+  box-shadow: var(--elevate1);
+}
+
+.elevate-2 {
+  box-shadow: var(--elevate2);
+}
+
+.elevate-3 {
+  box-shadow: var(--elevate3);
+}
+
+.elevate-4 {
+  box-shadow: var(--elevate4);
+}
+
+.elevate-5 {
+  box-shadow: var(--elevate5);
+}
+
+// For API compatibility. We might make this deprecated in the future
+@for $i from 1 through 24 {
+  $elevation: null;
+
+  @if $i <= 3 {
+    $elevation: var(--elevate0);
+  } @else if $i > 3 and $i <= 7 {
+    $elevation: var(--elevate1);
+  } @else if $i > 7 and $i <= 12 {
+    $elevation: var(--elevate2);
+  } @else if $i > 12 and $i <= 18 {
+    $elevation: var(--elevate3);
+  } @else if $i > 18 and $i <= 21 {
+    $elevation: var(--elevate4);
+  } @else if $i > 21 {
+    $elevation: var(--elevate5);
+  }
+
+  .shadow-#{$i} {
+    box-shadow: $elevation;
+  }
+}

@@ -1,13 +1,14 @@
 <script lang="ts">
-  import useSize from "$lib/composables/use-size";
   import { createClasses, createStyles } from "$lib/utils/props";
   import { isNumber } from "$lib/utils/types";
+  import { sizes } from "$lib/composables/use-size";
+  import type { Size } from "$lib/composables/use-size";
   import type { QIconProps } from "./props";
 
   export let size: QIconProps["size"] = "md",
     name: QIconProps["name"] = undefined,
     type: QIconProps["type"] = "outlined",
-    fill: QIconProps["fill"] = false,
+    filled: QIconProps["filled"] = false,
     svg: QIconProps["svg"] = undefined,
     img: QIconProps["img"] = undefined,
     imgAttributes: QIconProps["imgAttributes"] = {},
@@ -16,20 +17,27 @@
     userStyles: QIconProps["userStyles"] = undefined;
   export { userClasses as class, userStyles as style };
 
-  $: sizeStyle = useSize(size) === null ? (isNumber(size) ? `${size}px` : size) : undefined;
+  let sizeStyle: string | undefined;
 
-  $: classes = createClasses([
-    "q-icon",
-    `q-icon__${type}`,
-    fill && "fill",
-    useSize(size),
-    color && `${color}-text`,
+  $: {
+    if (isNumber(size)) {
+      sizeStyle = `${size}px`;
+    } else if (typeof size === "string" && !sizes.includes(size as Size)) {
+      sizeStyle = size;
+    } else {
+      sizeStyle = undefined;
+    }
+  }
+
+  $: classes = createClasses([type, filled && "filled", sizes.includes(size as Size) && size], {
+    component: "q-icon",
     userClasses,
-  ]);
+    quaffClasses: [color && `text-${color}`],
+  });
 
   $: style = createStyles(
     {
-      "---size": sizeStyle,
+      "--size": sizeStyle,
     },
     userStyles
   );
