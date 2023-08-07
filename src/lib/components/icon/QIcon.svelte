@@ -1,7 +1,8 @@
 <script lang="ts">
   import { createClasses, createStyles } from "$lib/utils/props";
   import { isNumber } from "$lib/utils/types";
-  import { Size, sizes } from "$lib/composables/use-size";
+  import { sizes } from "$lib/composables/use-size";
+  import type { Size } from "$lib/composables/use-size";
   import type { QIconProps } from "./props";
 
   export let size: QIconProps["size"] = "md",
