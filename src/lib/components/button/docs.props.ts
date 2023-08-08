@@ -56,6 +56,14 @@ export const QBtnDocsProps = [
     default: "false",
   },
   {
+    name: "round",
+    type: "boolean",
+    optional: true,
+    clickableType: false,
+    description: "Use round design for the button, giving it a circular shape.",
+    default: "false",
+  },
+  {
     name: "to",
     type: "string",
     optional: true,

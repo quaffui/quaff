@@ -56,6 +56,14 @@ export const QBtnDocsProps = [
     default: "false",
   },
   {
+    name: "round",
+    type: "boolean",
+    optional: true,
+    clickableType: false,
+    description: "Use round design for the button, giving it a circular shape.",
+    default: "false",
+  },
+  {
     name: "to",
     type: "string",
     optional: true,
@@ -86,10 +94,10 @@ export const QDialogDocsProps = [
   {
     name: "value",
     type: "boolean",
-    optional: true,
+    optional: false,
     clickableType: false,
     description: "The value indicating whether the dialog is visible or hidden.",
-    default: "false",
+    default: "true",
   },
   {
     name: "noBtn",

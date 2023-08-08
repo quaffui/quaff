@@ -1,9 +1,9 @@
 export const QSelectDocsProps = [
   {
     name: "value",
-    type: "string | string[]",
+    type: "string | string[] | number | number[]",
     optional: false,
-    clickableType: false,
+    clickableType: true,
     description: "",
     default: "",
   },
