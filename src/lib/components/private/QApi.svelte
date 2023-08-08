@@ -53,21 +53,22 @@
     return found;
   }
 
-  function handleDrawer(QDocument: QComponentDocs, doc: QComponentProp) {
+  function handleDrawer(QDocument: QComponentDocs, doc: QComponentProp, e: Event) {
+    e.stopPropagation();
     let content = getType(doc.type);
-    if (!drawer[QDocument.name][doc.name]) {
-      drawerContent = content;
-      drawer[QDocument.name][doc.name] = true;
-    } else {
-      if (content !== drawerContent) {
-        drawer[QDocument.name][doc.name] = false;
-        setTimeout(() => {
-          drawerContent = content;
-          drawer[QDocument.name][doc.name] = true;
-        }, 250);
-      } else {
-        drawer[QDocument.name][doc.name] = false;
+    for (let docName in drawer[QDocument.name]) {
+      if (drawer[QDocument.name][docName] === true && docName !== doc.name) {
+        drawer[QDocument.name][docName] = false;
       }
+    }
+
+    if (!drawer[QDocument.name][doc.name]) {
+      setTimeout(() => {
+        drawerContent = content;
+        drawer[QDocument.name][doc.name] = true;
+      }, 100);
+    } else {
+      drawer[QDocument.name][doc.name] = false;
     }
   }
 </script>
@@ -83,7 +84,7 @@
         {#each Object.entries(QDocument.docs) as [tabName, _tabDoc]}
           {#if _tabDoc.length !== 0}
             <QTab name={tabName} style="min-width: 100px">
-              <h6>{capitalize(tabName)}</h6>
+              <h6 style="margin: 0">{capitalize(tabName)}</h6>
             </QTab>
           {/if}
         {/each}
@@ -96,7 +97,7 @@
             {#if isProp(doc, index) && doc.clickableType}
               <QDrawer
                 side="right"
-                class="no-padding"
+                class="no-padding api-drawer"
                 style="height: fit-content; max-height: 400%; overflow: auto; border-radius: 0;"
                 bind:value={drawer[QDocument.name][doc.name]}
                 width="50%"
@@ -114,7 +115,7 @@
                       <!-- svelte-ignore a11y-click-events-have-key-events -->
                       <span
                         class="prop-type clickable"
-                        on:click={() => isProp(doc, index) && handleDrawer(QDocument, doc)}
+                        on:click={(e) => isProp(doc, index) && handleDrawer(QDocument, doc, e)}
                       >
                         : {doc.type}
                       </span>
@@ -150,15 +151,12 @@
 
   .q-item {
     overflow: visible;
-
-    & > .q-drawer {
-    }
   }
 
-  pre[class*="language-"] {
+  :global(.q-drawer.api-drawer pre) {
     margin: 0;
-    padding: 1em;
     border-radius: inherit;
+    white-space: pre-wrap;
   }
 
   :global(.prop-description > a:hover) {
