@@ -1,14 +1,8 @@
 <script lang="ts">
-  import { QCard, QCardSection } from "$lib";
+  import { QListDocs } from "$components/list/docs";
+  import QDocs from "$lib/components/private/QDocs.svelte";
 </script>
 
-<div class="grid" style="min-height: 400px; margin: 1rem">
-  <QCard class="s6 flex center-align primary-container">
-    <h1 class="large" slot="title">List</h1>
-  </QCard>
-  <QCard class="s6 q-mt-none secondary-container flex center-align">
-    <QCardSection class="flex center-align">
-      <h3>List description</h3>
-    </QCardSection>
-  </QCard>
-</div>
+<QDocs QComponentDocs={QListDocs}>
+  <div slot="usage"></div>
+</QDocs>
