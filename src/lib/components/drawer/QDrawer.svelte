@@ -121,6 +121,6 @@
   }
 </script>
 
-<div use:clickOutside={hide} class={classes} {style}>
+<div use:clickOutside={hide} class={classes} {style} {...$$restProps}>
   <slot />
 </div>
