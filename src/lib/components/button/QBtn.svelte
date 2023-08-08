@@ -12,6 +12,7 @@
     loading: QBtnProps["loading"] = false,
     unelevated: QBtnProps["unelevated"] = false,
     outline: QBtnProps["outline"] = false,
+    round: QBtnProps["round"] = false,
     rectangle: QBtnProps["rectangle"] = false,
     flat: QBtnProps["flat"] = false,
     to: QBtnProps["to"] = undefined,
@@ -30,7 +31,7 @@
       rectangle && "rectangle",
       outline && "outlined",
       flat && "flat",
-      !$$slots.default && !label && "circle",
+      ((!$$slots.default && !label) || round) && "round",
       size && size !== "md" && size,
     ],
     {

@@ -24,6 +24,12 @@
 }
 
 .q-item {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  white-space: nowrap;
+  gap: 1rem;
+
   min-width: 100%;
   min-height: 56px;
   margin-top: 0 !important;
