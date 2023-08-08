@@ -67,15 +67,15 @@ export const QChipDocsProps = [
   },
   {
     name: "size",
-    type: '"small" | "medium" | "large"',
+    type: "QChipSizeOptions",
     optional: true,
-    clickableType: false,
+    clickableType: true,
     description: "Size of the chip.",
     default: "small",
   },
   {
     name: "tabindex",
-    type: "string | number",
+    type: "number",
     optional: true,
     clickableType: false,
     description: "Tabindex of the chip.",

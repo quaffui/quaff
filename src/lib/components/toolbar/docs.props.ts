@@ -16,3 +16,14 @@ export const QToolbarDocsProps = [
     default: "",
   },
 ];
+
+export const QToolbarTitleDocsProps = [
+  {
+    name: "shrink",
+    type: "boolean",
+    optional: false,
+    clickableType: false,
+    description: "",
+    default: "",
+  },
+];

@@ -9,7 +9,7 @@ export const QCardDocsProps = [
   },
   {
     name: "fill",
-    type: "string | boolean",
+    type: "boolean | QCardFillColors",
     optional: true,
     clickableType: false,
     description: "Defines the fill color of the card.",
