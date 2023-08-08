@@ -107,7 +107,7 @@
             {/if}
             <QItemSection type="content" style="overflow: visible">
               <div slot="headline" class="q-my-sm" style="flex: 1 1 0; white-space: nowrap">
-                <span class=" small-padding surface-variant small-round">
+                <span class="q-pa-sm surface-variant">
                   <b>{doc.name}</b>
                   {#if isProp(doc, index)}
                     {doc.optional ? "?" : ""}
