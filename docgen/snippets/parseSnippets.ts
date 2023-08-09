@@ -1,8 +1,6 @@
 import path from "path";
 import fs from "fs";
 import { fileURLToPath } from "url";
-import Prism from "prismjs";
-import "prism-svelte";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.resolve(dirname, "../../src/routes/components");
