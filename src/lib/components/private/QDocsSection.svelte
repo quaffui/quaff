@@ -8,7 +8,7 @@
 </script>
 
 <div style="margin-bottom:48px">
-  <div class="flex between-align q-mb-md">
+  <div class="flex justify-between q-mb-md">
     <h5>{title}</h5>
     {#if snippets}
       <QDialog

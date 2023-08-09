@@ -1,4 +1,8 @@
 @use "sass:map";
+@import "./theme/theme.scss";
+@import "./fonts.scss";
+@import "./grid.scss";
+@import "./flex.scss";
 
 $space-base: 16px !default;
 $space-x-base: $space-base !default;
@@ -80,28 +84,6 @@ body {
       gap: $spaceVal;
     }
   }
-}
-
-.flex {
-  display: flex;
-}
-.between-align {
-  justify-content: space-between;
-}
-.around-align {
-  justify-content: space-around;
-}
-.evenly-align {
-  justify-content: space-evenly;
-}
-.stretch-align {
-  justify-content: stretch;
-}
-.reverse {
-  flex-direction: row-reverse;
-}
-.column {
-  flex-direction: column;
 }
 
 .no-overflow {

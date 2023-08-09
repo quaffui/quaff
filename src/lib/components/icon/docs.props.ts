@@ -25,7 +25,7 @@ export const QIconDocsProps = [
     default: "undefined",
   },
   {
-    name: "fill",
+    name: "filled",
     type: "boolean",
     optional: false,
     clickableType: false,

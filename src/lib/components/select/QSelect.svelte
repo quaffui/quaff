@@ -1,4 +1,5 @@
 <script lang="ts">
+  import QIcon from "$lib/components/icon/QIcon.svelte";
   import { onDestroy, onMount } from "svelte";
   import { createClasses } from "$lib/utils/props";
   import { textWidth } from "$lib/utils/fields";
@@ -166,9 +167,10 @@
     disabled={disable}
   />
 
-  <i class="q-select__arrow-toggle" class:q-select__arrow-toggle--has-append={$$slots.append}
-    >{`arrow_drop_${isMenuOpen ? "up" : "down"}`}</i
-  >
+  <QIcon
+    class="q-select__arrow-toggle {$$slots.append ? 'q-select__arrow-toggle--has-append' : ''}"
+    name={`arrow_drop_${isMenuOpen ? "up" : "down"}`}
+  />
 
   <slot name="append" />
 

@@ -42,7 +42,7 @@
 
 <div class="q-code-block">
   {#if copiable}
-    <div class="flex between-align {title ? 'middle' : 'right'}-align q-pb-sm">
+    <div class="flex justify-between {title ? 'items-center' : 'justify-end'} q-pb-sm">
       {#if title}
         <h4 class="q-ma-none q-pr-lg">{title}</h4>
       {/if}
