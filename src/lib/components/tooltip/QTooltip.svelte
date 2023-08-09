@@ -7,12 +7,10 @@
     userClasses: QTooltipProps["userClasses"] = "";
   export { userClasses as class };
 
-  $: classes = createClasses([
-    "q-tooltip tooltip",
-    value !== false && "active",
-    position,
+  $: classes = createClasses([value && "active", position || "top"], {
+    component: "q-tooltip",
     userClasses,
-  ]);
+  });
 </script>
 
 <div class={classes} {...$$restProps}>
