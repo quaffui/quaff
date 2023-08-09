@@ -1,9 +1,33 @@
 .flex {
-  display: flex;
+  display: flex !important;
   flex-wrap: wrap;
 }
 
-.flex-center {
+.column {
+  flex-direction: column;
+}
+
+.items-center {
   align-items: center;
+}
+
+.justify-center {
   justify-content: center;
+}
+
+.justify-end {
+  justify-content: flex-end;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.justify-around {
+  justify-content: space-around;
+}
+
+.flex-center {
+  @extend .items-center;
+  @extend .justify-center;
 }

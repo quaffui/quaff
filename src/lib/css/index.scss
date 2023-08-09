@@ -86,28 +86,6 @@ body {
   }
 }
 
-.flex {
-  display: flex;
-}
-.between-align {
-  justify-content: space-between;
-}
-.around-align {
-  justify-content: space-around;
-}
-.evenly-align {
-  justify-content: space-evenly;
-}
-.stretch-align {
-  justify-content: stretch;
-}
-.reverse {
-  flex-direction: row-reverse;
-}
-.column {
-  flex-direction: column;
-}
-
 .no-overflow {
   overflow: hidden;
 }

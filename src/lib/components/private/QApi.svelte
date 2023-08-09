@@ -75,7 +75,7 @@
 
 {#each QComponentDocs as QDocument, index}
   <QCard class="q-px-none q-pb-none">
-    <div slot="title" class="flex between-align middle-align q-px-md">
+    <div slot="title" class="flex justify-between items-center q-px-md">
       <h5 class="no-margin">
         <QIcon name="info" />
         <span class="q-ml-md">{QDocument.name} API</span>
