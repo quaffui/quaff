@@ -1,7 +1,3 @@
-:root {
-  --font: Inter, Roboto, "Helvetica Neue", "Arial Nova", "Nimbus Sans", Arial, sans-serif;
-}
-
 html {
   font-size: var(--size);
 }
@@ -191,4 +187,8 @@ p {
 
 .extra-line {
   line-height: 2.25;
+}
+
+.text-center {
+  text-align: center;
 }

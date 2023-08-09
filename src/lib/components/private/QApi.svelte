@@ -75,7 +75,7 @@
 
 {#each QComponentDocs as QDocument, index}
   <QCard class="q-px-none q-pb-none">
-    <div slot="title" class="flex between-align middle-align q-px-md">
+    <div slot="title" class="flex justify-between items-center q-px-md">
       <h5 class="no-margin">
         <QIcon name="info" />
         <span class="q-ml-md">{QDocument.name} API</span>
@@ -107,7 +107,7 @@
             {/if}
             <QItemSection type="content" style="overflow: visible">
               <div slot="headline" class="q-my-sm" style="flex: 1 1 0; white-space: nowrap">
-                <span class=" small-padding surface-variant small-round">
+                <span class="q-pa-sm surface-variant">
                   <b>{doc.name}</b>
                   {#if isProp(doc, index)}
                     {doc.optional ? "?" : ""}

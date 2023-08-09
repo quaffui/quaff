@@ -63,7 +63,7 @@
       <h6>Dark mode</h6>
       <p>$Quaff.dark.isActive: {$Quaff.dark.isActive}</p>
       <div>
-        <button on:click={() => $Quaff.dark.toggle()}>$Quaff.dark.toggle()</button>
+        <QBtn on:click={() => $Quaff.dark.toggle()}>$Quaff.dark.toggle()</QBtn>
       </div>
     </QCardSection>
     <QCardSection>
@@ -296,7 +296,7 @@
   <QCard title="Avatar">
     <QCardSection>
       <h6>Sizes</h6>
-      <div class="flex between-align" style="align-items: center">
+      <div class="flex justify-between" style="align-items: center">
         <QAvatar src="/cocktail.jpg" shape="circle" size="xs" />
         <QAvatar src="/cocktail.jpg" shape="circle" size="sm" />
         <QAvatar src="/cocktail.jpg" shape="circle" />
@@ -306,13 +306,13 @@
     </QCardSection>
     <QCardSection>
       <h6>Custom sizes</h6>
-      <div class="flex between-align" style="align-items: center">
+      <div class="flex justify-between" style="align-items: center">
         <QAvatar src="/cocktail.jpg" shape="circle" size="5rem" />
       </div>
     </QCardSection>
     <QCardSection>
       <h6>Shapes</h6>
-      <div class="flex between-align" style="align-items: center">
+      <div class="flex justify-between" style="align-items: center">
         <QAvatar src="/cocktail.jpg" shape="circle" />
         <QAvatar src="/cocktail.jpg" shape="rounded" />
         <QAvatar src="/cocktail.jpg" shape="top-round" />
@@ -321,7 +321,7 @@
     </QCardSection>
     <QCardSection>
       <h6>Video</h6>
-      <div class="flex between-align" style="align-items: center">
+      <div class="flex justify-between" style="align-items: center">
         <QAvatar src="/sea.mp4" shape="circle" size="lg" video />
         <QAvatar src="/sea.mp4" shape="rounded" size="lg" video />
         <QAvatar src="/sea.mp4" shape="left-round" size="lg" video />
@@ -332,7 +332,7 @@
   <QCard title="Tooltip">
     <QCardSection>
       <h6>Default</h6>
-      <div class="flex between-align" style="align-items: center">
+      <div class="flex justify-between" style="align-items: center">
         <QBtn label="Button with Tooltip">
           <QTooltip>Awesome</QTooltip>
         </QBtn>
@@ -340,7 +340,7 @@
     </QCardSection>
     <QCardSection>
       <h6>With position</h6>
-      <div class="flex between-align" style="align-items: center">
+      <div class="flex justify-between" style="align-items: center">
         <QBtn label="Right">
           <QTooltip position="right">Awesome</QTooltip>
         </QBtn>
@@ -354,11 +354,11 @@
     </QCardSection>
     <QCardSection>
       <h6>Rich tooltip</h6>
-      <div class="flex between-align" style="align-items: center">
+      <div class="flex justify-between" style="align-items: center">
         <QBtn label="I'm rich">
           <QTooltip position="right" class="q-pa-none">
             <QCard title="Wow this is a card" class="primary-container no-round">
-              <QCardSection class="middle-align">
+              <QCardSection class="items-center">
                 <QIcon name="help" class="q-mr-md" />
                 I'm inside the tooltip
               </QCardSection>
@@ -375,14 +375,14 @@
   <QCard title="Chips">
     <QCardSection>
       <h6>Default</h6>
-      <div class="flex around-align" style="align-items: center">
+      <div class="flex justify-around" style="align-items: center">
         <QChip content="With content" />
         <QChip>With default slot</QChip>
       </div>
     </QCardSection>
     <QCardSection>
       <h6>Styles</h6>
-      <div class="flex around-align" style="align-items: center">
+      <div class="flex justify-around" style="align-items: center">
         <QChip content="I'm outlined" outlined />
         <QChip content="I'm rounded" round />
         <QChip content="I'm disabled" disable />
@@ -446,7 +446,7 @@
       <QDialog bind:value={dialog1} bind:this={dialogElement1} btnContent="Default dialog">
         <h5>This is a dialog</h5>
         <div>Some text here</div>
-        <nav class="right-align">
+        <nav class="flex justify-end">
           <QBtn on:click={() => dialogElement1.hide()} label="Cancel" />
           <QBtn on:click={() => dialogElement1.hide()} label="Confirm" />
         </nav>
@@ -454,7 +454,7 @@
       <QDialog modal bind:value={dialog2} btnContent="Modal dialog">
         <h5>This is a modal dialog</h5>
         <div>Some text here</div>
-        <nav class="right-align">
+        <nav class="flex justify-end">
           <QBtn on:click={() => (dialog2 = false)} label="Cancel" />
           <QBtn on:click={() => (dialog2 = false)} label="Confirm" />
         </nav>
@@ -462,7 +462,7 @@
       <QDialog modal bind:value={dialog3} btnContent="Persistent dialog" persistent>
         <h5>This is a dialog</h5>
         <div>This time, I am persistent</div>
-        <nav class="right-align">
+        <nav class="flex justify-end">
           <QBtn on:click={() => (dialog3 = false)} label="Cancel" />
           <QBtn on:click={() => (dialog3 = false)} label="Confirm" />
         </nav>
@@ -473,7 +473,7 @@
       <QDialog modal bind:value={dialog4} btnContent="Top" position="top">
         <h5>This is a dialog</h5>
         <div>I'm chilling on top!</div>
-        <nav class="right-align">
+        <nav class="flex justify-end">
           <QBtn on:click={() => (dialog4 = false)} label="Cancel" />
           <QBtn on:click={() => (dialog4 = false)} label="Confirm" />
         </nav>
@@ -481,7 +481,7 @@
       <QDialog modal bind:value={dialog5} btnContent="Right" position="right">
         <h5>This is a dialog</h5>
         <div>I'm chilling on right!</div>
-        <nav class="right-align">
+        <nav class="flex justify-end">
           <QBtn on:click={() => (dialog5 = false)} label="Cancel" />
           <QBtn on:click={() => (dialog5 = false)} label="Confirm" />
         </nav>
@@ -489,7 +489,7 @@
       <QDialog modal bind:value={dialog6} btnContent="Bottom" position="bottom">
         <h5>This is a dialog</h5>
         <div>I'm chilling on bottom!</div>
-        <nav class="right-align">
+        <nav class="flex justify-end">
           <QBtn on:click={() => (dialog6 = false)} label="Cancel" />
           <QBtn on:click={() => (dialog6 = false)} label="Confirm" />
         </nav>
@@ -497,7 +497,7 @@
       <QDialog modal bind:value={dialog7} btnContent="Left" position="left">
         <h5>This is a dialog</h5>
         <div>I'm chilling on left!</div>
-        <nav class="right-align">
+        <nav class="flex justify-end">
           <QBtn on:click={() => (dialog7 = false)} label="Cancel" />
           <QBtn on:click={() => (dialog7 = false)} label="Confirm" />
         </nav>

@@ -10,7 +10,7 @@
 <QCard title="Cookie settings" flat>
   <QCardSection>
     {#each exampleToggles as toggle, index}
-      <div class="flex between-align q-my-sm">
+      <div class="flex justify-between q-my-sm">
         {#if index === 0}
           <h6 class="small">Cookies {index + 1} (always active)</h6>
           <QToggle bind:value={toggle} disable />
@@ -22,7 +22,7 @@
     {/each}
   </QCardSection>
   <QCardSection>
-    <div class="flex middle-align" style="white-space: pre">
+    <div class="flex items-center" style="white-space: pre">
       I've read the <span class="primary-text" style="cursor: pointer"> terms and conditions </span>
       <QCheckbox class="q-ml-sm" bind:value={exampleCheckbox} />
     </div>

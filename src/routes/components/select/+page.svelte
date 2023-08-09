@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { QSelect, QBtn } from "$lib";
+  import { QSelect, QBtn, QIcon } from "$lib";
   import { QSelectDocs } from "$components/select/docs";
   import QDocs from "$lib/components/private/QDocs.svelte";
   import QDocsSection from "$lib/components/private/QDocsSection.svelte";
@@ -57,10 +57,10 @@
 
     <QDocsSection {snippets} title="Slots">
       <QSelect bind:value={select} {options} label="Prepended Icon">
-        <i slot="prepend">favorite</i>
+        <QIcon slot="prepend" name="favorite" />
       </QSelect>
       <QSelect bind:value={select} {options} label="Appended Icon">
-        <i slot="append">list</i>
+        <QIcon slot="append" name="list" />
       </QSelect>
     </QDocsSection>
   </div>
