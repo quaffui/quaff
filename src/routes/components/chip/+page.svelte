@@ -11,7 +11,7 @@
 
   <div slot="usage">
     <QDocsSection {snippets} title="Default">
-      <div class="flex q-gap-lg middle-align">
+      <div class="flex q-gap-lg items-center">
         <QChip class="green" content="Green Chip" />
         <QChip class="error" content="Error Chip" />
         <QChip class="primary" content="Primary Chip" />
@@ -20,7 +20,7 @@
     </QDocsSection>
 
     <QDocsSection {snippets} title="Chip Sizes">
-      <div class="flex q-gap-lg middle-align">
+      <div class="flex q-gap-lg items-center">
         <QChip content="Small Chip" size="sm" />
         <QChip content="Medium Chip" />
         <QChip content="Large Chip" size="lg" />
@@ -28,7 +28,7 @@
     </QDocsSection>
 
     <QDocsSection {snippets} title="Chips with Icons">
-      <div class="flex q-gap-lg middle-align">
+      <div class="flex q-gap-lg items-center">
         <QChip icon="check" content="Leading icon" />
         <QChip iconRight="close" content="Trailing icon" />
         <QChip icon="check" iconRight="close" content="Both icons" />
@@ -36,7 +36,7 @@
     </QDocsSection>
 
     <QDocsSection {snippets} title="Chips with Images">
-      <div class="flex q-gap-lg middle-align">
+      <div class="flex q-gap-lg items-center">
         <QChip icon="img:/cocktail.jpg" content="Leading image" />
         <QChip iconRight="img:/cocktail.jpg" content="Trailing image" />
         <QChip icon="img:/cocktail.jpg" round content="Round with image" />
@@ -44,7 +44,7 @@
     </QDocsSection>
 
     <QDocsSection {snippets} title="Chip Types">
-      <div class="flex q-gap-lg middle-align">
+      <div class="flex q-gap-lg items-center">
         <QChip content="Outlined Chip" outlined />
         <QChip content="Round Chip" round />
         <QChip content="Disabled Chip" disable />
@@ -54,7 +54,7 @@
     </QDocsSection>
 
     <QDocsSection {snippets} title="Chips with Custom Tabindex">
-      <div class="flex q-gap-lg middle-align">
+      <div class="flex q-gap-lg items-center">
         <QChip tabindex="2" content="Tabindex 2 Chip" />
         <QChip tabindex="3" content="Tabindex 3 Chip" />
       </div>

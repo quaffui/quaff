@@ -122,7 +122,7 @@
               <QRadio bind:selected={viewArr[0][0]} value="h" label="h" />
               <QRadio class="no-margin" bind:selected={viewArr[0][0]} value="l" label="l" />
             </div>
-            <div class="max flex column middle-align">
+            <div class="max flex column items-center">
               <QRadio
                 style="width: fit-content"
                 bind:selected={viewArr[0][1]}
@@ -256,7 +256,7 @@
               <QRadio bind:selected={viewArr[2][0]} value="f" label="f" />
               <QRadio class="no-margin" bind:selected={viewArr[2][0]} value="l" label="l" />
             </div>
-            <div class="max flex column middle-align">
+            <div class="max flex column items-center">
               <QRadio
                 style="width: fit-content"
                 bind:selected={viewArr[2][1]}

@@ -11,7 +11,7 @@
 
   <div slot="usage">
     <QDocsSection {snippets} title="Default slot">
-      <div class="flex q-gap-lg middle-align">
+      <div class="flex q-gap-lg items-center">
         <QAvatar class="green">GR</QAvatar>
         <QAvatar class="red5">RD</QAvatar>
         <QAvatar class="primary">PR</QAvatar>
@@ -20,7 +20,7 @@
     </QDocsSection>
 
     <QDocsSection {snippets} title="Avatar Sizes">
-      <div class="flex q-gap-lg middle-align">
+      <div class="flex q-gap-lg items-center">
         <QAvatar src="/cocktail.jpg" size="xs" />
         <QAvatar src="/cocktail.jpg" size="sm" />
         <QAvatar src="/cocktail.jpg" />
@@ -30,13 +30,13 @@
     </QDocsSection>
 
     <QDocsSection {snippets} title="Custom Avatar Sizes">
-      <div class="flex q-gap-lg middle-align">
+      <div class="flex q-gap-lg items-center">
         <QAvatar src="/cocktail.jpg" size="5rem" />
       </div>
     </QDocsSection>
 
     <QDocsSection {snippets} title="Avatar Shapes">
-      <div class="flex q-gap-lg middle-align">
+      <div class="flex q-gap-lg items-center">
         <QAvatar src="/cocktail.jpg" />
         <QAvatar src="/cocktail.jpg" shape="rounded" />
         <QAvatar src="/cocktail.jpg" shape="top-round" />
@@ -45,7 +45,7 @@
     </QDocsSection>
 
     <QDocsSection {snippets} title="Avatar Videos">
-      <div class="flex q-gap-lg middle-align">
+      <div class="flex q-gap-lg items-center">
         <QAvatar src="/sea.mp4" size="lg" video />
         <QAvatar src="/sea.mp4" shape="rounded" size="lg" video />
         <QAvatar src="/sea.mp4" shape="left-round" size="lg" video />

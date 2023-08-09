@@ -29,23 +29,23 @@
   </QToolbar>
   <QRailbar slot="railbarLeft" bordered width="120">
     <QList>
-      <QItem class="column center-align round" to="/" style="gap: 0.25em">
+      <QItem class="column round" to="/" style="gap: 0.25em">
         <QIcon name="home" />
         <QItemSection>Home</QItemSection>
       </QItem>
-      <QItem class="column center-align round" to="/components" style="gap: 0.25em">
+      <QItem class="column round" to="/components" style="gap: 0.25em">
         <QIcon name="grid_view" />
         <QItemSection>Components</QItemSection>
       </QItem>
-      <QItem class="column center-align round" to="/utils" style="gap: 0.25em">
+      <QItem class="column round" to="/utils" style="gap: 0.25em">
         <QIcon name="construction" />
         <QItemSection>Quaff utils</QItemSection>
       </QItem>
-      <QItem class="column center-align round" to="/dev" style="gap: 0.25em">
+      <QItem class="column round" to="/dev" style="gap: 0.25em">
         <QIcon name="code" />
         <QItemSection>Dev tests</QItemSection>
       </QItem>
-      <QItem class="column center-align round" to="/layout" style="gap: 0.25em">
+      <QItem class="column round" to="/layout" style="gap: 0.25em">
         <QIcon name="dashboard_customize" />
         <QItemSection>Layout tests</QItemSection>
       </QItem>
@@ -55,31 +55,31 @@
     <QList separator>
       <QItem to="/">
         <QItemSection avatar>
-          <i>home</i>
+          <QIcon name="home" />
         </QItemSection>
         <QItemSection>Return home, oh god this is a long text</QItemSection>
       </QItem>
       <QItem to="/">
         <QItemSection avatar>
-          <i>home</i>
+          <QIcon name="home" />
         </QItemSection>
         <QItemSection>Return home</QItemSection>
       </QItem>
       <QItem to="/">
         <QItemSection avatar>
-          <i>home</i>
+          <QIcon name="home" />
         </QItemSection>
         <QItemSection>Return home</QItemSection>
       </QItem>
       <QItem to="/">
         <QItemSection avatar>
-          <i>home</i>
+          <QIcon name="home" />
         </QItemSection>
         <QItemSection>Return home</QItemSection>
       </QItem>
       <QItem to="/">
         <QItemSection avatar>
-          <i>home</i>
+          <QIcon name="home" />
         </QItemSection>
         <QItemSection>Return home</QItemSection>
       </QItem>
@@ -89,22 +89,22 @@
     <QList dense>
       <QItem>
         <QBtn flat class="circle transparent">
-          <i>check_box</i>
+          <QIcon name="check_box" />
         </QBtn>
       </QItem>
       <QItem>
         <QBtn flat class="circle transparent">
-          <i>brush</i>
+          <QIcon name="brush" />
         </QBtn>
       </QItem>
       <QItem>
         <QBtn flat class="circle transparent">
-          <i>mic</i>
+          <QIcon name="mic" />
         </QBtn>
       </QItem>
       <QItem>
         <QBtn flat class="circle transparent">
-          <i>image</i>
+          <QIcon name="image" />
         </QBtn>
       </QItem>
     </QList>
@@ -113,31 +113,31 @@
     <QList separator>
       <QItem to="/">
         <QItemSection avatar>
-          <i>home</i>
+          <QIcon name="home" />
         </QItemSection>
         <QItemSection>Return home, oh god this is a long text</QItemSection>
       </QItem>
       <QItem to="/">
         <QItemSection avatar>
-          <i>home</i>
+          <QIcon name="home" />
         </QItemSection>
         <QItemSection>Return home</QItemSection>
       </QItem>
       <QItem to="/">
         <QItemSection avatar>
-          <i>home</i>
+          <QIcon name="home" />
         </QItemSection>
         <QItemSection>Return home</QItemSection>
       </QItem>
       <QItem to="/">
         <QItemSection avatar>
-          <i>home</i>
+          <QIcon name="home" />
         </QItemSection>
         <QItemSection>Return home</QItemSection>
       </QItem>
       <QItem to="/">
         <QItemSection avatar>
-          <i>home</i>
+          <QIcon name="home" />
         </QItemSection>
         <QItemSection>Return home</QItemSection>
       </QItem>
@@ -152,20 +152,20 @@
   </div>
   <QFooter slot="footer" class="secondary-container">
     <QBtn flat class="circle transparent">
-      <i>check_box</i>
+      <QIcon name="check_box" />
     </QBtn>
     <QBtn flat class="circle transparent">
-      <i>brush</i>
+      <QIcon name="brush" />
     </QBtn>
     <QBtn flat class="circle transparent">
-      <i>mic</i>
+      <QIcon name="mic" />
     </QBtn>
     <QBtn flat class="circle transparent">
-      <i>image</i>
+      <QIcon name="image" />
     </QBtn>
     <div class="max" />
     <QBtn class="square round primary">
-      <i>add</i>
+      <QIcon name="add" />
     </QBtn>
   </QFooter>
 </QLayout>
