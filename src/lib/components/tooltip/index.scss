@@ -1,7 +1,82 @@
 .q-tooltip {
+  --space: -0.5rem;
+  visibility: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background-color: var(--inverse-surface);
+  color: var(--inverse-on-surface);
+  font-size: 0.75rem;
+  text-align: center;
+  border-radius: 0.25rem;
+  padding: 0.5rem;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  bottom: auto;
+  right: auto;
+  transform: translate(-50%, -100%) scale(0.9);
+  width: auto;
+  white-space: nowrap;
+  font-weight: 500;
+  opacity: 0;
+  transition: var(--speed2) all;
   z-index: 9999;
+
+  &--top {
+    margin-top: var(--space) !important;
+  }
+
+  &--right {
+    right: 0;
+    top: 50%;
+    bottom: auto;
+    left: auto;
+    transform: translate(100%, -50%) scale(0.9);
+    margin-right: var(--space) !important;
+  }
+
+  &--bottom {
+    bottom: 0;
+    left: 50%;
+    top: auto;
+    right: auto;
+    transform: translate(-50%, 100%) scale(0.9);
+    margin-bottom: var(--space) !important;
+  }
+
+  &--left {
+    margin-left: var(--space) !important;
+
+    left: 0;
+    top: 50%;
+    bottom: auto;
+    right: auto;
+    transform: translate(-100%, -50%) scale(0.9);
+  }
 }
 
-:hover > .q-tooltip.tooltip:not(.active) {
-  opacity: 0;
+// Not easily integratable into the block above due to the :hover
+:hover > .q-tooltip,
+.q-tooltip--active {
+  visibility: visible;
+  opacity: 1;
+
+  &.q-tooltip {
+    &--top {
+      transform: translate(-50%, -100%) scale(1);
+    }
+    &--left {
+      transform: translate(-100%, -50%) scale(1);
+    }
+
+    &--right {
+      transform: translate(100%, -50%) scale(1);
+    }
+
+    &--bottom {
+      transform: translate(-50%, 100%) scale(1);
+    }
+  }
 }
