@@ -1,4 +1,4 @@
-import type { CSSValue, NativeProps } from "$lib/utils/types";
+import type { CssValue, NativeProps } from "$lib/utils/types";
 
 export interface QFooterProps extends NativeProps {
   /**
@@ -23,5 +23,5 @@ export interface QFooterProps extends NativeProps {
    * The height of the footer. Can be specified with a CSS unit. If not specified, "px" will be used. (not supported yet)
    * @default undefined
    */
-  height?: number | CSSValue;
+  height?: number | CssValue;
 }

@@ -1,10 +1,10 @@
-import type { NativeProps, CSSValue } from "$lib/utils/types";
+import type { NativeProps, CssValue } from "$lib/utils/types";
 
 export interface QRailbarProps extends NativeProps {
   /**
    * @default 88px
    */
-  width: CSSValue | number;
+  width: CssValue | number;
   /**
    * @default left
    */
