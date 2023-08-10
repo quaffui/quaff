@@ -144,11 +144,14 @@
     </QList>
   </QDrawer>
   <div slot="content" class="tertiary-container" style="height: 200%">
-    <h1>
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptates sed quo illo minima,
-      delectus laborum amet commodi consequuntur voluptatum nihil incidunt perspiciatis maiores
-      aliquam expedita harum autem nulla quidem dolorem.
-    </h1>
+    <div class="q-page">
+      <h1 class="q-mb-xl">Layout Test</h1>
+      <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptates sed quo illo minima,
+        delectus laborum amet commodi consequuntur voluptatum nihil incidunt perspiciatis maiores
+        aliquam expedita harum autem nulla quidem dolorem.
+      </p>
+    </div>
   </div>
   <QFooter slot="footer" class="secondary-container">
     <QBtn flat class="circle transparent">
