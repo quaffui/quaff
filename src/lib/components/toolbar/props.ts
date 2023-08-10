@@ -1,22 +1,18 @@
-import type { NativeProps } from "$lib/utils/types";
-import { NativePropsDefaults } from "$lib/utils/types";
+import type { NativeProps, CssValue } from "$lib/utils/types";
 
 export interface QToolbarProps extends NativeProps {
+  /**
+   * @default false
+   */
   inset: boolean;
-  height: string | number;
+  /**
+   * @default 64px
+   */
+  height: CssValue | number;
 }
-
-export const QToolbarPropsDefaults: QToolbarProps = {
-  inset: false,
-  height: "64px",
-  ...NativePropsDefaults,
-};
-
 export interface QToolbarTitleProps extends NativeProps {
+  /**
+   * @default false
+   */
   shrink: boolean;
 }
-
-export const QToolbarTitlePropsDefaults: QToolbarTitleProps = {
-  shrink: false,
-  ...NativePropsDefaults,
-};

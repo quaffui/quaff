@@ -4,6 +4,7 @@
   import { createEventDispatcher } from "svelte";
   import QIcon from "../icon/QIcon.svelte";
   import type { QChipProps } from "./props";
+  import { useSize } from "$lib/composables/use-size";
 
   export let content: QChipProps["content"] = undefined,
     icon: QChipProps["icon"] = undefined,
@@ -24,10 +25,15 @@
   $: img = icon?.startsWith("img:") ? icon.slice(4) : undefined;
   $: imgRight = iconRight?.startsWith("img:") ? iconRight.slice(4) : undefined;
 
-  $: sizeClass = ["sm", "lg"].includes(size!) ? size : undefined;
+  $: sizeObj = useSize(size);
 
   $: classes = createClasses(
-    [vertical && "vertical", round && "rounded", (outlined || disable) && "bordered", sizeClass],
+    [
+      vertical && "vertical",
+      round && "rounded",
+      (outlined || disable) && "bordered",
+      size !== "md" && sizeObj.class,
+    ],
     {
       component: "q-chip",
       userClasses,

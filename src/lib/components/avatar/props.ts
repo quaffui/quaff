@@ -1,4 +1,4 @@
-import type { NativeProps } from "$lib/utils/types";
+import type { QuaffSizes, CssValue, NativeProps } from "$lib/utils/types";
 
 export type QAvatarShapeOptions =
   | "circle"
@@ -12,7 +12,7 @@ export type QAvatarShapeOptions =
   | "bottom-left-round"
   | "bottom-right-round";
 
-export type QAvatarSizeOptions = "xs" | "sm" | "md" | "lg" | "xl" | string;
+export type QAvatarSizeOptions = QuaffSizes | CssValue | number;
 
 export interface QAvatarProps extends NativeProps {
   /**
