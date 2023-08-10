@@ -22,7 +22,7 @@
   ];
 </script>
 
-<div style="max-width: 80em; margin: auto;">
+<div class="q-page">
   <h1 class="q-mb-xl">Colors</h1>
 
   <div class="row q-gutter-md">

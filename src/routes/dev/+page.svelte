@@ -53,7 +53,7 @@
   let dialogElement7: QDialog;
 </script>
 
-<div style="max-width: 40em; margin: auto;">
+<div class="q-page" style="max-width: 40rem;">
   <div class="row q-gutter-lg">
     <div class="col-12">
       <QCard title="The quaff object">

@@ -1,7 +1,7 @@
 <script lang="ts">
 </script>
 
-<div class="page-home">
+<div class="q-page page-home">
   <div class="page-home__logo-container">
     <img
       class="page-home__logo"
@@ -27,8 +27,7 @@
 
 <style lang="scss">
   .page-home {
-    max-width: 40em;
-    margin: 2em auto;
+    text-align: center;
 
     &__logo-container {
       text-align: center;
