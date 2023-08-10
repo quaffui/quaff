@@ -1,4 +1,4 @@
-import type { NativeProps, CSSValue } from "$utils/types";
+import type { NativeProps, CssValue } from "$utils/types";
 
 export interface QLinearProgressProps extends NativeProps {
   /**
@@ -27,7 +27,7 @@ export interface QCircularProgressProps extends NativeProps {
   /**
    * @default 2em
    */
-  size: CSSValue | number;
+  size: CssValue | number;
   /**
    * @default undefined
    */

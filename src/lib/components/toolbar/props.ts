@@ -1,4 +1,4 @@
-import type { NativeProps, CSSValue } from "$lib/utils/types";
+import type { NativeProps, CssValue } from "$lib/utils/types";
 
 export interface QToolbarProps extends NativeProps {
   /**
@@ -8,7 +8,7 @@ export interface QToolbarProps extends NativeProps {
   /**
    * @default 64px
    */
-  height: CSSValue | number;
+  height: CssValue | number;
 }
 export interface QToolbarTitleProps extends NativeProps {
   /**
