@@ -1,23 +1,31 @@
-export type Size = "xs" | "sm" | "md" | "lg" | "xl";
+import { CSSUnit, QuaffSizes, isNumber } from "$lib/utils/types";
 
-export const sizes: Size[] = ["xs", "sm", "md", "lg", "xl"];
+export const sizes: QuaffSizes[] = ["xs", "sm", "md", "lg", "xl"];
+export const CSSUnits: CSSUnit[] = ["px", "%", "em", "ex", "ch", "rem", "vw", "vh", "vmin", "vmax"];
 
-// @todo change classes or deprecate
-export const useSizeClasses: { [key in Size]: string } = {
-  xs: "tiny",
-  sm: "small",
-  md: "",
-  lg: "large",
-  xl: "extra",
-};
-
-export interface useSizeProps {
-  size?: string;
+interface UseSize {
+  class?: string;
+  style?: string;
 }
 
-export default function (sizeProp: any) {
-  // return sizeStyle
-  return sizeProp in useSizeClasses
-    ? useSizeClasses[sizeProp as keyof typeof useSizeClasses]
-    : null;
+export function useSize(sizeProp: any): UseSize {
+  if (isNumber(sizeProp) && sizeProp > 0) {
+    return {
+      style: `${sizeProp}px`,
+    };
+  } else if (typeof sizeProp === "string") {
+    for (let unit of CSSUnits) {
+      if (sizeProp.slice(-unit.length) === unit) {
+        return {
+          style: sizeProp,
+        };
+      } else if (sizes.includes(sizeProp as QuaffSizes)) {
+        return {
+          class: sizeProp,
+        };
+      }
+    }
+  }
+
+  return {};
 }

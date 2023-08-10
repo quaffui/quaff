@@ -1,6 +1,6 @@
-import type { NativeProps } from "$lib/utils/types";
+import type { NativeProps, QuaffSizes } from "$lib/utils/types";
 
-export type QChipSizeOptions = "sm" | "md" | "lg";
+export type QChipSizeOptions = Exclude<QuaffSizes, "xs" | "xl">;
 
 export interface QChipProps extends NativeProps {
   /**
