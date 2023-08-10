@@ -23,15 +23,25 @@ export const UseAlignPropsDefaults: UseAlignProps = {
   align: "top left",
 };
 
-export default function useAlign(align: UseAlignOptions = "top left") {
-  const alignClass = align
-    .split(" ")
-    .map((a) => `${a}-align`)
-    .join(" ");
+const alignMap = {
+  left: "start",
+  center: "center",
+  right: "end",
+  between: "between",
+  around: "around",
+  evenly: "evenly",
+  // @todo - justify-stretch isn't possible
+  stretch: "stretch",
+} as const;
 
-  return ["between", "around", "evenly", "stretch"].some((alignment) =>
-    align.split(" ").includes(alignment)
-  )
-    ? `flex ${alignClass}`
-    : `${alignClass}`;
+export default function useAlign(align: UseAlignOptions = "top left") {
+  const alignments = align
+    .split(" ")
+    .map((entry) => {
+      const val = alignMap[entry as keyof typeof alignMap];
+      return val ? `justify-${val}` : false;
+    })
+    .filter((entry) => typeof entry === "string");
+
+  return ["flex", ...alignments].join(" ");
 }

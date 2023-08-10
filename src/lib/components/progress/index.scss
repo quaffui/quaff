@@ -1,4 +1,19 @@
 // Linear progress
+.q-linear-progress {
+  height: 1rem;
+  @include border;
+
+  &__progress {
+    position: absolute;
+    background-color: var(--active);
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    transition: var(--speed4) clip-path;
+    clip-path: polygon(0% 0%, 0% 0%, 0% 0%, 0% 0%);
+  }
+}
 
 // Circular progress
 .q-circular-progress {

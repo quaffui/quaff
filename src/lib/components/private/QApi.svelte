@@ -74,7 +74,7 @@
 </script>
 
 {#each QComponentDocs as QDocument, index}
-  <QCard class="q-px-none q-pb-none">
+  <QCard class="q-px-none q-pb-none q-mt-lg">
     <div slot="title" class="flex justify-between items-center q-px-md">
       <h5 class="no-margin">
         <QIcon name="info" />

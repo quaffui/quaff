@@ -13,8 +13,15 @@
     borderRadius: rounded ? "12px" : "0",
   };
 
-  $: containerClasses = createClasses(["small-space", "border", userClasses]);
-  $: progressClasses = createClasses(["progress", from]);
+  $: containerClasses = createClasses(["small-space", "border"], {
+    component: "q-linear-progress",
+    userClasses,
+  });
+
+  $: progressClasses = createClasses([from], {
+    component: "q-linear-progress",
+    element: "progress",
+  });
 
   $: containerStyle = createStyles(roundedStyle, userStyles);
   $: progressStyle =
