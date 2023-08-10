@@ -23,14 +23,13 @@
 
   $: positionClass = ["top", "right", "bottom", "left"].includes(position!) ? position : undefined;
 
-  $: classes = createClasses([
-    "q-dialog",
-    value && "active",
-    positionClass,
-    modal && "modal",
-    fullscreen && "max",
-    userClasses,
-  ]);
+  $: classes = createClasses(
+    [value && "active", positionClass, modal && "modal", fullscreen && "max"],
+    {
+      component: "q-dialog",
+      userClasses,
+    }
+  );
 
   $: value === true
     ? modal

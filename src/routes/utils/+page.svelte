@@ -1,4 +1,6 @@
 <script lang="ts">
 </script>
 
-<h1>Utils</h1>
+<div class="q-page">
+  <h1>Utils</h1>
+</div>
