@@ -4,6 +4,7 @@
   import type { QToolbarProps } from "./props";
   import type { LayoutContext } from "../layout/QLayout.svelte";
   import { isNumber } from "$lib/utils/types";
+  import { useSize } from "$lib/composables/use-size";
 
   export let inset: QToolbarProps["inset"] = false,
     height: QToolbarProps["height"] = "64px",
@@ -22,7 +23,7 @@
     userClasses,
   ]);
 
-  $: heightStyle = ctx === undefined ? (isNumber(height) ? `${height}px` : height) : undefined;
+  $: heightStyle = $ctx && useSize(height).style;
 
   $: if ($ctx?.header !== undefined) {
     if (userStyles?.includes("display: none")) {

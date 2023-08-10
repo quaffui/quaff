@@ -8,6 +8,12 @@ export const NativePropsDefaults: NativeProps = {
   userStyles: undefined,
 };
 
+export type QuaffSizes = "xs" | "sm" | "md" | "lg" | "xl";
+
+export type CSSUnit = "px" | "%" | "em" | "ex" | "ch" | "rem" | "vw" | "vh" | "vmin" | "vmax";
+
+export type CSSValue = `${number}${CSSUnit}`;
+
 export interface QComponentDocs {
   name: string;
   description: string;
