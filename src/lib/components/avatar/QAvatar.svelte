@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { useSize } from "$lib/composables/use-size";
   import { createClasses, createStyles } from "$lib/utils/props";
   import type { QAvatarProps } from "./props";
 
@@ -11,7 +12,7 @@
   export { userClasses as class };
   export { userStyles as style };
 
-  $: isBasicSize = ["xs", "sm", "md", "lg", "xl"].includes(size!);
+  $: sizeObj = useSize(size);
 
   $: shapeClass = createClasses([
     shape === "circle" && "circle",
@@ -22,20 +23,18 @@
     shape!.includes("right") && "right-round",
   ]);
 
-  $: classes = createClasses([shapeClass, isBasicSize && size], {
+  $: classes = createClasses([shapeClass, sizeObj.class], {
     component: "q-avatar",
     userClasses,
   });
 
-  $: style = !isBasicSize
-    ? createStyles(
-        {
-          width: size,
-          height: size,
-        },
-        userStyles
-      )
-    : userStyles;
+  $: style = createStyles(
+    {
+      width: sizeObj.style,
+      height: sizeObj.style,
+    },
+    userStyles
+  );
 </script>
 
 {#if video === true}

@@ -1,6 +1,6 @@
-import type { NativeProps } from "$utils/types";
+import type { NativeProps, QuaffSizes } from "$utils/types";
 
-export type QBtnSizeOptions = "sm" | "md" | "lg" | "xl";
+export type QBtnSizeOptions = Exclude<QuaffSizes, "xs">;
 
 export interface QBtnProps extends NativeProps {
   /**
