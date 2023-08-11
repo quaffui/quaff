@@ -9,6 +9,7 @@ import QCodeBlock from "./codeBlock/QCodeBlock.svelte";
 import QDialog from "./dialog/QDialog.svelte";
 import QDrawer from "./drawer/QDrawer.svelte";
 import QFooter from "./footer/QFooter.svelte";
+import QHeader from "./header/QHeader.svelte";
 import QIcon from "./icon/QIcon.svelte";
 import QInput from "./input/QInput.svelte";
 import QSelect from "./select/QSelect.svelte";
@@ -40,6 +41,7 @@ export {
   QDialog,
   QDrawer,
   QFooter,
+  QHeader,
   QIcon,
   QInput,
   QSelect,
