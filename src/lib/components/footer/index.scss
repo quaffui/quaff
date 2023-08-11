@@ -2,4 +2,27 @@
   width: 100%;
   height: var(--footer-height);
   transition: all var(--speed3);
+  background-color: var(--surface);
+  color: var(--on-surface);
+  padding: 0 1rem;
+
+  nav {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    white-space: nowrap;
+    gap: 1rem;
+
+    > * {
+      margin: 0;
+    }
+  }
+
+  &--bordered {
+    border-top: solid 0.0625rem var(--outline);
+  }
+
+  &--elevated {
+    @include elevate(1, "top");
+  }
 }
