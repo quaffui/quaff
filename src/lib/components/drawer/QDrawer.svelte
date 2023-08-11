@@ -5,6 +5,7 @@
   import type { QDrawerProps } from "./props";
   import type { LayoutContext } from "../layout/QLayout.svelte";
   import { clickOutside } from "$lib/helpers";
+  import { useSize } from "$lib/composables/use-size";
 
   export let value: QDrawerProps["value"] = true,
     side: QDrawerProps["side"] = "left",
@@ -29,7 +30,7 @@
     (behavior === "mobile") === true ||
     (behavior !== "desktop" && /** TODO: Get Layout width */ 1300 <= breakpoint!);
 
-  $: widthStyle = ctx === undefined ? (isNaN(Number(width)) ? width : `${width}px`) : undefined;
+  $: widthStyle = $ctx && useSize(width).style;
 
   $: hideOnRouteChange = persistent !== true || overlay === true;
 

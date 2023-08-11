@@ -4,6 +4,7 @@
   import type { DrawerContext, LayoutContext } from "../layout/QLayout.svelte";
   import { createClasses, createStyles } from "$lib/utils/props";
   import { isNumber } from "$lib/utils/types";
+  import { useSize } from "$lib/composables/use-size";
 
   export let width: QRailbarProps["width"] = 88,
     side: QRailbarProps["side"] = "left",
@@ -30,7 +31,7 @@
     userClasses,
   ]);
 
-  $: widthStyle = ctx === undefined ? (isNumber(width) ? `${width}px` : width) : undefined;
+  $: widthStyle = $ctx && useSize(width).style;
 
   $: style = createStyles(
     {

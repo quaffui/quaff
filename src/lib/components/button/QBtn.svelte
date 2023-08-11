@@ -5,6 +5,7 @@
   import QCircularProgress from "../progress/QCircularProgress.svelte";
   import type { QBtnProps } from "./props";
   import { activationHandler } from "$lib/helpers/activationHandler";
+  import { useSize } from "$lib/composables/use-size";
 
   export let icon: QBtnProps["icon"] = undefined,
     label: QBtnProps["label"] = undefined,
@@ -25,6 +26,8 @@
   let tag: "a" | "div";
   $: tag = to !== undefined ? "a" : "div";
 
+  $: sizeObj = useSize(size);
+
   $: classes = createClasses(
     [
       unelevated && "unelevated",
@@ -32,7 +35,7 @@
       outline && "outlined",
       flat && "flat",
       ((!$$slots.default && !label) || round) && "round",
-      size && size !== "md" && size,
+      size !== "md" && sizeObj.class,
     ],
     {
       component: "q-btn",
