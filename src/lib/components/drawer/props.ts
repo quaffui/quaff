@@ -1,4 +1,4 @@
-import type { NativeProps } from "$lib/utils/types";
+import type { CssValue, NativeProps } from "$lib/utils/types";
 
 export type QDrawerSideOptions = "left" | "right";
 export type QDrawerBehaviorOptions = "default" | "desktop" | "mobile";
@@ -20,7 +20,7 @@ export interface QDrawerProps extends NativeProps {
    * The width of the drawer. Can be specified with a CSS unit. If no unit is specified, "px" will be used.
    * @default 300
    */
-  width?: number | string;
+  width?: number | CssValue;
 
   /**
    * The breakpoint at which the drawer behavior changes. (not supported yet)

@@ -1,6 +1,6 @@
-import type { NativeProps } from "$lib/utils/types";
+import type { CssValue, NativeProps, QuaffSizes } from "$lib/utils/types";
 
-export type QIconSizeOptions = "xs" | "sm" | "md" | "lg" | "xl" | string | number;
+export type QIconSizeOptions = QuaffSizes | CssValue | number;
 export type QIconTypeOptions = "outlined" | "sharp" | "rounded";
 export interface QIconProps extends NativeProps {
   /**

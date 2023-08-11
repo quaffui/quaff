@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { useSize } from "$lib/composables/use-size";
   import { createClasses } from "$lib/utils/props";
   import { isNumber } from "$lib/utils/types";
   import type { QCircularProgressProps } from "./props";
@@ -11,7 +12,7 @@
     userClasses: QCircularProgressProps["userClasses"] = undefined;
   export { userClasses as class };
 
-  $: spinnerSize = isNumber(size) ? `${size}px` : size;
+  $: spinnerSize = useSize(size);
 
   $: classes = createClasses([indeterminate && "indeterminate"], {
     component: "q-circular-progress",
@@ -20,7 +21,7 @@
   });
 </script>
 
-<svg class={classes} height={spinnerSize} width={spinnerSize} viewBox="25 25 50 50">
+<svg class={classes} height={spinnerSize.style} width={spinnerSize.style} viewBox="25 25 50 50">
   <circle
     class="path"
     cx="50"
