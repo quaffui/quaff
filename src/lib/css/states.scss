@@ -29,8 +29,12 @@
 
   @each $elevation, $value in $elevations {
     &-#{$elevation} {
-      @include elevate($value, "top");
-      @include elevate($value, "bottom");
+      &-top {
+        @include elevate($value, "top");
+      }
+      &-bottom {
+        @include elevate($value, "bottom");
+      }
     }
   }
 }

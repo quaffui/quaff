@@ -6,6 +6,7 @@
   import type { LayoutContext } from "../layout/QLayout.svelte";
   import { clickOutside } from "$lib/helpers";
   import { useSize } from "$lib/composables/use-size";
+  import { derived } from "svelte/store";
 
   export let value: QDrawerProps["value"] = true,
     side: QDrawerProps["side"] = "left",
@@ -30,7 +31,7 @@
     (behavior === "mobile") === true ||
     (behavior !== "desktop" && /** TODO: Get Layout width */ 1300 <= breakpoint!);
 
-  $: widthStyle = $ctx && useSize(width).style;
+  $: widthStyle = !$ctx && useSize(width).style;
 
   $: hideOnRouteChange = persistent !== true || overlay === true;
 
@@ -58,39 +59,28 @@
 
   let ctx = getContext<LayoutContext | undefined>("layout");
 
-  function prepareZIndexClass(
-    context: NonNullable<typeof $ctx>,
-    overlayProp: typeof overlay,
-    sideProp: typeof side
-  ) {
-    let drawer = sideProp === "left" ? context.drawerLeft : context.drawerRight;
-
-    let pos: keyof typeof drawer.offset;
-    for (pos of ["top", "bottom"] as const) {
-      if (!drawer.offset[pos] && overlayProp) {
-        drawer.overlay = true;
-        return "above";
-      }
-    }
-  }
-
   let drawerType: "drawerLeft" | "drawerRight";
   $: drawerType = side === "left" ? "drawerLeft" : "drawerRight";
 
-  $: classes = createClasses([
-    "q-drawer",
-    "surface",
-    side,
-    value && "active",
-    overlay && "overlay",
-    bordered && "bordered",
-    $ctx && $ctx[drawerType].offset.top && "offset-top",
-    $ctx && $ctx[drawerType].offset.bottom && "offset-bottom",
-    $ctx && $ctx[drawerType].fixed && "fixed",
-    getBorderRadiusClasses(side, overlay, $ctx),
-    $ctx && prepareZIndexClass($ctx, overlay, side),
-    userClasses,
-  ]);
+  $: classes = createClasses(
+    [
+      side,
+      value && "active",
+      overlay && "overlay",
+      bordered && "bordered",
+
+      $ctx && $ctx[drawerType].offset.top && "offset-top",
+      $ctx && $ctx[drawerType].offset.bottom && "offset-bottom",
+      $ctx && $ctx[drawerType].fixed && "fixed",
+
+      $borderRadiusClasses,
+      $zIndexClass,
+    ],
+    {
+      component: "q-drawer",
+      userClasses,
+    }
+  );
 
   $: style = createStyles(
     {
@@ -99,27 +89,42 @@
     userStyles
   );
 
-  function getBorderRadiusClasses(
-    sideProp: typeof side,
-    overlayProp: typeof overlay,
-    context: typeof $ctx
-  ) {
-    let prefix = "border-radius" + (sideProp === "left" ? "__right" : "__left");
+  $: borderRadiusClasses =
+    ctx && // No border radius if this isn't a layout drawer
+    derived(ctx, (context) => {
+      const borderSide = side === "left" ? "right" : "left";
 
-    const shouldHaveRadius = (pos: "top" | "bottom") => {
-      // This isn't a layout
-      if (!context) return undefined;
+      const shouldHaveRadius = (pos: "top" | "bottom") => {
+        let appBarEl = pos === "top" ? context["header"] : context["footer"];
 
-      let appbarEl = pos === "top" ? context["header"] : context["footer"];
-      // There's a visible header/footer and the drawer doesn't have an offset top/bottom
-      if (appbarEl && appbarEl.display && !context[drawerType].offset[pos] && !overlayProp)
-        return undefined;
+        // This is an overlay, or there is no header/footer, or there is an offset top/bottom
+        return overlay || !appBarEl?.display || context[drawerType].offset[pos];
+      };
 
-      return `${prefix}--${pos}`;
-    };
+      return createClasses(
+        [
+          shouldHaveRadius("top") && `top-${borderSide}-radius`,
+          shouldHaveRadius("bottom") && `bottom-${borderSide}-radius`,
+        ],
+        {
+          component: "q-drawer",
+        }
+      );
+    });
 
-    return createClasses([shouldHaveRadius("top"), shouldHaveRadius("bottom")]);
-  }
+  $: zIndexClass =
+    ctx &&
+    derived(ctx, (context) => {
+      const drawer = side === "left" ? context.drawerLeft : context.drawerRight;
+
+      let pos: keyof typeof drawer.offset;
+      for (pos of ["top", "bottom"] as const) {
+        if (!drawer.offset[pos] && overlay) {
+          drawer.overlay = true;
+          return "above";
+        }
+      }
+    });
 </script>
 
 <div use:clickOutside={hide} class={classes} {style} {...$$restProps}>

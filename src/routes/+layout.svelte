@@ -1,13 +1,12 @@
 <script lang="ts">
   // Comment this in again while needed during development
-  // import "beercss/dist/cdn/beer.min.css";
+  //import "beercss/dist/cdn/beer.min.css";
   import "../lib/css/index.scss";
   import "../lib/css/fonts.scss";
 
   import { Quaff } from "$stores/Quaff";
   import {
     QLayout,
-    QToolbar,
     QToolbarTitle,
     QBtn,
     QRailbar,
@@ -16,6 +15,7 @@
     QIcon,
     QItemSection,
     QDrawer,
+    QHeader,
   } from "$lib";
   import { isRouteActive } from "$lib/composables/use-router-link";
   import { fade } from "svelte/transition";
@@ -142,7 +142,7 @@
   <slot />
 {:else}
   <QLayout class="main-layout" leftRailbarWidth="120" leftDrawerWidth="15rem">
-    <QToolbar slot="header" class="elevate-2">
+    <QHeader slot="header" class="elevate-2">
       <QToolbarTitle>Quaff</QToolbarTitle>
       <QBtn
         icon={$Quaff.dark.isActive ? "light_mode" : "dark_mode"}
@@ -151,7 +151,7 @@
         on:click={$Quaff.dark.toggle}
       />
       <QBtn icon="help" flat />
-    </QToolbar>
+    </QHeader>
     <QRailbar slot="railbarLeft" class="surface no-round" bordered>
       <QList>
         <QItem to="/">

@@ -132,7 +132,9 @@
                   {/if}
                 </span>
               </div>
-              <div slot="line1" class="q-mt-sm prop-description">{@html doc.description}</div>
+              <div slot="line1" class="q-mt-sm prop-description" style="white-space: normal;">
+                {@html doc.description}
+              </div>
             </QItemSection>
           </QItem>
         {/each}

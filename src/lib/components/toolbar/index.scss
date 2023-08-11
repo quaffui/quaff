@@ -19,6 +19,14 @@
   &--inset {
     padding-left: 58px;
   }
+
+  &--elevated {
+    @include elevate(1, "bottom");
+  }
+
+  &--bordered {
+    border-bottom: solid 0.0625rem var(--outline);
+  }
 }
 
 .q-toolbar-title {
