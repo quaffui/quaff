@@ -11,13 +11,13 @@ export interface QFooterProps extends NativeProps {
    * Determines whether the footer has a border around it. (not supported yet)
    * @default false
    */
-  bordered?: boolean;
+  border?: boolean;
 
   /**
    * Determines whether the footer has an elevated effect. (not supported yet)
    * @default false
    */
-  elevated?: boolean;
+  elevate?: boolean;
 
   /**
    * The height of the footer. Can be specified with a CSS unit. If not specified, "px" will be used. (not supported yet)
