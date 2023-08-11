@@ -1,14 +1,14 @@
 import { convertCase } from "./string";
 
 export function createStyles(
-  styleObj: Record<string, string | number | null | undefined>,
+  styleObj: Record<string, string | number | boolean | null | undefined>,
   userStyles?: string
 ) {
   const stylesArray = Object.entries(styleObj);
   const toJoin: string[] = [];
 
   for (let [styleName, styleVal] of stylesArray) {
-    if (styleVal === undefined || styleVal === null) {
+    if (styleVal === undefined || styleVal === null || styleVal === false) {
       continue;
     }
 
