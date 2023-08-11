@@ -2,6 +2,7 @@
   // Comment this in again while needed during development
   // import "beercss/dist/cdn/beer.min.css";
   import "../lib/css/index.scss";
+  import "../lib/css/fonts.scss";
 
   import { Quaff } from "$stores/Quaff";
   import {
