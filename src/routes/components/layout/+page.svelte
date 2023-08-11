@@ -1,22 +1,25 @@
 <script lang="ts">
-  import { QCard, QIcon, QItemSection } from "$lib";
-  import QBtn from "$lib/components/button/QBtn.svelte";
-  import QDrawer from "$lib/components/drawer/QDrawer.svelte";
-  import QFooter from "$lib/components/footer/QFooter.svelte";
-  import QLayout from "$lib/components/layout/QLayout.svelte";
+  import {
+    QDrawer,
+    QLayout,
+    QBtn,
+    QToolbarTitle,
+    QList,
+    QHeader,
+    QItem,
+    QIcon,
+    QItemSection,
+    QRailbar,
+    QFooter,
+    QCard,
+    QRadio,
+    QToggle,
+  } from "$lib";
   import { QLayoutDocs } from "$lib/components/layout/docs";
   import type { QLayoutProps } from "$lib/components/layout/props";
-  import QItem from "$lib/components/list/QItem.svelte";
-  import QList from "$lib/components/list/QList.svelte";
   import QDocs from "$lib/components/private/QDocs.svelte";
   import QDocsSection from "$lib/components/private/QDocsSection.svelte";
-  import QRadio from "$lib/components/radio/QRadio.svelte";
-  import QRailbar from "$lib/components/railbar/QRailbar.svelte";
-  import QToggle from "$lib/components/toggle/QToggle.svelte";
-  import QToolbar from "$lib/components/toolbar/QToolbar.svelte";
-  import QToolbarTitle from "$lib/components/toolbar/QToolbarTitle.svelte";
   import { createStyles } from "$lib/utils/props";
-
   import { snippet } from "./docs.snippets";
 
   let displayLeftDrawerElement: QDrawer;
@@ -62,10 +65,10 @@
 
 <QDocs QComponentDocs={QLayoutDocs}>
   <QLayout slot="display" view="lhh lpr lfr" headerHeight="50px" footerHeight="50px">
-    <QToolbar slot="header" class="elevate-2">
+    <QHeader slot="header" elevate>
       <QBtn icon="menu" flat on:click={displayLeftDrawerElement.toggle} />
       <QToolbarTitle>Header</QToolbarTitle>
-    </QToolbar>
+    </QHeader>
     <QDrawer
       slot="drawerLeft"
       overlay
@@ -105,24 +108,24 @@
         </QItem>
       </QList>
     </QRailbar>
-    <QFooter slot="footer" class="no-round">
+    <QFooter slot="footer" class="no-round flex flex-center" elevate>
       <h3 class="small center">Footer</h3>
     </QFooter>
   </QLayout>
 
   <div slot="usage">
     <QDocsSection {snippets} title="Trying different layouts">
-      <QCard bordered class="no-padding" style="height: 80vh">
+      <QCard bordered class="q-pa-none" style="height: 80vh">
         <QLayout {view} {style}>
-          <QToolbar style={header ? undefined : "display: none;"} slot="header" class="elevate-2">
+          <QHeader style={header ? undefined : "display: none;"} slot="header" elevate>
             {#if leftDrawer}
               <QBtn icon="menu" flat on:click={leftDrawerElement.toggle} />
             {/if}
             <div class="flex column">
               <QRadio bind:selected={viewArr[0][0]} value="h" label="h" />
-              <QRadio class="no-margin" bind:selected={viewArr[0][0]} value="l" label="l" />
+              <QRadio style="margin: 0" bind:selected={viewArr[0][0]} value="l" label="l" />
             </div>
-            <div class="max flex column items-center">
+            <div class="max flex column items-center" style="flex-grow: 1">
               <QRadio
                 style="width: fit-content"
                 bind:selected={viewArr[0][1]}
@@ -130,8 +133,7 @@
                 label="h"
               />
               <QRadio
-                style="width: fit-content"
-                class=" no-margin"
+                style="width: fit-content; margin: 0"
                 bind:selected={viewArr[0][1]}
                 value="H"
                 label="H"
@@ -139,12 +141,12 @@
             </div>
             <div class="flex column">
               <QRadio bind:selected={viewArr[0][2]} value="h" label="h" />
-              <QRadio class="no-margin" bind:selected={viewArr[0][2]} value="r" label="r" />
+              <QRadio style="margin: 0" bind:selected={viewArr[0][2]} value="r" label="r" />
             </div>
             {#if rightDrawer}
               <QBtn icon="menu" flat on:click={rightDrawerElement.toggle} />
             {/if}
-          </QToolbar>
+          </QHeader>
 
           <QRailbar style={leftRailbar ? undefined : "display: none;"} slot="railbarLeft" bordered>
             <QList>
@@ -248,15 +250,15 @@
             </QList>
           </QDrawer>
 
-          <QFooter style={footer ? undefined : "display: none;"} slot="footer">
+          <QFooter style={footer ? undefined : "display: none;"} slot="footer" elevate>
             {#if leftDrawer}
               <QBtn icon="menu" flat on:click={leftDrawerElement.toggle} />
             {/if}
             <div class="flex column">
               <QRadio bind:selected={viewArr[2][0]} value="f" label="f" />
-              <QRadio class="no-margin" bind:selected={viewArr[2][0]} value="l" label="l" />
+              <QRadio style="margin: 0" bind:selected={viewArr[2][0]} value="l" label="l" />
             </div>
-            <div class="max flex column items-center">
+            <div class="max flex column items-center" style="flex-grow: 1">
               <QRadio
                 style="width: fit-content"
                 bind:selected={viewArr[2][1]}
@@ -264,8 +266,7 @@
                 label="f"
               />
               <QRadio
-                style="width: fit-content"
-                class=" no-margin"
+                style="width: fit-content; margin: 0"
                 bind:selected={viewArr[2][1]}
                 value="F"
                 label="F"
@@ -273,7 +274,7 @@
             </div>
             <div class="flex column">
               <QRadio bind:selected={viewArr[2][2]} value="f" label="f" />
-              <QRadio class="no-margin" bind:selected={viewArr[2][2]} value="r" label="r" />
+              <QRadio style="margin: 0" bind:selected={viewArr[2][2]} value="r" label="r" />
             </div>
             {#if rightDrawer}
               <QBtn icon="menu" flat on:click={rightDrawerElement.toggle} />

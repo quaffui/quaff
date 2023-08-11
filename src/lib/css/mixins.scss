@@ -30,9 +30,7 @@
   }
   $elevate: 0.125rem * $strength;
 
-  &-#{$position} {
-    box-shadow: 0 $elevate * $coeff $elevate 0 rgb(0, 0, 0, 0.24 + 0.08 * $strength);
-  }
+  box-shadow: 0 $elevate * $coeff $elevate 0 rgb(0, 0, 0, 0.24 + 0.08 * $strength);
 }
 
 @mixin border($color: var(--outline)) {

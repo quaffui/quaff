@@ -1,41 +1,24 @@
 <script lang="ts">
   import { createClasses, createStyles } from "$lib/utils/props";
-  import { getContext } from "svelte";
   import type { QToolbarProps } from "./props";
-  import type { LayoutContext } from "../layout/QLayout.svelte";
-  import { isNumber } from "$lib/utils/types";
   import { useSize } from "$lib/composables/use-size";
 
   export let inset: QToolbarProps["inset"] = false,
+    border: QToolbarProps["border"] = false,
+    elevate: QToolbarProps["elevate"] = false,
     height: QToolbarProps["height"] = "64px",
     userClasses: QToolbarProps["userClasses"] = undefined,
     userStyles: QToolbarProps["userStyles"] = undefined;
   export { userClasses as class, userStyles as style };
 
-  let ctx = getContext<LayoutContext | undefined>("layout");
-
-  $: classes = createClasses([
-    $ctx?.header && "q-header",
-    "q-toolbar",
-    "surface",
-    $ctx?.header?.fixed && "fixed",
-    inset && "q-toolbar--inset",
+  $: classes = createClasses([inset && "inset", elevate && "elevated", border && "bordered"], {
+    component: "q-toolbar",
     userClasses,
-  ]);
-
-  $: heightStyle = $ctx && useSize(height).style;
-
-  $: if ($ctx?.header !== undefined) {
-    if (userStyles?.includes("display: none")) {
-      $ctx.header.display = false;
-    } else {
-      $ctx.header.display = true;
-    }
-  }
+  });
 
   $: style = createStyles(
     {
-      "--header-height": heightStyle,
+      height: !userClasses?.includes("q-header") && useSize(height).style,
     },
     userStyles
   );

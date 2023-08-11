@@ -2,12 +2,12 @@
   import { getContext } from "svelte";
   import type { QFooterProps } from "./props";
   import { createClasses, createStyles } from "$lib/utils/props";
-  import type { AppbarContext, LayoutContext } from "../layout/QLayout.svelte";
+  import type { LayoutContext } from "../layout/QLayout.svelte";
   import { useSize } from "$lib/composables/use-size";
 
   export let value: QFooterProps["value"] = true,
-    bordered: QFooterProps["bordered"] = false,
-    elevated: QFooterProps["elevated"] = false,
+    border: QFooterProps["border"] = false,
+    elevate: QFooterProps["elevate"] = false,
     height: QFooterProps["height"] = undefined,
     userClasses: QFooterProps["userClasses"] = undefined,
     userStyles: QFooterProps["userStyles"] = undefined;
@@ -15,13 +15,17 @@
 
   let ctx = getContext<LayoutContext | undefined>("layout");
 
-  $: heightStyle = $ctx && useSize(height).style;
-
-  $: classes = createClasses(["q-footer", $ctx && $ctx.footer?.fixed && "fixed", userClasses]);
+  $: classes = createClasses(
+    [border && "bordered", elevate && "elevated", $ctx?.footer?.fixed && "fixed"],
+    {
+      component: "q-footer",
+      userClasses,
+    }
+  );
 
   $: style = createStyles(
     {
-      "--footer-height": heightStyle,
+      height: !ctx && useSize(height).style,
     },
     userStyles
   );
