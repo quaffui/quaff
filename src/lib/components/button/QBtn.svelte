@@ -1,11 +1,12 @@
 <script lang="ts">
   import { createClasses } from "$lib/utils/props";
-  import { createEventDispatcher } from "svelte";
+  import { createEventDispatcher, onMount } from "svelte";
   import QIcon from "../icon/QIcon.svelte";
   import QCircularProgress from "../progress/QCircularProgress.svelte";
   import type { QBtnProps } from "./props";
-  import { activationHandler } from "$lib/helpers/activationHandler";
   import { useSize } from "$lib/composables/use-size";
+  import { isActivationKey } from "$lib/utils/events";
+  import { ripple } from "$lib/helpers/ripple";
 
   export let icon: QBtnProps["icon"] = undefined,
     label: QBtnProps["label"] = undefined,
@@ -21,10 +22,12 @@
     userClasses: QBtnProps["userClasses"] = undefined;
   export { userClasses as class };
 
-  const emit = createEventDispatcher();
+  type QBtn = HTMLAnchorElement | HTMLButtonElement;
 
-  let tag: "a" | "div";
-  $: tag = to !== undefined ? "a" : "div";
+  let qBtn: QBtn;
+
+  let tag: "a" | "button";
+  $: tag = to !== undefined ? "a" : "button";
 
   $: sizeObj = useSize(size);
 
@@ -42,17 +45,28 @@
       userClasses,
     }
   );
+
+  function onKeyDown(e: KeyboardEvent) {
+    if (!isActivationKey(e)) return;
+
+    e.preventDefault();
+
+    let click = new MouseEvent("click");
+    qBtn.dispatchEvent(click);
+  }
 </script>
 
 <svelte:element
   this={tag}
-  use:activationHandler={{ disable, callback: (e) => emit("activated", e) }}
-  role="button"
+  bind:this={qBtn}
+  use:ripple
+  role={tag === "a" ? "button" : undefined}
   href={to}
   class={classes}
   aria-disabled={disable || undefined}
   tabindex={disable ? -1 : 0}
   on:click
+  on:keydown={onKeyDown}
   {...$$restProps}
 >
   {#if icon && !loading}
