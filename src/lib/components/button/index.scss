@@ -26,7 +26,6 @@
   gap: 1rem;
   line-height: normal;
   @extend .elevate-sm-bottom;
-  @extend .ripple;
 
   $sizeMap: (
     "sm": -1,
@@ -75,6 +74,24 @@
 
   & > :is(.q-icon, .q-circular-progress) {
     margin: 0 -0.5rem;
+  }
+
+  &:is(:hover, :focus):not([aria-disabled])::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--on-primary);
+  }
+
+  &:hover:not([aria-disabled])::after {
+    opacity: 0.08;
+  }
+
+  &:focus:not([aria-disabled])::after {
+    opacity: 0.16;
   }
 
   @include btn-image;
