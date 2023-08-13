@@ -53,12 +53,10 @@
   let tag: "button" | "a";
   $: tag = to === undefined ? "button" : "a";
 
-  $: classes = createClasses([
-    "q-tab",
-    isActive ? "active primary-text on-surface-text" : "surface on-surface-variant-text",
-    tag === "a" && "button",
+  $: classes = createClasses([isActive && "active"], {
+    component: "q-tab",
     userClasses,
-  ]);
+  });
 
   function setActive(el: HTMLElement) {
     let rect;
@@ -144,7 +142,7 @@
 >
   <div>
     {#if icon}
-      <QIcon name={icon} />
+      <QIcon name={icon} class="q-tab__icon" />
     {:else if $$slots.icon}
       <slot name="icon" />
     {/if}

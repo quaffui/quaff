@@ -7,6 +7,7 @@
   overflow: auto;
   scroll-behavior: smooth;
   border-radius: 0;
+  border-bottom: solid 0.0625rem var(--outline);
   &::-webkit-scrollbar {
     display: none;
   }
@@ -20,13 +21,18 @@
     align-items: center;
     justify-content: center;
     flex: 1;
-    background-color: unset;
+    background-color: var(--surface);
+    color: var(--on-surface);
     border-radius: 0;
     gap: 0;
     overflow: hidden;
 
-    & > .q-icon {
-      margin-right: 8px;
+    & .q-tab__icon {
+      margin-right: 4px;
+    }
+
+    &--active {
+      color: var(--primary);
     }
 
     &:is(:hover, :focus):not([aria-disabled])::after {
@@ -36,7 +42,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background-color: var(--on-primary);
+      background-color: var(--on-surface);
       border-radius: none;
       overflow: hidden;
     }
@@ -50,11 +56,14 @@
     }
   }
 
-  &.vertical-tabs {
+  &.q-tabs--vertical {
     flex-direction: column;
     min-height: calc(var(--tab-count) * 48px);
     width: fit-content;
     align-items: stretch;
+    border-bottom: unset;
+    border-right: solid 0.0625rem var(--outline);
+
     & > .q-tab {
       @include padding("x", "md");
     }
@@ -84,11 +93,11 @@
     opacity: 0;
   }
 
-  &:not(.hidden-indicator)::after {
+  &:not(.q-tabs--hidden-indicator)::after {
     opacity: 1;
   }
 
-  &.small-indicator::after {
+  &.q-tabs--primary::after {
     left: var(--indicator-position);
     transform: translateX(-50%);
     height: 3px;
