@@ -6,11 +6,13 @@
   max-width: 100%;
   overflow: auto;
   scroll-behavior: smooth;
+  border-radius: 0;
   &::-webkit-scrollbar {
     display: none;
   }
 
   & > .q-tab {
+    position: relative;
     box-sizing: border-box;
     height: 48px;
     min-width: max-content;
@@ -21,13 +23,30 @@
     background-color: unset;
     border-radius: 0;
     gap: 0;
+    overflow: hidden;
 
     & > .q-icon {
       margin-right: 8px;
     }
 
-    &:is(:hover, :focus)::after {
-      background-image: radial-gradient(circle, var(--on-surface-variant-2) 1%, transparent 1%);
+    &:is(:hover, :focus):not([aria-disabled])::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: var(--on-primary);
+      border-radius: none;
+      overflow: hidden;
+    }
+
+    &:hover:not([aria-disabled])::after {
+      opacity: 0.08;
+    }
+
+    &:focus:not([aria-disabled])::after {
+      opacity: 0.16;
     }
   }
 
@@ -36,6 +55,9 @@
     min-height: calc(var(--tab-count) * 48px);
     width: fit-content;
     align-items: stretch;
+    & > .q-tab {
+      @include padding("x", "md");
+    }
 
     &::after {
       top: var(--indicator-position);

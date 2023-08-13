@@ -6,6 +6,10 @@
   import { createClasses } from "$lib/utils/props";
   import QIcon from "../icon/QIcon.svelte";
   import { isRouteActive } from "$lib/composables/use-router-link";
+  import type { Direction } from "$lib/utils/events";
+  import { getDirection, isActivationKey, isArrowKey, isTabKey } from "$lib/utils/events";
+  import { ripple } from "$lib/helpers/ripple";
+  import { getClosestFocusableBlock, getClosestFocusableSibling } from "$lib/utils/dom";
 
   export let name: QTabProps["name"] = undefined,
     to: QTabProps["to"] = undefined,
@@ -14,7 +18,8 @@
   export { userClasses as class };
 
   let index = 1;
-  let tabEl: HTMLElement;
+  type QTab = HTMLAnchorElement | HTMLButtonElement;
+  let qTab: QTab;
 
   if (!hasContext("QTabCount")) {
     console.warn("QTab should be used inside QTabs");
@@ -41,8 +46,8 @@
 
   $: isActive = to !== undefined ? isRouteActive($Quaff.router, to) : name === $activeStore.name;
 
-  $: if (isActive && tabEl) {
-    setActive(tabEl);
+  $: if (isActive && qTab) {
+    setActive(qTab);
   }
 
   let tag: "button" | "a";
@@ -58,7 +63,7 @@
   function setActive(el: HTMLElement) {
     let rect;
     if (variant === "primary") {
-      rect = (el.firstChild as HTMLElement).getBoundingClientRect();
+      rect = (el.firstElementChild as HTMLElement).getBoundingClientRect();
     } else {
       rect = el.getBoundingClientRect();
     }
@@ -81,21 +86,61 @@
     }
   }
 
-  function handleClick(e: MouseEvent) {
+  function onClick(e: MouseEvent) {
     setActive(e.target as HTMLElement);
+  }
+
+  function onKeydown(e: KeyboardEvent) {
+    if (isActivationKey(e)) {
+      e.preventDefault();
+
+      const click = new MouseEvent("click");
+      qTab.dispatchEvent(click);
+      return;
+    }
+
+    if (isArrowKey(e)) {
+      e.preventDefault();
+      const direction = getDirection(e);
+      const targetTab = getClosestFocusableSibling(qTab, direction);
+
+      if (targetTab === qTab) {
+        return;
+      }
+
+      targetTab?.focus();
+      return;
+    }
+
+    if (isTabKey(e)) {
+      console.log(e);
+      e.preventDefault();
+      let direction: Direction = "next";
+      if (e.shiftKey) {
+        direction = "previous";
+      }
+
+      let targetBlock = getClosestFocusableBlock(qTab, direction);
+
+      targetBlock?.focus();
+    }
+
+    return;
   }
 </script>
 
 <svelte:element
   this={tag}
+  use:ripple
   href={to}
   class={classes}
-  on:click={handleClick}
-  on:keyup
-  on:keydown
-  on:keypress
+  role={tag === "a" ? "button" : undefined}
+  aria-current={isActive || undefined}
+  on:click
+  on:click={onClick}
+  on:keydown={onKeydown}
   {...$$restProps}
-  bind:this={tabEl}
+  bind:this={qTab}
 >
   <div>
     {#if icon}
