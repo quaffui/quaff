@@ -1,0 +1,108 @@
+interface RippleOptions {
+  center?: boolean;
+  color?: string; // CSS color
+  duration?: number; // In ms
+}
+
+const triggerEvents = ["pointerdown", "touchstart", "keydown"] as const;
+const cancelEvents = ["mouseleave", "dragleave", "touchmove", "touchcancel", "pointerup", "keyup"];
+
+export function ripple(el: HTMLElement, options: RippleOptions = {}) {
+  function addClasses(center?: boolean) {
+    let shouldBeCentered = center || options.center;
+
+    if (!el.classList.contains("q-ripple--effect")) {
+      el.classList.add("q-ripple--effect");
+    }
+
+    if (!shouldBeCentered && el.classList.contains("q-ripple--center")) {
+      el.classList.remove("q-ripple--center");
+    }
+
+    shouldBeCentered && el.classList.add("q-ripple--center");
+  }
+
+  function setOptions(options: RippleOptions) {
+    if (options.duration && options.duration < 0) {
+      options.duration = undefined;
+    }
+
+    if (options.color) {
+      el.style.setProperty("--ripple-color", options.color);
+    }
+
+    if (options.duration) {
+      el.style.setProperty("--ripple-duration", `${options.duration}ms`);
+    }
+  }
+
+  addClasses();
+  setOptions(options);
+
+  function createRipple(e: PointerEvent | KeyboardEvent | TouchEvent, center?: boolean) {
+    if (el.hasAttribute("aria-disabled")) return;
+
+    if (e instanceof KeyboardEvent) {
+      if (!["Enter", "Space"].includes(e.code) || e.repeat) {
+        return;
+      }
+
+      e.preventDefault();
+      const click = new PointerEvent("pointerdown");
+      createRipple(click, true);
+
+      return;
+    }
+
+    addClasses(center);
+
+    const rect = el.getBoundingClientRect();
+
+    const clientX = e instanceof TouchEvent ? e.touches[0].clientX : e.clientX;
+    const clientY = e instanceof TouchEvent ? e.touches[0].clientY : e.clientY;
+
+    const x = clientX - rect.left > el.offsetWidth / 2 ? 0 : el.offsetWidth;
+    const y = clientY - rect.top > el.offsetHeight / 2 ? 0 : el.offsetHeight;
+    const radius = Math.hypot(x - (clientX - rect.left), y - (clientY - rect.top));
+
+    const ripple = document.createElement("div");
+    ripple.classList.add("q-ripple");
+
+    ripple.style.left = `${clientX - rect.left - radius}px`;
+    ripple.style.top = `${clientY - rect.top - radius}px`;
+    ripple.style.width = ripple.style.height = `${radius * 2}px`;
+
+    el.appendChild(ripple);
+
+    function removeRipple() {
+      if (ripple === null) return;
+
+      ripple.style.opacity = "0";
+
+      setTimeout(() => {
+        ripple.remove();
+      }, options.duration || 1000);
+
+      cancelEvents.forEach((event) => el.removeEventListener(event, removeRipple));
+    }
+
+    cancelEvents.forEach((event) => el.addEventListener(event, removeRipple));
+  }
+
+  triggerEvents.forEach((event) =>
+    el.addEventListener(event, createRipple, { passive: event === "touchstart" })
+  );
+
+  return {
+    destroy() {
+      triggerEvents.forEach((event) => {
+        el.removeEventListener(event, createRipple);
+      });
+    },
+    update(newOptions: RippleOptions) {
+      options = newOptions;
+
+      setOptions(newOptions);
+    },
+  };
+}

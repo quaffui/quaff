@@ -1,12 +1,11 @@
 <script lang="ts">
   import { createClasses } from "$lib/utils/props";
-  import { createEventDispatcher } from "svelte";
+  import { createEventDispatcher, onMount } from "svelte";
   import type { QDialogProps } from "./props";
   import QBtn from "../button/QBtn.svelte";
   import { clickOutsideDialog } from "$lib/helpers";
 
-  export let value: QDialogProps["value"] = true,
-    noBtn: QDialogProps["noBtn"] = false,
+  export let noBtn: QDialogProps["noBtn"] = false,
     btnContent: QDialogProps["btnContent"] = undefined,
     btnAttrs: QDialogProps["btnAttrs"] = {},
     position: QDialogProps["position"] = "default",
@@ -19,41 +18,55 @@
   const emit = createEventDispatcher();
   let dialogElement: HTMLDialogElement;
 
-  $: canHideOnClickOutside = value === true && persistent !== true;
+  let opened = false;
+
+  onMount(() => {
+    opened = dialogElement.open;
+    dialogElement.style.display = opened ? "block" : "none";
+  });
+
+  $: canHideOnClickOutside = opened && persistent !== true;
 
   $: positionClass = ["top", "right", "bottom", "left"].includes(position!) ? position : undefined;
 
   $: classes = createClasses(
-    [value && "active", positionClass, modal && "modal", fullscreen && "max"],
+    [opened && "active", positionClass, modal && "modal", fullscreen && "max"],
     {
       component: "q-dialog",
       userClasses,
     }
   );
 
-  $: value === true
-    ? modal
-      ? dialogElement?.showModal()
-      : dialogElement?.show()
-    : dialogElement?.close();
-
   export function hide() {
-    if (value === true) {
-      value = false;
+    if (dialogElement && dialogElement.open) {
+      dialogElement.close();
+      opened = false;
+      setTimeout(() => {
+        dialogElement.style.display = "none";
+      }, 250);
     }
   }
   export function show() {
-    if (value === false) {
-      value = true;
+    if (dialogElement && !dialogElement.open) {
+      modal ? dialogElement.showModal() : dialogElement.show();
+      opened = true;
+      dialogElement.style.display = "block";
     }
   }
   export function toggle(e: MouseEvent) {
-    value = !value;
+    if (dialogElement) {
+      opened = !opened;
+      if (dialogElement.open) {
+        hide();
+      } else {
+        show();
+      }
+    }
     e.stopPropagation();
   }
 
   function addAnimation() {
-    if (persistent && value === true) {
+    if (persistent && opened) {
       dialogElement?.classList.add("animating");
 
       setTimeout(() => {
@@ -91,7 +104,6 @@
 <dialog
   use:clickOutsideDialog={handleClickHide}
   class={classes}
-  open={value}
   {...$$restProps}
   bind:this={dialogElement}
   on:cancel={handleKeyboardHide}

@@ -6,11 +6,14 @@
   max-width: 100%;
   overflow: auto;
   scroll-behavior: smooth;
+  border-radius: 0;
+  border-bottom: solid 0.0625rem var(--outline);
   &::-webkit-scrollbar {
     display: none;
   }
 
   & > .q-tab {
+    position: relative;
     box-sizing: border-box;
     height: 48px;
     min-width: max-content;
@@ -18,24 +21,52 @@
     align-items: center;
     justify-content: center;
     flex: 1;
-    background-color: unset;
+    background-color: var(--surface);
+    color: var(--on-surface);
     border-radius: 0;
     gap: 0;
+    overflow: hidden;
 
-    & > .q-icon {
-      margin-right: 8px;
+    & .q-tab__icon {
+      margin-right: 0.25rem;
     }
 
-    &:is(:hover, :focus)::after {
-      background-image: radial-gradient(circle, var(--on-surface-variant-2) 1%, transparent 1%);
+    &--active {
+      color: var(--primary);
+    }
+
+    &:is(:hover, :focus):not([aria-disabled])::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: var(--on-surface);
+      border-radius: none;
+      overflow: hidden;
+    }
+
+    &:hover:not([aria-disabled])::after {
+      opacity: 0.08;
+    }
+
+    &:focus:not([aria-disabled])::after {
+      opacity: 0.16;
     }
   }
 
-  &.vertical-tabs {
+  &.q-tabs--vertical {
     flex-direction: column;
-    min-height: calc(var(--tab-count) * 48px);
+    min-height: calc(var(--tab-count) * 3rem);
     width: fit-content;
     align-items: stretch;
+    border-bottom: unset;
+    border-right: solid 0.0625rem var(--outline);
+
+    & > .q-tab {
+      @include padding("x", "md");
+    }
 
     &::after {
       top: var(--indicator-position);
@@ -62,11 +93,11 @@
     opacity: 0;
   }
 
-  &:not(.hidden-indicator)::after {
+  &:not(.q-tabs--hidden-indicator)::after {
     opacity: 1;
   }
 
-  &.small-indicator::after {
+  &.q-tabs--primary::after {
     left: var(--indicator-position);
     transform: translateX(-50%);
     height: 3px;

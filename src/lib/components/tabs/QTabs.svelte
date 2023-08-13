@@ -40,14 +40,10 @@
 
   $: value = $activeTabStore.name;
 
-  $: classes = createClasses([
-    "q-tabs",
-    variant === "vertical" && "vertical-tabs",
-    round && "round",
-    variant === "primary" && "small-indicator",
-    hidden && "hidden-indicator",
+  $: classes = createClasses([variant, round && "rounded", hidden && "hidden-indicator"], {
+    component: "q-tabs",
     userClasses,
-  ]);
+  });
 
   let indicatorWidth = derived(activeTabStore, ($activeTabStore) => {
     return variant === "primary"
