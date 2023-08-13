@@ -111,14 +111,10 @@
     }
 
     if (isTabKey(e)) {
-      console.log(e);
       e.preventDefault();
-      let direction: Direction = "next";
-      if (e.shiftKey) {
-        direction = "previous";
-      }
+      const direction: Direction = e.shiftKey ? "previous" : "next";
 
-      let targetBlock = getClosestFocusableBlock(qTab, direction);
+      const targetBlock = getClosestFocusableBlock(qTab, direction);
 
       targetBlock?.focus();
     }

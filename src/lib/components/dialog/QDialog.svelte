@@ -56,7 +56,11 @@
   export function toggle(e: MouseEvent) {
     if (dialogElement) {
       opened = !opened;
-      dialogElement.open ? hide() : show();
+      if (dialogElement.open) {
+        hide();
+      } else {
+        show();
+      }
     }
     e.stopPropagation();
   }

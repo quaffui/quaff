@@ -28,7 +28,7 @@
     overflow: hidden;
 
     & .q-tab__icon {
-      margin-right: 4px;
+      margin-right: 0.25rem;
     }
 
     &--active {
@@ -58,7 +58,7 @@
 
   &.q-tabs--vertical {
     flex-direction: column;
-    min-height: calc(var(--tab-count) * 48px);
+    min-height: calc(var(--tab-count) * 3rem);
     width: fit-content;
     align-items: stretch;
     border-bottom: unset;

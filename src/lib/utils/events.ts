@@ -20,5 +20,5 @@ export function isTabKey(e: KeyboardEvent): e is KeyboardEvent & { code: "Tab" }
 export function getDirection(
   e: KeyboardEvent & { code: "ArrowUp" | "ArrowDown" | "ArrowLeft" | "ArrowRight" }
 ): Direction {
-  return e.code === "ArrowDown" || e.code === "ArrowRight" ? "next" : "previous";
+  return ["ArrowDown", "ArrowRight"].includes(e.code) ? "next" : "previous";
 }
