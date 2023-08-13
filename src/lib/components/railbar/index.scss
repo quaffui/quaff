@@ -26,6 +26,10 @@
   white-space: nowrap;
   box-sizing: border-box;
 
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
   &__left {
     left: 0;
   }
