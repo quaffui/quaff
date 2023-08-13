@@ -22,7 +22,7 @@
 
   onMount(() => {
     opened = dialogElement.open;
-    opened ? (dialogElement.style.display = "block") : (dialogElement.style.display = "none");
+    dialogElement.style.display = opened ? "block" : "none";
   });
 
   $: canHideOnClickOutside = opened && persistent !== true;
