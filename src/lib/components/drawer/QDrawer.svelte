@@ -8,7 +8,7 @@
   import { useSize } from "$lib/composables/use-size";
   import { derived } from "svelte/store";
 
-  export let value: QDrawerProps["value"] = true,
+  export let value: QDrawerProps["value"] = false,
     side: QDrawerProps["side"] = "left",
     width: QDrawerProps["width"] = 300,
     breakpoint: QDrawerProps["breakpoint"] = 1023,
@@ -43,7 +43,7 @@
   };
 
   export const hide = () => {
-    if (value === true && canHideOnClickOutside === true) {
+    if (value === true) {
       value = false;
     }
   };
@@ -127,6 +127,11 @@
     });
 </script>
 
-<div use:clickOutside={hide} class={classes} {style} {...$$restProps}>
+<div
+  use:clickOutside={() => canHideOnClickOutside && hide()}
+  class={classes}
+  {style}
+  {...$$restProps}
+>
   <slot />
 </div>
