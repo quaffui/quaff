@@ -2,7 +2,7 @@
   import {
     QDrawer,
     QLayout,
-    QToolbar,
+    QHeader,
     QToolbarTitle,
     QBtn,
     QRailbar,
@@ -18,7 +18,7 @@
 </script>
 
 <QLayout view="hHh LpR fFr" leftRailbarWidth="120">
-  <QToolbar slot="header" class="primary-container">
+  <QHeader slot="header" class="primary-container">
     <QBtn icon="menu" flat on:click={() => leftDrawer?.toggle()} />
     <QToolbarTitle>
       <a href="/">Go home</a>
@@ -26,7 +26,7 @@
     <QBtn flat icon="attach_file" />
     <QBtn flat icon="today" />
     <QBtn icon="menu" flat on:click={() => rightDrawer?.toggle()} />
-  </QToolbar>
+  </QHeader>
   <QRailbar slot="railbarLeft" bordered width="120">
     <QList>
       <QItem class="column round" to="/" style="gap: 0.25em">
