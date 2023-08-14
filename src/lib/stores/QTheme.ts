@@ -2,6 +2,10 @@ import { writable } from "svelte/store";
 import materialDynamicColors from "material-dynamic-colors";
 import { convertCase } from "$lib/utils/string";
 import QColors from "$lib/utils/colors";
+import type {
+  IMaterialDynamicColorsTheme,
+  IMaterialDynamicColorsThemeColor,
+} from "material-dynamic-colors/src/cdn/interfaces";
 
 interface IMaterialDynamicColorsThemeColorFormatted {
   primary: string;
@@ -42,7 +46,7 @@ type CSSDynamicColor =
   `${keyof IMaterialDynamicColorsThemeColorFormatted}-${keyof IMaterialDynamicColorsThemeFormatted}`;
 
 async function prepareThemeColors(from: string) {
-  let theme: IMaterialDynamicColorsTheme = await materialDynamicColors(from);
+  let theme = await materialDynamicColors(from);
 
   //@ts-ignore
   const themeColors: Record<CSSDynamicColor, string> = {};
@@ -65,24 +69,10 @@ async function prepareThemeColors(from: string) {
   return themeColors;
 }
 
-/* const defaultThemeColors = await prepareThemeColors("/cocktail.jpg"); */
 const defaultThemeColors = await prepareThemeColors("#3499E7");
 
 function themeBuilder() {
   const { subscribe, set, update } = writable(defaultThemeColors);
-
-  const setThemeColors = async (from: string) => {
-    let newTheme = await prepareThemeColors(from);
-    set(newTheme);
-  };
-
-  const updateThemeColor = (color: CSSDynamicColor, newValue: string) => {
-    update(($themeColors) => {
-      $themeColors[color] = newValue;
-
-      return $themeColors;
-    });
-  };
 
   const apply = () => {
     let root = document.documentElement;
@@ -100,11 +90,25 @@ function themeBuilder() {
       return $themeColors;
     });
   };
+
+  const updateThemeColor = (color: CSSDynamicColor, newValue: string) => {
+    update(($themeColors) => {
+      $themeColors[color] = newValue;
+
+      return $themeColors;
+    });
+  };
+
+  const setTheme = async (from: string) => {
+    let newTheme = await prepareThemeColors(from);
+    set(newTheme);
+    apply();
+  };
+
   return {
     subscribe,
-    setThemeColors,
+    setTheme,
     updateThemeColor,
-    apply,
   };
 }
 

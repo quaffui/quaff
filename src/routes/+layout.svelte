@@ -16,9 +16,11 @@
     QItemSection,
     QDrawer,
     QHeader,
+    QAvatar,
   } from "$lib";
   import { isRouteActive } from "$lib/composables/use-router-link";
   import { fade } from "svelte/transition";
+  import { QTheme } from "$lib/stores/QTheme";
 
   const components = [
     {
@@ -116,7 +118,27 @@
       to: "/utils/quaff",
     },
   ];
+  const colors = [
+    "#3499E7",
+    "#FFC7C7",
+    "#B83B5E",
+    "#95E1D3",
+    "#AA96DA",
+    "#AD8B73",
+    "#B1B2FF",
+    "#903749",
+    "#C06C84",
+    "#522546",
+    "#ADC2A9",
+    "#52734D",
+    "#F07B3F",
+    "#850E35",
+    "#395B64",
+  ];
+
   let contentEl: HTMLDivElement;
+  let drawerLeft: QDrawer;
+  let drawerRight: QDrawer;
 
   let selectedRailbarItem: "components" | "utils" | null;
   $: selectedRailbarItem = isRouteActive($Quaff.router, "/components")
@@ -125,7 +147,12 @@
     ? "utils"
     : null;
 
-  $: showDrawer = selectedRailbarItem !== null;
+  $: if (selectedRailbarItem !== null) {
+    drawerLeft?.show();
+  } else {
+    console.log(drawerLeft);
+    drawerLeft?.hide();
+  }
 
   $: drawerContent =
     selectedRailbarItem === "components"
@@ -141,7 +168,13 @@
 {#if $Quaff.router.route.id === "/layout"}
   <slot />
 {:else}
-  <QLayout class="main-layout" leftRailbarWidth="120" leftDrawerWidth="15rem">
+  <QLayout
+    view="hhr lpr fff"
+    class="main-layout"
+    leftRailbarWidth="120"
+    leftDrawerWidth="15rem"
+    rightDrawerWidth="30vw"
+  >
     <QHeader slot="header" class="elevate-2">
       <QToolbarTitle>Quaff</QToolbarTitle>
       <QBtn
@@ -150,7 +183,7 @@
         round
         on:click={$Quaff.dark.toggle}
       />
-      <QBtn icon="help" flat />
+      <QBtn icon="palette" flat on:click={drawerRight.toggle} />
     </QHeader>
     <QRailbar slot="railbarLeft" class="surface no-round" bordered>
       <QList>
@@ -184,7 +217,7 @@
         </QItem>
       </QList>
     </QRailbar>
-    <QDrawer slot="drawerLeft" persistent value={showDrawer}>
+    <QDrawer slot="drawerLeft" persistent bind:this={drawerLeft}>
       {#key drawerContent}
         <div in:fade={{ delay: 200, duration: 200 }} out:fade={{ duration: 200 }}>
           <QList dense>
@@ -200,6 +233,20 @@
           </QList>
         </div>
       {/key}
+    </QDrawer>
+    <QDrawer slot="drawerRight" side="right" bind:this={drawerRight} overlay bordered>
+      <div class="q-pa-md">
+        <h6 class="q-mb-lg">Want a different color theme?</h6>
+        <div class="flex q-gap-md">
+          {#each colors as color}
+            <QAvatar
+              shape="rounded"
+              style="background-color:{color}; cursor: pointer; border: solid 0.0625rem var(--outline)"
+              on:click={() => QTheme.setTheme(color)}
+            />
+          {/each}
+        </div>
+      </div>
     </QDrawer>
     <div bind:this={contentEl} slot="content">
       <slot />
