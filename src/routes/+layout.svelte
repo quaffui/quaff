@@ -150,7 +150,6 @@
   $: if (selectedRailbarItem !== null) {
     drawerLeft?.show();
   } else {
-    console.log(drawerLeft);
     drawerLeft?.hide();
   }
 
