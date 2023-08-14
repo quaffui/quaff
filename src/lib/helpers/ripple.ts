@@ -58,8 +58,14 @@ export function ripple(el: HTMLElement, options: RippleOptions = {}) {
 
     const rect = el.getBoundingClientRect();
 
-    const clientX = e instanceof TouchEvent ? e.touches[0].clientX : e.clientX;
-    const clientY = e instanceof TouchEvent ? e.touches[0].clientY : e.clientY;
+    const clientX =
+      window.TouchEvent && e instanceof TouchEvent
+        ? e.touches[0].clientX
+        : (e as PointerEvent).clientX;
+    const clientY =
+      window.TouchEvent && e instanceof TouchEvent
+        ? e.touches[0].clientY
+        : (e as PointerEvent).clientY;
 
     const x = clientX - rect.left > el.offsetWidth / 2 ? 0 : el.offsetWidth;
     const y = clientY - rect.top > el.offsetHeight / 2 ? 0 : el.offsetHeight;
