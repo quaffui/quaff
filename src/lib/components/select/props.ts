@@ -1,4 +1,4 @@
-import { type NativeProps } from "$utils/types";
+import type { NativeProps } from "$utils/types";
 
 export type QSelectOption = string | { label: string; value: string };
 
