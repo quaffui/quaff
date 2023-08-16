@@ -120,20 +120,17 @@
   ];
   const colors = [
     "#3499E7",
-    "#FFC7C7",
-    "#B83B5E",
-    "#95E1D3",
-    "#AA96DA",
-    "#AD8B73",
-    "#B1B2FF",
-    "#903749",
-    "#C06C84",
-    "#522546",
-    "#ADC2A9",
-    "#52734D",
-    "#F07B3F",
-    "#850E35",
-    "#395B64",
+    ...[
+      "red",
+      "blue-grey",
+      "green",
+      "yellow",
+      "orange",
+      "indigo",
+      "teal",
+      "deep-purple",
+      "brown",
+    ].map((color: string) => `var(--color-${color})`),
   ];
 
   let contentEl: HTMLDivElement;

@@ -1,23 +1,23 @@
 import type { NativeProps } from "$utils/types";
 
 interface QSeparatorPropsVertical extends NativeProps {
-  spacing: "none" | "sm" | "md" | "lg";
-  inset: boolean;
-  vertical: true;
+  spacing?: "none" | "sm" | "md" | "lg";
+  inset?: boolean;
+  vertical?: true;
   color?: string;
   size: string;
   text?: string;
-  textAlign: "top" | "middle" | "bottom";
+  textAlign?: "top" | "middle" | "bottom";
 }
 
 interface QSeparatorPropsHorizontal extends NativeProps {
-  spacing: "none" | "sm" | "md" | "lg";
-  inset: boolean;
-  vertical: false;
+  spacing?: "none" | "sm" | "md" | "lg";
+  inset?: boolean;
+  vertical?: false;
   color?: string;
-  size: string;
+  size?: string;
   text?: string;
-  textAlign: "left" | "center" | "right";
+  textAlign?: "left" | "center" | "right";
 }
 
 export type QSeparatorProps = QSeparatorPropsHorizontal | QSeparatorPropsVertical;

@@ -1,16 +1,16 @@
 import type { NativeProps } from "$utils/types";
 
 export interface QInputProps extends NativeProps {
-  bordered: boolean;
+  bordered?: boolean;
   dense?: boolean;
-  disable: boolean;
-  error: boolean;
+  disable?: boolean;
+  error?: boolean;
   errorMessage?: string;
-  filled: boolean;
+  filled?: boolean;
   hint?: string;
   label?: string;
-  outlined: boolean;
-  rounded: boolean;
+  outlined?: boolean;
+  rounded?: boolean;
   value: string;
 }
 

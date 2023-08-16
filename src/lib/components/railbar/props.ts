@@ -4,13 +4,13 @@ export interface QRailbarProps extends NativeProps {
   /**
    * @default 88px
    */
-  width: CssValue | number;
+  width?: CssValue | number;
   /**
    * @default left
    */
-  side: "left" | "right";
+  side?: "left" | "right";
   /**
    * @default false
    */
-  bordered: boolean;
+  bordered?: boolean;
 }

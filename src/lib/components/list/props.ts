@@ -6,11 +6,11 @@ import {
 } from "$lib/composables/use-router-link";
 
 export interface QListProps extends NativeProps {
-  bordered: boolean;
-  roundedBorders: boolean;
-  dense: boolean;
-  separator: boolean;
-  separatorOptions: {
+  bordered?: boolean;
+  roundedBorders?: boolean;
+  dense?: boolean;
+  separator?: boolean;
+  separatorOptions?: {
     spacing?: QSeparatorProps["spacing"];
     inset?: QSeparatorProps["inset"];
     color?: QSeparatorProps["color"];
@@ -18,7 +18,7 @@ export interface QListProps extends NativeProps {
     text?: QSeparatorProps["text"];
     textAlign?: QSeparatorProps["textAlign"];
   };
-  padding: boolean;
+  padding?: boolean;
   tag?: string;
 }
 
@@ -34,11 +34,11 @@ export const QListPropsDefaults: QListProps = {
 };
 
 export interface QItemProps extends UseRouterLinkProps, NativeProps {
-  tag: string;
-  active: boolean;
-  clickable: boolean;
-  dense: boolean;
-  tabindex: string | number;
+  tag?: string;
+  active?: boolean;
+  clickable?: boolean;
+  dense?: boolean;
+  tabindex?: string | number;
 }
 
 export const QItemPropsDefaults: QItemProps = {
@@ -62,7 +62,7 @@ export type QItemSectionTypes =
   | "content";
 
 export interface QItemSectionProps extends NativeProps {
-  type: QItemSectionTypes;
+  type?: QItemSectionTypes;
 }
 
 export const QItemSectionPropsDefaults: QItemSectionProps = {

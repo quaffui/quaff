@@ -609,10 +609,24 @@ $colors-list: (
   ),
 );
 
+:root {
+  @each $color-name, $color-values in $colors-list {
+    @for $i from 1 through length($color-values) {
+      $color: nth($color-values, $i);
+      $var-name: "--color-#{$color-name}-#{$i}";
+      #{$var-name}: $color;
+
+      @if $i == 6 {
+        $var-name-default: "--color-#{$color-name}";
+        #{$var-name-default}: $color;
+      }
+    }
+  }
+}
+
 @each $color-name, $color-values in $colors-list {
   @for $i from 1 through length($color-values) {
-    $color: nth($color-values, $i);
-
+    $var-name: "--color-#{$color-name}-#{$i}";
     $text-selector: ".text-#{$color-name}-#{$i}";
     $bg-selector: ".bg-#{$color-name}-#{$i}";
 
@@ -623,11 +637,11 @@ $colors-list: (
     }
 
     #{$text-selector} {
-      color: $color;
+      color: var(#{$var-name});
     }
 
     #{$bg-selector} {
-      background-color: $color;
+      background-color: var(#{$var-name});
     }
   }
 }
