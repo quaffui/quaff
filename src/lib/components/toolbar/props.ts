@@ -4,23 +4,24 @@ export interface QToolbarProps extends NativeProps {
   /**
    * @default false
    */
-  inset: boolean;
+  inset?: boolean;
   /**
    * @default false
    */
-  border: boolean;
+  border?: boolean;
   /**
    * @default false
    */
-  elevate: boolean;
+  elevate?: boolean;
   /**
    * @default 64px
    */
-  height: CssValue | number;
+  height?: CssValue | number;
 }
+
 export interface QToolbarTitleProps extends NativeProps {
   /**
    * @default false
    */
-  shrink: boolean;
+  shrink?: boolean;
 }

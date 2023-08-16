@@ -49,5 +49,5 @@ export interface QTableProps extends NativeProps {
    * Shows the Table in dense mode (takes up less space).
    * @default false
    */
-  dense: boolean;
+  dense?: boolean;
 }
