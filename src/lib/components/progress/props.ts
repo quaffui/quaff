@@ -8,11 +8,11 @@ export interface QLinearProgressProps extends NativeProps {
   /**
    * @default left
    */
-  from: "left" | "right";
+  from?: "left" | "right";
   /**
    * @default false
    */
-  rounded: boolean;
+  rounded?: boolean;
 }
 
 export interface QCircularProgressProps extends NativeProps {
@@ -23,11 +23,11 @@ export interface QCircularProgressProps extends NativeProps {
   /**
    * @default false
    */
-  indeterminate: boolean;
+  indeterminate?: boolean;
   /**
    * @default 2em
    */
-  size: CssValue | number;
+  size?: CssValue | number;
   /**
    * @default undefined
    */
@@ -35,5 +35,5 @@ export interface QCircularProgressProps extends NativeProps {
   /**
    * @default 5
    */
-  thickness: number;
+  thickness?: number;
 }

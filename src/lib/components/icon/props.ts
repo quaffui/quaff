@@ -7,13 +7,13 @@ export interface QIconProps extends NativeProps {
    * The size of the icon. Can be specified with CSS units. If no unit is specified, "px" will be used.
    * @default md
    */
-  size: QIconSizeOptions;
+  size?: QIconSizeOptions;
 
   /**
    * The type of the icon.
    * @default outlined
    */
-  type: QIconTypeOptions;
+  type?: QIconTypeOptions;
 
   /**
    * The name of the Material Symbols icon.
@@ -25,7 +25,7 @@ export interface QIconProps extends NativeProps {
    * Determines whether the icon should be filled.
    * @default false
    */
-  filled: boolean;
+  filled?: boolean;
 
   /**
    * The SVG content for the icon.
@@ -43,7 +43,7 @@ export interface QIconProps extends NativeProps {
    * Additional attributes for the image element when using the `img` prop, as for example the "alt" attribute.
    * @default {}
    */
-  imgAttributes: Record<string, any>;
+  imgAttributes?: Record<string, any>;
 
   /**
    * The color of the icon.

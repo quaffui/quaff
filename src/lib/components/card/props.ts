@@ -48,5 +48,5 @@ export interface QCardActionsProps extends UseAlignProps, NativeProps {
    * Lays out the action items vertically.
    * @default false
    */
-  vertical: boolean;
+  vertical?: boolean;
 }

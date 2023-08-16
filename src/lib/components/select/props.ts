@@ -8,10 +8,10 @@ export interface QSelectProps extends NativeProps {
   options: QSelectOption[];
   bordered?: boolean;
   dense?: boolean;
-  disable: boolean;
-  error: boolean;
+  disable?: boolean;
+  error?: boolean;
   errorMessage?: string;
-  filled: boolean;
+  filled?: boolean;
   hint?: string;
   label?: string;
   outlined?: boolean;
