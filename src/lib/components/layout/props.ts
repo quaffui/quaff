@@ -9,43 +9,43 @@ export interface QLayoutProps extends NativeProps {
    * See <a href="https://quasar.dev/layout/layout/#understanding-the-view-prop" target="_blank">Quasar's explanation on the view prop</a>.
    * @default "hhh lpr fff"
    */
-  view: QLayoutViewOptions;
+  view?: QLayoutViewOptions;
 
   /**
    * The height of the header. Can be specified with CSS units. If no unit is specified, "px" will be used.
    * @default 64px
    */
-  headerHeight: string | number;
+  headerHeight?: string | number;
 
   /**
    * The height of the footer. Can be specified with CSS units. If no unit is specified, "px" will be used.
    * @default 80px
    */
-  footerHeight: string | number;
+  footerHeight?: string | number;
 
   /**
    * The width of the left drawer. Can be specified with CSS units. If no unit is specified, "px" will be used.
    * @default 300px
    */
-  leftDrawerWidth: string | number;
+  leftDrawerWidth?: string | number;
 
   /**
    * The width of the right drawer. Can be specified with CSS units. If no unit is specified, "px" will be used.
    * @default 300px
    */
-  rightDrawerWidth: string | number;
+  rightDrawerWidth?: string | number;
 
   /**
    * The width of the left railbar. Can be specified with CSS units. If no unit is specified, "px" will be used.
    * @default 88px
    */
-  leftRailbarWidth: string | number;
+  leftRailbarWidth?: string | number;
 
   /**
    * The width of the right railbar. Can be specified with CSS units. If no unit is specified, "px" will be used.
    * @default 88px
    */
-  rightRailbarWidth: string | number;
+  rightRailbarWidth?: string | number;
 }
 
 export type QLayoutEvents = "resize" | "scroll" | "scrollHeight";

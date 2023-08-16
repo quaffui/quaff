@@ -1,4 +1,4 @@
-import { type NativeProps } from "$utils/types";
+import type { NativeProps } from "$utils/types";
 
 export type QSelectOption = string | { label: string; value: string };
 
@@ -8,10 +8,10 @@ export interface QSelectProps extends NativeProps {
   options: QSelectOption[];
   bordered?: boolean;
   dense?: boolean;
-  disable: boolean;
-  error: boolean;
+  disable?: boolean;
+  error?: boolean;
   errorMessage?: string;
-  filled: boolean;
+  filled?: boolean;
   hint?: string;
   label?: string;
   outlined?: boolean;

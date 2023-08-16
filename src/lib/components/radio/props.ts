@@ -3,9 +3,9 @@ import { NativePropsDefaults } from "$lib/utils/types";
 
 export interface QRadioProps extends NativeProps {
   value: string;
-  label: string;
-  selected: any;
-  disable: boolean;
+  label?: string;
+  selected?: any;
+  disable?: boolean;
 }
 
 export const QRadioPropsDefaults: QRadioProps = {
