@@ -69,10 +69,9 @@ async function prepareThemeColors(from: string) {
   return themeColors;
 }
 
-const defaultThemeColors = await prepareThemeColors("#3499E7");
-
 function themeBuilder() {
-  const { subscribe, set, update } = writable(defaultThemeColors);
+  const { subscribe, set, update } = writable({} as Awaited<ReturnType<typeof prepareThemeColors>>);
+  prepareThemeColors("#3499E7").then((res) => set(res));
 
   const apply = () => {
     let root = document.documentElement;
