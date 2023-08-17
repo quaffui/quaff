@@ -1,11 +1,10 @@
 import { NativePropsDefaults, type NativeProps } from "$lib/utils/types";
+import { UseRouterLinkPropsDefaults } from "$lib/composables/use-router-link";
+import type { UseRouterLinkProps } from "$lib/composables/use-router-link";
 import type { QSeparatorProps } from "../separator/props";
-import {
-  UseRouterLinkPropsDefaults,
-  type UseRouterLinkProps,
-} from "$lib/composables/use-router-link";
+import type { HTMLAnchorAttributes, HTMLAttributes } from "svelte/elements";
 
-export interface QListProps extends NativeProps {
+export interface QListProps extends NativeProps, HTMLAttributes<HTMLElement> {
   bordered?: boolean;
   roundedBorders?: boolean;
   dense?: boolean;
@@ -33,12 +32,13 @@ export const QListPropsDefaults: QListProps = {
   ...NativePropsDefaults,
 };
 
-export interface QItemProps extends UseRouterLinkProps, NativeProps {
+export interface QItemProps extends UseRouterLinkProps, NativeProps, HTMLAttributes<HTMLElement> {
   tag?: string;
   active?: boolean;
   clickable?: boolean;
   dense?: boolean;
-  tabindex?: string | number;
+  tabindex?: HTMLAttributes<HTMLElement>["tabindex"];
+  target?: HTMLAnchorAttributes["target"];
 }
 
 export const QItemPropsDefaults: QItemProps = {
@@ -61,7 +61,7 @@ export type QItemSectionTypes =
   | "trailingText"
   | "content";
 
-export interface QItemSectionProps extends NativeProps {
+export interface QItemSectionProps extends NativeProps, HTMLAttributes<HTMLDivElement> {
   type?: QItemSectionTypes;
 }
 

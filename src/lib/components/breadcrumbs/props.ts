@@ -1,8 +1,9 @@
 import type { NativeProps } from "$lib/utils/types";
+import type { HTMLAttributes } from "svelte/elements";
 
 export type QBreadcrumbsGutterOptions = "none" | "sm" | "md" | "lg";
 
-export interface QBreadcrumbsProps extends NativeProps {
+export interface QBreadcrumbsProps extends NativeProps, HTMLAttributes<HTMLDivElement> {
   /**
    * Separator to use between the breadcrumb elements. To use an icon, prefix with "icon:" followed by the name of the icon.
    * @default /
@@ -28,7 +29,7 @@ export interface QBreadcrumbsProps extends NativeProps {
   separatorColor?: string;
 }
 
-export interface QBreadcrumbsElProps extends NativeProps {
+export interface QBreadcrumbsElProps extends NativeProps, HTMLAttributes<HTMLElement> {
   /**
    * Text to use for the breadcrumb element. If default slot is defined, the label will be overwritten by it.
    * @default ""

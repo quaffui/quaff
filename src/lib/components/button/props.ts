@@ -1,8 +1,9 @@
 import type { NativeProps, QuaffSizes } from "$utils/types";
+import type { HTMLAnchorAttributes, HTMLAttributes } from "svelte/elements";
 
 export type QBtnSizeOptions = Exclude<QuaffSizes, "xs">;
 
-export interface QBtnProps extends NativeProps {
+export interface QBtnProps extends NativeProps, HTMLAttributes<HTMLElement> {
   /**
    * Puts the button in a disabled state, making it unclickable.
    * @default false
@@ -68,4 +69,10 @@ export interface QBtnProps extends NativeProps {
    * @default md
    */
   size?: QBtnSizeOptions;
+
+  /**
+   * For "a" (anchor) tag only, apply the target attribute.
+   * @default undefined
+   */
+  target?: HTMLAnchorAttributes["target"];
 }

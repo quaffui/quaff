@@ -1,6 +1,7 @@
 import type { CssValue, NativeProps } from "$lib/utils/types";
+import type { HTMLAttributes } from "svelte/elements";
 
-export interface QFooterProps extends NativeProps {
+export interface QFooterProps extends NativeProps, HTMLAttributes<HTMLElement> {
   /**
    * The value indicating whether the footer is visible or hidden. (not supported yet)
    * @default true

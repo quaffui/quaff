@@ -113,7 +113,7 @@
   }
 </script>
 
-<div class={classes}>
+<div class={classes} {...$$restProps}>
   <table class={classesTable}>
     <thead>
       <tr>

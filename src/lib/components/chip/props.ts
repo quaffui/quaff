@@ -1,8 +1,9 @@
 import type { NativeProps, QuaffSizes } from "$lib/utils/types";
+import type { HTMLAttributes } from "svelte/elements";
 
 export type QChipSizeOptions = Exclude<QuaffSizes, "xs" | "xl">;
 
-export interface QChipProps extends NativeProps {
+export interface QChipProps extends NativeProps, HTMLAttributes<HTMLAnchorElement> {
   /**
    * The content inside the chip. Will overwrite the default slot.
    * @default undefined
