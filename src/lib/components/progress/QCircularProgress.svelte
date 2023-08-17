@@ -21,7 +21,13 @@
   });
 </script>
 
-<svg class={classes} height={spinnerSize.style} width={spinnerSize.style} viewBox="25 25 50 50">
+<svg
+  class={classes}
+  height={spinnerSize.style}
+  width={spinnerSize.style}
+  viewBox="25 25 50 50"
+  {...$$restProps}
+>
   <circle
     class="path"
     cx="50"

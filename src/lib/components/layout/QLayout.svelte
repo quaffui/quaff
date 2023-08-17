@@ -112,7 +112,7 @@
   setContext("layout", ctx);
 </script>
 
-<div class={classes} {style} on:scroll on:resize>
+<div class={classes} {style} {...$$restProps} on:scroll on:resize>
   {#if $$slots.railbarLeft}
     <slot name="railbarLeft" />
   {/if}

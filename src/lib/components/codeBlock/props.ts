@@ -1,4 +1,6 @@
-export interface QCodeBlockProps {
+import type { HTMLAttributes } from "svelte/elements";
+
+export interface QCodeBlockProps extends HTMLAttributes<HTMLDivElement> {
   /**
    * Language to use for highlighting.
    */

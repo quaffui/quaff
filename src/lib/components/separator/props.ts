@@ -1,4 +1,5 @@
 import type { NativeProps } from "$utils/types";
+import type { HTMLAttributes } from "svelte/elements";
 
 interface QSeparatorPropsVertical extends NativeProps {
   spacing?: "none" | "sm" | "md" | "lg";
@@ -10,7 +11,7 @@ interface QSeparatorPropsVertical extends NativeProps {
   textAlign?: "top" | "middle" | "bottom";
 }
 
-interface QSeparatorPropsHorizontal extends NativeProps {
+interface QSeparatorPropsHorizontal extends NativeProps, HTMLAttributes<HTMLDivElement> {
   spacing?: "none" | "sm" | "md" | "lg";
   inset?: boolean;
   vertical?: false;

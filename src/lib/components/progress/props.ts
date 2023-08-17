@@ -1,6 +1,7 @@
 import type { NativeProps, CssValue } from "$utils/types";
+import type { HTMLAttributes, SVGAttributes } from "svelte/elements";
 
-export interface QLinearProgressProps extends NativeProps {
+export interface QLinearProgressProps extends NativeProps, HTMLAttributes<HTMLDivElement> {
   /**
    * @default 0
    */
@@ -15,7 +16,7 @@ export interface QLinearProgressProps extends NativeProps {
   rounded?: boolean;
 }
 
-export interface QCircularProgressProps extends NativeProps {
+export interface QCircularProgressProps extends NativeProps, SVGAttributes<SVGSVGElement> {
   /**
    * @default 0
    */

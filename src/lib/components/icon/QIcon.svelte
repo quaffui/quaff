@@ -38,7 +38,7 @@
   };
 </script>
 
-<i class={classes} {style}>
+<i class={classes} {style} {...$$restProps}>
   {#if name !== undefined}
     {name}
   {:else if img !== undefined}
