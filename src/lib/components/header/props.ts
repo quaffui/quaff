@@ -1,6 +1,6 @@
-import type { CssValue, NativeProps } from "$lib/utils/types";
+import type { QToolbarProps } from "../toolbar/props";
 
-export interface QHeaderProps extends NativeProps {
+export interface QHeaderProps extends QToolbarProps {
   /**
    * @default false
    */

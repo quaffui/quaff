@@ -1,4 +1,5 @@
 import type { NativeProps } from "$lib/utils/types";
+import type { HTMLAttributes } from "svelte/elements";
 
 export type QTableColumn = {
   name: string;
@@ -20,7 +21,7 @@ export type QTableSort = {
   type: "asc" | "desc";
 } | null;
 
-export interface QTableProps extends NativeProps {
+export interface QTableProps extends NativeProps, HTMLAttributes<HTMLDivElement> {
   /**
    * Column definitions of the table.
    * @default []

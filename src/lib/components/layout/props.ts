@@ -1,9 +1,10 @@
 import type { NativeProps } from "$lib/utils/types";
+import type { HTMLAttributes } from "svelte/elements";
 
 //prettier-ignore
 export type QLayoutViewOptions = `${"l"|"h"}${"h"|"H"}${"r"|"h"} ${"l"|"L"}${"p"}${"r"|"R"} ${"l"|"f"}${"f"|"F"}${"r"|"f"}`
 
-export interface QLayoutProps extends NativeProps {
+export interface QLayoutProps extends NativeProps, HTMLAttributes<HTMLDivElement> {
   /**
    * The layout view configuration, which defines how layout components (header, railbars, drawers, footer) should be displayed on screen.
    * See <a href="https://quasar.dev/layout/layout/#understanding-the-view-prop" target="_blank">Quasar's explanation on the view prop</a>.

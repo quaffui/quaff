@@ -27,7 +27,15 @@
   }
 </script>
 
-<div on:click={toggle} class={classes} aria-disabled={disable} {...$$restProps}>
+<div
+  on:click={toggle}
+  class={classes}
+  aria-disabled={disable}
+  role="switch"
+  aria-checked={value}
+  tabindex="0"
+  {...$$restProps}
+>
   <label class={classesInner}>
     <input bind:checked={value} type="checkbox" disabled={disable} />
     <span>

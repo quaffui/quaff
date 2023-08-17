@@ -1,9 +1,10 @@
 import type { NativeProps } from "$lib/utils/types";
+import type { HTMLAttributes } from "svelte/elements";
 import type { QBtnProps } from "../button/props";
 
 export type QDialogPositionOptions = "default" | "top" | "right" | "bottom" | "left";
 
-export interface QDialogProps extends NativeProps {
+export interface QDialogProps extends NativeProps, HTMLAttributes<HTMLDialogElement> {
   /**
    * The value indicating whether the dialog is visible or hidden.
    * @default true
