@@ -3,8 +3,14 @@ import type { HTMLAttributes } from "svelte/elements";
 
 export type QSelectOption = string | { label: string; value: string };
 
+export type QSelectValue = QSelectSingleValue | QSelectMultipleValue;
+
+export type QSelectSingleValue = string | number;
+
+export type QSelectMultipleValue = QSelectSingleValue[];
+
 export interface QSelectProps extends NativeProps, HTMLAttributes<HTMLDivElement> {
-  value: string | string[] | number | number[];
+  value: QSelectValue;
   multiple?: boolean;
   options: QSelectOption[];
   bordered?: boolean;
