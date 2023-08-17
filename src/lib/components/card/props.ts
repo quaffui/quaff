@@ -1,9 +1,10 @@
 import type { UseAlignProps } from "$lib/composables/use-align";
 import type { NativeProps } from "$lib/utils/types";
+import type { HTMLAttributes } from "svelte/elements";
 
 export type QCardFillColors = "primary" | "secondary" | "tertiary";
 
-export interface QCardProps extends NativeProps {
+export interface QCardProps extends NativeProps, HTMLAttributes<HTMLElement> {
   /**
    * Puts a border around the card.
    * @default false
@@ -35,7 +36,7 @@ export interface QCardProps extends NativeProps {
   title?: string;
 }
 
-export interface QCardSectionProps extends NativeProps {
+export interface QCardSectionProps extends NativeProps, HTMLAttributes<HTMLDivElement> {
   /**
    * Lays out the section content horizontally.
    * @default false
@@ -43,7 +44,7 @@ export interface QCardSectionProps extends NativeProps {
   horizontal?: boolean;
 }
 
-export interface QCardActionsProps extends UseAlignProps, NativeProps {
+export interface QCardActionsProps extends UseAlignProps, NativeProps, HTMLAttributes<HTMLElement> {
   /**
    * Lays out the action items vertically.
    * @default false

@@ -1,4 +1,5 @@
 import type { QuaffSizes, CssValue, NativeProps } from "$lib/utils/types";
+import type { HTMLAttributes } from "svelte/elements";
 
 export type QAvatarShapeOptions =
   | "circle"
@@ -14,7 +15,7 @@ export type QAvatarShapeOptions =
 
 export type QAvatarSizeOptions = QuaffSizes | CssValue | number;
 
-export interface QAvatarProps extends NativeProps {
+export interface QAvatarProps extends NativeProps, HTMLAttributes<HTMLElement> {
   /**
    * Shape of the avatar.
    * @default circle

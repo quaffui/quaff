@@ -1,6 +1,7 @@
 import type { NativeProps } from "$lib/utils/types";
+import type { HTMLAttributes } from "svelte/elements";
 
-export interface QCheckboxProps extends NativeProps {
+export interface QCheckboxProps extends NativeProps, HTMLAttributes<HTMLLabelElement> {
   /**
    * Controls the checked state of the checkbox.
    */

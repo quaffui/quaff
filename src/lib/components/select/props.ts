@@ -1,9 +1,16 @@
 import type { NativeProps } from "$utils/types";
+import type { HTMLAttributes } from "svelte/elements";
 
 export type QSelectOption = string | { label: string; value: string };
 
-export interface QSelectProps extends NativeProps {
-  value: string | string[] | number | number[];
+export type QSelectValue = QSelectSingleValue | QSelectMultipleValue;
+
+export type QSelectSingleValue = string | number;
+
+export type QSelectMultipleValue = QSelectSingleValue[];
+
+export interface QSelectProps extends NativeProps, HTMLAttributes<HTMLDivElement> {
+  value: QSelectValue;
   multiple?: boolean;
   options: QSelectOption[];
   bordered?: boolean;

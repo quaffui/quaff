@@ -1,9 +1,10 @@
 import type { CssValue, NativeProps } from "$lib/utils/types";
+import type { HTMLAttributes } from "svelte/elements";
 
 export type QDrawerSideOptions = "left" | "right";
 export type QDrawerBehaviorOptions = "default" | "desktop" | "mobile";
 
-export interface QDrawerProps extends NativeProps {
+export interface QDrawerProps extends NativeProps, HTMLAttributes<HTMLDivElement> {
   /**
    * The value indicating whether the drawer is visible or hidden.
    * @default true
