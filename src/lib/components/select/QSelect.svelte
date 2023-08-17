@@ -4,7 +4,7 @@
   import { createClasses } from "$lib/utils/props";
   import { textWidth } from "$lib/utils/fields";
   import { browser } from "$app/environment";
-  import type { QSelectOption, QSelectProps } from "./props";
+  import type { QSelectMultipleValue, QSelectOption, QSelectProps } from "./props";
 
   export let options: QSelectProps["options"],
     multiple: QSelectProps["multiple"] = false,
@@ -24,7 +24,7 @@
 
   let active = false;
 
-  $: active = value?.length > 0;
+  $: active = typeof value === "number" || value?.length > 0;
 
   $: hasBorder = bordered || rounded || outlined;
 
@@ -110,7 +110,7 @@
 
   function isSelected(option: QSelectOption) {
     const optionValue = typeof option === "string" ? option : option.value;
-    return multiple ? value.includes(optionValue) : value === optionValue;
+    return multiple ? (value as QSelectMultipleValue).includes(optionValue) : value === optionValue;
   }
 
   function select(evt: MouseEvent, option: QSelectOption) {
@@ -118,12 +118,14 @@
     const optionValue = typeof option === "string" ? option : option.value;
 
     if (multiple) {
-      const hasItem = (value as string[]).some((entry) => entry === optionValue);
+      const hasItem = (value as QSelectMultipleValue).some((entry) => entry === optionValue);
 
       if (hasItem) {
-        (value as string[]) = (value as string[]).filter((val) => val !== optionValue);
+        (value as QSelectMultipleValue) = (value as QSelectMultipleValue).filter(
+          (val) => val !== optionValue
+        );
       } else {
-        (value as string[]) = [...value, optionValue];
+        (value as QSelectMultipleValue) = [...(value as QSelectMultipleValue), optionValue];
       }
 
       return;
