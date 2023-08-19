@@ -34,8 +34,10 @@
     }
 
     &__logo {
-      max-width: 300px;
+      max-width: 15.75rem;
       margin: 0 auto;
+      margin-bottom: 1.75rem;
+      margin-top: 1.5rem;
     }
 
     &__teaser {
