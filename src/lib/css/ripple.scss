@@ -1,5 +1,5 @@
 .q-ripple {
-  background-color: var(--ripple-color, white);
+  background-color: var(--ripple-color, var(--outline));
   opacity: 0.2;
   position: absolute;
   border-radius: 50%;
