@@ -28,9 +28,11 @@
   <div class="row q-gutter-md">
     {#each colors as color, idx}
       <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2 palette">
-        <div class="bg-{color} heading q-pa-sm">{color}</div>
+        <div class="bg-{color} text-grey-10 heading q-pa-sm">{color}</div>
         {#each [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] as step}
-          <div class="bg-{color}-{step} q-pa-sm">{color}-{step}</div>
+          <div class="bg-{color}-{step} q-pa-sm {step < 5 ? 'text-grey-8' : ''}">
+            {color}-{step}
+          </div>
         {/each}
       </div>
     {/each}
