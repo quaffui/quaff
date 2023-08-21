@@ -29,7 +29,7 @@ export function createStyles(
 interface CreateClassesOptions {
   component?: string;
   element?: string;
-  userClasses?: string;
+  userClasses?: string | null;
   quaffClasses?: any[];
 }
 
