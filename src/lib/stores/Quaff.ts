@@ -10,30 +10,37 @@ function quaff() {
     //TODO? iconSet: {},
   });
 
+  type Mode = "light" | "dark";
+
   const toggleDarkMode = () => {
-    return update((q) => {
-      q.dark = !q.dark;
+    return update(($quaff) => {
+      $quaff.dark = !$quaff.dark;
+      const mode: { from: Mode; to: Mode } = $quaff.dark
+        ? {
+            from: "light",
+            to: "dark",
+          }
+        : {
+            from: "dark",
+            to: "light",
+          };
 
       let body = document.querySelector("body");
-
-      if (q.dark === true) {
-        body && body.classList.replace("light", "dark");
-      } else {
-        body && body.classList.replace("dark", "light");
+      if (body) {
+        body.classList.replace(`body--${mode.from}`, `body--${mode.to}`);
       }
 
-      let mode = q.dark === true ? "dark" : "light";
-      document.cookie = `current_mode=${mode}; max-age=31536000; path="/"; SameSite=strict`;
+      document.cookie = `current_mode=${mode.to}; max-age=31536000; path="/"; SameSite=strict`;
 
-      return q;
+      return $quaff;
     });
   };
 
   const setDarkMode = (newVal: boolean) => {
-    return update((q) => {
-      q.dark = newVal;
+    return update(($quaff) => {
+      $quaff.dark = newVal;
 
-      return q;
+      return $quaff;
     });
   };
 
