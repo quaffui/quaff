@@ -117,6 +117,10 @@ $contentSlot: ":not(.q-header, .q-footer, .q-railbar, .q-drawer)";
     }
   }
 
+  & > .q-list {
+    gap: 0.5rem;
+  }
+
   & > .q-list > .q-item {
     flex-direction: column;
     border-radius: 2rem;
@@ -135,13 +139,13 @@ $contentSlot: ":not(.q-header, .q-footer, .q-railbar, .q-drawer)";
 
     & > i {
       transition: var(--speed1) padding linear;
-      padding-inline: 0.25em;
+      padding: 0.25rem;
     }
 
     &:is(:hover, :focus, .active) > i {
       background-color: var(--secondary-container);
       color: var(--on-secondary-container);
-      padding: 0 1rem;
+      padding-inline: 1.5rem;
       font-variation-settings:
         "FILL" 1,
         "wght" 400,
