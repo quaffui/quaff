@@ -37,6 +37,7 @@ export interface QItemProps extends UseRouterLinkProps, NativeProps, HTMLAttribu
   active?: boolean;
   clickable?: boolean;
   dense?: boolean;
+  noRipple?: boolean;
   tabindex?: HTMLAttributes<HTMLElement>["tabindex"];
   target?: HTMLAnchorAttributes["target"];
 }

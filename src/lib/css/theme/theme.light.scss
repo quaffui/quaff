@@ -1,4 +1,4 @@
-body.light {
+.body--light {
   --body: #fff;
   --primary: rgba(var(--primary-light));
   --on-primary: rgba(var(--on-primary-light));
@@ -27,6 +27,8 @@ body.light {
   --on-surface-variant-2: rgba(var(--on-surface-variant-light), 0.08);
   --on-surface-variant-4: rgba(var(--on-surface-variant-light), 0.12);
   --outline: rgba(var(--outline-light));
+  --outline-2: rgba(var(--outline-light), 0.12);
+  --outline-4: rgba(var(--outline-light), 0.24);
   --inverse-on-surface: rgba(var(--inverse-on-surface-light));
   --inverse-surface: rgba(var(--inverse-surface-light));
   --inverse-primary: rgba(var(--inverse-primary-light));

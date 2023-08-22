@@ -4,7 +4,7 @@ export const handle: Handle = async ({ event, resolve }) => {
   let stored_mode = event.cookies.get("current_mode") || "light";
 
   const response = await resolve(event, {
-    transformPageChunk: ({ html }) => html.replace('class=""', `class="${stored_mode}"`),
+    transformPageChunk: ({ html }) => html.replace('class=""', `class="body--${stored_mode}"`),
   });
   return response;
 };
