@@ -22,6 +22,43 @@
   import { fade } from "svelte/transition";
   import { QTheme } from "$lib/stores/QTheme";
 
+  const pages = [
+    {
+      name: "Home",
+      icon: "home",
+      to: "/",
+    },
+    {
+      name: "Components",
+      icon: "grid_view",
+      to: "/components",
+    },
+    {
+      name: "Grid",
+      icon: "grid_on",
+      to: "/grid",
+    },
+    {
+      name: "Colors",
+      icon: "palette",
+      to: "/colors",
+    },
+    {
+      name: "Quaff utils",
+      icon: "construction",
+      to: "/utils",
+    },
+    {
+      name: "Dev tests",
+      icon: "code",
+      to: "/dev",
+    },
+    {
+      name: "Layout tests",
+      icon: "dashboard_customize",
+      to: "/layout",
+    },
+  ];
   const components = [
     {
       name: "Avatar",
@@ -183,34 +220,12 @@
     </QHeader>
     <QRailbar slot="railbarLeft" class="surface no-round" bordered>
       <QList>
-        <QItem to="/">
-          <QIcon name="home" />
-          <QItemSection>Home</QItemSection>
-        </QItem>
-        <QItem to="/components">
-          <QIcon name="grid_view" />
-          <QItemSection>Components</QItemSection>
-        </QItem>
-        <QItem to="/grid">
-          <QIcon name="grid_on" />
-          <QItemSection>Grid</QItemSection>
-        </QItem>
-        <QItem to="/colors">
-          <QIcon name="palette" />
-          <QItemSection>Colors</QItemSection>
-        </QItem>
-        <QItem to="/utils">
-          <QIcon name="construction" />
-          <QItemSection>Quaff utils</QItemSection>
-        </QItem>
-        <QItem to="/dev">
-          <QIcon name="code" />
-          <QItemSection>Dev tests</QItemSection>
-        </QItem>
-        <QItem to="/layout">
-          <QIcon name="dashboard_customize" />
-          <QItemSection>Layout tests</QItemSection>
-        </QItem>
+        {#each pages as { name, icon, to }}
+          <QItem {to} noRipple>
+            <QIcon name={icon} />
+            <QItemSection>{name}</QItemSection>
+          </QItem>
+        {/each}
       </QList>
     </QRailbar>
     <QDrawer slot="drawerLeft" persistent bind:this={drawerLeft}>
