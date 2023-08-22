@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { setIndex } from "$lib/composables/use-index";
   import { createClasses } from "$lib/utils/props";
   import type { QListProps } from "./props";
   import { onMount, setContext } from "svelte";
@@ -20,14 +19,14 @@
 
   $: setContext("separator", separator === true ? separatorOptions : undefined);
 
-  $: classes = createClasses([
-    "q-list",
-    bordered && "border",
-    dense && "dense",
-    padding && "q-py-sm",
-    roundedBorders && "rounded-borders",
-    userClasses,
-  ]);
+  $: classes = createClasses(
+    [bordered && "bordered", dense && "dense", roundedBorders && "rounded"],
+    {
+      component: "q-list",
+      quaffClasses: [padding && "q-py-sm"],
+      userClasses,
+    }
+  );
 </script>
 
 <svelte:element this={tag} class={classes} {...$$restProps} bind:this={listElement} on:scroll>
