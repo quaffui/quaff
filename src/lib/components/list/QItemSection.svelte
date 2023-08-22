@@ -15,14 +15,17 @@
       $$slots.headline && [$$slots.line1, $$slots.line2, $$slots.line3].filter(Boolean).length >= 2;
   }
 
-  $: classes = createClasses([`q-item__section `, `q-item__section--${type}`, userClasses]);
+  $: classes = createClasses([type], {
+    component: "q-item__section",
+    userClasses,
+  });
 </script>
 
 <div class={classes} {...$$restProps}>
   {#if type === "content"}
-    {#if [$$slots.headline, $$slots.line2, $$slots.line2, $$slots.line3].some(Boolean) === false}
+    <!-- {#if [$$slots.headline, $$slots.line2, $$slots.line2, $$slots.line3].some(Boolean) === false}
       <slot />
-    {/if}
+    {/if} -->
     {#if $$slots.headline}
       <div class="body-large on-surface-text">
         <slot name="headline" />
