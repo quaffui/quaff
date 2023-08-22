@@ -22,8 +22,8 @@
     userClasses: QItemProps["userClasses"] = undefined;
   export { userClasses as class };
 
-  let hasMultiplLines = writable(false);
-  setContext("hasMultipleLines", hasMultiplLines);
+  let hasMultipleLines = writable(false);
+  setContext("hasMultipleLines", hasMultipleLines);
 
   $: ({ hasLink, linkAttributes, linkClasses } = useRouterLink({
     href,
@@ -43,7 +43,7 @@
 
   $: classes = createClasses(
     [
-      $hasMultiplLines && "multiline",
+      $hasMultipleLines && "multiline",
       dense && "dense",
       (isActive || (hasLink && active)) && activeClass,
       (isActive || (hasLink && active)) && "active",
