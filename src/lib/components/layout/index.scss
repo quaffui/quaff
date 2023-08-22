@@ -129,7 +129,7 @@ $contentSlot: ":not(.q-header, .q-footer, .q-railbar, .q-drawer)";
     padding: 0 8px;
     gap: 0.25em;
 
-    &.wave::after {
+    &.q-link::after {
       all: unset;
     }
 
@@ -142,7 +142,7 @@ $contentSlot: ":not(.q-header, .q-footer, .q-railbar, .q-drawer)";
       padding: 0.25rem;
     }
 
-    &:is(:hover, :focus, .active) > i {
+    &:is(:hover, :focus, &--active) > i {
       background-color: var(--secondary-container);
       color: var(--on-secondary-container);
       padding-inline: 1.5rem;

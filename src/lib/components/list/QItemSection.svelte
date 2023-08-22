@@ -23,28 +23,29 @@
 
 <div class={classes} {...$$restProps}>
   {#if type === "content"}
-    <!-- {#if [$$slots.headline, $$slots.line2, $$slots.line2, $$slots.line3].some(Boolean) === false}
+    {#if [$$slots.headline, $$slots.line2, $$slots.line2, $$slots.line3].every(Boolean) === false}
       <slot />
-    {/if} -->
-    {#if $$slots.headline}
-      <div class="body-large on-surface-text">
-        <slot name="headline" />
-      </div>
-    {/if}
-    <div class="body-medium on-surface-variant-text">
-      {#if $$slots.line1}
-        <slot name="line1" />
+    {:else}
+      {#if $$slots.headline}
+        <div class="body-large on-surface-text">
+          <slot name="headline" />
+        </div>
       {/if}
-    </div>
-    {#if $$slots.line2}
       <div class="body-medium on-surface-variant-text">
-        <slot name="line2" />
+        {#if $$slots.line1}
+          <slot name="line1" />
+        {/if}
       </div>
-    {/if}
-    {#if $$slots.line3}
-      <div class="body-medium on-surface-variant-text">
-        <slot name="line3" />
-      </div>
+      {#if $$slots.line2}
+        <div class="body-medium on-surface-variant-text">
+          <slot name="line2" />
+        </div>
+      {/if}
+      {#if $$slots.line3}
+        <div class="body-medium on-surface-variant-text">
+          <slot name="line3" />
+        </div>
+      {/if}
     {/if}
   {:else if type === "trailingText"}
     <div class="label-small on-surface-variant-text">
