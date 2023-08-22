@@ -47,6 +47,12 @@ export interface QBtnProps extends NativeProps, HTMLAttributes<HTMLElement> {
   rectangle?: boolean;
 
   /**
+   * Disable the ripple effect for the button.
+   * @default false
+   */
+  noRipple?: boolean;
+
+  /**
    * Use round design for the button, giving it a circular shape.
    * @default false
    */

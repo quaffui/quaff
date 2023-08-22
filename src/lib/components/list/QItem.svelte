@@ -18,6 +18,7 @@
     disable: QItemProps["disable"] = false,
     activeClass: QItemProps["activeClass"] = undefined,
     replace: QItemProps["replace"] = false,
+    noRipple: QItemProps["noRipple"] = false,
     userClasses: QItemProps["userClasses"] = undefined;
   export { userClasses as class };
 
@@ -67,7 +68,7 @@
 {/if}
 {#if linkAttributes.href !== undefined}
   <!-- svelte-ignore a11y-missing-attribute -->
-  <a use:ripple={{ disable: !isClickable }} {...attributes} {...linkAttributes}>
+  <a use:ripple={{ disable: !isClickable || noRipple }} {...attributes} {...linkAttributes}>
     <slot />
   </a>
 {:else}
