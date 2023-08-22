@@ -16,6 +16,7 @@
     outline: QBtnProps["outline"] = false,
     round: QBtnProps["round"] = false,
     rectangle: QBtnProps["rectangle"] = false,
+    noRipple: QBtnProps["noRipple"] = false,
     flat: QBtnProps["flat"] = false,
     to: QBtnProps["to"] = undefined,
     size: QBtnProps["size"] = undefined,
@@ -59,7 +60,7 @@
 <svelte:element
   this={tag}
   bind:this={qBtn}
-  use:ripple
+  use:ripple={{ disable: noRipple || disable }}
   role={tag === "a" ? "button" : undefined}
   href={to}
   class={classes}

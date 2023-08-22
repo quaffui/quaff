@@ -6,6 +6,7 @@
   import type { QListProps, QItemProps } from "./props";
   import { Quaff } from "$lib/stores/Quaff";
   import { writable } from "svelte/store";
+  import { ripple } from "$lib/helpers/ripple";
 
   export let tag: QItemProps["tag"] = "div",
     active: QItemProps["active"] = false,
@@ -17,11 +18,12 @@
     disable: QItemProps["disable"] = false,
     activeClass: QItemProps["activeClass"] = undefined,
     replace: QItemProps["replace"] = false,
+    noRipple: QItemProps["noRipple"] = false,
     userClasses: QItemProps["userClasses"] = undefined;
   export { userClasses as class };
 
-  let hasMultiplLines = writable(false);
-  setContext("hasMultipleLines", hasMultiplLines);
+  let hasMultipleLines = writable(false);
+  setContext("hasMultipleLines", hasMultipleLines);
 
   $: ({ hasLink, linkAttributes, linkClasses } = useRouterLink({
     href,
@@ -33,23 +35,25 @@
 
   $: separatorOptions = getContext<QListProps["separatorOptions"] | undefined>("separator");
 
-  $: isActionable = clickable === true || hasLink === true || tag === "label";
+  $: isActionable = clickable || hasLink || tag === "label";
 
-  $: isClickable = disable !== true && isActionable === true;
+  $: isClickable = isActionable && !disable;
 
   $: isActive = isRouteActive($Quaff.router, to);
 
-  $: classes = createClasses([
-    "q-item flex items-center",
-    $hasMultiplLines && "multiline",
-    dense && "dense",
-    hasLink && active && "q-item--active",
-    hasLink && active && activeClass,
-    isActive && "active",
-    isClickable && "wave",
-    linkClasses,
-    userClasses,
-  ]);
+  $: classes = createClasses(
+    [
+      $hasMultipleLines && "multiline",
+      dense && "dense",
+      (isActive || (hasLink && active)) && activeClass,
+      (isActive || (hasLink && active)) && "active",
+    ],
+    {
+      component: "q-item",
+      quaffClasses: [linkClasses],
+      userClasses,
+    }
+  );
 
   $: attributes = {
     class: classes,
@@ -64,11 +68,11 @@
 {/if}
 {#if linkAttributes.href !== undefined}
   <!-- svelte-ignore a11y-missing-attribute -->
-  <a {...attributes} {...linkAttributes} {...$$restProps} on:mouseenter on:mouseleave on:click>
+  <a use:ripple={{ disable: !isClickable || noRipple }} {...attributes} {...linkAttributes}>
     <slot />
   </a>
 {:else}
-  <div {...attributes} {...$$restProps} on:mouseenter on:mouseleave on:click>
+  <svelte:element this={tag} {...attributes}>
     <slot />
-  </div>
+  </svelte:element>
 {/if}

@@ -5,11 +5,15 @@
   justify-content: center;
   width: 100%;
 
-  &.rounded-borders {
+  &--bordered {
+    @include border;
+  }
+
+  &--rounded {
     border-radius: 0.25rem;
   }
 
-  &.dense {
+  &--dense {
     min-height: 32px;
     padding-block: 0;
 
@@ -43,10 +47,28 @@
     width: 40px;
   }
 
-  &.wave {
+  &.q-link {
     padding: 8px 24px 8px 16px;
 
-    &.multiline {
+    &:is(:hover, :focus):not([aria-disabled])::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: var(--on-surface);
+    }
+
+    &:hover:not([aria-disabled])::after {
+      opacity: 0.08;
+    }
+
+    &:focus:not([aria-disabled])::after {
+      opacity: 0.16;
+    }
+
+    &.q-item--multiline {
       padding-block: 12px;
     }
 
@@ -55,7 +77,7 @@
     }
   }
 
-  &.multiline {
+  &--multiline {
     padding-block: 12px;
 
     &

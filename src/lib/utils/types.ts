@@ -1,6 +1,6 @@
 export interface NativeProps {
-  userClasses?: string;
-  userStyles?: string;
+  userClasses?: string | null;
+  userStyles?: string | null;
 }
 
 export const NativePropsDefaults: NativeProps = {
