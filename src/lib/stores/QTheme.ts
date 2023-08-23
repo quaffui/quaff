@@ -7,7 +7,7 @@ import type {
   IMaterialDynamicColorsThemeColor,
 } from "material-dynamic-colors/src/cdn/interfaces";
 
-interface IMaterialDynamicColorsThemeColorFormatted {
+interface MaterialColors {
   primary: string;
   "on-primary": string;
   "primary-container": string;
@@ -37,13 +37,13 @@ interface IMaterialDynamicColorsThemeColorFormatted {
   shadow: string;
 }
 
-interface IMaterialDynamicColorsThemeFormatted {
-  light: IMaterialDynamicColorsThemeColorFormatted;
-  dark: IMaterialDynamicColorsThemeColorFormatted;
+interface MaterialColorsTheme {
+  light: MaterialColors;
+  dark: MaterialColors;
 }
 
-type CSSDynamicColor =
-  `${keyof IMaterialDynamicColorsThemeColorFormatted}-${keyof IMaterialDynamicColorsThemeFormatted}`;
+type ThemeColorName = `${keyof MaterialColors}-${keyof MaterialColorsTheme}`;
+type ThemeColors = Record<ThemeColorName, string>;
 
 function extractColorFromCssVar(cssVar: string) {
   const rootStyles = getComputedStyle(document.documentElement);
@@ -59,19 +59,15 @@ async function prepareThemeColors(from: string) {
   let theme = await materialDynamicColors(from);
 
   //@ts-ignore
-  const themeColors: Record<CSSDynamicColor, string> = {};
+  const themeColors: ThemeColors = {};
 
   let mode: keyof IMaterialDynamicColorsTheme;
   for (mode in theme) {
     let color: keyof IMaterialDynamicColorsThemeColor;
     for (color in theme[mode]) {
-      let colorFormatted = convertCase(
-        color,
-        "camel",
-        "kebab"
-      ) as keyof IMaterialDynamicColorsThemeColorFormatted;
+      let colorFormatted = convertCase(color, "camel", "kebab") as keyof MaterialColors;
 
-      let cssColor: CSSDynamicColor = `${colorFormatted}-${mode}`;
+      let cssColor: ThemeColorName = `${colorFormatted}-${mode}`;
       themeColors[cssColor] = theme[mode][color];
     }
   }
@@ -80,15 +76,15 @@ async function prepareThemeColors(from: string) {
 }
 
 function themeBuilder() {
-  const { subscribe, set, update } = writable({} as Awaited<ReturnType<typeof prepareThemeColors>>);
-  prepareThemeColors("#3499E7").then((res) => set(res));
+  const { subscribe, set, update } = writable({} as ThemeColors);
+  prepareThemeColors("#3499E7").then(set);
 
   const apply = () => {
     let root = document.documentElement;
     if (root === null) return;
 
     update(($themeColors) => {
-      let colorName: CSSDynamicColor;
+      let colorName: ThemeColorName;
       for (colorName in $themeColors) {
         root.style.setProperty(
           `--${colorName}`,
@@ -100,7 +96,7 @@ function themeBuilder() {
     });
   };
 
-  const updateThemeColor = (color: CSSDynamicColor, newValue: string) => {
+  const updateThemeColor = (color: ThemeColorName, newValue: string) => {
     update(($themeColors) => {
       $themeColors[color] = newValue;
 
