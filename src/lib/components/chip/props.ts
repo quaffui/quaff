@@ -53,6 +53,12 @@ export interface QChipProps extends NativeProps, HTMLAttributes<HTMLAnchorElemen
   outlined?: boolean;
 
   /**
+   * Disable the ripple effect for the chip.
+   * @default false
+   */
+  noRipple?: boolean;
+
+  /**
    * Size of the chip.
    * @default small
    */
