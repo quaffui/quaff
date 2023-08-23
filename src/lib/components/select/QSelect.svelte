@@ -1,10 +1,9 @@
 <script lang="ts">
-  import QIcon from "$lib/components/icon/QIcon.svelte";
-  import { onDestroy, onMount } from "svelte";
-  import { createClasses } from "$lib/utils/props";
-  import { textWidth } from "$lib/utils/fields";
   import { browser } from "$app/environment";
-  import type { QSelectMultipleValue, QSelectOption, QSelectProps } from "./props";
+  import { createClasses, textWidth } from "$lib/utils";
+  import { onMount, onDestroy } from "svelte";
+  import { QIcon } from "..";
+  import type { QSelectProps, QSelectOption, QSelectMultipleValue } from "./props";
 
   export let options: QSelectProps["options"],
     multiple: QSelectProps["multiple"] = false,

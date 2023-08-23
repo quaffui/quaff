@@ -1,6 +1,5 @@
 <script>
-  import { QDialog } from "$lib";
-  import QCodeBlock from "../codeBlock/QCodeBlock.svelte";
+  import { QCodeBlock, QDialog } from "$lib";
 
   export let title, snippets;
 

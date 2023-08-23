@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { createClasses } from "$utils/props";
+  import { createClasses } from "$lib/utils";
   import type { QCardSectionProps } from "./props";
 
   export let horizontal: QCardSectionProps["horizontal"] = false,

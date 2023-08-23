@@ -1,4 +1,4 @@
-import type { CssValue, NativeProps } from "$lib/utils/types";
+import type { CssValue, NativeProps } from "$lib/utils";
 import type { HTMLAttributes } from "svelte/elements";
 
 export interface QFooterProps extends NativeProps, HTMLAttributes<HTMLElement> {

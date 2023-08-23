@@ -1,5 +1,4 @@
-import type { NativeProps } from "$lib/utils/types";
-import { NativePropsDefaults } from "$lib/utils/types";
+import { type NativeProps, NativePropsDefaults } from "$lib/utils";
 import type { HTMLAttributes } from "svelte/elements";
 
 export interface QRadioProps extends NativeProps, HTMLAttributes<HTMLLabelElement> {

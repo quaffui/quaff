@@ -1,4 +1,11 @@
 <script context="module" lang="ts">
+  import { createStyles, createClasses } from "$lib/utils";
+  import { setContext } from "svelte";
+  import type { Readable } from "svelte/motion";
+  import { writable } from "svelte/store";
+  import ContextReseter from "../private/ContextReseter.svelte";
+  import type { QLayoutProps } from "./props";
+
   export interface DrawerContext {
     offset: {
       top: boolean;
@@ -24,13 +31,6 @@
 </script>
 
 <script lang="ts">
-  import { setContext } from "svelte";
-  import type { QLayoutProps } from "./props";
-  import { createClasses, createStyles } from "$lib/utils/props";
-  import ContextReseter from "../private/ContextReseter.svelte";
-  import { writable } from "svelte/store";
-  import type { Readable } from "svelte/store";
-
   export let view: QLayoutProps["view"] = "hhh lpr fff",
     headerHeight: QLayoutProps["headerHeight"] = "64px",
     footerHeight: QLayoutProps["footerHeight"] = "80px",
@@ -65,7 +65,7 @@
   $: classes = createClasses(["q-layout", userClasses]);
 
   function prepareCtx(viewProp: typeof view) {
-    const [top, middle, bottom] = viewProp.split(" ");
+    const [top, middle, bottom] = viewProp!.split(" ");
     const header: AppbarContext | undefined = $$slots.header
       ? {
           display: true,

@@ -1,6 +1,5 @@
 <script lang="ts">
-  import { createClasses } from "$lib/utils/props";
-  import { onMount } from "svelte";
+  import { createClasses } from "$lib/utils";
   import type { QToggleProps } from "./props";
 
   export let value: QToggleProps["value"],

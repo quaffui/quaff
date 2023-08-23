@@ -19,7 +19,7 @@
   import type { QLayoutProps } from "$lib/components/layout/props";
   import QDocs from "$lib/components/private/QDocs.svelte";
   import QDocsSection from "$lib/components/private/QDocsSection.svelte";
-  import { createStyles } from "$lib/utils/props";
+  import { createStyles } from "$utils";
   import { snippet } from "./docs.snippets";
 
   let displayLeftDrawerElement: QDrawer;

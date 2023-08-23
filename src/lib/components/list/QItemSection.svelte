@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { createClasses } from "$lib/utils/props";
+  import { createClasses } from "$lib/utils";
   import { getContext } from "svelte";
-  import type { QItemSectionProps } from "./props";
   import type { Writable } from "svelte/store";
+  import type { QItemSectionProps } from "./props";
 
   export let type: QItemSectionProps["type"] = "content",
     userClasses: QItemSectionProps["userClasses"] = undefined;

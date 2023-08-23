@@ -1,9 +1,10 @@
 <script lang="ts">
   import Highlight from "svelte-highlight";
   import typescript from "svelte-highlight/languages/typescript";
-  import "svelte-highlight/styles/material.css";
-  import { QBtn } from "$lib";
+  import { copy } from "$lib/utils";
+  import { QBtn } from "..";
   import type { QCodeBlockProps } from "./props";
+  
 
   export let language: QCodeBlockProps["language"],
     code: QCodeBlockProps["code"] = "/* No code found */",
@@ -13,30 +14,33 @@
   let btnContent = "Copy";
   let btnColor = "primary";
 
-  async function copyCode() {
-    try {
-      if (navigator.clipboard.write) {
-        let blob = new Blob([code!], { type: "text/plain" });
-        let item = new ClipboardItem({ "text/plain": blob });
-        await navigator.clipboard.write([item]);
-      } else {
-        await navigator.clipboard.writeText(code!);
-      }
-
-      btnContent = "Copied!";
-      btnColor = "green";
-      setTimeout(() => {
+  function setBtn(type: "base" | "error" | "success") {
+    switch(type) {
+      case "error":
+        btnContent = "Error while copying..."
+        btnColor = "error"
+        break
+      case "success":
+        btnContent = "Copied!";
+        btnColor = "green";
+        break
+      default:
         btnContent = "Copy";
         btnColor = "primary";
-      }, 3000);
-    } catch (e) {
-      btnContent = "Error while copying...";
-      btnColor = "error";
-      setTimeout(() => {
-        btnContent = "Copy";
-        btnColor = "primary";
-      }, 3000);
+        break
     }
+  }
+
+  async function copyCode() {
+    await copy(code!).catch((_) => {
+      setBtn("error")
+      setTimeout(() => setBtn("base"), 3000);
+    })
+
+    setBtn("success")
+    setTimeout(() => {
+      setBtn("base")
+    }, 3000);
   }
 </script>
 

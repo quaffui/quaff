@@ -1,4 +1,4 @@
-import type { NativeProps, QuaffSizes } from "$lib/utils/types";
+import type { QuaffSizes, NativeProps } from "$lib/utils";
 import type { HTMLAttributes } from "svelte/elements";
 
 export type QChipSizeOptions = Exclude<QuaffSizes, "xs" | "xl">;

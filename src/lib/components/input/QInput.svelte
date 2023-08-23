@@ -1,6 +1,5 @@
 <script lang="ts">
-  import { createClasses } from "$lib/utils/props";
-  import { textWidth } from "$lib/utils/fields";
+  import { createClasses, textWidth } from "$lib/utils";
   import type { QInputProps } from "./props";
 
   export let bordered: QInputProps["bordered"] = false,
