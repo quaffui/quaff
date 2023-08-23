@@ -56,17 +56,17 @@
 //Layout
 @mixin include-drawers($baseWidth, $pos, $el) {
   // Left drawer
-  &.left ~ .q-#{$el} {
+  &.q-drawer--left ~ .q-#{$el} {
     width: calc(#{$baseWidth} - #{$L_Drawer});
   }
 
   // Right drawer
-  &.right ~ .q-#{$el} {
+  &.q-drawer--right ~ .q-#{$el} {
     width: calc(#{$baseWidth} - #{$R_Drawer});
   }
 
   // Left drawer + Right drawer
-  &.left ~ .q-drawer.active.right:not(.offset-#{$pos}, .overlay) {
+  &.q-drawer--left ~ .q-drawer--active.q-drawer--right:not(.q-drawer--offset-#{$pos}, .q-drawer--overlay) ~ .q-#{$el} {
     width: calc(#{$baseWidth} - #{$LR_Drawer});
   }
 }
