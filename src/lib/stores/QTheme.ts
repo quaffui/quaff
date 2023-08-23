@@ -1,7 +1,7 @@
 import { writable } from "svelte/store";
 import materialDynamicColors from "material-dynamic-colors";
-import { convertCase } from "$lib/utils/string";
-import QColors from "$lib/utils/colors";
+import { convertCase } from "$utils";
+import { QColors } from "$utils";
 import type {
   IMaterialDynamicColorsTheme,
   IMaterialDynamicColorsThemeColor,

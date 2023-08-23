@@ -1,5 +1,5 @@
 import type { QLayoutProps } from "$lib/components/layout/props";
-import { capitalize } from "$lib/utils/string";
+import { capitalize } from "$utils";
 
 export const snippet = (
   view: QLayoutProps["view"],

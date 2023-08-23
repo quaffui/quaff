@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { createClasses } from "$lib/utils/props";
+  import { createClasses } from "$lib/utils";
   import type { QTooltipProps } from "./props";
 
   export let value: QTooltipProps["value"] = undefined,

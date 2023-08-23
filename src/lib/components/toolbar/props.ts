@@ -1,4 +1,4 @@
-import type { NativeProps, CssValue } from "$lib/utils/types";
+import type { NativeProps, CssValue } from "$utils";
 import type { HTMLAttributes } from "svelte/elements";
 
 export interface QToolbarProps extends NativeProps, HTMLAttributes<HTMLElement> {

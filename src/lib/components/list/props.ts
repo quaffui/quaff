@@ -1,4 +1,4 @@
-import { NativePropsDefaults, type NativeProps } from "$lib/utils/types";
+import { NativePropsDefaults, type NativeProps } from "$utils";
 import { UseRouterLinkPropsDefaults } from "$lib/composables/use-router-link";
 import type { UseRouterLinkProps } from "$lib/composables/use-router-link";
 import type { QSeparatorProps } from "../separator/props";

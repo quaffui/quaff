@@ -1,10 +1,9 @@
 <script lang="ts">
-  import { createClasses } from "$lib/utils/props";
-  import QIcon from "../icon/QIcon.svelte";
+  import { useSize } from "$lib/composables";
+  import { ripple } from "$lib/helpers";
+  import { createClasses, isActivationKey } from "$lib/utils";
+  import { QIcon } from "..";
   import type { QChipProps } from "./props";
-  import { useSize } from "$lib/composables/use-size";
-    import { isActivationKey } from "$lib/utils/events";
-    import { ripple } from "$lib/helpers/ripple";
 
   export let content: QChipProps["content"] = undefined,
     icon: QChipProps["icon"] = undefined,

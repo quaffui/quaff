@@ -1,10 +1,7 @@
 <script lang="ts">
-  import { createClasses } from "$lib/utils/props";
-  import QBtn from "../button/QBtn.svelte";
-  import QIcon from "../icon/QIcon.svelte";
-  import QSelect from "../select/QSelect.svelte";
-  import type { QTableProps } from "./props";
-  import type { QTableColumn, QTableRow, QTableSort } from "./props";
+  import { createClasses } from "$lib/utils";
+  import { QIcon, QSelect, QBtn } from "..";
+  import type { QTableProps, QTableColumn, QTableRow, QTableSort } from "./props";
 
   export let columns: QTableProps["columns"] = [],
     rows: QTableProps["rows"] = [],

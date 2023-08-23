@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { createClasses } from "$utils/props";
+  import { createClasses } from "$lib/utils";
   import type { QCardProps } from "./props";
 
   export let bordered: QCardProps["bordered"] = false,

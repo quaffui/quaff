@@ -1,5 +1,5 @@
-import type { UseAlignProps } from "$lib/composables/use-align";
-import type { NativeProps } from "$lib/utils/types";
+import type { UseAlignProps } from "$lib/composables";
+import type { NativeProps } from "$lib/utils";
 import type { HTMLAttributes } from "svelte/elements";
 
 export type QCardFillColors = "primary" | "secondary" | "tertiary";
