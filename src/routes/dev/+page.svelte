@@ -469,14 +469,14 @@
               content="Click on me!"
               responsive
               icon="img:/cocktail.jpg"
-              on:activated={() => alert("OMG, you actually did it")}
+              on:click={() => alert("OMG, you actually did it")}
             />
             <QChip
               content="Can't click on me, now!"
               responsive
               disable
               icon="img:/cocktail.jpg"
-              on:activated={() => alert("OMG, you actually did it")}
+              on:click={() => alert("OMG, you actually did it")}
             />
           </div>
         </QCardSection>
