@@ -47,7 +47,7 @@
         <h4 class="q-ma-none q-pr-lg">{title}</h4>
       {/if}
       <QBtn
-        class="{btnColor}-border {btnColor}-text"
+        class="border-{btnColor} text-{btnColor}"
         size="sm"
         icon="content_copy"
         outline

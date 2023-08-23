@@ -236,7 +236,7 @@
               <QItem
                 {to}
                 on:click={() => contentEl.scrollTo({ top: 0, behavior: "smooth" })}
-                activeClass="primary-text"
+                activeClass="text-primary"
               >
                 {name}
               </QItem>

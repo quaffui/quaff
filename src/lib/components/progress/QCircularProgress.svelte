@@ -16,7 +16,7 @@
 
   $: classes = createClasses([indeterminate && "indeterminate"], {
     component: "q-circular-progress",
-    quaffClasses: [color && `${color}-text`],
+    quaffClasses: [color && `text-${color}`],
     userClasses,
   });
 </script>
