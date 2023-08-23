@@ -58,6 +58,7 @@
       width: 100%;
       height: 100%;
       background-color: var(--on-surface);
+      border-radius: inherit;
     }
 
     &:hover:not([aria-disabled])::after {
