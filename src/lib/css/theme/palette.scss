@@ -637,11 +637,11 @@ $colors-list: (
     }
 
     #{$text-selector} {
-      color: var(#{$var-name});
+      color: var(#{$var-name}) !important;
     }
 
     #{$bg-selector} {
-      background-color: var(#{$var-name});
+      background-color: var(#{$var-name}) !important;
     }
   }
 }
