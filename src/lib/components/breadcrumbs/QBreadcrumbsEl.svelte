@@ -23,7 +23,7 @@
   $: classes = createClasses([isActive && activeClass], {
     component: "q-breadcrumbs",
     element: "el",
-    quaffClasses: [isActive && `${activeColor}-text`],
+    quaffClasses: [isActive && `text-${activeColor}`],
     userClasses,
   });
 

@@ -20,7 +20,7 @@
 
   $: classes = createClasses([bordered && "bordered", flat && "flat", round && "rounded"], {
     component: "q-card",
-    quaffClasses: [`${color} on-${color}-text`],
+    quaffClasses: [color],
     userClasses,
   });
 </script>
