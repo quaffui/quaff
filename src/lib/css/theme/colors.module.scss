@@ -4,11 +4,17 @@
 .text-primary {
   color: var(--primary) !important;
 }
+.border-primary {
+  border-color: var(--primary) !important;
+}
 .bg-on-primary {
   background-color: var(--on-primary) !important;
 }
 .text-on-primary {
   color: var(--on-primary) !important;
+}
+.border-on-primary {
+  border-color: var(--on-primary) !important;
 }
 .primary {
   @extend .bg-primary;
@@ -21,11 +27,17 @@
 .text-primary-container {
   color: var(--primary-container) !important;
 }
+.border-primary-container {
+  border-color: var(--primary-container) !important;
+}
 .bg-on-primary-container {
   background-color: var(--on-primary-container) !important;
 }
 .text-on-primary-container {
   color: var(--on-primary-container) !important;
+}
+.border-on-primary-container {
+  border-color: var(--on-primary-container) !important;
 }
 .primary-container {
   @extend .bg-primary-container;
@@ -38,11 +50,17 @@
 .text-secondary {
   color: var(--secondary) !important;
 }
+.border-secondary {
+  border-color: var(--secondary) !important;
+}
 .bg-on-secondary {
   background-color: var(--on-secondary) !important;
 }
 .text-on-secondary {
   color: var(--on-secondary) !important;
+}
+.border-on-secondary {
+  border-color: var(--on-secondary) !important;
 }
 .secondary {
   @extend .bg-secondary;
@@ -55,11 +73,17 @@
 .text-secondary-container {
   color: var(--secondary-container) !important;
 }
+.border-secondary-container {
+  border-color: var(--secondary-container) !important;
+}
 .bg-on-secondary-container {
   background-color: var(--on-secondary-container) !important;
 }
 .text-on-secondary-container {
   color: var(--on-secondary-container) !important;
+}
+.border-on-secondary-container {
+  border-color: var(--on-secondary-container) !important;
 }
 .secondary-container {
   @extend .bg-secondary-container;
@@ -72,11 +96,17 @@
 .text-tertiary {
   color: var(--tertiary) !important;
 }
+.border-tertiary {
+  border-color: var(--tertiary) !important;
+}
 .bg-on-tertiary {
   background-color: var(--on-tertiary) !important;
 }
 .text-on-tertiary {
   color: var(--on-tertiary) !important;
+}
+.border-on-tertiary {
+  border-color: var(--on-tertiary) !important;
 }
 .tertiary {
   @extend .bg-tertiary;
@@ -89,11 +119,17 @@
 .text-tertiary-container {
   color: var(--tertiary-container) !important;
 }
+.border-tertiary-container {
+  border-color: var(--tertiary-container) !important;
+}
 .bg-on-tertiary-container {
   background-color: var(--on-tertiary-container) !important;
 }
 .text-on-tertiary-container {
   color: var(--on-tertiary-container) !important;
+}
+.border-on-tertiary-container {
+  border-color: var(--on-tertiary-container) !important;
 }
 .tertiary-container {
   @extend .bg-tertiary-container;
@@ -106,11 +142,17 @@
 .text-error {
   color: var(--error) !important;
 }
+.border-error {
+  border-color: var(--error) !important;
+}
 .bg-on-error {
   background-color: var(--on-error) !important;
 }
 .text-on-error {
   color: var(--on-error) !important;
+}
+.border-on-error {
+  border-color: var(--on-error) !important;
 }
 .error {
   @extend .bg-error;
@@ -123,11 +165,17 @@
 .text-error-container {
   color: var(--error-container) !important;
 }
+.border-error-container {
+  border-color: var(--error-container) !important;
+}
 .bg-on-error-container {
   background-color: var(--on-error-container) !important;
 }
 .text-on-error-container {
   color: var(--on-error-container) !important;
+}
+.border-on-error-container {
+  border-color: var(--on-error-container) !important;
 }
 .error-container {
   @extend .bg-error-container;
@@ -140,11 +188,17 @@
 .text-background {
   color: var(--background) !important;
 }
+.border-background {
+  border-color: var(--background) !important;
+}
 .bg-on-background {
   background-color: var(--on-background) !important;
 }
 .text-on-background {
   color: var(--on-background) !important;
+}
+.border-on-background {
+  border-color: var(--on-background) !important;
 }
 .background {
   @extend .bg-background;
@@ -157,11 +211,17 @@
 .text-surface {
   color: var(--surface) !important;
 }
+.border-surface {
+  border-color: var(--surface) !important;
+}
 .bg-on-surface {
   background-color: var(--on-surface) !important;
 }
 .text-on-surface {
   color: var(--on-surface) !important;
+}
+.border-on-surface {
+  border-color: var(--on-surface) !important;
 }
 .surface {
   @extend .bg-surface;
@@ -174,11 +234,17 @@
 .text-surface-variant {
   color: var(--surface-variant) !important;
 }
+.border-surface-variant {
+  border-color: var(--surface-variant) !important;
+}
 .bg-on-surface-variant {
   background-color: var(--on-surface-variant) !important;
 }
 .text-on-surface-variant {
   color: var(--on-surface-variant) !important;
+}
+.border-on-surface-variant {
+  border-color: var(--on-surface-variant) !important;
 }
 .surface-variant {
   @extend .bg-surface-variant;
@@ -191,12 +257,18 @@
 .text-outline {
   color: var(--outline) !important;
 }
+.border-outline {
+  border-color: var(--outline) !important;
+}
 
 .bg-inverse-surface {
   background-color: var(--inverse-surface) !important;
 }
 .text-inverse-surface {
   color: var(--inverse-surface) !important;
+}
+.border-inverse-surface {
+  border-color: var(--inverse-surface) !important;
 }
 
 .bg-inverse-on-surface {
@@ -205,12 +277,18 @@
 .text-inverse-on-surface {
   color: var(--inverse-on-surface) !important;
 }
+.border-inverse-on-surface {
+  border-color: var(--inverse-on-surface) !important;
+}
 
 .bg-inverse-primary {
   background-color: var(--inverse-primary) !important;
 }
 .text-inverse-primary {
   color: var(--inverse-primary) !important;
+}
+.border-inverse-primary {
+  border-color: var(--inverse-primary) !important;
 }
 
 .bg-shadow {
@@ -219,12 +297,18 @@
 .text-shadow {
   color: var(--shadow) !important;
 }
+.border-shadow {
+  border-color: var(--shadow) !important;
+}
 
 .bg-surface-tint {
   background-color: var(--surface-tint) !important;
 }
 .text-surface-tint {
   color: var(--surface-tint) !important;
+}
+.border-surface-tint {
+  border-color: var(--surface-tint) !important;
 }
 
 .bg-outline-variant {
@@ -233,10 +317,16 @@
 .text-outline-variant {
   color: var(--outline-variant) !important;
 }
+.border-outline-variant {
+  border-color: var(--outline-variant) !important;
+}
 
 .bg-scrim {
   background-color: var(--scrim) !important;
 }
 .text-scrim {
   color: var(--scrim) !important;
+}
+.border-scrim {
+  border-color: var(--scrim) !important;
 }

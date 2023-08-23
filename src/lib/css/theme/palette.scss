@@ -629,11 +629,13 @@ $colors-list: (
     $var-name: "--color-#{$color-name}-#{$i}";
     $text-selector: ".text-#{$color-name}-#{$i}";
     $bg-selector: ".bg-#{$color-name}-#{$i}";
+    $border-selector: ".border-#{$color-name}-#{$i}";
 
     // Color 6 is also the "default" color
     @if $i == 6 {
       $text-selector: ".text-#{$color-name}, #{$text-selector}";
       $bg-selector: ".bg-#{$color-name}, #{$bg-selector}";
+      $border-selector: ".border-#{$color-name}, #{$border-selector}";
     }
 
     #{$text-selector} {
@@ -642,6 +644,10 @@ $colors-list: (
 
     #{$bg-selector} {
       background-color: var(#{$var-name}) !important;
+    }
+
+    #{$border-selector} {
+      border-color: var(#{$var-name}) !important;
     }
   }
 }
