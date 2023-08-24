@@ -34,7 +34,7 @@ export const QTableDocsProps = [
   {
     name: "dense",
     type: "boolean",
-    optional: false,
+    optional: true,
     clickableType: false,
     description: "Shows the Table in dense mode (takes up less space).",
     default: "false",

@@ -2,7 +2,7 @@ export const QIconDocsProps = [
   {
     name: "size",
     type: "QIconSizeOptions",
-    optional: false,
+    optional: true,
     clickableType: true,
     description:
       'The size of the icon. Can be specified with CSS units. If no unit is specified, "px" will be used.',
@@ -11,7 +11,7 @@ export const QIconDocsProps = [
   {
     name: "type",
     type: "QIconTypeOptions",
-    optional: false,
+    optional: true,
     clickableType: true,
     description: "The type of the icon.",
     default: "outlined",
@@ -27,7 +27,7 @@ export const QIconDocsProps = [
   {
     name: "filled",
     type: "boolean",
-    optional: false,
+    optional: true,
     clickableType: false,
     description: "Determines whether the icon should be filled.",
     default: "false",
@@ -51,7 +51,7 @@ export const QIconDocsProps = [
   {
     name: "imgAttributes",
     type: "Record<string, any>",
-    optional: false,
+    optional: true,
     clickableType: true,
     description:
       'Additional attributes for the image element when using the `img` prop, as for example the "alt" attribute.',

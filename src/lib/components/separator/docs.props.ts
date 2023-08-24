@@ -1,16 +1,16 @@
 export const QSeparatorPropsVertical = [
   {
     name: "spacing",
-    type: '"none" | "sm" | "md" | "lg"',
-    optional: false,
-    clickableType: false,
+    type: "QuaffSizes",
+    optional: true,
+    clickableType: true,
     description: "",
     default: "",
   },
   {
     name: "inset",
     type: "boolean",
-    optional: false,
+    optional: true,
     clickableType: false,
     description: "",
     default: "",
@@ -18,7 +18,7 @@ export const QSeparatorPropsVertical = [
   {
     name: "vertical",
     type: "true",
-    optional: false,
+    optional: true,
     clickableType: false,
     description: "",
     default: "",
@@ -50,7 +50,7 @@ export const QSeparatorPropsVertical = [
   {
     name: "textAlign",
     type: '"top" | "middle" | "bottom"',
-    optional: false,
+    optional: true,
     clickableType: false,
     description: "",
     default: "",
@@ -60,16 +60,16 @@ export const QSeparatorPropsVertical = [
 export const QSeparatorPropsHorizontal = [
   {
     name: "spacing",
-    type: '"none" | "sm" | "md" | "lg"',
-    optional: false,
-    clickableType: false,
+    type: "QuaffSizes",
+    optional: true,
+    clickableType: true,
     description: "",
     default: "",
   },
   {
     name: "inset",
     type: "boolean",
-    optional: false,
+    optional: true,
     clickableType: false,
     description: "",
     default: "",
@@ -77,7 +77,7 @@ export const QSeparatorPropsHorizontal = [
   {
     name: "vertical",
     type: "false",
-    optional: false,
+    optional: true,
     clickableType: false,
     description: "",
     default: "",
@@ -93,7 +93,7 @@ export const QSeparatorPropsHorizontal = [
   {
     name: "size",
     type: "string",
-    optional: false,
+    optional: true,
     clickableType: false,
     description: "",
     default: "",
@@ -109,7 +109,7 @@ export const QSeparatorPropsHorizontal = [
   {
     name: "textAlign",
     type: '"left" | "center" | "right"',
-    optional: false,
+    optional: true,
     clickableType: false,
     description: "",
     default: "",

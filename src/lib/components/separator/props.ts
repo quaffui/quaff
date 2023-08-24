@@ -1,8 +1,8 @@
-import type { NativeProps } from "$lib/utils";
+import type { NativeProps, QuaffSizes } from "$lib/utils";
 import type { HTMLAttributes } from "svelte/elements";
 
 interface QSeparatorPropsVertical extends NativeProps {
-  spacing?: "none" | "sm" | "md" | "lg";
+  spacing?: QuaffSizes;
   inset?: boolean;
   vertical?: true;
   color?: string;
@@ -12,7 +12,7 @@ interface QSeparatorPropsVertical extends NativeProps {
 }
 
 interface QSeparatorPropsHorizontal extends NativeProps, HTMLAttributes<HTMLDivElement> {
-  spacing?: "none" | "sm" | "md" | "lg";
+  spacing?: QuaffSizes;
   inset?: boolean;
   vertical?: false;
   color?: string;
