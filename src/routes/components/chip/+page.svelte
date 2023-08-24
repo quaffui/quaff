@@ -12,7 +12,7 @@
   <div slot="usage">
     <QDocsSection {snippets} title="Default">
       <div class="flex q-gap-lg items-center">
-        <QChip class="green" content="Green Chip" />
+        <QChip class="bg-green" content="Green Chip" />
         <QChip class="error" content="Error Chip" />
         <QChip class="primary" content="Primary Chip" />
         <QChip class="primary-container" content="Primary Container Chip" />

@@ -1,8 +1,8 @@
 <script lang="ts">
+  import { Quaff } from "$lib/stores";
   import { QCard, QCardSection } from "$lib";
-  import { Quaff } from "$lib/stores/Quaff";
   import QApi from "./QApi.svelte";
-  import type { QComponentDocs } from "$utils/types";
+  import type { QComponentDocs } from "$lib/utils";
 
   export let QComponentDocs: QComponentDocs | QComponentDocs[];
 

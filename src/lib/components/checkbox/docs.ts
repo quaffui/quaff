@@ -1,5 +1,5 @@
-import type { QComponentDocs } from "$lib/utils/types";
 import { QCheckboxDocsProps } from "./docs.props";
+import type { QComponentDocs } from "$lib/utils";
 
 export let QCheckboxDocs: QComponentDocs = {
   name: "QCheckbox",

@@ -1,2 +1,2 @@
 export * from "./clickOutside";
-export * from "./activationHandler";
+export * from "./ripple";

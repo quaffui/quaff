@@ -1,10 +1,9 @@
 <script lang="ts">
-  import { activationHandler } from "$lib/helpers/activationHandler";
-  import { createClasses } from "$lib/utils/props";
-  import { createEventDispatcher } from "svelte";
-  import QIcon from "../icon/QIcon.svelte";
+  import { useSize } from "$lib/composables";
+  import { ripple } from "$lib/helpers";
+  import { createClasses, isActivationKey } from "$lib/utils";
+  import { QIcon } from "$lib";
   import type { QChipProps } from "./props";
-  import { useSize } from "$lib/composables/use-size";
 
   export let content: QChipProps["content"] = undefined,
     icon: QChipProps["icon"] = undefined,
@@ -14,13 +13,14 @@
     vertical: QChipProps["vertical"] = false,
     round: QChipProps["round"] = false,
     outlined: QChipProps["outlined"] = false,
+    noRipple: QChipProps["noRipple"] = false,
     size: QChipProps["size"] = "md",
     tabindex: QChipProps["tabindex"] = undefined,
     href: QChipProps["href"] = undefined,
     userClasses: QChipProps["userClasses"] = undefined;
   export { userClasses as class };
 
-  const emit = createEventDispatcher();
+  let qChip: HTMLAnchorElement
 
   $: img = icon?.startsWith("img:") ? icon.slice(4) : undefined;
   $: imgRight = iconRight?.startsWith("img:") ? iconRight.slice(4) : undefined;
@@ -46,15 +46,27 @@
   });
 
   $: tab = disable ? -1 : tabindex ?? 0;
+
+  function onKeyDown(e: KeyboardEvent) {
+    if (!isActivationKey(e)) return;
+
+    e.preventDefault();
+
+    let click = new MouseEvent("click");
+    qChip.dispatchEvent(click);
+  }
 </script>
 
 <a
-  use:activationHandler={{ disable, callback: (e) => emit("activated", e) }}
-  {href}
-  class={classes}
-  tabindex={tab}
-  {...$$restProps}
+  bind:this={qChip}
+  use:ripple={{disable: noRipple || disable}}
   aria-disabled={disable || undefined}
+  class={classes}
+  {href}
+  tabindex={tab}
+  on:click
+  on:keydown={onKeyDown}
+  {...$$restProps}
 >
   {#if $$slots.leading}
     <slot name="leading" />

@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { useSize } from "$lib/composables/use-size";
-  import { createClasses, createStyles } from "$lib/utils/props";
+  import { useSize } from "$lib/composables";
+  import { createClasses, createStyles } from "$lib/utils";
   import type { QAvatarProps } from "./props";
 
   export let shape: QAvatarProps["shape"] = "circle",

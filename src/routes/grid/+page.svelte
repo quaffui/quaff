@@ -13,8 +13,8 @@
     {#each Array(4) as _, idx}
       <div
         class="col-xs-12 col-md-6 col-lg-3 {idx % 2 === 0
-          ? 'primary on-primary-text'
-          : 'secondary on-secondary-text'} text-center"
+          ? 'primary'
+          : 'secondary'} text-center"
       >
         col-xs-12 col-md-6 col-lg-3
       </div>
@@ -32,15 +32,15 @@
     <h4>{size}</h4>
 
     <div class="row q-gutter-{size}">
-      <div class="border text-center col-6 primary on-primary-text">col-6</div>
-      <div class="border text-center col-6 secondary on-secondary-text">col-6</div>
-      <div class="border text-center col-4 primary on-primary-text">col-4</div>
-      <div class="border text-center col-4 secondary on-secondary-text">col-4</div>
-      <div class="border text-center col-4 primary on-primary-text">col-4</div>
-      <div class="border text-center col-3 primary on-primary-text">col-3</div>
-      <div class="border text-center col-3 secondary on-secondary-text">col-3</div>
-      <div class="border text-center col-3 primary on-primary-text">col-3</div>
-      <div class="border text-center col-3 secondary on-secondary-text">col-3</div>
+      <div class="border text-center col-6 primary">col-6</div>
+      <div class="border text-center col-6 secondary">col-6</div>
+      <div class="border text-center col-4 primary">col-4</div>
+      <div class="border text-center col-4 secondary">col-4</div>
+      <div class="border text-center col-4 primary">col-4</div>
+      <div class="border text-center col-3 primary">col-3</div>
+      <div class="border text-center col-3 secondary">col-3</div>
+      <div class="border text-center col-3 primary">col-3</div>
+      <div class="border text-center col-3 secondary">col-3</div>
     </div>
   {/each}
 

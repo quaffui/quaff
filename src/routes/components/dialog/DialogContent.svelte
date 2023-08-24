@@ -23,7 +23,7 @@
   </QCardSection>
   <QCardSection>
     <div class="flex items-center" style="white-space: pre">
-      I've read the <span class="primary-text" style="cursor: pointer"> terms and conditions </span>
+      I've read the <span class="text-primary" style="cursor: pointer"> terms and conditions </span>
       <QCheckbox class="q-ml-sm" bind:value={exampleCheckbox} />
     </div>
   </QCardSection>

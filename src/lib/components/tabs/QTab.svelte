@@ -1,15 +1,13 @@
 <script lang="ts">
-  import { Quaff } from "$stores/Quaff";
-  import { getContext, hasContext } from "svelte";
-  import type { QTabProps, QTabsVariants } from "./props";
+  import { QIcon } from "$lib";
+  import { isRouteActive } from "$lib/composables";
+  import { ripple } from "$lib/helpers";
+  import { Quaff } from "$lib/stores";
+  import { createClasses, isActivationKey, isArrowKey, getDirection, getClosestFocusableSibling, isTabKey, getClosestFocusableBlock } from "$lib/utils";
+  import { hasContext, getContext } from "svelte";
+  import type { Direction } from "$lib/utils";
   import type { Writable } from "svelte/store";
-  import { createClasses } from "$lib/utils/props";
-  import QIcon from "../icon/QIcon.svelte";
-  import { isRouteActive } from "$lib/composables/use-router-link";
-  import type { Direction } from "$lib/utils/events";
-  import { getDirection, isActivationKey, isArrowKey, isTabKey } from "$lib/utils/events";
-  import { ripple } from "$lib/helpers/ripple";
-  import { getClosestFocusableBlock, getClosestFocusableSibling } from "$lib/utils/dom";
+  import type { QTabProps, QTabsVariants } from "./props";
 
   export let name: QTabProps["name"] = undefined,
     to: QTabProps["to"] = undefined,

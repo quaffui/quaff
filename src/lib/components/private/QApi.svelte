@@ -1,12 +1,4 @@
 <script lang="ts">
-  import { capitalize } from "$lib/utils/string";
-  import type {
-    QComponentDocs,
-    QComponentProp,
-    QComponentSlot,
-    QComponentType,
-    QComponentEvent,
-  } from "$lib/utils/types";
   import {
     QCard,
     QIcon,
@@ -19,7 +11,15 @@
     QDrawer,
     QCodeBlock,
   } from "$lib";
-  import Types from "$utils/types.json";
+  import { capitalize } from "$lib/utils";
+  import Types from "$lib/utils/types.json";
+  import type {
+    QComponentDocs,
+    QComponentProp,
+    QComponentSlot,
+    QComponentType,
+    QComponentEvent,
+  } from "$lib/utils";
 
   export let QComponentDocs: QComponentDocs[];
 

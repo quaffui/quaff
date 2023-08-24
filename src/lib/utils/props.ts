@@ -2,7 +2,7 @@ import { convertCase } from "./string";
 
 export function createStyles(
   styleObj: Record<string, string | number | boolean | null | undefined>,
-  userStyles?: string
+  userStyles?: string | null
 ) {
   const stylesArray = Object.entries(styleObj);
   const toJoin: string[] = [];

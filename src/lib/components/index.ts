@@ -5,6 +5,7 @@ import QCardSection from "./card/QCardSection.svelte";
 import QCardActions from "./card/QCardActions.svelte";
 import QCheckbox from "./checkbox/QCheckbox.svelte";
 import QChip from "./chip/QChip.svelte";
+import QCircularProgress from "./progress/QCircularProgress.svelte";
 import QCodeBlock from "./codeBlock/QCodeBlock.svelte";
 import QDialog from "./dialog/QDialog.svelte";
 import QDrawer from "./drawer/QDrawer.svelte";
@@ -37,6 +38,7 @@ export {
   QCardActions,
   QCheckbox,
   QChip,
+  QCircularProgress,
   QCodeBlock,
   QDialog,
   QDrawer,

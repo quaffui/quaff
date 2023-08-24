@@ -1,12 +1,12 @@
 <script lang="ts">
-  import QSeparator from "$lib/components/separator/QSeparator.svelte";
-  import useRouterLink, { isRouteActive } from "$lib/composables/use-router-link";
-  import { createClasses } from "$lib/utils/props";
-  import { getContext, setContext } from "svelte";
-  import type { QListProps, QItemProps } from "./props";
+  import { useRouterLink, isRouteActive } from "$lib/composables";
+  import { ripple } from "$lib/helpers";
   import { Quaff } from "$lib/stores/Quaff";
+  import { createClasses } from "$lib/utils";
+  import { setContext, getContext } from "svelte";
   import { writable } from "svelte/store";
-  import { ripple } from "$lib/helpers/ripple";
+  import { QSeparator } from "$lib";
+  import type { QItemProps, QListProps } from "./props";
 
   export let tag: QItemProps["tag"] = "div",
     active: QItemProps["active"] = false,

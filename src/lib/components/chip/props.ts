@@ -1,4 +1,4 @@
-import type { NativeProps, QuaffSizes } from "$lib/utils/types";
+import type { QuaffSizes, NativeProps } from "$lib/utils";
 import type { HTMLAttributes } from "svelte/elements";
 
 export type QChipSizeOptions = Exclude<QuaffSizes, "xs" | "xl">;
@@ -51,6 +51,12 @@ export interface QChipProps extends NativeProps, HTMLAttributes<HTMLAnchorElemen
    * @default false
    */
   outlined?: boolean;
+
+  /**
+   * Disable the ripple effect for the chip.
+   * @default false
+   */
+  noRipple?: boolean;
 
   /**
    * Size of the chip.

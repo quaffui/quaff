@@ -16,11 +16,11 @@
     QToggle,
   } from "$lib";
   import { QLayoutDocs } from "$lib/components/layout/docs";
-  import type { QLayoutProps } from "$lib/components/layout/props";
   import QDocs from "$lib/components/private/QDocs.svelte";
   import QDocsSection from "$lib/components/private/QDocsSection.svelte";
-  import { createStyles } from "$lib/utils/props";
+  import { createStyles } from "$lib/utils";
   import { snippet } from "./docs.snippets";
+  import type { QLayoutProps } from "$lib/components/layout/props";
 
   let displayLeftDrawerElement: QDrawer;
   let displayLeftDrawer = false;

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { createClasses } from "$utils/props";
+  import { createClasses } from "$lib/utils";
   import type { QCardProps } from "./props";
 
   export let bordered: QCardProps["bordered"] = false,
@@ -20,7 +20,7 @@
 
   $: classes = createClasses([bordered && "bordered", flat && "flat", round && "rounded"], {
     component: "q-card",
-    quaffClasses: [`${color} on-${color}-text`],
+    quaffClasses: [color],
     userClasses,
   });
 </script>

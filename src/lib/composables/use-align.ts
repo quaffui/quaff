@@ -34,7 +34,7 @@ const alignMap = {
   stretch: "stretch",
 } as const;
 
-export default function useAlign(align: UseAlignOptions = "top left") {
+export function useAlign(align: UseAlignOptions = "top left") {
   const alignments = align
     .split(" ")
     .map((entry) => {

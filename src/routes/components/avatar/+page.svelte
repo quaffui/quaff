@@ -12,8 +12,8 @@
   <div slot="usage">
     <QDocsSection {snippets} title="Default slot">
       <div class="flex q-gap-lg items-center">
-        <QAvatar class="green">GR</QAvatar>
-        <QAvatar class="red5">RD</QAvatar>
+        <QAvatar class="bg-green">GR</QAvatar>
+        <QAvatar class="bg-red-5">RD</QAvatar>
         <QAvatar class="primary">PR</QAvatar>
         <QAvatar class="primary-container">PC</QAvatar>
       </div>

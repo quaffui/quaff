@@ -1,6 +1,6 @@
-import { NativePropsDefaults } from "$lib/utils/types";
-import type { NativeProps } from "$lib/utils/types";
+import { NativePropsDefaults } from "$lib/utils";
 import type { HTMLAttributes } from "svelte/elements";
+import type { NativeProps } from "$lib/utils";
 
 export interface QTooltipProps extends NativeProps, HTMLAttributes<HTMLDivElement> {
   value?: boolean;

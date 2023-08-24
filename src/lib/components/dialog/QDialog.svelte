@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { createClasses } from "$lib/utils/props";
-  import { createEventDispatcher, onMount } from "svelte";
-  import type { QDialogProps } from "./props";
-  import QBtn from "../button/QBtn.svelte";
   import { clickOutsideDialog } from "$lib/helpers";
+  import { createClasses } from "$lib/utils";
+  import { createEventDispatcher, onMount } from "svelte";
+  import { QBtn } from "$lib";
+  import type { QDialogProps } from "./props";
 
   export let noBtn: QDialogProps["noBtn"] = false,
     btnContent: QDialogProps["btnContent"] = undefined,

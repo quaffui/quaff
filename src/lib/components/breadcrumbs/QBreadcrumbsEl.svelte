@@ -1,10 +1,10 @@
 <script lang="ts">
-  import { getContext } from "svelte";
-  import type { QBreadcrumbsElProps } from "./props";
-  import QIcon from "../icon/QIcon.svelte";
-  import { createClasses } from "$lib/utils/props";
-  import { isRouteActive } from "$lib/composables/use-router-link";
+  import { isRouteActive } from "$lib/composables";
   import { Quaff } from "$lib/stores/Quaff";
+  import { createClasses } from "$lib/utils";
+  import { getContext } from "svelte";
+  import { QIcon } from "$lib";
+  import type { QBreadcrumbsElProps } from "./props";
 
   export let label: QBreadcrumbsElProps["label"] = "",
     icon: QBreadcrumbsElProps["icon"] = undefined,
@@ -23,7 +23,7 @@
   $: classes = createClasses([isActive && activeClass], {
     component: "q-breadcrumbs",
     element: "el",
-    quaffClasses: [isActive && `${activeColor}-text`],
+    quaffClasses: [isActive && `text-${activeColor}`],
     userClasses,
   });
 

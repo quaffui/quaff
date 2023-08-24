@@ -1,8 +1,8 @@
 <script lang="ts">
+  import { createClasses, createStyles } from "$lib/utils";
   import { onMount, setContext } from "svelte";
+  import { writable, derived } from "svelte/store";
   import type { QTabsProps } from "./props";
-  import { createClasses, createStyles } from "$lib/utils/props";
-  import { derived, writable } from "svelte/store";
 
   export let value: QTabsProps["value"] = undefined,
     variant: QTabsProps["variant"] = "primary",
