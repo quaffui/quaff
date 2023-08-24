@@ -1,10 +1,10 @@
 <script lang="ts">
+  import { useSize } from "$lib/composables";
+  import { createClasses, createStyles } from "$lib/utils";
   import { getContext } from "svelte";
-  import type { QRailbarProps } from "./props";
-  import type { LayoutContext } from "../layout/QLayout.svelte";
-  import { createClasses, createStyles } from "$lib/utils/props";
-  import { useSize } from "$lib/composables/use-size";
   import { derived } from "svelte/store";
+  import type { LayoutContext } from "../layout/QLayout.svelte";
+  import type { QRailbarProps } from "./props";
 
   export let width: QRailbarProps["width"] = 88,
     side: QRailbarProps["side"] = "left",

@@ -1,5 +1,5 @@
-import type { QComponentDocs } from "$utils/types";
 import { QTooltipDocsProps } from "./docs.props";
+import type { QComponentDocs } from "$lib/utils";
 
 export let QTooltipDocs: QComponentDocs = {
   name: "QTooltip",

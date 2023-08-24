@@ -1,8 +1,9 @@
-import { NativePropsDefaults, type NativeProps } from "$lib/utils/types";
+import { NativePropsDefaults } from "$lib/utils";
 import { UseRouterLinkPropsDefaults } from "$lib/composables/use-router-link";
 import type { UseRouterLinkProps } from "$lib/composables/use-router-link";
 import type { QSeparatorProps } from "../separator/props";
 import type { HTMLAnchorAttributes, HTMLAttributes } from "svelte/elements";
+import type { NativeProps } from "$lib/utils";
 
 export interface QListProps extends NativeProps, HTMLAttributes<HTMLElement> {
   bordered?: boolean;

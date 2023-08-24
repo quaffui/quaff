@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { createClasses } from "$lib/utils/props";
+  import { createClasses } from "$lib/utils";
   import { getContext } from "svelte";
-  import type { QHeaderProps } from "./props";
+  import { QToolbar } from "$lib";
   import type { LayoutContext } from "../layout/QLayout.svelte";
-  import QToolbar from "../toolbar/QToolbar.svelte";
+  import type { QHeaderProps } from "./props";
 
   export let inset: QHeaderProps["inset"] = false,
     elevate: QHeaderProps["elevate"] = false,

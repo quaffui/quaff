@@ -1,9 +1,9 @@
 <script lang="ts">
+  import { useSize } from "$lib/composables";
+  import { createClasses, createStyles } from "$lib/utils";
   import { getContext } from "svelte";
-  import type { QFooterProps } from "./props";
-  import { createClasses, createStyles } from "$lib/utils/props";
   import type { LayoutContext } from "../layout/QLayout.svelte";
-  import { useSize } from "$lib/composables/use-size";
+  import type { QFooterProps } from "./props";
 
   export let value: QFooterProps["value"] = true,
     border: QFooterProps["border"] = false,

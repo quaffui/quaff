@@ -1,4 +1,4 @@
-import type { NativeProps } from "$lib/utils/types";
+import type { NativeProps } from "$lib/utils";
 import type { HTMLAttributes } from "svelte/elements";
 
 export type QBreadcrumbsGutterOptions = "none" | "sm" | "md" | "lg";

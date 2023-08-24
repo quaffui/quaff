@@ -1,4 +1,5 @@
-import { NativePropsDefaults, type NativeProps } from "$utils/types";
+import { NativePropsDefaults } from "$lib/utils";
+import type { NativeProps } from "$lib/utils";
 
 export interface QToggleProps extends NativeProps {
   value?: boolean;

@@ -1,7 +1,6 @@
 <script lang="ts">
-  import { useSize } from "$lib/composables/use-size";
-  import { createClasses } from "$lib/utils/props";
-  import { isNumber } from "$lib/utils/types";
+  import { useSize } from "$lib/composables";
+  import { createClasses } from "$lib/utils";
   import type { QCircularProgressProps } from "./props";
 
   export let value: QCircularProgressProps["value"] = 0,
@@ -16,7 +15,7 @@
 
   $: classes = createClasses([indeterminate && "indeterminate"], {
     component: "q-circular-progress",
-    quaffClasses: [color && `${color}-text`],
+    quaffClasses: [color && `text-${color}`],
     userClasses,
   });
 </script>

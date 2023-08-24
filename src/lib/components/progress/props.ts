@@ -1,4 +1,4 @@
-import type { NativeProps, CssValue } from "$utils/types";
+import type { NativeProps, CssValue } from "$lib/utils";
 import type { HTMLAttributes, SVGAttributes } from "svelte/elements";
 
 export interface QLinearProgressProps extends NativeProps, HTMLAttributes<HTMLDivElement> {

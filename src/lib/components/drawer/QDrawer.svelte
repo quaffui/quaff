@@ -1,12 +1,12 @@
 <script lang="ts">
   import { navigating } from "$app/stores";
-  import { createClasses, createStyles } from "$lib/utils/props";
-  import { getContext } from "svelte";
-  import type { QDrawerProps } from "./props";
-  import type { LayoutContext } from "../layout/QLayout.svelte";
+  import { useSize } from "$lib/composables";
   import { clickOutside } from "$lib/helpers";
-  import { useSize } from "$lib/composables/use-size";
+  import { createClasses, createStyles } from "$lib/utils";
+  import { getContext } from "svelte";
   import { derived } from "svelte/store";
+  import type { LayoutContext } from "../layout/QLayout.svelte";
+  import type { QDrawerProps } from "./props";
 
   export let value: QDrawerProps["value"] = false,
     side: QDrawerProps["side"] = "left",

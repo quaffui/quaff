@@ -3,7 +3,7 @@
   import { QTableDocs } from "$components/table/docs";
   import QDocs from "$lib/components/private/QDocs.svelte";
   import QDocsSection from "$lib/components/private/QDocsSection.svelte";
-  import type { QTableColumn, QTableRow } from "$lib/components/table/types";
+  import type { QTableColumn, QTableRow } from "$lib/components/table/props";
 
   const columns: QTableColumn[] = [
     {

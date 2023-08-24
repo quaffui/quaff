@@ -1,4 +1,4 @@
-import { createClasses } from "$lib/utils/props";
+import { createClasses } from "$lib/utils";
 import type { Page } from "@sveltejs/kit";
 
 export interface UseRouterLinkProps {
@@ -26,7 +26,7 @@ export function isRouteActive(
     : router.url.pathname.slice(0, (to || "").length) === to;
 }
 
-export default function <T extends UseRouterLinkProps>(props: T) {
+export function useRouterLink<T extends UseRouterLinkProps>(props: T) {
   const hasLink = [props.to, props.href].some((entry) => typeof entry !== "undefined");
   const linkClasses = createClasses([hasLink && "q-link", props.disable && "disable"]);
 

@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { createClasses, createStyles } from "$lib/utils/props";
+  import { useSize } from "$lib/composables";
+  import { createClasses, createStyles } from "$lib/utils";
   import type { QToolbarProps } from "./props";
-  import { useSize } from "$lib/composables/use-size";
 
   export let inset: QToolbarProps["inset"] = false,
     border: QToolbarProps["border"] = false,

@@ -1,6 +1,6 @@
 <script lang="ts">
-  import useAlign from "$lib/composables/use-align";
-  import { createClasses } from "$utils/props";
+  import {useAlign} from "$lib/composables";
+  import { createClasses } from "$lib/utils";
   import type { QCardActionsProps } from "./props";
 
   export let align: QCardActionsProps["align"] = undefined,

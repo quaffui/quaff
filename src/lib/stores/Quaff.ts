@@ -3,7 +3,7 @@ import { page } from "$app/stores";
 import version from "$lib/helpers/version";
 
 function quaff() {
-  const { subscribe, set, update } = writable({
+  const { subscribe, update } = writable({
     version,
     dark: false,
     //TODO lang: {},

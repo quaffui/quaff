@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { createClasses } from "$lib/utils/props";
-  import type { QListProps } from "./props";
+  import { createClasses } from "$lib/utils";
   import { onMount, setContext } from "svelte";
+  import type { QListProps } from "./props";
 
   export let bordered: QListProps["bordered"] = false,
     roundedBorders: QListProps["roundedBorders"] = false,

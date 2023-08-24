@@ -1,4 +1,4 @@
-import type { NativeProps, QuaffSizes } from "$utils/types";
+import type { NativeProps, QuaffSizes } from "$lib/utils";
 import type { HTMLAnchorAttributes, HTMLAttributes } from "svelte/elements";
 
 export type QBtnSizeOptions = Exclude<QuaffSizes, "xs">;

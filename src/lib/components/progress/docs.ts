@@ -1,5 +1,5 @@
-import type { QComponentDocs } from "$utils/types";
 import { QLinearProgressDocsProps } from "./docs.props";
+import type { QComponentDocs } from "$lib/utils";
 
 export let QProgressDocs: QComponentDocs = {
   name: "QProgress",

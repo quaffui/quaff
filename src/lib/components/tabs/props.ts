@@ -1,5 +1,6 @@
-import { NativePropsDefaults, type NativeProps } from "$lib/utils/types";
+import { NativePropsDefaults } from "$lib/utils";
 import type { HTMLAttributes } from "svelte/elements";
+import type { NativeProps } from "$lib/utils";
 
 export type QTabsVariants = "primary" | "secondary" | "vertical";
 

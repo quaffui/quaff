@@ -1,12 +1,9 @@
 <script lang="ts">
-  import { createClasses } from "$lib/utils/props";
-  import { createEventDispatcher, onMount } from "svelte";
-  import QIcon from "../icon/QIcon.svelte";
-  import QCircularProgress from "../progress/QCircularProgress.svelte";
+  import { useSize } from "$lib/composables";
+  import { ripple } from "$lib/helpers";
+  import { createClasses, isActivationKey } from "$lib/utils";
+  import { QIcon, QCircularProgress } from "$lib";
   import type { QBtnProps } from "./props";
-  import { useSize } from "$lib/composables/use-size";
-  import { isActivationKey } from "$lib/utils/events";
-  import { ripple } from "$lib/helpers/ripple";
 
   export let icon: QBtnProps["icon"] = undefined,
     label: QBtnProps["label"] = undefined,

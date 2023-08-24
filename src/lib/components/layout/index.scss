@@ -175,6 +175,7 @@ $contentSlot: ":not(.q-header, .q-footer, .q-railbar, .q-drawer)";
 
   & .q-list > .q-item.q-link {
     border-radius: 2rem;
+    overflow: hidden;
 
     &::before {
       content: "";
@@ -200,11 +201,6 @@ $contentSlot: ":not(.q-header, .q-footer, .q-railbar, .q-drawer)";
         opacity: 1;
         transform: scaleX(1);
       }
-    }
-
-    &:hover {
-      background-color: var(--on-surface-variant-2);
-      font-variation-settings: "GRAD" 50;
     }
   }
 }
