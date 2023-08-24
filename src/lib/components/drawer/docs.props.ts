@@ -17,7 +17,7 @@ export const QDrawerDocsProps = [
   },
   {
     name: "width",
-    type: "number | string",
+    type: "number | CssValue",
     optional: true,
     clickableType: true,
     description:

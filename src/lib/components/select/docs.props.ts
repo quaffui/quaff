@@ -1,7 +1,7 @@
 export const QSelectDocsProps = [
   {
     name: "value",
-    type: "string | string[] | number | number[]",
+    type: "QSelectValue",
     optional: false,
     clickableType: true,
     description: "",
@@ -42,7 +42,7 @@ export const QSelectDocsProps = [
   {
     name: "disable",
     type: "boolean",
-    optional: false,
+    optional: true,
     clickableType: false,
     description: "",
     default: "",
@@ -50,7 +50,7 @@ export const QSelectDocsProps = [
   {
     name: "error",
     type: "boolean",
-    optional: false,
+    optional: true,
     clickableType: false,
     description: "",
     default: "",
@@ -66,7 +66,7 @@ export const QSelectDocsProps = [
   {
     name: "filled",
     type: "boolean",
-    optional: false,
+    optional: true,
     clickableType: false,
     description: "",
     default: "",
