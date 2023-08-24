@@ -23,7 +23,7 @@
 
 <div class={classes} {...$$restProps}>
   {#if type === "content"}
-    {#if [$$slots.headline, $$slots.line2, $$slots.line2, $$slots.line3].some(Boolean) === false}
+    {#if ![$$slots.headline, $$slots.line2, $$slots.line2, $$slots.line3].some(Boolean)}
       <slot />
     {:else}
       {#if $$slots.headline}
