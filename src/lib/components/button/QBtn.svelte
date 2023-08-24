@@ -44,6 +44,13 @@
     }
   );
 
+  function stopIfDisabled(e: MouseEvent) {
+    if(disable) {
+      e.preventDefault()
+      e.stopImmediatePropagation()
+    }
+  }
+
   function onKeyDown(e: KeyboardEvent) {
     if (!isActivationKey(e)) return;
 
@@ -63,8 +70,9 @@
   class={classes}
   aria-disabled={disable || undefined}
   tabindex={disable ? -1 : 0}
-  on:click
   on:keydown={onKeyDown}
+  on:click={stopIfDisabled}
+  on:click
   {...$$restProps}
 >
   {#if icon && !loading}

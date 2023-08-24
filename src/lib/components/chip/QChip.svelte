@@ -47,6 +47,13 @@
 
   $: tab = disable ? -1 : tabindex ?? 0;
 
+  function stopIfDisabled(e: MouseEvent) {
+    if(disable) {
+      e.preventDefault()
+      e.stopImmediatePropagation()
+    }
+  }
+
   function onKeyDown(e: KeyboardEvent) {
     if (!isActivationKey(e)) return;
 
@@ -64,8 +71,9 @@
   class={classes}
   {href}
   tabindex={tab}
-  on:click
   on:keydown={onKeyDown}
+  on:click={stopIfDisabled}
+  on:click
   {...$$restProps}
 >
   {#if $$slots.leading}
