@@ -10,7 +10,7 @@ export const QTooltipDocsProps = [
   {
     name: "position",
     type: '"top" | "right" | "bottom" | "left"',
-    optional: false,
+    optional: true,
     clickableType: false,
     description: "",
     default: "",

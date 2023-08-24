@@ -56,6 +56,14 @@ export const QBtnDocsProps = [
     default: "false",
   },
   {
+    name: "noRipple",
+    type: "boolean",
+    optional: true,
+    clickableType: false,
+    description: "Disable the ripple effect for the button.",
+    default: "false",
+  },
+  {
     name: "round",
     type: "boolean",
     optional: true,
@@ -87,6 +95,14 @@ export const QBtnDocsProps = [
     clickableType: true,
     description: "Size of the button.",
     default: "md",
+  },
+  {
+    name: "target",
+    type: 'HTMLAnchorAttributes["target"]',
+    optional: true,
+    clickableType: true,
+    description: 'For "a" (anchor) tag only, apply the target attribute.',
+    default: "undefined",
   },
 ];
 

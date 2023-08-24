@@ -9,7 +9,7 @@ export const QFooterDocsProps = [
     default: "true",
   },
   {
-    name: "bordered",
+    name: "border",
     type: "boolean",
     optional: true,
     clickableType: false,
@@ -17,7 +17,7 @@ export const QFooterDocsProps = [
     default: "false",
   },
   {
-    name: "elevated",
+    name: "elevate",
     type: "boolean",
     optional: true,
     clickableType: false,
@@ -26,9 +26,9 @@ export const QFooterDocsProps = [
   },
   {
     name: "height",
-    type: "string | number",
+    type: "number | CssValue",
     optional: true,
-    clickableType: false,
+    clickableType: true,
     description:
       'The height of the footer. Can be specified with a CSS unit. If not specified, "px" will be used. (not supported yet)',
     default: "undefined",

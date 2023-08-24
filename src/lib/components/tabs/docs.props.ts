@@ -10,7 +10,7 @@ export const QTabsDocsProps = [
   {
     name: "variant",
     type: "QTabsVariants",
-    optional: false,
+    optional: true,
     clickableType: true,
     description: "",
     default: "",
@@ -18,7 +18,7 @@ export const QTabsDocsProps = [
   {
     name: "round",
     type: "boolean",
-    optional: false,
+    optional: true,
     clickableType: false,
     description: "",
     default: "",
