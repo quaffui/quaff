@@ -1,26 +1,26 @@
 export const QRailbarDocsProps = [
   {
     name: "width",
-    type: "number | string",
-    optional: false,
+    type: "CssValue | number",
+    optional: true,
     clickableType: true,
     description: "",
-    default: "",
+    default: "88px",
   },
   {
     name: "side",
     type: '"left" | "right"',
-    optional: false,
+    optional: true,
     clickableType: false,
     description: "",
-    default: "",
+    default: "left",
   },
   {
     name: "bordered",
     type: "boolean",
-    optional: false,
+    optional: true,
     clickableType: false,
     description: "",
-    default: "",
+    default: "false",
   },
 ];

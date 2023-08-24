@@ -2,7 +2,7 @@ export const QInputDocsProps = [
   {
     name: "bordered",
     type: "boolean",
-    optional: false,
+    optional: true,
     clickableType: false,
     description: "",
     default: "",
@@ -18,7 +18,7 @@ export const QInputDocsProps = [
   {
     name: "disable",
     type: "boolean",
-    optional: false,
+    optional: true,
     clickableType: false,
     description: "",
     default: "",
@@ -26,7 +26,7 @@ export const QInputDocsProps = [
   {
     name: "error",
     type: "boolean",
-    optional: false,
+    optional: true,
     clickableType: false,
     description: "",
     default: "",
@@ -42,7 +42,7 @@ export const QInputDocsProps = [
   {
     name: "filled",
     type: "boolean",
-    optional: false,
+    optional: true,
     clickableType: false,
     description: "",
     default: "",
@@ -66,7 +66,7 @@ export const QInputDocsProps = [
   {
     name: "outlined",
     type: "boolean",
-    optional: false,
+    optional: true,
     clickableType: false,
     description: "",
     default: "",
@@ -74,7 +74,7 @@ export const QInputDocsProps = [
   {
     name: "rounded",
     type: "boolean",
-    optional: false,
+    optional: true,
     clickableType: false,
     description: "",
     default: "",

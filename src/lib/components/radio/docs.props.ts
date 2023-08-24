@@ -10,7 +10,7 @@ export const QRadioDocsProps = [
   {
     name: "label",
     type: "string",
-    optional: false,
+    optional: true,
     clickableType: false,
     description: "",
     default: "",
@@ -18,7 +18,7 @@ export const QRadioDocsProps = [
   {
     name: "selected",
     type: "any",
-    optional: false,
+    optional: true,
     clickableType: false,
     description: "",
     default: "",
@@ -26,7 +26,7 @@ export const QRadioDocsProps = [
   {
     name: "disable",
     type: "boolean",
-    optional: false,
+    optional: true,
     clickableType: false,
     description: "",
     default: "",

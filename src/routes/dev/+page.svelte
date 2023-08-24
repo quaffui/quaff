@@ -109,7 +109,13 @@
           <QSeparator text="Left separator" textAlign="left" />
           <QSeparator text="Center separator" />
           <QSeparator text="Right separator" textAlign="right" spacing="md" />
+          <QSeparator spacing="md" text="inset" inset />
         </div>
+        <QCardSection class="row q-gutter-md" style="height: 10rem">
+          <div class="col-4 flex flex-center">Me</div>
+          <QSeparator  class="col-4" spacing="md" text="My procrastination" vertical />
+          <div class="col-4 flex flex-center">Finishing my projects</div>
+        </QCardSection>
       </QCard>
     </div>
     <div class="col-12">

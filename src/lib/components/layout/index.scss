@@ -194,7 +194,7 @@ $contentSlot: ":not(.q-header, .q-footer, .q-railbar, .q-drawer)";
       transition-timing-function: linear;
     }
 
-    &.active {
+    &.q-item--active {
       color: var(--on-secondary-container);
 
       &::before {

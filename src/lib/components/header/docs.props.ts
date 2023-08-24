@@ -43,3 +43,30 @@ export const QToolbarTitleDocsProps = [
     default: "false",
   },
 ];
+
+export const QHeaderDocsProps = [
+  {
+    name: "inset",
+    type: "boolean",
+    optional: true,
+    clickableType: false,
+    description: "",
+    default: "false",
+  },
+  {
+    name: "elevate",
+    type: "boolean",
+    optional: true,
+    clickableType: false,
+    description: "",
+    default: "false",
+  },
+  {
+    name: "border",
+    type: "boolean",
+    optional: true,
+    clickableType: false,
+    description: "",
+    default: "false",
+  },
+];

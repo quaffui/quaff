@@ -1,16 +1,16 @@
 export const QSeparatorPropsVertical = [
   {
     name: "spacing",
-    type: '"none" | "sm" | "md" | "lg"',
-    optional: false,
-    clickableType: false,
+    type: "QuaffSizes",
+    optional: true,
+    clickableType: true,
     description: "",
     default: "",
   },
   {
     name: "inset",
     type: "boolean",
-    optional: false,
+    optional: true,
     clickableType: false,
     description: "",
     default: "",
@@ -18,7 +18,7 @@ export const QSeparatorPropsVertical = [
   {
     name: "vertical",
     type: "true",
-    optional: false,
+    optional: true,
     clickableType: false,
     description: "",
     default: "",
@@ -50,7 +50,7 @@ export const QSeparatorPropsVertical = [
   {
     name: "textAlign",
     type: '"top" | "middle" | "bottom"',
-    optional: false,
+    optional: true,
     clickableType: false,
     description: "",
     default: "",
@@ -60,16 +60,16 @@ export const QSeparatorPropsVertical = [
 export const QSeparatorPropsHorizontal = [
   {
     name: "spacing",
-    type: '"none" | "sm" | "md" | "lg"',
-    optional: false,
-    clickableType: false,
+    type: "QuaffSizes",
+    optional: true,
+    clickableType: true,
     description: "",
     default: "",
   },
   {
     name: "inset",
     type: "boolean",
-    optional: false,
+    optional: true,
     clickableType: false,
     description: "",
     default: "",
@@ -77,7 +77,7 @@ export const QSeparatorPropsHorizontal = [
   {
     name: "vertical",
     type: "false",
-    optional: false,
+    optional: true,
     clickableType: false,
     description: "",
     default: "",
@@ -93,7 +93,7 @@ export const QSeparatorPropsHorizontal = [
   {
     name: "size",
     type: "string",
-    optional: false,
+    optional: true,
     clickableType: false,
     description: "",
     default: "",
@@ -109,7 +109,7 @@ export const QSeparatorPropsHorizontal = [
   {
     name: "textAlign",
     type: '"left" | "center" | "right"',
-    optional: false,
+    optional: true,
     clickableType: false,
     description: "",
     default: "",
@@ -120,7 +120,7 @@ export const QListDocsProps = [
   {
     name: "bordered",
     type: "boolean",
-    optional: false,
+    optional: true,
     clickableType: false,
     description: "",
     default: "",
@@ -128,7 +128,7 @@ export const QListDocsProps = [
   {
     name: "roundedBorders",
     type: "boolean",
-    optional: false,
+    optional: true,
     clickableType: false,
     description: "",
     default: "",
@@ -136,7 +136,7 @@ export const QListDocsProps = [
   {
     name: "dense",
     type: "boolean",
-    optional: false,
+    optional: true,
     clickableType: false,
     description: "",
     default: "",
@@ -144,7 +144,7 @@ export const QListDocsProps = [
   {
     name: "separator",
     type: "boolean",
-    optional: false,
+    optional: true,
     clickableType: false,
     description: "",
     default: "",
@@ -152,7 +152,7 @@ export const QListDocsProps = [
   {
     name: "separatorOptions",
     type: 'QSeparatorProps["textAlign"]\n  };',
-    optional: false,
+    optional: true,
     clickableType: true,
     description: "",
     default: "",
@@ -160,7 +160,7 @@ export const QListDocsProps = [
   {
     name: "padding",
     type: "boolean",
-    optional: false,
+    optional: true,
     clickableType: false,
     description: "",
     default: "",
@@ -179,7 +179,7 @@ export const QItemDocsProps = [
   {
     name: "tag",
     type: "string",
-    optional: false,
+    optional: true,
     clickableType: false,
     description: "",
     default: "",
@@ -187,7 +187,7 @@ export const QItemDocsProps = [
   {
     name: "active",
     type: "boolean",
-    optional: false,
+    optional: true,
     clickableType: false,
     description: "",
     default: "",
@@ -195,7 +195,7 @@ export const QItemDocsProps = [
   {
     name: "clickable",
     type: "boolean",
-    optional: false,
+    optional: true,
     clickableType: false,
     description: "",
     default: "",
@@ -203,16 +203,32 @@ export const QItemDocsProps = [
   {
     name: "dense",
     type: "boolean",
-    optional: false,
+    optional: true,
+    clickableType: false,
+    description: "",
+    default: "",
+  },
+  {
+    name: "noRipple",
+    type: "boolean",
+    optional: true,
     clickableType: false,
     description: "",
     default: "",
   },
   {
     name: "tabindex",
-    type: "string | number",
-    optional: false,
-    clickableType: false,
+    type: 'HTMLAttributes<HTMLElement>["tabindex"]',
+    optional: true,
+    clickableType: true,
+    description: "",
+    default: "",
+  },
+  {
+    name: "target",
+    type: 'HTMLAnchorAttributes["target"]',
+    optional: true,
+    clickableType: true,
     description: "",
     default: "",
   },
@@ -222,7 +238,7 @@ export const QItemSectionDocsProps = [
   {
     name: "type",
     type: "QItemSectionTypes",
-    optional: false,
+    optional: true,
     clickableType: true,
     description: "",
     default: "",

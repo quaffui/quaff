@@ -56,7 +56,7 @@ export const QCardActionsDocsProps = [
   {
     name: "vertical",
     type: "boolean",
-    optional: false,
+    optional: true,
     clickableType: false,
     description: "Lays out the action items vertically.",
     default: "false",

@@ -66,6 +66,14 @@ export const QChipDocsProps = [
     default: "false",
   },
   {
+    name: "noRipple",
+    type: "boolean",
+    optional: true,
+    clickableType: false,
+    description: "Disable the ripple effect for the chip.",
+    default: "false",
+  },
+  {
     name: "size",
     type: "QChipSizeOptions",
     optional: true,
