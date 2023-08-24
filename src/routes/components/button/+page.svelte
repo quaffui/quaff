@@ -31,6 +31,9 @@
       <QBtn class="q-ma-sm" disable>
         <span>Disabled</span><span style="color: gray">Button</span>
       </QBtn>
+
+      <QBtn class="q-ma-sm" label="Click me" disable on:click={() => alert("What's this sorcery?!")}>
+      </QBtn>
     </QDocsSection>
 
     <QDocsSection {snippets} title="Button Variants">
@@ -54,6 +57,12 @@
 
     <QDocsSection {snippets} title="Button with Router Link">
       <QBtn class="q-ma-sm" icon="open_in_new" label="With router link" to="/layout" />
+      <QBtn class="q-ma-sm" icon="open_in_new" label="With router link" to="/layout" disable />
+    </QDocsSection>
+
+    <QDocsSection {snippets} title="Events">
+      <QBtn class="q-ma-sm" label="Click me" on:click={() => alert("Omg you did it")} />
+      <QBtn class="q-ma-sm" label="Click me" on:click={() => alert("Omg you did it")} disable />
     </QDocsSection>
   </div>
 </QDocs>
