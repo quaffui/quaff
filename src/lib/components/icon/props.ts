@@ -1,4 +1,4 @@
-import type { CssValue, NativeProps, QuaffSizes } from "$utils";
+import type { CssValue, NativeProps, QuaffSizes } from "$lib/utils";
 import type { HTMLAttributes } from "svelte/elements";
 
 export type QIconSizeOptions = QuaffSizes | CssValue | number;

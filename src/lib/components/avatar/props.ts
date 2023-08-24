@@ -1,4 +1,4 @@
-import type { QuaffSizes, CssValue, NativeProps } from "$utils";
+import type { QuaffSizes, CssValue, NativeProps } from "$lib/utils";
 import type { HTMLAttributes } from "svelte/elements";
 
 export type QAvatarShapeOptions =

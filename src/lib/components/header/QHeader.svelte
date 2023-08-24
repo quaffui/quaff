@@ -1,7 +1,7 @@
 <script lang="ts">
   import { createClasses } from "$lib/utils";
   import { getContext } from "svelte";
-  import { QToolbar } from "..";
+  import { QToolbar } from "$lib";
   import type { LayoutContext } from "../layout/QLayout.svelte";
   import type { QHeaderProps } from "./props";
 

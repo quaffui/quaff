@@ -3,7 +3,7 @@
   import { Quaff } from "$lib/stores/Quaff";
   import { createClasses } from "$lib/utils";
   import { getContext } from "svelte";
-  import { QIcon } from "..";
+  import { QIcon } from "$lib";
   import type { QBreadcrumbsElProps } from "./props";
 
   export let label: QBreadcrumbsElProps["label"] = "",

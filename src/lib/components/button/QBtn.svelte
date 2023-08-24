@@ -2,7 +2,7 @@
   import { useSize } from "$lib/composables";
   import { ripple } from "$lib/helpers";
   import { createClasses, isActivationKey } from "$lib/utils";
-  import { QIcon, QCircularProgress } from "..";
+  import { QIcon, QCircularProgress } from "$lib";
   import type { QBtnProps } from "./props";
 
   export let icon: QBtnProps["icon"] = undefined,

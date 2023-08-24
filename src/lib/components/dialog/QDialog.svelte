@@ -2,7 +2,7 @@
   import { clickOutsideDialog } from "$lib/helpers";
   import { createClasses } from "$lib/utils";
   import { createEventDispatcher, onMount } from "svelte";
-  import { QBtn } from "..";
+  import { QBtn } from "$lib";
   import type { QDialogProps } from "./props";
 
   export let noBtn: QDialogProps["noBtn"] = false,

@@ -1,4 +1,4 @@
-import { createClasses } from "$utils";
+import { createClasses } from "$lib/utils";
 import type { Page } from "@sveltejs/kit";
 
 export interface UseRouterLinkProps {

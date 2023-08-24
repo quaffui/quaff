@@ -1,5 +1,5 @@
-import type { QComponentDocs } from "$utils";
 import { QCardActionsDocsProps, QCardDocsProps, QCardSectionDocsProps } from "./docs.props";
+import type { QComponentDocs } from "$lib/utils";
 
 export let QCardDocs: QComponentDocs = {
   name: "QCard",

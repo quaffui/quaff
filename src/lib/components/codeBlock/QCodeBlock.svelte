@@ -2,7 +2,7 @@
   import Highlight from "svelte-highlight";
   import typescript from "svelte-highlight/languages/typescript";
   import { copy } from "$lib/utils";
-  import { QBtn } from "..";
+  import { QBtn } from "$lib";
   import type { QCodeBlockProps } from "./props";
   
 
