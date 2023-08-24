@@ -1,4 +1,4 @@
-import type { QComponentDocs } from "$utils/types";
+import type { QComponentDocs } from "$lib/utils";
 
 export let QInputDocs: QComponentDocs = {
   name: "QInput",

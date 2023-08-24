@@ -1,5 +1,5 @@
-import type { QComponentDocs } from "$utils/types";
 import { QSeparatorPropsVertical } from "./docs.props";
+import type { QComponentDocs } from "$lib/utils";
 
 export let QSeparatorDocs: QComponentDocs = {
   name: "QSeparator",

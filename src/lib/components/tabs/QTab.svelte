@@ -1,12 +1,12 @@
 <script lang="ts">
+  import { QIcon } from "$lib";
   import { isRouteActive } from "$lib/composables";
   import { ripple } from "$lib/helpers";
   import { Quaff } from "$lib/stores";
   import { createClasses, isActivationKey, isArrowKey, getDirection, getClosestFocusableSibling, isTabKey, getClosestFocusableBlock } from "$lib/utils";
-  import type { Direction } from "readline";
   import { hasContext, getContext } from "svelte";
+  import type { Direction } from "$lib/utils";
   import type { Writable } from "svelte/store";
-  import { QIcon } from "..";
   import type { QTabProps, QTabsVariants } from "./props";
 
   export let name: QTabProps["name"] = undefined,

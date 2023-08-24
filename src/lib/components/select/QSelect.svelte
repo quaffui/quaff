@@ -2,7 +2,7 @@
   import { browser } from "$app/environment";
   import { createClasses, textWidth } from "$lib/utils";
   import { onMount, onDestroy } from "svelte";
-  import { QIcon } from "..";
+  import { QIcon } from "$lib";
   import type { QSelectProps, QSelectOption, QSelectMultipleValue } from "./props";
 
   export let options: QSelectProps["options"],

@@ -5,7 +5,7 @@
   import { createClasses } from "$lib/utils";
   import { setContext, getContext } from "svelte";
   import { writable } from "svelte/store";
-  import { QSeparator } from "..";
+  import { QSeparator } from "$lib";
   import type { QItemProps, QListProps } from "./props";
 
   export let tag: QItemProps["tag"] = "div",

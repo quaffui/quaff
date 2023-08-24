@@ -1,10 +1,10 @@
 <script context="module" lang="ts">
   import { createStyles, createClasses } from "$lib/utils";
   import { setContext } from "svelte";
-  import type { Readable } from "svelte/motion";
   import { writable } from "svelte/store";
   import ContextReseter from "../private/ContextReseter.svelte";
   import type { QLayoutProps } from "./props";
+  import type { Readable } from "svelte/store";
 
   export interface DrawerContext {
     offset: {

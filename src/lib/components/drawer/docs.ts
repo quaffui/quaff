@@ -1,5 +1,5 @@
-import type { QComponentDocs } from "$utils/types";
 import { QDrawerDocsProps } from "./docs.props";
+import type { QComponentDocs } from "$lib/utils";
 
 export let QDrawerDocs: QComponentDocs = {
   name: "QDrawer",

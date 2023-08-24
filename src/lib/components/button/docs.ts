@@ -1,5 +1,5 @@
-import type { QComponentDocs } from "$utils/types";
 import { QBtnDocsProps } from "./docs.props";
+import type { QComponentDocs } from "$lib/utils";
 
 export let QBtnDocs: QComponentDocs = {
   name: "QBtn",

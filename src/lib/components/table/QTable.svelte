@@ -1,6 +1,6 @@
 <script lang="ts">
   import { createClasses } from "$lib/utils";
-  import { QIcon, QSelect, QBtn } from "..";
+  import { QIcon, QSelect, QBtn } from "$lib";
   import type { QTableProps, QTableColumn, QTableRow, QTableSort } from "./props";
 
   export let columns: QTableProps["columns"] = [],

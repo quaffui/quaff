@@ -2,7 +2,7 @@
   import { useSize } from "$lib/composables";
   import { ripple } from "$lib/helpers";
   import { createClasses, isActivationKey } from "$lib/utils";
-  import { QIcon } from "..";
+  import { QIcon } from "$lib";
   import type { QChipProps } from "./props";
 
   export let content: QChipProps["content"] = undefined,

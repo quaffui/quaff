@@ -1,4 +1,4 @@
-import { CssUnit, QuaffSizes, isNumber } from "$utils";
+import { CssUnit, QuaffSizes, isNumber } from "$lib/utils";
 
 export const sizes: QuaffSizes[] = ["xs", "sm", "md", "lg", "xl"];
 export const CssUnits: CssUnit[] = ["px", "%", "em", "ex", "ch", "rem", "vw", "vh", "vmin", "vmax"];
