@@ -3,15 +3,9 @@ import type { QComponentDocs } from "$lib/utils";
 export let QInputDocs: QComponentDocs = {
   name: "QInput",
   description:
-    "QInput is a form component that allows users to input text. It supports different visual styles such as bordered, filled, outlined, and rounded, and it can also display hint text and custom error messages.",
+    "QInput is a form component that allows users to input text. It supports different visual styles such as filled, outlined, and rounded, and it can also display hint text and custom error messages.",
   docs: {
     props: [
-      {
-        name: "bordered",
-        type: "boolean",
-        default: false,
-        description: "Whether the input component has a border.",
-      },
       {
         name: "disable",
         type: "boolean",

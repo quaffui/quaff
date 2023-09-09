@@ -1,9 +1,12 @@
 <script lang="ts">
-  import { createClasses, textWidth } from "$lib/utils";
-  import type { QInputProps } from "./props";
+  let focus = false;
+  $: active = value || focus;
 
-  export let bordered: QInputProps["bordered"] = false,
-    dense: QInputProps["dense"] = false,
+  let slotPrependWidth = 0;
+
+  import type { QInputProps } from "../input/props";
+
+  export let dense: QInputProps["dense"] = false,
     disable: QInputProps["disable"] = false,
     error: QInputProps["error"] = false,
     errorMessage: QInputProps["errorMessage"] = undefined,
@@ -13,89 +16,70 @@
     outlined: QInputProps["outlined"] = false,
     rounded: QInputProps["rounded"] = false,
     value: QInputProps["value"],
-    userClasses: QInputProps["userClasses"] = undefined;
+    userClasses: QInputProps["userClasses"] = "";
+
   export { userClasses as class };
-
-  let active = false;
-
-  $: hasBorder = bordered || rounded || outlined;
-
-  $: classes = createClasses(
-    [
-      label && "label",
-      active && "active",
-      dense && "dense",
-      $$slots.prepend && "prepend",
-      $$slots.append && "append",
-      hasBorder && "has-border",
-      bordered && "bordered",
-      rounded && "rounded",
-      filled && "filled",
-      error && "error",
-      disable && "disabled",
-    ],
-    {
-      component: "q-input",
-      userClasses,
-    }
-  );
-
-  let wrapper: HTMLElement | null = null;
-  let inputElement: HTMLInputElement | null = null;
-
-  $: value && updateInput(inputElement as HTMLInputElement);
-
-  // originally from beercss
-  function updateInput(target: HTMLInputElement) {
-    const input = target;
-
-    if (!wrapper) {
-      throw new Error("unexpected to not have element");
-    }
-
-    const label = wrapper.querySelector("label") as HTMLLabelElement;
-    const isBorder = hasBorder && !filled;
-    const toActive =
-      document.activeElement === target || input.value || input.querySelector("[selected]");
-
-    if (toActive) {
-      if (isBorder && label) {
-        const labelWidth = textWidth(label, "0.75rem Arial");
-        let width = active ? labelWidth : Math.round(labelWidth / 1.33);
-        width = width / 16;
-        const start = rounded ? 1.25 : 0.75;
-        const end = width + start + 0.5;
-        input.style.clipPath = `polygon(0% 0%, ${start}rem 0%, ${start}rem 0.5rem, ${end}rem 0.5rem, ${end}rem 0%, 100% 0%, 100% 100%, 0% 100%)`;
-      } else input.style.clipPath = "";
-      active = true;
-    } else {
-      active = false;
-      input.style.clipPath = "";
-    }
-  }
 </script>
 
-<div bind:this={wrapper} class={classes} {...$$restProps}>
-  <slot name="prepend" />
-
-  <input
-    type="text"
-    on:focus={(e) => updateInput(e.currentTarget)}
-    on:blur={(e) => updateInput(e.currentTarget)}
-    bind:value
-    bind:this={inputElement}
-    tabindex={disable === true ? -1 : 0}
-  />
-
-  <slot name="append" />
-
-  {#if label}
-    <!-- svelte-ignore a11y-label-has-associated-control -->
-    <label class="q-input__label {active ? 'q-input__label--active' : ''}">{label}</label>
+<div
+  class="q-input q-field {userClasses}"
+  class:q-field--default={!outlined && !rounded && !filled}
+  class:q-field--outlined={outlined}
+  class:q-field--rounded={rounded}
+  class:q-field--filled={filled}
+  class:q-field--has-border={outlined || rounded}
+  class:q-field--dense={dense}
+  class:q-field--active={active}
+  class:q-field--focus={focus}
+  class:q-field--label={label}
+  class:q-field--slot-append={$$slots.append}
+  class:q-field--slot-prepend={$$slots.prepend}
+  class:q-field--disable={disable}
+  class:q-field--error={error}
+  style:--slot-prepend-width="{slotPrependWidth}px"
+  {...$$restProps}
+>
+  {#if $$slots.before}
+    <div class="q-field__slot-before">
+      <slot name="before" />
+    </div>
   {/if}
-  {#if hint}
-    <span class="q-input__helper">{hint}</span>
-  {:else if error && errorMessage}
-    <span class="q-input__error">{errorMessage}</span>
+
+  <div class="q-field__inner">
+    <label class="q-field__wrapper">
+      {#if $$slots.prepend}
+        <div class="q-field__slot-prepend" bind:clientWidth={slotPrependWidth}>
+          <slot name="prepend" />
+        </div>
+      {/if}
+      <input
+        class="q-field__input"
+        bind:value
+        placeholder=""
+        on:focus={() => (focus = true)}
+        on:blur={() => (focus = false)}
+        disabled={disable}
+        tabindex={disable === true ? -1 : 0}
+      />
+      <span class="q-field__label">{label}</span>
+
+      {#if $$slots.append}
+        <div class="q-field__slot-append">
+          <slot name="append" />
+        </div>
+      {/if}
+    </label>
+
+    {#if error && errorMessage}
+      <div class="q-field__error">{errorMessage}</div>
+    {:else if hint}
+      <div class="q-field__hint">{hint}</div>
+    {/if}
+  </div>
+
+  {#if $$slots.after}
+    <div class="q-field__slot-after">
+      <slot name="after" />
+    </div>
   {/if}
 </div>

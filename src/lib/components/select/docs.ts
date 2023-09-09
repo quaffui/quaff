@@ -3,7 +3,7 @@ import type { QComponentDocs } from "$lib/utils";
 export let QSelectDocs: QComponentDocs = {
   name: "QSelect",
   description:
-    "QSelect is a form component that allows users to choose from multiple options in a dropdown list. It supports single and multiple selection, as well as different visual styles such as bordered, filled, outlined, and rounded.",
+    "QSelect is a form component that allows users to choose from multiple options in a dropdown list. It supports single and multiple selection, as well as different visual styles such as filled, outlined, and rounded.",
   docs: {
     props: [
       {
@@ -23,12 +23,6 @@ export let QSelectDocs: QComponentDocs = {
         type: "QSelectOption[]",
         description: "Options available for selection.",
         clickableType: true,
-      },
-      {
-        name: "bordered",
-        type: "boolean",
-        default: false,
-        description: "Whether the select component has a border.",
       },
       {
         name: "disable",
