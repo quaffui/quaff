@@ -36,7 +36,7 @@
   class:q-field--slot-prepend={$$slots.prepend}
   class:q-field--disable={disable}
   class:q-field--error={error}
-  style="--slot-prepend-width: {slotPrependWidth}px"
+  style:--slot-prepend-width="{slotPrependWidth}px"
   {...$$restProps}
 >
   {#if $$slots.before}

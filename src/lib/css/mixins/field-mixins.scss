@@ -20,7 +20,7 @@
 }
 
 @mixin border-substitute($variant: "outlined") {
-  $border-radius: if($variant == "outlined", 4px, calc(var(--wrapper-height) / 2));
+  $border-radius: if($variant == "outlined", 0.25rem, calc(var(--wrapper-height) / 2));
 
   &::before,
   &::after {
@@ -39,8 +39,8 @@
     left: calc(var(--border-width) * -1);
     border-top-right-radius: 0px;
     border-bottom-right-radius: 0px;
-    $clip-height: 2px;
-    $clip-width: if($variant == "outlined", 15px, 5px);
+    $clip-height: 0.125rem;
+    $clip-width: if($variant == "outlined", 0.9375rem, 0.3125rem);
     @include clip-border($clip-height, $clip-width);
   }
 
