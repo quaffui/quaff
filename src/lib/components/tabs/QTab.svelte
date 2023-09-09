@@ -3,27 +3,37 @@
   import { isRouteActive } from "$lib/composables";
   import { ripple } from "$lib/helpers";
   import { Quaff } from "$lib/stores";
-  import { createClasses, isActivationKey, isArrowKey, getDirection, getClosestFocusableSibling, isTabKey, getClosestFocusableBlock } from "$lib/utils";
+  import {
+    createClasses,
+    isActivationKey,
+    isArrowKey,
+    getDirection,
+    getClosestFocusableSibling,
+    isTabKey,
+    getClosestFocusableBlock,
+    movementDirection,
+  } from "$lib/utils";
   import { hasContext, getContext } from "svelte";
   import type { Direction } from "$lib/utils";
+  import { get } from "svelte/store";
   import type { Writable } from "svelte/store";
   import type { QTabProps, QTabsVariants } from "./props";
+  import type { QTab, QTabStore } from "./QTabs.svelte";
 
-  export let name: QTabProps["name"] = undefined,
+  export let name: QTabProps["name"],
     to: QTabProps["to"] = undefined,
     icon: QTabProps["icon"] = undefined,
     userClasses: QTabProps["userClasses"] = undefined;
   export { userClasses as class };
 
   let index = 1;
-  type QTab = HTMLAnchorElement | HTMLButtonElement;
   let qTab: QTab;
+
+  const qTabStore = getContext<Writable<QTabStore>>("qTabStore");
 
   if (!hasContext("QTabCount")) {
     console.warn("QTab should be used inside QTabs");
   }
-
-  const variant = getContext<QTabsVariants>("variant");
 
   let indexContext = getContext<{
     index: () => number;
@@ -33,20 +43,14 @@
     index = indexContext.index();
   }
 
-  let activeStore = getContext<
-    Writable<{
-      name?: string;
-      index: number;
-      size: number;
-      position: string;
-    }>
-  >("activeTab");
+  const isInitallyActive =
+    to !== undefined ? isRouteActive($Quaff.router, to) : name === $qTabStore.value;
 
-  $: isActive = to !== undefined ? isRouteActive($Quaff.router, to) : name === $activeStore.name;
-
-  $: if (isActive && qTab) {
+  $: if (isInitallyActive && qTab) {
     setActive(qTab);
   }
+
+  $: isActive = name === $qTabStore.value;
 
   let tag: "button" | "a";
   $: tag = to === undefined ? "button" : "a";
@@ -56,34 +60,37 @@
     userClasses,
   });
 
-  function setActive(el: HTMLElement) {
-    let rect;
+  function setActive(el: QTab) {
+    let store = get(qTabStore);
+    const previousEl = store.activeEl;
+    const variant = store.variant;
+
+    let element;
     if (variant === "primary") {
-      rect = (el.firstElementChild as HTMLElement).getBoundingClientRect();
+      element = el.firstElementChild as QTab;
     } else {
-      rect = el.getBoundingClientRect();
+      element = el;
     }
 
-    let indicatorWidth = variant === "vertical" ? rect.height : rect.width;
-    let buttonWidth = el.offsetWidth;
+    const position = variant === "vertical" ? element.offsetTop : element.offsetLeft;
+    const size = variant === "vertical" ? element.offsetHeight : element.offsetWidth;
 
-    if (index !== $activeStore.index) {
-      $activeStore = {
-        name,
-        index,
-        position:
-          variant === "vertical"
-            ? `${el.offsetTop}px`
-            : variant === "secondary"
-            ? `${el.offsetLeft}px`
-            : `calc(${el.offsetLeft}px + ${buttonWidth}px / 2)`,
-        size: indicatorWidth,
-      };
-    }
+    $qTabStore = {
+      variant,
+      value: name,
+      previousEl,
+      activeEl: el,
+      utils: {
+        size,
+        position,
+      },
+    };
   }
 
   function onClick(e: MouseEvent) {
-    setActive(e.target as HTMLElement);
+    if (!isActive) {
+      setActive(e.target as QTab);
+    }
   }
 
   function onKeydown(e: KeyboardEvent) {

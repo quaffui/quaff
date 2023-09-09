@@ -113,7 +113,7 @@
         </div>
         <QCardSection class="row q-gutter-md" style="height: 10rem">
           <div class="col-4 flex flex-center">Me</div>
-          <QSeparator  class="col-4" spacing="md" text="My procrastination" vertical />
+          <QSeparator class="col-4" spacing="md" text="My procrastination" vertical />
           <div class="col-4 flex flex-center">Finishing my projects</div>
         </QCardSection>
       </QCard>
@@ -559,7 +559,7 @@
         <QCardSection>
           Value: {activeTab}
         </QCardSection>
-        <QCardSection>
+        <!-- <QCardSection>
           <h6>Primary tabs</h6>
           <QTabs bind:value={activeTab}>
             <QTab name="hello">Hello</QTab>
@@ -567,7 +567,7 @@
             <QTab name="foo">Foo</QTab>
             <QTab name="bar">Bar</QTab>
           </QTabs>
-        </QCardSection>
+        </QCardSection> -->
         <QCardSection>
           <h6>Secondary tabs</h6>
           <QTabs bind:value={activeTab} variant="secondary">
@@ -586,7 +586,7 @@
             <QTab icon="help" name="world">World</QTab>
           </QTabs>
         </QCardSection>
-        <QCardSection>
+        <!-- <QCardSection>
           <h6>With icon</h6>
           <QTabs bind:value={activeTab}>
             <QTab icon="favorite" name="foo">Foo</QTab>
@@ -594,8 +594,8 @@
             <QTab icon="star" name="bar">Bar</QTab>
             <QTab icon="help" name="world">World</QTab>
           </QTabs>
-        </QCardSection>
-        <QCardSection>
+        </QCardSection> -->
+        <!-- <QCardSection>
           <h6>With router links</h6>
           <QTabs>
             <QTab icon="home" to="/">Home</QTab>
@@ -604,7 +604,7 @@
             <QTab icon="code" to="/dev">Dev</QTab>
             <QTab icon="dashboard_customize" to="/layout">Layout tests</QTab>
           </QTabs>
-        </QCardSection>
+        </QCardSection> -->
       </QCard>
     </div>
     <div class="col-12">
