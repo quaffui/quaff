@@ -11,7 +11,6 @@
     getClosestFocusableSibling,
     isTabKey,
     getClosestFocusableBlock,
-    movementDirection,
   } from "$lib/utils";
   import { hasContext, getContext, onMount } from "svelte";
   import type { Direction } from "$lib/utils";
@@ -26,27 +25,13 @@
     userClasses: QTabProps["userClasses"] = "";
   export { userClasses as class };
 
-  let index = 1;
   let qTab: QTab;
 
   const qTabStore = getContext<Writable<QTabStore>>("qTabStore");
 
-  if (!hasContext("QTabCount")) {
+  if (!hasContext("qTabStore")) {
     console.warn("QTab should be used inside QTabs");
   }
-
-  let indexContext = getContext<{
-    index: () => number;
-  }>("QTabCount");
-
-  $: if (indexContext) {
-    index = indexContext.index();
-  }
-
-  onMount(() => {
-    if(to)
-    console.log({name, isActive: isRouteActive($Quaff.router, to)})
-  })
 
   const isInitallyActive =
     to !== undefined ? isRouteActive($Quaff.router, to) : name === $qTabStore.value;

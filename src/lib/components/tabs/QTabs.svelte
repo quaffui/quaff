@@ -11,8 +11,8 @@
 </script>
 
 <script lang="ts">
-  import { createClasses, createStyles, movementDirection } from "$lib/utils";
-  import { onMount, setContext } from "svelte";
+  import { movementDirection } from "$lib/utils";
+  import { setContext } from "svelte";
   import { writable } from "svelte/store";
   import type { QTabsProps } from "./props";
 
