@@ -64,7 +64,6 @@
   "types": "./dist/index.d.ts",
   "type": "module",
   "dependencies": {
-    "beercss": "^3.3.5",
     "highlight.js": "^11.8.0",
     "material-dynamic-colors": "^1.0.1",
     "svelte-highlight": "^7.3.0"
