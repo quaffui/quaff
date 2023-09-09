@@ -31,6 +31,10 @@
     }
   }
 
+  &.q-field--bottom-space &__menu {
+    bottom: 0.9375rem;
+  }
+
   & &__arrow-toggle {
     cursor: pointer;
 

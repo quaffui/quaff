@@ -22,7 +22,7 @@
   let focus = false;
   let active = false;
 
-  $: active = typeof value === "number" || value?.length > 0;
+  $: active = typeof value === "number" || value?.length > 0 || focus;
 
   let wrapper: HTMLElement | null = null;
   let isMenuOpen = false;
@@ -34,7 +34,7 @@
     wasClicked = true;
   }
 
-  function handleFocus(target: HTMLInputElement) {
+  function handleFocus() {
     focus = true;
     if (!wasClicked) {
       isMenuOpen = true;
@@ -43,7 +43,7 @@
     wasClicked = false;
   }
 
-  function handleBlur(target: HTMLInputElement) {
+  function handleBlur() {
     focus = false;
 
     if (!multiple && !preventClose) {
@@ -119,7 +119,8 @@
   class:q-field--slot-prepend={$$slots.prepend}
   class:q-field--disable={disable}
   class:q-field--error={error}
-  style="--slot-prepend-width: {slotPrependWidth}px"
+  class:q-field--bottom-space={hint || (error && errorMessage)}
+  style:--slot-prepend-width="{slotPrependWidth}px"
   {...$$restProps}
 >
   {#if $$slots.before}
@@ -140,9 +141,9 @@
         class="q-field__input"
         bind:value
         placeholder=""
-        on:focus={(e) => handleFocus(e.currentTarget)}
-        on:blur={(e) => handleBlur(e.currentTarget)}
-        on:mousedown={() => handleMousedown()}
+        on:focus={handleFocus}
+        on:blur={handleBlur}
+        on:mousedown={handleMousedown}
         disabled={disable}
         tabindex={disable === true ? -1 : 0}
         readonly
