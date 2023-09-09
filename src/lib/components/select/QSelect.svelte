@@ -1,13 +1,11 @@
 <script lang="ts">
   import { browser } from "$app/environment";
-  import { createClasses, textWidth } from "$lib/utils";
   import { onMount, onDestroy } from "svelte";
   import { QIcon } from "$lib";
   import type { QSelectProps, QSelectOption, QSelectMultipleValue } from "./props";
 
   export let options: QSelectProps["options"],
     multiple: QSelectProps["multiple"] = false,
-    bordered: QSelectProps["bordered"] = false,
     dense: QSelectProps["dense"] = false,
     disable: QSelectProps["disable"] = false,
     error: QSelectProps["error"] = false,
@@ -21,63 +19,15 @@
     userClasses: QSelectProps["userClasses"] = undefined;
   export { userClasses as class };
 
+  let focus = false;
   let active = false;
 
   $: active = typeof value === "number" || value?.length > 0;
 
-  $: hasBorder = bordered || rounded || outlined;
-
-  $: classes = createClasses(
-    [
-      "q-select",
-      label && "label",
-      active && "active",
-      dense && "dense",
-      $$slots.prepend && "prepend",
-      $$slots.append && "append",
-      hasBorder && "has-border",
-      rounded && "rounded",
-      filled && "filled",
-      error && "error",
-      disable && "disabled",
-    ],
-    {
-      component: "q-select",
-      userClasses,
-    }
-  );
-
   let wrapper: HTMLElement | null = null;
-  let inputElement: HTMLInputElement | null = null;
   let isMenuOpen = false;
   let wasClicked = false;
   let preventClose = false;
-
-  $: value && updateInput(inputElement as HTMLInputElement);
-
-  function updateInput(target: HTMLInputElement) {
-    const input = target;
-
-    if (!wrapper || !input) {
-      return;
-    }
-
-    const label = wrapper.querySelector("label") as HTMLLabelElement;
-    const isBorder = hasBorder && !filled;
-
-    if (active) {
-      if (isBorder && label) {
-        const labelWidth = textWidth(label, "0.75rem Arial");
-        let width = active ? labelWidth : Math.round(labelWidth / 1.33);
-        width = width / 16;
-        const start = rounded ? 1.25 : 0.75;
-        const end = width + start + 0.5;
-        input.style.clipPath = `polygon(0% 0%, ${start}rem 0%, ${start}rem 0.5rem, ${end}rem 0.5rem, ${end}rem 0%, 100% 0%, 100% 100%, 0% 100%)`;
-      } else input.style.clipPath = "";
-    } else {
-      input.style.clipPath = "";
-    }
-  }
 
   function handleMousedown() {
     isMenuOpen = !isMenuOpen;
@@ -85,27 +35,28 @@
   }
 
   function handleFocus(target: HTMLInputElement) {
+    focus = true;
     if (!wasClicked) {
       isMenuOpen = true;
     }
 
     wasClicked = false;
-
-    updateInput(target);
   }
 
   function handleBlur(target: HTMLInputElement) {
+    focus = false;
+
     if (!multiple && !preventClose) {
       isMenuOpen = false;
     }
     preventClose = false;
-
-    updateInput(target);
   }
 
   let selectedOptions: boolean[] = [];
 
   $: selectedOptions = options.map((option) => isSelected(option), value);
+
+  let slotPrependWidth = 0;
 
   function isSelected(option: QSelectOption) {
     const optionValue = typeof option === "string" ? option : option.value;
@@ -153,47 +104,86 @@
   });
 </script>
 
-<div bind:this={wrapper} class={classes} {...$$restProps}>
-  <slot name="prepend" />
-
-  <input
-    type="text"
-    on:focus={(e) => handleFocus(e.currentTarget)}
-    on:blur={(e) => handleBlur(e.currentTarget)}
-    on:mousedown={() => handleMousedown()}
-    bind:value
-    bind:this={inputElement}
-    tabindex={disable === true ? -1 : 0}
-    readonly
-    disabled={disable}
-  />
-
-  <QIcon
-    class="q-select__arrow-toggle {$$slots.append ? 'q-select__arrow-toggle--has-append' : ''}"
-    name={`arrow_drop_${isMenuOpen ? "up" : "down"}`}
-  />
-
-  <slot name="append" />
-
-  <div class="q-select__menu {isMenuOpen ? 'q-select__menu--active' : ''}">
-    {#each options as option, idx}
-      <a
-        href={multiple ? "javascript:void(0)" : undefined}
-        class="q-select__option {selectedOptions[idx] ? 'q-select__option--selected' : ''}"
-        on:mousedown={() => (preventClose = true)}
-        on:click={(e) => select(e, option)}>{typeof option === "string" ? option : option.value}</a
-      >
-    {/each}
-  </div>
-
-  {#if label}
-    <!-- svelte-ignore a11y-label-has-associated-control -->
-    <label class="q-select__label {active ? 'q-select__label--active' : ''}">{label}</label>
+<div
+  class="q-select q-field {userClasses}"
+  class:q-field--default={!outlined && !rounded && !filled}
+  class:q-field--outlined={outlined}
+  class:q-field--rounded={rounded}
+  class:q-field--filled={filled}
+  class:q-field--has-border={outlined || rounded}
+  class:q-field--dense={dense}
+  class:q-field--active={active}
+  class:q-field--focus={focus}
+  class:q-field--label={label}
+  class:q-field--slot-append={$$slots.append}
+  class:q-field--slot-prepend={$$slots.prepend}
+  class:q-field--disable={disable}
+  class:q-field--error={error}
+  style="--slot-prepend-width: {slotPrependWidth}px"
+  {...$$restProps}
+>
+  {#if $$slots.before}
+    <div class="q-field__slot-before">
+      <slot name="before" />
+    </div>
   {/if}
 
-  {#if hint}
-    <span class="q-select__helper">{hint}</span>
-  {:else if error && errorMessage}
-    <span class="q-select__error">{errorMessage}</span>
+  <div class="q-field__inner">
+    <label class="q-field__wrapper">
+      {#if $$slots.prepend}
+        <div class="q-field__slot-prepend" bind:clientWidth={slotPrependWidth}>
+          <slot name="prepend" />
+        </div>
+      {/if}
+
+      <input
+        class="q-field__input"
+        bind:value
+        placeholder=""
+        on:focus={(e) => handleFocus(e.currentTarget)}
+        on:blur={(e) => handleBlur(e.currentTarget)}
+        on:mousedown={() => handleMousedown()}
+        disabled={disable}
+        tabindex={disable === true ? -1 : 0}
+        readonly
+      />
+
+      <span class="q-field__label">{label}</span>
+
+      <div class="q-field__slot-append">
+        <slot name="append" />
+
+        <QIcon
+          class="q-select__arrow-toggle {$$slots.append
+            ? 'q-select__arrow-toggle--has-append'
+            : ''}"
+          name={`arrow_drop_${isMenuOpen ? "up" : "down"}`}
+        />
+      </div>
+    </label>
+
+    <div class="q-select__menu {isMenuOpen ? 'q-select__menu--active' : ''}">
+      {#each options as option, idx}
+        <a
+          href={multiple ? "javascript:void(0)" : undefined}
+          class="q-select__option {selectedOptions[idx] ? 'q-select__option--selected' : ''}"
+          on:mousedown={() => (preventClose = true)}
+          on:click={(e) => select(e, option)}
+          >{typeof option === "string" ? option : option.value}</a
+        >
+      {/each}
+    </div>
+
+    {#if error && errorMessage}
+      <div class="q-field__error">{errorMessage}</div>
+    {:else if hint}
+      <div class="q-field__hint">{hint}</div>
+    {/if}
+  </div>
+
+  {#if $$slots.after}
+    <div class="q-field__slot-after">
+      <slot name="after" />
+    </div>
   {/if}
 </div>

@@ -129,14 +129,12 @@
           <QInput bind:value={input} rounded label="Rounded" class="q-mt-md" />
           <QInput
             bind:value={input}
-            bordered
             class="q-mt-md"
-            label="Bordered with hint"
+            label="Default with hint"
             hint="This is a hint"
           />
           <QInput
             bind:value={input}
-            bordered
             class="q-mt-md"
             label="Error state"
             error
@@ -168,15 +166,15 @@
           <QSelect
             bind:value={select}
             {options}
-            bordered
+            outlined
             class="q-mt-md"
-            label="Bordered with hint"
+            label="Outlined with hint"
             hint="This is a hint"
           />
           <QSelect
             bind:value={select}
             {options}
-            bordered
+            outlined
             class="q-mt-md"
             label="Error state"
             error

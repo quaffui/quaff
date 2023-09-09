@@ -27,14 +27,14 @@
     </QDocsSection>
 
     <QDocsSection {snippets} title="Style">
-      <QSelect bind:value={select} {options} label="Bordered" class="q-mt-md" bordered />
+      <QSelect bind:value={select} {options} label="Default" class="q-mt-md" />
       <QSelect bind:value={select} {options} label="Rounded" class="q-mt-md" rounded />
       <QSelect bind:value={select} {options} label="Outlined" class="q-mt-md" outlined />
       <QSelect bind:value={select} {options} label="Filled" class="q-mt-md" filled />
     </QDocsSection>
 
     <QDocsSection {snippets} title="Dense">
-      <QSelect bind:value={select} {options} label="Dense" class="q-mt-md" bordered dense />
+      <QSelect bind:value={select} {options} label="Dense" class="q-mt-md" outlined dense />
     </QDocsSection>
 
     <QDocsSection {snippets} title="Validation and Hints">
@@ -59,7 +59,7 @@
       <QSelect bind:value={select} {options} label="Prepended Icon">
         <QIcon slot="prepend" name="favorite" />
       </QSelect>
-      <QSelect bind:value={select} {options} label="Appended Icon">
+      <QSelect bind:value={select} {options} label="Appended Icon" class="q-mt-md">
         <QIcon slot="append" name="list" />
       </QSelect>
     </QDocsSection>

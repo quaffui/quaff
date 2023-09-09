@@ -24,14 +24,6 @@ export const QSelectDocsProps = [
     default: "",
   },
   {
-    name: "bordered",
-    type: "boolean",
-    optional: true,
-    clickableType: false,
-    description: "",
-    default: "",
-  },
-  {
     name: "dense",
     type: "boolean",
     optional: true,
