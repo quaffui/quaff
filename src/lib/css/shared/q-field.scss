@@ -93,6 +93,11 @@ $transition-duration: 0.2s;
     left: 1rem;
   }
 
+  &--default:not(#{&}--dense) &__label,
+  &--filled:not(#{&}--dense) &__label {
+    top: 1px;
+  }
+
   &--slot-prepend#{&}--default &__label,
   &--slot-prepend#{&}--filled &__label {
     left: calc(0.5rem + var(--slot-prepend-width));
@@ -227,6 +232,7 @@ $transition-duration: 0.2s;
     font-size: 0.75rem;
     text-align: left;
     left: 1rem;
+    padding-top: 0.125rem;
   }
 
   &--error &__label,
