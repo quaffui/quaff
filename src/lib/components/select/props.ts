@@ -13,7 +13,6 @@ export interface QSelectProps extends NativeProps, HTMLAttributes<HTMLDivElement
   value: QSelectValue;
   multiple?: boolean;
   options: QSelectOption[];
-  bordered?: boolean;
   dense?: boolean;
   disable?: boolean;
   error?: boolean;
@@ -26,7 +25,6 @@ export interface QSelectProps extends NativeProps, HTMLAttributes<HTMLDivElement
 }
 
 export const QSelectPropsDefaults = {
-  bordered: false,
   dense: false,
   disable: false,
   error: false,

@@ -1,0 +1,52 @@
+@mixin reset-form-element {
+  padding: 0px;
+  background: none;
+  border: none;
+  border-radius: 0px;
+  outline: none;
+  appearance: none;
+  font-family: inherit;
+}
+
+@mixin clip-border($clip-height, $clip-width) {
+  clip-path: polygon(
+    0% 0%,
+    0% 100%,
+    100% 100%,
+    100% $clip-height,
+    calc(100% - #{$clip-width}) $clip-height,
+    calc(100% - #{$clip-width}) 0%
+  );
+}
+
+@mixin border-substitute($variant: "outlined") {
+  $border-radius: if($variant == "outlined", 4px, calc(var(--wrapper-height) / 2));
+
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    top: calc(var(--border-width) * -1);
+    bottom: calc(var(--border-width) * -1);
+    width: calc(var(--wrapper-height) / 2);
+    height: var(--wrapper-height);
+    border: var(--border-width) solid transparent;
+    border-top-color: var(--decorator-color);
+    border-radius: $border-radius;
+  }
+
+  &::before {
+    left: calc(var(--border-width) * -1);
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+    $clip-height: 2px;
+    $clip-width: if($variant == "outlined", 15px, 5px);
+    @include clip-border($clip-height, $clip-width);
+  }
+
+  &::after {
+    right: calc(var(--border-width) * -1);
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+  }
+}

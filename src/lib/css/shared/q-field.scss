@@ -1,0 +1,299 @@
+@use "sass:math";
+@import "../mixins/field-mixins.scss";
+
+$transition-duration: 0.2s;
+
+.q-field {
+  display: flex;
+  --wrapper-height: 3rem;
+
+  &--dense {
+    --wrapper-height: 2.5rem;
+  }
+
+  &__inner {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
+
+  &__wrapper {
+    --decorator-color: var(--outline);
+    --border-width: 0.0625rem;
+    display: flex;
+    position: relative;
+    height: var(--wrapper-height);
+  }
+
+  &--default &__wrapper,
+  &--filled &__wrapper {
+    border-bottom: var(--border-width) solid var(--decorator-color);
+  }
+
+  &--has-border &__wrapper {
+    border: var(--border-width) solid var(--decorator-color);
+  }
+
+  &__wrapper {
+    border-radius: 0px;
+  }
+
+  &--rounded &__wrapper {
+    border-radius: calc(var(--wrapper-height) / 2);
+  }
+
+  &--outlined &__wrapper {
+    border-radius: 0.25rem;
+  }
+
+  &--filled &__wrapper {
+    background-color: var(--surface-variant);
+    border-top-left-radius: 0.25rem;
+    border-top-right-radius: 0.25rem;
+  }
+
+  &--label#{&}--active#{&}--has-border &__wrapper {
+    border-top-color: transparent;
+  }
+
+  &--label#{&}--active#{&}--rounded &__wrapper {
+    @include border-substitute("rounded");
+  }
+
+  &--label#{&}--active#{&}--outlined &__wrapper {
+    @include border-substitute("outlined");
+  }
+
+  // in case we have no label
+  &__label {
+    display: none;
+  }
+
+  &--label &__label {
+    display: flex;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    font-size: 1rem;
+    line-height: calc(var(--wrapper-height) - 0.25rem);
+    color: var(--decorator-color);
+    pointer-events: none;
+    transition:
+      color $transition-duration ease 0s,
+      left $transition-duration ease 0s,
+      top $transition-duration ease 0s,
+      font-size $transition-duration ease 0s,
+      line-height $transition-duration ease 0s,
+      border-color $transition-duration ease 0s;
+    will-change: top, left, font-size, line-height;
+  }
+
+  &--default &__label,
+  &--filled &__label {
+    left: 1rem;
+  }
+
+  &--slot-prepend#{&}--default &__label,
+  &--slot-prepend#{&}--filled &__label {
+    left: calc(0.5rem + var(--slot-prepend-width));
+  }
+
+  &--active#{&}--default &__label,
+  &--active#{&}--filled &__label {
+    top: 0.6875rem;
+  }
+
+  &--rounded &__label {
+    left: 1.4375rem;
+  }
+
+  &--slot-prepend#{&}--rounded &__label {
+    left: calc(0.5rem + var(--slot-prepend-width));
+  }
+
+  &--active#{&}--rounded &__label {
+    left: 1.4375rem;
+  }
+
+  &--has-border#{&}--focus &__label {
+    transform: translateX(-0.0625rem);
+  }
+
+  &--label#{&}--rounded#{&}--focus &__wrapper::before {
+    @include clip-border(0.3125rem, 0.4375rem);
+  }
+
+  &--label#{&}--outlined#{&}--focus &__wrapper::before {
+    @include clip-border(0.3125rem, 1.0625rem);
+  }
+
+  &--rounded#{&}--focus &__input {
+    padding-left: 1.375rem;
+  }
+
+  &--outlined#{&}--focus &__input {
+    padding-left: 0.6875rem;
+  }
+
+  &--outlined &__label {
+    left: 0.75rem;
+  }
+
+  &--slot-prepend#{&}--outlined &__label {
+    left: calc(0.5rem + var(--slot-prepend-width));
+  }
+
+  // active state should not account for prepend slot width
+  &--active#{&}--outlined &__label {
+    left: 0.75rem;
+  }
+
+  &--active#{&}--has-border &__label::after {
+    content: "";
+    display: block;
+    margin-left: 0.25rem;
+    flex-grow: 1;
+    border-top-width: var(--border-width);
+    border-top-style: solid;
+    border-top-color: var(--decorator-color);
+    min-width: 0.625rem;
+    height: 0.5rem;
+    pointer-events: none;
+    transition: border-color $transition-duration ease 0s;
+    opacity: 1 !important;
+  }
+
+  &--active#{&}--rounded &__label {
+    right: calc(var(--wrapper-height) / 2);
+  }
+
+  &--active#{&}--outlined &__label {
+    right: 0.25rem;
+  }
+
+  &--active &__label {
+    font-size: 0.75rem;
+    line-height: 0px;
+    margin-top: calc(var(--border-width) * -1);
+  }
+
+  &--active#{&}--default &__label,
+  &--active#{&}--filled &__label {
+    margin-top: 0px;
+  }
+
+  &--focus &__wrapper {
+    --decorator-color: var(--primary);
+    --border-width: 0.125rem;
+  }
+
+  &__input {
+    @include reset-form-element;
+    font-size: 1rem;
+    height: 100%;
+    color: unset;
+    flex-grow: 1;
+  }
+
+  &--default &__input,
+  &--filled &__input {
+    padding: 0 1rem;
+    padding-top: 15px;
+  }
+
+  &--focus#{&}--default &__input,
+  &--focus#{&}--filled &__input {
+    padding-top: 1rem;
+  }
+
+  &--rounded &__input {
+    padding: 0 23px;
+  }
+
+  &--outlined &__input {
+    padding: 0 0.75rem;
+  }
+
+  &--slot-prepend &__input {
+    padding-left: 0.5rem !important;
+  }
+
+  &--slot-append &__input {
+    padding-right: 0.5rem !important;
+  }
+
+  &__hint,
+  &__error {
+    font-size: 0.75rem;
+    text-align: left;
+    left: 1rem;
+  }
+
+  &--error &__label,
+  &__error {
+    color: var(--error);
+  }
+
+  &--error &__wrapper,
+  &--error#{&}--focus &__wrapper {
+    --decorator-color: var(--error);
+  }
+
+  &__slot- {
+    &prepend,
+    &append,
+    &before,
+    &after {
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  // prevent content moving up due to bottom border
+  &--focus#{&}--default &__slot-prepend,
+  &--focus#{&}--default &__slot-append,
+  &--focus#{&}--filled &__slot-prepend,
+  &--focus#{&}--filled &__slot-append {
+    margin-bottom: -0.0625rem;
+  }
+
+  &__slot-prepend {
+    padding-left: 12px;
+  }
+
+  &--rounded &__slot-prepend {
+    padding-left: 16px;
+  }
+
+  &--focus#{&}--has-border &__slot-prepend {
+    margin-left: -1px;
+  }
+
+  &__slot-append {
+    padding-right: 12px;
+  }
+
+  &--rounded &__slot-append {
+    padding-right: 16px;
+  }
+
+  &--focus#{&}--has-border &__slot-append {
+    margin-right: -1px;
+  }
+
+  &__slot-before {
+    padding-right: 0.75rem;
+  }
+
+  &__slot-after {
+    padding-left: 0.75rem;
+  }
+
+  &--disable {
+    opacity: 0.5;
+    &,
+    * {
+      cursor: not-allowed;
+    }
+  }
+}

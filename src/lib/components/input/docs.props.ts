@@ -1,13 +1,5 @@
 export const QInputDocsProps = [
   {
-    name: "bordered",
-    type: "boolean",
-    optional: true,
-    clickableType: false,
-    description: "",
-    default: "",
-  },
-  {
     name: "dense",
     type: "boolean",
     optional: true,
