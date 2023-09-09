@@ -1,11 +1,12 @@
-.q-select {
-  @include field;
+@import "$css/shared/q-field.scss";
 
+.q-select {
   &__option--selected {
     color: var(--primary);
   }
 
-  input:read-only {
+  .q-field__wrapper,
+  .q-field__input {
     cursor: pointer;
   }
 
@@ -30,11 +31,23 @@
     }
   }
 
+  &.q-field--bottom-space &__menu {
+    bottom: 0.9375rem;
+  }
+
   & &__arrow-toggle {
     cursor: pointer;
 
     &--has-append {
-      right: 3rem;
+      margin-left: 0.5rem;
+    }
+  }
+
+  &.q-field--disable {
+    opacity: 0.5;
+    &,
+    * {
+      cursor: not-allowed;
     }
   }
 }

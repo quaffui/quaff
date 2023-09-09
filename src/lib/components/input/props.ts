@@ -2,7 +2,6 @@ import type { NativeProps } from "$lib/utils";
 import type { HTMLAttributes } from "svelte/elements";
 
 export interface QInputProps extends NativeProps, HTMLAttributes<HTMLDivElement> {
-  bordered?: boolean;
   dense?: boolean;
   disable?: boolean;
   error?: boolean;
@@ -16,7 +15,6 @@ export interface QInputProps extends NativeProps, HTMLAttributes<HTMLDivElement>
 }
 
 export const QInputPropsDefaults = {
-  bordered: false,
   dense: false,
   disable: false,
   error: false,

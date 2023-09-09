@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { QCard, QCardSection, QInput } from "$lib";
+  import { QIcon, QInput } from "$lib";
   import { QInputDocs } from "$lib/components/input/docs";
   import QDocs from "$lib/components/private/QDocs.svelte";
   import QDocsSection from "$lib/components/private/QDocsSection.svelte";
@@ -41,10 +41,10 @@
 
     <QDocsSection {snippets} title="Slots">
       <QInput bind:value={input} label="Prepended Icon">
-        <i slot="prepend">search</i>
+        <QIcon slot="prepend" name="search" />
       </QInput>
-      <QInput bind:value={input} label="Appended Icon">
-        <i slot="append">list</i>
+      <QInput bind:value={input} label="Appended Icon" class="q-mt-md">
+        <QIcon slot="append" name="list" />
       </QInput>
     </QDocsSection>
   </div>
