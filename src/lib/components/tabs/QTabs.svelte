@@ -2,7 +2,7 @@
   export type QTab = HTMLAnchorElement | HTMLButtonElement;
 
   export type QTabStore = {
-    value: string;
+    value?: string;
     variant: QTabsProps["variant"];
     previousEl: QTab | null;
     activeEl: QTab | null;
@@ -13,36 +13,16 @@
 <script lang="ts">
   import { createClasses, createStyles, movementDirection } from "$lib/utils";
   import { onMount, setContext } from "svelte";
-  import { writable, derived } from "svelte/store";
-  import type { Writable } from "svelte/store";
+  import { writable } from "svelte/store";
   import type { QTabsProps } from "./props";
 
-  export let value: QTabsProps["value"],
+  export let value: QTabsProps["value"] = undefined,
     variant: QTabsProps["variant"] = "primary",
     round: QTabsProps["round"] = false,
-    userClasses: QTabsProps["userClasses"] = undefined,
-    userStyles: QTabsProps["userStyles"] = undefined;
-  export { userClasses as class, userStyles as style };
+    userClasses: QTabsProps["userClasses"] = "";
+  export { userClasses as class };
 
   let qTabs: HTMLElement;
-
-  // Hide indicator until it's mounted
-  let hidden = true;
-
-  onMount(() => {
-    setTimeout(() => {
-      hidden = false;
-    }, 200);
-  });
-
-  /** Counting QTab children number */
-  let QTabCount = 0;
-  setContext("QTabCount", {
-    index: () => {
-      QTabCount += 1;
-      return QTabCount;
-    },
-  });
 
   const qTabStore = writable<QTabStore>({
     value,
@@ -51,8 +31,6 @@
     activeEl: null,
     utils: { size: 0, position: 0 },
   });
-
-  $: console.log($qTabStore);
 
   /* const indicatorWidth = derived(qTabStore, ($store) => {
     return variant === "primary" ? `calc(${$store.size}px + 8px)` : `${$store.size}px`;
@@ -79,27 +57,30 @@
     const tabsSize = storeVariant === "vertical" ? qTabs.offsetHeight : qTabs.offsetWidth;
     const tabSize = size / tabsSize;
 
+    const child = variant === "primary" ? activeEl.firstElementChild as HTMLDivElement : { offsetLeft: 0, offsetWidth: 0 }
+    const previousChild = variant === "primary" ? previousEl?.firstElementChild as HTMLDivElement : { offsetLeft: 0, offsetWidth: 0 }
+
     if (previousEl === null) {
       // Position initial indicator
       qTabs.style.setProperty("--indicator-size", `${tabSize}`);
-
       qTabs.style.setProperty("--indicator-position", `${position}px`);
     } else {
       // Position indicator on tab change
       const comparePositions = movementDirection(previousEl, activeEl);
+
       let transitionSize;
       if (comparePositions === "next") {
         // New tab is after the previous one
         transitionSize =
           storeVariant === "vertical"
             ? activeEl.offsetTop + activeEl.offsetHeight - previousEl.offsetTop
-            : activeEl.offsetLeft + activeEl.offsetWidth - previousEl.offsetLeft;
+            : (activeEl.offsetLeft + child.offsetLeft) + (child.offsetWidth || activeEl.offsetWidth) - (previousEl.offsetLeft + previousChild.offsetLeft);
       } else {
         // New tab is before the previous one
         transitionSize =
           storeVariant === "vertical"
             ? previousEl.offsetTop + previousEl.offsetHeight - activeEl.offsetTop
-            : previousEl.offsetLeft + previousEl.offsetWidth - activeEl.offsetLeft;
+            : (previousEl.offsetLeft + previousChild.offsetLeft) + (previousChild.offsetWidth || previousEl.offsetWidth) - (activeEl.offsetLeft + child.offsetLeft);
         qTabs.style.setProperty("--indicator-position", `${position}px`);
       }
 
@@ -108,26 +89,15 @@
       setTimeout(() => {
         qTabs.style.setProperty("--indicator-position", `${position}px`);
         qTabs.style.setProperty("--indicator-size", `${tabSize}`);
-      }, 220);
+      }, 250);
     }
   }
-
-  $: classes = createClasses([variant, round && "rounded", hidden && "hidden-indicator"], {
-    component: "q-tabs",
-    userClasses,
-  });
-
-  $: style = createStyles(
-    {
-      "--tab-count": QTabCount || 1,
-      "--indicator-size": 0, // $indicatorWidth,
-      //"--active-tab-index": $qTabStore.index - 1,
-      //"--indicator-position": $qTabStore.position,
-    },
-    userStyles
-  );
 </script>
 
-<nav class={classes} {style} bind:this={qTabs}>
+<nav
+  bind:this={qTabs}
+  class="q-tabs q-tabs--{variant} {userClasses}"
+  class:q-tabs--rounded={round}
+  >
   <slot />
 </nav>

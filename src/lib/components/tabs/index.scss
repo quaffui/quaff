@@ -15,7 +15,7 @@
   & > .q-tab {
     position: relative;
     box-sizing: border-box;
-    height: 48px;
+    min-height: 3rem;
     min-width: max-content;
     display: flex;
     align-items: center;
@@ -59,7 +59,6 @@
 
   &.q-tabs--vertical {
     flex-direction: column;
-    min-height: calc(var(--tab-count) * 3rem);
     width: fit-content;
     align-items: stretch;
     border-bottom: unset;
@@ -75,7 +74,7 @@
       top: 0;
       bottom: 0;
 
-      width: 2px;
+      width: 0.125rem;
       height: 100%;
 
       transform-origin: top;
@@ -93,29 +92,25 @@
     bottom: 0;
 
     width: 100%;
-    height: 2px;
+    height: 0.125rem;
 
     border-radius: 0;
     background: var(--primary);
-    opacity: 0;
 
     transform-origin: left;
     transition:
-      scale 0.2s cubic-bezier(0.77, 0, 0.18, 1),
-      translate 0.2s cubic-bezier(0.77, 0, 0.18, 1);
+      scale 0.2s cubic-bezier(0.25, 0.92, 0.33, 1),
+      translate 0.2s cubic-bezier(0.25, 0.92, 0.33, 1);
 
     scale: var(--indicator-size, 0) 1;
     translate: var(--indicator-position, 0) 0;
   }
 
-  &:not(.q-tabs--hidden-indicator)::after {
-    opacity: 1;
-  }
-
   &.q-tabs--primary::after {
-    left: var(--indicator-position);
-    transform: translateX(-50%);
-    height: 3px;
-    border-radius: 3px 3px 0px 0px;
+    translate: var(--indicator-position, 0) 0;
+    scale: var(--indicator-size, 0) 1;
+
+    height: 0.1875rem;
+    border-radius: 0.25rem 0.25rem 0px 0px;
   }
 }

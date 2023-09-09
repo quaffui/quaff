@@ -5,7 +5,7 @@ import type { NativeProps } from "$lib/utils";
 export type QTabsVariants = "primary" | "secondary" | "vertical";
 
 export interface QTabsProps extends NativeProps, HTMLAttributes<HTMLElement> {
-  value: string;
+  value?: string;
   variant?: QTabsVariants;
   round?: boolean;
 }

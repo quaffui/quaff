@@ -13,7 +13,7 @@
     getClosestFocusableBlock,
     movementDirection,
   } from "$lib/utils";
-  import { hasContext, getContext } from "svelte";
+  import { hasContext, getContext, onMount } from "svelte";
   import type { Direction } from "$lib/utils";
   import { get } from "svelte/store";
   import type { Writable } from "svelte/store";
@@ -23,7 +23,7 @@
   export let name: QTabProps["name"],
     to: QTabProps["to"] = undefined,
     icon: QTabProps["icon"] = undefined,
-    userClasses: QTabProps["userClasses"] = undefined;
+    userClasses: QTabProps["userClasses"] = "";
   export { userClasses as class };
 
   let index = 1;
@@ -43,6 +43,11 @@
     index = indexContext.index();
   }
 
+  onMount(() => {
+    if(to)
+    console.log({name, isActive: isRouteActive($Quaff.router, to)})
+  })
+
   const isInitallyActive =
     to !== undefined ? isRouteActive($Quaff.router, to) : name === $qTabStore.value;
 
@@ -52,28 +57,23 @@
 
   $: isActive = name === $qTabStore.value;
 
+  $: if(qTab && isActive && qTab !== $qTabStore.activeEl) {
+    setActive(qTab)
+  }
+
   let tag: "button" | "a";
   $: tag = to === undefined ? "button" : "a";
-
-  $: classes = createClasses([isActive && "active"], {
-    component: "q-tab",
-    userClasses,
-  });
 
   function setActive(el: QTab) {
     let store = get(qTabStore);
     const previousEl = store.activeEl;
     const variant = store.variant;
 
-    let element;
-    if (variant === "primary") {
-      element = el.firstElementChild as QTab;
-    } else {
-      element = el;
-    }
+    const child = variant === "primary" ? el.firstElementChild as QTab : { offsetLeft: 0, offsetWidth: 0 }
 
-    const position = variant === "vertical" ? element.offsetTop : element.offsetLeft;
-    const size = variant === "vertical" ? element.offsetHeight : element.offsetWidth;
+    const position = variant === "vertical" ? el.offsetTop : el.offsetLeft + child.offsetLeft;
+    const size = variant === "vertical" ? el.offsetHeight : (child.offsetWidth || el.offsetWidth);
+
 
     $qTabStore = {
       variant,
@@ -129,17 +129,22 @@
 </script>
 
 <svelte:element
-  this={tag}
   use:ripple
+  bind:this={qTab}
+  this={tag}
+
   href={to}
-  class={classes}
   role={tag === "a" ? "button" : undefined}
   aria-current={isActive || undefined}
+
+  class="q-tab {userClasses}"
+  class:q-tab--active={isActive}
+
   on:click
   on:click={onClick}
   on:keydown={onKeydown}
+  
   {...$$restProps}
-  bind:this={qTab}
 >
   <div>
     {#if icon}
