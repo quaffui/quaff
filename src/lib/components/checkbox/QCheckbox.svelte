@@ -4,7 +4,7 @@
   export let value: QCheckboxProps["value"] = false,
     label: QCheckboxProps["label"] = "",
     disable: QCheckboxProps["disable"] = false,
-    userClasses: QCheckboxProps["userClasses"] = undefined;
+    userClasses: QCheckboxProps["userClasses"] = "";
   export { userClasses as class };
 </script>
 

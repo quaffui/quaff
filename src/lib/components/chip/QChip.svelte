@@ -1,7 +1,7 @@
 <script lang="ts">
   import { useSize } from "$lib/composables";
   import { ripple } from "$lib/helpers";
-  import { createClasses, isActivationKey } from "$lib/utils";
+  import { isActivationKey } from "$lib/utils";
   import { QIcon } from "$lib";
   import type { QChipProps } from "./props";
 
@@ -17,7 +17,7 @@
     size: QChipProps["size"] = "md",
     tabindex: QChipProps["tabindex"] = undefined,
     href: QChipProps["href"] = undefined,
-    userClasses: QChipProps["userClasses"] = undefined;
+    userClasses: QChipProps["userClasses"] = "";
   export { userClasses as class };
 
   let qChip: HTMLAnchorElement
@@ -26,37 +26,19 @@
   $: imgRight = iconRight?.startsWith("img:") ? iconRight.slice(4) : undefined;
 
   $: sizeObj = useSize(size);
-
-  $: classes = createClasses(
-    [
-      vertical && "vertical",
-      round && "rounded",
-      (outlined || disable) && "bordered",
-      size !== "md" && sizeObj.class,
-    ],
-    {
-      component: "q-chip",
-      userClasses,
-    }
-  );
-
-  $: imgClass = createClasses([responsive && "responsive"], {
-    component: "q-chip",
-    element: "img",
-  });
-
+  
   $: tab = disable ? -1 : tabindex ?? 0;
-
+  
   function stopIfDisabled(e: MouseEvent) {
     if(disable) {
       e.preventDefault()
       e.stopImmediatePropagation()
     }
   }
-
+  
   function onKeyDown(e: KeyboardEvent) {
     if (!isActivationKey(e)) return;
-
+    
     e.preventDefault();
 
     let click = new MouseEvent("click");
@@ -68,7 +50,10 @@
   bind:this={qChip}
   use:ripple={{disable: noRipple || disable}}
   aria-disabled={disable || undefined}
-  class={classes}
+  class="q-chip {sizeObj.class && sizeObj.class !== 'md' ? `q-chip--${sizeObj.class}` : ''} {userClasses}"
+  class:q-chip--vertical={vertical}
+  class:q-chip--rounded={round}
+  class:q-chip--bordered={outlined || disable}
   {href}
   tabindex={tab}
   on:keydown={onKeyDown}
@@ -79,7 +64,12 @@
   {#if $$slots.leading}
     <slot name="leading" />
   {:else if img}
-    <img class={imgClass} src={img} alt="{content || 'Slotted'} chip" />
+    <img
+      class="q-chip__img"
+      class:q-chip__img--responsive={responsive}
+      src={img}
+      alt="{content || 'Slotted'} chip"
+    />
   {:else if icon}
     <QIcon name={icon} class="q-chip__icon" />
   {/if}
@@ -92,7 +82,8 @@
     <slot name="trailing" />
   {:else if imgRight}
     <img
-      class="{imgClass} q-chip__img--trailing"
+      class="q-chip__img q-chip__img--trailing"
+      class:q-chip__img--responsive={responsive}
       src={imgRight}
       alt="{content || 'Slotted'} chip"
     />
