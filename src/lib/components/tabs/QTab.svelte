@@ -3,87 +3,79 @@
   import { isRouteActive } from "$lib/composables";
   import { ripple } from "$lib/helpers";
   import { Quaff } from "$lib/stores";
-  import { createClasses, isActivationKey, isArrowKey, getDirection, getClosestFocusableSibling, isTabKey, getClosestFocusableBlock } from "$lib/utils";
-  import { hasContext, getContext } from "svelte";
+  import {
+    createClasses,
+    isActivationKey,
+    isArrowKey,
+    getDirection,
+    getClosestFocusableSibling,
+    isTabKey,
+    getClosestFocusableBlock,
+  } from "$lib/utils";
+  import { hasContext, getContext, onMount } from "svelte";
   import type { Direction } from "$lib/utils";
+  import { get } from "svelte/store";
   import type { Writable } from "svelte/store";
   import type { QTabProps, QTabsVariants } from "./props";
+  import type { QTab, QTabStore } from "./QTabs.svelte";
 
-  export let name: QTabProps["name"] = undefined,
+  export let name: QTabProps["name"],
     to: QTabProps["to"] = undefined,
     icon: QTabProps["icon"] = undefined,
-    userClasses: QTabProps["userClasses"] = undefined;
+    userClasses: QTabProps["userClasses"] = "";
   export { userClasses as class };
 
-  let index = 1;
-  type QTab = HTMLAnchorElement | HTMLButtonElement;
   let qTab: QTab;
 
-  if (!hasContext("QTabCount")) {
+  const qTabStore = getContext<Writable<QTabStore>>("qTabStore");
+
+  if (!hasContext("qTabStore")) {
     console.warn("QTab should be used inside QTabs");
   }
 
-  const variant = getContext<QTabsVariants>("variant");
+  const isInitallyActive =
+    to !== undefined ? isRouteActive($Quaff.router, to) : name === $qTabStore.value;
 
-  let indexContext = getContext<{
-    index: () => number;
-  }>("QTabCount");
-
-  $: if (indexContext) {
-    index = indexContext.index();
+  $: if (isInitallyActive && qTab) {
+    setActive(qTab);
   }
 
-  let activeStore = getContext<
-    Writable<{
-      name?: string;
-      index: number;
-      size: number;
-      position: string;
-    }>
-  >("activeTab");
+  $: isActive = name === $qTabStore.value;
 
-  $: isActive = to !== undefined ? isRouteActive($Quaff.router, to) : name === $activeStore.name;
-
-  $: if (isActive && qTab) {
-    setActive(qTab);
+  $: if(qTab && isActive && qTab !== $qTabStore.activeEl) {
+    setActive(qTab)
   }
 
   let tag: "button" | "a";
   $: tag = to === undefined ? "button" : "a";
 
-  $: classes = createClasses([isActive && "active"], {
-    component: "q-tab",
-    userClasses,
-  });
+  function setActive(el: QTab) {
+    const store = get(qTabStore);
+    const previousEl = store.activeEl;
+    const variant = store.variant;
 
-  function setActive(el: HTMLElement) {
-    let rect;
-    if (variant === "primary") {
-      rect = (el.firstElementChild as HTMLElement).getBoundingClientRect();
-    } else {
-      rect = el.getBoundingClientRect();
-    }
+    const child = variant === "primary" ? el.firstElementChild as QTab : { offsetLeft: 0, offsetWidth: 0 }
 
-    let indicatorWidth = variant === "vertical" ? rect.height : rect.width;
-    let buttonWidth = el.offsetWidth;
+    const position = variant === "vertical" ? el.offsetTop : el.offsetLeft + child.offsetLeft;
+    const size = variant === "vertical" ? el.offsetHeight : (child.offsetWidth || el.offsetWidth);
 
-    if (index !== $activeStore.index) {
-      $activeStore = {
-        name,
-        index,
-        position:
-          variant === "vertical"
-            ? `${el.offsetTop}px`
-            : variant === "secondary"
-            ? `${el.offsetLeft}px`
-            : `calc(${el.offsetLeft}px + ${buttonWidth}px / 2)`,
-        size: indicatorWidth,
-      };
-    }
+
+    $qTabStore = {
+      variant,
+      value: name,
+      previousEl,
+      activeEl: el,
+      utils: {
+        size,
+        position,
+      },
+    };
   }
 
   function onClick(e: MouseEvent) {
-    setActive(e.target as HTMLElement);
+    if (!isActive) {
+      setActive(e.target as QTab);
+    }
   }
 
   function onKeydown(e: KeyboardEvent) {
@@ -122,17 +114,22 @@
 </script>
 
 <svelte:element
-  this={tag}
   use:ripple
+  bind:this={qTab}
+  this={tag}
+
   href={to}
-  class={classes}
   role={tag === "a" ? "button" : undefined}
   aria-current={isActive || undefined}
+
+  class="q-tab {userClasses}"
+  class:q-tab--active={isActive}
+
   on:click
   on:click={onClick}
   on:keydown={onKeydown}
+  
   {...$$restProps}
-  bind:this={qTab}
 >
   <div>
     {#if icon}
