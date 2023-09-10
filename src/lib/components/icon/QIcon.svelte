@@ -1,6 +1,5 @@
 <script lang="ts">
   import { useSize } from "$lib/composables";
-  import { createClasses, createStyles } from "$lib/utils";
   import type { QIconProps } from "./props";
 
   export let size: QIconProps["size"] = "md",
@@ -11,32 +10,25 @@
     img: QIconProps["img"] = undefined,
     imgAttributes: QIconProps["imgAttributes"] = {},
     color: QIconProps["color"] = undefined,
-    userClasses: QIconProps["userClasses"] = undefined,
-    userStyles: QIconProps["userStyles"] = undefined;
-  export { userClasses as class, userStyles as style };
+    userClasses: QIconProps["userClasses"] = "";
+  export { userClasses as class };
 
   $: sizeObj = useSize(size);
 
-  $: classes = createClasses([type, filled && "filled", sizeObj.class], {
-    component: "q-icon",
-    userClasses,
-    quaffClasses: [color && `text-${color}`],
-  });
-
-  $: style = createStyles(
-    {
-      "--size": sizeObj.style,
-    },
-    userStyles
-  );
-
+  $: sizeClass = sizeObj.class && sizeObj.class !== "md" ? `q-icon--${sizeObj.class}` : ""
+    
   $: imgAttrs = {
     alt: "Quaff Image Icon",
     ...imgAttributes,
   };
 </script>
 
-<i class={classes} {style} {...$$restProps}>
+<i
+  class="q-icon q-icon--{type} {sizeClass} {color ? `text-${color}` : ''} {userClasses}"
+  class:q-icon--filled={filled}
+  style:--size={sizeObj.style}
+  {...$$restProps}
+>
   {#if name !== undefined}
     {name}
   {:else if img !== undefined}
