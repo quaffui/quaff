@@ -11,7 +11,7 @@
     modal: QDialogProps["modal"] = false,
     fullscreen: QDialogProps["fullscreen"] = false,
     persistent: QDialogProps["persistent"] = false,
-    userClasses: QDialogProps["userClasses"] = undefined,
+    userClasses: QDialogProps["userClasses"] = "",
     value: QDialogProps["value"] = false;
   export { userClasses as class };
 
