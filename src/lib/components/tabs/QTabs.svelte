@@ -1,67 +1,104 @@
+  <script context="module" lang="ts">
+  export type QTab = HTMLAnchorElement | HTMLButtonElement;
+
+  export type QTabStore = {
+    value?: string;
+    variant: QTabsProps["variant"];
+    previousEl: QTab | null;
+    activeEl: QTab | null;
+    utils: { position: number; size: number };
+  };
+</script>
+
 <script lang="ts">
-  import { createClasses, createStyles } from "$lib/utils";
-  import { onMount, setContext } from "svelte";
-  import { writable, derived } from "svelte/store";
+  import { movementDirection } from "$lib/utils";
+  import { setContext } from "svelte";
+  import { writable } from "svelte/store";
   import type { QTabsProps } from "./props";
 
   export let value: QTabsProps["value"] = undefined,
     variant: QTabsProps["variant"] = "primary",
     round: QTabsProps["round"] = false,
-    userClasses: QTabsProps["userClasses"] = undefined,
-    userStyles: QTabsProps["userStyles"] = undefined;
-  export { userClasses as class, userStyles as style };
+    userClasses: QTabsProps["userClasses"] = "";
+  export { userClasses as class };
 
-  // Hide indicator until it's mounted
-  let hidden = true;
+  const cssVars = {
+    indicatorPosition: "--indicator-position",
+    indicatorSize: "--indicator-size"
+  }
 
-  onMount(() => {
-    setTimeout(() => {
-      hidden = false;
-    }, 200);
+  let qTabs: HTMLElement;
+
+  const qTabStore = writable<QTabStore>({
+    value,
+    variant,
+    previousEl: null,
+    activeEl: null,
+    utils: { size: 0, position: 0 },
   });
 
-  /** Counting QTab children number */
-  let QTabCount = 0;
-  setContext("QTabCount", {
-    index: () => {
-      QTabCount += 1;
-      return QTabCount;
-    },
+  // Update the store when "value" changes programmatically
+  $: qTabStore.update(($store) => {
+    $store.value = value;
+
+    return $store;
   });
+  // Update "value" when the store changes from QTab
+  $: value = $qTabStore.value;
 
-  let activeTabStore = writable({ name: value, index: 0, size: 0, position: 0 });
-  $: activeTabStore.update(($active) => {
-    $active.name = value;
+  setContext("qTabStore", qTabStore);
 
-    return $active;
-  });
-  setContext("activeTab", activeTabStore);
-  setContext("variant", variant);
+  $: if ($qTabStore.activeEl) {
+    const {
+      previousEl,
+      activeEl,
+      utils: { position, size },
+      variant: storeVariant,
+    } = $qTabStore;
+    const tabsSize = storeVariant === "vertical" ? qTabs.offsetHeight : qTabs.offsetWidth;
+    const tabSize = size / tabsSize;
 
-  $: value = $activeTabStore.name;
+    if (!previousEl) {
+      // Position initial indicator
+      qTabs.style.setProperty(cssVars.indicatorSize, `${tabSize}`);
+      qTabs.style.setProperty(cssVars.indicatorPosition, `${position}px`);
+    } else {
+      // Position indicator on tab change
+      const comparePositions = movementDirection(previousEl, activeEl);
 
-  $: classes = createClasses([variant, round && "rounded", hidden && "hidden-indicator"], {
-    component: "q-tabs",
-    userClasses,
-  });
+      let transitionSize;
+      if (comparePositions === "next") {
+        // New tab is after the previous one
+        transitionSize = prepareTransitionSize(storeVariant, previousEl, activeEl)
+      } else {
+        // New tab is before the previous one
+        transitionSize = prepareTransitionSize(storeVariant, activeEl, previousEl)
+        qTabs.style.setProperty(cssVars.indicatorPosition, `${position}px`);
+      }
 
-  let indicatorWidth = derived(activeTabStore, ($activeTabStore) => {
-    return variant === "primary"
-      ? `calc(${$activeTabStore.size}px + 8px)`
-      : `${$activeTabStore.size}px`;
-  });
+      qTabs.style.setProperty(cssVars.indicatorSize, `${transitionSize / tabsSize}`);
 
-  $: style = createStyles(
-    {
-      "--tab-count": QTabCount || 1,
-      "--indicator-size": $indicatorWidth,
-      "--active-tab-index": $activeTabStore.index - 1,
-      "--indicator-position": $activeTabStore.position,
-    },
-    userStyles
-  );
+      setTimeout(() => {
+        qTabs.style.setProperty(cssVars.indicatorPosition, `${position}px`);
+        qTabs.style.setProperty(cssVars.indicatorSize, `${tabSize}`);
+      }, 250);
+    }
+  }
+
+  function prepareTransitionSize(storeVariant: typeof variant, fromEl: QTab, toEl: QTab) {
+    const fromElChild = storeVariant === "primary" ? fromEl.firstElementChild as HTMLDivElement : { offsetLeft: 0, offsetWidth: 0 }
+    const toElChild = storeVariant === "primary" ? toEl.firstElementChild as HTMLDivElement : { offsetLeft: 0, offsetWidth: 0 }
+
+    return storeVariant === "vertical"
+      ? toEl.offsetTop + toEl.offsetHeight - fromEl.offsetTop
+      : (toEl.offsetLeft + toElChild.offsetLeft) + (toElChild.offsetWidth || toEl.offsetWidth) - (fromEl.offsetLeft + fromElChild.offsetLeft)
+  }
 </script>
 
-<nav class={classes} {style}>
+<nav
+  bind:this={qTabs}
+  class="q-tabs q-tabs--{variant} {userClasses}"
+  class:q-tabs--rounded={round}
+  >
   <slot />
 </nav>

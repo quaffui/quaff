@@ -10,22 +10,8 @@ export interface QTabsProps extends NativeProps, HTMLAttributes<HTMLElement> {
   round?: boolean;
 }
 
-export const QTabsPropsDefaults: QTabsProps = {
-  value: undefined,
-  variant: "primary",
-  round: false,
-  ...NativePropsDefaults,
-};
-
 export interface QTabProps extends NativeProps, HTMLAttributes<HTMLElement> {
-  name?: string;
+  name: string;
   to?: string;
   icon?: string;
 }
-
-export const QTabPropsDefaults: QTabProps = {
-  name: undefined,
-  to: undefined,
-  icon: undefined,
-  ...NativePropsDefaults,
-};

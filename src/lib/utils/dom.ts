@@ -101,3 +101,9 @@ export function getClosestFocusableBlock(el: HTMLElement, direction: Direction) 
 
   return targetBlock;
 }
+
+export function movementDirection(from: HTMLElement, to: HTMLElement): Direction {
+  const relativePosition = from.compareDocumentPosition(to);
+
+  return relativePosition === 2 ? "previous" : "next";
+}
