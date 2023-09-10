@@ -1,18 +1,16 @@
 <script lang="ts">
-  import { createClasses } from "$lib/utils";
   import type { QCardSectionProps } from "./props";
 
   export let horizontal: QCardSectionProps["horizontal"] = false,
-    userClasses: QCardSectionProps["userClasses"] = undefined;
+    userClasses: QCardSectionProps["userClasses"] = "";
   export { userClasses as class };
-
-  $: classes = createClasses([horizontal && "horizontal"], {
-    component: "q-card",
-    element: "section",
-    userClasses,
-  });
 </script>
 
-<div class={classes} {...$$restProps} on:scroll>
+<div
+  class="q-card__section {userClasses}"
+  class:q-card__section--horizontal={horizontal}
+  {...$$restProps} 
+  on:scroll
+  >
   <slot />
 </div>
