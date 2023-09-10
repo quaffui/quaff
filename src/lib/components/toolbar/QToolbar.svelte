@@ -1,30 +1,25 @@
 <script lang="ts">
-  import { useSize } from "$lib/composables";
-  import { createClasses, createStyles } from "$lib/utils";
   import type { QToolbarProps } from "./props";
 
   export let inset: QToolbarProps["inset"] = false,
     border: QToolbarProps["border"] = false,
     elevate: QToolbarProps["elevate"] = false,
     height: QToolbarProps["height"] = "64px",
-    userClasses: QToolbarProps["userClasses"] = undefined,
-    userStyles: QToolbarProps["userStyles"] = undefined;
-  export { userClasses as class, userStyles as style };
+    userClasses: QToolbarProps["userClasses"] = "";
+  export { userClasses as class };
 
-  $: classes = createClasses([inset && "inset", elevate && "elevated", border && "bordered"], {
-    component: "q-toolbar",
-    userClasses,
-  });
-
-  $: style = createStyles(
-    {
-      height: !userClasses?.includes("q-header") && useSize(height).style,
-    },
-    userStyles
-  );
+  $: dynamicHeight = !userClasses?.includes("q-header") ? height : undefined;
 </script>
 
-<header class={classes} role="toolbar" {...$$restProps} {style}>
+<header
+  class="q-toolbar {userClasses}"
+  class:q-toolbar--inset={inset}
+  class:q-toolbar--elevated={elevate}
+  class:q-toolbar--bordered={border}
+  role="toolbar"
+  style:height={dynamicHeight}
+  {...$$restProps}
+>
   <nav>
     <slot />
   </nav>
