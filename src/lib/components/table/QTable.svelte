@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { createClasses } from "$lib/utils";
   import { QIcon, QSelect, QBtn } from "$lib";
   import type { QTableProps, QTableColumn, QTableRow, QTableSort } from "./props";
 
@@ -21,17 +20,6 @@
     label: e.toString(),
     value: e.toString(),
   }));
-
-  $: classes = createClasses([], {
-    component: "q-table",
-    userClasses,
-  });
-
-  $: classesTable = createClasses([flat && "flat", bordered && "bordered", dense && "dense"], {
-    component: "q-table",
-    element: "table",
-    userClasses,
-  });
 
   let sort: QTableSort = null;
   let rowsSorted: QTableRow[] = rows;
@@ -110,8 +98,13 @@
   }
 </script>
 
-<div class={classes} {...$$restProps}>
-  <table class={classesTable}>
+<div class="q-table" {...$$restProps}>
+  <table
+    class="q-table__table {userClasses}"
+    class:q-table--flat={flat}
+    class:q-table--bordered={bordered}
+    class:q-table--dense={dense}
+  >
     <thead>
       <tr>
         {#each columns as column}
