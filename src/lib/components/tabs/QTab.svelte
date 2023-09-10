@@ -50,7 +50,7 @@
   $: tag = to === undefined ? "button" : "a";
 
   function setActive(el: QTab) {
-    let store = get(qTabStore);
+    const store = get(qTabStore);
     const previousEl = store.activeEl;
     const variant = store.variant;
 
