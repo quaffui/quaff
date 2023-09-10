@@ -58,7 +58,7 @@
   class:q-btn--outlined={outline}
   class:q-btn--flat={flat}
   class:q-btn--rectangle={rectangle}
-  class:q-btn--round={($$slots.default && !label) || round}
+  class:q-btn--round={(!$$slots.default && !label) || round}
   href={to}
   role={tag === "a" ? "button" : undefined}
   tabindex={disable ? -1 : 0}
