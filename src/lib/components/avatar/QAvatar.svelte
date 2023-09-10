@@ -1,6 +1,5 @@
 <script lang="ts">
   import { useSize } from "$lib/composables";
-  import { createClasses, createStyles } from "$lib/utils";
   import type { QAvatarProps } from "./props";
 
   export let shape: QAvatarProps["shape"] = "circle",
@@ -16,7 +15,7 @@
 {#if video === true}
   <!-- svelte-ignore a11y-media-has-caption -->
   <video
-    class="q-avatar {sizeObj.class || ''} {userClasses}"
+    class="q-avatar {sizeObj.class ? `q-avatar--${sizeObj.class}` : ''} {userClasses}"
     class:q-avatar--circle={shape === "circle"}
     class:q-avatar--round={shape === "rounded"}
     class:q-avatar--top-round={shape?.includes("top")}
@@ -32,7 +31,7 @@
   <!-- svelte-ignore a11y-missing-attribute -->
   <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
   <img
-    class="q-avatar {sizeObj.class || ''} {userClasses}"
+    class="q-avatar {sizeObj.class ? `q-avatar--${sizeObj.class}` : ''} {userClasses}"
     class:q-avatar--circle={shape === "circle"}
     class:q-avatar--round={shape === "rounded"}
     class:q-avatar--top-round={shape?.includes("top")}
@@ -45,7 +44,7 @@
 {:else}
   <!-- svelte-ignore a11y-no-static-element-interactions -->
   <div
-    class="q-avatar {sizeObj.class || ''} {userClasses}"
+    class="q-avatar {sizeObj.class ? `q-avatar--${sizeObj.class}` : ''} {userClasses}"
     class:q-avatar--circle={shape === "circle"}
     class:q-avatar--round={shape === "rounded"}
     class:q-avatar--top-round={shape?.includes("top")}

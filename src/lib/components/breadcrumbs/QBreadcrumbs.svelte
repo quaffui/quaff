@@ -7,7 +7,7 @@
     gutter: QBreadcrumbsProps["gutter"] = "sm",
     activeColor: QBreadcrumbsProps["activeColor"] = "primary",
     separatorColor: QBreadcrumbsProps["separatorColor"] = "outline",
-    userClasses: QBreadcrumbsProps["userClasses"] = undefined;
+    userClasses: QBreadcrumbsProps["userClasses"] = "";
   export { userClasses as class };
 
   let breadcrumbElement: HTMLDivElement;
@@ -16,13 +16,8 @@
 
   setContext("activeColor", activeColor);
   setContext("separator", { type: separator, color: separatorColor, gutter });
-
-  $: classes = createClasses([], {
-    component: "q-breadcrumbs",
-    userClasses,
-  });
 </script>
 
-<div class={classes} bind:this={breadcrumbElement}>
+<div class="q-breadcrumbs {userClasses}" bind:this={breadcrumbElement}>
   <slot />
 </div>
