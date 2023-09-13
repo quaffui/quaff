@@ -5,7 +5,7 @@
 
   &__progress {
     position: absolute;
-    background-color: var(--active);
+    background-color: var(--primary);
     top: 0;
     bottom: 0;
     left: 0;
@@ -19,11 +19,15 @@
 .q-circular-progress {
   vertical-align: middle;
 
+  .q-circular-progress__path {
+    transition: stroke-dashoffset 0.3s ease;
+  }
+
   &--indeterminate {
     animation: q-spin 2s linear infinite;
     transform-origin: center center;
 
-    & .path {
+    .q-circular-progress__path {
       stroke-dasharray: 1, 200;
       stroke-dashoffset: 0;
       animation: q-load 1.5s ease-in-out infinite;
