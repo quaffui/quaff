@@ -1,6 +1,5 @@
 <script lang="ts">
   import { useSize } from "$lib/composables";
-  import { createClasses } from "$lib/utils";
   import type { QCircularProgressProps } from "./props";
 
   export let value: QCircularProgressProps["value"] = 0,
