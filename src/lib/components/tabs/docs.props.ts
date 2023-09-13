@@ -29,7 +29,7 @@ export const QTabDocsProps = [
   {
     name: "name",
     type: "string",
-    optional: true,
+    optional: false,
     clickableType: false,
     description: "",
     default: "",
