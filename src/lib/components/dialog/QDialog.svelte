@@ -1,7 +1,7 @@
 <script lang="ts">
   import { clickOutsideDialog } from "$lib/helpers";
   import { createClasses } from "$lib/utils";
-  import { createEventDispatcher, onMount } from "svelte";
+  import { createEventDispatcher } from "svelte";
   import { QBtn } from "$lib";
   import type { QDialogProps } from "./props";
 
@@ -12,25 +12,33 @@
     modal: QDialogProps["modal"] = false,
     fullscreen: QDialogProps["fullscreen"] = false,
     persistent: QDialogProps["persistent"] = false,
-    userClasses: QDialogProps["userClasses"] = undefined;
+    userClasses: QDialogProps["userClasses"] = undefined,
+    value: QDialogProps["value"] = false;
   export { userClasses as class };
 
   const emit = createEventDispatcher();
-  let dialogElement: HTMLDialogElement;
+  let dialogElement: HTMLDialogElement | undefined;
 
-  let opened = false;
+  const DURATION_TOGGLE = 150;
 
-  onMount(() => {
-    opened = dialogElement.open;
-    dialogElement.style.display = opened ? "block" : "none";
-  });
+  $: if (dialogElement) {
+    if (value) {
+      dialogElement.style.display = "block";
+      modal ? dialogElement.showModal() : dialogElement.show();
+    } else {
+      dialogElement.close();
+      setTimeout(() => {
+        dialogElement!.style.display = "none";
+      }, DURATION_TOGGLE);
+    }
+  }
 
-  $: canHideOnClickOutside = opened && persistent !== true;
+  $: canHideOnClickOutside = value && !persistent;
 
   $: positionClass = ["top", "right", "bottom", "left"].includes(position!) ? position : undefined;
 
   $: classes = createClasses(
-    [opened && "active", positionClass, modal && "modal", fullscreen && "max"],
+    [value && "active", positionClass, modal && "modal", fullscreen && "max"],
     {
       component: "q-dialog",
       userClasses,
@@ -38,40 +46,24 @@
   );
 
   export function hide() {
-    if (dialogElement && dialogElement.open) {
-      dialogElement.close();
-      opened = false;
-      setTimeout(() => {
-        dialogElement.style.display = "none";
-      }, 250);
-    }
+    value = false;
   }
+
   export function show() {
-    if (dialogElement && !dialogElement.open) {
-      modal ? dialogElement.showModal() : dialogElement.show();
-      opened = true;
-      dialogElement.style.display = "block";
-    }
+    value = true;
   }
-  export function toggle(e: MouseEvent) {
-    if (dialogElement) {
-      opened = !opened;
-      if (dialogElement.open) {
-        hide();
-      } else {
-        show();
-      }
-    }
-    e.stopPropagation();
+
+  export function toggle(e?: MouseEvent) {
+    value = !value;
+    e?.stopPropagation();
   }
 
   function addAnimation() {
-    if (persistent && opened) {
+    if (persistent && value) {
       dialogElement?.classList.add("animating");
-
       setTimeout(() => {
         dialogElement?.classList.remove("animating");
-      }, 150);
+      }, DURATION_TOGGLE);
     }
   }
 
