@@ -13,19 +13,14 @@
 
   $: spinnerSize = useSize(size);
 
-  $: classes = createClasses([indeterminate && "indeterminate"], {
-    component: "q-circular-progress",
-    quaffClasses: [color && `text-${color}`],
-    userClasses,
-  });
-
-  $: circumference = 2 * Math.PI * 20;
+  const circumference = 2 * Math.PI * 20;
 
   $: progressOffset = ((100 - value) / 100) * circumference;
 </script>
 
 <svg
-  class={classes}
+  class="q-circular-progress {color ? `text-${color}` : ''} {userClasses}"
+  class:q-circular-progress--indeterminate={indeterminate}
   height={spinnerSize.style}
   width={spinnerSize.style}
   viewBox="25 25 50 50"

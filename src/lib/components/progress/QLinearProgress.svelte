@@ -13,16 +13,6 @@
     borderRadius: rounded ? "12px" : "0",
   };
 
-  $: containerClasses = createClasses(["small-space", "border"], {
-    component: "q-linear-progress",
-    userClasses,
-  });
-
-  $: progressClasses = createClasses([from], {
-    component: "q-linear-progress",
-    element: "progress",
-  });
-
   $: containerStyle = createStyles(roundedStyle, userStyles);
   $: progressStyle =
     from === "right"
@@ -31,7 +21,7 @@
 </script>
 
 <div
-  class={containerClasses}
+  class="q-linear-progress {userClasses}"
   style={containerStyle}
   role="progressbar"
   aria-valuenow={value}
@@ -39,5 +29,9 @@
   aria-valuemax={100}
   {...$$restProps}
 >
-  <div class={progressClasses} style={progressStyle} />
+  <div
+    class="q-linear-progress__progress"
+    class:q-linear-progress__progress--right={from === "right"}
+    style={progressStyle}
+  />
 </div>
