@@ -8,7 +8,7 @@
   font-family: inherit;
 }
 
-@mixin clip-border($clip-height, $clip-width) {
+@mixin clip-border($clip-width, $clip-height) {
   clip-path: polygon(
     0% 0%,
     0% 100%,
@@ -26,26 +26,27 @@
   &::after {
     content: "";
     position: absolute;
-    top: calc(var(--border-width) * -1);
-    bottom: calc(var(--border-width) * -1);
+    top: -0.0625rem;
+    bottom: -0.0625rem;
     width: calc(var(--wrapper-height) / 2);
     height: var(--wrapper-height);
-    border: var(--border-width) solid transparent;
+    border: 0.0625rem solid transparent;
     border-top-color: var(--decorator-color);
     border-radius: $border-radius;
+    box-sizing: border-box;
   }
 
   &::before {
-    left: calc(var(--border-width) * -1);
+    left: -0.0625rem;
     border-top-right-radius: 0px;
     border-bottom-right-radius: 0px;
-    $clip-height: 0.125rem;
+    $clip-height: 0.25rem;
     $clip-width: if($variant == "outlined", 0.9375rem, 0.3125rem);
-    @include clip-border($clip-height, $clip-width);
+    @include clip-border($clip-width, $clip-height);
   }
 
   &::after {
-    right: calc(var(--border-width) * -1);
+    right: -0.0625rem;
     border-top-left-radius: 0px;
     border-bottom-left-radius: 0px;
   }

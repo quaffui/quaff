@@ -19,19 +19,50 @@ $transition-duration: 0.2s;
 
   &__wrapper {
     --decorator-color: var(--outline);
-    --border-width: 0.0625rem;
     display: flex;
     position: relative;
     height: var(--wrapper-height);
   }
 
+  &--rounded#{&}--active &__wrapper {
+    $clip-x1: 1.25rem;
+    $clip-x2: 1.5rem;
+    $clip-y: 0.125rem;
+
+    // clip path has to go beyond 0% and 100% for y because of the floating label
+    clip-path: polygon(
+      0% -20%,
+      $clip-x1 -20%,
+      $clip-x1 $clip-y,
+      $clip-x2 $clip-y,
+      $clip-x2 -20%,
+      100% -20%,
+      100% 120%,
+      0% 120%
+    );
+  }
+
   &--default &__wrapper,
   &--filled &__wrapper {
-    border-bottom: var(--border-width) solid var(--decorator-color);
+    border-bottom: 0.0625rem solid var(--decorator-color);
+  }
+
+  &--focus#{&}--default &__wrapper,
+  &--focus#{&}--filled &__wrapper {
+    border-bottom: 0.0625rem solid var(--decorator-color);
+    box-shadow: inset 0 -0.0625rem 0 var(--decorator-color);
   }
 
   &--has-border &__wrapper {
-    border: var(--border-width) solid var(--decorator-color);
+    border: 0.0625rem solid var(--decorator-color);
+  }
+
+  &--focus#{&}--has-border &__wrapper {
+    box-shadow:
+      inset 0.0625rem 0 0 var(--decorator-color),
+      inset -0.0625rem 0 0 var(--decorator-color),
+      inset 0 0.0625rem 0 0 var(--decorator-color),
+      inset 0 -0.0625rem 0 0 var(--decorator-color);
   }
 
   &__wrapper {
@@ -54,6 +85,14 @@ $transition-duration: 0.2s;
 
   &--label#{&}--active#{&}--has-border &__wrapper {
     border-top-color: transparent;
+    box-shadow: none;
+  }
+
+  &--label#{&}--focus#{&}--has-border &__wrapper {
+    box-shadow:
+      inset 0.0625rem 0 0 var(--decorator-color),
+      inset -0.0625rem 0 0 var(--decorator-color),
+      inset 0 -0.0625rem 0 0 var(--decorator-color);
   }
 
   &--label#{&}--active#{&}--rounded &__wrapper {
@@ -95,7 +134,7 @@ $transition-duration: 0.2s;
 
   &--default:not(#{&}--dense) &__label,
   &--filled:not(#{&}--dense) &__label {
-    top: 1px;
+    top: 0.0625rem;
   }
 
   &--slot-prepend#{&}--default &__label,
@@ -120,24 +159,11 @@ $transition-duration: 0.2s;
     left: 1.4375rem;
   }
 
-  &--has-border#{&}--focus &__label {
-    transform: translateX(-0.0625rem);
-  }
-
-  &--label#{&}--rounded#{&}--focus &__wrapper::before {
-    @include clip-border(0.3125rem, 0.4375rem);
-  }
-
-  &--label#{&}--outlined#{&}--focus &__wrapper::before {
-    @include clip-border(0.3125rem, 1.0625rem);
-  }
-
-  &--rounded#{&}--focus &__input {
-    padding-left: 1.375rem;
-  }
-
-  &--outlined#{&}--focus &__input {
-    padding-left: 0.6875rem;
+  &--label#{&}--has-border#{&}--focus &__wrapper {
+    &::before,
+    &::after {
+      box-shadow: inset 0 0.0625rem 0 var(--decorator-color);
+    }
   }
 
   &--outlined &__label {
@@ -158,7 +184,7 @@ $transition-duration: 0.2s;
     display: block;
     margin-left: 0.25rem;
     flex-grow: 1;
-    border-top-width: var(--border-width);
+    border-top-width: 0.0625rem;
     border-top-style: solid;
     border-top-color: var(--decorator-color);
     min-width: 0.625rem;
@@ -169,17 +195,17 @@ $transition-duration: 0.2s;
   }
 
   &--active#{&}--rounded &__label {
-    right: calc(var(--wrapper-height) / 2);
+    right: calc(var(--wrapper-height) / 2 - 0.125rem);
   }
 
   &--active#{&}--outlined &__label {
-    right: 0.25rem;
+    right: 1.375rem;
   }
 
   &--active &__label {
     font-size: 0.75rem;
     line-height: 0px;
-    margin-top: calc(var(--border-width) * -1);
+    margin-top: -0.0625rem;
   }
 
   &--active#{&}--default &__label,
@@ -189,7 +215,10 @@ $transition-duration: 0.2s;
 
   &--focus &__wrapper {
     --decorator-color: var(--primary);
-    --border-width: 0.125rem;
+  }
+
+  &--focus#{&}--has-border &__label::after {
+    border-top-width: 0.125rem;
   }
 
   &__input {
@@ -203,7 +232,7 @@ $transition-duration: 0.2s;
   &--default &__input,
   &--filled &__input {
     padding: 0 1rem;
-    padding-top: 15px;
+    padding-top: 0.9375rem;
   }
 
   &--focus#{&}--default &__input,
@@ -212,7 +241,7 @@ $transition-duration: 0.2s;
   }
 
   &--rounded &__input {
-    padding: 0 23px;
+    padding: 0 1.4375rem;
   }
 
   &--outlined &__input {
@@ -255,36 +284,20 @@ $transition-duration: 0.2s;
     }
   }
 
-  // prevent content moving up due to bottom border
-  &--focus#{&}--default &__slot-prepend,
-  &--focus#{&}--default &__slot-append,
-  &--focus#{&}--filled &__slot-prepend,
-  &--focus#{&}--filled &__slot-append {
-    margin-bottom: -0.0625rem;
-  }
-
   &__slot-prepend {
-    padding-left: 12px;
+    padding-left: 0.75rem;
   }
 
   &--rounded &__slot-prepend {
-    padding-left: 16px;
-  }
-
-  &--focus#{&}--has-border &__slot-prepend {
-    margin-left: -1px;
+    padding-left: 1rem;
   }
 
   &__slot-append {
-    padding-right: 12px;
+    padding-right: 0.75rem;
   }
 
   &--rounded &__slot-append {
-    padding-right: 16px;
-  }
-
-  &--focus#{&}--has-border &__slot-append {
-    margin-right: -1px;
+    padding-right: 1rem;
   }
 
   &__slot-before {
