@@ -1,6 +1,5 @@
 <script lang="ts">
   import { clickOutsideDialog } from "$lib/helpers";
-  import { createClasses } from "$lib/utils";
   import { createEventDispatcher } from "svelte";
   import { QBtn } from "$lib";
   import type { QDialogProps } from "./props";
@@ -34,16 +33,6 @@
   }
 
   $: canHideOnClickOutside = value && !persistent;
-
-  $: positionClass = ["top", "right", "bottom", "left"].includes(position!) ? position : undefined;
-
-  $: classes = createClasses(
-    [value && "active", positionClass, modal && "modal", fullscreen && "max"],
-    {
-      component: "q-dialog",
-      userClasses,
-    }
-  );
 
   export function hide() {
     value = false;
@@ -98,7 +87,15 @@
 
 <dialog
   use:clickOutsideDialog={handleClickHide}
-  class={classes}
+  class="q-dialog {userClasses}"
+  class:q-dialog--active={value}
+  class:q-dialog--position-default={position === "default" || !position}
+  class:q-dialog--position-top={position === "top"}
+  class:q-dialog--position-right={position === "right"}
+  class:q-dialog--position-bottom={position === "bottom"}
+  class:q-dialog--position-left={position === "left"}
+  class:q-dialog--modal={modal}
+  class:q-dialog--fullscreen={fullscreen}
   {...$$restProps}
   bind:this={dialogElement}
   on:cancel={handleKeyboardHide}
