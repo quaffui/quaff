@@ -543,7 +543,12 @@
       <QCard title="Dialogs">
         <QCardSection>
           <h6>Basics</h6>
-          <QDialog bind:value={dialog1} bind:this={dialogElement1} btnContent="Default dialog">
+          <QDialog
+            bind:value={dialog1}
+            bind:this={dialogElement1}
+            button
+            buttonLabel="Default dialog"
+          >
             <h5>This is a dialog</h5>
             <div>Some text here</div>
             <nav class="flex justify-end">
@@ -551,7 +556,7 @@
               <QBtn on:click={() => dialogElement1.hide()} label="Confirm" />
             </nav>
           </QDialog>
-          <QDialog modal bind:value={dialog2} btnContent="Modal dialog">
+          <QDialog modal bind:value={dialog2} button buttonLabel="Modal dialog">
             <h5>This is a modal dialog</h5>
             <div>Some text here</div>
             <nav class="flex justify-end">
@@ -559,7 +564,7 @@
               <QBtn on:click={() => (dialog2 = false)} label="Confirm" />
             </nav>
           </QDialog>
-          <QDialog modal bind:value={dialog3} btnContent="Persistent dialog" persistent>
+          <QDialog modal bind:value={dialog3} button buttonLabel="Persistent dialog" persistent>
             <h5>This is a dialog</h5>
             <div>This time, I am persistent</div>
             <nav class="flex justify-end">
@@ -570,7 +575,7 @@
         </QCardSection>
         <QCardSection>
           <h6>Position</h6>
-          <QDialog modal bind:value={dialog4} btnContent="Top" position="top">
+          <QDialog modal bind:value={dialog4} button buttonLabel="Top" position="top">
             <h5>This is a dialog</h5>
             <div>I'm chilling on top!</div>
             <nav class="flex justify-end">
@@ -578,7 +583,7 @@
               <QBtn on:click={() => (dialog4 = false)} label="Confirm" />
             </nav>
           </QDialog>
-          <QDialog modal bind:value={dialog5} btnContent="Right" position="right">
+          <QDialog modal bind:value={dialog5} button buttonLabel="Right" position="right">
             <h5>This is a dialog</h5>
             <div>I'm chilling on right!</div>
             <nav class="flex justify-end">
@@ -586,7 +591,7 @@
               <QBtn on:click={() => (dialog5 = false)} label="Confirm" />
             </nav>
           </QDialog>
-          <QDialog modal bind:value={dialog6} btnContent="Bottom" position="bottom">
+          <QDialog modal bind:value={dialog6} button buttonLabel="Bottom" position="bottom">
             <h5>This is a dialog</h5>
             <div>I'm chilling on bottom!</div>
             <nav class="flex justify-end">
@@ -594,7 +599,7 @@
               <QBtn on:click={() => (dialog6 = false)} label="Confirm" />
             </nav>
           </QDialog>
-          <QDialog modal bind:value={dialog7} btnContent="Left" position="left">
+          <QDialog modal bind:value={dialog7} button buttonLabel="Left" position="left">
             <h5>This is a dialog</h5>
             <div>I'm chilling on left!</div>
             <nav class="flex justify-end">
