@@ -30,6 +30,14 @@
       : `clip-path: polygon(0% 0%, 0% 100%, ${value}% 100%, ${value}% 0%);`;
 </script>
 
-<div class={containerClasses} style={containerStyle} {...$$restProps}>
+<div
+  class={containerClasses}
+  style={containerStyle}
+  role="progressbar"
+  aria-valuenow={value}
+  aria-valuemin={0}
+  aria-valuemax={100}
+  {...$$restProps}
+>
   <div class={progressClasses} style={progressStyle} />
 </div>
