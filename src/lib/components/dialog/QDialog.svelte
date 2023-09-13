@@ -5,9 +5,9 @@
   import { QBtn } from "$lib";
   import type { QDialogProps } from "./props";
 
-  export let noBtn: QDialogProps["noBtn"] = false,
-    btnContent: QDialogProps["btnContent"] = undefined,
-    btnAttrs: QDialogProps["btnAttrs"] = {},
+  export let button: QDialogProps["button"] = false,
+    buttonLabel: QDialogProps["buttonLabel"] = undefined,
+    buttonProps: QDialogProps["buttonProps"] = {},
     position: QDialogProps["position"] = "default",
     modal: QDialogProps["modal"] = false,
     fullscreen: QDialogProps["fullscreen"] = false,
@@ -85,11 +85,14 @@
   }
 </script>
 
-{#if noBtn === false}
-  <QBtn {...btnAttrs} on:click={toggle} on:click={(event) => emit("btnClick", event)}>
-    <slot name="button">
-      {btnContent || ""}
-    </slot>
+{#if button}
+  <QBtn
+    {...buttonProps}
+    label={buttonLabel}
+    on:click={toggle}
+    on:click={(event) => emit("buttonClick", event)}
+  >
+    <slot name="button" />
   </QBtn>
 {/if}
 
