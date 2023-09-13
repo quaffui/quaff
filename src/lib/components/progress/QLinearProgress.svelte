@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { createClasses, createStyles } from "$lib/utils";
+  import { createStyles } from "$lib/utils";
   import type { QLinearProgressProps } from "./props";
 
   export let value: QLinearProgressProps["value"] = 0,
