@@ -57,7 +57,7 @@
     transform: translate(-50%, 0);
   }
 
-  &:is(&--active, [open]):is(&--left, &--right, &--top, &--bottom, &--max) {
+  &:is(&--active, [open]):is(&--left, &--right, &--top, &--bottom, &--fullscreen) {
     transform: translate(0, 0);
   }
 
@@ -111,7 +111,7 @@
     transform: translateY(100%);
   }
 
-  &--max {
+  &--fullscreen {
     top: 0;
     left: 0;
     right: auto;
