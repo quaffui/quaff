@@ -29,29 +29,29 @@
 
   $: sizeObj = useSize(size);
 
-  $: sizeClass = sizeObj.class && sizeObj.class !== 'md' ? `q-btn--${sizeObj.class}` : ""
-  
+  $: sizeClass = sizeObj.class && sizeObj.class !== "md" ? `q-btn--${sizeObj.class}` : "";
+
   function stopIfDisabled(e: MouseEvent) {
-    if(disable) {
-      e.preventDefault()
-      e.stopImmediatePropagation()
+    if (disable) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
     }
   }
-  
+
   function onKeyDown(e: KeyboardEvent) {
     if (!isActivationKey(e)) return;
-    
+
     e.preventDefault();
-    
+
     let click = new MouseEvent("click");
     qBtn.dispatchEvent(click);
   }
 </script>
 
 <svelte:element
+  this={tag}
   use:ripple={{ disable: noRipple || disable }}
   bind:this={qBtn}
-  this={tag}
   aria-disabled={disable || undefined}
   class="q-btn {sizeClass} {userClasses}"
   class:q-btn--unelevated={unelevated}

@@ -20,25 +20,25 @@
     userClasses: QChipProps["userClasses"] = "";
   export { userClasses as class };
 
-  let qChip: HTMLAnchorElement
+  let qChip: HTMLAnchorElement;
 
   $: img = icon?.startsWith("img:") ? icon.slice(4) : undefined;
   $: imgRight = iconRight?.startsWith("img:") ? iconRight.slice(4) : undefined;
 
   $: sizeObj = useSize(size);
-  
+
   $: tab = disable ? -1 : tabindex ?? 0;
-  
+
   function stopIfDisabled(e: MouseEvent) {
-    if(disable) {
-      e.preventDefault()
-      e.stopImmediatePropagation()
+    if (disable) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
     }
   }
-  
+
   function onKeyDown(e: KeyboardEvent) {
     if (!isActivationKey(e)) return;
-    
+
     e.preventDefault();
 
     let click = new MouseEvent("click");
@@ -48,9 +48,11 @@
 
 <a
   bind:this={qChip}
-  use:ripple={{disable: noRipple || disable}}
+  use:ripple={{ disable: noRipple || disable }}
   aria-disabled={disable || undefined}
-  class="q-chip {sizeObj.class && sizeObj.class !== 'md' ? `q-chip--${sizeObj.class}` : ''} {userClasses}"
+  class="q-chip {sizeObj.class && sizeObj.class !== 'md'
+    ? `q-chip--${sizeObj.class}`
+    : ''} {userClasses}"
   class:q-chip--vertical={vertical}
   class:q-chip--rounded={round}
   class:q-chip--bordered={outlined || disable}
