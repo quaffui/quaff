@@ -14,7 +14,7 @@
         class="snippet-dialog"
         bind:value={dialog}
         btnAttrs={{ outline: true, round: true, icon: "code" }}
-        on:btnClick={() => (dialog = true)}
+        on:buttonClick={() => (dialog = true)}
         modal
       >
         <QCodeBlock code={snippets[title]} language="svelte" {title} copiable />

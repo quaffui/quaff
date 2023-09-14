@@ -65,7 +65,9 @@
   }
 
   // Left drawer + Right drawer
-  &.q-drawer--left ~ .q-drawer--active.q-drawer--right:not(.q-drawer--offset-#{$pos}, .q-drawer--overlay) ~ .q-#{$el} {
+  &.q-drawer--left
+    ~ .q-drawer--active.q-drawer--right:not(.q-drawer--offset-#{$pos}, .q-drawer--overlay)
+    ~ .q-#{$el} {
     width: calc(#{$baseWidth} - #{$LR_Drawer});
   }
 }

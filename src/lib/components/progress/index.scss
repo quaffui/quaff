@@ -3,15 +3,28 @@
   height: 1rem;
   @include border;
 
+  &--rounded {
+    border-radius: 0.75rem;
+  }
+
   &__progress {
     position: absolute;
-    background-color: var(--active);
+    background-color: var(--primary);
     top: 0;
     bottom: 0;
     left: 0;
     right: 0;
     transition: var(--speed4) clip-path;
-    clip-path: polygon(0% 0%, 0% 0%, 0% 0%, 0% 0%);
+    clip-path: polygon(0% 0%, 0% 100%, var(--progress) 100%, var(--progress) 0%);
+  }
+
+  &--right &__progress {
+    clip-path: polygon(
+      100% 0%,
+      100% 100%,
+      calc(100% - var(--progress)) 100%,
+      calc(100% - var(--progress)) 0%
+    );
   }
 }
 
@@ -19,11 +32,15 @@
 .q-circular-progress {
   vertical-align: middle;
 
+  .q-circular-progress__path {
+    transition: stroke-dashoffset 0.3s ease;
+  }
+
   &--indeterminate {
     animation: q-spin 2s linear infinite;
     transform-origin: center center;
 
-    & .path {
+    .q-circular-progress__path {
       stroke-dasharray: 1, 200;
       stroke-dashoffset: 0;
       animation: q-load 1.5s ease-in-out infinite;

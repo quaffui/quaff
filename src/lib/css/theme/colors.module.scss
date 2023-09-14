@@ -18,7 +18,7 @@
 }
 .primary {
   @extend .bg-primary;
-  @extend .text-on-primary
+  @extend .text-on-primary;
 }
 
 .bg-primary-container {
@@ -41,7 +41,7 @@
 }
 .primary-container {
   @extend .bg-primary-container;
-  @extend .text-on-primary-container
+  @extend .text-on-primary-container;
 }
 
 .bg-secondary {
@@ -64,7 +64,7 @@
 }
 .secondary {
   @extend .bg-secondary;
-  @extend .text-on-secondary
+  @extend .text-on-secondary;
 }
 
 .bg-secondary-container {
@@ -87,7 +87,7 @@
 }
 .secondary-container {
   @extend .bg-secondary-container;
-  @extend .text-on-secondary-container
+  @extend .text-on-secondary-container;
 }
 
 .bg-tertiary {
@@ -110,7 +110,7 @@
 }
 .tertiary {
   @extend .bg-tertiary;
-  @extend .text-on-tertiary
+  @extend .text-on-tertiary;
 }
 
 .bg-tertiary-container {
@@ -133,7 +133,7 @@
 }
 .tertiary-container {
   @extend .bg-tertiary-container;
-  @extend .text-on-tertiary-container
+  @extend .text-on-tertiary-container;
 }
 
 .bg-error {
@@ -156,7 +156,7 @@
 }
 .error {
   @extend .bg-error;
-  @extend .text-on-error
+  @extend .text-on-error;
 }
 
 .bg-error-container {
@@ -179,7 +179,7 @@
 }
 .error-container {
   @extend .bg-error-container;
-  @extend .text-on-error-container
+  @extend .text-on-error-container;
 }
 
 .bg-background {
@@ -202,7 +202,7 @@
 }
 .background {
   @extend .bg-background;
-  @extend .text-on-background
+  @extend .text-on-background;
 }
 
 .bg-surface {
@@ -225,7 +225,7 @@
 }
 .surface {
   @extend .bg-surface;
-  @extend .text-on-surface
+  @extend .text-on-surface;
 }
 
 .bg-surface-variant {
@@ -248,7 +248,7 @@
 }
 .surface-variant {
   @extend .bg-surface-variant;
-  @extend .text-on-surface-variant
+  @extend .text-on-surface-variant;
 }
 
 .bg-outline {

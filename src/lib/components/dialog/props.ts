@@ -15,19 +15,19 @@ export interface QDialogProps extends NativeProps, HTMLAttributes<HTMLDialogElem
    * Wether the dialog should have a trigger button or not.
    * @default false
    */
-  noBtn?: boolean;
+  button?: boolean;
 
   /**
-   * The content to be displayed on the dialog button.
+   * The label of the trigger button. Requires "button" to be set.
    * @default undefined
    */
-  btnContent?: string;
+  buttonLabel?: string;
 
   /**
    * Additional attributes for the dialog button.
    * @default {}
    */
-  btnAttrs?: QBtnProps;
+  buttonProps?: QBtnProps;
 
   /**
    * The position of the dialog relative to the viewport.
