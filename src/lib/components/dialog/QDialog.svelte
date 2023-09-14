@@ -18,7 +18,7 @@
   const emit = createEventDispatcher();
   let dialogElement: HTMLDialogElement | undefined;
 
-  const DURATION_TOGGLE = 150;
+  const ANIMATION_DURATION = 150;
 
   $: if (dialogElement) {
     if (value) {
@@ -28,7 +28,7 @@
       dialogElement.close();
       setTimeout(() => {
         dialogElement!.style.display = "none";
-      }, DURATION_TOGGLE);
+      }, ANIMATION_DURATION);
     }
   }
 
@@ -52,7 +52,7 @@
       dialogElement?.classList.add("animating");
       setTimeout(() => {
         dialogElement?.classList.remove("animating");
-      }, DURATION_TOGGLE);
+      }, ANIMATION_DURATION);
     }
   }
 
