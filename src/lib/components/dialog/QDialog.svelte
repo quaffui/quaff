@@ -1,77 +1,58 @@
 <script lang="ts">
   import { clickOutsideDialog } from "$lib/helpers";
-  import { createClasses } from "$lib/utils";
-  import { createEventDispatcher, onMount } from "svelte";
+  import { createEventDispatcher } from "svelte";
   import { QBtn } from "$lib";
   import type { QDialogProps } from "./props";
 
-  export let noBtn: QDialogProps["noBtn"] = false,
-    btnContent: QDialogProps["btnContent"] = undefined,
-    btnAttrs: QDialogProps["btnAttrs"] = {},
+  export let button: QDialogProps["button"] = false,
+    buttonLabel: QDialogProps["buttonLabel"] = undefined,
+    buttonProps: QDialogProps["buttonProps"] = {},
     position: QDialogProps["position"] = "default",
     modal: QDialogProps["modal"] = false,
     fullscreen: QDialogProps["fullscreen"] = false,
     persistent: QDialogProps["persistent"] = false,
-    userClasses: QDialogProps["userClasses"] = undefined;
+    userClasses: QDialogProps["userClasses"] = undefined,
+    value: QDialogProps["value"] = false;
   export { userClasses as class };
 
   const emit = createEventDispatcher();
-  let dialogElement: HTMLDialogElement;
+  let dialogElement: HTMLDialogElement | undefined;
 
-  let opened = false;
+  const DURATION_TOGGLE = 150;
 
-  onMount(() => {
-    opened = dialogElement.open;
-    dialogElement.style.display = opened ? "block" : "none";
-  });
-
-  $: canHideOnClickOutside = opened && persistent !== true;
-
-  $: positionClass = ["top", "right", "bottom", "left"].includes(position!) ? position : undefined;
-
-  $: classes = createClasses(
-    [opened && "active", positionClass, modal && "modal", fullscreen && "max"],
-    {
-      component: "q-dialog",
-      userClasses,
+  $: if (dialogElement) {
+    if (value) {
+      dialogElement.style.display = "block";
+      modal ? dialogElement.showModal() : dialogElement.show();
+    } else {
+      dialogElement.close();
+      setTimeout(() => {
+        dialogElement!.style.display = "none";
+      }, DURATION_TOGGLE);
     }
-  );
+  }
+
+  $: canHideOnClickOutside = value && !persistent;
 
   export function hide() {
-    if (dialogElement && dialogElement.open) {
-      dialogElement.close();
-      opened = false;
-      setTimeout(() => {
-        dialogElement.style.display = "none";
-      }, 250);
-    }
+    value = false;
   }
+
   export function show() {
-    if (dialogElement && !dialogElement.open) {
-      modal ? dialogElement.showModal() : dialogElement.show();
-      opened = true;
-      dialogElement.style.display = "block";
-    }
+    value = true;
   }
-  export function toggle(e: MouseEvent) {
-    if (dialogElement) {
-      opened = !opened;
-      if (dialogElement.open) {
-        hide();
-      } else {
-        show();
-      }
-    }
-    e.stopPropagation();
+
+  export function toggle(e?: MouseEvent) {
+    value = !value;
+    e?.stopPropagation();
   }
 
   function addAnimation() {
-    if (persistent && opened) {
+    if (persistent && value) {
       dialogElement?.classList.add("animating");
-
       setTimeout(() => {
         dialogElement?.classList.remove("animating");
-      }, 150);
+      }, DURATION_TOGGLE);
     }
   }
 
@@ -93,17 +74,28 @@
   }
 </script>
 
-{#if noBtn === false}
-  <QBtn {...btnAttrs} on:click={toggle} on:click={(event) => emit("btnClick", event)}>
-    <slot name="button">
-      {btnContent || ""}
-    </slot>
+{#if button}
+  <QBtn
+    {...buttonProps}
+    label={buttonLabel}
+    on:click={toggle}
+    on:click={(event) => emit("buttonClick", event)}
+  >
+    <slot name="button" />
   </QBtn>
 {/if}
 
 <dialog
   use:clickOutsideDialog={handleClickHide}
-  class={classes}
+  class="q-dialog {userClasses}"
+  class:q-dialog--active={value}
+  class:q-dialog--position-default={position === "default" || !position}
+  class:q-dialog--position-top={position === "top"}
+  class:q-dialog--position-right={position === "right"}
+  class:q-dialog--position-bottom={position === "bottom"}
+  class:q-dialog--position-left={position === "left"}
+  class:q-dialog--modal={modal}
+  class:q-dialog--fullscreen={fullscreen}
   {...$$restProps}
   bind:this={dialogElement}
   on:cancel={handleKeyboardHide}

@@ -116,7 +116,7 @@ export const QDialogDocsProps = [
     default: "true",
   },
   {
-    name: "noBtn",
+    name: "button",
     type: "boolean",
     optional: true,
     clickableType: false,
@@ -124,15 +124,15 @@ export const QDialogDocsProps = [
     default: "false",
   },
   {
-    name: "btnContent",
+    name: "buttonLabel",
     type: "string",
     optional: true,
     clickableType: false,
-    description: "The content to be displayed on the dialog button.",
+    description: 'The label of the trigger button. Requires "button" to be set.',
     default: "undefined",
   },
   {
-    name: "btnAttrs",
+    name: "buttonProps",
     type: "QBtnProps",
     optional: true,
     clickableType: false,

@@ -52,7 +52,7 @@
       el: null,
       value: false,
     },
-    btnAttrsDialog: Dialog = {
+    buttonPropsDialog: Dialog = {
       el: null,
       value: false,
     };
@@ -61,7 +61,8 @@
 <QDocs QComponentDocs={QDialogDocs}>
   <QDialog
     slot="display"
-    btnContent="Open cookie settings"
+    button
+    buttonLabel="Open cookie settings"
     modal
     persistent
     bind:value={exampleDialog.value}
@@ -72,13 +73,19 @@
 
   <div slot="usage">
     <QDocsSection {snippets} title="Positions">
-      <QDialog bind:this={defaultDialog.el} bind:value={defaultDialog.value} btnContent="Default">
+      <QDialog
+        bind:this={defaultDialog.el}
+        bind:value={defaultDialog.value}
+        button
+        buttonLabel="Default"
+      >
         <DialogContent dialogEl={defaultDialog.el} />
       </QDialog>
       <QDialog
         bind:this={topDialog.el}
         bind:value={topDialog.value}
-        btnContent="Top"
+        button
+        buttonLabel="Top"
         position="top"
       >
         <DialogContent dialogEl={topDialog.el} />
@@ -86,7 +93,8 @@
       <QDialog
         bind:this={rightDialog.el}
         bind:value={rightDialog.value}
-        btnContent="Right"
+        button
+        buttonLabel="Right"
         position="right"
       >
         <DialogContent dialogEl={rightDialog.el} />
@@ -94,7 +102,8 @@
       <QDialog
         bind:this={bottomDialog.el}
         bind:value={bottomDialog.value}
-        btnContent="Bottom"
+        button
+        buttonLabel="Bottom"
         position="bottom"
       >
         <DialogContent dialogEl={bottomDialog.el} />
@@ -102,7 +111,8 @@
       <QDialog
         bind:this={leftDialog.el}
         bind:value={leftDialog.value}
-        btnContent="Left"
+        button
+        buttonLabel="Left"
         position="left"
       >
         <DialogContent dialogEl={leftDialog.el} />
@@ -110,13 +120,20 @@
     </QDocsSection>
 
     <QDocsSection {snippets} title="Types">
-      <QDialog bind:this={modalDialog.el} bind:value={modalDialog.value} btnContent="Modal" modal>
+      <QDialog
+        bind:this={modalDialog.el}
+        bind:value={modalDialog.value}
+        button
+        buttonLabel="Modal"
+        modal
+      >
         <DialogContent dialogEl={modalDialog.el} />
       </QDialog>
       <QDialog
         bind:this={fullscreenDialog.el}
         bind:value={fullscreenDialog.value}
-        btnContent="Fullscreen"
+        button
+        buttonLabel="Fullscreen"
         fullscreen
       >
         <DialogContent dialogEl={fullscreenDialog.el} />
@@ -124,7 +141,8 @@
       <QDialog
         bind:this={persistentDialog.el}
         bind:value={persistentDialog.value}
-        btnContent="Persistent"
+        button
+        buttonLabel="Persistent"
         persistent
         modal
       >
@@ -132,8 +150,8 @@
       </QDialog>
     </QDocsSection>
 
-    <QDocsSection {snippets} title="noBtn and programmatic toggle">
-      <QDialog bind:this={methodsDialog.el} bind:value={methodsDialog.value} noBtn persistent>
+    <QDocsSection {snippets} title="Programmatic toggle">
+      <QDialog bind:this={methodsDialog.el} bind:value={methodsDialog.value} persistent>
         <DialogContent dialogEl={methodsDialog.el} />
       </QDialog>
       <QBtn on:click={() => methodsDialog.el?.show()}>Show</QBtn>
@@ -141,14 +159,24 @@
       <QBtn on:click={() => methodsDialog.el?.toggle()}>Toggle</QBtn>
     </QDocsSection>
 
+    <QDocsSection {snippets} title="Value toggle">
+      <QDialog bind:value={methodsDialog.value} persistent>
+        <DialogContent dialogEl={methodsDialog.el} />
+      </QDialog>
+      <QBtn on:click={() => (methodsDialog.value = true)}>Show</QBtn>
+      <QBtn on:click={() => (methodsDialog.value = false)}>Hide</QBtn>
+      <QBtn on:click={() => (methodsDialog.value = !methodsDialog.value)}>Toggle</QBtn>
+    </QDocsSection>
+
     <QDocsSection {snippets} title="Custom button attributes">
       <QDialog
-        bind:this={btnAttrsDialog.el}
-        bind:value={btnAttrsDialog.value}
-        btnContent="Custom button styles"
-        btnAttrs={{ icon: "star", rectangle: true, outline: true }}
+        bind:this={buttonPropsDialog.el}
+        bind:value={buttonPropsDialog.value}
+        button
+        buttonLabel="Custom button styles"
+        buttonProps={{ icon: "star", rectangle: true, outline: true }}
       >
-        <DialogContent dialogEl={btnAttrsDialog.el} />
+        <DialogContent dialogEl={buttonPropsDialog.el} />
       </QDialog>
     </QDocsSection>
   </div>
