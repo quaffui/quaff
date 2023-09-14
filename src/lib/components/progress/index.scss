@@ -3,6 +3,10 @@
   height: 1rem;
   @include border;
 
+  &--rounded {
+    border-radius: 0.75rem;
+  }
+
   &__progress {
     position: absolute;
     background-color: var(--primary);
@@ -11,7 +15,16 @@
     left: 0;
     right: 0;
     transition: var(--speed4) clip-path;
-    clip-path: polygon(0% 0%, 0% 0%, 0% 0%, 0% 0%);
+    clip-path: polygon(0% 0%, 0% 100%, var(--progress) 100%, var(--progress) 0%);
+  }
+
+  &--right &__progress {
+    clip-path: polygon(
+      100% 0%,
+      100% 100%,
+      calc(100% - var(--progress)) 100%,
+      calc(100% - var(--progress)) 0%
+    );
   }
 }
 
