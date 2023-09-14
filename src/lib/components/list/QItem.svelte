@@ -2,7 +2,6 @@
   import { useRouterLink, isRouteActive } from "$lib/composables";
   import { ripple } from "$lib/helpers";
   import { Quaff } from "$lib/stores/Quaff";
-  import { createClasses } from "$lib/utils";
   import { setContext, getContext } from "svelte";
   import { writable } from "svelte/store";
   import { QSeparator } from "$lib";
@@ -16,10 +15,10 @@
     href: QItemProps["href"] = undefined,
     to: QItemProps["to"] = undefined,
     disable: QItemProps["disable"] = false,
-    activeClass: QItemProps["activeClass"] = undefined,
+    activeClass: QItemProps["activeClass"] = "",
     replace: QItemProps["replace"] = false,
     noRipple: QItemProps["noRipple"] = false,
-    userClasses: QItemProps["userClasses"] = undefined;
+    userClasses: QItemProps["userClasses"] = "";
   export { userClasses as class };
 
   let hasMultipleLines = writable(false);
@@ -36,31 +35,8 @@
   $: separatorOptions = getContext<QListProps["separatorOptions"] | undefined>("separator");
 
   $: isActionable = clickable || hasLink || tag === "label";
-
   $: isClickable = isActionable && !disable;
-
   $: isActive = isRouteActive($Quaff.router, to);
-
-  $: classes = createClasses(
-    [
-      $hasMultipleLines && "multiline",
-      dense && "dense",
-      (isActive || (hasLink && active)) && activeClass,
-      (isActive || (hasLink && active)) && "active",
-    ],
-    {
-      component: "q-item",
-      quaffClasses: [linkClasses],
-      userClasses,
-    }
-  );
-
-  $: attributes = {
-    class: classes,
-    tabindex: isClickable == true ? Number(tabindex) || 0 : undefined,
-    "aria-disabled": isActionable === true && disable === true ? true : undefined,
-    ...$$restProps,
-  };
 </script>
 
 {#if separatorOptions !== undefined}
@@ -68,11 +44,33 @@
 {/if}
 {#if linkAttributes.href !== undefined}
   <!-- svelte-ignore a11y-missing-attribute -->
-  <a use:ripple={{ disable: !isClickable || noRipple }} {...attributes} {...linkAttributes}>
+  <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+  <a
+    use:ripple={{ disable: !isClickable || noRipple }}
+    class="q-item {linkClasses} {userClasses}"
+    class:q-item--active={isActive || (hasLink && active)}
+    class:q-item--multiline={$hasMultipleLines}
+    class:q-item--dense={dense}
+    class:{activeClass}={isActive || (hasLink && active)}
+    tabindex={isClickable ? Number(tabindex) || 0 : -1}
+    aria-disabled={(isActionable && disable) || undefined}
+    {...linkAttributes}
+    {...$$restProps}
+  >
     <slot />
   </a>
 {:else}
-  <svelte:element this={tag} {...attributes}>
+  <svelte:element
+    this={tag}
+    class="q-item {userClasses}"
+    class:q-item--active={isActive || (hasLink && active)}
+    class:q-item--multiline={$hasMultipleLines}
+    class:q-item--dense={dense}
+    class:{activeClass}={isActive || (hasLink && active)}
+    tabindex={isClickable ? Number(tabindex) || 0 : -1}
+    aria-disabled={(isActionable && disable) || undefined}
+    {...$$restProps}
+  >
     <slot />
   </svelte:element>
 {/if}

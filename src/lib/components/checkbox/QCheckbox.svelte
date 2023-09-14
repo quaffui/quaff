@@ -1,20 +1,18 @@
 <script lang="ts">
-  import { createClasses } from "$lib/utils";
   import type { QCheckboxProps } from "./props";
 
   export let value: QCheckboxProps["value"] = false,
     label: QCheckboxProps["label"] = "",
     disable: QCheckboxProps["disable"] = false,
-    userClasses: QCheckboxProps["userClasses"] = undefined;
+    userClasses: QCheckboxProps["userClasses"] = "";
   export { userClasses as class };
-
-  $: classes = createClasses([disable && "disabled"], {
-    component: "q-checkbox",
-    userClasses,
-  });
 </script>
 
-<label class={classes} {...$$restProps}>
+<label 
+  class="q-checkbox {userClasses}"
+  class:q-checkbox--disabled={disable}
+  {...$$restProps}
+>
   <input type="checkbox" bind:checked={value} disabled={disable} />
   <span>{label}</span>
 </label>

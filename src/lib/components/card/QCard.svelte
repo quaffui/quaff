@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { createClasses } from "$lib/utils";
   import type { QCardProps } from "./props";
 
   export let bordered: QCardProps["bordered"] = false,
@@ -7,7 +6,7 @@
     flat: QCardProps["flat"] = false,
     round: QCardProps["round"] = false,
     title: QCardProps["title"] = undefined,
-    userClasses: QCardProps["userClasses"] = undefined;
+    userClasses: QCardProps["userClasses"] = "";
   export { userClasses as class };
 
   const colorOptions: (typeof fill)[] = ["primary", "secondary", "tertiary"];
@@ -17,15 +16,15 @@
     : colorOptions.includes(fill)
     ? `${fill}-container`
     : "surface-variant";
-
-  $: classes = createClasses([bordered && "bordered", flat && "flat", round && "rounded"], {
-    component: "q-card",
-    quaffClasses: [color],
-    userClasses,
-  });
 </script>
 
-<article class={classes} {...$$restProps}>
+<article 
+  class="q-card {color} {userClasses}"
+  class:q-card--bordered={bordered}
+  class:q-card--flat={flat}
+  class:q-card--rounded={round}
+  {...$$restProps}
+>
   {#if $$slots.title}
     <slot name="title" />
   {:else if title !== undefined}

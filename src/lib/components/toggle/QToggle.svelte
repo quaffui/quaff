@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { createClasses } from "$lib/utils";
   import type { QToggleProps } from "./props";
 
   export let value: QToggleProps["value"],
@@ -7,17 +6,8 @@
     label: QToggleProps["label"] = undefined,
     leftLabel: QToggleProps["leftLabel"] = undefined,
     disable: QToggleProps["disable"] = undefined,
-    userClasses: QToggleProps["userClasses"] = undefined;
+    userClasses: QToggleProps["userClasses"] = "";
   export { userClasses as class };
-
-  $: classes = createClasses([leftLabel && "reversed", disable && "disabled", userClasses], {
-    component: "q-toggle",
-    userClasses,
-  });
-
-  $: classesInner = createClasses([icon && "icon"], {
-    component: "q-toggle__inner",
-  });
 
   function toggle() {
     if (disable !== true) {
@@ -28,15 +18,17 @@
 
 <div
   on:click={toggle}
-  class={classes}
-  aria-disabled={disable}
+  class="q-toggle {userClasses}"
+  class:q-toggle--reversed={leftLabel}
+  class:q-toggle--disabled={disable}
+  aria-disabled={disable || undefined}
   role="switch"
   aria-checked={value}
   tabindex="0"
   {...$$restProps}
 >
-  <label class={classesInner}>
-    <input bind:checked={value} type="checkbox" disabled={disable} />
+  <label class="q-toggle__inner" class:q-toggle__inner--icon={icon}>
+    <input bind:checked={value} type="checkbox" disabled={disable || undefined} />
     <span>
       {#if icon}
         <i>{icon}</i>

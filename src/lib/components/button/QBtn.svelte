@@ -1,7 +1,7 @@
 <script lang="ts">
   import { useSize } from "$lib/composables";
   import { ripple } from "$lib/helpers";
-  import { createClasses, isActivationKey } from "$lib/utils";
+  import { isActivationKey } from "$lib/utils";
   import { QIcon, QCircularProgress } from "$lib";
   import type { QBtnProps } from "./props";
 
@@ -17,7 +17,7 @@
     flat: QBtnProps["flat"] = false,
     to: QBtnProps["to"] = undefined,
     size: QBtnProps["size"] = undefined,
-    userClasses: QBtnProps["userClasses"] = undefined;
+    userClasses: QBtnProps["userClasses"] = "";
   export { userClasses as class };
 
   type QBtn = HTMLAnchorElement | HTMLButtonElement;
@@ -29,25 +29,12 @@
 
   $: sizeObj = useSize(size);
 
-  $: classes = createClasses(
-    [
-      unelevated && "unelevated",
-      rectangle && "rectangle",
-      outline && "outlined",
-      flat && "flat",
-      ((!$$slots.default && !label) || round) && "round",
-      size !== "md" && sizeObj.class,
-    ],
-    {
-      component: "q-btn",
-      userClasses,
-    }
-  );
+  $: sizeClass = sizeObj.class && sizeObj.class !== "md" ? `q-btn--${sizeObj.class}` : "";
 
   function stopIfDisabled(e: MouseEvent) {
-    if(disable) {
-      e.preventDefault()
-      e.stopImmediatePropagation()
+    if (disable) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
     }
   }
 
@@ -63,12 +50,17 @@
 
 <svelte:element
   this={tag}
-  bind:this={qBtn}
   use:ripple={{ disable: noRipple || disable }}
-  role={tag === "a" ? "button" : undefined}
-  href={to}
-  class={classes}
+  bind:this={qBtn}
   aria-disabled={disable || undefined}
+  class="q-btn {sizeClass} {userClasses}"
+  class:q-btn--unelevated={unelevated}
+  class:q-btn--outlined={outline}
+  class:q-btn--flat={flat}
+  class:q-btn--rectangle={rectangle}
+  class:q-btn--round={(!$$slots.default && !label) || round}
+  href={to}
+  role={tag === "a" ? "button" : undefined}
   tabindex={disable ? -1 : 0}
   on:keydown={onKeyDown}
   on:click={stopIfDisabled}
