@@ -1,9 +1,10 @@
-import fs from "fs";
+import { writeFile, readdir } from "fs/promises";
 import path from "path";
 import { fileURLToPath } from "url";
 import parseInterface from "./parse-interface.js";
 import prettier from "prettier";
 import parseType from "../types/parseTypes.js";
+import getInfo from "./getInfo.js";
 
 async function formatCode(code: string) {
   const options = await prettier.resolveConfig(path.join(process.cwd(), ".prettierrc"));
@@ -14,16 +15,20 @@ const dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.resolve(dirname, "../../src/lib/components");
 const docTypes = path.resolve(dirname, "../../src/lib/utils/types.json");
 
+async function getComponentDirs(rootDir: string) {
+  const dirents = await readdir(rootDir, { withFileTypes: true });
+  return dirents.filter((dirent) => dirent.isDirectory()).map((dirent) => dirent.name);
+}
+
 async function run() {
-  const componentDirs = fs
-    .readdirSync(rootDir, { withFileTypes: true })
-    .filter((dirent) => dirent.isDirectory())
-    .map((dirent) => dirent.name);
+  const componentDirs = await getComponentDirs(rootDir);
 
   for (const dir of componentDirs) {
     const propsFilePath = path.resolve(rootDir, dir, "props.ts");
+    const docsPropsFilePath = path.resolve(rootDir, dir, "docs.props.ts");
+    const { needsToBeGenerated, hashProps } = await getInfo(propsFilePath, docsPropsFilePath);
 
-    if (fs.existsSync(propsFilePath)) {
+    if (needsToBeGenerated) {
       console.log("processing", propsFilePath);
       const parsedInterface = parseInterface(propsFilePath);
       parseType(propsFilePath, docTypes);
@@ -41,8 +46,14 @@ async function run() {
       });
 
       const formatted = await formatCode(contents);
+      const formattedWithComment = [
+        "// AUTO GENERATED FILE - DO NOT MODIFY OR DELETE",
+        `// @quaffHash ${hashProps}`,
+        "",
+        formatted,
+      ].join("\n");
 
-      fs.writeFileSync(path.resolve(rootDir, dir, "docs.props.ts"), formatted, "utf-8");
+      await writeFile(docsPropsFilePath, formattedWithComment, "utf8");
     }
   }
 }
