@@ -1,11 +1,10 @@
 <script lang="ts">
-  import { createClasses } from "$lib/utils";
   import { getContext } from "svelte";
   import type { Writable } from "svelte/store";
   import type { QItemSectionProps } from "./props";
 
   export let type: QItemSectionProps["type"] = "content",
-    userClasses: QItemSectionProps["userClasses"] = undefined;
+    userClasses: QItemSectionProps["userClasses"] = "";
   export { userClasses as class };
 
   $: ctx = getContext<Writable<boolean>>("hasMultipleLines");
@@ -14,14 +13,12 @@
     $ctx =
       $$slots.headline && [$$slots.line1, $$slots.line2, $$slots.line3].filter(Boolean).length >= 2;
   }
-
-  $: classes = createClasses([type], {
-    component: "q-item__section",
-    userClasses,
-  });
 </script>
 
-<div class={classes} {...$$restProps}>
+<div
+  class="q-item__section q-item__section--{type} {userClasses}"
+  {...$$restProps}
+>
   {#if type === "content"}
     {#if ![$$slots.headline, $$slots.line2, $$slots.line2, $$slots.line3].some(Boolean)}
       <slot />
