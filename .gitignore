@@ -14,3 +14,4 @@ vite.config.ts.timestamp-*
 
 src/lib/helpers/version.ts
 src/lib/components/**/docs.props.ts
+src/lib/utils/types.json
