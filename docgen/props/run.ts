@@ -1,27 +1,62 @@
-import { writeFile, readdir } from "fs/promises";
+import { readdir, readFile, writeFile } from "fs/promises";
 import path from "path";
 import { fileURLToPath } from "url";
-import parseInterface from "./parse-interface.js";
-import prettier from "prettier";
-import parseType from "../types/parseTypes.js";
 import getInfo from "./getInfo.js";
-
-async function formatCode(code: string) {
-  const options = await prettier.resolveConfig(path.join(process.cwd(), ".prettierrc"));
-  return prettier.format(code, { ...options, parser: "typescript" });
-}
+import WorkerManager from "./WorkerManager.js";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.resolve(dirname, "../../src/lib/components");
-const docTypes = path.resolve(dirname, "../../src/lib/utils/types.json");
+const docTypesPath = path.resolve(dirname, "../../src/lib/utils/types.json");
+let didUpdateAllFiles = true;
 
 async function getComponentDirs(rootDir: string) {
   const dirents = await readdir(rootDir, { withFileTypes: true });
   return dirents.filter((dirent) => dirent.isDirectory()).map((dirent) => dirent.name);
 }
 
+async function updateDocTypesFile(newTypes: Record<string, string>) {
+  let oldTypes: Record<string, string> = {};
+
+  // if only a few files were updated, we need to build on the existing types data
+  if (!didUpdateAllFiles) {
+    const oldTypesStr = await readFile(docTypesPath, "utf8");
+    oldTypes = JSON.parse(oldTypesStr);
+  }
+
+  const allTypesRaw = Object.assign(oldTypes, newTypes);
+
+  // sort alphabetically
+  const allTypesSorted = Object.keys(allTypesRaw)
+    .sort()
+    .reduce(
+      (carry, key) => {
+        carry[key] = allTypesRaw[key];
+        return carry;
+      },
+      {} as Record<string, string>
+    );
+
+  const allTypesStr = JSON.stringify(allTypesSorted, null, 2) + "\n";
+
+  await writeFile(docTypesPath, allTypesStr, "utf8");
+}
+
+const workerPath = path.resolve(dirname, "./worker.ts");
+const workerManager = new WorkerManager(workerPath);
+
+workerManager.on("finished", async (types: Record<string, string>) => {
+  await updateDocTypesFile(types);
+});
+
+type PropWorkerTask = {
+  propsFilePath: string;
+  docsPropsFilePath: string;
+  hashProps?: string;
+};
+
 async function run() {
   const componentDirs = await getComponentDirs(rootDir);
+  const tasks: PropWorkerTask[] = [];
 
   for (const dir of componentDirs) {
     const propsFilePath = path.resolve(rootDir, dir, "props.ts");
@@ -29,33 +64,23 @@ async function run() {
     const { needsToBeGenerated, hashProps } = await getInfo(propsFilePath, docsPropsFilePath);
 
     if (needsToBeGenerated) {
-      console.log("processing", propsFilePath);
-      const parsedInterface = parseInterface(propsFilePath);
-      parseType(propsFilePath, docTypes);
-
-      let contents = "";
-
-      Object.keys(parsedInterface).forEach((varName) => {
-        const interfaceResults = parsedInterface[varName];
-
-        contents += `export const ${varName.replace(/Props$/, "DocsProps")} = ${JSON.stringify(
-          interfaceResults,
-          null,
-          2
-        )};\n\n`;
+      tasks.push({
+        propsFilePath,
+        docsPropsFilePath,
+        hashProps,
       });
+    }
 
-      const formatted = await formatCode(contents);
-      const formattedWithComment = [
-        "// AUTO GENERATED FILE - DO NOT MODIFY OR DELETE",
-        `// @quaffHash ${hashProps}`,
-        "",
-        formatted,
-      ].join("\n");
-
-      await writeFile(docsPropsFilePath, formattedWithComment, "utf8");
+    if (!needsToBeGenerated && hashProps) {
+      didUpdateAllFiles = false;
     }
   }
+
+  if (!tasks.length) {
+    process.exit(0);
+  }
+
+  tasks.forEach((task) => workerManager.addTask(task));
 }
 
 run();
