@@ -14,7 +14,7 @@
     "test:unit": "vitest",
     "lint": "prettier --plugin-search-dir . --check . && eslint .",
     "format": "prettier --plugin-search-dir . --write .",
-    "docgen": "ts-node-esm docgen/props/run.ts",
+    "docgen": "NODE_OPTIONS='--loader ts-node/esm/transpile-only --no-warnings' node docgen/props/run.ts",
     "snippet": "ts-node-esm docgen/snippets/parseSnippets.ts"
   },
   "exports": {
