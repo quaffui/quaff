@@ -1,12 +1,9 @@
-import { existsSync, readFileSync, writeFileSync } from "fs";
 import ts from "typescript";
 
-export default function parseType(fileName: string, typesPath: string) {
-  let program = ts.createProgram([fileName], { allowJs: true });
-  let checker = program.getTypeChecker();
-  let types: Record<string, string> = existsSync(typesPath)
-    ? JSON.parse(readFileSync(typesPath, "utf8"))
-    : {};
+export default async function parseTypes(fileName: string) {
+  const program = ts.createProgram([fileName], { allowJs: true });
+  program.getTypeChecker();
+  const types: Record<string, string> = {};
 
   let visit = (node: ts.Node) => {
     if (!isNodeExported(node)) {
@@ -43,5 +40,5 @@ export default function parseType(fileName: string, typesPath: string) {
     );
   }
 
-  writeFileSync(typesPath, JSON.stringify(types));
+  return types;
 }

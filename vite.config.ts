@@ -1,10 +1,11 @@
 import { sveltekit } from "@sveltejs/kit/vite";
 import { defineConfig } from "vitest/config";
 import versionPlugin from "./src/dev/version-plugin";
+import docgenPlugin from "./src/dev/docgen-plugin";
 import path from "path";
 
 export default defineConfig({
-  plugins: [versionPlugin(), sveltekit()],
+  plugins: [versionPlugin(), docgenPlugin(), sveltekit()],
   test: {
     include: ["src/**/*.{test,spec}.{js,ts}"],
   },
