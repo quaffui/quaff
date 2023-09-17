@@ -21,6 +21,7 @@
     0s background-color;
   transform: translate(-50%, -4rem);
   animation-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
+  transform-origin: top left;
 
   &:is(&--active, [open]) {
     opacity: 1;
@@ -29,7 +30,7 @@
   }
 
   &::backdrop {
-    display: none;
+    visibility: hidden;
   }
 
   &:not(&--left, &--right, &--top, &--bottom) {
@@ -152,7 +153,7 @@
   }
 
   &--modal::backdrop {
-    display: block;
+    visibility: visible;
     background-color: rgba(0, 0, 0, 0.5);
   }
 
