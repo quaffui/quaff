@@ -3,6 +3,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import getInfo from "./getInfo.js";
 import WorkerManager from "./WorkerManager.js";
+import type { WorkerTask } from "./WorkerManager.js";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.resolve(dirname, "../../src/lib/components");
@@ -42,21 +43,10 @@ async function updateDocTypesFile(newTypes: Record<string, string>) {
 }
 
 const workerPath = path.resolve(dirname, "./worker.ts");
-const workerManager = new WorkerManager(workerPath);
-
-workerManager.on("finished", async (types: Record<string, string>) => {
-  await updateDocTypesFile(types);
-});
-
-type PropWorkerTask = {
-  propsFilePath: string;
-  docsPropsFilePath: string;
-  hashProps?: string;
-};
 
 async function run() {
   const componentDirs = await getComponentDirs(rootDir);
-  const tasks: PropWorkerTask[] = [];
+  const tasks: WorkerTask[] = [];
 
   for (const dir of componentDirs) {
     const propsFilePath = path.resolve(rootDir, dir, "props.ts");
@@ -80,7 +70,11 @@ async function run() {
     process.exit(0);
   }
 
-  tasks.forEach((task) => workerManager.addTask(task));
+  const workerManager = new WorkerManager(workerPath, tasks);
+
+  workerManager.on("finished", async (types: Record<string, string>) => {
+    await updateDocTypesFile(types);
+  });
 }
 
 run();
