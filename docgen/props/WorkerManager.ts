@@ -7,19 +7,25 @@ type ExtendedWorker = {
   isFree: boolean;
 };
 
+export type WorkerTask = {
+  propsFilePath: string;
+  docsPropsFilePath: string;
+  hashProps?: string;
+};
+
 export default class WorkerManager extends EventEmitter {
   private workerPath: string;
   private maxWorkers: number;
   private workers: ExtendedWorker[];
-  private taskQueue: any[];
+  private tasks: WorkerTask[];
   private types: Record<string, string>;
 
-  constructor(workerPath: string) {
+  constructor(workerPath: string, tasks: WorkerTask[]) {
     super();
     this.workerPath = workerPath;
-    const availableWorkers = os.cpus().length;
+    const availableWorkers = os.availableParallelism();
     this.maxWorkers = availableWorkers >= 6 ? availableWorkers - 2 : availableWorkers - 1;
-    this.taskQueue = [];
+    this.tasks = tasks;
     this.workers = this.initializeWorkers();
     this.types = {};
   }
@@ -30,8 +36,9 @@ export default class WorkerManager extends EventEmitter {
 
   private initializeWorkers(): ExtendedWorker[] {
     const workers = [];
+    const workerCount = Math.min(this.maxWorkers, this.tasks.length);
 
-    for (let i = 0; i < this.maxWorkers; i++) {
+    for (let i = 0; i < workerCount; i++) {
       const worker = new Worker(this.workerPath);
       const extWorker: ExtendedWorker = {
         worker,
@@ -50,6 +57,7 @@ export default class WorkerManager extends EventEmitter {
       });
 
       workers.push(extWorker);
+      this.assignNextTask(extWorker);
     }
 
     return workers;
@@ -66,27 +74,17 @@ export default class WorkerManager extends EventEmitter {
     Object.assign(this.types, newTypes);
   }
 
-  private assignTaskToWorker(worker: ExtendedWorker, task: any) {
+  private assignTaskToWorker(worker: ExtendedWorker, task: WorkerTask) {
     worker.isFree = false;
     worker.worker.postMessage(task);
   }
 
   private assignNextTask(worker: ExtendedWorker) {
-    if (this.taskQueue.length > 0) {
-      const nextTask = this.taskQueue.shift();
-      this.assignTaskToWorker(worker, nextTask);
+    if (this.tasks.length > 0) {
+      const nextTask = this.tasks.shift();
+      this.assignTaskToWorker(worker, nextTask!);
     } else {
       worker.worker.terminate();
-    }
-  }
-
-  public addTask(task: any) {
-    const freeWorker = this.workers.find((w) => w.isFree);
-
-    if (freeWorker) {
-      this.assignTaskToWorker(freeWorker, task);
-    } else {
-      this.taskQueue.push(task);
     }
   }
 }
