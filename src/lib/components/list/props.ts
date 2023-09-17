@@ -1,6 +1,6 @@
 import { NativePropsDefaults } from "$lib/utils";
-import { UseRouterLinkPropsDefaults } from "$lib/composables/use-router-link";
-import type { UseRouterLinkProps } from "$lib/composables/use-router-link";
+import { UseRouterLinkPropsDefaults } from "$lib/composables/useRouterLink";
+import type { UseRouterLinkProps } from "$lib/composables/useRouterLink";
 import type { QSeparatorProps } from "../separator/props";
 import type { HTMLAnchorAttributes, HTMLAttributes } from "svelte/elements";
 import type { NativeProps } from "$lib/utils";
