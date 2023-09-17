@@ -1,7 +1,8 @@
-<script>
+<script lang="ts">
   import { QCodeBlock, QDialog } from "$lib";
 
-  export let title, snippets;
+  export let title: string,
+    snippets: Record<string, string> | undefined = undefined;
 
   let dialog = false;
 </script>
