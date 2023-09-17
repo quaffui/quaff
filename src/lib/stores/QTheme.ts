@@ -56,18 +56,17 @@ async function prepareThemeColors(from: string) {
     from = extractColorFromCssVar(from);
   }
 
-  let theme = await materialDynamicColors(from);
+  const theme = await materialDynamicColors(from);
 
-  //@ts-ignore
-  const themeColors: ThemeColors = {};
+  const themeColors = {} as ThemeColors;
 
   let mode: keyof IMaterialDynamicColorsTheme;
   for (mode in theme) {
     let color: keyof IMaterialDynamicColorsThemeColor;
     for (color in theme[mode]) {
-      let colorFormatted = convertCase(color, "camel", "kebab") as keyof MaterialColors;
+      const colorFormatted = convertCase(color, "camel", "kebab") as keyof MaterialColors;
 
-      let cssColor: ThemeColorName = `${colorFormatted}-${mode}`;
+      const cssColor: ThemeColorName = `${colorFormatted}-${mode}`;
       themeColors[cssColor] = theme[mode][color];
     }
   }
@@ -80,7 +79,7 @@ function themeBuilder() {
   prepareThemeColors("#3499E7").then(set);
 
   const apply = () => {
-    let root = document.documentElement;
+    const root = document.documentElement;
     if (root === null) return;
 
     update(($themeColors) => {
@@ -105,7 +104,7 @@ function themeBuilder() {
   };
 
   const setTheme = async (from: string) => {
-    let newTheme = await prepareThemeColors(from);
+    const newTheme = await prepareThemeColors(from);
     set(newTheme);
     apply();
   };

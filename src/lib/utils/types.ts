@@ -28,7 +28,7 @@ export interface QComponentDocs {
 export interface QComponentProp {
   name: string;
   type: string;
-  default?: any;
+  default?: unknown;
   description: string;
   clickableType?: boolean;
   optional?: boolean;
@@ -56,6 +56,6 @@ export interface QComponentMethod {
   description: string;
 }
 
-export function isNumber(input: any): input is number {
+export function isNumber(input: unknown): input is number {
   return typeof input === "number" || !isNaN(Number(input));
 }

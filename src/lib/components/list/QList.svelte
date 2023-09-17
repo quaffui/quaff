@@ -19,15 +19,16 @@
   $: setContext("separator", separator === true ? separatorOptions : undefined);
 </script>
 
-<svelte:element 
-  this={tag} 
+<svelte:element
+  this={tag}
   class="q-list {userClasses}"
   class:q-list--bordered={bordered}
   class:q-list--rounded={roundedBorders}
   class:q-list--dense={dense}
   class:q-py-sm={padding}
-  {...$$restProps} 
-  bind:this={listElement} 
-  on:scroll>
+  {...$$restProps}
+  bind:this={listElement}
+  on:scroll
+>
   <slot />
 </svelte:element>

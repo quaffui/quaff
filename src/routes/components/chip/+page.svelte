@@ -6,7 +6,7 @@
   import snippets from "./docs.snippets";
 </script>
 
-<QDocs QComponentDocs={QChipDocs}>
+<QDocs componentDocs={QChipDocs}>
   <QChip slot="display" responsive icon="img:/cocktail.jpg" content="Cocktail" />
 
   <div slot="usage">

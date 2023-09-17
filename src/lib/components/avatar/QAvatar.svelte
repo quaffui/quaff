@@ -24,7 +24,12 @@
     class:q-avatar--right-round={shape?.includes("right")}
     style:width={sizeObj.style}
     style:height={sizeObj.style}
-    autoplay loop playsinline {...$$restProps} on:click>
+    autoplay
+    loop
+    playsinline
+    {...$$restProps}
+    on:click
+  >
     <source {src} type="video/mp4" />
   </video>
 {:else if src !== undefined}
@@ -40,7 +45,10 @@
     class:q-avatar--right-round={shape?.includes("right")}
     style:width={sizeObj.style}
     style:height={sizeObj.style}
-    {src} {...$$restProps} on:click />
+    {src}
+    {...$$restProps}
+    on:click
+  />
 {:else}
   <!-- svelte-ignore a11y-no-static-element-interactions -->
   <div
@@ -53,7 +61,9 @@
     class:q-avatar--right-round={shape?.includes("right")}
     style:width={sizeObj.style}
     style:height={sizeObj.style}
-    {...$$restProps} on:click>
+    {...$$restProps}
+    on:click
+  >
     <slot />
   </div>
 {/if}

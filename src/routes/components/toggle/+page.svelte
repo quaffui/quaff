@@ -8,7 +8,7 @@
   let toggle = false;
 </script>
 
-<QDocs QComponentDocs={QToggleDocs}>
+<QDocs componentDocs={QToggleDocs}>
   <QToggle slot="display" bind:value={toggle} class="q-ma-sm" />
 
   <div slot="usage">

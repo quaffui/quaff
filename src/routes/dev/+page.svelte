@@ -45,12 +45,6 @@
   let dialog6 = false;
   let dialog7 = false;
   let dialogElement1: QDialog;
-  let dialogElement2: QDialog;
-  let dialogElement3: QDialog;
-  let dialogElement4: QDialog;
-  let dialogElement5: QDialog;
-  let dialogElement6: QDialog;
-  let dialogElement7: QDialog;
 </script>
 
 <div class="q-page" style="max-width: 40rem;">

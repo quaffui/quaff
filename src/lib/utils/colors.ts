@@ -57,9 +57,8 @@ class QColors {
     (r = +r / 255), (g = +g / 255), (b = +b / 255);
     const max = Math.max(r, g, b),
       min = Math.min(r, g, b);
-    let h: number,
-      s: number,
-      l = (max + min) / 2;
+    const l = (max + min) / 2;
+    let h: number, s: number;
 
     if (max === min) {
       h = s = 0; // achromatic

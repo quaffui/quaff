@@ -1,7 +1,7 @@
 import { QCheckboxDocsProps } from "./docs.props";
 import type { QComponentDocs } from "$lib/utils";
 
-export let QCheckboxDocs: QComponentDocs = {
+export const QCheckboxDocs: QComponentDocs = {
   name: "QCheckbox",
   description: "Checkboxes allow the user to select one or more items from a set.",
   docs: {

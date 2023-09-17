@@ -15,8 +15,8 @@
 
   $: sizeObj = useSize(size);
 
-  $: sizeClass = sizeObj.class && sizeObj.class !== "md" ? `q-icon--${sizeObj.class}` : ""
-    
+  $: sizeClass = sizeObj.class && sizeObj.class !== "md" ? `q-icon--${sizeObj.class}` : "";
+
   $: imgAttrs = {
     alt: "Quaff Image Icon",
     ...imgAttributes,
