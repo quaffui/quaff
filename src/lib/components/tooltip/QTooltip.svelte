@@ -7,6 +7,14 @@
   export { userClasses as class };
 </script>
 
-<div class="q-tooltip {position} {userClasses}" class:q-tooltip--active={value} {...$$restProps}>
+<div
+  class="q-tooltip {userClasses}"
+  class:q-tooltip--top={position === "top"}
+  class:q-tooltip--right={position === "right"}
+  class:q-tooltip--bottom={position === "bottom"}
+  class:q-tooltip--left={position === "left"}
+  class:q-tooltip--active={value}
+  {...$$restProps}
+>
   <slot />
 </div>
