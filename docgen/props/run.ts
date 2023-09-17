@@ -27,15 +27,9 @@ async function updateDocTypesFile(newTypes: Record<string, string>) {
   const allTypesRaw = Object.assign(oldTypes, newTypes);
 
   // sort alphabetically
-  const allTypesSorted = Object.keys(allTypesRaw)
-    .sort()
-    .reduce(
-      (carry, key) => {
-        carry[key] = allTypesRaw[key];
-        return carry;
-      },
-      {} as Record<string, string>
-    );
+  const allTypesSorted = Object.fromEntries(
+    Object.entries(allTypesRaw).sort((a, b) => a[0].localeCompare(b[0]))
+  );
 
   const allTypesStr = JSON.stringify(allTypesSorted, null, 2) + "\n";
 
