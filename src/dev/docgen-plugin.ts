@@ -5,7 +5,7 @@ import type { Plugin, ViteDevServer } from "vite";
 function runDocGenProps(): Promise<void> {
   return new Promise((resolve, reject) => {
     const cmd = "node";
-    const args = ["docgen/props/run.ts"];
+    const args = ["scripts/docgenProps.ts"];
     const options = {
       env: {
         ...process.env,

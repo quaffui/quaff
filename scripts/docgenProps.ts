@@ -1,13 +1,13 @@
 import { readdir, readFile, writeFile } from "fs/promises";
 import path from "path";
 import { fileURLToPath } from "url";
-import getInfo from "./getInfo.js";
-import WorkerManager from "./WorkerManager.js";
-import type { WorkerTask } from "./WorkerManager.js";
+import getInfo from "../docgen/props/getInfo.js";
+import WorkerManager from "../docgen/props/WorkerManager.js";
+import type { WorkerTask } from "../docgen/props/WorkerManager.js";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
-const rootDir = path.resolve(dirname, "../../src/lib/components");
-const docTypesPath = path.resolve(dirname, "../../src/lib/utils/types.json");
+const rootDir = path.resolve(dirname, "../src/lib/components");
+const docTypesPath = path.resolve(dirname, "../src/lib/utils/types.json");
 let didUpdateAllFiles = true;
 
 async function getComponentDirs(rootDir: string) {
@@ -36,7 +36,7 @@ async function updateDocTypesFile(newTypes: Record<string, string>) {
   await writeFile(docTypesPath, allTypesStr, "utf8");
 }
 
-const workerPath = path.resolve(dirname, "./worker.ts");
+const workerPath = path.resolve(dirname, "../docgen/props/worker.ts");
 
 async function run() {
   const componentDirs = await getComponentDirs(rootDir);
