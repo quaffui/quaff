@@ -18,16 +18,16 @@
   const emit = createEventDispatcher();
   let dialogElement: HTMLDialogElement | undefined;
 
-  const ANIMATION_DURATION = 150;
+  const ANIMATION_DURATION = 300;
 
   $: if (dialogElement) {
     if (value) {
-      dialogElement.style.display = "block";
+      dialogElement.style.visibility = "visible";
       modal ? dialogElement.showModal() : dialogElement.show();
     } else {
       dialogElement.close();
       setTimeout(() => {
-        dialogElement!.style.display = "none";
+        dialogElement!.style.visibility = "hidden";
       }, ANIMATION_DURATION);
     }
   }
@@ -89,13 +89,13 @@
   use:clickOutsideDialog={handleClickHide}
   class="q-dialog {userClasses}"
   class:q-dialog--active={value}
-  class:q-dialog--position-default={position === "default" || !position}
-  class:q-dialog--position-top={position === "top"}
-  class:q-dialog--position-right={position === "right"}
-  class:q-dialog--position-bottom={position === "bottom"}
-  class:q-dialog--position-left={position === "left"}
+  class:q-dialog--top={position === "top"}
+  class:q-dialog--right={position === "right"}
+  class:q-dialog--bottom={position === "bottom"}
+  class:q-dialog--left={position === "left"}
   class:q-dialog--modal={modal}
   class:q-dialog--fullscreen={fullscreen}
+  class:q-dialog--persistent={persistent}
   {...$$restProps}
   bind:this={dialogElement}
   on:cancel={handleKeyboardHide}
