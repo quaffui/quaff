@@ -449,7 +449,11 @@
           <div class="flex justify-between" style="align-items: center">
             <QBtn label="I'm rich">
               <QTooltip position="right" class="q-pa-none">
-                <QCard title="Wow this is a card" class="primary-container no-round">
+                <QCard
+                  title="Wow this is a card"
+                  class="primary-container"
+                  style="border-radius: inherit"
+                >
                   <QCardSection class="items-center">
                     <QIcon name="help" class="q-mr-md" />
                     I'm inside the tooltip
