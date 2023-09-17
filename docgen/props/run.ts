@@ -1,50 +1,74 @@
-import fs from "fs";
+import { readdir, readFile, writeFile } from "fs/promises";
 import path from "path";
 import { fileURLToPath } from "url";
-import parseInterface from "./parse-interface.js";
-import prettier from "prettier";
-import parseType from "../types/parseTypes.js";
-
-async function formatCode(code: string) {
-  const options = await prettier.resolveConfig(path.join(process.cwd(), ".prettierrc"));
-  return prettier.format(code, { ...options, parser: "typescript" });
-}
+import getInfo from "./getInfo.js";
+import WorkerManager from "./WorkerManager.js";
+import type { WorkerTask } from "./WorkerManager.js";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.resolve(dirname, "../../src/lib/components");
-const docTypes = path.resolve(dirname, "../../src/lib/utils/types.json");
+const docTypesPath = path.resolve(dirname, "../../src/lib/utils/types.json");
+let didUpdateAllFiles = true;
+
+async function getComponentDirs(rootDir: string) {
+  const dirents = await readdir(rootDir, { withFileTypes: true });
+  return dirents.filter((dirent) => dirent.isDirectory()).map((dirent) => dirent.name);
+}
+
+async function updateDocTypesFile(newTypes: Record<string, string>) {
+  let oldTypes: Record<string, string> = {};
+
+  // if only a few files were updated, we need to build on the existing types data
+  if (!didUpdateAllFiles) {
+    const oldTypesStr = await readFile(docTypesPath, "utf8");
+    oldTypes = JSON.parse(oldTypesStr);
+  }
+
+  const allTypesRaw = Object.assign(oldTypes, newTypes);
+
+  // sort alphabetically
+  const allTypesSorted = Object.fromEntries(
+    Object.entries(allTypesRaw).sort((a, b) => a[0].localeCompare(b[0]))
+  );
+
+  const allTypesStr = JSON.stringify(allTypesSorted, null, 2) + "\n";
+
+  await writeFile(docTypesPath, allTypesStr, "utf8");
+}
+
+const workerPath = path.resolve(dirname, "./worker.ts");
 
 async function run() {
-  const componentDirs = fs
-    .readdirSync(rootDir, { withFileTypes: true })
-    .filter((dirent) => dirent.isDirectory())
-    .map((dirent) => dirent.name);
+  const componentDirs = await getComponentDirs(rootDir);
+  const tasks: WorkerTask[] = [];
 
   for (const dir of componentDirs) {
     const propsFilePath = path.resolve(rootDir, dir, "props.ts");
+    const docsPropsFilePath = path.resolve(rootDir, dir, "docs.props.ts");
+    const { needsToBeGenerated, hashProps } = await getInfo(propsFilePath, docsPropsFilePath);
 
-    if (fs.existsSync(propsFilePath)) {
-      console.log("processing", propsFilePath);
-      const parsedInterface = parseInterface(propsFilePath);
-      parseType(propsFilePath, docTypes);
-
-      let contents = "";
-
-      Object.keys(parsedInterface).forEach((varName) => {
-        const interfaceResults = parsedInterface[varName];
-
-        contents += `export const ${varName.replace(/Props$/, "DocsProps")} = ${JSON.stringify(
-          interfaceResults,
-          null,
-          2
-        )};\n\n`;
+    if (needsToBeGenerated) {
+      tasks.push({
+        propsFilePath,
+        docsPropsFilePath,
+        hashProps,
       });
+    }
 
-      const formatted = await formatCode(contents);
-
-      fs.writeFileSync(path.resolve(rootDir, dir, "docs.props.ts"), formatted, "utf-8");
+    if (!needsToBeGenerated && hashProps) {
+      didUpdateAllFiles = false;
     }
   }
+
+  if (!tasks.length) {
+    process.exit(0);
+  }
+
+  const workerManager = new WorkerManager(workerPath, tasks);
+
+  workerManager.on("finished", async (types: Record<string, string>) => {
+    await updateDocTypesFile(types);
+  });
 }
 
 run();
