@@ -27,7 +27,7 @@
     <QBtn flat icon="today" />
     <QBtn icon="menu" flat on:click={() => rightDrawer?.toggle()} />
   </QHeader>
-  <QRailbar slot="railbarLeft" bordered width="120">
+  <QRailbar slot="railbarLeft" bordered width={120}>
     <QList>
       <QItem class="column round" to="/" style="gap: 0.25em">
         <QIcon name="home" />
