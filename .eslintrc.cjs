@@ -7,7 +7,7 @@ module.exports = {
     "prettier",
   ],
   parser: "@typescript-eslint/parser",
-  plugins: ["@typescript-eslint"],
+  plugins: ["@typescript-eslint", "unicorn"],
   parserOptions: {
     sourceType: "module",
     ecmaVersion: 2020,
@@ -17,6 +17,18 @@ module.exports = {
     browser: true,
     es2017: true,
     node: true,
+  },
+  rules: {
+    "unicorn/filename-case": [
+      "error",
+      {
+        cases: {
+          camelCase: true,
+          pascalCase: true,
+        },
+        ignore: ["\\.shim\\.d\\.ts$"],
+      },
+    ],
   },
   overrides: [
     {
