@@ -5,7 +5,7 @@ export default async function parseTypes(fileName: string) {
   program.getTypeChecker();
   const types: Record<string, string> = {};
 
-  let visit = (node: ts.Node) => {
+  const visit = (node: ts.Node) => {
     if (!isNodeExported(node)) {
       return;
     }

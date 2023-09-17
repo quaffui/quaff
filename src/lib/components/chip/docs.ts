@@ -1,7 +1,7 @@
 import { QChipDocsProps } from "./docs.props";
 import type { QComponentDocs } from "$lib/utils";
 
-export let QChipDocs: QComponentDocs = {
+export const QChipDocs: QComponentDocs = {
   name: "QChip",
   description:
     "Chips help people enter information, make selections, filter content, or trigger actions. They represent options in a specific context, unlike buttons, which are persistent.",

@@ -18,7 +18,7 @@
     : "surface-variant";
 </script>
 
-<article 
+<article
   class="q-card {color} {userClasses}"
   class:q-card--bordered={bordered}
   class:q-card--flat={flat}

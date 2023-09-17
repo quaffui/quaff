@@ -13,7 +13,8 @@
       <QDialog
         class="snippet-dialog"
         bind:value={dialog}
-        btnAttrs={{ outline: true, round: true, icon: "code" }}
+        button
+        buttonProps={{ outline: true, round: true, icon: "code" }}
         on:buttonClick={() => (dialog = true)}
         modal
       >
@@ -23,9 +24,3 @@
   </div>
   <slot />
 </div>
-
-<style>
-  pre {
-    max-height: 400px;
-  }
-</style>

@@ -21,11 +21,11 @@
     QComponentEvent,
   } from "$lib/utils";
 
-  export let QComponentDocs: QComponentDocs[];
+  export let componentDocs: QComponentDocs[];
 
-  let api: (keyof QComponentDocs["docs"])[] = QComponentDocs.map((_doc) => "props");
+  let api: (keyof QComponentDocs["docs"])[] = componentDocs.map(() => "props");
   let drawer = Object.fromEntries(
-    QComponentDocs.map((doc) => [
+    componentDocs.map((doc) => [
       doc.name,
       Object.fromEntries(
         doc.docs.props.map((prop) => [prop.name, prop.clickableType ? false : undefined])
@@ -73,7 +73,7 @@
   }
 </script>
 
-{#each QComponentDocs as QDocument, index}
+{#each componentDocs as QDocument, index}
   <QCard class="q-px-none q-pb-none q-mt-lg">
     <div slot="title" class="flex justify-between items-center q-px-md">
       <h5 class="no-margin">
@@ -112,7 +112,7 @@
                   {#if isProp(doc, index)}
                     {doc.optional ? "?" : ""}
                     {#if doc.clickableType === true}
-                      <!-- svelte-ignore a11y-click-events-have-key-events -->
+                      <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-static-element-interactions -->
                       <span
                         class="prop-type clickable"
                         on:click={(e) => isProp(doc, index) && handleDrawer(QDocument, doc, e)}
@@ -133,6 +133,7 @@
                 </span>
               </div>
               <div slot="line1" class="q-mt-sm prop-description" style="white-space: normal;">
+                <!-- eslint-disable-next-line svelte/no-at-html-tags -->
                 {@html doc.description}
               </div>
             </QItemSection>
@@ -151,8 +152,16 @@
     }
   }
 
-  .q-item {
-    overflow: visible;
+  .prop-type {
+    opacity: 0.75;
+
+    &.clickable {
+      cursor: pointer;
+
+      &:hover {
+        opacity: 1;
+      }
+    }
   }
 
   :global(.q-drawer.api-drawer pre) {

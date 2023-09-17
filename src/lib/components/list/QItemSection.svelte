@@ -15,10 +15,7 @@
   }
 </script>
 
-<div
-  class="q-item__section q-item__section--{type} {userClasses}"
-  {...$$restProps}
->
+<div class="q-item__section q-item__section--{type} {userClasses}" {...$$restProps}>
   {#if type === "content"}
     {#if ![$$slots.headline, $$slots.line2, $$slots.line2, $$slots.line3].some(Boolean)}
       <slot />

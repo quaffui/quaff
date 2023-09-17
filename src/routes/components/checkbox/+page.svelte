@@ -8,7 +8,7 @@
   let value1 = false;
 </script>
 
-<QDocs QComponentDocs={QCheckboxDocs}>
+<QDocs componentDocs={QCheckboxDocs}>
   <QCheckbox slot="display" label="I agree to the terms and conditions" bind:value={value1} />
 
   <div slot="usage">

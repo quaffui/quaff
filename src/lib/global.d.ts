@@ -1,4 +1,4 @@
-declare var __PLATFORM__:
+declare let __PLATFORM__:
   | "aix"
   | "darwin"
   | "freebsd"

@@ -1,6 +1,6 @@
 import type { QComponentDocs } from "$lib/utils";
 
-export let QRadioDocs: QComponentDocs = {
+export const QRadioDocs: QComponentDocs = {
   name: "QRadio",
   description: "Radio buttons allow the user to select one option from a set.",
   docs: {

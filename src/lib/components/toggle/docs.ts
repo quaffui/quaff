@@ -1,6 +1,6 @@
 import type { QComponentDocs } from "$lib/utils";
 
-export let QToggleDocs: QComponentDocs = {
+export const QToggleDocs: QComponentDocs = {
   name: "QToggle",
   description:
     "QToggle is a switch-like checkbox which offers binary choices. It supports labels, icons and different positioning of the labels.",

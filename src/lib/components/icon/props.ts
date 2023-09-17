@@ -1,5 +1,5 @@
 import type { CssValue, NativeProps, QuaffSizes } from "$lib/utils";
-import type { HTMLAttributes } from "svelte/elements";
+import type { HTMLAttributes, HTMLImgAttributes } from "svelte/elements";
 
 export type QIconSizeOptions = QuaffSizes | CssValue | number;
 export type QIconTypeOptions = "outlined" | "sharp" | "rounded";
@@ -44,7 +44,7 @@ export interface QIconProps extends NativeProps, HTMLAttributes<HTMLElement> {
    * Additional attributes for the image element when using the `img` prop, as for example the "alt" attribute.
    * @default {}
    */
-  imgAttributes?: Record<string, any>;
+  imgAttributes?: HTMLImgAttributes;
 
   /**
    * The color of the icon.

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import {useAlign} from "$lib/composables";
+  import { useAlign } from "$lib/composables";
   import type { QCardActionsProps } from "./props";
 
   export let align: QCardActionsProps["align"] = undefined,

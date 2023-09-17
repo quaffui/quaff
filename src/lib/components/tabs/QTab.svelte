@@ -4,7 +4,6 @@
   import { ripple } from "$lib/helpers";
   import { Quaff } from "$lib/stores";
   import {
-    createClasses,
     isActivationKey,
     isArrowKey,
     getDirection,
@@ -12,11 +11,11 @@
     isTabKey,
     getClosestFocusableBlock,
   } from "$lib/utils";
-  import { hasContext, getContext, onMount } from "svelte";
+  import { hasContext, getContext } from "svelte";
   import type { Direction } from "$lib/utils";
   import { get } from "svelte/store";
   import type { Writable } from "svelte/store";
-  import type { QTabProps, QTabsVariants } from "./props";
+  import type { QTabProps } from "./props";
   import type { QTab, QTabStore } from "./QTabs.svelte";
 
   export let name: QTabProps["name"],
@@ -42,8 +41,8 @@
 
   $: isActive = name === $qTabStore.value;
 
-  $: if(qTab && isActive && qTab !== $qTabStore.activeEl) {
-    setActive(qTab)
+  $: if (qTab && isActive && qTab !== $qTabStore.activeEl) {
+    setActive(qTab);
   }
 
   let tag: "button" | "a";
@@ -54,11 +53,11 @@
     const previousEl = store.activeEl;
     const variant = store.variant;
 
-    const child = variant === "primary" ? el.firstElementChild as QTab : { offsetLeft: 0, offsetWidth: 0 }
+    const child =
+      variant === "primary" ? (el.firstElementChild as QTab) : { offsetLeft: 0, offsetWidth: 0 };
 
     const position = variant === "vertical" ? el.offsetTop : el.offsetLeft + child.offsetLeft;
-    const size = variant === "vertical" ? el.offsetHeight : (child.offsetWidth || el.offsetWidth);
-
+    const size = variant === "vertical" ? el.offsetHeight : child.offsetWidth || el.offsetWidth;
 
     $qTabStore = {
       variant,
@@ -114,21 +113,17 @@
 </script>
 
 <svelte:element
+  this={tag}
   use:ripple
   bind:this={qTab}
-  this={tag}
-
   href={to}
   role={tag === "a" ? "button" : undefined}
   aria-current={isActive || undefined}
-
   class="q-tab {userClasses}"
   class:q-tab--active={isActive}
-
   on:click
   on:click={onClick}
   on:keydown={onKeydown}
-  
   {...$$restProps}
 >
   <div>

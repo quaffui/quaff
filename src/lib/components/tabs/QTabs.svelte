@@ -1,4 +1,4 @@
-  <script context="module" lang="ts">
+<script context="module" lang="ts">
   export type QTab = HTMLAnchorElement | HTMLButtonElement;
 
   export type QTabStore = {
@@ -24,8 +24,8 @@
 
   const cssVars = {
     indicatorPosition: "--indicator-position",
-    indicatorSize: "--indicator-size"
-  }
+    indicatorSize: "--indicator-size",
+  };
 
   let qTabs: HTMLElement;
 
@@ -69,10 +69,10 @@
       let transitionSize;
       if (comparePositions === "next") {
         // New tab is after the previous one
-        transitionSize = prepareTransitionSize(storeVariant, previousEl, activeEl)
+        transitionSize = prepareTransitionSize(storeVariant, previousEl, activeEl);
       } else {
         // New tab is before the previous one
-        transitionSize = prepareTransitionSize(storeVariant, activeEl, previousEl)
+        transitionSize = prepareTransitionSize(storeVariant, activeEl, previousEl);
         qTabs.style.setProperty(cssVars.indicatorPosition, `${position}px`);
       }
 
@@ -86,19 +86,24 @@
   }
 
   function prepareTransitionSize(storeVariant: typeof variant, fromEl: QTab, toEl: QTab) {
-    const fromElChild = storeVariant === "primary" ? fromEl.firstElementChild as HTMLDivElement : { offsetLeft: 0, offsetWidth: 0 }
-    const toElChild = storeVariant === "primary" ? toEl.firstElementChild as HTMLDivElement : { offsetLeft: 0, offsetWidth: 0 }
+    const fromElChild =
+      storeVariant === "primary"
+        ? (fromEl.firstElementChild as HTMLDivElement)
+        : { offsetLeft: 0, offsetWidth: 0 };
+    const toElChild =
+      storeVariant === "primary"
+        ? (toEl.firstElementChild as HTMLDivElement)
+        : { offsetLeft: 0, offsetWidth: 0 };
 
     return storeVariant === "vertical"
       ? toEl.offsetTop + toEl.offsetHeight - fromEl.offsetTop
-      : (toEl.offsetLeft + toElChild.offsetLeft) + (toElChild.offsetWidth || toEl.offsetWidth) - (fromEl.offsetLeft + fromElChild.offsetLeft)
+      : toEl.offsetLeft +
+          toElChild.offsetLeft +
+          (toElChild.offsetWidth || toEl.offsetWidth) -
+          (fromEl.offsetLeft + fromElChild.offsetLeft);
   }
 </script>
 
-<nav
-  bind:this={qTabs}
-  class="q-tabs q-tabs--{variant} {userClasses}"
-  class:q-tabs--rounded={round}
-  >
+<nav bind:this={qTabs} class="q-tabs q-tabs--{variant} {userClasses}" class:q-tabs--rounded={round}>
   <slot />
 </nav>

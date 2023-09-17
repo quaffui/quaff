@@ -11,25 +11,14 @@
   export let value: QDrawerProps["value"] = false,
     side: QDrawerProps["side"] = "left",
     width: QDrawerProps["width"] = 300,
-    breakpoint: QDrawerProps["breakpoint"] = 1023,
-    showIfAbove: QDrawerProps["showIfAbove"] = false,
-    behavior: QDrawerProps["behavior"] = "default",
     bordered: QDrawerProps["bordered"] = false,
-    elevated: QDrawerProps["elevated"] = false,
     overlay: QDrawerProps["overlay"] = false,
     persistent: QDrawerProps["persistent"] = false,
-    noSwipeOpen: QDrawerProps["noSwipeOpen"] = false,
-    noSwipeClose: QDrawerProps["noSwipeClose"] = false,
-    noSwipeBackdrop: QDrawerProps["noSwipeBackdrop"] = false,
     userClasses: QDrawerProps["userClasses"] = undefined,
     userStyles: QDrawerProps["userStyles"] = undefined;
   export { userClasses as class, userStyles as style };
 
   $: canHideOnClickOutside = (value === true && persistent === false) || overlay === true;
-
-  $: belowBreakpoint =
-    (behavior === "mobile") === true ||
-    (behavior !== "desktop" && /** TODO: Get Layout width */ 1300 <= breakpoint!);
 
   $: widthStyle = !$ctx && useSize(width).style;
 

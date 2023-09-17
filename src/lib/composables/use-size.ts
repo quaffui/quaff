@@ -8,13 +8,13 @@ interface UseSize {
   style?: string;
 }
 
-export function useSize(sizeProp: any): UseSize {
+export function useSize(sizeProp: unknown): UseSize {
   if (isNumber(sizeProp) && sizeProp > 0) {
     return {
       style: `${sizeProp}px`,
     };
   } else if (typeof sizeProp === "string") {
-    for (let unit of CssUnits) {
+    for (const unit of CssUnits) {
       if (sizeProp.slice(-unit.length) === unit) {
         return {
           style: sizeProp,

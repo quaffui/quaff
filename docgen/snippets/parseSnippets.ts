@@ -40,7 +40,7 @@ export function parseSnippets() {
     const dirPath = path.resolve(rootDir, dir);
     const pageFilePath = path.resolve(dirPath, "+page.svelte");
 
-    let snippets: Record<string, string> = {};
+    const snippets: Record<string, string> = {};
 
     if (fs.existsSync(pageFilePath)) {
       const sections = parseSvelteFile(pageFilePath);
@@ -50,7 +50,7 @@ export function parseSnippets() {
       });
     }
 
-    let resultCode = `export default ${JSON.stringify(snippets)}`;
+    const resultCode = `export default ${JSON.stringify(snippets)}`;
 
     fs.writeFileSync(path.resolve(dirPath, "docs.snippets.ts"), resultCode, "utf8");
   }

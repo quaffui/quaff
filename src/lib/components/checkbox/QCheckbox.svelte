@@ -8,11 +8,7 @@
   export { userClasses as class };
 </script>
 
-<label 
-  class="q-checkbox {userClasses}"
-  class:q-checkbox--disabled={disable}
-  {...$$restProps}
->
+<label class="q-checkbox {userClasses}" class:q-checkbox--disabled={disable} {...$$restProps}>
   <input type="checkbox" bind:checked={value} disabled={disable} />
   <span>{label}</span>
 </label>

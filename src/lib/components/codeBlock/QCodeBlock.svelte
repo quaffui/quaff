@@ -1,10 +1,11 @@
 <script lang="ts">
   import Highlight from "svelte-highlight";
+  import { HighlightSvelte } from "svelte-highlight";
   import typescript from "svelte-highlight/languages/typescript";
+  import "svelte-highlight/styles/material.css";
   import { copy } from "$lib/utils";
   import { QBtn } from "$lib";
   import type { QCodeBlockProps } from "./props";
-  
 
   export let language: QCodeBlockProps["language"],
     code: QCodeBlockProps["code"] = "/* No code found */",
@@ -15,31 +16,31 @@
   let btnColor = "primary";
 
   function setBtn(type: "base" | "error" | "success") {
-    switch(type) {
+    switch (type) {
       case "error":
-        btnContent = "Error while copying..."
-        btnColor = "error"
-        break
+        btnContent = "Error while copying...";
+        btnColor = "error";
+        break;
       case "success":
         btnContent = "Copied!";
         btnColor = "green";
-        break
+        break;
       default:
         btnContent = "Copy";
         btnColor = "primary";
-        break
+        break;
     }
   }
 
   async function copyCode() {
-    await copy(code!).catch((_) => {
-      setBtn("error")
+    await copy(code!).catch(() => {
+      setBtn("error");
       setTimeout(() => setBtn("base"), 3000);
-    })
+    });
 
-    setBtn("success")
+    setBtn("success");
     setTimeout(() => {
-      setBtn("base")
+      setBtn("base");
     }, 3000);
   }
 </script>
@@ -63,21 +64,15 @@
   {:else if title}
     <h4>{title}</h4>
   {/if}
-  <Highlight language={typescript} {code} />
+  {#if language === "ts"}
+    <Highlight language={typescript} {code} />
+  {:else}
+    <HighlightSvelte {code} />
+  {/if}
 </div>
 
 <style>
   .q-code-block {
     border-radius: 0.5em;
-  }
-
-  pre {
-    max-height: 400px;
-    height: 100%;
-    margin: 0;
-  }
-
-  code {
-    white-space: pre-wrap;
   }
 </style>

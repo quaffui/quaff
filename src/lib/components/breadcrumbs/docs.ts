@@ -1,7 +1,7 @@
 import { QBreadcrumbsDocsProps } from "./docs.props";
 import type { QComponentDocs } from "$lib/utils";
 
-export let QBreadcrumbsDocs: QComponentDocs = {
+export const QBreadcrumbsDocs: QComponentDocs = {
   name: "QBreadcrumbs",
   description:
     "Breadcrumbs are mostly used as a navigation aid. They allow users to keep track of their location within the page.",

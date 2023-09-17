@@ -58,7 +58,7 @@
     };
 </script>
 
-<QDocs QComponentDocs={QDialogDocs}>
+<QDocs componentDocs={QDialogDocs}>
   <QDialog
     slot="display"
     button

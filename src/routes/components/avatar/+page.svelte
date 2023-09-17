@@ -6,7 +6,7 @@
   import snippets from "./docs.snippets";
 </script>
 
-<QDocs QComponentDocs={QAvatarDocs}>
+<QDocs componentDocs={QAvatarDocs}>
   <QAvatar slot="display" src="/cocktail.jpg" size="5rem" />
 
   <div slot="usage">

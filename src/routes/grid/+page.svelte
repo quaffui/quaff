@@ -1,4 +1,5 @@
 <script lang="ts">
+  const cols = [1, 2, 3, 4];
 </script>
 
 <div class="q-page">
@@ -10,11 +11,9 @@
   </p>
 
   <div class="row">
-    {#each Array(4) as _, idx}
+    {#each cols as col}
       <div
-        class="col-xs-12 col-md-6 col-lg-3 {idx % 2 === 0
-          ? 'primary'
-          : 'secondary'} text-center"
+        class="col-xs-12 col-md-6 col-lg-3 {col % 2 === 0 ? 'primary' : 'secondary'} text-center"
       >
         col-xs-12 col-md-6 col-lg-3
       </div>
@@ -28,7 +27,7 @@
     md, lg, xl or none.
   </p>
 
-  {#each ["xs", "sm", "md", "lg", "xl", "none"] as size, index}
+  {#each ["xs", "sm", "md", "lg", "xl", "none"] as size}
     <h4>{size}</h4>
 
     <div class="row q-gutter-{size}">

@@ -25,7 +25,7 @@ function quaff() {
             to: "light",
           };
 
-      let body = document.querySelector("body");
+      const body = document.querySelector("body");
       if (body) {
         body.classList.replace(`body--${mode.from}`, `body--${mode.to}`);
       }

@@ -15,11 +15,13 @@
   export { userClasses as class };
 
   const activeColor = getContext<string>("activeColor");
-  const separator = getContext<{ type: string; color: string; gutter: QBreadcrumbsGutterOptions }>("separator");
+  const separator = getContext<{ type: string; color: string; gutter: QBreadcrumbsGutterOptions }>(
+    "separator"
+  );
 
   $: isActive = isRouteActive($Quaff.router, href || to);
 
-  $: activeClasses = isActive ? `${activeClass} text-${activeColor}` : ""
+  $: activeClasses = isActive ? `${activeClass} text-${activeColor}` : "";
 </script>
 
 <div class="q-breadcrumbs__separator q-px-{separator.gutter}">
@@ -31,9 +33,7 @@
 </div>
 
 {#if href !== undefined || to !== undefined}
-  <a href={href || to}
-    class="q-breadcrumb__el {activeClasses} {userClasses}"
-  >
+  <a href={href || to} class="q-breadcrumb__el {activeClasses} {userClasses}">
     {#if icon !== undefined}
       <QIcon name={icon} size="1rem" />
     {:else if $$slots.icon}
@@ -45,9 +45,7 @@
     </slot>
   </a>
 {:else}
-  <svelte:element this={tag}
-    class="q-breadcrumb__el {activeClasses} {userClasses}"
-  >
+  <svelte:element this={tag} class="q-breadcrumb__el {activeClasses} {userClasses}">
     {#if icon !== undefined}
       <QIcon name={icon} size="1rem" />
     {:else if $$slots.icon}
