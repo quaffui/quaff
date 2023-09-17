@@ -50,7 +50,10 @@
 
 <svelte:element
   this={tag}
-  use:ripple={{ disable: noRipple || disable }}
+  use:ripple={{
+    disable: noRipple || disable,
+    color: flat || outline ? undefined : "var(--on-primary)",
+  }}
   bind:this={qBtn}
   aria-disabled={disable || undefined}
   class="q-btn {sizeClass} {userClasses}"

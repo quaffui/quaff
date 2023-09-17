@@ -48,7 +48,10 @@
 
 <a
   bind:this={qChip}
-  use:ripple={{ disable: noRipple || disable }}
+  use:ripple={{
+    disable: noRipple || disable,
+    color: outlined ? undefined : "var(--on-secondary)",
+  }}
   aria-disabled={disable || undefined}
   class="q-chip {sizeObj.class && sizeObj.class !== 'md'
     ? `q-chip--${sizeObj.class}`
