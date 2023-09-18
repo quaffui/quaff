@@ -1,1 +1,0 @@
-export default {"Default Checkbox":"<QCheckbox class=\"q-ma-sm\" bind:value={value1} />\n<QCheckbox class=\"q-ma-sm\" label=\"With label\" bind:value={value1} />","Checked Checkbox":"<QCheckbox class=\"q-ma-sm\" label=\"Checkbox checked by default\" value={true} />","Disabled":"<QCheckbox class=\"q-ma-sm\" label=\"Checkbox with disable prop\" value={true} disable />"}

@@ -1,1 +1,0 @@
-export default {"Radio Group":"<QRadio class=\"q-ma-sm\" value=\"option1\" bind:selected={selectedValue} label=\"Option 1\" />\n<QRadio class=\"q-ma-sm\" value=\"option2\" bind:selected={selectedValue} label=\"Option 2\" />","Disabled Radio Button":"<QRadio class=\"q-ma-sm\" value=\"option3\" label=\"Option 3\" disable />"}
