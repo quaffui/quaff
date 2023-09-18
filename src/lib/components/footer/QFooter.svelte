@@ -31,8 +31,10 @@
   );
 </script>
 
-<footer class={classes} {style}>
-  <nav>
-    <slot />
-  </nav>
-</footer>
+{#if value}
+  <footer class={classes} {style}>
+    <nav>
+      <slot />
+    </nav>
+  </footer>
+{/if}

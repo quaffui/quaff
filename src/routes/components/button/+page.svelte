@@ -7,7 +7,7 @@
   import snippets from "./docs.snippets";
 </script>
 
-<QDocs QComponentDocs={QBtnDocs}>
+<QDocs componentDocs={QBtnDocs}>
   <QBtn slot="display" icon="star">Star me on Github</QBtn>
 
   <div slot="usage">
@@ -32,8 +32,12 @@
         <span>Disabled</span><span style="color: gray">Button</span>
       </QBtn>
 
-      <QBtn class="q-ma-sm" label="Click me" disable on:click={() => alert("What's this sorcery?!")}>
-      </QBtn>
+      <QBtn
+        class="q-ma-sm"
+        label="Click me"
+        disable
+        on:click={() => alert("What's this sorcery?!")}
+      />
     </QDocsSection>
 
     <QDocsSection {snippets} title="Button Variants">

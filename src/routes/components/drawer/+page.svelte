@@ -3,6 +3,6 @@
   import QDocs from "$lib/components/private/QDocs.svelte";
 </script>
 
-<QDocs QComponentDocs={QDrawerDocs}>
+<QDocs componentDocs={QDrawerDocs}>
   <div slot="usage"></div>
 </QDocs>

@@ -4,7 +4,7 @@ export interface QCodeBlockProps extends HTMLAttributes<HTMLDivElement> {
   /**
    * Language to use for highlighting.
    */
-  language: string;
+  language: "ts" | "svelte";
 
   /**
    * Code to highlight.

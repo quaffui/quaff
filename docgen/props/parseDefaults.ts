@@ -6,11 +6,11 @@ export type ParsedDefault = {
 };
 
 export default function parseDefaults(fileName: string, variableName: string) {
-  let program = ts.createProgram([fileName], { allowJs: true });
+  const program = ts.createProgram([fileName], { allowJs: true });
   program.getTypeChecker();
-  let defaults: ParsedDefault[] = [];
+  const defaults: ParsedDefault[] = [];
 
-  let visit = (node: ts.Node) => {
+  const visit = (node: ts.Node) => {
     if (!isNodeExported(node)) {
       return;
     }
@@ -26,9 +26,9 @@ export default function parseDefaults(fileName: string, variableName: string) {
         ) {
           declaration.initializer.properties.forEach((p) => {
             if (ts.isPropertyAssignment(p)) {
-              let curDefault: ParsedDefault = {
+              const curDefault: ParsedDefault = {
                 name: (p.name as ts.Identifier).text,
-                value: evaluateNode(p.initializer), //.getText(),
+                value: evaluateNode(p.initializer)?.toString() ?? "",
               };
               defaults.push(curDefault);
             }
@@ -49,7 +49,16 @@ export default function parseDefaults(fileName: string, variableName: string) {
   return defaults;
 }
 
-function evaluateNode(node: ts.Node): any {
+type NodeEvaluatedSimple = string | number | boolean | null | void;
+type NodeEvaluatedArray = NodeEvaluated[];
+type NodeEvaluatedObject = {
+  [key: string]: NodeEvaluatedSimple | NodeEvaluatedArray | NodeEvaluatedObject;
+};
+type NodeEvaluated = NodeEvaluatedSimple | NodeEvaluatedArray | NodeEvaluatedObject;
+
+function evaluateNode(node: ts.Node): NodeEvaluated {
+  const obj: Record<string, NodeEvaluated> = {};
+
   switch (node.kind) {
     case ts.SyntaxKind.StringLiteral:
       return (node as ts.StringLiteral).text;
@@ -66,7 +75,6 @@ function evaluateNode(node: ts.Node): any {
     case ts.SyntaxKind.ArrayLiteralExpression:
       return (node as ts.ArrayLiteralExpression).elements.map(evaluateNode);
     case ts.SyntaxKind.ObjectLiteralExpression:
-      const obj: any = {};
       (node as ts.ObjectLiteralExpression).properties.forEach((prop) => {
         if (ts.isPropertyAssignment(prop)) {
           obj[(prop.name as ts.Identifier).text] = evaluateNode(prop.initializer);

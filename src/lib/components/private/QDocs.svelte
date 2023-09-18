@@ -4,11 +4,11 @@
   import QApi from "./QApi.svelte";
   import type { QComponentDocs } from "$lib/utils";
 
-  export let QComponentDocs: QComponentDocs | QComponentDocs[];
+  export let componentDocs: QComponentDocs | QComponentDocs[];
 
   $: isDark = $Quaff.dark.isActive;
 
-  let principalDocument = Array.isArray(QComponentDocs) ? QComponentDocs[0] : QComponentDocs;
+  let principalDocument = Array.isArray(componentDocs) ? componentDocs[0] : componentDocs;
 </script>
 
 <div class="q-docs" style="margin: 1rem">
@@ -43,7 +43,7 @@
     </QCard>
   </div>
 
-  <QApi QComponentDocs={Array.isArray(QComponentDocs) ? QComponentDocs : [QComponentDocs]} />
+  <QApi componentDocs={Array.isArray(componentDocs) ? componentDocs : [componentDocs]} />
 
   {#if $$slots.usage}
     <div class="s12 q-pa-md">
@@ -86,18 +86,6 @@
 
     :global(.q-docs__description-text) {
       font-size: 1.75rem;
-    }
-  }
-
-  .prop-type {
-    opacity: 0.75;
-
-    &.clickable {
-      cursor: pointer;
-
-      &:hover {
-        opacity: 1;
-      }
     }
   }
 

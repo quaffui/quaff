@@ -1,7 +1,7 @@
 import { QBtnDocsProps } from "./docs.props";
 import type { QComponentDocs } from "$lib/utils";
 
-export let QBtnDocs: QComponentDocs = {
+export const QBtnDocs: QComponentDocs = {
   name: "QBtn",
   description:
     "Buttons help users take action, such as sending an email, sharing a document, or liking a comment.",

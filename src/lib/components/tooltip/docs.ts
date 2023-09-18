@@ -1,7 +1,7 @@
 import { QTooltipDocsProps } from "./docs.props";
 import type { QComponentDocs } from "$lib/utils";
 
-export let QTooltipDocs: QComponentDocs = {
+export const QTooltipDocs: QComponentDocs = {
   name: "QTooltip",
   description:
     "The Tooltip component displays informative text on hover or focus, providing additional context.",

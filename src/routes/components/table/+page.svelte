@@ -221,7 +221,7 @@
   ];
 </script>
 
-<QDocs QComponentDocs={QTableDocs} usagePath="table">
+<QDocs componentDocs={QTableDocs}>
   <QTable slot="display" {columns} rows={rows.slice(0, 1)} />
 
   <div slot="usage">

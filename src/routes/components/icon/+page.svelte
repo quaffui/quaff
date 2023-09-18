@@ -5,7 +5,7 @@
   import QDocsSection from "$lib/components/private/QDocsSection.svelte";
 </script>
 
-<QDocs QComponentDocs={QIconDocs}>
+<QDocs componentDocs={QIconDocs}>
   <QIcon slot="display" name="check" />
 
   <div slot="usage">

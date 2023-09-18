@@ -18,7 +18,7 @@
     QHeader,
     QAvatar,
   } from "$lib";
-  import { isRouteActive } from "$lib/composables/use-router-link";
+  import { isRouteActive } from "$lib/composables/useRouterLink";
   import { fade } from "svelte/transition";
   import { QTheme } from "$lib/stores/QTheme";
 

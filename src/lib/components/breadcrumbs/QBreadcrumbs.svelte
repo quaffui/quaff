@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { createClasses } from "$lib/utils";
   import { onMount, setContext } from "svelte";
   import type { QBreadcrumbsProps } from "./props";
 

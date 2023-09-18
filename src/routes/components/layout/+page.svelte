@@ -63,7 +63,7 @@
   }
 </script>
 
-<QDocs QComponentDocs={QLayoutDocs}>
+<QDocs componentDocs={QLayoutDocs}>
   <QLayout slot="display" view="lhh lpr lfr" headerHeight="50px" footerHeight="50px">
     <QHeader slot="header" elevate>
       <QBtn icon="menu" flat on:click={displayLeftDrawerElement.toggle} />

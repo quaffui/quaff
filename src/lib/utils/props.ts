@@ -7,14 +7,12 @@ export function createStyles(
   const stylesArray = Object.entries(styleObj);
   const toJoin: string[] = [];
 
-  for (let [styleName, styleVal] of stylesArray) {
+  for (const [styleName, styleVal] of stylesArray) {
     if (styleVal === undefined || styleVal === null || styleVal === false) {
       continue;
     }
 
-    styleName = convertCase(styleName, "camel", "kebab");
-
-    toJoin.push(`${styleName}: ${styleVal}`);
+    toJoin.push(`${convertCase(styleName, "camel", "kebab")}: ${styleVal}`);
   }
 
   userStyles && toJoin.push(userStyles);
@@ -30,19 +28,19 @@ interface CreateClassesOptions {
   component?: string;
   element?: string;
   userClasses?: string | null;
-  quaffClasses?: any[];
+  quaffClasses?: unknown[];
 }
 
 export function createClasses(
-  modifiers: any[],
+  modifiers: unknown[],
   options: CreateClassesOptions = { userClasses: "", quaffClasses: [] }
 ): string {
   const userClasses = options.userClasses?.trim();
   const quaffClasses = options.quaffClasses?.length && createClasses(options.quaffClasses);
   const baseClasses = `${quaffClasses || ""} ${userClasses || ""}`.trim();
 
-  let component = options.component,
-    element: string | undefined;
+  const component = options.component;
+  let element: string | undefined;
 
   if (component && options.element) {
     element = `${component}__${options.element}`;
@@ -50,7 +48,7 @@ export function createClasses(
 
   const filteredModifiers = modifiers.filter(Boolean);
 
-  let withModifiers = component
+  const withModifiers = component
     ? filteredModifiers.map((modifier) => `${element || component}--${modifier}`)
     : filteredModifiers;
 
