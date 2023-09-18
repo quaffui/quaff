@@ -7,6 +7,7 @@
     userClasses: QItemSectionProps["userClasses"] = "";
   export { userClasses as class };
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   $: ctx = getContext<Writable<boolean>>("hasMultipleLines");
 
   $: if (type === "content") {
