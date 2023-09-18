@@ -39,6 +39,8 @@ function convertToKebabSnakeCase(str: string, caseType: keyof typeof cases) {
 }
 
 export function convertCase(str: string, fromCase: keyof typeof cases, toCase: keyof typeof cases) {
+  const uncap = uncapitalize(str);
+
   switch (fromCase) {
     case "camel":
       if (toCase === "pascal") {
@@ -49,7 +51,6 @@ export function convertCase(str: string, fromCase: keyof typeof cases, toCase: k
       }
       break;
     case "pascal":
-      let uncap = uncapitalize(str);
       if (toCase === "camel") {
         return uncap;
       }

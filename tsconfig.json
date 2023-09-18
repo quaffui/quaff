@@ -34,5 +34,5 @@
     "importsNotUsedAsValues": "error"
   },
   "exclude": ["./dist/**/*"],
-  "include": ["./docgen/**/*", "./src/**/*"]
+  "include": ["./docgen/**/*", "./scripts/**/*", "./src/**/*"]
 }

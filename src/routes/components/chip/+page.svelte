@@ -6,7 +6,7 @@
   import snippets from "./docs.snippets";
 </script>
 
-<QDocs QComponentDocs={QChipDocs}>
+<QDocs componentDocs={QChipDocs}>
   <QChip slot="display" responsive icon="img:/cocktail.jpg" content="Cocktail" />
 
   <div slot="usage">
@@ -55,8 +55,8 @@
 
     <QDocsSection {snippets} title="Chips with Custom Tabindex">
       <div class="flex q-gap-lg items-center">
-        <QChip tabindex="2" content="Tabindex 2 Chip" />
-        <QChip tabindex="3" content="Tabindex 3 Chip" />
+        <QChip tabindex={2} content="Tabindex 2 Chip" />
+        <QChip tabindex={3} content="Tabindex 3 Chip" />
       </div>
     </QDocsSection>
   </div>

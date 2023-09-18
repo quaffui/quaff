@@ -11,7 +11,7 @@ export type ParsedProp = {
 
 function getJSDocComment(declaration: ts.Declaration) {
   if (ts.isPropertySignature(declaration)) {
-    let comment = ts.getJSDocCommentsAndTags(declaration)[0];
+    const comment = ts.getJSDocCommentsAndTags(declaration)[0];
 
     if (comment) {
       const commentText = comment.getText();
@@ -40,21 +40,21 @@ function getJSDocComment(declaration: ts.Declaration) {
 }
 
 export default function parseInterface(fileName: string) {
-  let program = ts.createProgram([fileName], { allowJs: true });
-  let checker = program.getTypeChecker();
-  let componentsToProps: {
+  const program = ts.createProgram([fileName], { allowJs: true });
+  const checker = program.getTypeChecker();
+  const componentsToProps: {
     [key: string]: ParsedProp[];
   } = {};
 
-  let visit = (node: ts.Node) => {
+  const visit = (node: ts.Node) => {
     if (!isNodeExported(node)) {
       return;
     }
 
     if (ts.isInterfaceDeclaration(node)) {
-      let symbol = checker.getSymbolAtLocation(node.name)!;
+      const symbol = checker.getSymbolAtLocation(node.name)!;
 
-      let props: ParsedProp[] = [];
+      const props: ParsedProp[] = [];
       const interfaceName = symbol.getName();
       componentsToProps[interfaceName] = props;
 
@@ -65,7 +65,7 @@ export default function parseInterface(fileName: string) {
           curProp.type = member.getText().split(": ").at(-1)?.replace(";", "") || "";
           curProp.optional = !!member.questionToken;
 
-          let type = checker.getTypeAtLocation(member);
+          const type = checker.getTypeAtLocation(member);
 
           if (member.type && ts.isArrayTypeNode(member.type)) {
             const elementTypeNode = member.type!.elementType;
@@ -100,23 +100,4 @@ export default function parseInterface(fileName: string) {
   }
 
   return componentsToProps;
-}
-
-function getAllProperties(symbol: ts.Symbol, checker: ts.TypeChecker): ts.Symbol[] {
-  let properties: ts.Symbol[] = [];
-
-  if (symbol.flags & ts.SymbolFlags.Interface) {
-    let interfaceType = checker.getDeclaredTypeOfSymbol(symbol) as ts.InterfaceType;
-    let baseTypes = interfaceType.getBaseTypes();
-
-    properties.push(...checker.getPropertiesOfType(interfaceType));
-
-    if (baseTypes) {
-      baseTypes.forEach((baseType) => {
-        properties.push(...getAllProperties(baseType.symbol, checker));
-      });
-    }
-  }
-
-  return properties;
 }

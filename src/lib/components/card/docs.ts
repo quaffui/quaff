@@ -1,7 +1,7 @@
 import { QCardActionsDocsProps, QCardDocsProps, QCardSectionDocsProps } from "./docs.props";
 import type { QComponentDocs } from "$lib/utils";
 
-export let QCardDocs: QComponentDocs = {
+export const QCardDocs: QComponentDocs = {
   name: "QCard",
   description:
     "Cards provide a clean, flexible, and convenient means of displaying a wide variety of content.",
@@ -18,7 +18,7 @@ export let QCardDocs: QComponentDocs = {
   },
 };
 
-export let QCardSectionDocs: QComponentDocs = {
+export const QCardSectionDocs: QComponentDocs = {
   name: "QCardSection",
   description: "Sections are used to group similar content within a card.",
   docs: {
@@ -34,7 +34,7 @@ export let QCardSectionDocs: QComponentDocs = {
   },
 };
 
-export let QCardActionsDocs: QComponentDocs = {
+export const QCardActionsDocs: QComponentDocs = {
   name: "QCardActions",
   description: "Actions hold actionable items like buttons within a card.",
   docs: {

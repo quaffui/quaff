@@ -6,7 +6,7 @@
   import QCircularProgress from "$lib/components/progress/QCircularProgress.svelte";
 </script>
 
-<QDocs QComponentDocs={QProgressDocs}>
+<QDocs componentDocs={QProgressDocs}>
   <div slot="usage">
     <QDocsSection title="Linear Progress">
       <QLinearProgress value={30}></QLinearProgress>

@@ -1,6 +1,6 @@
-export function clickOutside(node: HTMLElement, onEventFunction: () => any) {
+export function clickOutside(node: HTMLElement, onEventFunction: () => unknown) {
   const handleClick = (event: MouseEvent) => {
-    let path = event.composedPath();
+    const path = event.composedPath();
 
     if (!path.includes(node)) {
       onEventFunction();
@@ -16,12 +16,12 @@ export function clickOutside(node: HTMLElement, onEventFunction: () => any) {
   };
 }
 
-export function clickOutsideDialog(node: HTMLDialogElement, onEventFunction: () => any) {
+export function clickOutsideDialog(node: HTMLDialogElement, onEventFunction: () => unknown) {
   const handleClick = (event: MouseEvent) => {
     if (!node.open) return;
-    let rect = node.getBoundingClientRect();
+    const rect = node.getBoundingClientRect();
 
-    let isInDialog =
+    const isInDialog =
       rect.top <= event.clientY &&
       event.clientY <= rect.top + rect.height &&
       rect.left <= event.clientX &&

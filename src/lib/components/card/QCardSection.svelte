@@ -9,8 +9,8 @@
 <div
   class="q-card__section {userClasses}"
   class:q-card__section--horizontal={horizontal}
-  {...$$restProps} 
+  {...$$restProps}
   on:scroll
-  >
+>
   <slot />
 </div>

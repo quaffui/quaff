@@ -5,7 +5,7 @@ import type { NativeProps } from "$lib/utils";
 export interface QRadioProps extends NativeProps, HTMLAttributes<HTMLLabelElement> {
   value: string;
   label?: string;
-  selected?: any;
+  selected?: unknown;
   disable?: boolean;
 }
 

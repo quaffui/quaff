@@ -16,7 +16,7 @@ export function ripple(el: HTMLElement, options: RippleOptions = {}) {
   el.appendChild(rippleContainer);
 
   function addClasses(center?: boolean) {
-    let shouldBeCentered = center || options.center;
+    const shouldBeCentered = center || options.center;
 
     if (!rippleContainer.classList.contains("q-ripple--effect")) {
       rippleContainer.classList.add("q-ripple--effect");

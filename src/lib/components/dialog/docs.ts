@@ -1,7 +1,7 @@
 import { QDialogDocsProps } from "./docs.props";
 import type { QComponentDocs } from "$lib/utils";
 
-export let QDialogDocs: QComponentDocs = {
+export const QDialogDocs: QComponentDocs = {
   name: "QDialog",
   description: "Dialogs provide important prompts in a user flow.",
   docs: {

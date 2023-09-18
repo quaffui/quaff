@@ -1,0 +1,25 @@
+name: Code Checks
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  run-checks:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "18.x"
+
+      - name: Prep
+        run: npm install && npm run write-version && npm run docgen
+
+      - name: Run Type Check
+        run: npm run check
+
+      - name: Run Lint
+        run: npm run lint

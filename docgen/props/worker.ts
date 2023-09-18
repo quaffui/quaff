@@ -2,7 +2,7 @@ import { writeFile } from "fs/promises";
 import { MessagePort, parentPort } from "worker_threads";
 import path from "path";
 import prettier from "prettier";
-import parseInterface from "./parse-interface.js";
+import parseInterface from "./parseInterface.js";
 import parseTypes from "../types/parseTypes.js";
 
 function assertHasParentPort(parentPort: MessagePort | null): asserts parentPort is MessagePort {

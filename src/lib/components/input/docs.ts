@@ -1,6 +1,6 @@
 import type { QComponentDocs } from "$lib/utils";
 
-export let QInputDocs: QComponentDocs = {
+export const QInputDocs: QComponentDocs = {
   name: "QInput",
   description:
     "QInput is a form component that allows users to input text. It supports different visual styles such as filled, outlined, and rounded, and it can also display hint text and custom error messages.",

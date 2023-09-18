@@ -33,7 +33,7 @@ export function getFocusableChildren<T extends HTMLElement>(el: T) {
 }
 
 export function getClosestFocusableChild(el: HTMLElement) {
-  let children = Array.from(el.querySelectorAll(focusableElements)) as HTMLElement[];
+  const children = Array.from(el.querySelectorAll(focusableElements)) as HTMLElement[];
   const focusableChildren: HTMLElement[] = children.filter(isFocusable);
 
   return focusableChildren[0] || null;
@@ -43,7 +43,7 @@ export function getClosestFocusableSibling<T extends HTMLElement>(el: T, directi
   const parent = getParentElement(el);
   const allSiblings = Array.from(parent.childNodes) as HTMLElement[];
 
-  let filtered = allSiblings.filter(isFocusable);
+  const filtered = allSiblings.filter(isFocusable);
   const indexOfEl = filtered.indexOf(el);
 
   if (direction === "next") {
@@ -68,8 +68,8 @@ export function getClosestFocusableSibling<T extends HTMLElement>(el: T, directi
 }
 
 export function getClosestFocusableBlock(el: HTMLElement, direction: Direction) {
-  let parent = getParentElement(el);
-  let parentFocusableChildren = getFocusableChildren(parent);
+  const parent = getParentElement(el);
+  const parentFocusableChildren = getFocusableChildren(parent);
 
   function getNextFocusableBlock(parentBlock: HTMLElement) {
     const grandParent = getParentElement(parentBlock);
