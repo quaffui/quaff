@@ -1,6 +1,13 @@
 import { spawn } from "child_process";
 import { basename } from "path";
+import updateAllSnippets from "../../docgen/snippets/updateAllSnippets.js";
+import updateSnippetsForPage from "../../docgen/snippets/updateSnippetsForPage";
 import type { Plugin, ViteDevServer } from "vite";
+
+enum HotUpdateFileName {
+  Props = "props.ts",
+  Page = "+page.svelte",
+}
 
 function runDocGenProps(): Promise<void> {
   return new Promise((resolve, reject) => {
@@ -40,12 +47,19 @@ function docgenPlugin(): Plugin {
     name: "docgen-plugin",
     async configResolved(config) {
       config.logger.info(DOCGEN_LOG_MESSAGE);
-      await runDocGenProps();
+      const p1 = runDocGenProps();
+      const p2 = updateAllSnippets();
+      await Promise.all([p1, p2]);
       config.logger.clearScreen("info");
     },
 
     handleHotUpdate({ file, server }: { file: string; server: ViteDevServer }) {
       const now = new Date().getTime();
+      const fileName = basename(file);
+
+      if (!Object.values(HotUpdateFileName).includes(fileName as HotUpdateFileName)) {
+        return;
+      }
 
       if (lastUpdated.file === file && now - lastUpdated.at < 500) {
         // throttle calls, in case of formatters etc.
@@ -55,11 +69,13 @@ function docgenPlugin(): Plugin {
       lastUpdated.file = file;
       lastUpdated.at = now;
 
-      const fileName = basename(file);
+      const isProps = fileName === HotUpdateFileName.Props;
+      server.config.logger.info(DOCGEN_LOG_MESSAGE);
 
-      if (fileName === "props.ts") {
-        server.config.logger.info(DOCGEN_LOG_MESSAGE);
+      if (isProps) {
         runDocGenProps().then(() => server.config.logger.clearScreen("info"));
+      } else {
+        updateSnippetsForPage(file).then(() => server.config.logger.clearScreen("info"));
       }
     },
   };
