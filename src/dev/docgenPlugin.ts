@@ -47,9 +47,7 @@ function docgenPlugin(): Plugin {
     name: "docgen-plugin",
     async configResolved(config) {
       config.logger.info(DOCGEN_LOG_MESSAGE);
-      const p1 = runDocGenProps();
-      const p2 = updateAllSnippets();
-      await Promise.all([p1, p2]);
+      await Promise.all([runDocGenProps(), updateAllSnippets()]);
       config.logger.clearScreen("info");
     },
 
