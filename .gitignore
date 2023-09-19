@@ -15,4 +15,5 @@ vite.config.ts.timestamp-*
 src/lib/helpers/version.ts
 src/lib/components/**/docs.props.ts
 src/routes/components/**/docs.snippets.ts
+!src/routes/components/layout/docs.snippets.ts
 src/lib/utils/types.json
