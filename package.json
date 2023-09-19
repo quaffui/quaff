@@ -14,7 +14,7 @@
     "test:unit": "vitest",
     "lint": "prettier --plugin prettier-plugin-svelte . --check . && eslint .",
     "format": "prettier --plugin prettier-plugin-svelte . --write .",
-    "docgen": "NODE_OPTIONS='--loader ts-node/esm/transpile-only --no-warnings' node scripts/docgenProps.ts",
+    "docgen-props": "NODE_OPTIONS='--loader ts-node/esm/transpile-only --no-warnings' node scripts/docgenProps.ts",
     "docgen-snippets": "NODE_OPTIONS='--loader ts-node/esm/transpile-only --no-warnings' node scripts/docgenSnippets.ts",
     "write-version": "NODE_OPTIONS='--loader ts-node/esm/transpile-only --no-warnings' node scripts/writeVersion.ts"
   },
