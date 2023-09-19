@@ -1,19 +1,13 @@
 import { writeFile } from "fs/promises";
 import { MessagePort, parentPort } from "worker_threads";
-import path from "path";
-import prettier from "prettier";
 import parseInterface from "./parseInterface.js";
 import parseTypes from "../types/parseTypes.js";
+import formatCodeAndAddHash from "../helpers/formatCodeAndAddHash.js";
 
 function assertHasParentPort(parentPort: MessagePort | null): asserts parentPort is MessagePort {
   if (!parentPort) {
     throw new Error("missing parentPort");
   }
-}
-
-async function formatCode(code: string) {
-  const options = await prettier.resolveConfig(path.join(process.cwd(), ".prettierrc"));
-  return prettier.format(code, { ...options, parser: "typescript" });
 }
 
 assertHasParentPort(parentPort);
@@ -37,13 +31,7 @@ parentPort.on("message", async (workerData) => {
     )};\n\n`;
   });
 
-  const formatted = await formatCode(contents);
-  const formattedWithComment = [
-    "// AUTO GENERATED FILE - DO NOT MODIFY OR DELETE",
-    `// @quaffHash ${hashProps}`,
-    "",
-    formatted,
-  ].join("\n");
+  const formattedWithComment = await formatCodeAndAddHash(contents, hashProps);
 
   await writeFile(docsPropsFilePath, formattedWithComment, "utf8");
 

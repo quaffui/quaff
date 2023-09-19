@@ -1,19 +1,15 @@
-import { readdir, readFile, writeFile } from "fs/promises";
+import { readFile, writeFile } from "fs/promises";
 import path from "path";
 import { fileURLToPath } from "url";
 import getInfo from "../docgen/props/getInfo.js";
 import WorkerManager from "../docgen/props/WorkerManager.js";
+import getComponentDirs from "../docgen/helpers/getComponentDirs.js";
 import type { WorkerTask } from "../docgen/props/WorkerManager.js";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.resolve(dirname, "../src/lib/components");
 const docTypesPath = path.resolve(dirname, "../src/lib/utils/types.json");
 let didUpdateAllFiles = true;
-
-async function getComponentDirs(rootDir: string) {
-  const dirents = await readdir(rootDir, { withFileTypes: true });
-  return dirents.filter((dirent) => dirent.isDirectory()).map((dirent) => dirent.name);
-}
 
 async function updateDocTypesFile(newTypes: Record<string, string>) {
   let oldTypes: Record<string, string> = {};
