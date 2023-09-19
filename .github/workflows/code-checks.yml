@@ -16,7 +16,7 @@ jobs:
           node-version: "18.x"
 
       - name: Prep
-        run: npm install && npm run write-version && npm run docgen
+        run: npm install && npm run write-version && npm run docgen-props && npm run docgen-snippets
 
       - name: Run Type Check
         run: npm run check
