@@ -1,7 +1,7 @@
 import { spawn } from "child_process";
 import { basename } from "path";
 import updateAllSnippets from "../../docgen/snippets/updateAllSnippets.js";
-import updateSnippetsForPage from "../../docgen/snippets/updateSnippetsForPage";
+import updateSnippetsForPage from "../../docgen/snippets/updateSnippetsForPage.js";
 import type { Plugin, ViteDevServer } from "vite";
 
 enum HotUpdateFileName {
