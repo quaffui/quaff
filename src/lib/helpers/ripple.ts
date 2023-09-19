@@ -10,10 +10,9 @@ const cancelEvents = ["mouseleave", "dragleave", "touchmove", "touchcancel", "po
 
 export function ripple(el: HTMLElement, options: RippleOptions = {}) {
   const rippleContainer = document.createElement("div");
-
   addClasses();
+
   setOptions(options);
-  el.appendChild(rippleContainer);
 
   function addClasses(center?: boolean) {
     const shouldBeCentered = center || options.center;
@@ -30,6 +29,12 @@ export function ripple(el: HTMLElement, options: RippleOptions = {}) {
   }
 
   function setOptions(options: RippleOptions) {
+    if (options.disable || el.hasAttribute("aria-disabled")) {
+      rippleContainer.remove();
+    } else {
+      el.appendChild(rippleContainer);
+    }
+
     if (options.duration && options.duration < 0) {
       options.duration = undefined;
     }
