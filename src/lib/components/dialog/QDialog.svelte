@@ -18,18 +18,16 @@
   const emit = createEventDispatcher();
   let dialogElement: HTMLDialogElement | undefined;
 
-  const ANIMATION_DURATION = 300;
+  const ANIMATION_DURATION = 150;
 
-  $: if (dialogElement) {
-    if (value) {
-      dialogElement.style.visibility = "visible";
-      modal ? dialogElement.showModal() : dialogElement.show();
+  $: if (value) {
+    if (modal) {
+      dialogElement?.showModal();
     } else {
-      dialogElement.close();
-      setTimeout(() => {
-        dialogElement!.style.visibility = "hidden";
-      }, ANIMATION_DURATION);
+      dialogElement?.show();
     }
+  } else {
+    dialogElement?.close();
   }
 
   $: canHideOnClickOutside = value && !persistent;

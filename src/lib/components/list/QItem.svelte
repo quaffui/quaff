@@ -47,11 +47,10 @@
   <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
   <a
     use:ripple={{ disable: !isClickable || noRipple }}
-    class="q-item {linkClasses} {userClasses}"
+    class="q-item {linkClasses} {isActive || (hasLink && active) ? activeClass : ''} {userClasses}"
     class:q-item--active={isActive || (hasLink && active)}
     class:q-item--multiline={$hasMultipleLines}
     class:q-item--dense={dense}
-    class:{activeClass}={isActive || (hasLink && active)}
     tabindex={isClickable ? Number(tabindex) || 0 : -1}
     aria-disabled={(isActionable && disable) || undefined}
     {...linkAttributes}
@@ -62,11 +61,10 @@
 {:else}
   <svelte:element
     this={tag}
-    class="q-item {userClasses}"
+    class="q-item {isActive || (hasLink && active) ? activeClass : ''} {userClasses}"
     class:q-item--active={isActive || (hasLink && active)}
     class:q-item--multiline={$hasMultipleLines}
     class:q-item--dense={dense}
-    class:{activeClass}={isActive || (hasLink && active)}
     tabindex={isClickable ? Number(tabindex) || 0 : -1}
     aria-disabled={(isActionable && disable) || undefined}
     {...$$restProps}
