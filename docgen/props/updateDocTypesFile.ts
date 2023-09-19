@@ -1,8 +1,7 @@
 import { readFile, writeFile } from "fs/promises";
 
-const docTypesPathUrl = new URL("../../src/lib/utils/types.json", import.meta.url);
-
 export default async function updateDocTypesFile(
+  docTypesPath: string,
   newTypes: Record<string, string>,
   didUpdateAllFiles: boolean
 ) {
@@ -10,7 +9,7 @@ export default async function updateDocTypesFile(
 
   // if only a few files were updated, we need to build on the existing types data
   if (!didUpdateAllFiles) {
-    const oldTypesStr = await readFile(docTypesPathUrl, "utf8");
+    const oldTypesStr = await readFile(docTypesPath, "utf8");
     oldTypes = JSON.parse(oldTypesStr);
   }
 
@@ -23,5 +22,5 @@ export default async function updateDocTypesFile(
 
   const allTypesStr = JSON.stringify(allTypesSorted, null, 2) + "\n";
 
-  await writeFile(docTypesPathUrl, allTypesStr, "utf8");
+  await writeFile(docTypesPath, allTypesStr, "utf8");
 }
