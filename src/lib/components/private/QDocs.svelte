@@ -12,7 +12,7 @@
 </script>
 
 <div class="q-docs" style="margin: 1rem">
-  <div class="row q-gutter-lg q-mb-lg" style="min-height: 400px">
+  <div class="row q-gutter-lg" style="min-height: 400px">
     <QCard class="col-sm-12 col-lg-6 flex flex-center" fill="primary" style="min-height: 400px">
       <h1 class="large no-margin" slot="title">{principalDocument.name}</h1>
     </QCard>
@@ -43,19 +43,23 @@
     </QCard>
   </div>
 
-  <QApi componentDocs={Array.isArray(componentDocs) ? componentDocs : [componentDocs]} />
+  <div class="q-page">
+    <QApi componentDocs={Array.isArray(componentDocs) ? componentDocs : [componentDocs]} />
 
-  {#if $$slots.usage}
-    <div class="s12 q-pa-md">
-      <div class="heading-usage">
-        <h4 class="q-my-xl">Usage</h4>
+    <slot name="pre" />
+
+    {#if $$slots.usage}
+      <div class="q-pa-md">
+        <div class="heading-usage">
+          <h4 class="q-my-xl">Usage</h4>
+        </div>
+
+        <slot name="usage" />
       </div>
+    {/if}
 
-      <slot name="usage" />
-    </div>
-  {/if}
-
-  <slot />
+    <slot />
+  </div>
 </div>
 
 <style lang="scss">
@@ -86,6 +90,10 @@
 
     :global(.q-docs__description-text) {
       font-size: 1.75rem;
+    }
+
+    .q-page {
+      padding-top: 0.5rem;
     }
   }
 
