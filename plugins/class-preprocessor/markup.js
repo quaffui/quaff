@@ -10,10 +10,10 @@
 export function prepareMarkup(fragment, component, uses, namespace) {
   for (const node of fragment.nodes) {
     if (node.type === "IfBlock") {
-      prepareMarkup(node.consequent, component, uses);
+      prepareMarkup(node.consequent, component, uses, namespace);
 
       if (node.alternate) {
-        prepareMarkup(node.alternate, component, uses);
+        prepareMarkup(node.alternate, component, uses, namespace);
       }
 
       continue;
@@ -23,19 +23,19 @@ export function prepareMarkup(fragment, component, uses, namespace) {
       for (awaitKey of ["pending", "then", "catch"]) {
         let frag = node[awaitKey];
         if (frag) {
-          prepareMarkup(frag, component, uses);
+          prepareMarkup(frag, component, uses, namespace);
         }
       }
 
       continue;
     } else if (node.type === "EachBlock" || node.type === "SnippetBlock") {
-      prepareMarkup(node.body, component, uses);
+      prepareMarkup(node.body, component, uses, namespace);
 
       continue;
     }
 
     if (node.fragment) {
-      prepareMarkup(node.fragment, component, uses);
+      prepareMarkup(node.fragment, component, uses, namespace);
     }
 
     if (!("attributes" in node)) continue;
