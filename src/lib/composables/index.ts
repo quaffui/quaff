@@ -1,3 +1,3 @@
 export * from "./useAlign";
 export * from "./useRouterLink";
-export * from "./useSize";
+export * from "./useSizeLegacy";

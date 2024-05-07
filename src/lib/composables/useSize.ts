@@ -1,31 +1,43 @@
-import { CssUnit, QuaffSizes, isNumber } from "$lib/utils";
+import { isNumber } from "$utils/number.js";
 
-export const sizes: QuaffSizes[] = ["none", "xs", "sm", "md", "lg", "xl"];
-export const CssUnits: CssUnit[] = ["px", "%", "em", "ex", "ch", "rem", "vw", "vh", "vmin", "vmax"];
+export const sizes: __Quaff__.Size[] = ["none", "xs", "sm", "md", "lg", "xl"];
 
-interface UseSize {
-  class?: string;
-  style?: string;
+export const CssUnits: __Quaff__.CssUnit[] = [
+  "px",
+  "%",
+  "em",
+  "ex",
+  "ch",
+  "rem",
+  "vw",
+  "vh",
+  "vmin",
+  "vmax",
+];
+
+/**
+ * Checks wether the input is a size like "sm" or "lg"
+ */
+export function isQuaffSize(size: number | string): size is __Quaff__.Size {
+  return sizes.includes(size as __Quaff__.Size);
 }
 
-export function useSize(sizeProp: unknown): UseSize {
-  if (isNumber(sizeProp) && sizeProp > 0) {
-    return {
-      style: `${sizeProp}px`,
-    };
-  } else if (typeof sizeProp === "string") {
-    for (const unit of CssUnits) {
-      if (sizeProp.slice(-unit.length) === unit) {
-        return {
-          style: sizeProp,
-        };
-      } else if (sizes.includes(sizeProp as QuaffSizes)) {
-        return {
-          class: sizeProp,
-        };
+export function useSize(size: number | string, component?: `q-${string}`) {
+  const sizeClass = isQuaffSize(size) ? ` ${component}--${size}` : "";
+  const sizeStyle = () => {
+    if (isNumber(size)) {
+      return size > 0 ? `${size}px` : undefined;
+    } else {
+      for (const unit of CssUnits) {
+        if (size.slice(-unit.length) === unit) {
+          return size;
+        }
       }
     }
-  }
+  };
 
-  return {};
+  return {
+    class: sizeClass,
+    style: sizeStyle(),
+  };
 }
