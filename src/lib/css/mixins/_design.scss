@@ -1,0 +1,55 @@
+@use "../variables";
+
+@mixin elevate($strength, $position) {
+  $coeff: 1;
+  @if $position == "top" {
+    $coeff: -1;
+  }
+  $elevate: 0.125rem * $strength;
+
+  box-shadow: 0 $elevate * $coeff $elevate 0 rgb(0, 0, 0, 0.24 + 0.08 * $strength);
+}
+
+@mixin border($color: var(--outline), $position: variables.$border-positions) {
+  @if index($list: $position, $value: top) {
+    border-top: 0.0625rem solid $color;
+  }
+
+  @if index($list: $position, $value: right) {
+    border-right: 0.0625rem solid $color;
+  }
+
+  @if index($list: $position, $value: bottom) {
+    border-bottom: 0.0625rem solid $color;
+  }
+
+  @if index($list: $position, $value: left) {
+    border-left: 0.0625rem solid $color;
+  }
+}
+
+@mixin transparent($ripple: false) {
+  background-color: transparent;
+  background: transparent;
+  color: inherit;
+
+  &:is(:focus, :hover) > .q-icon {
+    font-variation-settings: "FILL" 1;
+  }
+
+  @if $ripple {
+    &::after {
+      background-image: radial-gradient(circle, rgb(150, 150, 150, 0.2) 1%, transparent 1%);
+    }
+  }
+}
+
+@mixin disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+
+  &::before,
+  &::after {
+    all: unset;
+  }
+}

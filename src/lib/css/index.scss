@@ -1,44 +1,10 @@
 @use "sass:map";
 @import "./theme/theme.scss";
-@import "./grid.scss";
-@import "./flex.scss";
-
-$space-base: 16px !default;
-$space-x-base: $space-base !default;
-$space-y-base: $space-base !default;
-
-$space-none: 0 !default;
-$space-xs: 0.25rem !default;
-$space-sm: 0.5rem !default;
-$space-md: 1rem !default;
-$space-lg: 1.5rem !default;
-$space-xl: 2rem !default;
-
-$spaces: (
-  "auto": auto,
-  "none": $space-none,
-  "xs": $space-xs,
-  "sm": $space-sm,
-  "md": $space-md,
-  "lg": $space-lg,
-  "xl": $space-xl,
-) !default;
-
-$positions: (
-  "t": -top,
-  "r": -right,
-  "b": -bottom,
-  "l": -left,
-  "x": -inline,
-  "y": -block,
-  "a": "",
-);
 
 @import "./theme/theme";
-@import "./mixins";
-@import "./grid";
-@import "./states";
-@import "./ripple";
+@import "classes";
+@import "ripple";
+
 @import "$components/avatar";
 @import "$components/breadcrumbs";
 @import "$components/button";
@@ -67,36 +33,4 @@ html,
 body {
   height: 100%;
   width: 100%;
-}
-
-@each $spaceName, $spaceVal in $spaces {
-  @each $posName, $_ in $positions {
-    .q-p#{$posName}-#{$spaceName} {
-      @include padding($posName, $spaceName);
-    }
-
-    .q-m#{$posName}-#{$spaceName} {
-      @include margin($posName, $spaceName);
-    }
-  }
-
-  @if $spaceName != "auto" {
-    .q-gap-#{$spaceName} {
-      gap: $spaceVal;
-    }
-  }
-}
-
-.no-overflow {
-  overflow: hidden;
-}
-.scroll {
-  overflow: scroll;
-}
-
-.no-select {
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
 }

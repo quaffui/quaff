@@ -1,3 +1,5 @@
+@use "$css/mixins";
+
 .q-footer {
   width: 100%;
   height: var(--footer-height);
@@ -23,6 +25,6 @@
   }
 
   &--elevated {
-    @include elevate(1, "top");
+    @include mixins.elevate(1, "top");
   }
 }

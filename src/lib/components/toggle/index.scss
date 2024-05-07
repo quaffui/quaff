@@ -1,3 +1,5 @@
+@use "$css/mixins";
+
 .q-toggle {
   $root: &;
   display: inline-flex;
@@ -18,7 +20,7 @@
   }
 
   &__inner {
-    @include selection(switch);
+    @include mixins.selection(switch);
   }
 
   &__label {

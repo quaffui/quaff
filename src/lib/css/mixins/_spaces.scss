@@ -1,0 +1,20 @@
+@use "sass:map";
+@use "../variables";
+
+@mixin padding($pos: "a", $size: "sm") {
+  $position: map.get(variables.$positions, $pos);
+  $space: map.get(variables.$spaces, $size);
+
+  padding#{$position}: $space;
+}
+
+@mixin margin($pos: "a", $size: "sm") {
+  $position: map.get(variables.$positions, $pos);
+  $space: map.get(variables.$spaces, $size);
+
+  margin#{$position}: $space;
+}
+
+@mixin gap($space: "sm") {
+  gap: map.get(variables.$spaces, $space);
+}

@@ -1,3 +1,5 @@
+@use "$css/mixins";
+
 .q-list {
   display: flex;
   flex-direction: column;
@@ -6,7 +8,7 @@
   width: 100%;
 
   &--bordered {
-    @include border;
+    @include mixins.border;
   }
 
   &--rounded {
