@@ -178,8 +178,8 @@
   $: selectedRailbarItem = isRouteActive($Quaff.router, "/components")
     ? "components"
     : isRouteActive($Quaff.router, "/utils")
-    ? "utils"
-    : null;
+      ? "utils"
+      : null;
 
   $: if (selectedRailbarItem !== null) {
     drawerLeft?.show();
@@ -191,8 +191,8 @@
     selectedRailbarItem === "components"
       ? components
       : selectedRailbarItem === "utils"
-      ? quaffUtils
-      : [];
+        ? quaffUtils
+        : [];
 
   export let data;
   if (data.isDark) $Quaff.dark.set(true);
@@ -212,11 +212,11 @@
       <QToolbarTitle>Quaff</QToolbarTitle>
       <QBtn
         icon={$Quaff.dark.isActive ? "light_mode" : "dark_mode"}
-        flat
+        design="flat"
         round
-        on:click={$Quaff.dark.toggle}
+        onclick={() => $Quaff.dark.toggle()}
       />
-      <QBtn icon="palette" flat on:click={drawerRight.toggle} />
+      <QBtn icon="palette" design="flat" onclick={() => drawerRight.toggle()} />
     </QHeader>
     <QRailbar slot="railbarLeft" class="surface no-round" bordered>
       <QList>
