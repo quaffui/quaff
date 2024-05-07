@@ -1,7 +1,7 @@
 import type { Snippet } from "svelte";
 import type { HTMLAttributes } from "svelte/elements";
 
-export type AvatarShapeOptions =
+export type QAvatarShapeOptions =
   | "circle"
   | "rounded"
   | "top-round"
@@ -13,21 +13,21 @@ export type AvatarShapeOptions =
   | "bottom-left-round"
   | "bottom-right-round";
 
-export type AvatarSizeOptions = __Quaff__.Size | __Quaff__.CssValue | number;
+export type QAvatarSizeOptions = __Quaff__.Size | __Quaff__.CssValue | number;
 
-export interface AvatarProps extends HTMLAttributes<HTMLElement> {
+export interface QAvatarProps extends HTMLAttributes<HTMLElement> {
   /**
    * Shape of the avatar.
    *
    * @default "circle"
    */
-  shape?: AvatarShapeOptions;
+  shape?: QAvatarShapeOptions;
   /**
    * Size of the avatar, can be a custom size using CSS units. If no unit is specified, "px" will be used.
    *
    * @default "md"
    */
-  size?: AvatarSizeOptions;
+  size?: QAvatarSizeOptions;
   /**
    * Source of the image to be used as the avatar. Can be a url or a path to a local file.
    *

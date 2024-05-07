@@ -2,7 +2,7 @@
 
 <script lang="ts">
   import { useSize } from "$lib/composables/useSize";
-  import type { AvatarProps } from "./props";
+  import type { QAvatarProps } from "./props";
 
   let {
     alt,
@@ -13,17 +13,17 @@
     children,
     videoAccessibility,
     ...props
-  }: AvatarProps = $props();
+  }: QAvatarProps = $props();
 
-  const kSize = $derived(useSize(size, "q-avatar"));
-  const kShape = $derived(`q-avatar--${shape}`);
+  const qSize = $derived(useSize(size, "q-avatar"));
+  const qShape = $derived(`q-avatar--${shape}`);
 
   __Quaff__.classes("q-avatar", {
-    classes: [kShape, kSize.class, props.class],
+    classes: [qShape, qSize.class, props.class],
   });
 </script>
 
-<div {...props} class="q-avatar" {...__Quaff__.classes} style:--size={kSize.style}>
+<div {...props} class="q-avatar" {...__Quaff__.classes} style:--size={qSize.style}>
   {#if video}
     <video>
       <source {src} type="video/mp4" />
@@ -38,5 +38,5 @@
 </div>
 
 <style lang="scss">
-  @import "./avatar.scss";
+  @import "./QAvatar.scss";
 </style>
