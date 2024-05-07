@@ -45,11 +45,37 @@
 }
 
 @mixin disabled {
-  opacity: 0.5;
   cursor: not-allowed;
+  box-shadow: none;
+
+  &[class*="--outlined"] {
+    outline-color: rgb(var(--raw-on-surface), 0.12);
+  }
+
+  &:not([class*="--outlined"], [class*="--flat"]) {
+    background-color: rgb(var(--raw-on-surface), 0.12);
+  }
+
+  & > :global(*) {
+    color: rgb(var(--raw-on-surface), 0.38);
+  }
 
   &::before,
   &::after {
     all: unset;
   }
+}
+
+@mixin overlay($color: null, $opacity: null) {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  border-radius: inherit;
+
+  background-color: $color;
+  opacity: $opacity;
 }
