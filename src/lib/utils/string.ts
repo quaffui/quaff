@@ -86,3 +86,7 @@ export function convertCase(str: string, fromCase: keyof typeof cases, toCase: k
 
   return str;
 }
+
+export function extractImgSrc(prop?: string) {
+  return prop?.startsWith("img:") ? prop.slice(4) : undefined;
+}
