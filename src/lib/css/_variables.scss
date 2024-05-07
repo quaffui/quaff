@@ -51,23 +51,23 @@ $speed3: 0.3s;
 $speed4: 0.4s;
 
 // Layout offsets
-$L_Railbar: var(--left-railbar-width);
-$R_Railbar: var(--right-railbar-width);
-$LR_Railbar: calc(#{$L_Railbar} + #{$R_Railbar});
+$LeftRailbar: var(--left-railbar-width);
+$RightRailbar: var(--right-railbar-width);
+$LeftRightRailbar: calc(#{$LeftRailbar} + #{$RightRailbar});
 
-$L_Drawer: var(--left-drawer-width);
-$R_Drawer: var(--right-drawer-width);
-$LR_Drawer: calc(#{$L_Drawer} + #{$R_Drawer});
+$LeftDrawer: var(--left-drawer-width);
+$RightDrawer: var(--right-drawer-width);
+$LeftRightDrawer: calc(#{$LeftDrawer} + #{$RightDrawer});
 
-$L_Full: calc(#{$L_Railbar} + #{$L_Drawer});
-$R_Full: calc(#{$R_Railbar} + #{$R_Drawer});
+$LeftFull: calc(#{$LeftRailbar} + #{$LeftDrawer});
+$RightFull: calc(#{$RightRailbar} + #{$RightDrawer});
 
-$L_Railbar-R_Drawer: calc(#{$L_Railbar} + #{$R_Drawer});
-$R_Railbar-L_Drawer: calc(#{$R_Railbar} + #{$L_Drawer});
+$LeftRailbarRightDrawer: calc(#{$LeftRailbar} + #{$RightDrawer});
+$RightRailbarLeftDrawer: calc(#{$RightRailbar} + #{$LeftDrawer});
 
-$L_Full-R_Railbar: calc(#{$L_Full} + #{$R_Railbar});
-$L_Full-R_Drawer: calc(#{$L_Full} + #{$R_Drawer});
-$R_Full-L_Railbar: calc(#{$R_Full} + #{$L_Railbar});
-$R_Full-L_Drawer: calc(#{$R_Full} + #{$L_Drawer});
+$LeftFullRightRailbar: calc(#{$LeftFull} + #{$RightRailbar});
+$LeftFullRightDrawer: calc(#{$LeftFull} + #{$RightDrawer});
+$RightFullLeftRailbar: calc(#{$RightFull} + #{$LeftRailbar});
+$RightFullLeftDrawer: calc(#{$RightFull} + #{$LeftDrawer});
 
-$Full: calc(#{$L_Full} + #{$R_Full});
+$Full: calc(#{$LeftFull} + #{$RightFull});

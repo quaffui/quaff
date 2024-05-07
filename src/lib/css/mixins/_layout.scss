@@ -3,18 +3,18 @@
 @mixin include-drawers($baseWidth, $pos, $el) {
   // Left drawer
   &.q-drawer--left ~ .q-#{$el} {
-    width: calc(#{$baseWidth} - #{variables.$L_Drawer});
+    width: calc(#{$baseWidth} - #{variables.$LeftDrawer});
   }
 
   // Right drawer
   &.q-drawer--right ~ .q-#{$el} {
-    width: calc(#{$baseWidth} - #{variables.$R_Drawer});
+    width: calc(#{$baseWidth} - #{variables.$RightDrawer});
   }
 
   // Left drawer + Right drawer
   &.q-drawer--left
     ~ .q-drawer--active.q-drawer--right:not(.q-drawer--offset-#{$pos}, .q-drawer--overlay)
     ~ .q-#{$el} {
-    width: calc(#{$baseWidth} - #{variables.$LR_Drawer});
+    width: calc(#{$baseWidth} - #{variables.$LeftRightDrawer});
   }
 }
