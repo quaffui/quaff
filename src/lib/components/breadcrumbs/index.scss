@@ -1,3 +1,5 @@
+@use "$css/mixins";
+
 // QBreadcrumbs
 .q-breadcrumbs {
   display: flex;
@@ -15,6 +17,6 @@
   align-items: center;
 
   & > .q-icon {
-    @include margin("r");
+    @include mixins.margin("r");
   }
 }

@@ -1,3 +1,5 @@
+@use "$css/mixins";
+
 // QCard
 .q-card {
   display: block;
@@ -6,12 +8,12 @@
     var(--speed-3) transform,
     var(--speed-3) padding,
     var(--speed-3) border-radius;
-  @include padding("a", "md");
+  @include mixins.padding("a", "md");
   @extend .elevate-sm-bottom;
 
   &.q-card--bordered {
     box-sizing: border-box;
-    @include border();
+    @include mixins.border();
     @extend .elevate-none;
   }
 
@@ -24,20 +26,20 @@
   }
 
   & > .q-card__title {
-    @include margin("b");
+    @include mixins.margin("b");
   }
 }
 
 // QCardSection
 .q-card > .q-card__section {
-  @include padding;
+  @include mixins.padding;
 
   &.q-card__section--horizontal {
     @extend .row;
     border-radius: 0;
 
     &:not(.q-card__title + .q-card__section) {
-      @include margin("t");
+      @include mixins.margin("t");
     }
   }
 }
@@ -51,6 +53,6 @@
   }
 
   &:not(.q-card__title + .q-card__actions) {
-    @include margin("t");
+    @include mixins.margin("t");
   }
 }

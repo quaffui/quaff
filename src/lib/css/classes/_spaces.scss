@@ -1,0 +1,23 @@
+@use "../mixins";
+@use "../variables";
+
+@each $spaceName, $spaceVal in variables.$spaces {
+  @each $posName, $_ in variables.$positions {
+    // Padding
+    .q-p#{$posName}-#{$spaceName} {
+      @include mixins.padding($posName, $spaceName);
+    }
+
+    // Margin
+    .q-m#{$posName}-#{$spaceName} {
+      @include mixins.margin($posName, $spaceName);
+    }
+  }
+
+  // Gap
+  @if $spaceName != "auto" {
+    .q-gap-#{$spaceName} {
+      gap: $spaceVal;
+    }
+  }
+}

@@ -1,3 +1,5 @@
+@use "$css/variables";
+
 .q-separator__wrapper {
   display: flex;
   align-items: center;
@@ -28,7 +30,7 @@
     &--vertical {
       width: var(--q-separator--size, 0.0625rem);
 
-      @each $space, $val in $spaces {
+      @each $space, $val in variables.$spaces {
         @if $space != "none" and $space != "auto" {
           &.q-separator--spacing-#{$space} {
             margin-inline: $val;
@@ -40,7 +42,7 @@
     &:not(&--vertical) {
       height: var(--q-separator--size, 0.0625rem);
 
-      @each $space, $val in $spaces {
+      @each $space, $val in variables.$spaces {
         @if $space != "auto" {
           &.q-separator--spacing-#{$space} {
             margin-block: $val;

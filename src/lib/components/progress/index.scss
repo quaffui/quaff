@@ -1,7 +1,9 @@
+@use "$css/mixins";
+
 // Linear progress
 .q-linear-progress {
   height: 1rem;
-  @include border;
+  @include mixins.border;
 
   &--rounded {
     border-radius: 0.75rem;

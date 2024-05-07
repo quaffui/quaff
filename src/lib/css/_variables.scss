@@ -1,0 +1,73 @@
+// Responsive breakpoints
+$breakpoints: (
+  xs: 0px,
+  sm: 600px,
+  md: 960px,
+  lg: 1280px,
+  xl: 1920px,
+);
+
+// Grid variables
+$grid-columns: 12;
+
+// Spaces
+$space-base: 1rem !default;
+$space-x-base: $space-base !default;
+$space-y-base: $space-base !default;
+
+$space-none: 0 !default;
+$space-xs: 0.25rem !default;
+$space-sm: 0.5rem !default;
+$space-md: 1rem !default;
+$space-lg: 1.5rem !default;
+$space-xl: 3rem !default;
+
+$spaces: (
+  "auto": auto,
+  "none": $space-none,
+  "xs": $space-xs,
+  "sm": $space-sm,
+  "md": $space-md,
+  "lg": $space-lg,
+  "xl": $space-xl,
+) !default;
+
+// Positions
+$positions: (
+  "t": -top,
+  "r": -right,
+  "b": -bottom,
+  "l": -left,
+  "x": -inline,
+  "y": -block,
+  "a": "",
+);
+$border-positions: top, right, bottom, left;
+
+// Speeds
+$speed1: 0.1s;
+$speed2: 0.2s;
+$speed3: 0.3s;
+$speed4: 0.4s;
+
+// Layout offsets
+$L_Railbar: var(--left-railbar-width);
+$R_Railbar: var(--right-railbar-width);
+$LR_Railbar: calc(#{$L_Railbar} + #{$R_Railbar});
+
+$L_Drawer: var(--left-drawer-width);
+$R_Drawer: var(--right-drawer-width);
+$LR_Drawer: calc(#{$L_Drawer} + #{$R_Drawer});
+
+$L_Full: calc(#{$L_Railbar} + #{$L_Drawer});
+$R_Full: calc(#{$R_Railbar} + #{$R_Drawer});
+
+$L_Railbar-R_Drawer: calc(#{$L_Railbar} + #{$R_Drawer});
+$R_Railbar-L_Drawer: calc(#{$R_Railbar} + #{$L_Drawer});
+
+$L_Full-R_Railbar: calc(#{$L_Full} + #{$R_Railbar});
+$L_Full-R_Drawer: calc(#{$L_Full} + #{$R_Drawer});
+$R_Full-L_Railbar: calc(#{$R_Full} + #{$L_Railbar});
+$R_Full-L_Drawer: calc(#{$R_Full} + #{$L_Drawer});
+
+$Full: calc(#{$L_Full} + #{$R_Full});

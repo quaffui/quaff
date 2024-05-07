@@ -1,6 +1,8 @@
+@use "$css/mixins";
+
 .q-table {
   &__table {
-    @include table;
+    @include mixins.table;
 
     border-radius: 0.75rem;
     box-shadow: var(--elevate1);

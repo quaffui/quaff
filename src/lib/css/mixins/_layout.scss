@@ -1,0 +1,20 @@
+@use "../variables";
+
+@mixin include-drawers($baseWidth, $pos, $el) {
+  // Left drawer
+  &.q-drawer--left ~ .q-#{$el} {
+    width: calc(#{$baseWidth} - #{variables.$L_Drawer});
+  }
+
+  // Right drawer
+  &.q-drawer--right ~ .q-#{$el} {
+    width: calc(#{$baseWidth} - #{variables.$R_Drawer});
+  }
+
+  // Left drawer + Right drawer
+  &.q-drawer--left
+    ~ .q-drawer--active.q-drawer--right:not(.q-drawer--offset-#{$pos}, .q-drawer--overlay)
+    ~ .q-#{$el} {
+    width: calc(#{$baseWidth} - #{variables.$LR_Drawer});
+  }
+}
