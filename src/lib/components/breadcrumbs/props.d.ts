@@ -1,7 +1,7 @@
 import type { Snippet } from "svelte";
 import type { HTMLAttributes } from "svelte/elements";
 
-export type QBreadcrumbsGutterOptions = Exclude<Quaff.Size, "xs" | "xl">;
+export type QBreadcrumbsGutterOptions = Exclude<__Quaff__.Size, "xs" | "xl">;
 
 export interface QBreadcrumbsProps extends HTMLAttributes<HTMLDivElement> {
   /**
