@@ -1,93 +1,119 @@
+<svelte:options runes={true} />
+
 <script lang="ts">
-  import { useSize } from "$lib/composables";
+  import { useSize } from "$lib/composables/useSize";
   import { ripple } from "$lib/helpers";
   import { isActivationKey } from "$lib/utils";
-  import { QIcon, QCircularProgress } from "$lib";
+  import { extractImgSrc } from "$lib/utils/string";
+  import QIcon from "../icon/QIcon.svelte";
   import type { QBtnProps } from "./props";
 
-  export let icon: QBtnProps["icon"] = undefined,
-    label: QBtnProps["label"] = undefined,
-    disable: QBtnProps["disable"] = false,
-    loading: QBtnProps["loading"] = false,
-    unelevated: QBtnProps["unelevated"] = false,
-    outline: QBtnProps["outline"] = false,
-    round: QBtnProps["round"] = false,
-    rectangle: QBtnProps["rectangle"] = false,
-    noRipple: QBtnProps["noRipple"] = false,
-    flat: QBtnProps["flat"] = false,
-    to: QBtnProps["to"] = undefined,
-    size: QBtnProps["size"] = undefined,
-    userClasses: QBtnProps["userClasses"] = "";
-  export { userClasses as class };
+  let {
+    disabled = false,
+    design = "elevated",
+    icon,
+    label,
+    loading = false,
+    rectangle = false,
+    noRipple = false,
+    rippleColor,
+    round = false,
+    to,
+    unelevated = false,
+    size = "md",
+    target,
+    onclick,
+    children,
+    ...props
+  }: QBtnProps = $props();
 
-  type QBtn = HTMLAnchorElement | HTMLButtonElement;
+  let qBtn: HTMLButtonElement | HTMLAnchorElement;
 
-  let qBtn: QBtn;
+  const tag = $derived(to ? "a" : "button");
+  const qSize = $derived(useSize(size, "q-btn"));
 
-  let tag: "a" | "button";
-  $: tag = to !== undefined ? "a" : "button";
+  const src = $derived(extractImgSrc(icon));
 
-  $: sizeObj = useSize(size);
+  const color = $derived(
+    `var(--${design === "filled" ? "on-primary" : design === "tonal" ? "on-secondary-container" : "primary"})`
+  );
 
-  $: sizeClass = sizeObj.class && sizeObj.class !== "md" ? `q-btn--${sizeObj.class}` : "";
+  const rippleColorVar = $derived(rippleColor ? `var(--${rippleColor}, ${rippleColor})` : color);
 
   function stopIfDisabled(e: MouseEvent) {
-    if (disable) {
+    if (disabled) {
       e.preventDefault();
       e.stopImmediatePropagation();
+      return;
     }
+
+    onclick?.(e);
   }
 
-  function onKeyDown(e: KeyboardEvent) {
+  function onkeydown(e: KeyboardEvent) {
+    if (e.key === "Escape") {
+      qBtn?.blur();
+      return;
+    }
+
     if (!isActivationKey(e)) return;
 
     e.preventDefault();
 
-    let click = new MouseEvent("click");
-    qBtn.dispatchEvent(click);
+    const click = new MouseEvent("click");
+    stopIfDisabled(click);
   }
+
+  __Quaff__.classes("q-btn", {
+    bemClasses: {
+      [design]: true,
+      unelevated,
+      rectangle,
+      round: round || (!children && !label),
+    },
+    classes: [qSize.class, props.class],
+  });
 </script>
 
 <svelte:element
   this={tag}
-  use:ripple={{
-    disable: noRipple || disable,
-    color: flat || outline ? undefined : "var(--on-primary)",
-  }}
   bind:this={qBtn}
-  aria-disabled={disable || undefined}
-  class="q-btn {sizeClass} {userClasses}"
-  class:q-btn--unelevated={unelevated}
-  class:q-btn--outlined={outline}
-  class:q-btn--flat={flat}
-  class:q-btn--rectangle={rectangle}
-  class:q-btn--round={(!$$slots.default && !label) || round}
-  href={to}
+  use:ripple={{
+    disabled: noRipple || disabled,
+    color: rippleColorVar,
+  }}
+  {...props}
+  class="q-btn"
+  {...__Quaff__.classes}
+  style:--q-btn-size={qSize.style}
+  style:--ripple-color={color}
   role={tag === "a" ? "button" : undefined}
-  tabindex={disable ? -1 : 0}
-  on:keydown={onKeyDown}
-  on:click={stopIfDisabled}
-  on:click
-  {...$$restProps}
+  aria-disabled={disabled || undefined}
+  tabindex={disabled ? -1 : 0}
+  {onkeydown}
+  onclick={stopIfDisabled}
 >
   {#if icon && !loading}
-    {#if icon.startsWith("img:")}
-      <img
-        src={icon.replace("img:", "")}
-        class="q-btn__img q-btn__img--responsive"
-        alt="{label || 'Slotted'} button"
-      />
+    {#if src}
+      <img {src} alt="q-btn leading icon" class="q-btn__img q-btn__img--responsive" />
     {:else}
-      <QIcon name={icon} class="q-btn__icon" />
+      <QIcon name={icon} {color} class="q-btn__icon" />
     {/if}
   {/if}
 
   {#if loading}
-    <QCircularProgress indeterminate class="q-btn__loader" />
+    <!-- QCircularProgress -->
   {/if}
 
-  {#if label}
-    <span>{label}</span>
-  {/if}
-  <slot />
+  <span class="q-btn__label">
+    {#if label}
+      {label}
+    {:else}
+      {@render children?.()}
+    {/if}
+  </span>
 </svelte:element>
+
+<style lang="scss">
+  @import "./QBtn.scss";
+</style>
