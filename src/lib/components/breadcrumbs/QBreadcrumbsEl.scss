@@ -1,0 +1,10 @@
+@use "$css/mixins";
+
+.q-breadcrumbs__el {
+  display: flex;
+  align-items: center;
+
+  & > :global(.q-icon) {
+    @include mixins.margin("r");
+  }
+}
