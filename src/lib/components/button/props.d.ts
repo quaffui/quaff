@@ -1,20 +1,21 @@
-import type { NativeProps, QuaffSizes } from "$lib/utils";
-import type { HTMLAnchorAttributes, HTMLAttributes } from "svelte/elements";
+import type { HTMLAttributes, MouseEventHandler } from "svelte/elements";
 
-export type QBtnSizeOptions = Exclude<QuaffSizes, "xs">;
+export type QBtnSizeOptions = Exclude<__Quaff__.Size, "xs">;
 
-export interface QBtnProps extends NativeProps, HTMLAttributes<HTMLElement> {
+export type QBtnDesignOptions = "elevated" | "filled" | "tonal" | "outlined" | "flat";
+
+export interface QBtnProps extends HTMLAttributes<HTMLButtonElement> {
   /**
    * Puts the button in a disabled state, making it unclickable.
    * @default false
    */
-  disable?: boolean;
+  disabled?: boolean;
 
   /**
-   * Use flat design for the button, removing its elevation and background-color.
-   * @default false
+   * Choose the design for the button.
+   * @default "elevated"
    */
-  flat?: boolean;
+  design?: QBtnDesignOptions;
 
   /**
    * Name of the leading icon to use for the button.
@@ -35,12 +36,6 @@ export interface QBtnProps extends NativeProps, HTMLAttributes<HTMLElement> {
   loading?: boolean;
 
   /**
-   * Use outline design for the button, adding a border around it.
-   * @default false
-   */
-  outline?: boolean;
-
-  /**
    * Use rectangle design for the button, removing the large border-radius.
    * @default false
    */
@@ -51,6 +46,12 @@ export interface QBtnProps extends NativeProps, HTMLAttributes<HTMLElement> {
    * @default false
    */
   noRipple?: boolean;
+
+  /**
+   * Sets the ripple effect's color for the button.
+   * @default undefined
+   */
+  rippleColor?: string;
 
   /**
    * Use round design for the button, giving it a circular shape.
@@ -72,7 +73,7 @@ export interface QBtnProps extends NativeProps, HTMLAttributes<HTMLElement> {
 
   /**
    * Size of the button.
-   * @default md
+   * @default "md"
    */
   size?: QBtnSizeOptions;
 
@@ -81,4 +82,10 @@ export interface QBtnProps extends NativeProps, HTMLAttributes<HTMLElement> {
    * @default undefined
    */
   target?: HTMLAnchorAttributes["target"];
+
+  /**
+   * This event is emitted when the button is clicked.
+   * @default undefined
+   */
+  onclick?: MouseEventHandler;
 }
