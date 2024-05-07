@@ -1,5 +1,5 @@
 import materialDynamicColors from "material-dynamic-colors";
-import KColors from "$lib/utils/colors";
+import QColors from "$lib/utils/colors";
 import type {
   IMaterialDynamicColorsTheme,
   IMaterialDynamicColorsThemeColor,
@@ -88,7 +88,7 @@ class QTheme {
     for (colorName in this.themeColors) {
       root.style.setProperty(
         `--${colorName}`,
-        KColors.hexToRgb(this.themeColors[colorName]).join(", ")
+        QColors.hexToRgb(this.themeColors[colorName]).join(", ")
       );
     }
   }
