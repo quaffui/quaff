@@ -1,59 +1,76 @@
-<script lang="ts">
-  import { isRouteActive } from "$lib/composables";
-  import { Quaff } from "$lib/stores/Quaff";
-  import { getContext } from "svelte";
-  import { QIcon } from "$lib";
-  import type { QBreadcrumbsElProps, QBreadcrumbsGutterOptions } from "./props";
+<svelte:options runes={true} />
 
-  export let label: QBreadcrumbsElProps["label"] = "",
-    icon: QBreadcrumbsElProps["icon"] = undefined,
-    tag: QBreadcrumbsElProps["tag"] = "div",
-    to: QBreadcrumbsElProps["to"] = undefined,
-    href: QBreadcrumbsElProps["href"] = undefined,
-    activeClass: QBreadcrumbsElProps["activeClass"] = "q-breadcrumbs__el--active",
-    userClasses: QBreadcrumbsElProps["userClasses"] = "";
-  export { userClasses as class };
+<script lang="ts">
+  import { isRouteActive } from "$utils/router";
+  import { getContext, type Snippet } from "svelte";
+  import type { QBreadcrumbsElProps } from "./props";
+  import { derived } from "svelte/store";
+  import QIcon from "../icon/QIcon.svelte";
+
+  let {
+    activeClass = "active",
+    href,
+    label = "",
+    icon,
+    tag = "div",
+    to,
+    children = fallback,
+    ...props
+  }: QBreadcrumbsElProps = $props();
 
   const activeColor = getContext<string>("activeColor");
-  const separator = getContext<{ type: string; color: string; gutter: QBreadcrumbsGutterOptions }>(
+  const separator = getContext<{ type: string | Snippet; color: string; gutter: string }>(
     "separator"
   );
 
-  $: isActive = isRouteActive($Quaff.router, href || to);
+  const classesIfActive = derived(isRouteActive, ($isRouteActive) =>
+    $isRouteActive(href || to) ? `${activeClass} text-${activeColor}` : undefined
+  );
 
-  $: activeClasses = isActive ? `${activeClass} text-${activeColor}` : "";
+  __Quaff__.classes("q-breadcrumbs__separator", {
+    classes: [`q-px-${separator.gutter}`, props.class],
+  });
+  __Quaff__.classes("q-breadcrumbs__el", { classes: [$classesIfActive] });
 </script>
 
-<div class="q-breadcrumbs__separator q-px-{separator.gutter}">
-  {#if separator.type.startsWith("icon:")}
-    <QIcon name={separator.type.replace("icon:", "")} size="1rem" />
+{#snippet fallback()}
+  {label}
+{/snippet}
+
+{#snippet breadcrumbEl()}
+  {#if icon !== undefined}
+    {#if typeof icon === "string"}
+      <QIcon name={icon} size="1rem" />
+    {:else}
+      {@render icon()}
+    {/if}
+  {/if}
+
+  {@render children()}
+{/snippet}
+
+<div {...props} class="q-breadcrumbs__separator" {...__Quaff__.classes}>
+  {#if typeof separator.type === "string"}
+    {#if separator.type.startsWith("icon:")}
+      <QIcon name={separator.type.replace("icon:", "")} size="1rem" />
+    {:else}
+      {separator.type}
+    {/if}
   {:else}
-    {separator.type}
+    {@render separator.type()}
   {/if}
 </div>
 
 {#if href !== undefined || to !== undefined}
-  <a href={href || to} class="q-breadcrumb__el {activeClasses} {userClasses}">
-    {#if icon !== undefined}
-      <QIcon name={icon} size="1rem" />
-    {:else if $$slots.icon}
-      <slot name="icon" />
-    {/if}
-
-    <slot>
-      {label}
-    </slot>
+  <a href={href || to} class="q-breadcrumbs__el" {...__Quaff__.classes}>
+    {@render breadcrumbEl()}
   </a>
 {:else}
-  <svelte:element this={tag} class="q-breadcrumb__el {activeClasses} {userClasses}">
-    {#if icon !== undefined}
-      <QIcon name={icon} size="1rem" />
-    {:else if $$slots.icon}
-      <slot name="icon" />
-    {/if}
-
-    <slot>
-      {label}
-    </slot>
+  <svelte:element this={tag} class="q-breadcrumbs__el" {...__Quaff__.classes}>
+    {@render breadcrumbEl()}
   </svelte:element>
 {/if}
+
+<style lang="scss">
+  @import "./QBreadcrumbsEl.scss";
+</style>
