@@ -13,8 +13,6 @@
   }: QToolbarProps = $props();
 
   const dynamicHeight = $derived(!props.class?.includes("q-header") ? height : undefined);
-
-  $inspect(props.class);
 </script>
 
 <header
