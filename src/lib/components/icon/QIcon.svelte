@@ -1,40 +1,49 @@
+<svelte:options runes={true} />
+
 <script lang="ts">
-  import { useSize } from "$lib/composables";
   import type { QIconProps } from "./props";
+  import { useSize } from "$lib/composables/useSize";
 
-  export let size: QIconProps["size"] = "md",
-    name: QIconProps["name"] = undefined,
-    type: QIconProps["type"] = "outlined",
-    filled: QIconProps["filled"] = false,
-    svg: QIconProps["svg"] = undefined,
-    img: QIconProps["img"] = undefined,
-    imgAttributes: QIconProps["imgAttributes"] = {},
-    color: QIconProps["color"] = undefined,
-    userClasses: QIconProps["userClasses"] = "";
-  export { userClasses as class };
+  let {
+    size = "md",
+    name,
+    type = "outlined",
+    filled = false,
+    svg,
+    img,
+    imgAttributes = {},
+    color,
+    children,
+    ...props
+  }: QIconProps = $props();
 
-  $: sizeObj = useSize(size);
+  const qSize = $derived(useSize(size, "q-icon"));
 
-  $: sizeClass = sizeObj.class && sizeObj.class !== "md" ? `q-icon--${sizeObj.class}` : "";
-
-  $: imgAttrs = {
+  const imgAttrs = $derived({
     alt: "Quaff Image Icon",
     ...imgAttributes,
-  };
+  });
+
+  const typeClass = $derived(`q-icon--${type}`);
+
+  __Quaff__.classes("q-icon", {
+    bemClasses: {
+      filled,
+    },
+    classes: [typeClass, color && `text-${color}`, qSize.class, props.class],
+  });
 </script>
 
-<i
-  class="q-icon q-icon--{type} {sizeClass} {color ? `text-${color}` : ''} {userClasses}"
-  class:q-icon--filled={filled}
-  style:--size={sizeObj.style}
-  {...$$restProps}
->
+<i {...props} class="q-icon" {...__Quaff__.classes} style:--size={qSize.style}>
   {#if name !== undefined}
     {name}
   {:else if img !== undefined}
-    <!-- svelte-ignore a11y-missing-attribute -->
     <img src={img} {...imgAttrs} />
   {:else if svg !== undefined}
-    <slot />
+    {@render children?.()}
   {/if}
 </i>
+
+<style lang="scss">
+  @import "./QIcon.scss";
+</style>

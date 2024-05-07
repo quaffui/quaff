@@ -1,9 +1,10 @@
-import type { CssValue, NativeProps, QuaffSizes } from "$lib/utils";
 import type { HTMLAttributes, HTMLImgAttributes } from "svelte/elements";
 
-export type QIconSizeOptions = QuaffSizes | CssValue | number;
+export type QIconSizeOptions = __Quaff__.Size | __Quaff__.CssValue | number;
+
 export type QIconTypeOptions = "outlined" | "sharp" | "rounded";
-export interface QIconProps extends NativeProps, HTMLAttributes<HTMLElement> {
+
+export interface QIconProps extends HTMLAttributes<HTMLElement> {
   /**
    * The size of the icon. Can be specified with CSS units. If no unit is specified, "px" will be used.
    * @default md
