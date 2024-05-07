@@ -72,8 +72,3 @@
     font-variation-settings: "FILL" 1;
   }
 }
-
-:global(:is(.q-btn:not(.q-btn--round), .q-chip)) > .q-icon {
-  margin-inline: -0.5rem;
-  --size: 1.25rem;
-}
