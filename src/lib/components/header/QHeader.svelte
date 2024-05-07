@@ -1,37 +1,46 @@
+<svelte:options runes={true} />
+
 <script lang="ts">
   import { createClasses } from "$lib/utils";
-  import { getContext } from "svelte";
+  import { getContext, untrack } from "svelte";
   import { QToolbar } from "$lib";
   import type { LayoutContext } from "../layout/QLayout.svelte";
   import type { QHeaderProps } from "./props";
 
-  export let inset: QHeaderProps["inset"] = false,
-    elevate: QHeaderProps["elevate"] = false,
-    border: QHeaderProps["border"] = false,
-    userClasses: QHeaderProps["userClasses"] = undefined,
-    userStyles: QHeaderProps["userStyles"] = undefined;
-  export { userClasses as class, userStyles as style };
+  let {
+    inset = false,
+    elevate = false,
+    border = false,
+    children,
+    ...props
+  }: QHeaderProps = $props();
 
   let ctx = getContext<LayoutContext | undefined>("layout");
 
-  $: if ($ctx === undefined) {
-    console.warn("QHeader should be used inside QLayout");
-  }
-
-  $: classes = createClasses([$ctx?.header?.fixed && "fixed"], {
-    component: "q-header",
-    userClasses,
+  $effect(() => {
+    if ($ctx === undefined) {
+      console.warn("QHeader should be used inside QLayout");
+    }
   });
 
-  $: if ($ctx?.header !== undefined) {
-    if (userStyles?.includes("display: none")) {
-      $ctx.header.display = false;
-    } else {
-      $ctx.header.display = true;
+  const classes = $derived(
+    createClasses([$ctx?.header?.fixed && "fixed"], {
+      component: "q-header",
+      userClasses: props.class,
+    })
+  );
+
+  $effect(() => {
+    if (untrack(() => $ctx)?.header !== undefined) {
+      if (props.style?.includes("display: none")) {
+        $ctx!.header!.display = false;
+      } else {
+        $ctx!.header!.display = true;
+      }
     }
-  }
+  });
 </script>
 
-<QToolbar {inset} {elevate} {border} class={classes} role="header" {...$$restProps}>
-  <slot />
+<QToolbar {...props} {inset} {elevate} {border} class={classes} role="header">
+  {@render children?.()}
 </QToolbar>
