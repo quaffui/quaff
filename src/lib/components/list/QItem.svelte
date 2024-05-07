@@ -32,7 +32,7 @@
     replace,
   }));
 
-  $: separatorOptions = getContext<QListProps["separatorOptions"] | undefined>("separator");
+  const separatorOptions = getContext<QListProps["separatorOptions"] | undefined>("separator");
 
   $: isActionable = clickable || hasLink || tag === "label";
   $: isClickable = isActionable && !disable;
@@ -45,11 +45,12 @@
 {#if linkAttributes.href !== undefined}
   <!-- svelte-ignore a11y-missing-attribute -->
   <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+  <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
   <a
     use:ripple={{ disable: !isClickable || noRipple }}
     class="q-item {linkClasses} {isActive || (hasLink && active) ? activeClass : ''} {userClasses}"
     class:q-item--active={isActive || (hasLink && active)}
-    class:q-item--multiline={$hasMultipleLines}
+    class:q-item--multiline={hasMultipleLines}
     class:q-item--dense={dense}
     tabindex={isClickable ? Number(tabindex) || 0 : -1}
     aria-disabled={(isActionable && disable) || undefined}
@@ -63,7 +64,7 @@
     this={tag}
     class="q-item {isActive || (hasLink && active) ? activeClass : ''} {userClasses}"
     class:q-item--active={isActive || (hasLink && active)}
-    class:q-item--multiline={$hasMultipleLines}
+    class:q-item--multiline={hasMultipleLines}
     class:q-item--dense={dense}
     tabindex={isClickable ? Number(tabindex) || 0 : -1}
     aria-disabled={(isActionable && disable) || undefined}
