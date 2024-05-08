@@ -1,6 +1,7 @@
 <svelte:options runes={true} />
 
 <script lang="ts">
+  import QCircularProgress from "$lib/components/progress/QCircularProgress.svelte";
   import { useSize } from "$lib/composables/useSize";
   import { ripple } from "$lib/helpers";
   import { isActivationKey } from "$lib/utils";
@@ -102,7 +103,13 @@
   {/if}
 
   {#if loading}
-    <!-- QCircularProgress -->
+    <QCircularProgress
+      indeterminate
+      trackColor="transparent"
+      {color}
+      size="1.5em"
+      class="q-btn__loader"
+    />
   {/if}
 
   <span class="q-btn__label">
