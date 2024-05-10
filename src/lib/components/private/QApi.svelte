@@ -75,7 +75,7 @@
 
 {#each componentDocs as QDocument, index}
   <QCard class="q-px-none q-pb-none q-mt-lg">
-    <div slot="title" class="flex justify-between items-center q-px-md">
+    <div class="flex justify-between items-center q-px-md">
       <h5 class="no-margin">
         <QIcon name="info" />
         <span class="q-ml-md">{QDocument.name} API</span>
@@ -106,36 +106,39 @@
               </QDrawer>
             {/if}
             <QItemSection type="content" style="overflow: visible">
-              <div slot="headline" class="q-my-sm" style="flex: 1 1 0; white-space: nowrap">
-                <span class="q-pa-sm surface-variant">
-                  <b>{doc.name}</b>
-                  {#if isProp(doc, index)}
-                    {doc.optional ? "?" : ""}
-                    {#if doc.clickableType === true}
-                      <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-static-element-interactions -->
-                      <span
-                        class="prop-type clickable"
-                        on:click={(e) => isProp(doc, index) && handleDrawer(QDocument, doc, e)}
-                      >
-                        : {doc.type}
-                      </span>
-                    {:else}
+              {#snippet headline()}
+                <div class="q-my-sm" style="flex: 1 1 0; white-space: nowrap">
+                  <span class="q-pa-sm surface-variant">
+                    <b>{doc.name}</b>
+                    {#if isProp(doc, index)}
+                      {doc.optional ? "?" : ""}
+                      {#if doc.clickableType === true}
+                        <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-static-element-interactions -->
+                        <span
+                          class="prop-type clickable"
+                          on:click={(e) => isProp(doc, index) && handleDrawer(QDocument, doc, e)}
+                        >
+                          : {doc.type}
+                        </span>
+                      {:else}
+                        <span class="prop-type">
+                          : {doc.type}
+                        </span>
+                      {/if}
+                      {doc.default === "" ? "" : ` = ${doc.default}`}
+                    {:else if isEvent(doc, index)}
                       <span class="prop-type">
                         : {doc.type}
                       </span>
                     {/if}
-                    {doc.default === "" ? "" : ` = ${doc.default}`}
-                  {:else if isEvent(doc, index)}
-                    <span class="prop-type">
-                      : {doc.type}
-                    </span>
-                  {/if}
-                </span>
-              </div>
-              <div slot="line1" class="q-mt-sm prop-description" style="white-space: normal;">
-                <!-- eslint-disable-next-line svelte/no-at-html-tags -->
-                {@html doc.description}
-              </div>
+                  </span>
+                </div>
+              {/snippet}
+              {#snippet line1()}
+                <div class="q-mt-sm prop-description" style="white-space: normal;">
+                  {@html doc.description}
+                </div>
+              {/snippet}
             </QItemSection>
           </QItem>
         {/each}
