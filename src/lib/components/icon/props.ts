@@ -1,6 +1,6 @@
 import type { HTMLAttributes, HTMLImgAttributes } from "svelte/elements";
 
-export type QIconSizeOptions = __Quaff__.Size | __Quaff__.CssValue | number;
+export type QIconSizeOptions = Q.Size | Q.CssValue | number;
 
 export type QIconTypeOptions = "outlined" | "sharp" | "rounded";
 

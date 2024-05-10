@@ -22,10 +22,10 @@
   setContext("activeColor", activeColor);
   setContext("separator", { type: separator, color: separatorColor, gutter });
 
-  __Quaff__.classes("q-breadcrumbs", { classes: [props.class] });
+  Q.classes("q-breadcrumbs", { classes: [props.class] });
 </script>
 
-<div bind:this={breadrumbElement} {...props} class="q-breadcrumbs" {...__Quaff__.classes}>
+<div bind:this={breadrumbElement} {...props} class="q-breadcrumbs" {...Q.classes}>
   {@render children?.()}
 </div>
 

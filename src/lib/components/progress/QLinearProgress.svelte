@@ -34,11 +34,11 @@
   const trackTransform = $derived(width(buffer ?? 1, reverse));
   const indicatorTransform = $derived(width(+indeterminate || normalized, reverse));
 
-  __Quaff__.classes("q-linear-progress", {
+  Q.classes("q-linear-progress", {
     classes: [props.class],
   });
 
-  __Quaff__.classes("q-linear-progress__indicator", {
+  Q.classes("q-linear-progress__indicator", {
     bemClasses: { indeterminate },
   });
 </script>
@@ -46,7 +46,7 @@
 <div
   {...props}
   class="q-linear-progress"
-  {...__Quaff__.classes}
+  {...Q.classes}
   style:font-size={qSize.style}
   style:border-radius={radius}
   role="progressbar"
@@ -64,7 +64,7 @@
 
   <div
     class="q-linear-progress__indicator"
-    {...__Quaff__.classes}
+    {...Q.classes}
     style:--q-indicator-color="var(--{color}, {color})"
     style:transition
     style:transform={indicatorTransform}

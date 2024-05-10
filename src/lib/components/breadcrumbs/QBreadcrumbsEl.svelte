@@ -27,10 +27,10 @@
     $isRouteActive(href || to) ? `${activeClass} text-${activeColor}` : undefined
   );
 
-  __Quaff__.classes("q-breadcrumbs__separator", {
+  Q.classes("q-breadcrumbs__separator", {
     classes: [`q-px-${separator.gutter}`, props.class],
   });
-  __Quaff__.classes("q-breadcrumbs__el", { classes: [$classesIfActive] });
+  Q.classes("q-breadcrumbs__el", { classes: [$classesIfActive] });
 </script>
 
 {#snippet fallback()}
@@ -49,7 +49,7 @@
   {@render children()}
 {/snippet}
 
-<div {...props} class="q-breadcrumbs__separator" {...__Quaff__.classes}>
+<div {...props} class="q-breadcrumbs__separator" {...Q.classes}>
   {#if typeof separator.type === "string"}
     {#if separator.type.startsWith("icon:")}
       <QIcon name={separator.type.replace("icon:", "")} size="1rem" />
@@ -62,11 +62,11 @@
 </div>
 
 {#if href !== undefined || to !== undefined}
-  <a href={href || to} class="q-breadcrumbs__el" {...__Quaff__.classes}>
+  <a href={href || to} class="q-breadcrumbs__el" {...Q.classes}>
     {@render breadcrumbEl()}
   </a>
 {:else}
-  <svelte:element this={tag} class="q-breadcrumbs__el" {...__Quaff__.classes}>
+  <svelte:element this={tag} class="q-breadcrumbs__el" {...Q.classes}>
     {@render breadcrumbEl()}
   </svelte:element>
 {/if}

@@ -18,12 +18,12 @@
   const qSize = $derived(useSize(size, "q-avatar"));
   const qShape = $derived(`q-avatar--${shape}`);
 
-  __Quaff__.classes("q-avatar", {
+  Q.classes("q-avatar", {
     classes: [qShape, qSize.class, props.class],
   });
 </script>
 
-<div {...props} class="q-avatar" {...__Quaff__.classes} style:--size={qSize.style}>
+<div {...props} class="q-avatar" {...Q.classes} style:--size={qSize.style}>
   {#if video}
     <video>
       <source {src} type="video/mp4" />

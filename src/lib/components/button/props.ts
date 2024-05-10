@@ -1,6 +1,6 @@
 import type { HTMLAttributes, HTMLAnchorAttributes, MouseEventHandler } from "svelte/elements";
 
-export type QBtnSizeOptions = Exclude<__Quaff__.Size, "xs">;
+export type QBtnSizeOptions = Exclude<Q.Size, "xs">;
 
 export type QBtnDesignOptions = "elevated" | "filled" | "tonal" | "outlined" | "flat";
 

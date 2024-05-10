@@ -8,7 +8,7 @@
 
   const alignClass = $derived(useAlign(align));
 
-  __Quaff__.classes("q-card__actions", {
+  Q.classes("q-card__actions", {
     bemClasses: {
       vertical,
     },
@@ -16,7 +16,7 @@
   });
 </script>
 
-<nav {...props} class="q-card__actions" {...__Quaff__.classes}>
+<nav {...props} class="q-card__actions" {...Q.classes}>
   {@render children?.()}
 </nav>
 

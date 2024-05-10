@@ -13,7 +13,7 @@ export type QAvatarShapeOptions =
   | "bottom-left-round"
   | "bottom-right-round";
 
-export type QAvatarSizeOptions = __Quaff__.Size | __Quaff__.CssValue | number;
+export type QAvatarSizeOptions = Q.Size | Q.CssValue | number;
 
 export interface QAvatarProps extends HTMLAttributes<HTMLElement> {
   /**

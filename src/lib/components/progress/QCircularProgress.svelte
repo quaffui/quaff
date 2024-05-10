@@ -55,7 +55,7 @@
     return circumference * dashRatio + dashGap;
   });
 
-  __Quaff__.classes("q-circular-progress", {
+  Q.classes("q-circular-progress", {
     bemClasses: {
       indeterminate,
     },
@@ -66,7 +66,7 @@
 <div
   {...props}
   class="q-circular-progress"
-  {...__Quaff__.classes}
+  {...Q.classes}
   style:--size={qSize.style}
   role="progressbar"
   aria-valuemin={min}

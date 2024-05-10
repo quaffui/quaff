@@ -18,7 +18,7 @@
     !fill ? "surface" : colorOptions.includes(fill) ? `${fill}-container` : "surface-variant"
   );
 
-  __Quaff__.classes("q-card", {
+  Q.classes("q-card", {
     bemClasses: {
       flat,
       bordered,
@@ -28,7 +28,7 @@
   });
 </script>
 
-<article {...props} class="q-card" {...__Quaff__.classes}>
+<article {...props} class="q-card" {...Q.classes}>
   {@render children?.()}
 </article>
 

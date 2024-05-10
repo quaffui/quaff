@@ -26,7 +26,7 @@
 
   const typeClass = $derived(`q-icon--${type}`);
 
-  __Quaff__.classes("q-icon", {
+  Q.classes("q-icon", {
     bemClasses: {
       filled,
     },
@@ -34,7 +34,7 @@
   });
 </script>
 
-<i {...props} class="q-icon" {...__Quaff__.classes} style:--size={qSize.style}>
+<i {...props} class="q-icon" {...Q.classes} style:--size={qSize.style}>
   {#if name !== undefined}
     {name}
   {:else if img !== undefined}

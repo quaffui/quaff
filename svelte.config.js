@@ -6,7 +6,7 @@ import { preprocessClasses } from "./plugins/class-preprocessor/index.js";
 const config = {
   // Consult https://kit.svelte.dev/docs/integrations#preprocessors
   // for more information about preprocessors
-  preprocess: [vitePreprocess(), preprocessClasses("__Quaff__")],
+  preprocess: [vitePreprocess(), preprocessClasses("Q")],
 
   experimental: {
     useVitePreprocess: true,
