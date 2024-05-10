@@ -1,75 +1,83 @@
 <script lang="ts">
-  import { useRouterLink, isRouteActive } from "$lib/composables";
-  import { ripple } from "$lib/helpers";
-  import { Quaff } from "$lib/stores/Quaff";
-  import { setContext, getContext } from "svelte";
-  import { writable } from "svelte/store";
-  import { QSeparator } from "$lib";
+  import { getRouterInfo, isRouteActive } from "$lib/utils/router";
+  import { ripple } from "$lib/helpers/ripple";
+  import QSeparator from "../separator/QSeparator.svelte";
   import type { QItemProps, QListProps } from "./props";
+  import { QContext } from "$lib/classes/QContext.svelte";
 
-  export let tag: QItemProps["tag"] = "div",
-    active: QItemProps["active"] = false,
-    clickable: QItemProps["clickable"] = false,
-    dense: QItemProps["dense"] = false,
-    tabindex: QItemProps["tabindex"] = 0,
-    href: QItemProps["href"] = undefined,
-    to: QItemProps["to"] = undefined,
-    disable: QItemProps["disable"] = false,
-    activeClass: QItemProps["activeClass"] = "",
-    replace: QItemProps["replace"] = false,
-    noRipple: QItemProps["noRipple"] = false,
-    userClasses: QItemProps["userClasses"] = "";
-  export { userClasses as class };
-
-  let hasMultipleLines = writable(false);
-  setContext("hasMultipleLines", hasMultipleLines);
-
-  $: ({ hasLink, linkAttributes, linkClasses } = useRouterLink({
+  let {
+    tag = "div",
+    active = false,
+    clickable = false,
+    dense = false,
+    tabindex = 0,
     href,
     to,
-    disable,
-    activeClass,
-    replace,
-  }));
+    disabled = false,
+    activeClass = "active",
+    replace = false,
+    noRipple = false,
+    children,
+    ...props
+  }: QItemProps = $props();
 
-  const separatorOptions = getContext<QListProps["separatorOptions"] | undefined>("separator");
+  const routerInfo = $derived(
+    getRouterInfo({
+      href,
+      to,
+      disabled,
+      activeClass,
+      replace,
+    })
+  );
 
-  $: isActionable = clickable || hasLink || tag === "label";
-  $: isClickable = isActionable && !disable;
-  $: isActive = isRouteActive($Quaff.router, to);
+  const multiline = new QContext(false).set("multiline");
+
+  const separatorOptions = QContext.get<QListProps["separatorOptions"] | undefined>("separator");
+
+  const isActionable = $derived(clickable || routerInfo.hasLink || tag === "label");
+  const isClickable = $derived(isActionable && !disabled);
+
+  Q.classes("q-item", {
+    bemClasses: {
+      multiline: multiline.value,
+      dense,
+      [activeClass]: $isRouteActive(to || href) || (routerInfo.hasLink && active),
+    },
+    classes: [routerInfo.linkClasses, props.class],
+  });
 </script>
 
-{#if separatorOptions !== undefined}
-  <QSeparator {...separatorOptions} />
+{#if separatorOptions.value}
+  <QSeparator {...separatorOptions.value} />
 {/if}
-{#if linkAttributes.href !== undefined}
-  <!-- svelte-ignore a11y-missing-attribute -->
-  <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+
+{#if routerInfo.linkAttributes.href}
   <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
   <a
-    use:ripple={{ disable: !isClickable || noRipple }}
-    class="q-item {linkClasses} {isActive || (hasLink && active) ? activeClass : ''} {userClasses}"
-    class:q-item--active={isActive || (hasLink && active)}
-    class:q-item--multiline={hasMultipleLines}
-    class:q-item--dense={dense}
-    tabindex={isClickable ? Number(tabindex) || 0 : -1}
-    aria-disabled={(isActionable && disable) || undefined}
-    {...linkAttributes}
-    {...$$restProps}
+    use:ripple={{ disabled: !isClickable || noRipple }}
+    {...props}
+    class="q-item"
+    {...Q.classes}
+    tabindex={isClickable ? tabindex || 0 : undefined}
+    aria-disabled={isActionable && disabled ? true : undefined}
+    {...routerInfo.linkAttributes}
   >
-    <slot />
+    {@render children?.()}
   </a>
 {:else}
   <svelte:element
     this={tag}
-    class="q-item {isActive || (hasLink && active) ? activeClass : ''} {userClasses}"
-    class:q-item--active={isActive || (hasLink && active)}
-    class:q-item--multiline={hasMultipleLines}
-    class:q-item--dense={dense}
-    tabindex={isClickable ? Number(tabindex) || 0 : -1}
-    aria-disabled={(isActionable && disable) || undefined}
-    {...$$restProps}
+    {...props}
+    class="q-item"
+    {...Q.classes}
+    tabindex={isClickable ? tabindex || 0 : undefined}
+    aria-disabled={isActionable && disabled ? true : undefined}
   >
-    <slot />
+    {@render children?.()}
   </svelte:element>
 {/if}
+
+<style lang="scss">
+  @import "./QItem.scss";
+</style>

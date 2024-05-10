@@ -1,53 +1,68 @@
 <script lang="ts">
-  import { getContext } from "svelte";
-  import type { Writable } from "svelte/store";
+  import type { Snippet } from "svelte";
   import type { QItemSectionProps } from "./props";
+  import { QContext } from "$lib/classes/QContext.svelte";
 
-  export let type: QItemSectionProps["type"] = "content",
-    userClasses: QItemSectionProps["userClasses"] = "";
-  export { userClasses as class };
+  let {
+    type = "content",
+    children,
+    headline = children,
+    line1,
+    line2,
+    line3,
+    ...props
+  }: QItemSectionProps = $props();
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const multiline = QContext.get<boolean>("multiline");
 
-  let ctx = getContext<Writable<boolean>>("hasMultipleLines");
+  $effect(() => {
+    if (type === "content") {
+      multiline.update(!!headline && [line1, line2, line3].filter(Boolean).length >= 2);
+    }
+  });
 
-  $: if (type === "content") {
-    $ctx =
-      $$slots.headline && [$$slots.line1, $$slots.line2, $$slots.line3].filter(Boolean).length >= 2;
+  function getClass(snip: Snippet) {
+    return snip === headline ? "body-large text-on-surface" : "body-medium text-on-surface-variant";
   }
+
+  Q.classes("q-item__section", {
+    bemClasses: {
+      [type]: true,
+    },
+    classes: [props.class],
+  });
 </script>
 
-<div class="q-item__section q-item__section--{type} {userClasses}" {...$$restProps}>
+<div {...props} class="q-item__section" {...Q.classes}>
   {#if type === "content"}
-    {#if ![$$slots.headline, $$slots.line2, $$slots.line2, $$slots.line3].some(Boolean)}
-      <slot />
+    {#if !headline && !line1 && !line2 && !line3}
+      {@render children?.()}
     {:else}
-      {#if $$slots.headline}
-        <div class="body-large text-on-surface">
-          <slot name="headline" />
-        </div>
-      {/if}
-      <div class="body-medium text-on-surface-variant">
-        {#if $$slots.line1}
-          <slot name="line1" />
-        {/if}
-      </div>
-      {#if $$slots.line2}
-        <div class="body-medium text-on-surface-variant">
-          <slot name="line2" />
-        </div>
-      {/if}
-      {#if $$slots.line3}
-        <div class="body-medium text-on-surface-variant">
-          <slot name="line3" />
-        </div>
-      {/if}
+      {@render line(headline)}
+
+      {@render line(line1)}
+
+      {@render line(line2)}
+
+      {@render line(line3)}
     {/if}
   {:else if type === "trailingText"}
     <div class="label-small text-on-surface-variant">
-      <slot />
+      {@render children?.()}
     </div>
   {:else}
-    <slot />
+    {@render children?.()}
   {/if}
 </div>
+
+{#snippet line(snip: Snippet | undefined)}
+  {#if snip}
+    <div class={getClass(snip)}>
+      {@render snip()}
+    </div>
+  {/if}
+{/snippet}
+
+<style lang="scss">
+  @import "./QItemSection.scss";
+</style>

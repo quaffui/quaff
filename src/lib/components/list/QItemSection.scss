@@ -1,0 +1,45 @@
+@use "$css/mixins";
+
+.q-item__section {
+  display: flex;
+
+  &--video {
+    margin-left: -8px;
+    padding-block: 4px;
+
+    & :global(video) {
+      width: 114px;
+      height: 64px;
+      object-fit: cover;
+      object-position: center;
+    }
+  }
+
+  & :global(.q-avatar) {
+    height: 40px;
+    width: 40px;
+  }
+  &--icon {
+    height: 24px;
+    width: 24px;
+  }
+
+  &--thumbnail :global(img) {
+    width: 56px;
+    height: 56px;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  &--content {
+    flex-direction: column;
+    flex: 10000 1 0;
+    justify-content: center;
+    align-items: start;
+  }
+
+  &--toggle {
+    height: 24px;
+    width: 52px;
+  }
+}
