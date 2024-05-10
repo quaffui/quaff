@@ -4,7 +4,6 @@
   import type { QCardProps } from "./props";
 
   let {
-    title,
     fill = false,
     flat = false,
     bordered = false,
@@ -30,12 +29,6 @@
 </script>
 
 <article {...props} class="q-card" {...__Quaff__.classes}>
-  {#if typeof title === "string"}
-    <h5 class="q-card__title">{title}</h5>
-  {:else}
-    {@render title?.()}
-  {/if}
-
   {@render children?.()}
 </article>
 

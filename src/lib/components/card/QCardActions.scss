@@ -2,12 +2,9 @@
 
 .q-card__actions {
   display: flex;
+  @include mixins.margin("t");
 
   &--vertical {
     flex-direction: column;
-  }
-
-  &:not(.q-card__title + .q-card__actions) {
-    @include mixins.margin("t");
   }
 }

@@ -5,9 +5,6 @@
 
   &--horizontal {
     border-radius: 0;
-
-    &:not(.q-card__title + .q-card__section) {
-      @include mixins.margin("t");
-    }
+    @include mixins.margin("t");
   }
 }
