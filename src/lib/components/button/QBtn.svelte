@@ -41,7 +41,11 @@
 
   const rippleColorVar = $derived(rippleColor ? `var(--${rippleColor}, ${rippleColor})` : color);
 
-  function stopIfDisabled(e: MouseEvent) {
+  type QBtnMouseEvent = MouseEvent & {
+    currentTarget: EventTarget & (HTMLButtonElement | HTMLAnchorElement);
+  };
+
+  function stopIfDisabled(e: QBtnMouseEvent) {
     if (disabled) {
       e.preventDefault();
       e.stopImmediatePropagation();
@@ -61,7 +65,7 @@
 
     e.preventDefault();
 
-    const click = new MouseEvent("click");
+    const click = new MouseEvent("click", { relatedTarget: qBtn }) as QBtnMouseEvent;
     stopIfDisabled(click);
   }
 
