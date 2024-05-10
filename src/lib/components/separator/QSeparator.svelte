@@ -14,13 +14,13 @@
   }: QSeparatorProps = $props();
 
   const orientation = $derived(vertical ? "vertical" : "horizontal");
-  const qSpace = $derived(useSize(spacing, "q-separator__spacing"));
+  const qSize = $derived(useSize(spacing, "q-separator__spacing"));
 
   Q.classes("q-separator", {
     bemClasses: {
       vertical,
     },
-    classes: [`bg-${color}`, qSpace.class],
+    classes: [`bg-${color}`, qSize.class],
   });
   Q.classes("q-separator__wrapper", {
     bemClasses: {
