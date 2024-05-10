@@ -69,7 +69,7 @@
     stopIfDisabled(click);
   }
 
-  __Quaff__.classes("q-btn", {
+  Q.classes("q-btn", {
     bemClasses: {
       [design]: true,
       unelevated,
@@ -89,7 +89,7 @@
   }}
   {...props}
   class="q-btn"
-  {...__Quaff__.classes}
+  {...Q.classes}
   style:--q-btn-size={qSize.style}
   style:--ripple-color={color}
   role={tag === "a" ? "button" : undefined}

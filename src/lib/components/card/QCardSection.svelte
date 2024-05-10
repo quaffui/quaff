@@ -5,7 +5,7 @@
 
   let { horizontal = false, children, ...props }: QCardSectionProps = $props();
 
-  __Quaff__.classes("q-card__section", {
+  Q.classes("q-card__section", {
     bemClasses: {
       horizontal,
     },
@@ -13,7 +13,7 @@
   });
 </script>
 
-<div {...props} class="q-card__section" {...__Quaff__.classes} class:row={horizontal}>
+<div {...props} class="q-card__section" {...Q.classes} class:row={horizontal}>
   {@render children?.()}
 </div>
 

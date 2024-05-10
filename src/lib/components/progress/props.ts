@@ -14,7 +14,7 @@ export interface QLinearProgressProps extends HTMLAttributes<HTMLDivElement> {
   /**
    * @default "0.375em"
    */
-  size?: __Quaff__.CssValue | number;
+  size?: Q.CssValue | number;
 
   /**
    * @default false
@@ -71,7 +71,7 @@ export interface QCircularProgressProps extends HTMLAttributes<HTMLDivElement> {
   /**
    * @default "2em"
    */
-  size?: __Quaff__.CssValue | number;
+  size?: Q.CssValue | number;
 
   /**
    * @default "primary"
@@ -121,5 +121,5 @@ export interface QCircularProgressProps extends HTMLAttributes<HTMLDivElement> {
   /**
    * @default "0.25em"
    */
-  fontSize?: __Quaff__.CssValue | number;
+  fontSize?: Q.CssValue | number;
 }

@@ -1,8 +1,8 @@
 import { isNumber } from "$utils/number.js";
 
-export const sizes: __Quaff__.Size[] = ["none", "xs", "sm", "md", "lg", "xl"];
+export const sizes: Q.Size[] = ["none", "xs", "sm", "md", "lg", "xl"];
 
-export const CssUnits: __Quaff__.CssUnit[] = [
+export const CssUnits: Q.CssUnit[] = [
   "px",
   "%",
   "em",
@@ -18,8 +18,8 @@ export const CssUnits: __Quaff__.CssUnit[] = [
 /**
  * Checks wether the input is a size like "sm" or "lg"
  */
-export function isQuaffSize(size: number | string): size is __Quaff__.Size {
-  return sizes.includes(size as __Quaff__.Size);
+export function isQuaffSize(size: number | string): size is Q.Size {
+  return sizes.includes(size as Q.Size);
 }
 
 export function useSize(size: number | string, component?: `q-${string}`) {

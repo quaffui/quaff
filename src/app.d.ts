@@ -8,7 +8,7 @@ declare global {
     // interface Platform {}
   }
 
-  namespace __Quaff__ {
+  namespace Q {
     export type Size = "none" | "xs" | "sm" | "md" | "lg" | "xl";
 
     export type CssUnit = "px" | "%" | "em" | "ex" | "ch" | "rem" | "vw" | "vh" | "vmin" | "vmax";

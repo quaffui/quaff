@@ -68,7 +68,7 @@
     }
   }
 
-  __Quaff__.classes("q-dialog", {
+  Q.classes("q-dialog", {
     bemClasses: {
       active: value,
       fullscreen,
@@ -82,7 +82,7 @@
   bind:this={dialogEl}
   {...props}
   class="q-dialog"
-  {...__Quaff__.classes}
+  {...Q.classes}
   onclick={handleClickInside}
   oncancel={tryCancel}
   {onkeydown}
