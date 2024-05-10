@@ -21,16 +21,15 @@
     0s background-color;
   transform: translate(-50%, -4rem);
   animation-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
-  transform-origin: top left;
 
-  &:is(&--active, [open]) {
+  &:is(&.active, [open]) {
     opacity: 1;
     visibility: visible;
     transform: translate(-50%, 0);
   }
 
   &::backdrop {
-    visibility: hidden;
+    pointer-events: none;
   }
 
   &:not(&--left, &--right, &--top, &--bottom) {
@@ -153,11 +152,11 @@
   }
 
   &--modal::backdrop {
-    visibility: visible;
+    display: block;
     background-color: rgba(0, 0, 0, 0.5);
   }
 
-  &.animating {
+  &--animating {
     animation: shake 0.15s;
   }
 }
