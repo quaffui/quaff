@@ -16,14 +16,10 @@
   }
 
   &--flat {
-    box-sizing: none;
+    box-shadow: none;
   }
 
   &--rounded {
     border-radius: 2rem;
-  }
-
-  & > :global(.q-card__title) {
-    @include mixins.margin("b");
   }
 }
