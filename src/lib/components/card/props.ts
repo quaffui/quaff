@@ -1,6 +1,5 @@
 import type { UseAlignProps } from "$lib/composables/useAlign";
 import type { HTMLAttributes } from "svelte/elements";
-import type { Snippet } from "svelte";
 
 export type CardFillColors = "primary" | "secondary" | "tertiary";
 
@@ -28,12 +27,6 @@ export interface QCardProps extends HTMLAttributes<HTMLElement> {
    * @default false
    */
   rounded?: boolean;
-
-  /**
-   * Sets the title of the card.
-   * @default undefined
-   */
-  title?: string | Snippet;
 }
 
 export interface QCardSectionProps extends HTMLAttributes<HTMLDivElement> {

@@ -1,4 +1,4 @@
-import type { HTMLAttributes, MouseEventHandler } from "svelte/elements";
+import type { HTMLAttributes, HTMLAnchorAttributes, MouseEventHandler } from "svelte/elements";
 
 export type QBtnSizeOptions = Exclude<__Quaff__.Size, "xs">;
 
@@ -87,5 +87,5 @@ export interface QBtnProps extends HTMLAttributes<HTMLButtonElement> {
    * This event is emitted when the button is clicked.
    * @default undefined
    */
-  onclick?: MouseEventHandler;
+  onclick?: MouseEventHandler<HTMLButtonElement | HTMLAnchorElement>;
 }
