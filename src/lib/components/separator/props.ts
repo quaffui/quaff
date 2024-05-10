@@ -5,7 +5,7 @@ interface QSeparatorPropsVertical extends HTMLAttributes<HTMLDivElement> {
   inset?: boolean;
   vertical?: true;
   color?: string;
-  size: string;
+  size?: string;
   text?: string;
   textAlign?: "top" | "middle" | "bottom";
 }
