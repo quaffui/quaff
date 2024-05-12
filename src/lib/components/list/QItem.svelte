@@ -42,7 +42,7 @@
     bemClasses: {
       multiline: multiline.value,
       dense,
-      // svelte-ignore global_reference_invalid
+      // eslint-disable-nextline svelte/valid-compile
       [activeClass]: $isRouteActive(to || href) || (routerInfo.hasLink && active),
     },
     classes: [routerInfo.linkClasses, props.class],

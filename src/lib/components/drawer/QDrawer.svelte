@@ -42,7 +42,7 @@
     e && e.stopPropagation();
   };
 
-  // svelte-ignore global_reference_invalid
+  // eslint-disable-nextline svelte/valid-compile
   $: if ($navigating && hideOnRouteChange) {
     hide();
   }
