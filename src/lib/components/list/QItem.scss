@@ -9,7 +9,7 @@
 
   min-width: 100%;
   max-width: 100%;
-  min-height: 56px;
+  min-height: 3.5rem;
   margin-top: 0 !important;
   margin: 0;
   padding: 0.5rem 1.5rem 0.5rem 1rem;
@@ -38,7 +38,7 @@
     }
 
     &.multiline {
-      padding-block: 12px;
+      padding-block: 0.75rem;
     }
 
     &::after {
@@ -47,7 +47,7 @@
   }
 
   &--multiline {
-    padding-block: 12px;
+    padding-block: 0.75rem;
 
     & > :global(.q-item__section:is(.avatar, .icon, .thumbnail, .trailingIcon, .trailingText)) {
       align-self: start;
