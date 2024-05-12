@@ -32,6 +32,7 @@ module.exports = {
     curly: ["error"],
     "no-undef": ["off"],
     "svelte/valid-compile": ["off"],
+    "svelte/no-at-html-tags": ["warn"],
   },
   overrides: [
     {

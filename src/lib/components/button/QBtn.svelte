@@ -63,9 +63,9 @@
 
     if (!isActivationKey(e)) {
       return;
-
-      e.preventDefault();
     }
+
+    e.preventDefault();
 
     const click = new MouseEvent("click", { relatedTarget: qBtn }) as QBtnMouseEvent;
     stopIfDisabled(click);
@@ -94,6 +94,7 @@
   {...Q.classes}
   style:--q-btn-size={qSize.style}
   style:--ripple-color={color}
+  {target}
   role={tag === "a" ? "button" : undefined}
   aria-disabled={disabled || undefined}
   tabindex={disabled ? -1 : 0}
