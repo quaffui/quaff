@@ -195,7 +195,9 @@
         : [];
 
   export let data;
-  if (data.isDark) $Quaff.dark.set(true);
+  if (data.isDark) {
+    $Quaff.dark.set(true);
+  }
 </script>
 
 {#if $Quaff.router.route.id === "/layout"}

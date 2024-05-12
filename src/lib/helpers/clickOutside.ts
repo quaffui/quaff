@@ -18,7 +18,9 @@ export function clickOutside(node: HTMLElement, onEventFunction: () => unknown) 
 
 export function clickOutsideDialog(node: HTMLDialogElement, onEventFunction: () => unknown) {
   const handleClick = (event: MouseEvent) => {
-    if (!node.open) return;
+    if (!node.open) {
+      return;
+    }
     const rect = node.getBoundingClientRect();
 
     const isInDialog =

@@ -38,7 +38,9 @@ export function prepareMarkup(fragment, component, uses, namespace) {
       prepareMarkup(node.fragment, component, uses, namespace);
     }
 
-    if (!("attributes" in node)) continue;
+    if (!("attributes" in node)) {
+      continue;
+    }
 
     /** @type {(typeof node.attributes[0]) & { type: "Attribute" }} */
     const classAttribute = node.attributes.find(
@@ -49,11 +51,14 @@ export function prepareMarkup(fragment, component, uses, namespace) {
       !classAttribute ||
       !Array.isArray(classAttribute.value) ||
       classAttribute.value.length !== 1
-    )
+    ) {
       continue;
+    }
 
     const cls = classAttribute.value[0];
-    if (cls.type !== "Text" || cls.data !== component) continue;
+    if (cls.type !== "Text" || cls.data !== component) {
+      continue;
+    }
     // Possible element to add classes on
 
     // Check for `{...${namespace}.classes}` attribute
@@ -67,7 +72,9 @@ export function prepareMarkup(fragment, component, uses, namespace) {
         attr.expression.property.name === "classes"
     );
 
-    if (!quaffClassesAttr) continue;
+    if (!quaffClassesAttr) {
+      continue;
+    }
     // We found the element on which to add the classes
 
     // We grab the end to append new classes

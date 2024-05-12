@@ -29,6 +29,7 @@ module.exports = {
         ignore: ["\\.shim\\.d\\.ts$"],
       },
     ],
+    curly: ["error"],
   },
   overrides: [
     {

@@ -30,10 +30,15 @@ export function preprocessClasses(namespace) {
 
       const parsed = parse(content, { modern: true, filename });
 
-      if (!("fragment" in parsed)) return; // Force "parsed" to be of type `Root`
+      // Force "parsed" to be of type `Root`
+      if (!("fragment" in parsed)) {
+        return;
+      }
 
       const { fragment, instance } = parsed;
-      if (!instance) return;
+      if (!instance) {
+        return;
+      }
 
       const scriptDefs = prepareScript(instance, content, namespace);
 

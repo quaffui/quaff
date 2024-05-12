@@ -82,7 +82,9 @@ class QTheme {
 
   private apply() {
     const root = document.documentElement;
-    if (root === null) return;
+    if (root === null) {
+      return;
+    }
 
     let colorName: ThemeColorName;
     for (colorName in this.themeColors) {

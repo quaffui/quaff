@@ -36,37 +36,48 @@ export function prepareScript(instance, source, namespace) {
   const scriptDefs = {};
 
   for (const node of instance.content.body) {
-    if (node.type !== "ExpressionStatement") continue;
+    if (node.type !== "ExpressionStatement") {
+      continue;
+    }
 
     const { expression } = node;
-    if (expression.type !== "CallExpression" || expression.callee.type !== "MemberExpression")
+    if (expression.type !== "CallExpression" || expression.callee.type !== "MemberExpression") {
       continue;
+    }
 
     const { object, property } = expression.callee;
-    if (object.type !== "Identifier" || property.type !== "Identifier") continue;
-    if (object.name !== namespace || property.name !== "classes") continue;
+    if (object.type !== "Identifier" || property.type !== "Identifier") {
+      continue;
+    }
+    if (object.name !== namespace || property.name !== "classes") {
+      continue;
+    }
 
     // We found an instance definition
     // We grab the start and end of the expression so we can remove it from the script
     const { start, end } = expression;
 
-    if (expression.arguments.length !== 2)
+    if (expression.arguments.length !== 2) {
       throw new Error("The ${namespace}.classes function takes exactly 2 arguments");
+    }
 
     const [component, options] = expression.arguments;
 
-    if (component.type !== "Literal")
+    if (component.type !== "Literal") {
       throw new Error(
         "The ${namespace}.classes 1st argument should be a Literal containing the name of the component"
       );
+    }
 
-    if (options.type !== "ObjectExpression")
+    if (options.type !== "ObjectExpression") {
       throw new Error("The ${namespace}.classes 2nd argument should be an object");
+    }
 
-    if (options.properties.some((prop) => prop.type === "SpreadElement"))
+    if (options.properties.some((prop) => prop.type === "SpreadElement")) {
       throw new Error(
         "The ${namespace}.classes 2nd argument doesn't take SpreadElements as a property"
       );
+    }
 
     const bemClasses = options.properties.find((prop) => prop?.key?.name === "bemClasses");
     const classes = options.properties.find((prop) => prop?.key?.name === "classes");
@@ -99,13 +110,18 @@ export function prepareScript(instance, source, namespace) {
  * @returns
  */
 function handleComponentName(component) {
-  if (component.type !== "Literal") throw new Error("The component name should be a literal.");
+  if (component.type !== "Literal") {
+    throw new Error("The component name should be a literal.");
+  }
 
   const componentName = component.value;
-  if (!componentName || typeof componentName !== "string")
+  if (!componentName || typeof componentName !== "string") {
     throw new Error("The component name should be a string and not empty.");
+  }
 
-  if (!componentName.startsWith("q-")) throw new Error('The component name should start with "q-"');
+  if (!componentName.startsWith("q-")) {
+    throw new Error('The component name should start with "q-"');
+  }
 
   return /** @type {import("./types").ComponentName} */ (componentName);
 }
@@ -117,15 +133,19 @@ function handleComponentName(component) {
  * @param {string} source
  */
 function handleClasses(staticClasses, classes, source) {
-  if (!staticClasses) return;
+  if (!staticClasses) {
+    return;
+  }
 
-  if (staticClasses.type !== "ArrayExpression")
+  if (staticClasses.type !== "ArrayExpression") {
     throw new Error("The static classes should be an array of values");
+  }
 
   for (const cls of staticClasses.elements) {
     if (cls?.type === "Literal") {
-      if (typeof cls.value !== "string")
+      if (typeof cls.value !== "string") {
         throw new Error("The static class literals should be strings.");
+      }
 
       if (cls.value.length) {
         classes.push(` ${cls.value}`);
@@ -175,13 +195,18 @@ function handleClasses(staticClasses, classes, source) {
  * @param {string} source
  */
 function handleBemClasses(dynamicClasses, classes, staticClasses, componentName, source) {
-  if (!dynamicClasses) return;
+  if (!dynamicClasses) {
+    return;
+  }
 
-  if (dynamicClasses.type !== "ObjectExpression")
+  if (dynamicClasses.type !== "ObjectExpression") {
     throw new Error("Dynamic classes should be inside an object");
+  }
 
   for (const prop of dynamicClasses.properties) {
-    if (prop.type !== "Property") throw new Error("The dynamic classes can't be spread.");
+    if (prop.type !== "Property") {
+      throw new Error("The dynamic classes can't be spread.");
+    }
 
     const { key, value } = prop;
     const val = source.slice(value.start, value.end);
@@ -209,8 +234,9 @@ function handleBemClasses(dynamicClasses, classes, staticClasses, componentName,
 function handleMemberExpression(node) {
   const { object, property } = node;
 
-  if (property.type !== "Identifier")
+  if (property.type !== "Identifier") {
     throw new Error("All the members of a member expression should be identifiers.");
+  }
 
   if (object.type === "MemberExpression") {
     return `${handleMemberExpression(object)}.${property.name}`;
