@@ -31,7 +31,7 @@
     console.warn("QTab should be used inside QTabs");
   }
 
-  // eslint-disable-nextline svelte/valid-compile
+  // eslint-disable-next-line svelte/valid-compile
   const isInitallyActive = to !== undefined ? $isRouteActive(to) : name === $qTabStore.value;
 
   $: if (isInitallyActive && qTab) {
