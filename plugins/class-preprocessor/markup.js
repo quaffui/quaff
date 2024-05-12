@@ -4,7 +4,7 @@
  * @export
  * @param {import("./types").Fragment} fragment
  * @param {import("./types").ComponentName} component
- * @param {import("./types").Use[]} uses
+ * @param {import("./types").ClassesUsage[]} uses
  * @param {string} namespace
  */
 export function prepareMarkup(fragment, component, uses, namespace) {
