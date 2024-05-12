@@ -205,7 +205,7 @@
   }
 </script>
 
-<!-- eslint-disable-nextline svelte/valid-compile -->
+<!-- eslint-disable-next-line svelte/valid-compile -->
 {#if $page.route.id === "/layout"}
   {@render children?.()}
 {:else}
