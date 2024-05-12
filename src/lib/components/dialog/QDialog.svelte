@@ -30,16 +30,23 @@
   });
 
   export function hide() {
-    if (dialogEl.open) value = false;
+    if (dialogEl.open) {
+      value = false;
+    }
   }
 
   export function show() {
-    if (!dialogEl.open) value = true;
+    if (!dialogEl.open) {
+      value = true;
+    }
   }
 
   export function toggle() {
-    if (dialogEl.open) hide();
-    else show();
+    if (dialogEl.open) {
+      hide();
+    } else {
+      show();
+    }
   }
 
   function addAnimation() {
@@ -57,12 +64,15 @@
   }
 
   function onkeydown(e: KeyboardEvent) {
-    if (e.key === "Escape") tryCancel(e);
+    if (e.key === "Escape") {
+      tryCancel(e);
+    }
   }
 
   function tryCancel(e: Event) {
-    if (canHide) hide();
-    else {
+    if (canHide) {
+      hide();
+    } else {
       addAnimation();
       e.preventDefault();
     }
