@@ -42,6 +42,7 @@
     e && e.stopPropagation();
   };
 
+  // svelte-ignore global_reference_invalid
   $: if ($navigating && hideOnRouteChange) {
     hide();
   }
