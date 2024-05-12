@@ -319,11 +319,11 @@ $elements: (
       & ~ .q-railbar.q-railbar--right:not(.q-railbar--offset-#{$pos}, [style="display: none"]) {
         // Left railbar + Right railbar
         & ~ .q-#{$el} {
-          width: without(variables.$leftRight-railbar);
+          width: without(variables.$left-right-railbar);
         }
 
         & ~ .q-drawer.q-drawer--active:not(.q-drawer--offset-#{$pos}, .q-drawer--overlay) {
-          @include mixins.include-drawers(without(variables.$leftRight-railbar), $pos, $el);
+          @include mixins.include-drawers(without(variables.$left-right-railbar), $pos, $el);
         }
       }
     }
