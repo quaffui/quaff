@@ -227,28 +227,28 @@ $elements: (
   }
 
   & > .q-drawer.q-drawer--active.q-drawer--left:not(.q-drawer--overlay) ~ #{$contentSlot} {
-    padding-left: variables.$LeftDrawer;
+    padding-left: variables.$left-drawer;
   }
   & > .q-drawer.q-drawer--active.q-drawer--right:not(.q-drawer--overlay) ~ #{$contentSlot} {
-    padding-right: variables.$RightDrawer;
+    padding-right: variables.$right-drawer;
   }
 
   & > .q-railbar.q-railbar--left:not([style="display: none"]) {
     & ~ #{$contentSlot} {
-      padding-left: variables.$LeftRailbar;
+      padding-left: variables.$left-railbar;
     }
 
     & ~ .q-drawer.q-drawer--active.q-drawer--left:not(.q-drawer--overlay) ~ #{$contentSlot} {
-      padding-left: variables.$LeftFull;
+      padding-left: variables.$left-full;
     }
   }
   & > .q-railbar.q-railbar--right:not([style="display: none"]) {
     & ~ #{$contentSlot} {
-      padding-right: variables.$RightRailbar;
+      padding-right: variables.$right-railbar;
     }
 
     & ~ .q-drawer.q-drawer--active.q-drawer--right:not(.q-drawer--overlay) ~ #{$contentSlot} {
-      padding-right: variables.$RightFull;
+      padding-right: variables.$right-full;
     }
   }
 }
@@ -259,7 +259,7 @@ $elements: (
     & > .q-railbar.q-railbar--left:not([style="display: none"]) {
       &:not(.q-railbar--offset-#{$pos}) ~ .q-#{$el},
       & ~ .q-drawer.q-drawer--left {
-        left: variables.$LeftRailbar;
+        left: variables.$left-railbar;
       }
 
       &
@@ -268,13 +268,13 @@ $elements: (
           .q-drawer--overlay
         )
         ~ .q-#{$el} {
-        left: variables.$LeftFull;
+        left: variables.$left-full;
       }
     }
     & > .q-railbar.q-railbar--right:not([style="display: none"]) {
       &:not(.q-railbar--offset-#{$pos}) ~ .q-#{$el},
       & ~ .q-drawer.q-drawer--right {
-        right: variables.$RightRailbar;
+        right: variables.$right-railbar;
       }
 
       &
@@ -283,14 +283,14 @@ $elements: (
           .q-drawer--overlay
         )
         ~ .q-#{$el} {
-        right: variables.$RightFull;
+        right: variables.$right-full;
       }
     }
 
     &
       > .q-drawer.q-drawer--active.q-drawer--left:not(.q-drawer--offset-#{$pos}, .q-drawer--overlay)
       ~ .q-#{$el} {
-      left: variables.$LeftDrawer;
+      left: variables.$left-drawer;
     }
     &
       > .q-drawer.q-drawer--active.q-drawer--right:not(
@@ -298,7 +298,7 @@ $elements: (
         .q-drawer--overlay
       )
       ~ .q-#{$el} {
-      right: variables.$RightDrawer;
+      right: variables.$right-drawer;
     }
   }
 }
@@ -309,21 +309,21 @@ $elements: (
     & > .q-railbar.q-railbar--left:not(.q-railbar--offset-#{$pos}, [style="display: none"]) {
       // Left railbar
       & ~ .q-#{$el} {
-        width: without(variables.$LeftRailbar);
+        width: without(variables.$left-railbar);
       }
 
       & ~ .q-drawer.q-drawer--active:not(.q-drawer--offset-#{$pos}, .q-drawer--overlay) {
-        @include mixins.include-drawers(without(variables.$LeftRailbar), $pos, $el);
+        @include mixins.include-drawers(without(variables.$left-railbar), $pos, $el);
       }
 
       & ~ .q-railbar.q-railbar--right:not(.q-railbar--offset-#{$pos}, [style="display: none"]) {
         // Left railbar + Right railbar
         & ~ .q-#{$el} {
-          width: without(variables.$LeftRightRailbar);
+          width: without(variables.$leftRight-railbar);
         }
 
         & ~ .q-drawer.q-drawer--active:not(.q-drawer--offset-#{$pos}, .q-drawer--overlay) {
-          @include mixins.include-drawers(without(variables.$LeftRightRailbar), $pos, $el);
+          @include mixins.include-drawers(without(variables.$leftRight-railbar), $pos, $el);
         }
       }
     }
@@ -331,11 +331,11 @@ $elements: (
     & > .q-railbar.q-railbar--right:not(.q-railbar--offset-#{$pos}, [style="display: none"]) {
       // Right railbar
       & ~ .q-#{$el} {
-        width: without(variables.$RightRailbar);
+        width: without(variables.$right-railbar);
       }
 
       & ~ .q-drawer.q-drawer--active:not(.q-drawer--offset-#{$pos}, .q-drawer--overlay) {
-        @include mixins.include-drawers(without(variables.$RightRailbar), $pos, $el);
+        @include mixins.include-drawers(without(variables.$right-railbar), $pos, $el);
       }
     }
 
