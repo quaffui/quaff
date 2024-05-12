@@ -7,7 +7,9 @@ export function changeSource(source, result) {
   // Remove the classes definition
   source.remove(result.def.start, result.def.end);
 
-  if (!result.uses.length) return;
+  if (!result.uses.length) {
+    return;
+  }
 
   for (const use of result.uses) {
     // Replace the {...${namespace}.classes} attribute by class:dynamicClass attributes

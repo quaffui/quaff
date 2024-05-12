@@ -37,7 +37,9 @@
   }
 
   function onKeyDown(e: KeyboardEvent) {
-    if (!isActivationKey(e)) return;
+    if (!isActivationKey(e)) {
+      return;
+    }
 
     e.preventDefault();
 

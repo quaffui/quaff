@@ -49,7 +49,9 @@ export function ripple(el: HTMLElement, options: RippleOptions = {}) {
   }
 
   function createRipple(e: PointerEvent | KeyboardEvent | TouchEvent, center?: boolean) {
-    if (options.disabled || el.hasAttribute("aria-disabled")) return;
+    if (options.disabled || el.hasAttribute("aria-disabled")) {
+      return;
+    }
 
     if (e instanceof KeyboardEvent) {
       if (!["Enter", "Space"].includes(e.code) || e.repeat) {
@@ -90,7 +92,9 @@ export function ripple(el: HTMLElement, options: RippleOptions = {}) {
     rippleContainer.appendChild(ripple);
 
     function removeRipple() {
-      if (ripple === null) return;
+      if (ripple === null) {
+        return;
+      }
 
       ripple.style.opacity = "0";
 
