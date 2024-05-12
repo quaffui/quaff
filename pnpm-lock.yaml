@@ -11,9 +11,6 @@ importers:
       highlight.js:
         specifier: ^11.9.0
         version: 11.9.0
-      material-dynamic-colors:
-        specifier: ^1.1.0
-        version: 1.1.0
       svelte-highlight:
         specifier: ^7.6.0
         version: 7.6.0
@@ -1043,10 +1040,6 @@ packages:
 
   make-error@1.3.6:
     resolution: {integrity: sha512-s8UhlNe7vPKomQhC1qFelMokr/Sc3AgNbso3n74mVPA5LTZwkB9NlXf4XPamLxJE8h0gh73rM94xvwRT2CVInw==}
-
-  material-dynamic-colors@1.1.0:
-    resolution: {integrity: sha512-Uez8I/VykAc03u/07AJ7OOC59+9shllbEvnMDZdYcNI4qzhxPGJwAiOang2CudgkWx+lp0QT2Oc8DxxX8RHJkQ==}
-    hasBin: true
 
   material-symbols@0.13.2:
     resolution: {integrity: sha512-O8p2pguTZ/3EXym606wFxwI7DPS+cPM5jlS2mcO3EIcqhnHcKQbTD9lVkd0JK4Ygq/vuuiLl44T2xZYMJmpwLw==}
@@ -2655,10 +2648,6 @@ snapshots:
       '@jridgewell/sourcemap-codec': 1.4.15
 
   make-error@1.3.6: {}
-
-  material-dynamic-colors@1.1.0:
-    dependencies:
-      '@material/material-color-utilities': 0.2.7
 
   material-symbols@0.13.2: {}
 
