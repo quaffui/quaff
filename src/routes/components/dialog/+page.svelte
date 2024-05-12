@@ -51,10 +51,6 @@
     methodsDialog: Dialog = {
       el: null,
       value: false,
-    },
-    buttonPropsDialog: Dialog = {
-      el: null,
-      value: false,
     };
 </script>
 
