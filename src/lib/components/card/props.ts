@@ -1,7 +1,7 @@
 import type { UseAlignProps } from "$lib/composables/useAlign";
 import type { HTMLAttributes } from "svelte/elements";
 
-export type CardFillColors = "primary" | "secondary" | "tertiary";
+export type QCardFillColors = "primary" | "secondary" | "tertiary";
 
 export interface QCardProps extends HTMLAttributes<HTMLElement> {
   /**
@@ -14,7 +14,7 @@ export interface QCardProps extends HTMLAttributes<HTMLElement> {
    * Defines the fill color of the card.
    * @default false
    */
-  fill?: boolean | CardFillColors;
+  fill?: boolean | QCardFillColors;
 
   /**
    * Use the flat design for the card, removing its elevation.
