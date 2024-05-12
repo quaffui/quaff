@@ -26,12 +26,12 @@ export function useSize(size: number | string, component?: `q-${string}`) {
   const sizeClass = isQuaffSize(size) ? ` ${component}--${size}` : "";
   const sizeStyle = () => {
     if (isNumber(size)) {
-      return size > 0 ? `${size}px` : undefined;
-    } else {
-      for (const unit of CssUnits) {
-        if (size.slice(-unit.length) === unit) {
-          return size;
-        }
+      return +size > 0 ? `${size}px` : undefined;
+    }
+
+    for (const unit of CssUnits) {
+      if (size.slice(-unit.length) === unit) {
+        return size;
       }
     }
   };
