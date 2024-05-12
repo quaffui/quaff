@@ -17,7 +17,7 @@
   <div class="s12 q-pa-md">
     <div class="heading">
       <h4 class="q-my-xl">Usage</h4>
-      <QBtn rounded icon="code" outline />
+      <QBtn icon="code" design="outlined" />
     </div>
 
     <QDocsSection {snippets} title="State">

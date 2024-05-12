@@ -19,13 +19,13 @@
 
 <QLayout view="hHh LpR fFr" leftRailbarWidth="120">
   <QHeader slot="header" class="primary-container">
-    <QBtn icon="menu" flat on:click={() => leftDrawer?.toggle()} />
+    <QBtn icon="menu" design="flat" on:click={() => leftDrawer?.toggle()} />
     <QToolbarTitle>
       <a href="/">Go home</a>
     </QToolbarTitle>
-    <QBtn flat icon="attach_file" />
-    <QBtn flat icon="today" />
-    <QBtn icon="menu" flat on:click={() => rightDrawer?.toggle()} />
+    <QBtn design="flat" icon="attach_file" />
+    <QBtn design="flat" icon="today" />
+    <QBtn icon="menu" design="flat" on:click={() => rightDrawer?.toggle()} />
   </QHeader>
   <QRailbar slot="railbarLeft" bordered width={120}>
     <QList>
@@ -54,31 +54,31 @@
   <QDrawer overlay slot="drawerLeft" side="left" class="secondary" bind:this={leftDrawer}>
     <QList separator>
       <QItem to="/">
-        <QItemSection avatar>
+        <QItemSection type="avatar">
           <QIcon name="home" />
         </QItemSection>
         <QItemSection>Return home, oh god this is a long text</QItemSection>
       </QItem>
       <QItem to="/">
-        <QItemSection avatar>
+        <QItemSection type="avatar">
           <QIcon name="home" />
         </QItemSection>
         <QItemSection>Return home</QItemSection>
       </QItem>
       <QItem to="/">
-        <QItemSection avatar>
+        <QItemSection type="avatar">
           <QIcon name="home" />
         </QItemSection>
         <QItemSection>Return home</QItemSection>
       </QItem>
       <QItem to="/">
-        <QItemSection avatar>
+        <QItemSection type="avatar">
           <QIcon name="home" />
         </QItemSection>
         <QItemSection>Return home</QItemSection>
       </QItem>
       <QItem to="/">
-        <QItemSection avatar>
+        <QItemSection type="avatar">
           <QIcon name="home" />
         </QItemSection>
         <QItemSection>Return home</QItemSection>
@@ -88,22 +88,22 @@
   <QRailbar slot="railbarRight" bordered side="right">
     <QList dense>
       <QItem>
-        <QBtn flat class="circle transparent">
+        <QBtn design="flat" class="circle transparent">
           <QIcon name="check_box" />
         </QBtn>
       </QItem>
       <QItem>
-        <QBtn flat class="circle transparent">
+        <QBtn design="flat" class="circle transparent">
           <QIcon name="brush" />
         </QBtn>
       </QItem>
       <QItem>
-        <QBtn flat class="circle transparent">
+        <QBtn design="flat" class="circle transparent">
           <QIcon name="mic" />
         </QBtn>
       </QItem>
       <QItem>
-        <QBtn flat class="circle transparent">
+        <QBtn design="flat" class="circle transparent">
           <QIcon name="image" />
         </QBtn>
       </QItem>
@@ -112,31 +112,31 @@
   <QDrawer slot="drawerRight" side="right" class="secondary" bind:this={rightDrawer}>
     <QList separator>
       <QItem to="/">
-        <QItemSection avatar>
+        <QItemSection type="avatar">
           <QIcon name="home" />
         </QItemSection>
         <QItemSection>Return home, oh god this is a long text</QItemSection>
       </QItem>
       <QItem to="/">
-        <QItemSection avatar>
+        <QItemSection type="avatar">
           <QIcon name="home" />
         </QItemSection>
         <QItemSection>Return home</QItemSection>
       </QItem>
       <QItem to="/">
-        <QItemSection avatar>
+        <QItemSection type="avatar">
           <QIcon name="home" />
         </QItemSection>
         <QItemSection>Return home</QItemSection>
       </QItem>
       <QItem to="/">
-        <QItemSection avatar>
+        <QItemSection type="avatar">
           <QIcon name="home" />
         </QItemSection>
         <QItemSection>Return home</QItemSection>
       </QItem>
       <QItem to="/">
-        <QItemSection avatar>
+        <QItemSection type="avatar">
           <QIcon name="home" />
         </QItemSection>
         <QItemSection>Return home</QItemSection>
@@ -154,19 +154,19 @@
     </div>
   </div>
   <QFooter slot="footer" class="secondary-container">
-    <QBtn flat class="circle transparent">
+    <QBtn design="flat" class="circle transparent">
       <QIcon name="check_box" />
     </QBtn>
-    <QBtn flat class="circle transparent">
+    <QBtn design="flat" class="circle transparent">
       <QIcon name="brush" />
     </QBtn>
-    <QBtn flat class="circle transparent">
+    <QBtn design="flat" class="circle transparent">
       <QIcon name="mic" />
     </QBtn>
-    <QBtn flat class="circle transparent">
+    <QBtn design="flat" class="circle transparent">
       <QIcon name="image" />
     </QBtn>
-    <div class="max" />
+    <div class="max"></div>
     <QBtn class="square round primary">
       <QIcon name="add" />
     </QBtn>

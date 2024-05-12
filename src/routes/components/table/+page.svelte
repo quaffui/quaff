@@ -244,8 +244,8 @@
           {:else if column.field === "author"}
             {row.author}
           {:else if column.field === "actions"}
-            <QBtn icon="edit" rounded flat />
-            <QBtn icon="delete" rounded flat />
+            <QBtn icon="edit" design="flat" />
+            <QBtn icon="delete" design="flat" />
           {/if}
         </td>
       </QTable>

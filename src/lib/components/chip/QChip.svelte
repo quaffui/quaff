@@ -51,7 +51,7 @@
 <a
   bind:this={qChip}
   use:ripple={{
-    disable: noRipple || disable,
+    disabled: noRipple || disable,
     color: outlined ? undefined : "var(--on-secondary)",
   }}
   aria-disabled={disable || undefined}

@@ -112,7 +112,7 @@
           <h6>Dark mode</h6>
           <p>$Quaff.dark.isActive: {$Quaff.dark.isActive}</p>
           <div>
-            <QBtn on:click={() => $Quaff.dark.toggle()}>$Quaff.dark.toggle()</QBtn>
+            <QBtn onclick={() => $Quaff.dark.toggle()}>$Quaff.dark.toggle()</QBtn>
           </div>
         </QCardSection>
         <QCardSection>
@@ -145,8 +145,9 @@
     </div>
     <div class="col-12">
       <QCard title="Linear Progress">
+        <QLinearProgress indeterminate class="q-mt-md" />
         <QLinearProgress value={30} class="q-mt-md" />
-        <QLinearProgress value={40} class="q-mt-md" from="right" rounded />
+        <QLinearProgress value={40} class="q-mt-md" reverse noRound />
       </QCard>
     </div>
     <div class="col-12">
@@ -265,13 +266,15 @@
           class="q-ma-sm"
           icon="add"
           label="Disabled"
-          disable
+          disabled
           on:activated={() => alert("Hey you clicked")}
         />
+        <QBtn class="q-ma-sm" label="Default (elevated)" />
         <QBtn class="q-ma-sm" label="Unelevated" unelevated />
-        <QBtn class="q-ma-sm" label="Outline" outline />
+        <QBtn class="q-ma-sm" label="Filled" design="filled" />
+        <QBtn class="q-ma-sm" label="Outline" design="outlined" />
         <QBtn class="q-ma-sm" label="Rectangle" rectangle />
-        <QBtn class="q-ma-sm" label="Flat" flat />
+        <QBtn class="q-ma-sm" label="Flat" design="flat" />
         <QBtn class="q-ma-sm" icon="open_in_new" label="With router link" to="/layout" />
       </QCard>
     </div>
@@ -290,11 +293,11 @@
     <div class="col-12">
       <QCard title="Toolbar">
         <QToolbar class="text-primary q-mt-md">
-          <QBtn icon="menu" flat />
+          <QBtn icon="menu" design="flat" />
           <QToolbarTitle>Title</QToolbarTitle>
-          <QBtn flat icon="attach_file" />
-          <QBtn flat icon="today" />
-          <QBtn flat icon="more_vert" />
+          <QBtn design="flat" icon="attach_file" />
+          <QBtn design="flat" icon="today" />
+          <QBtn design="flat" icon="more_vert" />
         </QToolbar>
       </QCard>
     </div>
@@ -306,7 +309,9 @@
               <QIcon name="home" />
             </QItemSection>
             <QItemSection type="content">
-              <svelte:fragment slot="headline">Leading icon, Trailing helper text</svelte:fragment>
+              {#snippet headline()}
+                Leading icon, Trailing helper text
+              {/snippet}
             </QItemSection>
             <QItemSection type="trailingText">100+</QItemSection>
           </QItem>
@@ -315,8 +320,12 @@
               <QAvatar class="primary-container">JD</QAvatar>
             </QItemSection>
             <QItemSection type="content">
-              <svelte:fragment slot="headline">With a link, and an avatar</svelte:fragment>
-              <svelte:fragment slot="line1">Using "to"</svelte:fragment>
+              {#snippet headline()}
+                With a link, and an avatar
+              {/snippet}
+              {#snippet line1()}
+                Using "to"
+              {/snippet}
             </QItemSection>
           </QItem>
           <div>Not a QItem</div>
@@ -325,9 +334,15 @@
               <QIcon name="help" color="light-blue" />
             </QItemSection>
             <QItemSection type="content">
-              <svelte:fragment slot="headline">With a link</svelte:fragment>
-              <svelte:fragment slot="line1">Using "href"</svelte:fragment>
-              <svelte:fragment slot="line2">But I have multiple lines</svelte:fragment>
+              {#snippet headline()}
+                With a link
+              {/snippet}
+              {#snippet line1()}
+                Using "href"
+              {/snippet}
+              {#snippet line2()}
+                But I have multiple lines
+              {/snippet}
             </QItemSection>
           </QItem>
           <QItem>
@@ -335,10 +350,15 @@
               <QAvatar class="primary-container">JD</QAvatar>
             </QItemSection>
             <QItemSection type="content">
-              <svelte:fragment slot="headline">With an avatar</svelte:fragment>
-              <svelte:fragment slot="line1">Using "href", I'm also a helper text</svelte:fragment>
-              <svelte:fragment slot="line2">But I have multiple lines</svelte:fragment>
-              <svelte:fragment slot="line3">Wow, three lines</svelte:fragment>
+              {#snippet headline()}
+                With an avatar
+              {/snippet}
+              {#snippet line1()}
+                Using "href", I'm also a helper text
+              {/snippet}
+              {#snippet line3()}
+                Wow, three lines
+              {/snippet}
             </QItemSection>
             <QItemSection type="trailingIcon">
               <QIcon name="edit" />
@@ -352,8 +372,12 @@
               />
             </QItemSection>
             <QItemSection type="content">
-              <svelte:fragment slot="headline">With an image</svelte:fragment>
-              <svelte:fragment slot="line1">And with a checkbox</svelte:fragment>
+              {#snippet headline()}
+                With an image
+              {/snippet}
+              {#snippet line1()}
+                And with a checkbox
+              {/snippet}
             </QItemSection>
             <QItemSection type="trailingIcon">
               <QCheckbox />
@@ -367,9 +391,15 @@
               </video>
             </QItemSection>
             <QItemSection type="content">
-              <svelte:fragment slot="headline">With a video</svelte:fragment>
-              <svelte:fragment slot="line1">And with a trailing helper text</svelte:fragment>
-              <svelte:fragment slot="line2">I also have multiple lines</svelte:fragment>
+              {#snippet headline()}
+                With a video
+              {/snippet}
+              {#snippet line1()}
+                And with a trailing helper text
+              {/snippet}
+              {#snippet line2()}
+                I also have multiple lines
+              {/snippet}
             </QItemSection>
             <QItemSection type="trailingText">100+</QItemSection>
           </QItem>
@@ -541,68 +571,76 @@
       <QCard title="Dialogs">
         <QCardSection>
           <h6>Basics</h6>
-          <QDialog
-            bind:value={dialog1}
-            bind:this={dialogElement1}
-            button
-            buttonLabel="Default dialog"
-          >
+          <QBtn onclick={dialogElement1?.show}>Default dialog</QBtn>
+          <QDialog bind:value={dialog1} bind:this={dialogElement1}>
             <h5>This is a dialog</h5>
             <div>Some text here</div>
             <nav class="flex justify-end">
-              <QBtn on:click={() => dialogElement1.hide()} label="Cancel" />
-              <QBtn on:click={() => dialogElement1.hide()} label="Confirm" />
+              <QBtn onclick={() => dialogElement1.hide()} label="Cancel" />
+              <QBtn onclick={() => dialogElement1.hide()} label="Confirm" />
             </nav>
           </QDialog>
-          <QDialog modal bind:value={dialog2} button buttonLabel="Modal dialog">
+
+          <QBtn onclick={() => (dialog2 = true)}>Modal dialog</QBtn>
+          <QDialog modal bind:value={dialog2}>
             <h5>This is a modal dialog</h5>
             <div>Some text here</div>
             <nav class="flex justify-end">
-              <QBtn on:click={() => (dialog2 = false)} label="Cancel" />
-              <QBtn on:click={() => (dialog2 = false)} label="Confirm" />
+              <QBtn onclick={() => (dialog2 = false)} label="Cancel" />
+              <QBtn onclick={() => (dialog2 = false)} label="Confirm" />
             </nav>
           </QDialog>
-          <QDialog modal bind:value={dialog3} button buttonLabel="Persistent dialog" persistent>
+
+          <QBtn onclick={() => (dialog3 = true)}>Persistent dialog</QBtn>
+          <QDialog modal bind:value={dialog3} persistent>
             <h5>This is a dialog</h5>
             <div>This time, I am persistent</div>
             <nav class="flex justify-end">
-              <QBtn on:click={() => (dialog3 = false)} label="Cancel" />
-              <QBtn on:click={() => (dialog3 = false)} label="Confirm" />
+              <QBtn onclick={() => (dialog3 = false)} label="Cancel" />
+              <QBtn onclick={() => (dialog3 = false)} label="Confirm" />
             </nav>
           </QDialog>
         </QCardSection>
         <QCardSection>
           <h6>Position</h6>
-          <QDialog modal bind:value={dialog4} button buttonLabel="Top" position="top">
+
+          <QBtn onclick={() => (dialog4 = true)}>Top</QBtn>
+          <QDialog modal bind:value={dialog4} position="top">
             <h5>This is a dialog</h5>
             <div>I'm chilling on top!</div>
             <nav class="flex justify-end">
-              <QBtn on:click={() => (dialog4 = false)} label="Cancel" />
-              <QBtn on:click={() => (dialog4 = false)} label="Confirm" />
+              <QBtn onclick={() => (dialog4 = false)} label="Cancel" />
+              <QBtn onclick={() => (dialog4 = false)} label="Confirm" />
             </nav>
           </QDialog>
-          <QDialog modal bind:value={dialog5} button buttonLabel="Right" position="right">
+
+          <QBtn onclick={() => (dialog5 = true)}>Right</QBtn>
+          <QDialog modal bind:value={dialog5} position="right">
             <h5>This is a dialog</h5>
             <div>I'm chilling on right!</div>
             <nav class="flex justify-end">
-              <QBtn on:click={() => (dialog5 = false)} label="Cancel" />
-              <QBtn on:click={() => (dialog5 = false)} label="Confirm" />
+              <QBtn onclick={() => (dialog5 = false)} label="Cancel" />
+              <QBtn onclick={() => (dialog5 = false)} label="Confirm" />
             </nav>
           </QDialog>
-          <QDialog modal bind:value={dialog6} button buttonLabel="Bottom" position="bottom">
+
+          <QBtn onclick={() => (dialog6 = true)}>Bottom</QBtn>
+          <QDialog modal bind:value={dialog6} position="bottom">
             <h5>This is a dialog</h5>
             <div>I'm chilling on bottom!</div>
             <nav class="flex justify-end">
-              <QBtn on:click={() => (dialog6 = false)} label="Cancel" />
-              <QBtn on:click={() => (dialog6 = false)} label="Confirm" />
+              <QBtn onclick={() => (dialog6 = false)} label="Cancel" />
+              <QBtn onclick={() => (dialog6 = false)} label="Confirm" />
             </nav>
           </QDialog>
-          <QDialog modal bind:value={dialog7} button buttonLabel="Left" position="left">
+
+          <QBtn onclick={() => (dialog7 = true)}>Left</QBtn>
+          <QDialog modal bind:value={dialog7} position="left">
             <h5>This is a dialog</h5>
             <div>I'm chilling on left!</div>
             <nav class="flex justify-end">
-              <QBtn on:click={() => (dialog7 = false)} label="Cancel" />
-              <QBtn on:click={() => (dialog7 = false)} label="Confirm" />
+              <QBtn onclick={() => (dialog7 = false)} label="Cancel" />
+              <QBtn onclick={() => (dialog7 = false)} label="Confirm" />
             </nav>
           </QDialog>
         </QCardSection>
