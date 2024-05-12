@@ -1,4 +1,4 @@
-//? Basic styles
+// Basic styles
 .q-avatar {
   height: var(--size);
   width: var(--size);
@@ -36,7 +36,7 @@
   }
 }
 
-//? Sizes
+// Sizes
 $sizes: (
   "xs": 1,
   "sm": 2,
@@ -54,7 +54,7 @@ $sizes: (
   }
 }
 
-//? Border radius
+// Border radius
 $positions-y: "top", "bottom";
 $positions-x: "right", "left";
 
