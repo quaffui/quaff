@@ -31,6 +31,7 @@
     console.warn("QTab should be used inside QTabs");
   }
 
+  // svelte-ignore global_reference_invalid
   const isInitallyActive = to !== undefined ? $isRouteActive(to) : name === $qTabStore.value;
 
   $: if (isInitallyActive && qTab) {
