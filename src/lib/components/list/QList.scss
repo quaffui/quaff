@@ -16,11 +16,11 @@
   }
 
   &--dense {
-    min-height: 32px;
+    min-height: 2rem;
     padding-block: 0;
 
     & > :global(.q-item) {
-      min-height: 32px;
+      min-height: 2rem;
     }
   }
 

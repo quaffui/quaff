@@ -20,13 +20,13 @@
     width: 2.5rem;
   }
   &--icon {
-    height: 24px;
-    width: 24px;
+    height: 1.5rem;
+    width: 1.5rem;
   }
 
   &--thumbnail :global(img) {
-    width: 56px;
-    height: 56px;
+    width: 3.5rem;
+    height: 3.5rem;
     object-fit: cover;
     object-position: center;
   }
@@ -39,7 +39,7 @@
   }
 
   &--toggle {
-    height: 24px;
-    width: 52px;
+    height: 1.5rem;
+    width: 3.25rem;
   }
 }
