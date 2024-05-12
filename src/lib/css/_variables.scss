@@ -53,11 +53,11 @@ $speed4: 0.4s;
 // Layout offsets
 $left-railbar: var(--left-railbar-width);
 $right-railbar: var(--right-railbar-width);
-$leftRight-railbar: calc(#{$left-railbar} + #{$right-railbar});
+$left-right-railbar: calc(#{$left-railbar} + #{$right-railbar});
 
 $left-drawer: var(--left-drawer-width);
 $right-drawer: var(--right-drawer-width);
-$leftRight-drawer: calc(#{$left-drawer} + #{$right-drawer});
+$left-right-drawer: calc(#{$left-drawer} + #{$right-drawer});
 
 $left-full: calc(#{$left-railbar} + #{$left-drawer});
 $right-full: calc(#{$right-railbar} + #{$right-drawer});
