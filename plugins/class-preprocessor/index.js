@@ -46,7 +46,7 @@ export function preprocessClasses(namespace) {
       let component;
       for (component in scriptDefs) {
         const def = scriptDefs[component];
-        /** @type {import("./types").Use[]} */
+        /** @type {import("./types").ClassesUsage[]} */
         const uses = [];
         prepareMarkup(fragment, component, uses, namespace);
 

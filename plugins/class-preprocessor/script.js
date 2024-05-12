@@ -32,7 +32,7 @@ function classShorthand(componentName, key, value) {
  * @returns
  */
 export function prepareScript(instance, source, namespace) {
-  /** @type {Record<`q-${string}`, import("./types").Def>} */
+  /** @type {Record<`q-${string}`, import("./types").ClassesDefinition>} */
   const scriptDefs = {};
 
   for (const node of instance.content.body) {
