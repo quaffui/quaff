@@ -57,7 +57,7 @@
     e.stopPropagation();
     let content = getType(doc.type);
     for (let docName in drawer[QDocument.name]) {
-      if (drawer[QDocument.name][docName] === true && docName !== doc.name) {
+      if (drawer[QDocument.name][docName] && docName !== doc.name) {
         drawer[QDocument.name][docName] = false;
       }
     }
@@ -112,7 +112,7 @@
                     <b>{doc.name}</b>
                     {#if isProp(doc, index)}
                       {doc.optional ? "?" : ""}
-                      {#if doc.clickableType === true}
+                      {#if doc.clickableType}
                         <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-static-element-interactions -->
                         <span
                           class="prop-type clickable"
