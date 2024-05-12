@@ -1,5 +1,6 @@
 import { argbFromHex, hexFromArgb, themeFromSourceColor } from "@material/material-color-utilities";
 import type { Theme, TonalPalette } from "@material/material-color-utilities";
+import { format } from "prettier";
 import fs from "node:fs";
 
 export type QuaffColors = {
@@ -120,19 +121,21 @@ function getColors(palettes: Theme["palettes"], mode: "light" | "dark") {
 
 function stringFromPalette(palette: QuaffColors) {
   return Object.entries(palette)
-    .map(([color, hex]) => `  --${color}: ${hex};\n`)
+    .map(([color, hex]) => `--${color}: ${hex};`)
     .join("");
 }
 
 function writeColorFile() {
   const colors = generateColors();
   const cssContent = Object.entries(colors)
-    .map(([mode, palette]) => `.body--${mode} {\n${stringFromPalette(palette)}}`)
-    .join("\n\n");
+    .map(([mode, palette]) => `.body--${mode} {${stringFromPalette(palette)}}`)
+    .join("");
 
   const pathToCssFile = new URL("../lib/css/theme/_colors.scss", import.meta.url);
 
-  fs.writeFileSync(pathToCssFile, cssContent);
+  format("// AUTO GENERATED FILE - DO NOT MODIFY OR DELETE\n\n".concat(cssContent), {
+    parser: "css",
+  }).then((content) => fs.writeFileSync(pathToCssFile, content));
 }
 
 function pascalToKebab(str: string) {
