@@ -2,9 +2,53 @@ import { argbFromHex, hexFromArgb, themeFromSourceColor } from "@material/materi
 import type { Theme, TonalPalette } from "@material/material-color-utilities";
 import fs from "node:fs";
 
+export type QuaffColors = {
+  primary: `#${string}`;
+  "on-primary": `#${string}`;
+  "primary-container": `#${string}`;
+  "on-primary-container": `#${string}`;
+  secondary: `#${string}`;
+  "on-secondary": `#${string}`;
+  "secondary-container": `#${string}`;
+  "on-secondary-container": `#${string}`;
+  tertiary: `#${string}`;
+  "on-tertiary": `#${string}`;
+  "tertiary-container": `#${string}`;
+  "on-tertiary-container": `#${string}`;
+  neutral: `#${string}`;
+  "on-neutral": `#${string}`;
+  "neutral-container": `#${string}`;
+  "on-neutral-container": `#${string}`;
+  "neutral-variant": `#${string}`;
+  "on-neutral-variant": `#${string}`;
+  "neutral-variant-container": `#${string}`;
+  "on-neutral-variant-container": `#${string}`;
+  error: `#${string}`;
+  "on-error": `#${string}`;
+  "error-container": `#${string}`;
+  "on-error-container": `#${string}`;
+  surface: `#${string}`;
+  "surface-dim": `#${string}`;
+  "surface-bright": `#${string}`;
+  "on-surface": `#${string}`;
+  "on-surface-variant": `#${string}`;
+  "surface-container-lowest": `#${string}`;
+  "surface-container-low": `#${string}`;
+  "surface-container": `#${string}`;
+  "surface-container-high": `#${string}`;
+  "surface-container-highest": `#${string}`;
+  "inverse-surface": `#${string}`;
+  "inverse-on-surface": `#${string}`;
+  "inverse-primary": `#${string}`;
+  outline: `#${string}`;
+  "outline-variant": `#${string}`;
+  scrim: `#${string}`;
+  shadow: `#${string}`;
+};
+
 const BASE_COLOR = argbFromHex("#0039b4");
 
-export function generateColors() {
+export function generateColors(): { light: QuaffColors; dark: QuaffColors } {
   const palettes = themeFromSourceColor(BASE_COLOR).palettes;
 
   return {
@@ -30,7 +74,7 @@ function getColors(palettes: Theme["palettes"], mode: "light" | "dark") {
         };
 
   const getColor = (color: string, palette: TonalPalette) => {
-    color = color.replaceAll(/([A-Z])/g, "-$1").toLowerCase();
+    color = pascalToKebab(color);
 
     return [
       [color, palette.tone(tones.base)],
@@ -40,7 +84,7 @@ function getColors(palettes: Theme["palettes"], mode: "light" | "dark") {
     ];
   };
 
-  const results: Record<string, number> = Object.fromEntries(
+  const results: Record<keyof QuaffColors, number> = Object.fromEntries(
     Object.entries(palettes)
       .map(([color, palette]) => getColor(color, palette))
       .flat(1)
@@ -71,10 +115,10 @@ function getColors(palettes: Theme["palettes"], mode: "light" | "dark") {
 
   return Object.fromEntries(
     Object.entries(results).map(([color, value]) => [color, hexFromArgb(value)])
-  );
+  ) as QuaffColors;
 }
 
-function stringFromPalette(palette: Record<string, string>) {
+function stringFromPalette(palette: QuaffColors) {
   return Object.entries(palette)
     .map(([color, hex]) => `  --${color}: ${hex};\n`)
     .join("");
@@ -89,6 +133,10 @@ function writeColorFile() {
   const pathToCssFile = new URL("../lib/css/theme/_colors.scss", import.meta.url);
 
   fs.writeFileSync(pathToCssFile, cssContent);
+}
+
+function pascalToKebab(str: string) {
+  return str.replaceAll(/([A-Z])/g, "-$1").toLowerCase();
 }
 
 writeColorFile();
