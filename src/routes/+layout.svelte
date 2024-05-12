@@ -22,11 +22,13 @@
     QAvatar,
   } from "$lib";
   import { fade } from "svelte/transition";
-  import { QTheme } from "$lib/stores/QTheme";
+  import QTheme from "$lib/classes/QTheme.svelte";
   import { isRouteActive } from "$lib/utils/router";
   import { page } from "$app/stores";
 
   const { data, children } = $props();
+
+  let chosenColor = $state(0);
 
   const pages = [
     {
@@ -162,7 +164,7 @@
     },
   ];
   const colors = [
-    "#3499E7",
+    "#0039b4",
     ...[
       "red",
       "blue-grey",
@@ -257,12 +259,22 @@
       <div class="q-pa-md">
         <h6 class="q-mb-lg">Want a different color theme?</h6>
         <div class="flex q-gap-md">
-          {#each colors as color}
-            <QAvatar
-              shape="rounded"
-              style="background-color:{color}; cursor: pointer; border: solid 0.0625rem var(--outline)"
-              on:click={() => QTheme.setTheme(color)}
-            />
+          {#each colors as color, index}
+            <QBtn
+              round
+              onclick={() => {
+                chosenColor = index;
+                QTheme.setTheme(color);
+              }}
+              disabled={chosenColor === index}
+            >
+              <QAvatar
+                class={chosenColor === index ? "chosen" : ""}
+                shape="rounded"
+                size="2.5rem"
+                style="background-color:{color}; border: solid 0.0625rem var(--outline)"
+              />
+            </QBtn>
           {/each}
         </div>
       </div>
@@ -272,3 +284,22 @@
     </div>
   </QLayout>
 {/if}
+
+<style>
+  :global(.q-avatar.chosen::after) {
+    content: "✔️";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: transparent;
+    border-radius: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+  }
+</style>
