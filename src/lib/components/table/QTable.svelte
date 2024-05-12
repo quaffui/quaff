@@ -53,8 +53,8 @@
             ? -1
             : 1
           : parseFloat(valB.toString()) > parseFloat(valA.toString())
-          ? -1
-          : 1;
+            ? -1
+            : 1;
       });
     } else {
       rowsSorted = rows;
@@ -154,15 +154,15 @@
     <QBtn
       icon="chevron_left"
       size="sm"
-      flat
-      disable={page === 1}
+      design="flat"
+      disabled={page === 1}
       on:click={() => (page = page - 1)}
     />
     <QBtn
       icon="chevron_right"
       size="sm"
-      flat
-      disable={page * rowsPerPage >= rows.length}
+      design="flat"
+      disabled={page * rowsPerPage >= rows.length}
       on:click={() => (page = page + 1)}
     />
   </div>

@@ -21,7 +21,7 @@
         <QCardSection>This is a flat card.</QCardSection>
       </QCard>
 
-      <QCard class="q-ma-sm" title="Round Card" round>
+      <QCard class="q-ma-sm" title="Round Card" rounded>
         <QCardSection>This is a round card.</QCardSection>
       </QCard>
     </QDocsSection>

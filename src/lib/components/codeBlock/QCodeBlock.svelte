@@ -55,7 +55,7 @@
         class="border-{btnColor} text-{btnColor}"
         size="sm"
         icon="content_copy"
-        outline
+        design="outlined"
         on:click={copyCode}
       >
         {btnContent}
