@@ -133,7 +133,7 @@ $contentSlot: ":not(.q-header, .q-footer, .q-railbar, .q-drawer)";
     gap: 0.25em;
 
     &.q-link::after {
-      all: unset;
+      all: unset !important;
     }
 
     & > .q-item__section {
