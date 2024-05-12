@@ -1,4 +1,4 @@
-export function isNumber(input: unknown): input is number {
+export function isNumber(input: unknown): input is number | `${number}` {
   return typeof input === "number" || !isNaN(Number(input));
 }
 
