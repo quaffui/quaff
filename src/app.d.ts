@@ -65,10 +65,11 @@ declare global {
     }
 
     /**
+     * Function that allows a preprocessor to add static and dynamic classes on the chosen component (identified by `componentName`).
      *
-     * @param componentName - Main class of the target element. The element should only have this class to be well targeted
+     * @param componentName - Main class of the target element. The element should only have this class to be well targeted. If you need to add other classes, use this function's `classes` parameter.
      * @param bemClasses - Classes that should be prefixed with `componentName`
-     * @param classes - Classes that should not be prefixed with `componentName`. Use arrow function if Svelte cries about $derived values
+     * @param classes - Classes that should not be prefixed with `componentName`. Use arrow function if Svelte cries about `$derived` values
      */
     export function classes(
       componentName: string,
