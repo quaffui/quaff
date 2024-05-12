@@ -14,9 +14,12 @@
 
   const colorOptions: (typeof fill)[] = ["primary", "secondary", "tertiary"];
 
-  const color = $derived(
-    !fill ? "surface" : colorOptions.includes(fill) ? `${fill}-container` : "surface-variant"
-  );
+  const color = $derived.by(() => {
+    if (fill) {
+      return colorOptions.includes(fill) ? `${fill}-container` : "surface-variant";
+    }
+    return "surface";
+  });
 
   Q.classes("q-card", {
     bemClasses: {
