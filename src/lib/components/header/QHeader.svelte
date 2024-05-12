@@ -18,7 +18,7 @@
   let ctx = getContext<LayoutContext | undefined>("layout");
 
   $effect(() => {
-    if ($ctx === undefined) {
+    if (!$ctx) {
       console.warn("QHeader should be used inside QLayout");
     }
   });
@@ -31,12 +31,8 @@
   );
 
   $effect(() => {
-    if (untrack(() => $ctx)?.header !== undefined) {
-      if (props.style?.includes("display: none")) {
-        $ctx!.header!.display = false;
-      } else {
-        $ctx!.header!.display = true;
-      }
+    if (untrack(() => $ctx)?.header) {
+      $ctx!.header!.display = !props.style?.includes("display: none");
     }
   });
 </script>
