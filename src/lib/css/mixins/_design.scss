@@ -49,15 +49,15 @@
   box-shadow: none;
 
   &[class*="--outlined"] {
-    outline-color: rgb(var(--raw-on-surface), 0.12);
+    outline-color: add-transparency(var(--on-surface), 12%);
   }
 
   &:not([class*="--outlined"], [class*="--flat"]) {
-    background-color: rgb(var(--raw-on-surface), 0.12);
+    background-color: add-transparency(var(--on-surface), 12%);
   }
 
   & > :global(*) {
-    color: rgb(var(--raw-on-surface), 0.38);
+    color: add-transparency(var(--on-surface), 38%);
   }
 
   &::before,
@@ -78,4 +78,8 @@
 
   background-color: $color;
   opacity: $opacity;
+}
+
+@function add-transparency($color-variable: null, $percentage: null) {
+  @return color-mix(in srgb, $color-variable $percentage, transparent);
 }

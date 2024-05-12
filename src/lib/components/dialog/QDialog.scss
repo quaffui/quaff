@@ -1,3 +1,5 @@
+@use "$css/mixins";
+
 .q-dialog {
   display: block;
   border: none;
@@ -153,7 +155,7 @@
 
   &--modal::backdrop {
     display: block;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: mixins.add-transparency(var(--shadow), 50%);
   }
 
   &--animating {

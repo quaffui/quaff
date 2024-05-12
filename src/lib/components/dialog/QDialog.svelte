@@ -72,6 +72,7 @@
     bemClasses: {
       active: value,
       fullscreen,
+      modal,
       [position]: ["top", "right", "bottom", "left"].includes(position),
     },
     classes: [props.class],
