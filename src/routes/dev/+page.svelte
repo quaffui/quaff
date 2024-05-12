@@ -385,8 +385,8 @@
           </QItem>
           <QItem>
             <QItemSection type="video">
-              <!-- svelte-ignore a11y-media-has-caption -->
               <video autoplay loop playsinline>
+                <track kind="captions" />
                 <source src="/sea.mp4" type="video/mp4" />
               </video>
             </QItemSection>

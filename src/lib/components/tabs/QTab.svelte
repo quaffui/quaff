@@ -1,7 +1,6 @@
 <script lang="ts">
   import { QIcon } from "$lib";
   import { ripple } from "$lib/helpers";
-  import Quaff from "$lib/classes/Quaff.svelte";
   import {
     isActivationKey,
     isArrowKey,
