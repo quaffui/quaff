@@ -113,10 +113,10 @@
                     {#if isProp(doc, index)}
                       {doc.optional ? "?" : ""}
                       {#if doc.clickableType}
-                        <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-static-element-interactions -->
+                        <!-- svelte-ignore a11y_click_events_have_key_events a11y_no_static_element_interactions -->
                         <span
                           class="prop-type clickable"
-                          on:click={(e) => isProp(doc, index) && handleDrawer(QDocument, doc, e)}
+                          onclick={(e) => isProp(doc, index) && handleDrawer(QDocument, doc, e)}
                         >
                           : {doc.type}
                         </span>
