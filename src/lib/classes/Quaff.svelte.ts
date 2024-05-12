@@ -3,7 +3,7 @@ type Mode = "light" | "dark";
 class Quaff {
   public version = "prealpha";
 
-  private dark = $state(false);
+  protected dark = $state(false);
   private toggleDarkMode() {
     this.dark = !this.dark;
 
@@ -13,9 +13,7 @@ class Quaff {
     };
 
     const body = document.querySelector("body");
-    if (body) {
-      body.classList.replace(`body--${mode.from}`, `body--${mode.to}`);
-    }
+    body?.classList.replace(`body--${mode.from}`, `body--${mode.to}`);
 
     document.cookie = `current_mode=${mode.to}; max-age=31536000; path="/"; SameSite=strict`;
   }
