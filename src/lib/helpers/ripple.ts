@@ -2,7 +2,7 @@ interface RippleOptions {
   center?: boolean;
   color?: string; // CSS color
   duration?: number; // In ms
-  disable?: boolean; // Should the ripple be disabled
+  disabled?: boolean; // Should the ripple be disabled
 }
 
 const triggerEvents = ["pointerdown", "touchstart", "keydown"] as const;
@@ -29,7 +29,7 @@ export function ripple(el: HTMLElement, options: RippleOptions = {}) {
   }
 
   function setOptions(options: RippleOptions) {
-    if (options.disable || el.hasAttribute("aria-disabled")) {
+    if (options.disabled || el.hasAttribute("aria-disabled")) {
       rippleContainer.remove();
     } else {
       el.appendChild(rippleContainer);
@@ -49,7 +49,9 @@ export function ripple(el: HTMLElement, options: RippleOptions = {}) {
   }
 
   function createRipple(e: PointerEvent | KeyboardEvent | TouchEvent, center?: boolean) {
-    if (options.disable || el.hasAttribute("aria-disabled")) return;
+    if (options.disabled || el.hasAttribute("aria-disabled")) {
+      return;
+    }
 
     if (e instanceof KeyboardEvent) {
       if (!["Enter", "Space"].includes(e.code) || e.repeat) {
@@ -90,7 +92,9 @@ export function ripple(el: HTMLElement, options: RippleOptions = {}) {
     rippleContainer.appendChild(ripple);
 
     function removeRipple() {
-      if (ripple === null) return;
+      if (ripple === null) {
+        return;
+      }
 
       ripple.style.opacity = "0";
 

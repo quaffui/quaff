@@ -1,18 +1,17 @@
-import type { NativeProps, QuaffSizes } from "$lib/utils";
 import type { HTMLAttributes } from "svelte/elements";
 
-interface QSeparatorPropsVertical extends NativeProps {
-  spacing?: QuaffSizes;
+interface QSeparatorPropsVertical extends HTMLAttributes<HTMLDivElement> {
+  spacing?: Q.Size;
   inset?: boolean;
   vertical?: true;
   color?: string;
-  size: string;
+  size?: string;
   text?: string;
   textAlign?: "top" | "middle" | "bottom";
 }
 
-interface QSeparatorPropsHorizontal extends NativeProps, HTMLAttributes<HTMLDivElement> {
-  spacing?: QuaffSizes;
+interface QSeparatorPropsHorizontal extends HTMLAttributes<HTMLDivElement> {
+  spacing?: Q.Size;
   inset?: boolean;
   vertical?: false;
   color?: string;
@@ -22,13 +21,3 @@ interface QSeparatorPropsHorizontal extends NativeProps, HTMLAttributes<HTMLDivE
 }
 
 export type QSeparatorProps = QSeparatorPropsHorizontal | QSeparatorPropsVertical;
-
-export const QSeparatorPropsDefaults: QSeparatorProps = {
-  spacing: "sm",
-  inset: false,
-  vertical: false,
-  color: undefined,
-  size: "1px",
-  text: undefined,
-  textAlign: "center",
-};

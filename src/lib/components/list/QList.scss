@@ -1,0 +1,30 @@
+@use "$css/mixins";
+
+.q-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+
+  &--bordered {
+    @include mixins.border;
+  }
+
+  &--rounded {
+    border-radius: 0.25rem;
+  }
+
+  &--dense {
+    min-height: 2rem;
+    padding-block: 0;
+
+    & > :global(.q-item) {
+      min-height: 2rem;
+    }
+  }
+
+  & > :global(.q-separator__wrapper:first-child) {
+    display: none !important;
+  }
+}

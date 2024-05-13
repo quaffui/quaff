@@ -1,3 +1,5 @@
+@use "$css/mixins";
+
 .q-toolbar {
   width: 100%;
   padding: 0 1rem;
@@ -21,7 +23,7 @@
   }
 
   &--elevated {
-    @include elevate(1, "bottom");
+    @include mixins.elevate(1, "bottom");
   }
 
   &--bordered {

@@ -1,8 +1,6 @@
 <script lang="ts">
   import { QIcon } from "$lib";
-  import { isRouteActive } from "$lib/composables";
   import { ripple } from "$lib/helpers";
-  import { Quaff } from "$lib/stores";
   import {
     isActivationKey,
     isArrowKey,
@@ -17,6 +15,7 @@
   import type { Writable } from "svelte/store";
   import type { QTabProps } from "./props";
   import type { QTab, QTabStore } from "./QTabs.svelte";
+  import { isRouteActive } from "$lib/utils/router";
 
   export let name: QTabProps["name"],
     to: QTabProps["to"] = undefined,
@@ -32,8 +31,8 @@
     console.warn("QTab should be used inside QTabs");
   }
 
-  const isInitallyActive =
-    to !== undefined ? isRouteActive($Quaff.router, to) : name === $qTabStore.value;
+  // eslint-disable-next-line svelte/valid-compile
+  const isInitallyActive = to !== undefined ? $isRouteActive(to) : name === $qTabStore.value;
 
   $: if (isInitallyActive && qTab) {
     setActive(qTab);

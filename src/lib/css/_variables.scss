@@ -1,0 +1,73 @@
+// Responsive breakpoints
+$breakpoints: (
+  xs: 0px,
+  sm: 600px,
+  md: 960px,
+  lg: 1280px,
+  xl: 1920px,
+);
+
+// Grid variables
+$grid-columns: 12;
+
+// Spaces
+$space-base: 1rem !default;
+$space-x-base: $space-base !default;
+$space-y-base: $space-base !default;
+
+$space-none: 0 !default;
+$space-xs: 0.25rem !default;
+$space-sm: 0.5rem !default;
+$space-md: 1rem !default;
+$space-lg: 1.5rem !default;
+$space-xl: 3rem !default;
+
+$spaces: (
+  "auto": auto,
+  "none": $space-none,
+  "xs": $space-xs,
+  "sm": $space-sm,
+  "md": $space-md,
+  "lg": $space-lg,
+  "xl": $space-xl,
+) !default;
+
+// Positions
+$positions: (
+  "t": -top,
+  "r": -right,
+  "b": -bottom,
+  "l": -left,
+  "x": -inline,
+  "y": -block,
+  "a": "",
+);
+$border-positions: top, right, bottom, left;
+
+// Speeds
+$speed1: 0.1s;
+$speed2: 0.2s;
+$speed3: 0.3s;
+$speed4: 0.4s;
+
+// Layout offsets
+$left-railbar: var(--left-railbar-width);
+$right-railbar: var(--right-railbar-width);
+$left-right-railbar: calc(#{$left-railbar} + #{$right-railbar});
+
+$left-drawer: var(--left-drawer-width);
+$right-drawer: var(--right-drawer-width);
+$left-right-drawer: calc(#{$left-drawer} + #{$right-drawer});
+
+$left-full: calc(#{$left-railbar} + #{$left-drawer});
+$right-full: calc(#{$right-railbar} + #{$right-drawer});
+
+$left-railbar-right-drawer: calc(#{$left-railbar} + #{$right-drawer});
+$right-railbar-left-drawer: calc(#{$right-railbar} + #{$left-drawer});
+
+$left-full-right-railbar: calc(#{$left-full} + #{$right-railbar});
+$left-full-right-drawer: calc(#{$left-full} + #{$right-drawer});
+$right-full-left-railbar: calc(#{$right-full} + #{$left-railbar});
+$right-full-left-drawer: calc(#{$right-full} + #{$left-drawer});
+
+$full: calc(#{$left-full} + #{$right-full});

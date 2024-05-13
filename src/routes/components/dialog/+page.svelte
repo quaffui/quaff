@@ -51,101 +51,59 @@
     methodsDialog: Dialog = {
       el: null,
       value: false,
-    },
-    buttonPropsDialog: Dialog = {
-      el: null,
-      value: false,
     };
 </script>
 
 <QDocs componentDocs={QDialogDocs}>
-  <QDialog
-    slot="display"
-    button
-    buttonLabel="Open cookie settings"
-    modal
-    persistent
-    bind:value={exampleDialog.value}
-    bind:this={exampleDialog.el}
-  >
-    <DialogContent dialogEl={exampleDialog.el} />
-  </QDialog>
+  <svelte:fragment slot="display">
+    <QBtn onclick={exampleDialog.el?.show}>Open cookie settings</QBtn>
+
+    <QDialog modal persistent bind:value={exampleDialog.value} bind:this={exampleDialog.el}>
+      <DialogContent dialogEl={exampleDialog.el} />
+    </QDialog>
+  </svelte:fragment>
 
   <div slot="usage">
     <QDocsSection {snippets} title="Positions">
-      <QDialog
-        bind:this={defaultDialog.el}
-        bind:value={defaultDialog.value}
-        button
-        buttonLabel="Default"
-      >
+      <QBtn onclick={defaultDialog.el?.show}>Default</QBtn>
+      <QDialog bind:this={defaultDialog.el} bind:value={defaultDialog.value}>
         <DialogContent dialogEl={defaultDialog.el} />
       </QDialog>
-      <QDialog
-        bind:this={topDialog.el}
-        bind:value={topDialog.value}
-        button
-        buttonLabel="Top"
-        position="top"
-      >
+
+      <QBtn onclick={topDialog.el?.show}>Top</QBtn>
+      <QDialog bind:this={topDialog.el} bind:value={topDialog.value} position="top">
         <DialogContent dialogEl={topDialog.el} />
       </QDialog>
-      <QDialog
-        bind:this={rightDialog.el}
-        bind:value={rightDialog.value}
-        button
-        buttonLabel="Right"
-        position="right"
-      >
+
+      <QBtn onclick={rightDialog.el?.show}>Right</QBtn>
+      <QDialog bind:this={rightDialog.el} bind:value={rightDialog.value} position="right">
         <DialogContent dialogEl={rightDialog.el} />
       </QDialog>
-      <QDialog
-        bind:this={bottomDialog.el}
-        bind:value={bottomDialog.value}
-        button
-        buttonLabel="Bottom"
-        position="bottom"
-      >
+
+      <QBtn onclick={bottomDialog.el?.show}>Bottom</QBtn>
+      <QDialog bind:this={bottomDialog.el} bind:value={bottomDialog.value} position="bottom">
         <DialogContent dialogEl={bottomDialog.el} />
       </QDialog>
-      <QDialog
-        bind:this={leftDialog.el}
-        bind:value={leftDialog.value}
-        button
-        buttonLabel="Left"
-        position="left"
-      >
+
+      <QBtn onclick={leftDialog.el?.show}>Left</QBtn>
+      <QDialog bind:this={leftDialog.el} bind:value={leftDialog.value} position="left">
         <DialogContent dialogEl={leftDialog.el} />
       </QDialog>
     </QDocsSection>
 
     <QDocsSection {snippets} title="Types">
-      <QDialog
-        bind:this={modalDialog.el}
-        bind:value={modalDialog.value}
-        button
-        buttonLabel="Modal"
-        modal
-      >
+      <QBtn onclick={modalDialog.el?.show}>Modal</QBtn>
+      <QDialog bind:this={modalDialog.el} bind:value={modalDialog.value} modal>
         <DialogContent dialogEl={modalDialog.el} />
       </QDialog>
-      <QDialog
-        bind:this={fullscreenDialog.el}
-        bind:value={fullscreenDialog.value}
-        button
-        buttonLabel="Fullscreen"
-        fullscreen
-      >
+
+      <QBtn onclick={fullscreenDialog.el?.show}>Fullscreen</QBtn>
+      <QDialog bind:this={fullscreenDialog.el} bind:value={fullscreenDialog.value} fullscreen>
         <DialogContent dialogEl={fullscreenDialog.el} />
       </QDialog>
-      <QDialog
-        bind:this={persistentDialog.el}
-        bind:value={persistentDialog.value}
-        button
-        buttonLabel="Persistent"
-        persistent
-        modal
-      >
+
+      <QBtn onclick={persistentDialog.el?.show}>Persistent</QBtn>
+      <QDialog bind:this={persistentDialog.el} bind:value={persistentDialog.value} persistent modal>
         <DialogContent dialogEl={persistentDialog.el} />
       </QDialog>
     </QDocsSection>
@@ -154,30 +112,18 @@
       <QDialog bind:this={methodsDialog.el} bind:value={methodsDialog.value} persistent>
         <DialogContent dialogEl={methodsDialog.el} />
       </QDialog>
-      <QBtn on:click={() => methodsDialog.el?.show()}>Show</QBtn>
-      <QBtn on:click={() => methodsDialog.el?.hide()}>Hide</QBtn>
-      <QBtn on:click={() => methodsDialog.el?.toggle()}>Toggle</QBtn>
+      <QBtn onclick={methodsDialog.el?.show}>Show</QBtn>
+      <QBtn onclick={methodsDialog.el?.hide}>Hide</QBtn>
+      <QBtn onclick={methodsDialog.el?.toggle}>Toggle</QBtn>
     </QDocsSection>
 
     <QDocsSection {snippets} title="Value toggle">
       <QDialog bind:value={methodsDialog.value} persistent>
         <DialogContent dialogEl={methodsDialog.el} />
       </QDialog>
-      <QBtn on:click={() => (methodsDialog.value = true)}>Show</QBtn>
-      <QBtn on:click={() => (methodsDialog.value = false)}>Hide</QBtn>
-      <QBtn on:click={() => (methodsDialog.value = !methodsDialog.value)}>Toggle</QBtn>
-    </QDocsSection>
-
-    <QDocsSection {snippets} title="Custom button attributes">
-      <QDialog
-        bind:this={buttonPropsDialog.el}
-        bind:value={buttonPropsDialog.value}
-        button
-        buttonLabel="Custom button styles"
-        buttonProps={{ icon: "star", rectangle: true, outline: true }}
-      >
-        <DialogContent dialogEl={buttonPropsDialog.el} />
-      </QDialog>
+      <QBtn onclick={() => (methodsDialog.value = true)}>Show</QBtn>
+      <QBtn onclick={() => (methodsDialog.value = false)}>Hide</QBtn>
+      <QBtn onclick={() => (methodsDialog.value = !methodsDialog.value)}>Toggle</QBtn>
     </QDocsSection>
   </div>
 </QDocs>

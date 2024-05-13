@@ -1,0 +1,10 @@
+@use "$css/mixins";
+
+.q-card__actions {
+  display: flex;
+  @include mixins.margin("t");
+
+  &--vertical {
+    flex-direction: column;
+  }
+}

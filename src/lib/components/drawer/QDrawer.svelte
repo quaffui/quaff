@@ -42,6 +42,7 @@
     e && e.stopPropagation();
   };
 
+  // eslint-disable-next-line svelte/valid-compile
   $: if ($navigating && hideOnRouteChange) {
     hide();
   }

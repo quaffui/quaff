@@ -1,16 +1,22 @@
+<svelte:options runes={true} />
+
 <script lang="ts">
   import type { QCardSectionProps } from "./props";
 
-  export let horizontal: QCardSectionProps["horizontal"] = false,
-    userClasses: QCardSectionProps["userClasses"] = "";
-  export { userClasses as class };
+  let { horizontal = false, children, ...props }: QCardSectionProps = $props();
+
+  Q.classes("q-card__section", {
+    bemClasses: {
+      horizontal,
+    },
+    classes: [props.class],
+  });
 </script>
 
-<div
-  class="q-card__section {userClasses}"
-  class:q-card__section--horizontal={horizontal}
-  {...$$restProps}
-  on:scroll
->
-  <slot />
+<div {...props} class="q-card__section" {...Q.classes} class:row={horizontal}>
+  {@render children?.()}
 </div>
+
+<style lang="scss">
+  @import "./QCardSection.scss";
+</style>

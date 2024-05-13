@@ -1,10 +1,13 @@
+<svelte:options runes={true} />
+
 <script lang="ts">
+  import { derived } from "svelte/store";
   // Comment this in again while needed during development
   //import "beercss/dist/cdn/beer.min.css";
   import "../lib/css/index.scss";
   import "../lib/css/fonts.scss";
 
-  import { Quaff } from "$stores/Quaff";
+  import Quaff from "$lib/classes/Quaff.svelte";
   import {
     QLayout,
     QToolbarTitle,
@@ -18,9 +21,12 @@
     QHeader,
     QAvatar,
   } from "$lib";
-  import { isRouteActive } from "$lib/composables/useRouterLink";
   import { fade } from "svelte/transition";
   import { QTheme } from "$lib/stores/QTheme";
+  import { isRouteActive } from "$lib/utils/router";
+  import { page } from "$app/stores";
+
+  const { data, children } = $props();
 
   const pages = [
     {
@@ -170,36 +176,38 @@
     ].map((color: string) => `var(--color-${color})`),
   ];
 
-  let contentEl: HTMLDivElement;
-  let drawerLeft: QDrawer;
-  let drawerRight: QDrawer;
+  let contentEl = $state<HTMLDivElement>();
+  let drawerLeft = $state<QDrawer>();
+  let drawerRight = $state<QDrawer>();
 
-  let selectedRailbarItem: "components" | "utils" | null;
-  $: selectedRailbarItem = isRouteActive($Quaff.router, "/components")
-    ? "components"
-    : isRouteActive($Quaff.router, "/utils")
-    ? "utils"
-    : null;
+  const selectedRailbarItem = derived(isRouteActive, ($isRouteActive) =>
+    $isRouteActive("/components") ? "components" : $isRouteActive("/utils") ? "utils" : null
+  );
 
-  $: if (selectedRailbarItem !== null) {
-    drawerLeft?.show();
-  } else {
-    drawerLeft?.hide();
-  }
+  $effect(() => {
+    if (selectedRailbarItem !== null) {
+      drawerLeft?.show();
+    } else {
+      drawerLeft?.hide();
+    }
+  });
 
-  $: drawerContent =
-    selectedRailbarItem === "components"
+  const drawerContent = derived(selectedRailbarItem, ($selectedRailbarItem) =>
+    $selectedRailbarItem === "components"
       ? components
-      : selectedRailbarItem === "utils"
-      ? quaffUtils
-      : [];
+      : $selectedRailbarItem === "utils"
+        ? quaffUtils
+        : []
+  );
 
-  export let data;
-  if (data.isDark) $Quaff.dark.set(true);
+  if (data.isDark) {
+    Quaff.darkMode.set(true);
+  }
 </script>
 
-{#if $Quaff.router.route.id === "/layout"}
-  <slot />
+<!-- eslint-disable-next-line svelte/valid-compile -->
+{#if $page.route.id === "/layout"}
+  {@render children?.()}
 {:else}
   <QLayout
     view="hhr lpr fff"
@@ -211,12 +219,12 @@
     <QHeader slot="header" class="elevate-2">
       <QToolbarTitle>Quaff</QToolbarTitle>
       <QBtn
-        icon={$Quaff.dark.isActive ? "light_mode" : "dark_mode"}
-        flat
+        icon={Quaff.darkMode.isActive ? "light_mode" : "dark_mode"}
+        design="flat"
         round
-        on:click={$Quaff.dark.toggle}
+        onclick={Quaff.darkMode.toggle}
       />
-      <QBtn icon="palette" flat on:click={drawerRight.toggle} />
+      <QBtn icon="palette" design="flat" onclick={drawerRight?.toggle} />
     </QHeader>
     <QRailbar slot="railbarLeft" class="surface no-round" bordered>
       <QList>
@@ -232,10 +240,10 @@
       {#key drawerContent}
         <div in:fade={{ delay: 200, duration: 200 }} out:fade={{ duration: 200 }}>
           <QList dense>
-            {#each drawerContent as { name, to }}
+            {#each $drawerContent as { name, to }}
               <QItem
                 {to}
-                on:click={() => contentEl.scrollTo({ top: 0, behavior: "smooth" })}
+                on:click={() => contentEl?.scrollTo({ top: 0, behavior: "smooth" })}
                 activeClass="text-primary"
               >
                 {name}
@@ -260,7 +268,7 @@
       </div>
     </QDrawer>
     <div bind:this={contentEl} slot="content">
-      <slot />
+      {@render children?.()}
     </div>
   </QLayout>
 {/if}

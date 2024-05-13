@@ -1,8 +1,7 @@
 .q-icon {
-  --font: "Material Symbols Outlined";
   --size: 1.5rem;
   overflow: visible;
-  font-family: var(--font);
+  font-family: var(--font, "Material Symbols Outlined");
   font-weight: normal;
   font-style: normal;
   font-size: var(--size);
@@ -18,7 +17,6 @@
   -webkit-font-smoothing: antialiased;
   vertical-align: middle;
   text-align: center;
-  overflow: hidden;
   width: var(--size);
   min-width: var(--size);
   height: var(--size);
@@ -54,7 +52,7 @@
     --size: 2rem;
   }
 
-  > :is(img, svg) {
+  > :global(:is(img, svg)) {
     width: 100%;
     height: 100%;
     background-size: 100%;
@@ -65,7 +63,7 @@
     padding: inherit;
   }
 
-  &.filled
+  &--filled
   // we might need these selectors later:
   // a.row:is(:hover, :focus) > i,
   // .transparent:is(:hover, :focus) > i

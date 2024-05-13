@@ -1,19 +1,25 @@
+<svelte:options runes={true} />
+
 <script lang="ts">
-  import { useAlign } from "$lib/composables";
+  import { useAlign } from "$lib/composables/useAlign";
   import type { QCardActionsProps } from "./props";
 
-  export let align: QCardActionsProps["align"] = undefined,
-    vertical: QCardActionsProps["vertical"] = false,
-    userClasses: QCardActionsProps["userClasses"] = "";
-  export { userClasses as class };
+  let { align, vertical = false, children, ...props }: QCardActionsProps = $props();
 
-  $: alignClass = useAlign(align);
+  const alignClass = $derived(useAlign(align));
+
+  Q.classes("q-card__actions", {
+    bemClasses: {
+      vertical,
+    },
+    classes: [alignClass, props.class],
+  });
 </script>
 
-<nav
-  class="q-card__actions {alignClass} {userClasses}"
-  class:q-card__actions--vertical={vertical}
-  {...$$restProps}
->
-  <slot />
+<nav {...props} class="q-card__actions" {...Q.classes}>
+  {@render children?.()}
 </nav>
+
+<style lang="scss">
+  @import "./QCardActions.scss";
+</style>

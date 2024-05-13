@@ -37,7 +37,9 @@
   }
 
   function onKeyDown(e: KeyboardEvent) {
-    if (!isActivationKey(e)) return;
+    if (!isActivationKey(e)) {
+      return;
+    }
 
     e.preventDefault();
 
@@ -49,7 +51,7 @@
 <a
   bind:this={qChip}
   use:ripple={{
-    disable: noRipple || disable,
+    disabled: noRipple || disable,
     color: outlined ? undefined : "var(--on-secondary)",
   }}
   aria-disabled={disable || undefined}

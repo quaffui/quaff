@@ -14,8 +14,9 @@
     <QDocsSection {snippets} title="Default Buttons">
       <QBtn class="q-ma-sm" icon="favorite" label="Using Label" />
 
-      <QBtn class="q-ma-sm">
-        <span>Using</span><span style="color: blue">slot</span>
+      <QBtn class="q-ma-sm q-gap-md">
+        <span>Using</span>
+        <span style="color: blue">slot</span>
       </QBtn>
     </QDocsSection>
 
@@ -26,28 +27,30 @@
     </QDocsSection>
 
     <QDocsSection {snippets} title="Disabled State Buttons">
-      <QBtn class="q-ma-sm" icon="add" label="Disabled" disable />
+      <QBtn class="q-ma-sm" icon="add" label="Disabled" disabled />
 
-      <QBtn class="q-ma-sm" disable>
+      <QBtn class="q-ma-sm" disabled>
         <span>Disabled</span><span style="color: gray">Button</span>
       </QBtn>
 
       <QBtn
         class="q-ma-sm"
         label="Click me"
-        disable
-        on:click={() => alert("What's this sorcery?!")}
+        disabled
+        onclick={() => alert("What's this sorcery?!")}
       />
     </QDocsSection>
 
     <QDocsSection {snippets} title="Button Variants">
+      <QBtn class="q-ma-sm" label="Elevated (default)" />
+
       <QBtn class="q-ma-sm" label="Unelevated" unelevated />
 
-      <QBtn class="q-ma-sm" label="Outline" outline />
+      <QBtn class="q-ma-sm" label="Tonal" design="tonal" />
 
-      <QBtn class="q-ma-sm" label="Rectangle" rectangle />
+      <QBtn class="q-ma-sm" label="Outlined" design="outlined" />
 
-      <QBtn class="q-ma-sm" label="Flat" flat />
+      <QBtn class="q-ma-sm" label="Flat" design="flat" />
 
       <QBtn class="q-ma-sm" label="With image" icon="img:/cocktail.jpg" />
     </QDocsSection>
@@ -61,12 +64,12 @@
 
     <QDocsSection {snippets} title="Button with Router Link">
       <QBtn class="q-ma-sm" icon="open_in_new" label="With router link" to="/layout" />
-      <QBtn class="q-ma-sm" icon="open_in_new" label="With router link" to="/layout" disable />
+      <QBtn class="q-ma-sm" icon="open_in_new" label="With router link" to="/layout" disabled />
     </QDocsSection>
 
     <QDocsSection {snippets} title="Events">
-      <QBtn class="q-ma-sm" label="Click me" on:click={() => alert("Omg you did it")} />
-      <QBtn class="q-ma-sm" label="Click me" on:click={() => alert("Omg you did it")} disable />
+      <QBtn class="q-ma-sm" label="Click me" onclick={() => alert("Omg you did it")} />
+      <QBtn class="q-ma-sm" label="Click me" onclick={() => alert("Omg you did it")} disabled />
     </QDocsSection>
   </div>
 </QDocs>

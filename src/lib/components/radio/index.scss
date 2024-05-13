@@ -1,3 +1,5 @@
+@use "$css/mixins";
+
 .q-radio {
-  @include selection(radio);
+  @include mixins.selection(radio);
 }

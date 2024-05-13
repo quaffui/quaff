@@ -1,3 +1,4 @@
+@use "$css/mixins";
 @import "$css/shared/q-field.scss";
 
 .q-select {
@@ -11,7 +12,7 @@
   }
 
   &__menu {
-    @include menu;
+    @include mixins.menu;
     opacity: 0;
     visibility: hidden;
     transform: scale(0.8) translateY(120%);

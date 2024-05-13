@@ -1,61 +1,76 @@
 <script lang="ts">
-  import { clickOutsideDialog } from "$lib/helpers";
-  import { createEventDispatcher } from "svelte";
-  import { QBtn } from "$lib";
   import type { QDialogProps } from "./props";
 
-  export let button: QDialogProps["button"] = false,
-    buttonLabel: QDialogProps["buttonLabel"] = undefined,
-    buttonProps: QDialogProps["buttonProps"] = {},
-    position: QDialogProps["position"] = "default",
-    modal: QDialogProps["modal"] = false,
-    fullscreen: QDialogProps["fullscreen"] = false,
-    persistent: QDialogProps["persistent"] = false,
-    userClasses: QDialogProps["userClasses"] = "",
-    value: QDialogProps["value"] = false;
-  export { userClasses as class };
+  let {
+    value = $bindable(false),
+    position = "default",
+    modal = false,
+    fullscreen = false,
+    persistent = false,
+    children,
+    ...props
+  }: QDialogProps = $props();
 
-  const emit = createEventDispatcher();
-  let dialogElement: HTMLDialogElement | undefined;
+  let dialogEl: HTMLDialogElement;
 
-  const ANIMATION_DURATION = 150;
+  const canHide = $derived(value && !persistent);
 
-  $: if (value) {
-    if (modal) {
-      dialogElement?.showModal();
+  $effect(() => {
+    if (value) {
+      dialogEl?.[modal ? "showModal" : "show"]();
+
+      setTimeout(() => {
+        window.addEventListener("click", tryCancel);
+      }, 150);
     } else {
-      dialogElement?.show();
-    }
-  } else {
-    dialogElement?.close();
-  }
+      dialogEl?.close();
 
-  $: canHideOnClickOutside = value && !persistent;
+      window.removeEventListener("click", tryCancel);
+    }
+  });
 
   export function hide() {
-    value = false;
+    if (dialogEl.open) {
+      value = false;
+    }
   }
 
   export function show() {
-    value = true;
+    if (!dialogEl.open) {
+      value = true;
+    }
   }
 
-  export function toggle(e?: MouseEvent) {
-    value = !value;
-    e?.stopPropagation();
+  export function toggle() {
+    if (dialogEl.open) {
+      hide();
+    } else {
+      show();
+    }
   }
 
   function addAnimation() {
     if (persistent && value) {
-      dialogElement?.classList.add("animating");
+      dialogEl.classList.add("q-dialog--animating");
+
       setTimeout(() => {
-        dialogElement?.classList.remove("animating");
-      }, ANIMATION_DURATION);
+        dialogEl.classList.remove("q-dialog--animating");
+      }, 150);
     }
   }
 
-  function handleKeyboardHide(e: Event) {
-    if (canHideOnClickOutside) {
+  function handleClickInside(e: MouseEvent) {
+    e.stopPropagation();
+  }
+
+  function onkeydown(e: KeyboardEvent) {
+    if (e.key === "Escape") {
+      tryCancel(e);
+    }
+  }
+
+  function tryCancel(e: Event) {
+    if (canHide) {
       hide();
     } else {
       addAnimation();
@@ -63,40 +78,30 @@
     }
   }
 
-  function handleClickHide() {
-    if (canHideOnClickOutside) {
-      hide();
-    } else {
-      addAnimation();
-    }
-  }
+  Q.classes("q-dialog", {
+    bemClasses: {
+      active: value,
+      fullscreen,
+      modal,
+      [position]: ["top", "right", "bottom", "left"].includes(position),
+    },
+    classes: [props.class],
+  });
 </script>
 
-{#if button}
-  <QBtn
-    {...buttonProps}
-    label={buttonLabel}
-    on:click={toggle}
-    on:click={(event) => emit("buttonClick", event)}
-  >
-    <slot name="button" />
-  </QBtn>
-{/if}
-
 <dialog
-  use:clickOutsideDialog={handleClickHide}
-  class="q-dialog {userClasses}"
-  class:q-dialog--active={value}
-  class:q-dialog--top={position === "top"}
-  class:q-dialog--right={position === "right"}
-  class:q-dialog--bottom={position === "bottom"}
-  class:q-dialog--left={position === "left"}
-  class:q-dialog--modal={modal}
-  class:q-dialog--fullscreen={fullscreen}
-  class:q-dialog--persistent={persistent}
-  {...$$restProps}
-  bind:this={dialogElement}
-  on:cancel={handleKeyboardHide}
+  bind:this={dialogEl}
+  {...props}
+  class="q-dialog"
+  {...Q.classes}
+  onclick={handleClickInside}
+  oncancel={tryCancel}
+  {onkeydown}
+  aria-hidden={!value || undefined}
 >
-  <slot />
+  {@render children?.()}
 </dialog>
+
+<style lang="scss">
+  @import "./QDialog.scss";
+</style>

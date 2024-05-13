@@ -29,6 +29,10 @@ module.exports = {
         ignore: ["\\.shim\\.d\\.ts$"],
       },
     ],
+    curly: ["error"],
+    "no-undef": ["off"],
+    "svelte/valid-compile": ["error", { ignoreWarnings: true }],
+    "svelte/no-at-html-tags": ["warn"],
   },
   overrides: [
     {

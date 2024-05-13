@@ -30,8 +30,7 @@
       "$helpers/*": ["src/lib/helpers/*"]
     },
     "preserveValueImports": false,
-    "verbatimModuleSyntax": false,
-    "importsNotUsedAsValues": "error"
+    "verbatimModuleSyntax": false
   },
   "exclude": ["./dist/**/*"],
   "include": ["./docgen/**/*", "./scripts/**/*", "./src/**/*"]

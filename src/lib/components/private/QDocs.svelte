@@ -14,7 +14,7 @@
 <div class="q-docs" style="margin: 1rem">
   <div class="row q-gutter-lg" style="min-height: 400px">
     <QCard class="col-sm-12 col-lg-6 flex flex-center" fill="primary" style="min-height: 400px">
-      <h1 class="large no-margin" slot="title">{principalDocument.name}</h1>
+      <h1 class="large no-margin">{principalDocument.name}</h1>
     </QCard>
     <QCard
       class="q-docs__preview col-sm-12 col-lg-6 q-mt-none q-pa-none"

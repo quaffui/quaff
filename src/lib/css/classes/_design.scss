@@ -1,0 +1,56 @@
+@use "../mixins" as *;
+
+// Disabled
+.disabled {
+  @include disabled;
+}
+
+// Borders
+.border {
+  @include border;
+}
+
+.border-top {
+  @include border(var(--outline), top);
+}
+
+.border-right {
+  @include border(var(--outline), right);
+}
+
+.border-bottom {
+  @include border(var(--outline), bottom);
+}
+
+.border-left {
+  @include border(var(--outline), left);
+}
+
+// Elevation
+.elevate {
+  &-none {
+    box-shadow: none;
+  }
+
+  $elevations: (
+    "sm": 1,
+    "md": 2,
+    "lg": 3,
+  );
+
+  @each $elevation, $value in $elevations {
+    &-#{$elevation} {
+      &-top {
+        @include elevate($value, "top");
+      }
+      &-bottom {
+        @include elevate($value, "bottom");
+      }
+    }
+  }
+}
+
+// Transparent
+.transparent {
+  @include transparent;
+}
