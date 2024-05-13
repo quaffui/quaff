@@ -1,0 +1,94 @@
+// Basic styles
+.q-avatar {
+  height: var(--size);
+  width: var(--size);
+
+  & > img,
+  & > video {
+    object-fit: cover;
+    object-position: center;
+    aspect-ratio: 1;
+    width: 100%;
+    height: 100%;
+  }
+  transition:
+    var(--speed3) transform,
+    var(--speed3) border-radius,
+    var(--speed3) padding;
+  border-radius: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 1rem;
+  text-transform: uppercase;
+
+  overflow: hidden;
+
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
+  &.circle {
+    margin: 0;
+  }
+}
+
+// Sizes
+$sizes: (
+  "xs": 1,
+  "sm": 2,
+  "md": 3,
+  "lg": 4,
+  "xl": 5,
+);
+
+.q-avatar {
+  @each $size, $val in $sizes {
+    &--#{$size} {
+      height: 2rem + ($val - 1) * 0.5rem;
+      width: 2rem + ($val - 1) * 0.5rem;
+    }
+  }
+}
+
+// Border radius
+$positions-y: "top", "bottom";
+$positions-x: "right", "left";
+
+.q-avatar {
+  border-radius: 50%;
+
+  &--top-right-round {
+    border-bottom-left-radius: 0;
+  }
+  &--top-left-round {
+    border-bottom-right-radius: 0;
+  }
+  &--bottom-right-round {
+    border-top-left-radius: 0;
+  }
+  &--bottom-left-round {
+    border-top-right-radius: 0;
+  }
+
+  @each $pos-y in $positions-y {
+    &--#{$pos-y}-round {
+      @extend .q-avatar--#{$pos-y}-left-round;
+      @extend .q-avatar--#{$pos-y}-right-round;
+    }
+  }
+
+  @each $pos-x in $positions-x {
+    &--#{$pos-x}-round {
+      @extend .q-avatar--top-#{$pos-x}-round;
+      @extend .q-avatar--bottom-#{$pos-x}-round;
+    }
+  }
+
+  &--round {
+    border-radius: 0.5rem;
+  }
+}

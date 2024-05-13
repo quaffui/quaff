@@ -1,0 +1,25 @@
+@use "$css/mixins";
+
+.q-card {
+  display: block;
+  border-radius: 0.75rem;
+  transition: transform var(--speed-3) padding var(--speed-3) border-radius var(--speed-3);
+
+  @include mixins.padding("a", "md");
+  @include mixins.elevate(1, "bottom");
+
+  &--bordered {
+    box-sizing: border-box;
+    box-shadow: none;
+
+    @include mixins.border;
+  }
+
+  &--flat {
+    box-shadow: none;
+  }
+
+  &--rounded {
+    border-radius: 2rem;
+  }
+}

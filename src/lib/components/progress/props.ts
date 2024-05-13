@@ -1,40 +1,125 @@
-import type { NativeProps, CssValue } from "$lib/utils";
-import type { HTMLAttributes, SVGAttributes } from "svelte/elements";
+import type { HTMLAttributes } from "svelte/elements";
 
-export interface QLinearProgressProps extends NativeProps, HTMLAttributes<HTMLDivElement> {
+export interface QLinearProgressProps extends HTMLAttributes<HTMLDivElement> {
   /**
    * @default 0
    */
-  value: number;
+  value?: number;
+
   /**
-   * @default left
+   * @default undefined
    */
-  from?: "left" | "right";
+  buffer?: number;
+
+  /**
+   * @default "0.375em"
+   */
+  size?: Q.CssValue | number;
+
   /**
    * @default false
    */
-  rounded?: boolean;
-}
+  reverse?: boolean;
 
-export interface QCircularProgressProps extends NativeProps, SVGAttributes<SVGSVGElement> {
   /**
-   * @default 0
+   * @default false
    */
-  value: number;
+  noRound?: boolean;
+
+  /**
+   * @default false
+   */
+  instantFeedback?: boolean;
+
+  /**
+   * @default "primary"
+   */
+  color?: string;
+
+  /**
+   * @default "secondary-container"
+   */
+  trackColor?: string;
+
+  /**
+   * @default 600
+   */
+  animationSpeed?: number;
+
   /**
    * @default false
    */
   indeterminate?: boolean;
+}
+
+export interface QCircularProgressProps extends HTMLAttributes<HTMLDivElement> {
   /**
-   * @default 2em
+   * @default 0
    */
-  size?: CssValue | number;
+  value?: number;
+
   /**
-   * @default undefined
+   * @default false
+   */
+  indeterminate?: boolean;
+
+  /**
+   * @default false
+   */
+  noRound?: boolean;
+
+  /**
+   * @default "2em"
+   */
+  size?: Q.CssValue | number;
+
+  /**
+   * @default "primary"
    */
   color?: string;
+
+  /**
+   * @default "secondary-container"
+   */
+  trackColor?: string;
+
   /**
    * @default 5
    */
   thickness?: number;
+
+  /**
+   * @default 0
+   */
+  min?: number;
+
+  /**
+   * @default 100
+   */
+  max?: number;
+
+  /**
+   * @default 0
+   */
+  angle?: number;
+
+  /**
+   * @default false
+   */
+  showValue?: boolean;
+
+  /**
+   * @default false
+   */
+  instantFeedback?: boolean;
+
+  /**
+   * @default 600
+   */
+  animationSpeed?: number;
+
+  /**
+   * @default "0.25em"
+   */
+  fontSize?: Q.CssValue | number;
 }

@@ -1,62 +1,61 @@
 <script lang="ts">
-  import { useSize } from "$lib/composables";
+  import { useSize } from "$lib/composables/useSize";
   import type { QSeparatorProps } from "./props";
 
-  export let spacing: QSeparatorProps["spacing"] = "none",
-    inset: QSeparatorProps["inset"] = false,
-    vertical: QSeparatorProps["vertical"] = false,
-    color: QSeparatorProps["color"] = undefined,
-    size: QSeparatorProps["size"] = undefined,
-    text: QSeparatorProps["text"] = undefined,
-    textAlign: QSeparatorProps["textAlign"] = vertical ? "middle" : "center",
-    userClasses: QSeparatorProps["userClasses"] = undefined;
-  export { userClasses as class };
+  let {
+    spacing = "none",
+    inset = false,
+    vertical = false,
+    color = "outline",
+    size,
+    text,
+    textAlign = vertical ? "middle" : "center",
+    ...props
+  }: QSeparatorProps = $props();
 
-  let orientation: "vertical" | "horizontal";
-  $: orientation = vertical ? "vertical" : "horizontal";
+  const orientation = $derived(vertical ? "vertical" : "horizontal");
+  const qSize = $derived(useSize(spacing, "q-separator__spacing"));
 
-  $: spacingClass = useSize(spacing).class || "";
-
-  $: colorClass = color ? `bg-${color}` : "";
+  Q.classes("q-separator", {
+    bemClasses: {
+      vertical,
+    },
+    classes: [`bg-${color}`, qSize.class],
+  });
+  Q.classes("q-separator__wrapper", {
+    bemClasses: {
+      vertical,
+      inset,
+    },
+    classes: [props.class],
+  });
 </script>
 
-{#if text}
-  <div
-    class="q-separator__wrapper {userClasses || ''}"
-    class:q-separator--vertical__wrapper={vertical}
-    class:q-separator--inset__wrapper={inset}
-    {...$$restProps}
-  >
+<div {...props} class="q-separator__wrapper" {...Q.classes}>
+  {#if text}
     {#if (vertical && textAlign !== "top") || (!vertical && textAlign !== "left")}
-      <hr
-        class="q-separator {spacingClass} {colorClass}"
-        class:q-separator--vertical={vertical}
-        style:--q-separator--size={size}
-        aria-orientation={orientation}
-      />
+      {@render hr()}
     {/if}
+
     <div class={vertical ? "q-py-sm" : "q-px-sm"}>{text}</div>
+
     {#if (vertical && textAlign !== "bottom") || (!vertical && textAlign !== "right")}
-      <hr
-        class="q-separator {spacingClass} {colorClass}"
-        class:q-separator--vertical={vertical}
-        style:--q-separator--size={size}
-        aria-orientation={orientation}
-      />
+      {@render hr()}
     {/if}
-  </div>
-{:else}
-  <div
-    class="q-separator__wrapper {userClasses || ''}"
-    class:q-separator--vertical__wrapper={vertical}
-    class:q-separator--inset__wrapper={inset}
-    {...$$restProps}
-  >
-    <hr
-      class="q-separator {spacingClass} {colorClass}"
-      class:q-separator--vertical={vertical}
-      style:--q-separator--size={size}
-      aria-orientation={orientation}
-    />
-  </div>
-{/if}
+  {:else}
+    {@render hr()}
+  {/if}
+</div>
+
+{#snippet hr()}
+  <hr
+    class="q-separator"
+    {...Q.classes}
+    style:--q-separator-size={size}
+    aria-orientation={orientation}
+  />
+{/snippet}
+
+<style lang="scss">
+  @import "./QSeparator.scss";
+</style>

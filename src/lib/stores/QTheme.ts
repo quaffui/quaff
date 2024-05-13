@@ -80,7 +80,9 @@ function themeBuilder() {
 
   const apply = () => {
     const root = document.documentElement;
-    if (root === null) return;
+    if (root === null) {
+      return;
+    }
 
     update(($themeColors) => {
       let colorName: ThemeColorName;

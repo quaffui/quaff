@@ -1,0 +1,35 @@
+@use "../variables";
+@use "sass:map";
+
+.row {
+  display: grid;
+  grid-template-columns: repeat(variables.$grid-columns, 1fr);
+  grid-gap: 0;
+
+  // Gutter classes
+  @each $spaceName, $spaceVal in variables.$spaces {
+    @if $spaceName != "auto" {
+      &.q-gutter-#{$spaceName} {
+        gap: $spaceVal;
+      }
+    }
+  }
+
+  // Column classes for all sizes
+  @for $i from 1 through variables.$grid-columns {
+    & > .col-#{$i} {
+      grid-column: span #{$i};
+    }
+  }
+
+  // Column classes for each breakpoint
+  @each $breakpoint, $min-width in variables.$breakpoints {
+    @media (min-width: #{$min-width}) {
+      @for $i from 1 through variables.$grid-columns {
+        & > .col-#{$breakpoint}-#{$i} {
+          grid-column: span #{$i};
+        }
+      }
+    }
+  }
+}

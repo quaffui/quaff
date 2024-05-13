@@ -10,8 +10,9 @@
   <div slot="usage">
     <QDocsSection title="Linear Progress">
       <QLinearProgress value={30}></QLinearProgress>
-      <QLinearProgress class="q-mt-md" value={30} from="right"></QLinearProgress>
-      <QLinearProgress class="q-mt-md" value={30} rounded></QLinearProgress>
+      <QLinearProgress class="q-mt-md" value={30} reverse></QLinearProgress>
+      <QLinearProgress class="q-mt-md" value={30}></QLinearProgress>
+      <QLinearProgress class="q-mt-md" indeterminate></QLinearProgress>
     </QDocsSection>
 
     <QDocsSection title="Circular Progress">

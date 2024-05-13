@@ -1,0 +1,10 @@
+.q-breadcrumbs {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+
+  & > :global(.q-breadcrumbs__separator:first-child) {
+    display: none;
+  }
+}

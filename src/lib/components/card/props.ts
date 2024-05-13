@@ -1,42 +1,35 @@
-import type { UseAlignProps } from "$lib/composables";
-import type { NativeProps } from "$lib/utils";
+import type { UseAlignProps } from "$lib/composables/useAlign";
 import type { HTMLAttributes } from "svelte/elements";
 
 export type QCardFillColors = "primary" | "secondary" | "tertiary";
 
-export interface QCardProps extends NativeProps, HTMLAttributes<HTMLElement> {
+export interface QCardProps extends HTMLAttributes<HTMLElement> {
   /**
-   * Puts a border around the card.
+   * Adds a border around the card.
    * @default false
    */
   bordered?: boolean;
 
   /**
    * Defines the fill color of the card.
-   * @default undefined
+   * @default false
    */
   fill?: boolean | QCardFillColors;
 
   /**
-   * Makes the card flat, removing its elevation.
+   * Use the flat design for the card, removing its elevation.
    * @default false
    */
   flat?: boolean;
 
   /**
-   * Adds rounded corners to the card.
+   * Adds border radius to the card to round its corners.
    * @default false
    */
-  round?: boolean;
-
-  /**
-   * Sets the title of the card.
-   * @default undefined
-   */
-  title?: string;
+  rounded?: boolean;
 }
 
-export interface QCardSectionProps extends NativeProps, HTMLAttributes<HTMLDivElement> {
+export interface QCardSectionProps extends HTMLAttributes<HTMLDivElement> {
   /**
    * Lays out the section content horizontally.
    * @default false
@@ -44,7 +37,7 @@ export interface QCardSectionProps extends NativeProps, HTMLAttributes<HTMLDivEl
   horizontal?: boolean;
 }
 
-export interface QCardActionsProps extends UseAlignProps, NativeProps, HTMLAttributes<HTMLElement> {
+export interface QCardActionsProps extends UseAlignProps, HTMLAttributes<HTMLElement> {
   /**
    * Lays out the action items vertically.
    * @default false

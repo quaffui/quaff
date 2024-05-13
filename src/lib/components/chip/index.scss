@@ -1,3 +1,5 @@
+@use "$css/mixins";
+
 // QChip
 .q-chip {
   box-sizing: content-box;
@@ -22,10 +24,10 @@
   border: none;
 
   @extend .no-select;
-  @include padding("x", "md");
-  @include margin("x");
-  @include gap("md");
-  @include btn-image("chip");
+  @include mixins.padding("x", "md");
+  @include mixins.margin("x");
+  @include mixins.gap("md");
+  @include mixins.btn-image("chip");
 
   &.q-chip--sm {
     height: 2rem;
@@ -38,8 +40,8 @@
   }
 
   &.q-chip--bordered {
-    @include transparent($ripple: true);
-    @include border(var(--secondary));
+    @include mixins.transparent($ripple: true);
+    @include mixins.border(var(--secondary));
     color: var(--secondary);
   }
 
@@ -66,8 +68,8 @@
     height: auto;
     max-height: none;
 
-    @include padding("y");
-    @include gap("xs");
+    @include mixins.padding("y");
+    @include mixins.gap("xs");
   }
 
   &.q-chip[aria-disabled="true"] {

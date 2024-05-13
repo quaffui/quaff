@@ -1,3 +1,5 @@
+@use "$css/mixins";
+
 .q-btn {
   position: relative;
   cursor: pointer;
@@ -47,8 +49,8 @@
   }
 
   &.q-btn--outlined {
-    @include transparent($ripple: true);
-    @include border(var(--primary));
+    @include mixins.transparent($ripple: true);
+    @include mixins.border(var(--primary));
     color: var(--primary);
   }
 
@@ -57,7 +59,7 @@
   }
 
   &.q-btn--flat {
-    @include transparent($ripple: true);
+    @include mixins.transparent($ripple: true);
     @extend .elevate-none;
   }
 
@@ -99,5 +101,5 @@
     opacity: 0.16;
   }
 
-  @include btn-image;
+  @include mixins.btn-image;
 }

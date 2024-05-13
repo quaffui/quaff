@@ -1,6 +1,5 @@
 import type { NativeProps } from "$lib/utils";
 import type { HTMLAttributes } from "svelte/elements";
-import type { QBtnProps } from "../button/props";
 
 export type QDialogPositionOptions = "default" | "top" | "right" | "bottom" | "left";
 
@@ -10,24 +9,6 @@ export interface QDialogProps extends NativeProps, HTMLAttributes<HTMLDialogElem
    * @default true
    */
   value: boolean;
-
-  /**
-   * Wether the dialog should have a trigger button or not.
-   * @default false
-   */
-  button?: boolean;
-
-  /**
-   * The label of the trigger button. Requires "button" to be set.
-   * @default undefined
-   */
-  buttonLabel?: string;
-
-  /**
-   * Additional attributes for the dialog button.
-   * @default {}
-   */
-  buttonProps?: QBtnProps;
 
   /**
    * The position of the dialog relative to the viewport.
