@@ -1,11 +1,12 @@
 import { format } from "prettier";
 import fs from "node:fs";
 import { generateColors } from "../lib/utils/colors.js";
-import type { QuaffColors } from "../lib/utils/colors.js";
+import type { QuaffColors, Mode } from "../lib/utils/colors.js";
+import { Entries } from "$lib/utils/types.js";
 
 const BASE_COLOR = "#0039b4";
 
-function stringFromPalette(palette: QuaffColors, mode: string, type: "root" | "body") {
+function stringFromPalette(palette: QuaffColors, mode: Mode, type: "root" | "body") {
   const modeString = mode ? `-${mode}` : "";
   return Object.entries(palette)
     .map(([color, hex]) =>
@@ -16,11 +17,13 @@ function stringFromPalette(palette: QuaffColors, mode: string, type: "root" | "b
 
 export function writeColorFile() {
   const colors = generateColors(BASE_COLOR);
+  const colorEntries = Object.entries(colors) as Entries<typeof colors>;
+
   const disclaimer = "// AUTO GENERATED FILE - DO NOT MODIFY OR DELETE";
-  const root = `:root {${Object.entries(colors)
+  const root = `:root {${colorEntries
     .map(([mode, palette]) => stringFromPalette(palette, mode, "root"))
     .join("")}}`;
-  const cssContent = Object.entries(colors)
+  const cssContent = colorEntries
     .map(([mode, palette]) => `.body--${mode} {${stringFromPalette(palette, mode, "body")}}`)
     .join("");
 

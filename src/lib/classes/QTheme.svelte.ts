@@ -1,7 +1,6 @@
 import { generateColors } from "$lib/utils/colors";
-import type { HexValue, QuaffColors } from "$lib/utils/colors";
+import type { HexValue, QuaffColors, Mode } from "$lib/utils/colors";
 
-type Mode = "light" | "dark";
 type ThemeColors = Record<`${keyof QuaffColors}-${Mode}`, HexValue>;
 
 function extractColorFromCssVar(cssVar: string) {
