@@ -94,6 +94,10 @@
 
   &--outlined {
     outline: solid 0.0625rem var(--outline);
+
+    &:not([aria-disabled]):focus {
+      outline-color: var(--primary);
+    }
   }
 
   &--round {
