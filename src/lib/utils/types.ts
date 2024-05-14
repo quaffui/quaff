@@ -56,6 +56,10 @@ export interface QComponentMethod {
   description: string;
 }
 
+export type Entries<T> = {
+  [K in keyof T]: [K, T[K]];
+}[keyof T][];
+
 export function isNumber(input: unknown): input is number {
   return typeof input === "number" || !isNaN(Number(input));
 }

@@ -1,4 +1,141 @@
-import { isNumber } from "./types";
+import {
+  TonalPalette,
+  argbFromHex,
+  hexFromArgb,
+  themeFromSourceColor,
+  type Theme,
+} from "@material/material-color-utilities";
+import { isNumber } from "./types.js";
+import { convertCase } from "./string.js";
+
+export type Mode = "light" | "dark";
+export type HexValue = `#${string}`;
+
+type BaseColors = {
+  primary: HexValue;
+  "on-primary": HexValue;
+  "primary-container": HexValue;
+  "on-primary-container": HexValue;
+  secondary: HexValue;
+  "on-secondary": HexValue;
+  "secondary-container": HexValue;
+  "on-secondary-container": HexValue;
+  tertiary: HexValue;
+  "on-tertiary": HexValue;
+  "tertiary-container": HexValue;
+  "on-tertiary-container": HexValue;
+  neutral: HexValue;
+  "on-neutral": HexValue;
+  "neutral-container": HexValue;
+  "on-neutral-container": HexValue;
+  "neutral-variant": HexValue;
+  "on-neutral-variant": HexValue;
+  "neutral-variant-container": HexValue;
+  "on-neutral-variant-container": HexValue;
+  error: HexValue;
+  "on-error": HexValue;
+  "error-container": HexValue;
+  "on-error-container": HexValue;
+};
+
+type ToneColors = {
+  surface: HexValue;
+  "surface-dim": HexValue;
+  "surface-bright": HexValue;
+  "on-surface": HexValue;
+  "on-surface-variant": HexValue;
+  "surface-container-lowest": HexValue;
+  "surface-container-low": HexValue;
+  "surface-container": HexValue;
+  "surface-container-high": HexValue;
+  "surface-container-highest": HexValue;
+  "inverse-surface": HexValue;
+  "inverse-on-surface": HexValue;
+  "inverse-primary": HexValue;
+  outline: HexValue;
+  "outline-variant": HexValue;
+  scrim: HexValue;
+  shadow: HexValue;
+};
+
+export type QuaffColors = BaseColors & ToneColors;
+
+const COLOR_TONES: Record<
+  keyof ToneColors,
+  { fromColor: keyof Theme["palettes"]; light: number; dark: number }
+> = {
+  surface: { fromColor: "neutral", light: 98, dark: 6 },
+  "surface-dim": { fromColor: "neutral", light: 87, dark: 6 },
+  "surface-bright": { fromColor: "neutral", light: 98, dark: 24 },
+  "on-surface": { fromColor: "neutral", light: 10, dark: 90 },
+  "on-surface-variant": { fromColor: "neutralVariant", light: 30, dark: 90 },
+  "surface-container-lowest": { fromColor: "neutral", light: 100, dark: 4 },
+  "surface-container-low": { fromColor: "neutral", light: 96, dark: 10 },
+  "surface-container": { fromColor: "neutral", light: 94, dark: 12 },
+  "surface-container-high": { fromColor: "neutral", light: 92, dark: 17 },
+  "surface-container-highest": { fromColor: "neutral", light: 90, dark: 24 },
+  "inverse-surface": { fromColor: "neutral", light: 20, dark: 90 },
+  "inverse-on-surface": { fromColor: "neutral", light: 95, dark: 20 },
+  "inverse-primary": { fromColor: "primary", light: 80, dark: 40 },
+  outline: { fromColor: "neutralVariant", light: 50, dark: 60 },
+  "outline-variant": { fromColor: "neutralVariant", light: 80, dark: 30 },
+  scrim: { fromColor: "neutral", light: 0, dark: 0 },
+  shadow: { fromColor: "neutral", light: 0, dark: 0 },
+};
+
+export function generateColors(from: string): { light: QuaffColors; dark: QuaffColors } {
+  const argb = argbFromHex(from);
+  const palettes = themeFromSourceColor(argb).palettes;
+
+  return {
+    light: getColors(palettes, "light"),
+    dark: getColors(palettes, "dark"),
+  };
+}
+
+function getColors(palettes: Theme["palettes"], mode: "light" | "dark") {
+  const tones =
+    mode === "light"
+      ? {
+          base: 40,
+          onBase: 100,
+          baseContainer: 90,
+          onBaseContainer: 10,
+        }
+      : {
+          base: 80,
+          onBase: 20,
+          baseContainer: 30,
+          onBaseContainer: 90,
+        };
+
+  const getColor = (color: string, palette: TonalPalette) => {
+    color = convertCase(color, "pascal", "kebab");
+
+    return [
+      [color, palette.tone(tones.base)],
+      [`on-${color}`, palette.tone(tones.onBase)],
+      [`${color}-container`, palette.tone(tones.baseContainer)],
+      [`on-${color}-container`, palette.tone(tones.onBaseContainer)],
+    ];
+  };
+
+  const results: Record<keyof QuaffColors, number> = Object.fromEntries(
+    Object.entries(palettes)
+      .map(([color, palette]) => getColor(color, palette))
+      .flat(1)
+  );
+
+  let toneColor: keyof typeof COLOR_TONES;
+  for (toneColor in COLOR_TONES) {
+    const toneInfo = COLOR_TONES[toneColor];
+    results[toneColor] = palettes[toneInfo.fromColor].tone(toneInfo[mode]);
+  }
+
+  return Object.fromEntries(
+    Object.entries(results).map(([color, value]) => [color, hexFromArgb(value)])
+  ) as QuaffColors;
+}
 
 class QColors {
   private static hexRegex: RegExp = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
