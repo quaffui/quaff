@@ -8,6 +8,7 @@ import {
 import { isNumber } from "./types.js";
 import { convertCase } from "./string.js";
 
+export type Mode = "light" | "dark";
 export type HexValue = `#${string}`;
 
 export type QuaffColors = {
