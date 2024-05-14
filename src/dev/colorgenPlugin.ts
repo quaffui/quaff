@@ -2,7 +2,7 @@ import { format } from "prettier";
 import fs from "node:fs";
 import { generateColors } from "../lib/utils/colors.js";
 import type { QuaffColors, Mode } from "../lib/utils/colors.js";
-import { Entries } from "$lib/utils/types.js";
+import type { Entries } from "../lib/utils/types.js";
 
 const BASE_COLOR = "#0039b4";
 
