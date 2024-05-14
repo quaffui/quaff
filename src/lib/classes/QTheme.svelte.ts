@@ -5,7 +5,8 @@ type ThemeColors = Record<`${keyof QuaffColors}-${Mode}`, HexValue>;
 
 function extractColorFromCssVar(cssVar: string) {
   const rootStyles = getComputedStyle(document.documentElement);
-  const varName = cssVar.replace(/var\(([a-z0-9-]+)\)/, "$1"); // remove var(...) to get only the color
+  // remove var(...) to get only the color
+  const varName = cssVar.replace(/var\(([a-z0-9-]+)\)/, "$1");
   return rootStyles.getPropertyValue(varName).trim();
 }
 
@@ -15,8 +16,6 @@ function prepareThemeColors(from: string) {
   }
 
   const theme = generateColors(from);
-
-  console.log(theme);
 
   //@ts-expect-error The properties are added in the next for loop
   const themeColors: ThemeColors = {};
@@ -57,7 +56,6 @@ class QTheme {
   }
 
   setTheme(from: string) {
-    console.log({ from });
     const newTheme = prepareThemeColors(from);
     this.themeColors = newTheme;
     this.apply();
