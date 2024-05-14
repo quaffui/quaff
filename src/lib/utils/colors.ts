@@ -11,7 +11,7 @@ import { convertCase } from "./string.js";
 export type Mode = "light" | "dark";
 export type HexValue = `#${string}`;
 
-export type QuaffColors = {
+type BaseColors = {
   primary: HexValue;
   "on-primary": HexValue;
   "primary-container": HexValue;
@@ -36,6 +36,9 @@ export type QuaffColors = {
   "on-error": HexValue;
   "error-container": HexValue;
   "on-error-container": HexValue;
+};
+
+type ToneColors = {
   surface: HexValue;
   "surface-dim": HexValue;
   "surface-bright": HexValue;
@@ -53,6 +56,31 @@ export type QuaffColors = {
   "outline-variant": HexValue;
   scrim: HexValue;
   shadow: HexValue;
+};
+
+export type QuaffColors = BaseColors & ToneColors;
+
+const COLOR_TONES: Record<
+  keyof ToneColors,
+  { fromColor: keyof Theme["palettes"]; light: number; dark: number }
+> = {
+  surface: { fromColor: "neutral", light: 98, dark: 6 },
+  "surface-dim": { fromColor: "neutral", light: 87, dark: 6 },
+  "surface-bright": { fromColor: "neutral", light: 98, dark: 24 },
+  "on-surface": { fromColor: "neutral", light: 10, dark: 90 },
+  "on-surface-variant": { fromColor: "neutralVariant", light: 30, dark: 90 },
+  "surface-container-lowest": { fromColor: "neutral", light: 100, dark: 4 },
+  "surface-container-low": { fromColor: "neutral", light: 96, dark: 10 },
+  "surface-container": { fromColor: "neutral", light: 94, dark: 12 },
+  "surface-container-high": { fromColor: "neutral", light: 92, dark: 17 },
+  "surface-container-highest": { fromColor: "neutral", light: 90, dark: 24 },
+  "inverse-surface": { fromColor: "neutral", light: 20, dark: 90 },
+  "inverse-on-surface": { fromColor: "neutral", light: 95, dark: 20 },
+  "inverse-primary": { fromColor: "primary", light: 80, dark: 40 },
+  outline: { fromColor: "neutralVariant", light: 50, dark: 60 },
+  "outline-variant": { fromColor: "neutralVariant", light: 80, dark: 30 },
+  scrim: { fromColor: "neutral", light: 0, dark: 0 },
+  shadow: { fromColor: "neutral", light: 0, dark: 0 },
 };
 
 export function generateColors(from: string): { light: QuaffColors; dark: QuaffColors } {
@@ -98,28 +126,11 @@ function getColors(palettes: Theme["palettes"], mode: "light" | "dark") {
       .flat(1)
   );
 
-  results["surface"] = palettes.neutral.tone(mode === "light" ? 98 : 6);
-  results["surface-dim"] = palettes.neutral.tone(mode === "light" ? 87 : 6);
-  results["surface-bright"] = palettes.neutral.tone(mode === "light" ? 98 : 24);
-
-  results["on-surface"] = palettes.neutral.tone(mode === "light" ? 10 : 90);
-  results["on-surface-variant"] = palettes.neutralVariant.tone(mode === "light" ? 30 : 90);
-
-  results["surface-container-lowest"] = palettes.neutral.tone(mode === "light" ? 100 : 4);
-  results["surface-container-low"] = palettes.neutral.tone(mode === "light" ? 96 : 10);
-  results["surface-container"] = palettes.neutral.tone(mode === "light" ? 94 : 12);
-  results["surface-container-high"] = palettes.neutral.tone(mode === "light" ? 92 : 17);
-  results["surface-container-highest"] = palettes.neutral.tone(mode === "light" ? 90 : 24);
-
-  results["inverse-surface"] = palettes.neutral.tone(mode === "light" ? 20 : 90);
-  results["inverse-on-surface"] = palettes.neutral.tone(mode === "light" ? 95 : 20);
-  results["inverse-primary"] = palettes.primary.tone(mode === "light" ? 80 : 40);
-
-  results["outline"] = palettes.neutralVariant.tone(mode === "light" ? 50 : 60);
-  results["outline-variant"] = palettes.neutralVariant.tone(mode === "light" ? 80 : 30);
-
-  results["scrim"] = palettes.neutral.tone(0);
-  results["shadow"] = palettes.neutral.tone(0);
+  let toneColor: keyof typeof COLOR_TONES;
+  for (toneColor in COLOR_TONES) {
+    const toneInfo = COLOR_TONES[toneColor];
+    results[toneColor] = palettes[toneInfo.fromColor].tone(toneInfo[mode]);
+  }
 
   return Object.fromEntries(
     Object.entries(results).map(([color, value]) => [color, hexFromArgb(value)])
