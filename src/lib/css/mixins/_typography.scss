@@ -1,0 +1,7 @@
+@mixin typography($name: null) {
+  font-family: var(--typescale-#{$name}-font-family-name);
+  font-weight: var(--typescale-#{$name}-font-weight);
+  font-size: var(--typescale-#{$name}-font-size);
+  line-height: var(--typescale-#{$name}-line-height);
+  letter-spacing: var(--typescale-#{$name}-letter-spacing);
+}
