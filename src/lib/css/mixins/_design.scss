@@ -1,6 +1,6 @@
 @use "../variables";
 
-@mixin elevate($strength, $position) {
+@mixin elevate($strength, $position: null) {
   $coeff: 1;
   @if $position == "top" {
     $coeff: -1;
@@ -45,24 +45,25 @@
 }
 
 @mixin disabled {
-  cursor: not-allowed;
-  box-shadow: none;
+  cursor: not-allowed !important;
+  box-shadow: none !important;
+  user-select: none !important;
 
   &[class*="--outlined"] {
-    outline-color: add-transparency(var(--on-surface), 12%);
+    outline-color: add-transparency(var(--on-surface), 12%) !important;
   }
 
   &:not([class*="--outlined"], [class*="--flat"]) {
-    background-color: add-transparency(var(--on-surface), 12%);
+    background-color: add-transparency(var(--on-surface), 12%) !important;
   }
 
   & > :global(*) {
-    color: add-transparency(var(--on-surface), 38%);
+    color: add-transparency(var(--on-surface), 38%) !important;
   }
 
   &::before,
   &::after {
-    all: unset;
+    all: unset !important;
   }
 }
 
