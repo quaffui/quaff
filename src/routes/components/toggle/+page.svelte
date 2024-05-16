@@ -23,7 +23,7 @@
 
     <QDocsSection {snippets} title="Toggle with label position">
       <QToggle bind:value={toggle} class="q-ma-sm" leftLabel label="Left label" />
-      <QToggle bind:value={toggle} class="q-ma-sm" rightLabel label="Right label" />
+      <QToggle bind:value={toggle} class="q-ma-sm" label="Right label" />
     </QDocsSection>
 
     <QDocsSection {snippets} title="Disabled state">
