@@ -1,15 +1,23 @@
 <script lang="ts">
   import type { QRadioProps } from "./props";
 
-  export let value: QRadioProps["value"] = "",
-    label: QRadioProps["label"] = "",
-    selected: QRadioProps["selected"] = undefined,
-    disable: QRadioProps["disable"] = false,
-    userClasses: QRadioProps["userClasses"] = "";
-  export { userClasses as class };
+  let {
+    value = "",
+    label = "",
+    selected = $bindable(),
+    disable = false,
+    ...props
+  }: QRadioProps = $props();
+
+  Q.classes("q-radio", {
+    bemClasses: {
+      disabled: disable,
+    },
+    classes: [props.class],
+  });
 </script>
 
-<label class="q-radio {userClasses}" class:q-radio--disabled={disable} {...$$restProps}>
+<label {...props} class="q-radio" {...Q.classes}>
   <input type="radio" bind:group={selected} {value} disabled={disable} />
   <span>{label}</span>
 </label>
