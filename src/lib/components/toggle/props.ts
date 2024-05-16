@@ -1,19 +1,9 @@
-import { NativePropsDefaults } from "$lib/utils";
-import type { NativeProps } from "$lib/utils";
+import type { HTMLAttributes } from "svelte/elements";
 
-export interface QToggleProps extends NativeProps {
+export interface QToggleProps extends HTMLAttributes<HTMLDivElement> {
   value?: boolean;
   label?: string;
   leftLabel?: boolean;
   icon?: string;
   disable?: boolean;
 }
-
-export const QTogglePropsDefaults: QToggleProps = {
-  value: false,
-  label: undefined,
-  leftLabel: false,
-  icon: undefined,
-  disable: false,
-  ...NativePropsDefaults,
-};
