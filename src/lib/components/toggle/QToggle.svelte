@@ -6,12 +6,12 @@
     icon = undefined,
     label = undefined,
     leftLabel = undefined,
-    disable = undefined,
+    disable = false,
     ...props
   }: QToggleProps = $props();
 
   function toggle() {
-    if (disable !== true) {
+    if (!disable) {
       value = !value;
     }
   }
@@ -33,7 +33,7 @@
   aria-disabled={disable || undefined}
   role="switch"
   aria-checked={value}
-  tabindex="0"
+  tabindex={disable ? -1 : 0}
 >
   <label class="q-toggle__inner" class:q-toggle__inner--icon={icon}>
     <input bind:checked={value} type="checkbox" disabled={disable || undefined} />
