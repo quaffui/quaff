@@ -1,31 +1,39 @@
 <script lang="ts">
   import type { QToggleProps } from "./props";
 
-  export let value: QToggleProps["value"],
-    icon: QToggleProps["icon"] = undefined,
-    label: QToggleProps["label"] = undefined,
-    leftLabel: QToggleProps["leftLabel"] = undefined,
-    disable: QToggleProps["disable"] = undefined,
-    userClasses: QToggleProps["userClasses"] = "";
-  export { userClasses as class };
+  let {
+    value = $bindable(),
+    icon = undefined,
+    label = undefined,
+    leftLabel = undefined,
+    disable = undefined,
+    ...props
+  }: QToggleProps = $props();
 
   function toggle() {
     if (disable !== true) {
       value = !value;
     }
   }
+
+  Q.classes("q-toggle", {
+    bemClasses: {
+      reversed: leftLabel,
+      disabled: disable,
+    },
+    classes: [props.class],
+  });
 </script>
 
 <div
-  on:click={toggle}
-  class="q-toggle {userClasses}"
-  class:q-toggle--reversed={leftLabel}
-  class:q-toggle--disabled={disable}
+  {...props}
+  class="q-toggle"
+  {...Q.classes}
+  onclick={toggle}
   aria-disabled={disable || undefined}
   role="switch"
   aria-checked={value}
   tabindex="0"
-  {...$$restProps}
 >
   <label class="q-toggle__inner" class:q-toggle__inner--icon={icon}>
     <input bind:checked={value} type="checkbox" disabled={disable || undefined} />
