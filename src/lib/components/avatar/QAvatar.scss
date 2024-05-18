@@ -38,18 +38,17 @@
 
 // Sizes
 $sizes: (
-  "xs": 1,
-  "sm": 2,
-  "md": 3,
-  "lg": 4,
-  "xl": 5,
+  "xs": 0,
+  "sm": 1,
+  "md": 2,
+  "lg": 3,
+  "xl": 4,
 );
 
 .q-avatar {
   @each $size, $val in $sizes {
     &--#{$size} {
-      height: 2rem + ($val - 1) * 0.5rem;
-      width: 2rem + ($val - 1) * 0.5rem;
+      --size: calc(2rem + #{$val} * 0.5rem);
     }
   }
 }
