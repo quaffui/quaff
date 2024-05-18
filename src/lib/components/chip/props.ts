@@ -1,14 +1,28 @@
-import type { QuaffSizes, NativeProps } from "$lib/utils";
 import type { HTMLAttributes } from "svelte/elements";
 
-export type QChipSizeOptions = Exclude<QuaffSizes, "xs" | "xl">;
+export type QChipKindOptions = "assist" | "filter" | "input" | "suggestion";
+export type QChipFillOptions =
+  | "primary"
+  | "secondary"
+  | "tertiary"
+  | "neutral"
+  | "neutral-variant"
+  | "error";
 
-export interface QChipProps extends NativeProps, HTMLAttributes<HTMLAnchorElement> {
+export type QChipSizeOptions = Exclude<Q.Size, "xs" | "xl" | "none">;
+
+export interface QChipProps extends HTMLAttributes<HTMLDivElement> {
   /**
-   * The content inside the chip. Will overwrite the default slot.
+   * The chip's kind. It will control the chip's style and behavior.
    * @default undefined
    */
-  content?: string;
+  kind?: QChipKindOptions;
+
+  /**
+   * The chip's text content. Will overwrite the default slot.
+   * @default undefined
+   */
+  label?: string;
 
   /**
    * Name of the leading icon to use for the chip. If starts with "img:", will be used as an image src instead.
@@ -17,40 +31,34 @@ export interface QChipProps extends NativeProps, HTMLAttributes<HTMLAnchorElemen
   icon?: string;
 
   /**
-   * Name of the trailing icon to use for the chip. If starts with "img:", will be used as an image src instead.
+   * Only for filter and input chips. Name of the trailing icon to use for the chip.
    * @default undefined
    */
-  iconRight?: string;
+  trailingIcon?: string;
 
   /**
-   * Puts the chip in a disabled state, making it unclickable.
+   * Puts the chip in a disabled state, making it unactivable.
    * @default false
    */
-  disable?: boolean;
+  disabled?: boolean;
 
   /**
-   * Makes leading and trailing images responsive, making them take more space.
+   * Only for filter chips. Controls wether the chip is selected or not.
    * @default false
    */
-  responsive?: boolean;
+  selected?: boolean;
 
   /**
-   * If true, the chip will display its content vertically.
+   * Elevates the button, giving it box-shadow and a background color.
    * @default false
    */
-  vertical?: boolean;
+  elevated?: boolean;
 
   /**
    * Use round design for the chip, adding a large border-radius to it.
    * @default false
    */
   round?: boolean;
-
-  /**
-   * Use outline design for the chip, adding a border around it.
-   * @default false
-   */
-  outlined?: boolean;
 
   /**
    * Disable the ripple effect for the chip.
@@ -60,19 +68,7 @@ export interface QChipProps extends NativeProps, HTMLAttributes<HTMLAnchorElemen
 
   /**
    * Size of the chip.
-   * @default small
+   * @default sm
    */
   size?: QChipSizeOptions;
-
-  /**
-   * Tabindex of the chip.
-   * @default undefined
-   */
-  tabindex?: number;
-
-  /**
-   * Makes the chip navigational. Can be used with the router (e.g to="/home") or as a normal href attribute (e.g to="#section-id").
-   * @default undefined
-   */
-  href?: string;
 }
