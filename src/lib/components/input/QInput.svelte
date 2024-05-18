@@ -1,71 +1,84 @@
 <script lang="ts">
-  let focus = false;
-  $: active = value || focus;
+  let focus = $state(false);
 
-  let slotPrependWidth = 0;
+  let snippetPrependWidth = $state(0);
 
   import type { QInputProps } from "../input/props";
 
-  export let dense: QInputProps["dense"] = false,
-    disable: QInputProps["disable"] = false,
-    error: QInputProps["error"] = false,
-    errorMessage: QInputProps["errorMessage"] = undefined,
-    filled: QInputProps["filled"] = false,
-    hint: QInputProps["hint"] = undefined,
-    label: QInputProps["label"] = undefined,
-    outlined: QInputProps["outlined"] = false,
-    rounded: QInputProps["rounded"] = false,
-    value: QInputProps["value"],
-    userClasses: QInputProps["userClasses"] = "";
+  let {
+    dense = false,
+    disable = false,
+    error = false,
+    errorMessage = undefined,
+    filled = false,
+    hint = undefined,
+    label = undefined,
+    outlined = false,
+    rounded = false,
+    before = undefined,
+    prepend = undefined,
+    append = undefined,
+    after = undefined,
+    value = $bindable(),
+    ...props
+  }: QInputProps = $props();
 
-  export { userClasses as class };
+  const active = $derived(value || focus);
+
+  // q-field here, q-input in classes
+  Q.classes("q-field", {
+    bemClasses: {
+      default: !outlined && !rounded && !filled,
+      outlined,
+      rounded,
+      filled,
+      "has-border": outlined || rounded,
+      dense,
+      active,
+      focus,
+      label,
+      "snippet-append": !!append,
+      "snippet-prepend": !!prepend,
+      disable,
+      error,
+    },
+    classes: [props.class, "q-input"],
+  });
 </script>
 
 <div
-  class="q-input q-field {userClasses}"
-  class:q-field--default={!outlined && !rounded && !filled}
-  class:q-field--outlined={outlined}
-  class:q-field--rounded={rounded}
-  class:q-field--filled={filled}
-  class:q-field--has-border={outlined || rounded}
-  class:q-field--dense={dense}
-  class:q-field--active={active}
-  class:q-field--focus={focus}
-  class:q-field--label={label}
-  class:q-field--slot-append={$$slots.append}
-  class:q-field--slot-prepend={$$slots.prepend}
-  class:q-field--disable={disable}
-  class:q-field--error={error}
-  style:--slot-prepend-width="{slotPrependWidth}px"
-  {...$$restProps}
+  {...props}
+  class="q-field"
+  {...Q.classes}
+  style:--snippet-prepend-width="{snippetPrependWidth}px"
 >
-  {#if $$slots.before}
-    <div class="q-field__slot-before">
-      <slot name="before" />
+  {#if before}
+    <div class="q-field__snippet-before">
+      {@render before()}
     </div>
   {/if}
 
   <div class="q-field__inner">
     <label class="q-field__wrapper">
-      {#if $$slots.prepend}
-        <div class="q-field__slot-prepend" bind:clientWidth={slotPrependWidth}>
-          <slot name="prepend" />
+      {#if prepend}
+        <div class="q-field__snippet-prepend" bind:clientWidth={snippetPrependWidth}>
+          {@render prepend()}
         </div>
       {/if}
       <input
         class="q-field__input"
         bind:value
         placeholder=""
-        on:focus={() => (focus = true)}
-        on:blur={() => (focus = false)}
+        onfocus={() => (focus = true)}
+        onblur={() => (focus = false)}
         disabled={disable}
         tabindex={disable === true ? -1 : 0}
       />
       <span class="q-field__label">{label}</span>
 
-      {#if $$slots.append}
-        <div class="q-field__slot-append">
-          <slot name="append" />
+      {#if append}
+        <div class="q-field__snippet-append">
+          {@render append()}
         </div>
       {/if}
     </label>
@@ -77,9 +90,9 @@
     {/if}
   </div>
 
-  {#if $$slots.after}
-    <div class="q-field__slot-after">
-      <slot name="after" />
+  {#if after}
+    <div class="q-field__snippet-after">
+      {@render after()}
     </div>
   {/if}
 </div>
