@@ -15,7 +15,6 @@
     icon,
     trailingIcon,
     disabled = false,
-    round = false,
     elevated,
     noRipple = false,
     selected = $bindable(kind === "filter" ? false : undefined),
@@ -81,7 +80,6 @@
     bemClasses: {
       [kind]: true,
       [size]: true,
-      round,
       selected,
       elevated,
       outlined: !elevated,

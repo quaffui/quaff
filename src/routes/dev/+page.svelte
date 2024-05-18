@@ -498,52 +498,44 @@
         <QCardSection>
           <h6>Default</h6>
           <div class="flex justify-around" style="align-items: center">
-            <QChip content="With content" />
+            <QChip label="With content" />
             <QChip>With default slot</QChip>
           </div>
         </QCardSection>
         <QCardSection>
           <h6>Styles</h6>
           <div class="flex justify-around" style="align-items: center">
-            <QChip content="I'm outlined" outlined />
-            <QChip content="I'm rounded" round />
-            <QChip content="I'm disabled" disable />
+            <QChip label="I'm outlined" />
+            <QChip label="I'm disabled" disabled />
           </div>
         </QCardSection>
         <QCardSection>
           <h6>Size</h6>
           <div class="flex column" style="align-items: center; gap: 1em">
-            <QChip content="I'm small" size="sm" />
-            <QChip content="I'm medium (default)" size="md" />
-            <QChip content="I'm large" size="lg" />
+            <QChip label="I'm small" size="sm" />
+            <QChip label="I'm medium (default)" size="md" />
+            <QChip label="I'm large" size="lg" />
           </div>
         </QCardSection>
         <QCardSection>
           <h6>With icons</h6>
           <div class="flex column" style="align-items: center; gap: 1em">
-            <QChip content="With left icon" icon="check" />
-            <QChip content="With right icon" iconRight="close" />
-            <QChip content="With both icons" icon="check" iconRight="close" />
+            <QChip label="With left icon" icon="check" />
+            <QChip label="With right icon" trailingIcon="close" />
+            <QChip label="With both icons" icon="check" trailingIcon="close" />
           </div>
         </QCardSection>
         <QCardSection>
           <h6>With images</h6>
           <div class="flex column" style="align-items: center; gap: 1em">
-            <QChip content="With left image" icon="img:/cocktail.jpg" />
-            <QChip content="With right image" outlined iconRight="img:/cocktail.jpg" />
+            <QChip label="With left image" icon="img:/cocktail.jpg" />
+            <QChip label="With right image" trailingIcon="img:/cocktail.jpg" />
             <QChip
-              content="With both images"
+              label="With both images"
               icon="img:/cocktail.jpg"
-              iconRight="img:/cocktail.jpg"
+              trailingIcon="img:/cocktail.jpg"
             />
-            <QChip content="With left image, rounded" round icon="img:/cocktail.jpg" />
-            <QChip content="With left image, responsive" responsive icon="img:/cocktail.jpg" />
-            <QChip
-              content="With left image, rounded and responsive!"
-              round
-              responsive
-              icon="img:/cocktail.jpg"
-            />
+            <QChip label="With left image" icon="img:/cocktail.jpg" />
           </div>
         </QCardSection>
         <QCardSection>
@@ -551,15 +543,13 @@
           <div class="flex column" style="align-items: center; gap: 1em">
             <QChip
               class="tertiary-container"
-              content="Click on me!"
-              responsive
+              label="Click on me!"
               icon="img:/cocktail.jpg"
               on:click={() => alert("OMG, you actually did it")}
             />
             <QChip
-              content="Can't click on me, now!"
-              responsive
-              disable
+              label="Can't click on me, now!"
+              disabled
               icon="img:/cocktail.jpg"
               on:click={() => alert("OMG, you actually did it")}
             />
