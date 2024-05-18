@@ -1,5 +1,4 @@
 <script lang="ts">
-  import QChipNew from "$lib/components/chip/QChipNew.svelte";
 </script>
 
 <div class="q-page page-home">
@@ -22,15 +21,6 @@
     <li>
       Found an issue? <s>Rage</s> Comment on Quaff's
       <a href="https://github.com/quaffui/quaff">GitHub page</a>.
-    </li>
-    <li class="flex flex-center q-gap-md">
-      <QChipNew icon="shopping_cart">Default</QChipNew>
-      <QChipNew icon="shopping_cart" elevated>Elevated</QChipNew>
-      <QChipNew kind="filter" icon="filter_list">Default Filter</QChipNew>
-      <QChipNew kind="filter" icon="filter_list" elevated>Elevated filter</QChipNew>
-      <QChipNew kind="input" trailingIcon="close" elevated>Hello</QChipNew>
-      <QChipNew kind="input" trailingIcon="close" disabled>Hello</QChipNew>
-      <QChipNew kind="input" trailingIcon="close" disabled elevated>Hello</QChipNew>
     </li>
   </ul>
 </div>
