@@ -2,8 +2,9 @@
   import QIcon from "../icon/QIcon.svelte";
   import { ripple } from "$lib/helpers";
   import type { QChipProps } from "./propsNew";
-  import { isActivationKey } from "$lib/utils";
+  import { extractImgSrc, isActivationKey } from "$lib/utils";
   import type { MouseEventHandler } from "svelte/elements";
+  import QAvatar from "../avatar/QAvatar.svelte";
 
   type QChipMouseEvent = MouseEvent & {
     currentTarget: EventTarget & HTMLDivElement;
@@ -32,7 +33,9 @@
     }
 
     if ((kind === "assist" || kind === "suggestion") && trailingIcon) {
-      console.warn('QChips of kind "assist" and "suggestion" should not have a trailing icon.');
+      console.warn(
+        'QChips of kind "assist" and "suggestion" should not have a trailing icon. It will thus be ignored.'
+      );
     }
   });
 
@@ -41,6 +44,8 @@
   );
 
   const tabindex = disabled ? -1 : props.tabindex || 0;
+
+  const avatar = extractImgSrc(icon);
 
   function stopIfDisabled(e: QChipMouseEvent) {
     if (disabled) {
@@ -99,8 +104,10 @@
   onclick={stopIfDisabled}
   {onkeydown}
 >
-  {#if icon && !selected}
+  {#if icon && !selected && !avatar}
     <QIcon class="q-chip__leading-icon" name={icon} />
+  {:else if avatar && !selected}
+    <QAvatar class="q-chip__avatar" src={avatar} />
   {:else if selected}
     <QIcon class="q-chip__leading-icon" name="check" />
   {/if}
