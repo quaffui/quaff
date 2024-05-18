@@ -42,30 +42,34 @@
     --state-layer-opacity: 10%;
   }
 
-  &--round {
+  &[aria-disabled] {
+    @include mixins.disabled;
+  }
+
+  &.q-chip--round {
     border-radius: 50%;
   }
 
-  &--sm {
+  &.q-chip--sm {
     height: 2rem;
 
-    & > :global(.q-icon) {
+    & > :global(:is(.q-icon, .q-avatar)) {
       --size: 1.125rem;
     }
   }
 
-  &--md {
+  &.q-chip--md {
     height: 2.5rem;
 
-    & > :global(.q-icon) {
+    & > :global(:is(.q-icon, .q-avatar)) {
       --size: 1.40625rem;
     }
   }
 
-  &--lg {
+  &.q-chip--lg {
     height: 3rem;
 
-    & > :global(.q-icon) {
+    & > :global(:is(.q-icon, .q-avatar)) {
       --size: 1.6875rem;
     }
   }
@@ -78,11 +82,15 @@
     }
   }
 
-  &--outlined {
+  &.q-chip--outlined {
     outline: 1px solid var(--outline);
+
+    &:focus {
+      outline-color: var(--secondary);
+    }
   }
 
-  &--elevated {
+  &.q-chip--elevated {
     @include mixins.elevate(0.5);
 
     &:hover {
@@ -92,11 +100,11 @@
     background-color: var(--surface-container-low);
   }
 
-  &--assist {
+  &.q-chip--assist {
     --state-layer-color: var(--on-surface);
   }
 
-  &--filter {
+  &.q-chip--filter {
     --state-layer-color: var(--on-surface-variant);
 
     &:focus {
@@ -122,8 +130,25 @@
     }
   }
 
-  &[aria-disabled] {
-    @include mixins.disabled;
+  &.q-chip--input {
+    --state-layer-color: var(--on-surface-variant);
+
+    padding-inline: 0.75rem;
+    color: var(--on-surface-variant);
+
+    & > :global(.q-icon) {
+      color: var(--on-surface-variant);
+    }
+  }
+
+  &.q-chip--suggestion {
+    --state-layer-color: var(--on-surface-variant);
+
+    color: var(--on-surface-variant);
+
+    &:focus {
+      outline-color: var(--secondary);
+    }
   }
 }
 
@@ -131,10 +156,14 @@
   color: var(--primary);
 }
 
-.q-chip > :global(.q-icon.q-chip__leading-icon) {
+.q-chip > :global(:is(.q-icon.q-chip__leading-icon, .q-avatar.q-chip__avatar)) {
   margin-left: -0.5rem;
 }
 
 .q-chip > :global(.q-icon.q-chip__trailing-icon) {
   margin-right: -0.5rem;
+}
+
+.q-chip.q-chip--input > :global(.q-avatar.q-chip__avatar) {
+  --size: 1.5rem;
 }
