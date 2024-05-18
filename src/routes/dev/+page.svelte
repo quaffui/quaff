@@ -380,7 +380,7 @@
               {/snippet}
             </QItemSection>
             <QItemSection type="trailingIcon">
-              <QCheckbox />
+              <QCheckbox value={false} />
             </QItemSection>
           </QItem>
           <QItem>
