@@ -86,6 +86,7 @@
       elevated,
       outlined: !elevated,
     },
+    classes: [props.class],
   });
 </script>
 
