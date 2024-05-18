@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { QChip } from "$lib";
+  import { QChip, QSeparator } from "$lib";
   import { QChipDocs } from "$components/chip/docs";
   import QDocs from "$lib/components/private/QDocs.svelte";
   import QDocsSection from "$lib/components/private/QDocsSection.svelte";
@@ -7,56 +7,49 @@
 </script>
 
 <QDocs componentDocs={QChipDocs}>
-  <QChip slot="display" responsive icon="img:/cocktail.jpg" content="Cocktail" />
+  <QChip slot="display" elevated icon="img:/cocktail.jpg" label="Cocktail" />
 
   <div slot="usage">
     <QDocsSection {snippets} title="Default">
       <div class="flex q-gap-lg items-center">
-        <QChip class="bg-green" content="Green Chip" />
-        <QChip class="error" content="Error Chip" />
-        <QChip class="primary" content="Primary Chip" />
-        <QChip class="primary-container" content="Primary Container Chip" />
+        <QChip class="bg-green" label="Green Chip" />
+        <QChip class="error" label="Error Chip" />
+        <QChip class="primary" label="Primary Chip" />
+        <QChip class="primary-container" label="Primary Container Chip" />
       </div>
     </QDocsSection>
 
     <QDocsSection {snippets} title="Chip Sizes">
       <div class="flex q-gap-lg items-center">
-        <QChip content="Small Chip" size="sm" />
-        <QChip content="Medium Chip" />
-        <QChip content="Large Chip" size="lg" />
+        <QChip label="Small Chip" size="sm" icon="mail" />
+        <QChip label="Medium Chip" size="md" icon="mail" />
+        <QChip label="Large Chip" size="lg" icon="mail" />
       </div>
     </QDocsSection>
 
-    <QDocsSection {snippets} title="Chips with Icons">
+    <QDocsSection {snippets} title="Chip designs">
       <div class="flex q-gap-lg items-center">
-        <QChip icon="check" content="Leading icon" />
-        <QChip iconRight="close" content="Trailing icon" />
-        <QChip icon="check" iconRight="close" content="Both icons" />
+        <QChip icon="map" label="Assist (default)" />
+        <QChip kind="filter" icon="filter_list" label="Filter" />
+        <QChip kind="input" icon="edit" trailingIcon="close" label="Input" />
+        <QChip kind="suggestion" icon="help" label="Suggestion" />
+        <QChip disabled icon="warning" label="Disabled" />
+      </div>
+      <QSeparator text="Elevated designs" textAlign="left" spacing="lg" />
+      <div class="flex q-gap-lg items-center">
+        <QChip elevated icon="map" label="Assist (default)" />
+        <QChip elevated kind="filter" icon="filter_list" label="Filter" />
+        <QChip elevated kind="input" icon="edit" trailingIcon="close" label="Input" />
+        <QChip elevated kind="suggestion" icon="help" label="Suggestion" />
+        <QChip elevated disabled icon="warning" label="Disabled" />
       </div>
     </QDocsSection>
 
     <QDocsSection {snippets} title="Chips with Images">
       <div class="flex q-gap-lg items-center">
-        <QChip icon="img:/cocktail.jpg" content="Leading image" />
-        <QChip iconRight="img:/cocktail.jpg" content="Trailing image" />
-        <QChip icon="img:/cocktail.jpg" round content="Round with image" />
-      </div>
-    </QDocsSection>
-
-    <QDocsSection {snippets} title="Chip Types">
-      <div class="flex q-gap-lg items-center">
-        <QChip content="Outlined Chip" outlined />
-        <QChip content="Round Chip" round />
-        <QChip content="Disabled Chip" disable />
-        <QChip content="Vertical Chip" vertical icon="star" />
-        <QChip content="Responsive Chip" responsive iconRight="img:/cocktail.jpg" />
-      </div>
-    </QDocsSection>
-
-    <QDocsSection {snippets} title="Chips with Custom Tabindex">
-      <div class="flex q-gap-lg items-center">
-        <QChip tabindex={2} content="Tabindex 2 Chip" />
-        <QChip tabindex={3} content="Tabindex 3 Chip" />
+        <QChip icon="img:/cocktail.jpg" label="Leading avatar" />
+        <QChip kind="filter" elevated icon="img:/cocktail.jpg" label="Filter elevated" />
+        <QChip kind="input" icon="img:/cocktail.jpg" label="Input chip with avatar" />
       </div>
     </QDocsSection>
   </div>
