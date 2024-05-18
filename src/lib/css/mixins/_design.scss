@@ -7,7 +7,8 @@
   }
   $elevate: 0.125rem * $strength;
 
-  box-shadow: 0 $elevate * $coeff $elevate 0 rgb(0, 0, 0, 0.24 + 0.08 * $strength);
+  box-shadow: 0 $elevate * $coeff $elevate 0
+    add-transparency(var(--shadow), calc(24% + 8% * $strength));
 }
 
 @mixin border($color: var(--outline), $position: variables.$border-positions) {
@@ -57,7 +58,7 @@
     background-color: add-transparency(var(--on-surface), 12%) !important;
   }
 
-  & > :global(*) {
+  & :global(*) {
     color: add-transparency(var(--on-surface), 38%) !important;
   }
 
