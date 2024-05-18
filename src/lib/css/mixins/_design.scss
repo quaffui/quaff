@@ -1,13 +1,14 @@
 @use "../variables";
 
-@mixin elevate($strength, $position) {
+@mixin elevate($strength, $position: null) {
   $coeff: 1;
   @if $position == "top" {
     $coeff: -1;
   }
   $elevate: 0.125rem * $strength;
 
-  box-shadow: 0 $elevate * $coeff $elevate 0 rgb(0, 0, 0, 0.24 + 0.08 * $strength);
+  box-shadow: 0 $elevate * $coeff $elevate 0
+    add-transparency(var(--shadow), calc(24% + 8% * $strength));
 }
 
 @mixin border($color: var(--outline), $position: variables.$border-positions) {
@@ -45,24 +46,25 @@
 }
 
 @mixin disabled {
-  cursor: not-allowed;
-  box-shadow: none;
+  cursor: not-allowed !important;
+  box-shadow: none !important;
+  user-select: none !important;
 
   &[class*="--outlined"] {
-    outline-color: add-transparency(var(--on-surface), 12%);
+    outline-color: add-transparency(var(--on-surface), 12%) !important;
   }
 
   &:not([class*="--outlined"], [class*="--flat"]) {
-    background-color: add-transparency(var(--on-surface), 12%);
+    background-color: add-transparency(var(--on-surface), 12%) !important;
   }
 
-  & > :global(*) {
-    color: add-transparency(var(--on-surface), 38%);
+  & :global(*) {
+    color: add-transparency(var(--on-surface), 38%) !important;
   }
 
   &::before,
   &::after {
-    all: unset;
+    all: unset !important;
   }
 }
 

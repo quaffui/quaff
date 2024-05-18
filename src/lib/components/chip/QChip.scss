@@ -1,0 +1,165 @@
+@use "$css/mixins";
+
+.q-chip {
+  $state-layer-opacity: 0;
+  padding-inline: 1rem;
+  border-radius: 0.5rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  gap: 0.5rem;
+  width: fit-content;
+
+  background-color: transparent;
+  color: var(--on-surface);
+
+  cursor: pointer;
+  user-select: none;
+
+  @include mixins.typography(label-large);
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    border-radius: inherit;
+    background-color: mixins.add-transparency(
+      var(--state-layer-color, transparent),
+      var(--state-layer-opacity, 0)
+    );
+  }
+
+  &:hover {
+    --state-layer-opacity: 8%;
+  }
+
+  &:focus {
+    --state-layer-opacity: 10%;
+  }
+
+  &[aria-disabled] {
+    @include mixins.disabled;
+  }
+
+  &.q-chip--sm {
+    height: 2rem;
+
+    & > :global(:is(.q-icon, .q-avatar)) {
+      --size: 1.125rem;
+    }
+  }
+
+  &.q-chip--md {
+    height: 2.5rem;
+
+    & > :global(:is(.q-icon, .q-avatar)) {
+      --size: 1.40625rem;
+    }
+  }
+
+  &.q-chip--lg {
+    height: 3rem;
+
+    & > :global(:is(.q-icon, .q-avatar)) {
+      --size: 1.6875rem;
+    }
+  }
+
+  &:focus {
+    outline: 1px solid var(--secondary);
+
+    & > :global(.q-icon) {
+      color: var(--on-secondary-container);
+    }
+  }
+
+  &.q-chip--outlined {
+    outline: 1px solid var(--outline);
+
+    &:focus {
+      outline-color: var(--secondary);
+    }
+  }
+
+  &.q-chip--elevated {
+    @include mixins.elevate(0.5);
+
+    &:hover {
+      @include mixins.elevate(1);
+    }
+
+    background-color: var(--surface-container-low);
+  }
+
+  &.q-chip--assist {
+    --state-layer-color: var(--on-surface);
+  }
+
+  &.q-chip--filter {
+    --state-layer-color: var(--on-surface-variant);
+
+    &:focus {
+      outline-color: var(--on-surface-variant);
+    }
+
+    &.q-chip--selected {
+      --state-layer-color: var(--on-secondary-container);
+
+      outline-color: var(--secondary-container);
+      outline-width: 0;
+
+      background-color: var(--secondary-container);
+
+      &.q-chip--elevated {
+        color: var(--on-secondary-container);
+      }
+
+      &:hover {
+        @include mixins.elevate(0.5);
+        color: var(--on-secondary-container);
+      }
+    }
+  }
+
+  &.q-chip--input {
+    --state-layer-color: var(--on-surface-variant);
+
+    padding-inline: 0.75rem;
+    color: var(--on-surface-variant);
+
+    & > :global(.q-icon) {
+      color: var(--on-surface-variant);
+    }
+  }
+
+  &.q-chip--suggestion {
+    --state-layer-color: var(--on-surface-variant);
+
+    color: var(--on-surface-variant);
+
+    &:focus {
+      outline-color: var(--secondary);
+    }
+  }
+}
+
+.q-chip > :global(.q-icon) {
+  color: var(--primary);
+}
+
+.q-chip > :global(:is(.q-icon.q-chip__leading-icon, .q-avatar.q-chip__avatar)) {
+  margin-left: -0.5rem;
+}
+
+.q-chip > :global(.q-icon.q-chip__trailing-icon) {
+  margin-right: -0.5rem;
+}
+
+.q-chip.q-chip--input > :global(.q-avatar.q-chip__avatar) {
+  --size: 1.5rem;
+}
