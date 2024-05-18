@@ -31,6 +31,7 @@ module.exports = {
     ],
     curly: ["error"],
     "no-undef": ["off"],
+    "object-shorthand": "error",
     "svelte/valid-compile": ["error", { ignoreWarnings: true }],
     "svelte/no-at-html-tags": ["warn"],
   },
