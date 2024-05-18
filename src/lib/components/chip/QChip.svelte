@@ -1,100 +1,129 @@
 <script lang="ts">
-  import { useSize } from "$lib/composables";
+  import QIcon from "../icon/QIcon.svelte";
   import { ripple } from "$lib/helpers";
-  import { isActivationKey } from "$lib/utils";
-  import { QIcon } from "$lib";
   import type { QChipProps } from "./props";
+  import { extractImgSrc, isActivationKey } from "$lib/utils";
+  import QAvatar from "../avatar/QAvatar.svelte";
 
-  export let content: QChipProps["content"] = undefined,
-    icon: QChipProps["icon"] = undefined,
-    iconRight: QChipProps["iconRight"] = undefined,
-    disable: QChipProps["disable"] = false,
-    responsive: QChipProps["responsive"] = false,
-    vertical: QChipProps["vertical"] = false,
-    round: QChipProps["round"] = false,
-    outlined: QChipProps["outlined"] = false,
-    noRipple: QChipProps["noRipple"] = false,
-    size: QChipProps["size"] = "md",
-    tabindex: QChipProps["tabindex"] = undefined,
-    href: QChipProps["href"] = undefined,
-    userClasses: QChipProps["userClasses"] = "";
-  export { userClasses as class };
+  type QChipMouseEvent = MouseEvent & {
+    currentTarget: EventTarget & HTMLDivElement;
+  };
 
-  let qChip: HTMLAnchorElement;
+  let {
+    kind = "assist",
+    label,
+    icon,
+    trailingIcon,
+    disabled = false,
+    round = false,
+    elevated,
+    noRipple = false,
+    selected = $bindable(kind === "filter" ? false : undefined),
+    size = "sm",
+    children,
+    ...props
+  }: QChipProps = $props();
 
-  $: img = icon?.startsWith("img:") ? icon.slice(4) : undefined;
-  $: imgRight = iconRight?.startsWith("img:") ? iconRight.slice(4) : undefined;
+  let qChip: HTMLDivElement;
 
-  $: sizeObj = useSize(size);
+  $effect.pre(() => {
+    if (selected !== undefined && kind !== "filter") {
+      throw new Error('Only QChips of kind "filter" can use the "selected" prop.');
+    }
 
-  $: tab = disable ? -1 : tabindex ?? 0;
+    if ((kind === "assist" || kind === "suggestion") && trailingIcon) {
+      console.warn(
+        'QChips of kind "assist" and "suggestion" should not have a trailing icon. It will thus be ignored.'
+      );
+    }
+  });
 
-  function stopIfDisabled(e: MouseEvent) {
-    if (disable) {
+  const trailing = $derived(
+    (kind === "assist" || kind === "suggestion") && trailingIcon ? undefined : trailingIcon
+  );
+
+  const tabindex = disabled ? -1 : props.tabindex || 0;
+
+  const avatar = extractImgSrc(icon);
+
+  function stopIfDisabled(e: QChipMouseEvent) {
+    if (disabled) {
       e.preventDefault();
       e.stopImmediatePropagation();
+      return;
     }
+
+    if (kind === "filter") {
+      selected = !selected;
+    }
+
+    e.stopPropagation();
+    props.onclick?.(e);
   }
 
-  function onKeyDown(e: KeyboardEvent) {
+  function onkeydown(e: KeyboardEvent) {
+    if (e.key === "Escape") {
+      qChip?.blur();
+      return;
+    }
+
     if (!isActivationKey(e)) {
       return;
     }
 
     e.preventDefault();
 
-    let click = new MouseEvent("click");
-    qChip.dispatchEvent(click);
+    const click = new MouseEvent("click", { relatedTarget: qChip }) as QChipMouseEvent;
+    stopIfDisabled(click);
   }
+
+  Q.classes("q-chip", {
+    bemClasses: {
+      [kind]: true,
+      [size]: true,
+      round,
+      selected,
+      elevated,
+      outlined: !elevated,
+    },
+  });
 </script>
 
-<a
+<div
   bind:this={qChip}
   use:ripple={{
-    disabled: noRipple || disable,
-    color: outlined ? undefined : "var(--on-secondary)",
+    disabled: noRipple || disabled,
+    color: elevated ? "var(--on-surface-variant)" : undefined,
   }}
-  aria-disabled={disable || undefined}
-  class="q-chip {sizeObj.class && sizeObj.class !== 'md'
-    ? `q-chip--${sizeObj.class}`
-    : ''} {userClasses}"
-  class:q-chip--vertical={vertical}
-  class:q-chip--rounded={round}
-  class:q-chip--bordered={outlined || disable}
-  {href}
-  tabindex={tab}
-  on:keydown={onKeyDown}
-  on:click={stopIfDisabled}
-  on:click
-  {...$$restProps}
+  {...props}
+  class="q-chip"
+  {...Q.classes}
+  aria-disabled={disabled || undefined}
+  {tabindex}
+  onclick={stopIfDisabled}
+  {onkeydown}
 >
-  {#if $$slots.leading}
-    <slot name="leading" />
-  {:else if img}
-    <img
-      class="q-chip__img"
-      class:q-chip__img--responsive={responsive}
-      src={img}
-      alt="{content || 'Slotted'} chip"
-    />
-  {:else if icon}
-    <QIcon name={icon} class="q-chip__icon" />
+  {#if icon && !selected && !avatar}
+    <QIcon class="q-chip__leading-icon" name={icon} />
+  {:else if avatar && !selected}
+    <QAvatar class="q-chip__avatar" src={avatar} />
+  {:else if selected}
+    <QIcon class="q-chip__leading-icon" name="check" />
   {/if}
-  {#if content}
-    {content}
-  {:else}
-    <slot />
+
+  <div class="q-chip__label">
+    {#if label}
+      {label}
+    {:else}
+      {@render children?.()}
+    {/if}
+  </div>
+
+  {#if trailing}
+    <QIcon class="q-chip__trailing-icon" name={trailing} />
   {/if}
-  {#if $$slots.trailing}
-    <slot name="trailing" />
-  {:else if imgRight}
-    <img
-      class="q-chip__img q-chip__img--trailing"
-      class:q-chip__img--responsive={responsive}
-      src={imgRight}
-      alt="{content || 'Slotted'} chip"
-    />
-  {:else if iconRight}
-    <QIcon name={iconRight} class="q-chip__icon" />
-  {/if}
-</a>
+</div>
+
+<style lang="scss">
+  @import "./QChip.scss";
+</style>
