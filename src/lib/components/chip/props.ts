@@ -55,12 +55,6 @@ export interface QChipProps extends HTMLAttributes<HTMLDivElement> {
   elevated?: boolean;
 
   /**
-   * Use round design for the chip, adding a large border-radius to it.
-   * @default false
-   */
-  round?: boolean;
-
-  /**
    * Disable the ripple effect for the chip.
    * @default false
    */

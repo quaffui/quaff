@@ -46,10 +46,6 @@
     @include mixins.disabled;
   }
 
-  &.q-chip--round {
-    border-radius: 50%;
-  }
-
   &.q-chip--sm {
     height: 2rem;
 
