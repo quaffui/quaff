@@ -7,13 +7,15 @@
   import { QBtn } from "$lib";
   import type { QCodeBlockProps } from "./props";
 
-  export let language: QCodeBlockProps["language"],
-    code: QCodeBlockProps["code"] = "/* No code found */",
-    title: QCodeBlockProps["title"] = undefined,
-    copiable: QCodeBlockProps["copiable"] = undefined;
+  let {
+    language,
+    code = "/* No code found */",
+    title = undefined,
+    copiable = undefined,
+  }: QCodeBlockProps = $props();
 
-  let btnContent = "Copy";
-  let btnColor = "primary";
+  let btnContent = $state("Copy");
+  let btnColor = $state("primary");
 
   function setBtn(type: "base" | "error" | "success") {
     switch (type) {
@@ -56,7 +58,7 @@
         size="sm"
         icon="content_copy"
         design="outlined"
-        on:click={copyCode}
+        onclick={copyCode}
       >
         {btnContent}
       </QBtn>
