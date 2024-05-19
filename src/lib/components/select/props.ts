@@ -1,4 +1,5 @@
 import type { NativeProps } from "$lib/utils";
+import type { Snippet } from "svelte";
 import type { HTMLAttributes } from "svelte/elements";
 
 export type QSelectOption = string | { label: string; value: string };
@@ -22,17 +23,8 @@ export interface QSelectProps extends NativeProps, HTMLAttributes<HTMLDivElement
   label?: string;
   outlined?: boolean;
   rounded?: boolean;
+  before?: Snippet;
+  prepend?: Snippet;
+  append?: Snippet;
+  after?: Snippet;
 }
-
-export const QSelectPropsDefaults = {
-  dense: false,
-  disable: false,
-  error: false,
-  errorMessage: undefined,
-  filled: false,
-  hint: undefined,
-  label: undefined,
-  outlined: false,
-  rounded: false,
-  value: "",
-};

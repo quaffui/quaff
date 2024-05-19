@@ -55,12 +55,16 @@
       />
     </QDocsSection>
 
-    <QDocsSection {snippets} title="Slots">
+    <QDocsSection {snippets} title="Snippets">
       <QSelect bind:value={select} {options} label="Prepended Icon">
-        <QIcon slot="prepend" name="favorite" />
+        {#snippet prepend()}
+          <QIcon name="favorite" />
+        {/snippet}
       </QSelect>
       <QSelect bind:value={select} {options} label="Appended Icon" class="q-mt-md">
-        <QIcon slot="append" name="list" />
+        {#snippet append()}
+          <QIcon name="list" />
+        {/snippet}
       </QSelect>
     </QDocsSection>
   </div>
