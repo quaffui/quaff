@@ -236,18 +236,20 @@
     </QDocsSection>
     <QDocsSection title="Slots">
       <QTable {rows} columns={columnsWithActions} dense class="q-mt-md">
-        <td slot="body-cell" let:row let:column let:style {style}>
-          {#if column.field === "id"}
-            <QIcon name="book" /> {row.id}
-          {:else if column.field === "title"}
-            <b>{row.title}</b>
-          {:else if column.field === "author"}
-            {row.author}
-          {:else if column.field === "actions"}
-            <QBtn icon="edit" design="flat" />
-            <QBtn icon="delete" design="flat" />
-          {/if}
-        </td>
+        {#snippet bodyCell({ row, column, style })}
+          <td {style}>
+            {#if column.field === "id"}
+              <QIcon name="book" /> {row.id}
+            {:else if column.field === "title"}
+              <b>{row.title}</b>
+            {:else if column.field === "author"}
+              {row.author}
+            {:else if column.field === "actions"}
+              <QBtn icon="edit" design="flat" />
+              <QBtn icon="delete" design="flat" />
+            {/if}
+          </td>
+        {/snippet}
       </QTable>
     </QDocsSection>
   </div>
