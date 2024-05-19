@@ -4,6 +4,10 @@
   import { QIcon } from "$lib";
   import type { QSelectProps, QSelectOption, QSelectMultipleValue } from "./props";
 
+  type QSelectEvent<T> = T & {
+    currentTarget: EventTarget & HTMLDivElement;
+  };
+
   let {
     options,
     multiple = false,
@@ -32,27 +36,30 @@
   let wasClicked = $state(false);
   let preventClose = $state(false);
 
-  function handleMousedown() {
+  function handleMousedown(e: QSelectEvent<MouseEvent>) {
     isMenuOpen = !isMenuOpen;
     wasClicked = true;
+    props.onmousedown?.(e);
   }
 
-  function handleFocus() {
+  function handleFocus(e: QSelectEvent<FocusEvent>) {
     focus = true;
     if (!wasClicked) {
       isMenuOpen = true;
     }
 
     wasClicked = false;
+    props.onfocus?.(e);
   }
 
-  function handleBlur() {
+  function handleBlur(e: QSelectEvent<FocusEvent>) {
     focus = false;
 
     if (!multiple && !preventClose) {
       isMenuOpen = false;
     }
     preventClose = false;
+    props.onblur?.(e);
   }
 
   const selectedOptions: boolean[] = $derived(options.map((option) => isSelected(option), value));
