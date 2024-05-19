@@ -14,10 +14,10 @@
     "test:unit": "vitest",
     "lint": "prettier --plugin prettier-plugin-svelte . --check . && eslint .",
     "format": "prettier --plugin prettier-plugin-svelte . --write .",
-    "docgen-props": "NODE_OPTIONS='--loader ts-node/esm/transpile-only --no-warnings' node scripts/docgenProps.ts",
+    "docgen-props": "node --loader ts-node/esm/transpile-only --no-warnings scripts/docgenProps.ts",
     "colorgen": "node --loader ts-node/esm/transpile-only --no-warnings scripts/colorgen.ts",
-    "docgen-snippets": "NODE_OPTIONS='--loader ts-node/esm/transpile-only --no-warnings' node scripts/docgenSnippets.ts",
-    "write-version": "NODE_OPTIONS='--loader ts-node/esm/transpile-only --no-warnings' node scripts/writeVersion.ts"
+    "docgen-snippets": "node --loader ts-node/esm/transpile-only --no-warnings scripts/docgenSnippets.ts",
+    "write-version": "node --loader ts-node/esm/transpile-only --no-warnings scripts/writeVersion.ts"
   },
   "exports": {
     ".": {
