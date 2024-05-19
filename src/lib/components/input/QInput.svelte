@@ -1,4 +1,8 @@
 <script lang="ts">
+  type QInputEvent<T> = T & {
+    currentTarget: EventTarget & HTMLDivElement;
+  };
+
   let focus = $state(false);
 
   let snippetPrependWidth = $state(0);
@@ -24,6 +28,16 @@
   }: QInputProps = $props();
 
   const active = $derived(value || focus);
+
+  function onFocus(e: QInputEvent<FocusEvent>) {
+    focus = true;
+    props.onfocus?.(e);
+  }
+
+  function onBlur(e: QInputEvent<FocusEvent>) {
+    focus = false;
+    props.onblur?.(e);
+  }
 
   // q-field here, q-input in classes
   Q.classes("q-field", {
@@ -69,8 +83,8 @@
         class="q-field__input"
         bind:value
         placeholder=""
-        onfocus={() => (focus = true)}
-        onblur={() => (focus = false)}
+        onfocus={onFocus}
+        onblur={onBlur}
         disabled={disable}
         tabindex={disable === true ? -1 : 0}
       />
