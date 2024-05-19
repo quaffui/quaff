@@ -190,10 +190,14 @@
           />
           <QInput bind:value={input} outlined class="q-mt-md" label="Outlined" />
           <QInput bind:value={input} outlined class="q-mt-md" label="Outlined with prepended icon">
-            <QIcon slot="prepend" name="search" />
+            {#snippet prepend()}
+              <QIcon name="search" />
+            {/snippet}
           </QInput>
           <QInput bind:value={input} outlined class="q-mt-md" label="Rounded with appended icon">
-            <QIcon slot="append" name="list" />
+            {#snippet append()}
+              <QIcon name="list" />
+            {/snippet}
           </QInput>
         </div>
       </QCard>
@@ -236,7 +240,9 @@
             class="q-mt-md"
             label="Outlined with prepended icon"
           >
-            <QIcon slot="prepend" name="favorite" />
+            {#snippet prepend()}
+              <QIcon name="favorite" />
+            {/snippet}
           </QSelect>
           <QSelect
             bind:value={select}
@@ -245,7 +251,9 @@
             class="q-mt-md"
             label="Rounded with appended icon"
           >
-            <QIcon slot="append" name="list" />
+            {#snippet append()}
+              <QIcon name="list" />
+            {/snippet}
           </QSelect>
         </div>
       </QCard>
@@ -380,7 +388,7 @@
               {/snippet}
             </QItemSection>
             <QItemSection type="trailingIcon">
-              <QCheckbox />
+              <QCheckbox value={false} />
             </QItemSection>
           </QItem>
           <QItem>

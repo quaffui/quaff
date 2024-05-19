@@ -1,4 +1,5 @@
 import type { NativeProps } from "$lib/utils";
+import type { Snippet } from "svelte";
 import type { HTMLAttributes } from "svelte/elements";
 
 export interface QInputProps extends NativeProps, HTMLAttributes<HTMLDivElement> {
@@ -12,17 +13,8 @@ export interface QInputProps extends NativeProps, HTMLAttributes<HTMLDivElement>
   outlined?: boolean;
   rounded?: boolean;
   value: string;
+  before?: Snippet;
+  prepend?: Snippet;
+  append?: Snippet;
+  after?: Snippet;
 }
-
-export const QInputPropsDefaults = {
-  dense: false,
-  disable: false,
-  error: false,
-  errorMessage: undefined,
-  filled: false,
-  hint: undefined,
-  label: undefined,
-  outlined: false,
-  rounded: false,
-  value: "",
-};

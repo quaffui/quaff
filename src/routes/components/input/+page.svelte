@@ -18,14 +18,14 @@
     </QDocsSection>
 
     <QDocsSection {snippets} title="Styles">
-      <QInput bind:value={input} label="Bordered" class="q-mt-md" bordered />
+      <QInput bind:value={input} label="Default" class="q-mt-md" />
       <QInput bind:value={input} label="Rounded" class="q-mt-md" rounded />
       <QInput bind:value={input} label="Outlined" class="q-mt-md" outlined />
       <QInput bind:value={input} label="Filled" class="q-mt-md" filled />
     </QDocsSection>
 
     <QDocsSection {snippets} title="Dense">
-      <QInput bind:value={input} label="Dense" class="q-mt-md" bordered dense />
+      <QInput bind:value={input} label="Dense" class="q-mt-md" dense />
     </QDocsSection>
 
     <QDocsSection {snippets} title="Validation and Hints">
@@ -39,12 +39,16 @@
       />
     </QDocsSection>
 
-    <QDocsSection {snippets} title="Slots">
+    <QDocsSection {snippets} title="Snippets">
       <QInput bind:value={input} label="Prepended Icon">
-        <QIcon slot="prepend" name="search" />
+        {#snippet prepend()}
+          <QIcon name="search" />
+        {/snippet}
       </QInput>
       <QInput bind:value={input} label="Appended Icon" class="q-mt-md">
-        <QIcon slot="append" name="list" />
+        {#snippet append()}
+          <QIcon name="list" />
+        {/snippet}
       </QInput>
     </QDocsSection>
   </div>

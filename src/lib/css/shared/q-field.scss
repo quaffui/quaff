@@ -137,9 +137,9 @@ $transition-duration: 0.2s;
     top: 0.0625rem;
   }
 
-  &--slot-prepend#{&}--default &__label,
-  &--slot-prepend#{&}--filled &__label {
-    left: calc(0.5rem + var(--slot-prepend-width));
+  &--snippet-prepend#{&}--default &__label,
+  &--snippet-prepend#{&}--filled &__label {
+    left: calc(0.5rem + var(--snippet-prepend-width));
   }
 
   &--active#{&}--default &__label,
@@ -151,8 +151,8 @@ $transition-duration: 0.2s;
     left: 1.4375rem;
   }
 
-  &--slot-prepend#{&}--rounded &__label {
-    left: calc(0.5rem + var(--slot-prepend-width));
+  &--snippet-prepend#{&}--rounded &__label {
+    left: calc(0.5rem + var(--snippet-prepend-width));
   }
 
   &--active#{&}--rounded &__label {
@@ -170,11 +170,11 @@ $transition-duration: 0.2s;
     left: 0.75rem;
   }
 
-  &--slot-prepend#{&}--outlined &__label {
-    left: calc(0.5rem + var(--slot-prepend-width));
+  &--snippet-prepend#{&}--outlined &__label {
+    left: calc(0.5rem + var(--snippet-prepend-width));
   }
 
-  // active state should not account for prepend slot width
+  // active state should not account for prepend snippet width
   &--active#{&}--outlined &__label {
     left: 0.75rem;
   }
@@ -248,11 +248,11 @@ $transition-duration: 0.2s;
     padding: 0 0.75rem;
   }
 
-  &--slot-prepend &__input {
+  &--snippet-prepend &__input {
     padding-left: 0.5rem !important;
   }
 
-  &--slot-append &__input {
+  &--snippet-append &__input {
     padding-right: 0.5rem !important;
   }
 
@@ -274,7 +274,7 @@ $transition-duration: 0.2s;
     --decorator-color: var(--error);
   }
 
-  &__slot- {
+  &__snippet- {
     &prepend,
     &append,
     &before,
@@ -284,27 +284,27 @@ $transition-duration: 0.2s;
     }
   }
 
-  &__slot-prepend {
+  &__snippet-prepend {
     padding-left: 0.75rem;
   }
 
-  &--rounded &__slot-prepend {
+  &--rounded &__snippet-prepend {
     padding-left: 1rem;
   }
 
-  &__slot-append {
+  &__snippet-append {
     padding-right: 0.75rem;
   }
 
-  &--rounded &__slot-append {
+  &--rounded &__snippet-append {
     padding-right: 1rem;
   }
 
-  &__slot-before {
+  &__snippet-before {
     padding-right: 0.75rem;
   }
 
-  &__slot-after {
+  &__snippet-after {
     padding-left: 0.75rem;
   }
 

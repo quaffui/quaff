@@ -1,14 +1,17 @@
 <script lang="ts">
   import type { QCheckboxProps } from "./props";
 
-  export let value: QCheckboxProps["value"] = false,
-    label: QCheckboxProps["label"] = "",
-    disable: QCheckboxProps["disable"] = false,
-    userClasses: QCheckboxProps["userClasses"] = "";
-  export { userClasses as class };
+  let { value = $bindable(), label = "", disable = false, ...props }: QCheckboxProps = $props();
+
+  Q.classes("q-checkbox", {
+    bemClasses: {
+      disabled: disable,
+    },
+    classes: [props.class],
+  });
 </script>
 
-<label class="q-checkbox {userClasses}" class:q-checkbox--disabled={disable} {...$$restProps}>
+<label {...props} class="q-checkbox" {...Q.classes}>
   <input type="checkbox" bind:checked={value} disabled={disable} />
   <span>{label}</span>
 </label>
