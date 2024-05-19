@@ -1,4 +1,5 @@
 import type { NativeProps } from "$lib/utils";
+import type { Snippet } from "svelte";
 import type { HTMLAttributes } from "svelte/elements";
 
 export type QTableColumn = {
@@ -51,4 +52,10 @@ export interface QTableProps extends NativeProps, HTMLAttributes<HTMLDivElement>
    * @default false
    */
   dense?: boolean;
+
+  /**
+   * Optionally pass a snippet to render each table cell.
+   * @default undefined
+   */
+  bodyCell?: Snippet<[{ column: QTableColumn; row: QTableRow; style: string }]>;
 }
