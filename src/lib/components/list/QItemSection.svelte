@@ -17,7 +17,7 @@
 
   $effect(() => {
     if (type === "content") {
-      multiline.update(!!headline && [line1, line2, line3].filter(Boolean).length >= 2);
+      multiline?.update(!!headline && [line1, line2, line3].filter(Boolean).length >= 2);
     }
   });
 
