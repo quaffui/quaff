@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { Snippet } from "svelte";
   import type { QItemSectionProps } from "./props";
-  import { QContext } from "$lib/classes/QContext.svelte";
+  import QContext from "$lib/classes/QContext.svelte";
 
   let {
     type = "content",
