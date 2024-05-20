@@ -2,7 +2,7 @@ import { getContext, setContext } from "svelte";
 
 /**
  * This class allows to manipulate reactive contexts more easily.
- * It avoid having to pass a Svelte store down the components but rather use runes to keep the context reactive.
+ * It avoids having to pass a Svelte store down the components but rather use runes to keep the context reactive.
  *
  * This class should be used when the context has to be modified from a child component. Otherwise, using svelte's context API should be enough.
  */
