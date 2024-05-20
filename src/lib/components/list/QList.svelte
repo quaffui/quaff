@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { QContext } from "$lib/classes/QContext.svelte";
+  import { setContext } from "svelte";
   import type { QListProps } from "./props";
 
   let {
@@ -20,7 +20,7 @@
     listEl.querySelector(".q-separator__wrapper:first-child")?.remove();
   });
 
-  new QContext(separator ? separatorOptions : undefined).set("separator");
+  setContext("separator", separator ? separatorOptions : undefined);
 
   Q.classes("q-list", {
     bemClasses: {

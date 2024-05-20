@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { Snippet } from "svelte";
   import type { QItemSectionProps } from "./props";
-  import { QContext } from "$lib/classes/QContext.svelte";
+  import QContext from "$lib/classes/QContext.svelte";
 
   let {
     type = "content",
@@ -17,7 +17,7 @@
 
   $effect(() => {
     if (type === "content") {
-      multiline.update(!!headline && [line1, line2, line3].filter(Boolean).length >= 2);
+      multiline?.update(!!headline && [line1, line2, line3].filter(Boolean).length >= 2);
     }
   });
 
