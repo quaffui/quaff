@@ -2,45 +2,45 @@
   import { QIcon, QSelect, QBtn } from "$lib";
   import type { QTableProps, QTableColumn, QTableRow, QTableSort } from "./props";
 
-  export let columns: QTableProps["columns"] = [],
-    rows: QTableProps["rows"] = [],
-    flat: QTableProps["flat"] = undefined,
-    bordered: QTableProps["bordered"] = undefined,
-    dense: QTableProps["dense"] = false,
-    userClasses: QTableProps["userClasses"] = "";
-  export { userClasses as class };
+  let {
+    columns = [],
+    rows = [],
+    flat,
+    bordered,
+    dense = false,
+    bodyCell,
+    ...props
+  }: QTableProps = $props();
 
   function getField(fieldRaw: QTableColumn["field"], row: QTableRow): string | number {
     return typeof fieldRaw === "function" ? fieldRaw(row) : row[fieldRaw];
   }
 
-  let page = 1;
-  let rowsPerPage = 5;
-  let rowsPerPageOptions = [5, 10, 25, 50].map((e) => ({
-    label: e.toString(),
-    value: e.toString(),
-  }));
+  let page = $state(1);
+  let rowsPerPage = $state(5);
+  let rowsPerPageOptions = $state(
+    [5, 10, 25, 50].map((e) => ({
+      label: e.toString(),
+      value: e.toString(),
+    }))
+  );
+  let sort: QTableSort = $state(null);
 
-  let sort: QTableSort = null;
-  let rowsSorted: QTableRow[] = rows;
-  let rowsPaginated: QTableRow[] = [];
-  let numberFrom: number = 1;
-  let numberTo: number = 5;
-  let numberOf: number = rows.length;
+  const numberFrom: number = $derived(rowsPerPage * page - rowsPerPage + 1);
+  const numberTo: number = $derived(
+    rowsPerPage * page > rows.length ? rows.length : rowsPerPage * page
+  );
+  const numberOf: number = $derived(rows.length);
 
-  $: numberFrom = rowsPerPage * page - rowsPerPage + 1;
-  $: numberTo = rowsPerPage * page > rows.length ? rows.length : rowsPerPage * page;
-  $: numberOf = rows.length;
-  $: rowsPaginated = rowsSorted.slice(numberFrom - 1, numberTo);
-  $: {
+  $effect(() => {
     if (rowsPerPage * (page - 1) >= rows.length) {
       page = 1;
     }
-  }
+  });
 
-  $: {
+  const rowsSorted: QTableRow[] = $derived.by(() => {
     if (sort) {
-      rowsSorted = structuredClone(rows).sort((a: QTableRow, b: QTableRow) => {
+      return structuredClone(rows).sort((a: QTableRow, b: QTableRow) => {
         const valA = getField(sort!.columnField, a);
         const valB = getField(sort!.columnField, b);
 
@@ -56,10 +56,12 @@
             ? -1
             : 1;
       });
-    } else {
-      rowsSorted = rows;
     }
-  }
+
+    return rows;
+  });
+
+  const rowsPaginated: QTableRow[] = $derived(rowsSorted.slice(numberFrom - 1, numberTo));
 
   function getThStyle(column: QTableColumn) {
     let style = allowsSort(column) ? "cursor: pointer; " : "";
@@ -96,19 +98,23 @@
       type: !sort?.type || sort?.type === "desc" ? "asc" : "desc",
     };
   }
+
+  Q.classes("q-table__table", {
+    bemClasses: {
+      flat,
+      bordered,
+      dense,
+    },
+    classes: [props.class],
+  });
 </script>
 
-<div class="q-table" {...$$restProps}>
-  <table
-    class="q-table__table {userClasses}"
-    class:q-table--flat={flat}
-    class:q-table--bordered={bordered}
-    class:q-table--dense={dense}
-  >
+<div {...props} class="q-table">
+  <table class="q-table__table" {...Q.classes}>
     <thead>
       <tr>
         {#each columns as column}
-          <th style={getThStyle(column)} on:click={() => setSort(column)}>
+          <th style={getThStyle(column)} onclick={() => setSort(column)}>
             {#if column.align === "left"}
               {column.label}
             {/if}
@@ -131,11 +137,13 @@
       {#each rowsPaginated as row}
         <tr>
           {#each columns as column}
-            <slot name="body-cell" {column} {row} style={getCellStyle(column)}>
+            {#if bodyCell}
+              {@render bodyCell({ column, row, style: getCellStyle(column) })}
+            {:else}
               <td class="q-table__body-cell" style={getCellStyle(column)}
                 >{getField(column.field, row)}</td
               >
-            </slot>
+            {/if}
           {/each}
         </tr>
       {/each}
@@ -156,14 +164,14 @@
       size="sm"
       design="flat"
       disabled={page === 1}
-      on:click={() => (page = page - 1)}
+      onclick={() => page--}
     />
     <QBtn
       icon="chevron_right"
       size="sm"
       design="flat"
       disabled={page * rowsPerPage >= rows.length}
-      on:click={() => (page = page + 1)}
+      onclick={() => page++}
     />
   </div>
 </div>
