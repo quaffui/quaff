@@ -46,7 +46,7 @@ export default class QContext<T> {
    * @param newVal - New value to update the context's property with
    */
   updateEntry(key: keyof T, newVal: NonNullable<T>[keyof T]) {
-    if (typeof this.#state !== "object" || !Object.hasOwn(this.#state, key)) {
+    if (!this.#state || typeof this.#state !== "object" || !Object.hasOwn(this.#state, key)) {
       throw new Error(`${key.toString()} doesn't exist on ${this.#state}`);
     }
 
