@@ -3,7 +3,7 @@ import { getContext, setContext } from "svelte";
 /**
  * This class allows to manipulate reactive contexts more easily.
  * It avoid having to pass a Svelte store down the components but rather use runes to keep the context reactive.
- * 
+ *
  * This class should be used when the context has to be modified from a child component. Otherwise, using svelte's context API should be enough.
  */
 export default class QContext<T> {
@@ -23,7 +23,7 @@ export default class QContext<T> {
   static get<T>(contextName: string) {
     return getContext<QContext<T> | undefined>(contextName);
   }
-  
+
   /**
    * Prevents the propagation of the context further down
    * @param contextName - Name of the context to get
@@ -40,7 +40,7 @@ export default class QContext<T> {
   update(newVal: T) {
     this.#state = newVal;
   }
-  
+
   /**
    * Updates the property of id `key` with `newVal` in the context's inner value
    * @param newVal - New value to update the context's property with
