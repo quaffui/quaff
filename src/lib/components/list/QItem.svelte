@@ -1,9 +1,10 @@
 <script lang="ts">
+  import { getContext } from "svelte";
   import { getRouterInfo, isRouteActive } from "$lib/utils/router";
   import { ripple } from "$lib/helpers/ripple";
   import QSeparator from "../separator/QSeparator.svelte";
+  import QContext from "$lib/classes/QContext.svelte";
   import type { QItemProps, QListProps } from "./props";
-  import { QContext } from "$lib/classes/QContext.svelte";
 
   let {
     tag = "div",
@@ -31,9 +32,9 @@
     })
   );
 
-  const multiline = new QContext(false).set("multiline");
+  const multiline = new QContext("multiline", false);
 
-  const separatorOptions = QContext.get<QListProps["separatorOptions"] | undefined>("separator");
+  const separatorOptions = getContext<QListProps["separatorOptions"] | undefined>("separator");
 
   const isActionable = $derived(clickable || routerInfo.hasLink || tag === "label");
   const isClickable = $derived(isActionable && !disabled);
@@ -49,8 +50,8 @@
   });
 </script>
 
-{#if separatorOptions.value}
-  <QSeparator {...separatorOptions.value} />
+{#if separatorOptions}
+  <QSeparator {...separatorOptions} />
 {/if}
 
 {#if routerInfo.linkAttributes.href}
