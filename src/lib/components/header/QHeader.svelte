@@ -2,10 +2,11 @@
 
 <script lang="ts">
   import { createClasses } from "$lib/utils";
-  import { getContext, untrack } from "svelte";
+  import { untrack } from "svelte";
   import { QToolbar } from "$lib";
   import type { LayoutContext } from "../layout/QLayout.svelte";
   import type { QHeaderProps } from "./props";
+  import QContext from "$lib/classes/QContext.svelte";
 
   let {
     inset = false,
@@ -15,25 +16,34 @@
     ...props
   }: QHeaderProps = $props();
 
-  let ctx = getContext<LayoutContext | undefined>("layout");
+  const ctx = QContext.get<LayoutContext>("layout");
+
+  const header = $derived(ctx?.value?.header);
 
   $effect(() => {
-    if (!$ctx) {
+    if (!ctx) {
       console.warn("QHeader should be used inside QLayout");
     }
   });
 
   const classes = $derived(
-    createClasses([$ctx?.header?.fixed && "fixed"], {
+    createClasses([header?.fixed && "fixed"], {
       component: "q-header",
       userClasses: props.class,
     })
   );
 
   $effect(() => {
-    if (untrack(() => $ctx)?.header) {
-      $ctx!.header!.display = !props.style?.includes("display: none");
-    }
+    props.style;
+
+    untrack(() => {
+      if (header) {
+        ctx?.updateEntry("header", {
+          ...header,
+          display: !props.style?.includes("display: none"),
+        });
+      }
+    });
   });
 </script>
 
