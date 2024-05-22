@@ -2,126 +2,96 @@
   import { navigating } from "$app/stores";
   import { useSize } from "$lib/composables";
   import { clickOutside } from "$lib/helpers";
-  import { createClasses, createStyles } from "$lib/utils";
-  import { getContext } from "svelte";
-  import { derived } from "svelte/store";
   import type { LayoutContext } from "../layout/QLayout.svelte";
   import type { QDrawerProps } from "./props";
+  import QContext from "$lib/classes/QContext.svelte";
 
-  export let value: QDrawerProps["value"] = false,
-    side: QDrawerProps["side"] = "left",
-    width: QDrawerProps["width"] = 300,
-    bordered: QDrawerProps["bordered"] = false,
-    overlay: QDrawerProps["overlay"] = false,
-    persistent: QDrawerProps["persistent"] = false,
-    userClasses: QDrawerProps["userClasses"] = undefined,
-    userStyles: QDrawerProps["userStyles"] = undefined;
-  export { userClasses as class, userStyles as style };
+  let {
+    value = $bindable(false),
+    side = "left",
+    width = 300,
+    bordered = false,
+    overlay = false,
+    persistent = false,
+    children,
+    ...props
+  }: QDrawerProps = $props();
 
-  $: canHideOnClickOutside = (value === true && persistent === false) || overlay === true;
+  const ctx = QContext.get<LayoutContext>("layout");
 
-  $: widthStyle = !$ctx && useSize(width).style;
+  const drawerType = $derived(side === "left" ? "drawerLeft" : "drawerRight");
 
-  $: hideOnRouteChange = persistent !== true || overlay === true;
+  const drawerCtx = $derived(ctx?.value?.[drawerType]);
+
+  const canHideOnClickOutside = $derived((value && !persistent) || overlay);
+
+  const hideOnRouteChange = $derived(!persistent || overlay);
 
   export const show = (e?: MouseEvent) => {
-    if (value !== true) {
+    if (!value) {
       value = true;
-      e && e.stopPropagation();
+      e?.stopPropagation();
     }
   };
 
   export const hide = () => {
-    if (value === true) {
+    if (value) {
       value = false;
     }
   };
 
   export const toggle = (e?: MouseEvent) => {
     value = !value;
-    e && e.stopPropagation();
+    e?.stopPropagation();
   };
 
-  // eslint-disable-next-line svelte/valid-compile
-  $: if ($navigating && hideOnRouteChange) {
-    hide();
-  }
-
-  let ctx = getContext<LayoutContext | undefined>("layout");
-
-  let drawerType: "drawerLeft" | "drawerRight";
-  $: drawerType = side === "left" ? "drawerLeft" : "drawerRight";
-
-  $: classes = createClasses(
-    [
-      side,
-      value && "active",
-      overlay && "overlay",
-      bordered && "bordered",
-
-      $ctx && $ctx[drawerType].offset.top && "offset-top",
-      $ctx && $ctx[drawerType].offset.bottom && "offset-bottom",
-      $ctx && $ctx[drawerType].fixed && "fixed",
-
-      $borderRadiusClasses,
-      $zIndexClass,
-    ],
-    {
-      component: "q-drawer",
-      userClasses,
+  $effect(() => {
+    // eslint-disable-next-line svelte/valid-compile
+    if ($navigating && hideOnRouteChange) {
+      hide();
     }
-  );
+  });
 
-  $: style = createStyles(
-    {
-      [side === "left" ? "--leftDrawerWidth" : "--rightDrawerWidth"]: widthStyle,
+  const shouldHaveRadius = (pos: "top" | "bottom") => {
+    const appBarEl = pos === "top" ? ctx?.value?.header : ctx?.value?.footer;
+
+    // This is an overlay, or there is no header/footer, or there is an offset top/bottom
+    return overlay || !appBarEl?.display || drawerCtx?.offset[pos];
+  };
+
+  Q.classes("q-drawer", {
+    bemClasses: {
+      [side]: true,
+      active: value,
+      overlay,
+      bordered,
+      "offset-top": drawerCtx?.offset.top,
+      "offset-bottom": drawerCtx?.offset.bottom,
+      fixed: drawerCtx?.fixed,
+      "top-left-radius": side === "right" && shouldHaveRadius("top"),
+      "bottom-left-radius": side === "right" && shouldHaveRadius("bottom"),
+      "top-right-radius": side === "left" && shouldHaveRadius("top"),
+      "bottom-right-radius": side === "left" && shouldHaveRadius("bottom"),
+      above: (["top", "bottom"] as const).some((pos) => !drawerCtx?.offset[pos] && overlay),
     },
-    userStyles
+    classes: [props.class],
+  });
+
+  const widthStyle = $derived(!ctx ? useSize(width).style : null);
+
+  const drawerWidthStyle = $derived(
+    widthStyle === null ? "" : `--${side}-drawer-width: ${widthStyle};`
   );
 
-  $: borderRadiusClasses =
-    ctx && // No border radius if this isn't a layout drawer
-    derived(ctx, (context) => {
-      const borderSide = side === "left" ? "right" : "left";
-
-      const shouldHaveRadius = (pos: "top" | "bottom") => {
-        let appBarEl = pos === "top" ? context["header"] : context["footer"];
-
-        // This is an overlay, or there is no header/footer, or there is an offset top/bottom
-        return overlay || !appBarEl?.display || context[drawerType].offset[pos];
-      };
-
-      return createClasses(
-        [
-          shouldHaveRadius("top") && `top-${borderSide}-radius`,
-          shouldHaveRadius("bottom") && `bottom-${borderSide}-radius`,
-        ],
-        {
-          component: "q-drawer",
-        }
-      );
-    });
-
-  $: zIndexClass =
-    ctx &&
-    derived(ctx, (context) => {
-      const drawer = side === "left" ? context.drawerLeft : context.drawerRight;
-
-      let pos: keyof typeof drawer.offset;
-      for (pos of ["top", "bottom"] as const) {
-        if (!drawer.offset[pos] && overlay) {
-          drawer.overlay = true;
-          return "above";
-        }
-      }
-    });
+  const style = $derived(`${drawerWidthStyle}${props.style ?? ""}`);
 </script>
 
 <div
+  {...props}
   use:clickOutside={() => canHideOnClickOutside && hide()}
-  class={classes}
+  class="q-drawer"
+  {...Q.classes}
   {style}
-  {...$$restProps}
 >
-  <slot />
+  {@render children?.()}
 </div>
