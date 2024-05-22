@@ -1,10 +1,9 @@
 <script context="module" lang="ts">
-  import { createStyles, createClasses } from "$lib/utils";
-  import { setContext } from "svelte";
-  import { writable } from "svelte/store";
+  import { untrack } from "svelte";
   import ContextReseter from "../private/ContextReseter.svelte";
   import type { QLayoutProps } from "./props";
-  import type { Readable } from "svelte/store";
+  import QContext from "$lib/classes/QContext.svelte";
+  import { isNumber } from "$lib/utils/number";
 
   export interface DrawerContext {
     offset: {
@@ -22,116 +21,128 @@
     fixed: boolean;
   }
 
-  export type LayoutContext = Readable<{
+  export type LayoutContext = {
     header?: AppbarContext;
     footer?: AppbarContext;
     drawerLeft: DrawerContext;
     drawerRight: DrawerContext;
-  }>;
+  };
 </script>
 
 <script lang="ts">
-  export let view: QLayoutProps["view"] = "hhh lpr fff",
-    headerHeight: QLayoutProps["headerHeight"] = "64px",
-    footerHeight: QLayoutProps["footerHeight"] = "80px",
-    leftDrawerWidth: QLayoutProps["leftDrawerWidth"] = "300px",
-    rightDrawerWidth: QLayoutProps["rightDrawerWidth"] = "300px",
-    leftRailbarWidth: QLayoutProps["leftRailbarWidth"] = "88px",
-    rightRailbarWidth: QLayoutProps["rightDrawerWidth"] = "88px",
-    userClasses: QLayoutProps["userClasses"] = undefined,
-    userStyles: QLayoutProps["userStyles"] = undefined;
-  export { userClasses as class, userStyles as style };
+  let {
+    view = "hhh lpr fff",
+    headerHeight = "64px",
+    footerHeight = "80px",
+    leftDrawerWidth = "300px",
+    rightDrawerWidth = "300px",
+    leftRailbarWidth = "88px",
+    rightRailbarWidth = "88px",
+    content,
+    railbarLeft,
+    railbarRight,
+    drawerLeft,
+    drawerRight,
+    header,
+    footer,
+    onscroll,
+    onresize,
+    ...props
+  }: QLayoutProps = $props();
 
-  $: style = createStyles(
-    {
-      "--header-height": isNaN(Number(headerHeight)) ? headerHeight : `${headerHeight}px`,
-      "--footer-height": isNaN(Number(footerHeight)) ? footerHeight : `${footerHeight}px`,
-      "--left-railbar-width": isNaN(Number(leftRailbarWidth))
-        ? leftRailbarWidth
-        : `${leftRailbarWidth}px`,
-      "--right-railbar-width": isNaN(Number(rightRailbarWidth))
-        ? rightRailbarWidth
-        : `${rightRailbarWidth}px`,
-      "--left-drawer-width": isNaN(Number(leftDrawerWidth))
-        ? leftDrawerWidth
-        : `${leftDrawerWidth}px`,
-      "--right-drawer-width": isNaN(Number(rightDrawerWidth))
-        ? rightDrawerWidth
-        : `${rightDrawerWidth}px`,
-    },
-    userStyles
-  );
+  const getStyleValue = (measure: string | number) =>
+    isNumber(measure) ? `${measure}px` : measure;
 
-  $: classes = createClasses(["q-layout", userClasses]);
+  Q.classes("q-layout", {
+    classes: [props.class],
+  });
 
   function prepareCtx(viewProp: typeof view) {
     const [top, middle, bottom] = viewProp!.split(" ");
-    const header: AppbarContext | undefined = $$slots.header
+    const headerCtx: AppbarContext | undefined = header
       ? {
           display: true,
           fixed: top.includes("H"),
         }
       : undefined;
-    const footer: AppbarContext | undefined = $$slots.footer
+    const footerCtx: AppbarContext | undefined = footer
       ? {
           display: true,
           fixed: bottom.includes("F"),
         }
       : undefined;
-    const drawerLeft: DrawerContext = {
+    const drawerLeftCtx: DrawerContext = {
       offset: {
-        top: $$slots.header && top[0].toLowerCase() === "h",
-        bottom: $$slots.footer && bottom[0].toLowerCase() === "f",
+        top: !!header && top[0].toLowerCase() === "h",
+        bottom: !!footer && bottom[0].toLowerCase() === "f",
       },
       fixed: [top[0], middle[0], bottom[0]].includes("L"),
-      railbar: $$slots.railbarLeft === true,
-      drawer: $$slots.drawerLeft === true,
+      railbar: !!railbarLeft,
+      drawer: !!drawerLeft,
       overlay: false,
     };
-    const drawerRight: DrawerContext = {
+    const drawerRightCtx: DrawerContext = {
       offset: {
-        top: $$slots.header && top[2].toLowerCase() === "h",
-        bottom: $$slots.footer && bottom[2].toLowerCase() === "f",
+        top: !!header && top[2].toLowerCase() === "h",
+        bottom: !!footer && bottom[2].toLowerCase() === "f",
       },
       fixed: [top[2], middle[2], bottom[2]].includes("R"),
-      railbar: $$slots.railbarRight === true,
-      drawer: $$slots.drawerRight === true,
+      railbar: !!railbarRight,
+      drawer: !!drawerRight,
       overlay: false,
     };
 
     return {
-      header,
-      footer,
-      drawerLeft,
-      drawerRight,
+      header: headerCtx,
+      footer: footerCtx,
+      drawerLeft: drawerLeftCtx,
+      drawerRight: drawerRightCtx,
     };
   }
 
-  let ctx: LayoutContext = writable(prepareCtx(view));
-  $: $ctx = prepareCtx(view);
-  setContext("layout", ctx);
+  const ctx = new QContext<LayoutContext>("layout", prepareCtx(view));
+
+  $effect(() => {
+    untrack(() => ctx).update(prepareCtx(view));
+  });
 </script>
 
-<div class={classes} {style} {...$$restProps} on:scroll on:resize>
-  {#if $$slots.railbarLeft}
-    <slot name="railbarLeft" />
+<div
+  {...props}
+  class="q-layout"
+  {...Q.classes}
+  style:--header-height={getStyleValue(headerHeight)}
+  style:--footer-height={getStyleValue(footerHeight)}
+  style:--left-railbar-width={getStyleValue(leftRailbarWidth)}
+  style:--right-railbar-width={getStyleValue(rightRailbarWidth)}
+  style:--left-drawer-width={getStyleValue(leftDrawerWidth)}
+  style:--right-drawer-width={getStyleValue(rightDrawerWidth)}
+  {onscroll}
+  {onresize}
+>
+  {#if railbarLeft}
+    {@render railbarLeft()}
   {/if}
-  {#if $$slots.railbarRight}
-    <slot name="railbarRight" />
+  {#if railbarRight}
+    {@render railbarRight()}
   {/if}
-  {#if $$slots.drawerLeft}
-    <slot name="drawerLeft" />
+  {#if drawerLeft}
+    {@render drawerLeft()}
   {/if}
-  {#if $$slots.drawerRight}
-    <slot name="drawerRight" />
+  {#if drawerRight}
+    {@render drawerRight()}
   {/if}
-  {#if $$slots.header}
-    <slot name="header" />
+  {#if header}
+    {@render header()}
   {/if}
-  {#if $$slots.footer}
-    <slot name="footer" />
+  {#if footer}
+    {@render footer()}
   {/if}
   <ContextReseter keys="layout">
-    <slot name="content" />
+    {#snippet children()}
+      {#if content}
+        {@render content()}
+      {/if}
+    {/snippet}
   </ContextReseter>
 </div>
