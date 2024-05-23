@@ -20,6 +20,7 @@
     label = undefined,
     outlined = false,
     rounded = false,
+    displayValue,
     before = undefined,
     prepend = undefined,
     append = undefined,
@@ -29,7 +30,20 @@
   }: QSelectProps = $props();
 
   let focus = $state(false);
-  const active = $derived(typeof value === "number" || value?.length > 0 || focus);
+
+  const currentDisplayValue = $derived.by(() => {
+    if (displayValue !== undefined) {
+      return displayValue;
+    }
+
+    if (!multiple) {
+      return value;
+    }
+
+    return (value as QSelectMultipleValue).join(", ");
+  });
+
+  const active = $derived(currentDisplayValue ?? focus);
 
   let wrapper: HTMLDivElement | null = $state(null);
   let isMenuOpen = $state(false);
@@ -156,7 +170,7 @@
 
       <input
         class="q-field__input"
-        bind:value
+        value={currentDisplayValue}
         placeholder=""
         onfocus={handleFocus}
         onblur={handleBlur}

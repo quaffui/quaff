@@ -31,6 +31,13 @@ export const QSelectDocs: QComponentDocs = {
         description: "Whether the select component is disabled.",
       },
       {
+        name: "displayValue",
+        type: "string",
+        default: undefined,
+        optional: true,
+        description: "Custom display value to show instead of the plain option(s).",
+      },
+      {
         name: "error",
         type: "boolean",
         default: false,
