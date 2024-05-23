@@ -1,5 +1,5 @@
-import { QAvatarDocsProps } from "./docs.props";
 import type { QComponentDocs } from "$lib/utils";
+import { QAvatarDocsProps } from "./docs.props";
 
 export const QAvatarDocs: QComponentDocs = {
   name: "QAvatar",

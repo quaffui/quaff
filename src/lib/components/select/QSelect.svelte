@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { browser } from "$app/environment";
   import { onMount, onDestroy } from "svelte";
+  import { browser } from "$app/environment";
   import { QIcon } from "$lib";
   import type { QSelectProps, QSelectOption, QSelectMultipleValue } from "./props";
 

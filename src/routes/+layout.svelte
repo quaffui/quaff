@@ -6,6 +6,7 @@
   import "../lib/css/index.scss";
   import "../lib/css/fonts.scss";
 
+  import { fade } from "svelte/transition";
   import Quaff from "$lib/classes/Quaff.svelte";
   import {
     QLayout,
@@ -20,7 +21,6 @@
     QHeader,
     QAvatar,
   } from "$lib";
-  import { fade } from "svelte/transition";
   import QTheme from "$lib/classes/QTheme.svelte";
   import { isRouteActive } from "$lib/utils/router";
   import { page } from "$app/stores";

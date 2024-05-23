@@ -1,8 +1,8 @@
 <svelte:options runes={true} />
 
 <script lang="ts">
-  import type { QIconProps } from "./props";
   import { useSize } from "$lib/composables/useSize";
+  import type { QIconProps } from "./props";
 
   let {
     size = "md",

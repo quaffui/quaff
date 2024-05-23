@@ -1,11 +1,11 @@
 <svelte:options runes={true} />
 
 <script lang="ts">
-  import { isRouteActive } from "$utils/router";
   import { getContext, type Snippet } from "svelte";
-  import type { QBreadcrumbsElProps } from "./props";
   import { derived } from "svelte/store";
+  import { isRouteActive } from "$utils/router";
   import QIcon from "../icon/QIcon.svelte";
+  import type { QBreadcrumbsElProps } from "./props";
 
   let {
     activeClass = "active",

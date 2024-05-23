@@ -1,5 +1,5 @@
-import prettier from "prettier";
 import { fileURLToPath } from "url";
+import prettier from "prettier";
 
 async function formatCode(code: string) {
   const prettierRcUrl = new URL("../../.prettierrc", import.meta.url);

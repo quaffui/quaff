@@ -1,9 +1,9 @@
 <script context="module" lang="ts">
   import { untrack } from "svelte";
-  import ContextReseter from "../private/ContextReseter.svelte";
-  import type { QLayoutProps } from "./props";
   import QContext from "$lib/classes/QContext.svelte";
   import { isNumeric } from "$lib/utils/number";
+  import ContextReseter from "../private/ContextReseter.svelte";
+  import type { QLayoutProps } from "./props";
 
   export interface DrawerContext {
     offset: {

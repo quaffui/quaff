@@ -11,9 +11,9 @@
 </script>
 
 <script lang="ts">
-  import { movementDirection } from "$lib/utils";
   import { setContext } from "svelte";
   import { writable } from "svelte/store";
+  import { movementDirection } from "$lib/utils";
   import type { QTabsProps } from "./props";
 
   export let value: QTabsProps["value"] = undefined,
