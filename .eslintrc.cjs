@@ -7,7 +7,7 @@ module.exports = {
     "prettier",
   ],
   parser: "@typescript-eslint/parser",
-  plugins: ["@typescript-eslint", "unicorn"],
+  plugins: ["@typescript-eslint", "unicorn", "import"],
   parserOptions: {
     sourceType: "module",
     ecmaVersion: 2020,
@@ -30,6 +30,22 @@ module.exports = {
       },
     ],
     curly: ["error"],
+    "import/order": [
+      "error",
+      {
+        groups: ["builtin", "external", "internal", "parent", "sibling", "index", "object", "type"],
+        pathGroups: [
+          {
+            pattern: "$**",
+            group: "internal",
+          },
+          {
+            pattern: "$*/**",
+            group: "internal",
+          },
+        ],
+      },
+    ],
     "no-undef": ["off"],
     "object-shorthand": "error",
     "svelte/valid-compile": ["error", { ignoreWarnings: true }],
