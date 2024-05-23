@@ -21,7 +21,7 @@
     QComponentEvent,
   } from "$lib/utils";
 
-  export let componentDocs: QComponentDocs[];
+  let { componentDocs }: { componentDocs: QComponentDocs[] } = $props();
 
   let api: (keyof QComponentDocs["docs"])[] = componentDocs.map(() => "props");
   let drawer = Object.fromEntries(
@@ -32,7 +32,7 @@
       ),
     ])
   );
-  let drawerContent: string | undefined = "";
+  let drawerContent: string | undefined = $state("");
 
   function isProp(
     doc: QComponentProp | QComponentSlot | QComponentType | QComponentEvent,
