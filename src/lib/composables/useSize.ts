@@ -1,4 +1,4 @@
-import { isNumber } from "$utils/number.js";
+import { isNumeric } from "$utils/number.js";
 
 export const sizes: Q.Size[] = ["none", "xs", "sm", "md", "lg", "xl"];
 
@@ -25,7 +25,7 @@ export function isQuaffSize(size: number | string): size is Q.Size {
 export function useSize(size: number | string, component?: `q-${string}`) {
   const sizeClass = isQuaffSize(size) ? ` ${component}--${size}` : "";
   const sizeStyle = () => {
-    if (isNumber(size)) {
+    if (isNumeric(size)) {
       return +size > 0 ? `${size}px` : undefined;
     }
 
