@@ -12,7 +12,9 @@
 </script>
 
 <QDocs componentDocs={QSelectDocs}>
-  <QSelect slot="display" label="Favorite animal" {options} {value} />
+  {#snippet display()}
+    <QSelect label="Favorite animal" {options} {value} />
+  {/snippet}
 
   <div class="s12 q-pa-md">
     <div class="heading">

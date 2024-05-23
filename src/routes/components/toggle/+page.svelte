@@ -9,25 +9,29 @@
 </script>
 
 <QDocs componentDocs={QToggleDocs}>
-  <QToggle slot="display" bind:value={toggle} class="q-ma-sm" />
+  {#snippet display()}
+    <QToggle bind:value={toggle} class="q-ma-sm" />
+  {/snippet}
 
-  <div slot="usage">
-    <QDocsSection {snippets} title="Default Toggle">
-      <QToggle bind:value={toggle} class="q-ma-sm" />
-    </QDocsSection>
+  {#snippet usage()}
+    <div>
+      <QDocsSection {snippets} title="Default Toggle">
+        <QToggle bind:value={toggle} class="q-ma-sm" />
+      </QDocsSection>
 
-    <QDocsSection {snippets} title="Toggle with label">
-      <QToggle bind:value={toggle} class="q-ma-sm" label="With label" />
-      <QToggle bind:value={toggle} class="q-ma-sm" icon="favorite" label="With icon" />
-    </QDocsSection>
+      <QDocsSection {snippets} title="Toggle with label">
+        <QToggle bind:value={toggle} class="q-ma-sm" label="With label" />
+        <QToggle bind:value={toggle} class="q-ma-sm" icon="favorite" label="With icon" />
+      </QDocsSection>
 
-    <QDocsSection {snippets} title="Toggle with label position">
-      <QToggle bind:value={toggle} class="q-ma-sm" leftLabel label="Left label" />
-      <QToggle bind:value={toggle} class="q-ma-sm" label="Right label" />
-    </QDocsSection>
+      <QDocsSection {snippets} title="Toggle with label position">
+        <QToggle bind:value={toggle} class="q-ma-sm" leftLabel label="Left label" />
+        <QToggle bind:value={toggle} class="q-ma-sm" label="Right label" />
+      </QDocsSection>
 
-    <QDocsSection {snippets} title="Disabled state">
-      <QToggle bind:value={toggle} class="q-ma-sm" disable label="Disable" />
-    </QDocsSection>
-  </div>
+      <QDocsSection {snippets} title="Disabled state">
+        <QToggle bind:value={toggle} class="q-ma-sm" disable label="Disable" />
+      </QDocsSection>
+    </div>
+  {/snippet}
 </QDocs>

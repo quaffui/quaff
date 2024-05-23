@@ -9,16 +9,20 @@
 </script>
 
 <QDocs componentDocs={QRadioDocs}>
-  <QRadio slot="display" value="option1" selected={selectedValue} label="Option 1" />
+  {#snippet display()}
+    <QRadio value="option1" selected={selectedValue} label="Option 1" />
+  {/snippet}
 
-  <div slot="usage">
-    <QDocsSection {snippets} title="Radio Group">
-      <QRadio class="q-ma-sm" value="option1" bind:selected={selectedValue} label="Option 1" />
-      <QRadio class="q-ma-sm" value="option2" bind:selected={selectedValue} label="Option 2" />
-    </QDocsSection>
+  {#snippet usage()}
+    <div>
+      <QDocsSection {snippets} title="Radio Group">
+        <QRadio class="q-ma-sm" value="option1" bind:selected={selectedValue} label="Option 1" />
+        <QRadio class="q-ma-sm" value="option2" bind:selected={selectedValue} label="Option 2" />
+      </QDocsSection>
 
-    <QDocsSection {snippets} title="Disabled Radio Button">
-      <QRadio class="q-ma-sm" value="option3" label="Option 3" disable />
-    </QDocsSection>
-  </div>
+      <QDocsSection {snippets} title="Disabled Radio Button">
+        <QRadio class="q-ma-sm" value="option3" label="Option 3" disable />
+      </QDocsSection>
+    </div>
+  {/snippet}
 </QDocs>
