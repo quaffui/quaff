@@ -222,35 +222,39 @@
 </script>
 
 <QDocs componentDocs={QTableDocs}>
-  <QTable slot="display" {columns} rows={rows.slice(0, 1)} />
+  {#snippet display()}
+    <QTable {columns} rows={rows.slice(0, 1)} />
+  {/snippet}
 
-  <div slot="usage">
-    <QDocsSection title="Default">
-      <QTable {columns} {rows} class="q-mt-md" />
-    </QDocsSection>
-    <QDocsSection title="Flat & Bordered">
-      <QTable {columns} {rows} flat bordered class="q-mt-md" />
-    </QDocsSection>
-    <QDocsSection title="Dense">
-      <QTable {columns} {rows} dense class="q-mt-md" />
-    </QDocsSection>
-    <QDocsSection title="Slots">
-      <QTable {rows} columns={columnsWithActions} dense class="q-mt-md">
-        {#snippet bodyCell({ row, column, style })}
-          <td {style}>
-            {#if column.field === "id"}
-              <QIcon name="book" /> {row.id}
-            {:else if column.field === "title"}
-              <b>{row.title}</b>
-            {:else if column.field === "author"}
-              {row.author}
-            {:else if column.field === "actions"}
-              <QBtn icon="edit" design="flat" />
-              <QBtn icon="delete" design="flat" />
-            {/if}
-          </td>
-        {/snippet}
-      </QTable>
-    </QDocsSection>
-  </div>
+  {#snippet usage()}
+    <div>
+      <QDocsSection title="Default">
+        <QTable {columns} {rows} class="q-mt-md" />
+      </QDocsSection>
+      <QDocsSection title="Flat & Bordered">
+        <QTable {columns} {rows} flat bordered class="q-mt-md" />
+      </QDocsSection>
+      <QDocsSection title="Dense">
+        <QTable {columns} {rows} dense class="q-mt-md" />
+      </QDocsSection>
+      <QDocsSection title="Slots">
+        <QTable {rows} columns={columnsWithActions} dense class="q-mt-md">
+          {#snippet bodyCell({ row, column, style })}
+            <td {style}>
+              {#if column.field === "id"}
+                <QIcon name="book" /> {row.id}
+              {:else if column.field === "title"}
+                <b>{row.title}</b>
+              {:else if column.field === "author"}
+                {row.author}
+              {:else if column.field === "actions"}
+                <QBtn icon="edit" design="flat" />
+                <QBtn icon="delete" design="flat" />
+              {/if}
+            </td>
+          {/snippet}
+        </QTable>
+      </QDocsSection>
+    </div>
+  {/snippet}
 </QDocs>

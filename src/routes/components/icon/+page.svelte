@@ -6,42 +6,46 @@
 </script>
 
 <QDocs componentDocs={QIconDocs}>
-  <QIcon slot="display" name="check" />
+  {#snippet display()}
+    <QIcon name="check" />
+  {/snippet}
 
-  <div slot="usage">
-    <QDocsSection title="Default">
-      <div class="flex q-gap-lg items-center">
-        <QIcon name="check" />
-        <QIcon name="edit" />
-      </div>
-    </QDocsSection>
-    <QDocsSection title="Color">
-      <div class="flex q-gap-lg items-center">
-        <QIcon name="check" color="green" />
-        <QIcon name="check" color="purple" />
-        <QIcon name="check" color="blue" />
-      </div>
-    </QDocsSection>
-    <QDocsSection title="Sizes">
-      <div class="flex q-gap-lg items-center">
-        <QIcon name="check" size="xs" />
-        <QIcon name="check" size="sm" />
-        <QIcon name="check" size="md" />
-        <QIcon name="check" size="lg" />
-        <QIcon name="check" size="xl" />
-      </div>
-    </QDocsSection>
-    <QDocsSection title="Types">
-      <div class="flex q-gap-lg items-center">
-        <QIcon name="table" type="rounded" />
-        <QIcon name="table" type="outlined" />
-        <QIcon name="table" type="sharp" />
-      </div>
-    </QDocsSection>
-    <QDocsSection title="Image">
-      <div class="flex q-gap-lg items-center">
-        <QIcon img="/cocktail.jpg" />
-      </div>
-    </QDocsSection>
-  </div>
+  {#snippet usage()}
+    <div>
+      <QDocsSection title="Default">
+        <div class="flex q-gap-lg items-center">
+          <QIcon name="check" />
+          <QIcon name="edit" />
+        </div>
+      </QDocsSection>
+      <QDocsSection title="Color">
+        <div class="flex q-gap-lg items-center">
+          <QIcon name="check" color="green" />
+          <QIcon name="check" color="purple" />
+          <QIcon name="check" color="blue" />
+        </div>
+      </QDocsSection>
+      <QDocsSection title="Sizes">
+        <div class="flex q-gap-lg items-center">
+          <QIcon name="check" size="xs" />
+          <QIcon name="check" size="sm" />
+          <QIcon name="check" size="md" />
+          <QIcon name="check" size="lg" />
+          <QIcon name="check" size="xl" />
+        </div>
+      </QDocsSection>
+      <QDocsSection title="Types">
+        <div class="flex q-gap-lg items-center">
+          <QIcon name="table" type="rounded" />
+          <QIcon name="table" type="outlined" />
+          <QIcon name="table" type="sharp" />
+        </div>
+      </QDocsSection>
+      <QDocsSection title="Image">
+        <div class="flex q-gap-lg items-center">
+          <QIcon img="/cocktail.jpg" />
+        </div>
+      </QDocsSection>
+    </div>
+  {/snippet}
 </QDocs>
