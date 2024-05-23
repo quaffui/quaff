@@ -31,7 +31,7 @@
   let focus = $state(false);
   const active = $derived(typeof value === "number" || value?.length > 0 || focus);
 
-  let wrapper: HTMLElement | null = $state(null);
+  let wrapper: HTMLDivElement | null = $state(null);
   let isMenuOpen = $state(false);
   let wasClicked = $state(false);
   let preventClose = $state(false);
@@ -134,6 +134,7 @@
 </script>
 
 <div
+  bind:this={wrapper}
   {...props}
   class="q-field"
   {...Q.classes}
