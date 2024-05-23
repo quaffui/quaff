@@ -1,5 +1,5 @@
-import { QLayoutDocsProps } from "./docs.props";
 import type { QComponentDocs } from "$lib/utils";
+import { QLayoutDocsProps } from "./docs.props";
 
 export const QLayoutDocs: QComponentDocs = {
   name: "QLayout",

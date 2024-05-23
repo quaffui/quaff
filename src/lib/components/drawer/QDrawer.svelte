@@ -2,9 +2,9 @@
   import { navigating } from "$app/stores";
   import { useSize } from "$lib/composables";
   import { clickOutside } from "$lib/helpers";
+  import QContext from "$lib/classes/QContext.svelte";
   import type { LayoutContext } from "../layout/QLayout.svelte";
   import type { QDrawerProps } from "./props";
-  import QContext from "$lib/classes/QContext.svelte";
 
   let {
     value = $bindable(false),

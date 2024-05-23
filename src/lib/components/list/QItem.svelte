@@ -2,8 +2,8 @@
   import { getContext } from "svelte";
   import { getRouterInfo, isRouteActive } from "$lib/utils/router";
   import { ripple } from "$lib/helpers/ripple";
-  import QSeparator from "../separator/QSeparator.svelte";
   import QContext from "$lib/classes/QContext.svelte";
+  import QSeparator from "../separator/QSeparator.svelte";
   import type { QItemProps, QListProps } from "./props";
 
   let {

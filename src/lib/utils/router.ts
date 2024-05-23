@@ -1,5 +1,5 @@
-import { page } from "$app/stores";
 import { derived } from "svelte/store";
+import { page } from "$app/stores";
 import type { Readable } from "svelte/store";
 
 export interface RouterProps {

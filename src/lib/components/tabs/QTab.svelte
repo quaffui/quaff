@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { hasContext, getContext } from "svelte";
+  import { get } from "svelte/store";
   import { QIcon } from "$lib";
   import { ripple } from "$lib/helpers";
   import {
@@ -9,13 +11,11 @@
     isTabKey,
     getClosestFocusableBlock,
   } from "$lib/utils";
-  import { hasContext, getContext } from "svelte";
   import type { Direction } from "$lib/utils";
-  import { get } from "svelte/store";
+  import { isRouteActive } from "$lib/utils/router";
   import type { Writable } from "svelte/store";
   import type { QTabProps } from "./props";
   import type { QTab, QTabStore } from "./QTabs.svelte";
-  import { isRouteActive } from "$lib/utils/router";
 
   export let name: QTabProps["name"],
     to: QTabProps["to"] = undefined,
