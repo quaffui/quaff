@@ -4,5 +4,7 @@
 </script>
 
 <QDocs componentDocs={QFooterDocs}>
-  <div slot="usage"></div>
+  {#snippet usage()}
+    <div></div>
+  {/snippet}
 </QDocs>

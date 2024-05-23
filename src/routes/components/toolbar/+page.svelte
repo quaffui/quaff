@@ -4,5 +4,7 @@
 </script>
 
 <QDocs componentDocs={QToolbarDocs}>
-  <div slot="usage"></div>
+  {#snippet usage()}
+    <div></div>
+  {/snippet}
 </QDocs>
