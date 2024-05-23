@@ -1,40 +1,36 @@
 <script lang="ts">
   import { useSize } from "$lib/composables";
-  import { createClasses, createStyles } from "$lib/utils";
-  import { getContext } from "svelte";
   import type { LayoutContext } from "../layout/QLayout.svelte";
   import type { QFooterProps } from "./props";
+  import QContext from "$lib/classes/QContext.svelte";
 
-  export let value: QFooterProps["value"] = true,
-    border: QFooterProps["border"] = false,
-    elevate: QFooterProps["elevate"] = false,
-    height: QFooterProps["height"] = undefined,
-    userClasses: QFooterProps["userClasses"] = undefined,
-    userStyles: QFooterProps["userStyles"] = undefined;
-  export { userClasses as class, userStyles as style };
+  let {
+    value = $bindable(true),
+    border = false,
+    elevate = false,
+    height,
+    children,
+    ...props
+  }: QFooterProps = $props();
 
-  let ctx = getContext<LayoutContext | undefined>("layout");
+  const ctx = QContext.get<LayoutContext>("layout");
 
-  $: classes = createClasses(
-    [border && "bordered", elevate && "elevated", $ctx?.footer?.fixed && "fixed"],
-    {
-      component: "q-footer",
-      userClasses,
-    }
-  );
-
-  $: style = createStyles(
-    {
-      height: !ctx && useSize(height).style,
+  Q.classes("q-footer", {
+    bemClasses: {
+      bordered: border,
+      elevated: elevate,
+      fixed: ctx?.value?.footer?.fixed,
     },
-    userStyles
-  );
+    classes: [props.class],
+  });
+
+  const heightStyle = $derived(!ctx ? useSize(height).style : null);
 </script>
 
 {#if value}
-  <footer class={classes} {style}>
+  <footer {...props} class="q-footer" {...Q.classes} style:height={heightStyle}>
     <nav>
-      <slot />
+      {@render children?.()}
     </nav>
   </footer>
 {/if}

@@ -179,8 +179,8 @@
   ];
 
   let contentEl = $state<HTMLDivElement>();
-  let drawerLeft = $state<QDrawer>();
-  let drawerRight = $state<QDrawer>();
+  let drawerLeftEl = $state<QDrawer>();
+  let drawerRightEl = $state<QDrawer>();
 
   const selectedRailbarItem = derived(isRouteActive, ($isRouteActive) =>
     $isRouteActive("/components") ? "components" : $isRouteActive("/utils") ? "utils" : null
@@ -188,9 +188,9 @@
 
   $effect(() => {
     if (selectedRailbarItem !== null) {
-      drawerLeft?.show();
+      drawerLeftEl?.show();
     } else {
-      drawerLeft?.hide();
+      drawerLeftEl?.hide();
     }
   });
 
@@ -218,70 +218,83 @@
     leftDrawerWidth="15rem"
     rightDrawerWidth="30vw"
   >
-    <QHeader slot="header" class="elevate-2">
-      <QToolbarTitle>Quaff</QToolbarTitle>
-      <QBtn
-        icon={Quaff.darkMode.isActive ? "light_mode" : "dark_mode"}
-        design="flat"
-        round
-        onclick={Quaff.darkMode.toggle}
-      />
-      <QBtn icon="palette" design="flat" onclick={drawerRight?.toggle} />
-    </QHeader>
-    <QRailbar slot="railbarLeft" class="surface no-round" bordered>
-      <QList>
-        {#each pages as { name, icon, to }}
-          <QItem {to} noRipple>
-            <QIcon name={icon} />
-            <QItemSection>{name}</QItemSection>
-          </QItem>
-        {/each}
-      </QList>
-    </QRailbar>
-    <QDrawer slot="drawerLeft" persistent bind:this={drawerLeft}>
-      {#key drawerContent}
-        <div in:fade={{ delay: 200, duration: 200 }} out:fade={{ duration: 200 }}>
-          <QList dense>
-            {#each $drawerContent as { name, to }}
-              <QItem
-                {to}
-                on:click={() => contentEl?.scrollTo({ top: 0, behavior: "smooth" })}
-                activeClass="text-primary"
-              >
-                {name}
-              </QItem>
-            {/each}
-          </QList>
-        </div>
-      {/key}
-    </QDrawer>
-    <QDrawer slot="drawerRight" side="right" bind:this={drawerRight} overlay bordered>
-      <div class="q-pa-md">
-        <h6 class="q-mb-lg">Want a different color theme?</h6>
-        <div class="flex q-gap-md">
-          {#each colors as color, index}
-            <QBtn
-              round
-              onclick={() => {
-                chosenColor = index;
-                QTheme.setTheme(color);
-              }}
-              disabled={chosenColor === index}
-            >
-              <QAvatar
-                class={chosenColor === index ? "chosen" : ""}
-                shape="rounded"
-                size="2.5rem"
-                style="background-color:{color}; border: solid 0.0625rem var(--outline)"
-              />
-            </QBtn>
+    {#snippet header()}
+      <QHeader class="elevate-2">
+        <QToolbarTitle>Quaff</QToolbarTitle>
+        <QBtn
+          icon={Quaff.darkMode.isActive ? "light_mode" : "dark_mode"}
+          design="flat"
+          round
+          onclick={Quaff.darkMode.toggle}
+        />
+        <QBtn icon="palette" design="flat" onclick={drawerRightEl?.toggle} />
+      </QHeader>
+    {/snippet}
+
+    {#snippet railbarLeft()}
+      <QRailbar class="surface no-round" bordered>
+        <QList>
+          {#each pages as { name, icon, to }}
+            <QItem {to} noRipple>
+              <QIcon name={icon} />
+              <QItemSection>{name}</QItemSection>
+            </QItem>
           {/each}
+        </QList>
+      </QRailbar>
+    {/snippet}
+
+    {#snippet drawerLeft()}
+      <QDrawer persistent bind:this={drawerLeftEl}>
+        {#key drawerContent}
+          <div in:fade={{ delay: 200, duration: 200 }} out:fade={{ duration: 200 }}>
+            <QList dense>
+              {#each $drawerContent as { name, to }}
+                <QItem
+                  {to}
+                  onclick={() => contentEl?.scrollTo({ top: 0, behavior: "smooth" })}
+                  activeClass="text-primary"
+                >
+                  {name}
+                </QItem>
+              {/each}
+            </QList>
+          </div>
+        {/key}
+      </QDrawer>
+    {/snippet}
+
+    {#snippet drawerRight()}
+      <QDrawer side="right" bind:this={drawerRightEl} overlay bordered>
+        <div class="q-pa-md">
+          <h6 class="q-mb-lg">Want a different color theme?</h6>
+          <div class="flex q-gap-md">
+            {#each colors as color, index}
+              <QBtn
+                round
+                onclick={() => {
+                  chosenColor = index;
+                  QTheme.setTheme(color);
+                }}
+                disabled={chosenColor === index}
+              >
+                <QAvatar
+                  class={chosenColor === index ? "chosen" : ""}
+                  shape="rounded"
+                  size="2.5rem"
+                  style="background-color:{color}; border: solid 0.0625rem var(--outline)"
+                />
+              </QBtn>
+            {/each}
+          </div>
         </div>
+      </QDrawer>
+    {/snippet}
+    {#snippet content()}
+      <div bind:this={contentEl}>
+        {@render children?.()}
       </div>
-    </QDrawer>
-    <div bind:this={contentEl} slot="content">
-      {@render children?.()}
-    </div>
+    {/snippet}
   </QLayout>
 {/if}
 

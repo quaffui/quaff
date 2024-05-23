@@ -1,15 +1,21 @@
 <script lang="ts">
-  import { setContext } from "svelte";
+  import QContext from "$lib/classes/QContext.svelte";
+  import type { Snippet } from "svelte";
 
-  export let keys: string | string[];
+  let {
+    keys,
+    children,
+  }: {
+    keys: string | string[];
+    children?: Snippet;
+  } = $props();
 
-  $: if (Array.isArray(keys)) {
-    for (let key of keys) {
-      setContext(key, undefined);
-    }
-  } else {
-    setContext(keys, undefined);
-  }
+  $effect(() => {
+    const keysArr = Array.isArray(keys) ? keys : [keys];
+    keysArr.forEach((key) => QContext.reset(key));
+  });
 </script>
 
-<slot />
+{#if children}
+  {@render children()}
+{/if}
