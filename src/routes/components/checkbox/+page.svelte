@@ -9,20 +9,24 @@
 </script>
 
 <QDocs componentDocs={QCheckboxDocs}>
-  <QCheckbox slot="display" label="I agree to the terms and conditions" bind:value={value1} />
+  {#snippet display()}
+    <QCheckbox label="I agree to the terms and conditions" bind:value={value1} />
+  {/snippet}
 
-  <div slot="usage">
-    <QDocsSection {snippets} title="Default Checkbox">
-      <QCheckbox class="q-ma-sm" bind:value={value1} />
-      <QCheckbox class="q-ma-sm" label="With label" bind:value={value1} />
-    </QDocsSection>
+  {#snippet usage()}
+    <div>
+      <QDocsSection {snippets} title="Default Checkbox">
+        <QCheckbox class="q-ma-sm" bind:value={value1} />
+        <QCheckbox class="q-ma-sm" label="With label" bind:value={value1} />
+      </QDocsSection>
 
-    <QDocsSection {snippets} title="Checked Checkbox">
-      <QCheckbox class="q-ma-sm" label="Checkbox checked by default" value={true} />
-    </QDocsSection>
+      <QDocsSection {snippets} title="Checked Checkbox">
+        <QCheckbox class="q-ma-sm" label="Checkbox checked by default" value={true} />
+      </QDocsSection>
 
-    <QDocsSection {snippets} title="Disabled">
-      <QCheckbox class="q-ma-sm" label="Checkbox with disable prop" value={true} disable />
-    </QDocsSection>
-  </div>
+      <QDocsSection {snippets} title="Disabled">
+        <QCheckbox class="q-ma-sm" label="Checkbox with disable prop" value={true} disable />
+      </QDocsSection>
+    </div>
+  {/snippet}
 </QDocs>

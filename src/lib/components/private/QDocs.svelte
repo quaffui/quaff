@@ -1,12 +1,25 @@
 <script lang="ts">
-  import { Quaff } from "$lib/stores";
   import { QCard, QCardSection } from "$lib";
   import QApi from "./QApi.svelte";
   import type { QComponentDocs } from "$lib/utils";
+  import type { Snippet } from "svelte";
+  import Quaff from "$lib/classes/Quaff.svelte";
 
-  export let componentDocs: QComponentDocs | QComponentDocs[];
+  let {
+    children,
+    display,
+    pre,
+    usage,
+    componentDocs,
+  }: {
+    children?: Snippet;
+    display?: Snippet;
+    pre?: Snippet;
+    usage?: Snippet;
+    componentDocs: QComponentDocs | QComponentDocs[];
+  } = $props();
 
-  $: isDark = $Quaff.dark.isActive;
+  const isDark = $derived(Quaff.darkMode.isActive);
 
   let principalDocument = Array.isArray(componentDocs) ? componentDocs[0] : componentDocs;
 </script>
@@ -26,7 +39,7 @@
           class="flex flex-center"
           style="position: absolute; height: 100%; width: 100%; z-index: 1;"
         >
-          <slot name="display" />
+          {@render display?.()}
         </div>
         <img
           class="q-docs__image"
@@ -46,19 +59,19 @@
   <div class="q-page">
     <QApi componentDocs={Array.isArray(componentDocs) ? componentDocs : [componentDocs]} />
 
-    <slot name="pre" />
+    {@render pre?.()}
 
-    {#if $$slots.usage}
+    {#if usage}
       <div class="q-pa-md">
         <div class="heading-usage">
           <h4 class="q-my-xl">Usage</h4>
         </div>
 
-        <slot name="usage" />
+        {@render usage()}
       </div>
     {/if}
 
-    <slot />
+    {@render children?.()}
   </div>
 </div>
 

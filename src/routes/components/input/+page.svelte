@@ -9,47 +9,51 @@
 </script>
 
 <QDocs componentDocs={QInputDocs}>
-  <QInput slot="display" bind:value={input} label="Default" class="q-mt-md" />
+  {#snippet display()}
+    <QInput bind:value={input} label="Default" class="q-mt-md" />
+  {/snippet}
 
-  <div slot="usage">
-    <QDocsSection {snippets} title="State">
-      <QInput bind:value={input} label="Default" class="q-mt-md" />
-      <QInput bind:value={input} label="Disabled" class="q-mt-md" disable />
-    </QDocsSection>
+  {#snippet usage()}
+    <div>
+      <QDocsSection {snippets} title="State">
+        <QInput bind:value={input} label="Default" class="q-mt-md" />
+        <QInput bind:value={input} label="Disabled" class="q-mt-md" disable />
+      </QDocsSection>
 
-    <QDocsSection {snippets} title="Styles">
-      <QInput bind:value={input} label="Default" class="q-mt-md" />
-      <QInput bind:value={input} label="Rounded" class="q-mt-md" rounded />
-      <QInput bind:value={input} label="Outlined" class="q-mt-md" outlined />
-      <QInput bind:value={input} label="Filled" class="q-mt-md" filled />
-    </QDocsSection>
+      <QDocsSection {snippets} title="Styles">
+        <QInput bind:value={input} label="Default" class="q-mt-md" />
+        <QInput bind:value={input} label="Rounded" class="q-mt-md" rounded />
+        <QInput bind:value={input} label="Outlined" class="q-mt-md" outlined />
+        <QInput bind:value={input} label="Filled" class="q-mt-md" filled />
+      </QDocsSection>
 
-    <QDocsSection {snippets} title="Dense">
-      <QInput bind:value={input} label="Dense" class="q-mt-md" dense />
-    </QDocsSection>
+      <QDocsSection {snippets} title="Dense">
+        <QInput bind:value={input} label="Dense" class="q-mt-md" dense />
+      </QDocsSection>
 
-    <QDocsSection {snippets} title="Validation and Hints">
-      <QInput bind:value={input} label="With Hint" class="q-mt-md" hint="This is a hint" />
-      <QInput
-        bind:value={input}
-        label="Error State"
-        class="q-mt-md"
-        error
-        errorMessage="A custom error message"
-      />
-    </QDocsSection>
+      <QDocsSection {snippets} title="Validation and Hints">
+        <QInput bind:value={input} label="With Hint" class="q-mt-md" hint="This is a hint" />
+        <QInput
+          bind:value={input}
+          label="Error State"
+          class="q-mt-md"
+          error
+          errorMessage="A custom error message"
+        />
+      </QDocsSection>
 
-    <QDocsSection {snippets} title="Snippets">
-      <QInput bind:value={input} label="Prepended Icon">
-        {#snippet prepend()}
-          <QIcon name="search" />
-        {/snippet}
-      </QInput>
-      <QInput bind:value={input} label="Appended Icon" class="q-mt-md">
-        {#snippet append()}
-          <QIcon name="list" />
-        {/snippet}
-      </QInput>
-    </QDocsSection>
-  </div>
+      <QDocsSection {snippets} title="Snippets">
+        <QInput bind:value={input} label="Prepended Icon">
+          {#snippet prepend()}
+            <QIcon name="search" />
+          {/snippet}
+        </QInput>
+        <QInput bind:value={input} label="Appended Icon" class="q-mt-md">
+          {#snippet append()}
+            <QIcon name="list" />
+          {/snippet}
+        </QInput>
+      </QDocsSection>
+    </div>
+  {/snippet}
 </QDocs>

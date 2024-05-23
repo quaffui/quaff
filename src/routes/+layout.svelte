@@ -1,7 +1,6 @@
 <svelte:options runes={true} />
 
 <script lang="ts">
-  import { derived } from "svelte/store";
   // Comment this in again while needed during development
   //import "beercss/dist/cdn/beer.min.css";
   import "../lib/css/index.scss";
@@ -182,7 +181,8 @@
   let drawerLeftEl = $state<QDrawer>();
   let drawerRightEl = $state<QDrawer>();
 
-  const selectedRailbarItem = derived(isRouteActive, ($isRouteActive) =>
+  const selectedRailbarItem = $derived(
+    // eslint-disable-next-line svelte/valid-compile
     $isRouteActive("/components") ? "components" : $isRouteActive("/utils") ? "utils" : null
   );
 
@@ -194,10 +194,10 @@
     }
   });
 
-  const drawerContent = derived(selectedRailbarItem, ($selectedRailbarItem) =>
-    $selectedRailbarItem === "components"
+  const drawerContent = $derived(
+    selectedRailbarItem === "components"
       ? components
-      : $selectedRailbarItem === "utils"
+      : selectedRailbarItem === "utils"
         ? quaffUtils
         : []
   );
@@ -249,7 +249,7 @@
         {#key drawerContent}
           <div in:fade={{ delay: 200, duration: 200 }} out:fade={{ duration: 200 }}>
             <QList dense>
-              {#each $drawerContent as { name, to }}
+              {#each drawerContent as { name, to }}
                 <QItem
                   {to}
                   onclick={() => contentEl?.scrollTo({ top: 0, behavior: "smooth" })}
