@@ -6,9 +6,9 @@
   import snippets from "./docs.snippets";
 
   let options = ["Cats", "Dogs", "Capybaras"];
-  let value = "";
-  let select = "";
-  let selectMultiple: string[] = [];
+  let value = $state("");
+  let select = $state("");
+  let selectMultiple: string[] = $state([]);
   const displayValue = $derived.by(() => {
     if (!selectMultiple.length) {
       return "None";
