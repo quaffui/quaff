@@ -1,4 +1,5 @@
 import type { NativeProps } from "$lib/utils";
+import type { Snippet } from "svelte";
 import type { HTMLAttributes } from "svelte/elements";
 
 //prettier-ignore
@@ -47,6 +48,20 @@ export interface QLayoutProps extends NativeProps, HTMLAttributes<HTMLDivElement
    * @default 88px
    */
   rightRailbarWidth?: string | number;
+
+  content?: Snippet;
+
+  railbarLeft?: Snippet;
+
+  railbarRight?: Snippet;
+
+  drawerLeft?: Snippet;
+
+  drawerRight?: Snippet;
+
+  header?: Snippet;
+
+  footer?: Snippet;
 }
 
 export type QLayoutEvents = "resize" | "scroll" | "scrollHeight";
