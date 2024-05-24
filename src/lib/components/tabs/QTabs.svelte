@@ -11,16 +11,18 @@
 </script>
 
 <script lang="ts">
-  import { setContext } from "svelte";
-  import { writable } from "svelte/store";
+  import { untrack } from "svelte";
   import { movementDirection } from "$lib/utils";
+  import QContext from "$lib/classes/QContext.svelte";
   import type { QTabsProps } from "./props";
 
-  export let value: QTabsProps["value"] = undefined,
-    variant: QTabsProps["variant"] = "primary",
-    round: QTabsProps["round"] = false,
-    userClasses: QTabsProps["userClasses"] = "";
-  export { userClasses as class };
+  let {
+    value = $bindable(),
+    variant = "primary",
+    round = false,
+    children,
+    ...props
+  }: QTabsProps = $props();
 
   const cssVars = {
     indicatorPosition: "--indicator-position",
@@ -29,7 +31,7 @@
 
   let qTabs: HTMLElement;
 
-  const qTabStore = writable<QTabStore>({
+  const ctx = new QContext<QTabStore>("q-tabs", {
     value,
     variant,
     previousEl: null,
@@ -37,26 +39,46 @@
     utils: { size: 0, position: 0 },
   });
 
-  // Update the store when "value" changes programmatically
-  $: qTabStore.update(($store) => {
-    $store.value = value;
+  const qTabStore = $derived(ctx.value);
 
-    return $store;
+  $effect(() => {
+    value;
+
+    untrack(() => {
+      if (!ctx.value) {
+        return;
+      }
+
+      ctx.updateEntry("value", value);
+    });
   });
+
   // Update "value" when the store changes from QTab
-  $: value = $qTabStore.value;
+  $effect(() => {
+    ctx.value?.value;
 
-  setContext("qTabStore", qTabStore);
+    untrack(() => {
+      value = ctx.value?.value;
+    });
+  });
 
-  $: if ($qTabStore.activeEl) {
+  $effect(() => {
+    if (!qTabStore?.activeEl) {
+      return;
+    }
+
     const {
       previousEl,
       activeEl,
       utils: { position, size },
       variant: storeVariant,
-    } = $qTabStore;
+    } = qTabStore;
     const tabsSize = storeVariant === "vertical" ? qTabs.offsetHeight : qTabs.offsetWidth;
     const tabSize = size / tabsSize;
+
+    if (!storeVariant) {
+      throw new Error("q-tabs: expected storeVariant to be set");
+    }
 
     if (!previousEl) {
       // Position initial indicator
@@ -83,7 +105,7 @@
         qTabs.style.setProperty(cssVars.indicatorSize, `${tabSize}`);
       }, 250);
     }
-  }
+  });
 
   function prepareTransitionSize(storeVariant: typeof variant, fromEl: QTab, toEl: QTab) {
     const fromElChild =
@@ -102,8 +124,16 @@
           (toElChild.offsetWidth || toEl.offsetWidth) -
           (fromEl.offsetLeft + fromElChild.offsetLeft);
   }
+
+  Q.classes("q-tabs", {
+    bemClasses: {
+      [variant]: !!variant,
+      rounded: round,
+    },
+    classes: [props.class],
+  });
 </script>
 
-<nav bind:this={qTabs} class="q-tabs q-tabs--{variant} {userClasses}" class:q-tabs--rounded={round}>
-  <slot />
+<nav {...props} bind:this={qTabs} class="q-tabs" {...Q.classes}>
+  {@render children?.()}
 </nav>

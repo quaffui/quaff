@@ -1,6 +1,5 @@
 <script lang="ts">
-  import { hasContext, getContext } from "svelte";
-  import { get } from "svelte/store";
+  import { onMount } from "svelte";
   import { QIcon } from "$lib";
   import { ripple } from "$lib/helpers";
   import {
@@ -13,44 +12,39 @@
   } from "$lib/utils";
   import type { Direction } from "$lib/utils";
   import { isRouteActive } from "$lib/utils/router";
-  import type { Writable } from "svelte/store";
+  import QContext from "$lib/classes/QContext.svelte";
   import type { QTabProps } from "./props";
   import type { QTab, QTabStore } from "./QTabs.svelte";
 
-  export let name: QTabProps["name"],
-    to: QTabProps["to"] = undefined,
-    icon: QTabProps["icon"] = undefined,
-    userClasses: QTabProps["userClasses"] = "";
-  export { userClasses as class };
+  type QTabEvent<T> = T & {
+    currentTarget: EventTarget & HTMLElement;
+  };
+
+  let { name, to, icon, iconSnippet, children, ...props }: QTabProps = $props();
 
   let qTab: QTab;
 
-  const qTabStore = getContext<Writable<QTabStore>>("qTabStore");
+  const ctx = QContext.get<QTabStore>("q-tabs");
 
-  if (!hasContext("qTabStore")) {
-    console.warn("QTab should be used inside QTabs");
-  }
+  const qTabStore = $derived(ctx?.value);
 
-  // eslint-disable-next-line svelte/valid-compile
-  const isInitallyActive = to !== undefined ? $isRouteActive(to) : name === $qTabStore.value;
+  const isActive = $derived(name === qTabStore?.value);
 
-  $: if (isInitallyActive && qTab) {
-    setActive(qTab);
-  }
+  $effect(() => {
+    if (qTab && isActive && qTab !== qTabStore?.activeEl) {
+      setActive(qTab);
+    }
+  });
 
-  $: isActive = name === $qTabStore.value;
-
-  $: if (qTab && isActive && qTab !== $qTabStore.activeEl) {
-    setActive(qTab);
-  }
-
-  let tag: "button" | "a";
-  $: tag = to === undefined ? "button" : "a";
+  const tag: "button" | "a" = $derived(to === undefined ? "button" : "a");
 
   function setActive(el: QTab) {
-    const store = get(qTabStore);
-    const previousEl = store.activeEl;
-    const variant = store.variant;
+    if (!qTabStore || !ctx) {
+      return;
+    }
+
+    const previousEl = qTabStore.activeEl;
+    const variant = qTabStore.variant;
 
     const child =
       variant === "primary" ? (el.firstElementChild as QTab) : { offsetLeft: 0, offsetWidth: 0 };
@@ -58,7 +52,7 @@
     const position = variant === "vertical" ? el.offsetTop : el.offsetLeft + child.offsetLeft;
     const size = variant === "vertical" ? el.offsetHeight : child.offsetWidth || el.offsetWidth;
 
-    $qTabStore = {
+    ctx.update({
       variant,
       value: name,
       previousEl,
@@ -67,21 +61,25 @@
         size,
         position,
       },
-    };
+    });
   }
 
-  function onClick(e: MouseEvent) {
+  function onClick(e: QTabEvent<MouseEvent>) {
     if (!isActive) {
       setActive(e.target as QTab);
     }
+
+    props.onclick?.(e);
   }
 
-  function onKeydown(e: KeyboardEvent) {
+  function onKeydown(e: QTabEvent<KeyboardEvent>) {
     if (isActivationKey(e)) {
       e.preventDefault();
 
       const click = new MouseEvent("click");
       qTab.dispatchEvent(click);
+      props.onkeydown?.(e);
+
       return;
     }
 
@@ -95,6 +93,8 @@
       }
 
       targetTab?.focus();
+      props.onkeydown?.(e);
+
       return;
     }
 
@@ -105,32 +105,56 @@
       const targetBlock = getClosestFocusableBlock(qTab, direction);
 
       targetBlock?.focus();
+      props.onkeydown?.(e);
+
+      return;
     }
+
+    props.onkeydown?.(e);
 
     return;
   }
+
+  // eslint-disable-next-line svelte/valid-compile
+  const isInitallyActive = to !== undefined ? $isRouteActive(to) : name === qTabStore?.value;
+
+  onMount(() => {
+    if (!qTabStore) {
+      console.warn("QTab should be used inside QTabs");
+    }
+
+    if (isInitallyActive && qTab) {
+      setActive(qTab);
+    }
+  });
+
+  Q.classes("q-tab", {
+    bemClasses: {
+      active: isActive,
+    },
+    classes: [props.class],
+  });
 </script>
 
 <svelte:element
   this={tag}
+  {...props}
   use:ripple
   bind:this={qTab}
   href={to}
   role={tag === "a" ? "button" : undefined}
   aria-current={isActive || undefined}
-  class="q-tab {userClasses}"
-  class:q-tab--active={isActive}
-  on:click
-  on:click={onClick}
-  on:keydown={onKeydown}
-  {...$$restProps}
+  class="q-tab"
+  onclick={onClick}
+  onkeydown={onKeydown}
+  {...Q.classes}
 >
   <div>
     {#if icon}
       <QIcon name={icon} class="q-tab__icon" />
-    {:else if $$slots.icon}
-      <slot name="icon" />
+    {:else if iconSnippet}
+      {@render iconSnippet()}
     {/if}
-    <slot />
+    {@render children?.()}
   </div>
 </svelte:element>
