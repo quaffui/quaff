@@ -1,15 +1,16 @@
 <script lang="ts">
-  import { createClasses } from "$lib/utils";
   import type { QToolbarTitleProps } from "./props";
 
-  export let shrink: QToolbarTitleProps["shrink"] = false,
-    userClasses: QToolbarTitleProps["userClasses"] = undefined,
-    userStyles: QToolbarTitleProps["userStyles"] = undefined;
-  export { userClasses as class, userStyles as style };
+  let { shrink = false, children, ...props }: QToolbarTitleProps = $props();
 
-  $: classes = createClasses([shrink && "shrink", userClasses], { component: "q-toolbar-title" });
+  Q.classes("q-toolbar-title", {
+    bemClasses: {
+      shrink,
+    },
+    classes: [props.class],
+  });
 </script>
 
-<div class={classes} {...$$restProps} style={userStyles}>
-  <slot />
+<div {...props} class="q-toolbar-title" {...Q.classes}>
+  {@render children?.()}
 </div>

@@ -1,7 +1,7 @@
-import type { NativeProps, CssValue } from "$lib/utils";
+import type { CssValue } from "$lib/utils";
 import type { HTMLAttributes } from "svelte/elements";
 
-export interface QToolbarProps extends NativeProps, HTMLAttributes<HTMLElement> {
+export interface QToolbarProps extends HTMLAttributes<HTMLElement> {
   /**
    * @default false
    */
@@ -20,7 +20,7 @@ export interface QToolbarProps extends NativeProps, HTMLAttributes<HTMLElement> 
   height?: CssValue | number;
 }
 
-export interface QToolbarTitleProps extends NativeProps, HTMLAttributes<HTMLDivElement> {
+export interface QToolbarTitleProps extends HTMLAttributes<HTMLDivElement> {
   /**
    * @default false
    */
