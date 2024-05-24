@@ -1,5 +1,5 @@
-import { QTableDocsProps } from "./docs.props";
 import type { QComponentDocs } from "$lib/utils";
+import { QTableDocsProps } from "./docs.props";
 
 export const QTableDocs: QComponentDocs = {
   name: "QTable",

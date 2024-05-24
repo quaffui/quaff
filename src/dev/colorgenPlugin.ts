@@ -1,5 +1,5 @@
-import { format } from "prettier";
 import fs from "node:fs";
+import { format } from "prettier";
 import { generateColors } from "../lib/utils/colors.js";
 import type { QuaffColors, Mode } from "../lib/utils/colors.js";
 import type { Entries } from "../lib/utils/types.js";

@@ -1,8 +1,8 @@
 import { writeFile } from "fs/promises";
 import { MessagePort, parentPort } from "worker_threads";
-import parseInterface from "./parseInterface.js";
 import parseTypes from "../types/parseTypes.js";
 import formatCodeAndAddHash from "../helpers/formatCodeAndAddHash.js";
+import parseInterface from "./parseInterface.js";
 
 function assertHasParentPort(parentPort: MessagePort | null): asserts parentPort is MessagePort {
   if (!parentPort) {

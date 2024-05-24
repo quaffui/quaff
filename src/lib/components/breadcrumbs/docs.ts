@@ -1,5 +1,5 @@
-import { QBreadcrumbsDocsProps } from "./docs.props";
 import type { QComponentDocs } from "$lib/utils";
+import { QBreadcrumbsDocsProps } from "./docs.props";
 
 export const QBreadcrumbsDocs: QComponentDocs = {
   name: "QBreadcrumbs",

@@ -5,7 +5,7 @@ import {
   themeFromSourceColor,
   type Theme,
 } from "@material/material-color-utilities";
-import { isNumber } from "./types.js";
+import { isNumeric } from "./number.js";
 import { convertCase } from "./string.js";
 
 export type Mode = "light" | "dark";
@@ -142,9 +142,9 @@ class QColors {
 
   private static isValidRgb(r: string | number, g: string | number, b: string | number): boolean {
     return (
-      isNumber(r) &&
-      isNumber(g) &&
-      isNumber(b) &&
+      isNumeric(r) &&
+      isNumeric(g) &&
+      isNumeric(b) &&
       +r >= 0 &&
       +r <= 255 &&
       +g >= 0 &&
@@ -156,9 +156,9 @@ class QColors {
 
   private static isValidHsl(h: string | number, s: string | number, l: string | number): boolean {
     return (
-      isNumber(h) &&
-      isNumber(s) &&
-      isNumber(l) &&
+      isNumeric(h) &&
+      isNumeric(s) &&
+      isNumeric(l) &&
       +h >= 0 &&
       +h <= 360 &&
       +s >= 0 &&

@@ -1,5 +1,5 @@
-import { QDialogDocsProps } from "./docs.props";
 import type { QComponentDocs } from "$lib/utils";
+import { QDialogDocsProps } from "./docs.props";
 
 export const QDialogDocs: QComponentDocs = {
   name: "QDialog",

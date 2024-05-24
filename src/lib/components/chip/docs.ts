@@ -1,5 +1,5 @@
-import { QChipDocsProps } from "./docs.props";
 import type { QComponentDocs } from "$lib/utils";
+import { QChipDocsProps } from "./docs.props";
 
 export const QChipDocs: QComponentDocs = {
   name: "QChip",

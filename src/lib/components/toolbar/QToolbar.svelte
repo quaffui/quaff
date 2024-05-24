@@ -13,17 +13,18 @@
   }: QToolbarProps = $props();
 
   const dynamicHeight = $derived(!props.class?.includes("q-header") ? height : undefined);
+
+  Q.classes("q-toolbar", {
+    bemClasses: {
+      inset,
+      elevated: elevate,
+      bordered: border,
+    },
+    classes: [props.class],
+  });
 </script>
 
-<header
-  {...props}
-  class="q-toolbar {props.class}"
-  class:q-toolbar--inset={inset}
-  class:q-toolbar--elevated={elevate}
-  class:q-toolbar--bordered={border}
-  role="toolbar"
-  style:height={dynamicHeight}
->
+<header {...props} class="q-toolbar" {...Q.classes} role="toolbar" style:height={dynamicHeight}>
   <nav>
     {@render children?.()}
   </nav>

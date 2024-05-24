@@ -1,8 +1,8 @@
 <script lang="ts">
   import { useSize } from "$lib/composables";
+  import QContext from "$lib/classes/QContext.svelte";
   import type { LayoutContext } from "../layout/QLayout.svelte";
   import type { QFooterProps } from "./props";
-  import QContext from "$lib/classes/QContext.svelte";
 
   let {
     value = $bindable(true),

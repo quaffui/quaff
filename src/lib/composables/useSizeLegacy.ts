@@ -1,4 +1,5 @@
-import { CssUnit, QuaffSizes, isNumber } from "$lib/utils";
+import type { CssUnit, QuaffSizes } from "$lib/utils";
+import { isNumeric } from "$lib/utils/number";
 
 export const sizes: QuaffSizes[] = ["none", "xs", "sm", "md", "lg", "xl"];
 export const CssUnits: CssUnit[] = ["px", "%", "em", "ex", "ch", "rem", "vw", "vh", "vmin", "vmax"];
@@ -8,18 +9,22 @@ interface UseSize {
   style?: string;
 }
 
-export function useSize(sizeProp: unknown): UseSize {
-  if (isNumber(sizeProp) && sizeProp > 0) {
+export function useSize(sizeProp?: string | number): UseSize {
+  if (sizeProp !== undefined && isNumeric(sizeProp) && Number(sizeProp) > 0) {
     return {
       style: `${sizeProp}px`,
     };
-  } else if (typeof sizeProp === "string") {
+  }
+
+  if (typeof sizeProp === "string") {
     for (const unit of CssUnits) {
       if (sizeProp.slice(-unit.length) === unit) {
         return {
           style: sizeProp,
         };
-      } else if (sizes.includes(sizeProp as QuaffSizes)) {
+      }
+
+      if (sizes.includes(sizeProp as QuaffSizes)) {
         return {
           class: sizeProp,
         };

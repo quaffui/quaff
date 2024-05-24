@@ -1,10 +1,10 @@
 import path from "path";
 import { fileURLToPath } from "url";
+import getComponentDirs from "../helpers/getComponentDirs.js";
+import pathExists from "../helpers/pathExists.js";
 import getInfo from "./getInfo.js";
 import WorkerManager from "./WorkerManager.js";
-import getComponentDirs from "../helpers/getComponentDirs.js";
 import updateDocTypesFile from "./updateDocTypesFile.js";
-import pathExists from "../helpers/pathExists.js";
 import type { WorkerTask } from "./WorkerManager.js";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));

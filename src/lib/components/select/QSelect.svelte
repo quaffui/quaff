@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { browser } from "$app/environment";
   import { onMount, onDestroy } from "svelte";
+  import { browser } from "$app/environment";
   import { QIcon } from "$lib";
   import type { QSelectProps, QSelectOption, QSelectMultipleValue } from "./props";
 
@@ -20,6 +20,7 @@
     label = undefined,
     outlined = false,
     rounded = false,
+    displayValue,
     before = undefined,
     prepend = undefined,
     append = undefined,
@@ -29,9 +30,22 @@
   }: QSelectProps = $props();
 
   let focus = $state(false);
-  const active = $derived(typeof value === "number" || value?.length > 0 || focus);
 
-  let wrapper: HTMLElement | null = $state(null);
+  const currentDisplayValue = $derived.by(() => {
+    if (displayValue !== undefined) {
+      return displayValue;
+    }
+
+    if (!multiple) {
+      return value;
+    }
+
+    return (value as QSelectMultipleValue).join(", ");
+  });
+
+  const active = $derived(currentDisplayValue ?? focus);
+
+  let wrapper: HTMLDivElement | null = $state(null);
   let isMenuOpen = $state(false);
   let wasClicked = $state(false);
   let preventClose = $state(false);
@@ -134,6 +148,7 @@
 </script>
 
 <div
+  bind:this={wrapper}
   {...props}
   class="q-field"
   {...Q.classes}
@@ -155,7 +170,7 @@
 
       <input
         class="q-field__input"
-        bind:value
+        value={currentDisplayValue}
         placeholder=""
         onfocus={handleFocus}
         onblur={handleBlur}
