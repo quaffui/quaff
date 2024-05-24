@@ -1,12 +1,12 @@
 <svelte:options runes={true} />
 
 <script lang="ts">
-  import { createClasses } from "$lib/utils";
   import { untrack } from "svelte";
+  import { createClasses } from "$lib/utils";
   import { QToolbar } from "$lib";
+  import QContext from "$lib/classes/QContext.svelte";
   import type { LayoutContext } from "../layout/QLayout.svelte";
   import type { QHeaderProps } from "./props";
-  import QContext from "$lib/classes/QContext.svelte";
 
   let {
     inset = false,

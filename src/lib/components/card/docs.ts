@@ -1,5 +1,5 @@
-import { QCardActionsDocsProps, QCardDocsProps, QCardSectionDocsProps } from "./docs.props";
 import type { QComponentDocs } from "$lib/utils";
+import { QCardActionsDocsProps, QCardDocsProps, QCardSectionDocsProps } from "./docs.props";
 
 export const QCardDocs: QComponentDocs = {
   name: "QCard",

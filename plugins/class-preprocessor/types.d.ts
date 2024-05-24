@@ -1,5 +1,5 @@
-import type { parse } from "svelte/compiler";
 import { Node } from "estree-walker";
+import type { parse } from "svelte/compiler";
 
 type GetModernRoot<T> = T extends { fragment: unknown } ? T : never;
 

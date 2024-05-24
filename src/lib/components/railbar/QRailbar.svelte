@@ -1,8 +1,8 @@
 <script lang="ts">
   import { useSize } from "$lib/composables";
+  import QContext from "$lib/classes/QContext.svelte";
   import type { LayoutContext } from "../layout/QLayout.svelte";
   import type { QRailbarProps } from "./props";
-  import QContext from "$lib/classes/QContext.svelte";
 
   let { width = 88, side = "left", bordered = false, children, ...props }: QRailbarProps = $props();
 

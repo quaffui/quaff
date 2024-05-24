@@ -1,9 +1,9 @@
 <script lang="ts">
-  import QIcon from "../icon/QIcon.svelte";
   import { ripple } from "$lib/helpers";
-  import type { QChipProps } from "./props";
   import { extractImgSrc, isActivationKey } from "$lib/utils";
+  import QIcon from "../icon/QIcon.svelte";
   import QAvatar from "../avatar/QAvatar.svelte";
+  import type { QChipProps } from "./props";
 
   type QChipMouseEvent = MouseEvent & {
     currentTarget: EventTarget & HTMLDivElement;

@@ -6,9 +6,22 @@
   import snippets from "./docs.snippets";
 
   let options = ["Cats", "Dogs", "Capybaras"];
-  let value = "";
-  let select = "";
-  let selectMultiple: string[] = [];
+  let value = $state("");
+  let select = $state("");
+  let selectMultiple: string[] = $state([]);
+  const displayValue = $derived.by(() => {
+    if (!selectMultiple.length) {
+      return "None";
+    }
+
+    if (selectMultiple.length > 1) {
+      const firstParts = selectMultiple.slice(0, -1);
+      const lastPart = selectMultiple.at(-1);
+      return `${firstParts.join(", ")} and ${lastPart}`;
+    }
+
+    return selectMultiple[0];
+  });
 </script>
 
 <QDocs componentDocs={QSelectDocs}>
@@ -26,6 +39,14 @@
       <QSelect bind:value={select} {options} label="Default" class="q-mt-md" />
       <QSelect bind:value={select} {options} label="Disabled" class="q-mt-md" disable />
       <QSelect bind:value={selectMultiple} {options} label="Multiple" class="q-mt-md" multiple />
+      <QSelect
+        bind:value={selectMultiple}
+        {displayValue}
+        {options}
+        label="Multiple with displayValue"
+        class="q-mt-md"
+        multiple
+      />
     </QDocsSection>
 
     <QDocsSection {snippets} title="Style">

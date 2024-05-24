@@ -1,5 +1,5 @@
-import { QRailbarDocsProps } from "./docs.props";
 import type { QComponentDocs } from "$lib/utils";
+import { QRailbarDocsProps } from "./docs.props";
 
 export const QRailbarDocs: QComponentDocs = {
   name: "QRailbar",

@@ -1,9 +1,9 @@
 <script context="module" lang="ts">
   import { untrack } from "svelte";
+  import QContext from "$lib/classes/QContext.svelte";
+  import { isNumeric } from "$lib/utils/number";
   import ContextReseter from "../private/ContextReseter.svelte";
   import type { QLayoutProps } from "./props";
-  import QContext from "$lib/classes/QContext.svelte";
-  import { isNumber } from "$lib/utils/number";
 
   export interface DrawerContext {
     offset: {
@@ -51,7 +51,7 @@
   }: QLayoutProps = $props();
 
   const getStyleValue = (measure: string | number) =>
-    isNumber(measure) ? `${measure}px` : measure;
+    isNumeric(measure) ? `${measure}px` : measure;
 
   Q.classes("q-layout", {
     classes: [props.class],

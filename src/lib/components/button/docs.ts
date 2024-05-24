@@ -1,5 +1,5 @@
-import { QBtnDocsProps } from "./docs.props";
 import type { QComponentDocs } from "$lib/utils";
+import { QBtnDocsProps } from "./docs.props";
 
 export const QBtnDocs: QComponentDocs = {
   name: "QBtn",

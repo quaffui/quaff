@@ -23,6 +23,7 @@ export interface QSelectProps extends NativeProps, HTMLAttributes<HTMLDivElement
   label?: string;
   outlined?: boolean;
   rounded?: boolean;
+  displayValue?: string;
   before?: Snippet;
   prepend?: Snippet;
   append?: Snippet;
