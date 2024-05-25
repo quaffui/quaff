@@ -1,10 +1,18 @@
 <script lang="ts">
   import { QCodeBlock, QDialog, QBtn } from "$lib";
+  import type { Snippet } from "svelte";
 
-  export let title: string,
-    snippets: Record<string, string> | undefined = undefined;
+  let {
+    title,
+    snippets,
+    children,
+  }: {
+    title: string;
+    snippets?: Record<string, string>;
+    children?: Snippet;
+  } = $props();
 
-  let dialog = false;
+  let dialog = $state(false);
 </script>
 
 <div style="margin-bottom:48px">
@@ -17,5 +25,5 @@
       </QDialog>
     {/if}
   </div>
-  <slot />
+  {@render children?.()}
 </div>

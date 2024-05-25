@@ -1,22 +1,23 @@
 <script lang="ts">
   import { QCard, QCardSection, QToggle, QCheckbox, QCardActions, QBtn, QDialog } from "$lib";
 
-  let exampleToggles = [true, true, true];
-  let exampleCheckbox = false;
+  let exampleToggles = $state([true, true, true]);
+  let exampleCheckbox = $state(false);
 
-  export let dialogEl: QDialog | null;
+  let { dialogEl }: { dialogEl: QDialog | null } = $props();
 </script>
 
 <QCard title="Cookie settings" flat>
   <QCardSection>
-    {#each exampleToggles as toggle, index}
+    <!-- eslint-disable-next-line @typescript-eslint/no-unused-vars -->
+    {#each exampleToggles as _, index}
       <div class="flex justify-between q-my-sm">
         {#if index === 0}
           <h6 class="small">Cookies {index + 1} (always active)</h6>
-          <QToggle bind:value={toggle} disable />
+          <QToggle bind:value={exampleToggles[index]} disable />
         {:else}
           <h6 class="small">Cookies {index + 1}</h6>
-          <QToggle bind:value={toggle} />
+          <QToggle bind:value={exampleToggles[index]} />
         {/if}
       </div>
     {/each}
