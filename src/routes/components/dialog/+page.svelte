@@ -65,7 +65,6 @@
 
   {#snippet usage()}
     <div>
-      isDark =
       <QDocsSection {snippets} title="Positions">
         <QBtn onclick={defaultDialog.el?.show}>Default</QBtn>
         <QDialog bind:this={defaultDialog.el} bind:value={defaultDialog.value}>

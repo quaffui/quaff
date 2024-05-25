@@ -158,7 +158,7 @@
   ];
   const quaffUtils = [
     {
-      name: "The $Quaff object",
+      name: "The Quaff object",
       to: "/utils/quaff",
     },
   ];

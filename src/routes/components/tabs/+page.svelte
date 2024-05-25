@@ -5,7 +5,7 @@
   import QDocs from "$lib/components/private/QDocs.svelte";
   import QDocsSection from "$lib/components/private/QDocsSection.svelte";
 
-  let activeTab = "hello";
+  let activeTab = $state("hello");
 </script>
 
 <QDocs componentDocs={QTabsDocs}>

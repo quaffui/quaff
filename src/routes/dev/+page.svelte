@@ -23,7 +23,7 @@
     QTab,
     QIcon,
   } from "$lib";
-  import { Quaff } from "$lib/stores/Quaff";
+  import Quaff from "$lib/classes/Quaff.svelte";
   import QBreadcrumbs from "$lib/components/breadcrumbs/QBreadcrumbs.svelte";
   import QBreadcrumbsEl from "$lib/components/breadcrumbs/QBreadcrumbsEl.svelte";
   import QCardActions from "$lib/components/card/QCardActions.svelte";
@@ -106,23 +106,23 @@
       <QCard title="The quaff object">
         <QCardSection>
           <h6>Version</h6>
-          <p>$Quaff.version: {$Quaff.version}</p>
+          <p>Quaff.version: {Quaff.version}</p>
         </QCardSection>
         <QCardSection>
           <h6>Dark mode</h6>
-          <p>$Quaff.dark.isActive: {$Quaff.dark.isActive}</p>
+          <p>Quaff.darkMode.isActive: {Quaff.darkMode.isActive}</p>
           <div>
-            <QBtn onclick={() => $Quaff.dark.toggle()}>$Quaff.dark.toggle()</QBtn>
+            <QBtn onclick={() => Quaff.darkMode.toggle()}>Quaff.darkMode.toggle()</QBtn>
           </div>
         </QCardSection>
         <QCardSection>
           <h6>Router</h6>
-          <p>$Quaff.router.data: {JSON.stringify($Quaff.router.data)}</p>
-          <p>$Quaff.router.error: {$Quaff.router.error}</p>
-          <p>$Quaff.router.params: {JSON.stringify($Quaff.router.params)}</p>
-          <p>$Quaff.router.route: {JSON.stringify($Quaff.router.route)}</p>
-          <p>$Quaff.router.status: {JSON.stringify($Quaff.router.status)}</p>
-          <p>$Quaff.router.url: {JSON.stringify($Quaff.router.url)}</p>
+          <p>Quaff.router.data: {JSON.stringify(Quaff.router.data)}</p>
+          <p>Quaff.router.error: {Quaff.router.error}</p>
+          <p>Quaff.router.params: {JSON.stringify(Quaff.router.params)}</p>
+          <p>Quaff.router.route: {JSON.stringify(Quaff.router.route)}</p>
+          <p>Quaff.router.status: {JSON.stringify(Quaff.router.status)}</p>
+          <p>Quaff.router.url: {JSON.stringify(Quaff.router.url)}</p>
         </QCardSection>
       </QCard>
     </div>
