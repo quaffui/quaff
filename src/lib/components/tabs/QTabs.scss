@@ -1,0 +1,40 @@
+@use "$css/mixins";
+
+.q-tabs {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  max-width: 100%;
+  overflow: auto;
+  scroll-behavior: smooth;
+  border-radius: 0;
+  border-bottom: solid 0.0625rem var(--outline);
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  &.q-tabs--secondary :global(.q-tab .q-tab__indicator) {
+    border-radius: 0;
+    height: 0.125rem;
+  }
+
+  &.q-tabs--vertical {
+    flex-direction: column;
+    width: fit-content;
+    align-items: stretch;
+    border-bottom: unset;
+    border-right: solid 0.0625rem var(--outline);
+
+    & > :global(.q-tab) {
+      @include mixins.padding("x", "md");
+    }
+
+    & :global(.q-tab .q-tab__indicator) {
+      inset: 0 0 0 auto;
+      border-radius: 0;
+      height: unset;
+      width: 0.125rem;
+    }
+  }
+}
