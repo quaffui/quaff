@@ -1,0 +1,85 @@
+@use "$css/mixins";
+
+.q-tabs {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  max-width: 100%;
+  overflow: auto;
+  scroll-behavior: smooth;
+  border-radius: 0;
+  border-bottom: solid 0.0625rem var(--outline);
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  &.q-tabs--secondary :global(.q-tab .q-tab__indicator) {
+    border-radius: 0;
+    height: 2px;
+  }
+
+  &.q-tabs--vertical {
+    flex-direction: column;
+    width: fit-content;
+    align-items: stretch;
+    border-bottom: unset;
+    border-right: solid 0.0625rem var(--outline);
+
+    & > :global(.q-tab) {
+      @include mixins.padding("x", "md");
+    }
+
+    & :global(.q-tab .q-tab__indicator) {
+      inset: 0 0 0 auto;
+      border-radius: 0;
+      height: unset;
+      width: 2px;
+    }
+
+    &::after {
+      left: auto;
+      right: 0;
+      top: 0;
+      bottom: 0;
+
+      width: 0.125rem;
+      height: 100%;
+
+      transform-origin: top;
+
+      scale: 1 var(--q-tabs-indicator-size, 0);
+      translate: 0 var(--q-tabs-indicator-position, 0);
+    }
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    width: 100%;
+    height: 0.125rem;
+
+    border-radius: 0;
+    background: var(--primary);
+
+    transform-origin: left;
+    transition:
+      scale 0.2s cubic-bezier(0.25, 0.92, 0.33, 1),
+      translate 0.2s cubic-bezier(0.25, 0.92, 0.33, 1);
+
+    scale: var(--q-tabs-indicator-size, 0) 1;
+    translate: var(--q-tabs-indicator-position, 0) 0;
+  }
+
+  &.q-tabs--primary::after {
+    translate: var(--q-tabs-indicator-position, 0) 0;
+    scale: var(--q-tabs-indicator-size, 0) 1;
+
+    height: 0.1875rem;
+    border-radius: 0.25rem 0.25rem 0px 0px;
+  }
+}
