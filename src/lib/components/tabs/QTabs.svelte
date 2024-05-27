@@ -9,8 +9,8 @@
 <script lang="ts">
   import { setContext, untrack } from "svelte";
   import QContext from "$lib/classes/QContext.svelte";
-  import type { QTabsProps } from "./props";
   import { shouldReduceMotion } from "$lib/utils/dom";
+  import type { QTabsProps } from "./props";
 
   let {
     value = $bindable(),

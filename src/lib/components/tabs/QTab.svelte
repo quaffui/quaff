@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { getContext, hasContext, untrack } from "svelte";
+  import { getContext, hasContext } from "svelte";
   import { QIcon } from "$lib";
   import QContext from "$lib/classes/QContext.svelte";
   import { ripple } from "$lib/helpers";
