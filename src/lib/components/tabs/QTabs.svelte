@@ -87,7 +87,7 @@
 
     qIndicator.getAnimations().forEach((animation) => animation.cancel());
     const frames = getKeyframes(previousTab, newTab!);
-    if (frames !== null) {
+    if (frames) {
       qIndicator.animate(frames, {
         duration: 600,
         easing: "cubic-bezier(.18,.77,0,1)",
@@ -101,8 +101,8 @@
       return reduceMotion ? [{ opacity: 1 }, { transform: "none" }] : null;
     }
 
-    let previousEl = variant === "primary" ? oldTab?.querySelector(".q-tab__content") : oldTab;
-    let activeEl = variant === "primary" ? newTab?.querySelector(".q-tab__content") : newTab;
+    const previousEl = variant === "primary" ? oldTab?.querySelector(".q-tab__content") : oldTab;
+    const activeEl = variant === "primary" ? newTab?.querySelector(".q-tab__content") : newTab;
 
     const pos = variant === "vertical" ? "top" : "left";
     const extent = variant === "vertical" ? "height" : "width";
@@ -123,10 +123,10 @@
     if (!reduceMotion && fromPos !== undefined && toPos !== undefined && !isNaN(scale)) {
       const translateAnimation = (fromPos - toPos).toFixed(4);
       const scaleAnimation = scale.toFixed(4);
-      keyframe["transform"] =
+      keyframe.transform =
         `translate${axis}(${translateAnimation}px) scale${axis}(${scaleAnimation})`;
     } else {
-      keyframe["opacity"] = 0;
+      keyframe.opacity = 0;
     }
 
     // Including `transform: none` avoids quirky Safari behavior
