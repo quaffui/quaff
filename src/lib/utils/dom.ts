@@ -107,3 +107,7 @@ export function movementDirection(from: HTMLElement, to: HTMLElement): Direction
 
   return relativePosition === 2 ? "previous" : "next";
 }
+
+export function shouldReduceMotion() {
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
