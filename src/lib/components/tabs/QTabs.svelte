@@ -123,8 +123,7 @@
     if (!reduceMotion && fromPos !== undefined && toPos !== undefined && !isNaN(scale)) {
       const translateAnimation = (fromPos - toPos).toFixed(4);
       const scaleAnimation = scale.toFixed(4);
-      keyframe.transform =
-        `translate${axis}(${translateAnimation}px) scale${axis}(${scaleAnimation})`;
+      keyframe.transform = `translate${axis}(${translateAnimation}px) scale${axis}(${scaleAnimation})`;
     } else {
       keyframe.opacity = 0;
     }
