@@ -1,6 +1,3 @@
-<script lang="ts">
-</script>
-
 <div class="q-page page-home">
   <div class="page-home__logo-container">
     <img

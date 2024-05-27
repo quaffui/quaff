@@ -1,86 +1,55 @@
 <script lang="ts">
-  import { onMount } from "svelte";
+  import { getContext, hasContext } from "svelte";
   import { QIcon } from "$lib";
-  import { ripple } from "$lib/helpers";
-  import {
-    isActivationKey,
-    isArrowKey,
-    getDirection,
-    getClosestFocusableSibling,
-    isTabKey,
-    getClosestFocusableBlock,
-  } from "$lib/utils";
-  import type { Direction } from "$lib/utils";
-  import { isRouteActive } from "$lib/utils/router";
   import QContext from "$lib/classes/QContext.svelte";
-  import type { QTabProps } from "./props";
-  import type { QTab, QTabStore } from "./QTabs.svelte";
+  import { ripple } from "$lib/helpers";
+  import { getClosestFocusableBlock, getClosestFocusableSibling } from "$lib/utils/dom";
+  import type { Direction } from "$lib/utils/events";
+  import { getDirection, isActivationKey, isArrowKey, isTabKey } from "$lib/utils/events";
+  import { isRouteActive } from "$lib/utils/router";
+  import type { QTabEl } from "./QTabs.svelte";
+  import type { QTabProps, QTabsVariants } from "./props";
 
   type QTabEvent<T> = T & {
-    currentTarget: EventTarget & HTMLElement;
+    currentTarget: EventTarget & QTabEl;
   };
 
-  let { name, to, icon, iconSnippet, children, ...props }: QTabProps = $props();
+  let { name, to, icon, children, ...props }: QTabProps = $props();
 
-  let qTab: QTab;
+  let qTab: QTabEl;
 
-  const ctx = QContext.get<QTabStore>("q-tabs");
+  const tag = $derived(to ? "a" : "button");
 
-  const qTabStore = $derived(ctx?.value);
+  if (!hasContext("QTabsValue")) {
+    console.warn("QTab should be use inside QTabs.");
+  }
 
-  const isActive = $derived(name === qTabStore?.value);
+  const qTabsRequestCtx = QContext.get<string | null>("QTabsRequest")!;
 
-  $effect(() => {
-    if (qTab && isActive && qTab !== qTabStore?.activeEl) {
-      setActive(qTab);
-    }
-  });
+  const qTabsValueCtx = QContext.get<string | undefined | null>("QTabsValue")!;
+  const variant = getContext<QTabsVariants>("QTabsVariant");
 
-  const tag: "button" | "a" = $derived(to === undefined ? "button" : "a");
+  // eslint-disable-next-line svelte/valid-compile
+  const isActive = $derived(to ? $isRouteActive(to) : name === qTabsValueCtx.value);
 
-  function setActive(el: QTab) {
-    if (!qTabStore || !ctx) {
+  function onclick(e: QTabEvent<MouseEvent>) {
+    props.onclick?.(e);
+
+    if (e.defaultPrevented || isActive) {
       return;
     }
 
-    const previousEl = qTabStore.activeEl;
-    const variant = qTabStore.variant;
-
-    const child =
-      variant === "primary" ? (el.firstElementChild as QTab) : { offsetLeft: 0, offsetWidth: 0 };
-
-    const position = variant === "vertical" ? el.offsetTop : el.offsetLeft + child.offsetLeft;
-    const size = variant === "vertical" ? el.offsetHeight : child.offsetWidth || el.offsetWidth;
-
-    ctx.update({
-      variant,
-      value: name,
-      previousEl,
-      activeEl: el,
-      utils: {
-        size,
-        position,
-      },
-    });
+    qTabsRequestCtx.update(name);
   }
 
-  function onClick(e: QTabEvent<MouseEvent>) {
-    if (!isActive) {
-      setActive(e.target as QTab);
-    }
+  function onkeydown(e: QTabEvent<KeyboardEvent>) {
+    props.onkeydown?.(e);
 
-    props.onclick?.(e);
-  }
-
-  function onKeydown(e: QTabEvent<KeyboardEvent>) {
     if (isActivationKey(e)) {
       e.preventDefault();
 
-      const click = new MouseEvent("click");
-      qTab.dispatchEvent(click);
-      props.onkeydown?.(e);
-
-      return;
+      const click = new MouseEvent("click") as QTabEvent<MouseEvent>;
+      return onclick(click);
     }
 
     if (isArrowKey(e)) {
@@ -92,41 +61,17 @@
         return;
       }
 
-      targetTab?.focus();
-      props.onkeydown?.(e);
-
-      return;
+      return targetTab?.focus();
     }
 
     if (isTabKey(e)) {
       e.preventDefault();
       const direction: Direction = e.shiftKey ? "previous" : "next";
-
       const targetBlock = getClosestFocusableBlock(qTab, direction);
 
       targetBlock?.focus();
-      props.onkeydown?.(e);
-
-      return;
     }
-
-    props.onkeydown?.(e);
-
-    return;
   }
-
-  // eslint-disable-next-line svelte/valid-compile
-  const isInitallyActive = to !== undefined ? $isRouteActive(to) : name === qTabStore?.value;
-
-  onMount(() => {
-    if (!qTabStore) {
-      console.warn("QTab should be used inside QTabs");
-    }
-
-    if (isInitallyActive && qTab) {
-      setActive(qTab);
-    }
-  });
 
   Q.classes("q-tab", {
     bemClasses: {
@@ -138,23 +83,37 @@
 
 <svelte:element
   this={tag}
-  {...props}
-  use:ripple
   bind:this={qTab}
+  use:ripple
+  {...props}
+  class="q-tab"
+  {...Q.classes}
   href={to}
   role={tag === "a" ? "button" : undefined}
   aria-current={isActive || undefined}
-  class="q-tab"
-  onclick={onClick}
-  onkeydown={onKeydown}
-  {...Q.classes}
+  aria-label={name}
+  {onclick}
+  {onkeydown}
 >
-  <div>
-    {#if icon}
+  <div class="q-tab__content">
+    {#if typeof icon === "string"}
       <QIcon name={icon} class="q-tab__icon" />
-    {:else if iconSnippet}
-      {@render iconSnippet()}
+    {:else}
+      {@render icon?.()}
     {/if}
+
     {@render children?.()}
+
+    {#if variant === "primary"}
+      <div class="q-tab__indicator"></div>
+    {/if}
   </div>
+
+  {#if variant !== "primary"}
+    <div class="q-tab__indicator"></div>
+  {/if}
 </svelte:element>
+
+<style lang="scss">
+  @import "./QTab.scss";
+</style>

@@ -57,6 +57,6 @@ export default class QContext<T> {
    * Inner value of the context
    */
   get value() {
-    return this.#state;
+    return this.#state as T;
   }
 }
