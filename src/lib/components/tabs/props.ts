@@ -12,6 +12,5 @@ export interface QTabsProps extends HTMLAttributes<HTMLElement> {
 export interface QTabProps extends HTMLAttributes<HTMLElement> {
   name: string;
   to?: string;
-  icon?: string;
-  iconSnippet?: Snippet;
+  icon?: string | Snippet;
 }
