@@ -61,8 +61,8 @@
     box-sizing: border-box;
     transform-origin: bottom left;
     background: var(--primary);
-    border-radius: 3px 3px 0 0;
-    height: 3px;
+    border-radius: 0.1875rem 0.1875rem 0 0;
+    height: 0.1875rem;
     inset: auto 0 0 0;
     // hidden unless the tab is selected
     opacity: 0;
