@@ -40,6 +40,7 @@
     "@sveltejs/adapter-auto": "^3.2.1",
     "@sveltejs/kit": "^2.5.10",
     "@sveltejs/package": "^2.3.1",
+    "@sveltejs/vite-plugin-svelte": "^3.1.0",
     "@types/node": "^20.12.12",
     "@types/prettier": "^2.7.3",
     "@types/prismjs": "^1.26.4",
