@@ -25,7 +25,9 @@ export function ripple(el: HTMLElement, options: RippleOptions = {}) {
       rippleContainer.classList.remove("q-ripple--center");
     }
 
-    shouldBeCentered && rippleContainer.classList.add("q-ripple--center");
+    if (shouldBeCentered) {
+      rippleContainer.classList.add("q-ripple--center");
+    }
   }
 
   function setOptions(options: RippleOptions) {
