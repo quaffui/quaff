@@ -12,23 +12,6 @@
     "sourceMap": true,
     "strict": true,
     "moduleResolution": "node",
-    "baseUrl": ".",
-    "paths": {
-      "$lib": ["src/lib"],
-      "$lib/*": ["src/lib/*"],
-      "$components": ["src/lib/components"],
-      "$components/*": ["src/lib/components/*"],
-      "$composables": ["src/lib/composables"],
-      "$composables/*": ["src/lib/composables/*"],
-      "$utils": ["src/lib/utils"],
-      "$utils/*": ["src/lib/utils/*"],
-      "$css": ["src/lib/css"],
-      "$css/*": ["src/lib/css/*"],
-      "$stores": ["src/lib/stores"],
-      "$stores/*": ["src/lib/stores/*"],
-      "$helpers": ["src/lib/helpers"],
-      "$helpers/*": ["src/lib/helpers/*"]
-    },
     "preserveValueImports": false,
     "verbatimModuleSyntax": false
   },
