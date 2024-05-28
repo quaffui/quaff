@@ -191,7 +191,10 @@ class QColors {
     if (!QColors.isValidRgb(r, g, b)) {
       throw new Error("Invalid RGB values. They should be in the range 0-255.");
     }
-    (r = +r / 255), (g = +g / 255), (b = +b / 255);
+    r = +r / 255;
+    g = +g / 255;
+    b = +b / 255;
+
     const max = Math.max(r, g, b),
       min = Math.min(r, g, b);
     const l = (max + min) / 2;
@@ -227,7 +230,9 @@ class QColors {
       );
     }
     let r: number, g: number, b: number;
-    (h = +h / 360), (s = +s / 100), (l = +l / 100);
+    h = +h / 360;
+    s = +s / 100;
+    l = +l / 100;
 
     if (s === 0) {
       r = g = b = l; // achromatic
