@@ -4,7 +4,7 @@ export default async function pathExists(filePath: string) {
   try {
     await access(filePath);
     return true;
-  } catch (err) {
+  } catch {
     return false;
   }
 }

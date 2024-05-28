@@ -15,7 +15,9 @@ export function createStyles(
     toJoin.push(`${convertCase(styleName, "camel", "kebab")}: ${styleVal}`);
   }
 
-  userStyles && toJoin.push(userStyles);
+  if (userStyles) {
+    toJoin.push(userStyles);
+  }
 
   if (toJoin.length === 0) {
     return null;
