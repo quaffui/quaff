@@ -5,7 +5,7 @@ import typescriptParser from "@typescript-eslint/parser";
 import svelteParser from "svelte-eslint-parser";
 import eslintPluginTypescript from "@typescript-eslint/eslint-plugin";
 import eslintPluginUnicorn from "eslint-plugin-unicorn";
-import eslintPluginImport from "eslint-plugin-import";
+import eslintPluginImport from "eslint-plugin-import-x";
 import eslintPluginSvelte from "eslint-plugin-svelte";
 import eslintConfigPrettier from "eslint-config-prettier";
 import globals from "globals";
