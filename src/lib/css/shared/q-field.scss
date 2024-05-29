@@ -227,6 +227,7 @@ $transition-duration: 0.2s;
     height: 100%;
     color: unset;
     flex-grow: 1;
+    min-width: 0;
   }
 
   &--default &__input,
