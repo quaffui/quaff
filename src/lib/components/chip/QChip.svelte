@@ -3,6 +3,7 @@
   import { extractImgSrc, isActivationKey } from "$lib/utils";
   import QIcon from "../icon/QIcon.svelte";
   import QAvatar from "../avatar/QAvatar.svelte";
+  import type { MaterialSymbol } from "material-symbols";
   import type { QChipProps } from "./props";
 
   type QChipMouseEvent = MouseEvent & {
@@ -103,7 +104,7 @@
   {onkeydown}
 >
   {#if icon && !selected && !avatar}
-    <QIcon class="q-chip__leading-icon" name={icon} />
+    <QIcon class="q-chip__leading-icon" name={icon as MaterialSymbol} />
   {:else if avatar && !selected}
     <QAvatar class="q-chip__avatar" src={avatar} />
   {:else if selected}
