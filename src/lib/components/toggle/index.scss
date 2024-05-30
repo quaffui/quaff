@@ -6,6 +6,7 @@
   align-items: center;
   gap: 0.8em;
   cursor: pointer;
+  outline: none;
 
   &--disabled {
     cursor: not-allowed;
