@@ -1,4 +1,5 @@
 import type { HTMLAttributes, HTMLImgAttributes } from "svelte/elements";
+import type { MaterialSymbol } from "material-symbols";
 
 export type QIconSizeOptions = Q.Size | Q.CssValue | number;
 
@@ -21,7 +22,7 @@ export interface QIconProps extends HTMLAttributes<HTMLElement> {
    * The name of the Material Symbols icon.
    * @default undefined
    */
-  name?: string;
+  name?: MaterialSymbol;
 
   /**
    * Determines whether the icon should be filled.
