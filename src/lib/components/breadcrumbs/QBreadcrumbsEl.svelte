@@ -5,8 +5,8 @@
   import { derived } from "svelte/store";
   import { isRouteActive } from "$utils/router";
   import QIcon from "../icon/QIcon.svelte";
+  import type { MaterialSymbol } from "material-symbols";
   import type { QBreadcrumbsElProps } from "./props";
-  import { MaterialSymbol } from "material-symbols";
 
   let {
     activeClass = "active",

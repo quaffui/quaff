@@ -23,7 +23,7 @@
     value = !value;
   }
 
-  function onclick(event: MouseEvent) {
+  function onclick() {
     if (!qSwitchInput || disabled) {
       return;
     }

@@ -1,5 +1,5 @@
-import { MaterialSymbol } from "material-symbols";
-import { Snippet } from "svelte";
+import type { MaterialSymbol } from "material-symbols";
+import type { Snippet } from "svelte";
 import type { HTMLAttributes } from "svelte/elements";
 
 export interface QSwitchProps extends HTMLAttributes<HTMLDivElement> {

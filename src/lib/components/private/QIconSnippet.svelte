@@ -10,7 +10,7 @@
     defaultIcon?: MaterialSymbol | Snippet;
   }
 
-  let { icon, defaultIcon, children, ...props }: IconSnippetProps = $props();
+  let { icon, defaultIcon, ...props }: IconSnippetProps = $props();
 </script>
 
 {#if icon}
