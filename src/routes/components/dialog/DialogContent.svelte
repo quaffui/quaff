@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { QCard, QCardSection, QToggle, QCheckbox, QCardActions, QBtn, QDialog } from "$lib";
+  import { QCard, QCardSection, QSwitch, QCheckbox, QCardActions, QBtn, QDialog } from "$lib";
 
   let exampleToggles = $state([true, true, true]);
   let exampleCheckbox = $state(false);
@@ -14,10 +14,10 @@
       <div class="flex justify-between q-my-sm">
         {#if index === 0}
           <h6 class="small">Cookies {index + 1} (always active)</h6>
-          <QToggle bind:value={exampleToggles[index]} disable />
+          <QSwitch bind:value={exampleToggles[index]} disable />
         {:else}
           <h6 class="small">Cookies {index + 1}</h6>
-          <QToggle bind:value={exampleToggles[index]} />
+          <QSwitch bind:value={exampleToggles[index]} />
         {/if}
       </div>
     {/each}
