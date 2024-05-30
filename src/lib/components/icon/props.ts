@@ -22,7 +22,7 @@ export interface QIconProps extends HTMLAttributes<HTMLElement> {
    * The name of the Material Symbols icon.
    * @default undefined
    */
-  name?: MaterialSymbol;
+  name?: MaterialSymbol | `img:${string}`;
 
   /**
    * Determines whether the icon should be filled.
