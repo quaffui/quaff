@@ -6,6 +6,7 @@
   import { isRouteActive } from "$utils/router";
   import QIcon from "../icon/QIcon.svelte";
   import type { QBreadcrumbsElProps } from "./props";
+  import { MaterialSymbol } from "material-symbols";
 
   let {
     activeClass = "active",
@@ -19,9 +20,11 @@
   }: QBreadcrumbsElProps = $props();
 
   const activeColor = getContext<string>("activeColor");
-  const separator = getContext<{ type: string | Snippet; color: string; gutter: string }>(
-    "separator"
-  );
+  const separator = getContext<{
+    type: `icon:${MaterialSymbol}` | Snippet;
+    color: string;
+    gutter: string;
+  }>("separator");
 
   const classesIfActive = derived(isRouteActive, ($isRouteActive) =>
     $isRouteActive(href || to) ? `${activeClass} text-${activeColor}` : undefined
@@ -52,7 +55,7 @@
 <div {...props} class="q-breadcrumbs__separator" {...Q.classes}>
   {#if typeof separator.type === "string"}
     {#if separator.type.startsWith("icon:")}
-      <QIcon name={separator.type.replace("icon:", "")} size="1rem" />
+      <QIcon name={separator.type.replace("icon:", "") as MaterialSymbol} size="1rem" />
     {:else}
       {separator.type}
     {/if}
