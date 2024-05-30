@@ -1,6 +1,6 @@
 <script lang="ts">
-  import QToggle from "$lib/components/toggle/QToggle.svelte";
-  import { QToggleDocs } from "$lib/components/toggle/docs";
+  import QSwitch from "$lib/components/toggle/QSwitch.svelte";
+  import { QSwitchDocs } from "$lib/components/toggle/docs";
   import QDocs from "$lib/components/private/QDocs.svelte";
   import QDocsSection from "$lib/components/private/QDocsSection.svelte";
   import snippets from "./docs.snippets";
@@ -8,29 +8,42 @@
   let toggle = false;
 </script>
 
-<QDocs componentDocs={QToggleDocs}>
+<QDocs componentDocs={QSwitchDocs}>
   {#snippet display()}
-    <QToggle bind:value={toggle} class="q-ma-sm" />
+    <QSwitch bind:value={toggle} class="q-ma-sm" />
   {/snippet}
 
   {#snippet usage()}
     <div>
       <QDocsSection {snippets} title="Default Toggle">
-        <QToggle bind:value={toggle} class="q-ma-sm" />
+        <QSwitch bind:value={toggle} class="q-ma-sm" />
       </QDocsSection>
 
       <QDocsSection {snippets} title="Toggle with label">
-        <QToggle bind:value={toggle} class="q-ma-sm" label="With label" />
-        <QToggle bind:value={toggle} class="q-ma-sm" icon="favorite" label="With icon" />
+        <QSwitch bind:value={toggle} class="q-ma-sm" label="With label" />
+        <QSwitch bind:value={toggle} class="q-ma-sm" icons label="With default icons" />
+        <QSwitch bind:value={toggle} class="q-ma-sm" showOnlyCheckedIcon label="Only check icon" />
+        <QSwitch
+          bind:value={toggle}
+          class="q-ma-sm"
+          uncheckedIcon="warning"
+          label="Only uncheck icon"
+        />
+        <QSwitch
+          bind:value={toggle}
+          class="q-ma-sm"
+          checkedIcon="favorite"
+          label="With check icon"
+        />
       </QDocsSection>
 
       <QDocsSection {snippets} title="Toggle with label position">
-        <QToggle bind:value={toggle} class="q-ma-sm" leftLabel label="Left label" />
-        <QToggle bind:value={toggle} class="q-ma-sm" label="Right label" />
+        <QSwitch bind:value={toggle} class="q-ma-sm" label="Right label (default)" />
+        <QSwitch bind:value={toggle} class="q-ma-sm" labelPosition="left" label="Left label" />
       </QDocsSection>
 
       <QDocsSection {snippets} title="Disabled state">
-        <QToggle bind:value={toggle} class="q-ma-sm" disable label="Disable" />
+        <QSwitch bind:value={toggle} class="q-ma-sm" disabled label="Disable" />
       </QDocsSection>
     </div>
   {/snippet}
