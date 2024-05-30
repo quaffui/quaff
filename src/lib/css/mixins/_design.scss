@@ -58,6 +58,10 @@
     background-color: add-transparency(var(--on-surface), 12%) !important;
   }
 
+  & :global(.q-switch:not([aria-checked] *)) {
+    color: add-transparency(var(--surface-container-highest), 38%) !important;
+  }
+
   & :global(*) {
     color: add-transparency(var(--on-surface), 38%) !important;
   }
