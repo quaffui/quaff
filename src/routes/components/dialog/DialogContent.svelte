@@ -14,7 +14,7 @@
       <div class="flex justify-between q-my-sm">
         {#if index === 0}
           <h6 class="small">Cookies {index + 1} (always active)</h6>
-          <QSwitch bind:value={exampleToggles[index]} disable />
+          <QSwitch bind:value={exampleToggles[index]} disabled />
         {:else}
           <h6 class="small">Cookies {index + 1}</h6>
           <QSwitch bind:value={exampleToggles[index]} />

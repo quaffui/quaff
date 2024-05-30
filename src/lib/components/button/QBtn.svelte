@@ -7,6 +7,7 @@
   import { isActivationKey } from "$lib/utils";
   import { extractImgSrc } from "$lib/utils/string";
   import QIcon from "../icon/QIcon.svelte";
+  import type { MaterialSymbol } from "material-symbols";
   import type { QBtnProps } from "./props";
 
   let {
@@ -105,7 +106,7 @@
     {#if src}
       <img {src} alt="q-btn leading icon" class="q-btn__img q-btn__img--responsive" />
     {:else}
-      <QIcon name={icon} {color} class="q-btn__icon" />
+      <QIcon name={icon as MaterialSymbol} {color} class="q-btn__icon" />
     {/if}
   {/if}
 

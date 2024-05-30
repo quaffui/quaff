@@ -35,7 +35,7 @@ export interface QChipProps extends HTMLAttributes<HTMLDivElement> {
    * Only for filter and input chips. Name of the trailing icon to use for the chip.
    * @default undefined
    */
-  trailingIcon?: MaterialSymbol;
+  trailingIcon?: MaterialSymbol | `img:${string}`;
 
   /**
    * Puts the chip in a disabled state, making it unactivable.

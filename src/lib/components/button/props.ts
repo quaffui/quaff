@@ -22,7 +22,7 @@ export interface QBtnProps extends HTMLAttributes<HTMLButtonElement> {
    * Name of the leading icon to use for the button.
    * @default undefined
    */
-  icon?: MaterialSymbol;
+  icon?: MaterialSymbol | `img:${string}`;
 
   /**
    * Text to use for the button.
