@@ -1,4 +1,4 @@
-import { MaterialSymbol } from "material-symbols";
+import type { MaterialSymbol } from "material-symbols";
 import type { HTMLAttributes } from "svelte/elements";
 
 export type QChipKindOptions = "assist" | "filter" | "input" | "suggestion";

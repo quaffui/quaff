@@ -24,7 +24,7 @@
   import QTheme from "$lib/classes/QTheme.svelte";
   import { isRouteActive } from "$lib/utils/router";
   import { page } from "$app/stores";
-  import { MaterialSymbol } from "material-symbols";
+  import type { MaterialSymbol } from "material-symbols";
 
   const { data, children } = $props();
 
