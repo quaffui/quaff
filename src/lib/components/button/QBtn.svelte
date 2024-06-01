@@ -4,7 +4,7 @@
   import QCircularProgress from "$lib/components/progress/QCircularProgress.svelte";
   import { useSize } from "$lib/composables/useSize";
   import { ripple } from "$lib/helpers";
-  import { isActivationKey } from "$lib/utils";
+  import { QEvent, isActivationKey } from "$lib/utils";
   import { extractImgSrc } from "$lib/utils/string";
   import QIcon from "../icon/QIcon.svelte";
   import type { MaterialSymbol } from "material-symbols";
@@ -31,6 +31,8 @@
 
   let qBtn: HTMLButtonElement | HTMLAnchorElement;
 
+  type QBtnMouseEvent = QEvent<MouseEvent, typeof qBtn>;
+
   const tag = $derived(to ? "a" : "button");
   const qSize = $derived(useSize(size, "q-btn"));
 
@@ -41,10 +43,6 @@
   );
 
   const rippleColorVar = $derived(rippleColor ? `var(--${rippleColor}, ${rippleColor})` : color);
-
-  type QBtnMouseEvent = MouseEvent & {
-    currentTarget: EventTarget & (HTMLButtonElement | HTMLAnchorElement);
-  };
 
   function stopIfDisabled(e: QBtnMouseEvent) {
     if (disabled) {
