@@ -1,10 +1,11 @@
 <script lang="ts">
   import { ripple } from "$lib/helpers";
-  import { QEvent, extractImgSrc, isActivationKey } from "$lib/utils";
+  import { extractImgSrc, isActivationKey } from "$lib/utils";
   import QIcon from "../icon/QIcon.svelte";
   import QAvatar from "../avatar/QAvatar.svelte";
   import type { MaterialSymbol } from "material-symbols";
   import type { QChipProps } from "./props";
+  import type { QEvent } from "$lib/utils";
 
   type QChipMouseEvent = QEvent<MouseEvent, HTMLDivElement>;
 

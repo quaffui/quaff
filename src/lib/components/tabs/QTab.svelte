@@ -9,7 +9,7 @@
   import { isRouteActive } from "$lib/utils/router";
   import type { QTabEl } from "./QTabs.svelte";
   import type { QTabProps, QTabsVariants } from "./props";
-  import { QEvent } from "$utils/types";
+  import type { QEvent } from "$utils/types";
 
   type QTabEvent<T> = QEvent<T, QTabEl>;
 

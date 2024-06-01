@@ -4,7 +4,8 @@
   import QCircularProgress from "$lib/components/progress/QCircularProgress.svelte";
   import { useSize } from "$lib/composables/useSize";
   import { ripple } from "$lib/helpers";
-  import { QEvent, isActivationKey } from "$lib/utils";
+  import { isActivationKey } from "$lib/utils";
+  import type { QEvent } from "$lib/utils";
   import { extractImgSrc } from "$lib/utils/string";
   import QIcon from "../icon/QIcon.svelte";
   import type { MaterialSymbol } from "material-symbols";
