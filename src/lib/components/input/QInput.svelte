@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { QEvent } from "$utils";
+  import type { QEvent } from "$utils";
 
   type QInputFocusEvent = QEvent<FocusEvent, HTMLDivElement>;
 

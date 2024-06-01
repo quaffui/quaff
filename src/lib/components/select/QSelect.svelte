@@ -3,7 +3,7 @@
   import { browser } from "$app/environment";
   import { QIcon } from "$lib";
   import type { QSelectProps, QSelectOption, QSelectMultipleValue } from "./props";
-  import { QEvent } from "$utils";
+  import type { QEvent } from "$utils";
 
   type QSelectEvent<T> = QEvent<T, HTMLDivElement>;
 
