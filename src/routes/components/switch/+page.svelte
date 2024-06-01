@@ -1,6 +1,6 @@
 <script lang="ts">
-  import QSwitch from "$lib/components/toggle/QSwitch.svelte";
-  import { QSwitchDocs } from "$lib/components/toggle/docs";
+  import QSwitch from "$lib/components/switch/QSwitch.svelte";
+  import { QSwitchDocs } from "$lib/components/switch/docs";
   import QDocs from "$lib/components/private/QDocs.svelte";
   import QDocsSection from "$lib/components/private/QDocsSection.svelte";
   import snippets from "./docs.snippets";
