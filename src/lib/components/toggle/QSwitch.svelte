@@ -2,7 +2,10 @@
   import QIconSnippet from "$components/private/QIconSnippet.svelte";
   import { ripple } from "$helpers";
   import { isActivationKey } from "$utils";
+  import type { QEvent } from "$utils";
   import type { QSwitchProps } from "./props";
+
+  type QSwitchEvent<T> = QEvent<T, HTMLDivElement>;
 
   let {
     value = $bindable(),
@@ -23,8 +26,14 @@
     value = !value;
   }
 
-  function onclick() {
+  function onclick(event: QSwitchEvent<MouseEvent>) {
     if (!qSwitchInput || disabled) {
+      return;
+    }
+
+    props.onclick?.(event);
+
+    if (event.defaultPrevented) {
       return;
     }
 
@@ -32,13 +41,19 @@
     toggle();
   }
 
-  function onkeydown(event: KeyboardEvent) {
-    if (!qSwitch || disabled || !isActivationKey(event) || event.defaultPrevented) {
+  function onkeydown(event: QSwitchEvent<KeyboardEvent>) {
+    if (!qSwitch || disabled || !isActivationKey(event)) {
+      return;
+    }
+
+    props.onkeydown?.(event);
+
+    if (event.defaultPrevented) {
       return;
     }
 
     event.preventDefault();
-    qSwitchInput.click();
+    qSwitch.click();
   }
 
   Q.classes("q-switch", {
