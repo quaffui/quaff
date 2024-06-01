@@ -25,9 +25,9 @@ $check-map: (
     } @else {
       @return if($hovered, var(--on-surface-variant), var(--outline));
     }
-  } @else {
-    @error "The given element #{$el} is not supported.";
   }
+
+  @error "The given element #{$el} is not supported.";
 }
 
 .q-switch {
