@@ -2,8 +2,8 @@
   import { onMount, onDestroy } from "svelte";
   import { browser } from "$app/environment";
   import { QIcon } from "$lib";
-  import type { QSelectProps, QSelectOption, QSelectMultipleValue } from "./props";
   import type { QEvent } from "$utils";
+  import type { QSelectProps, QSelectOption, QSelectMultipleValue } from "./props";
 
   type QSelectEvent<T> = QEvent<T, HTMLDivElement>;
 
