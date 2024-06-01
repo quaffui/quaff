@@ -59,3 +59,7 @@ export interface QComponentMethod {
 export type Entries<T> = {
   [K in keyof T]: [K, T[K]];
 }[keyof T][];
+
+export type QEvent<T, E> = T & {
+  currentTarget: EventTarget & E;
+};

@@ -3,10 +3,9 @@
   import { browser } from "$app/environment";
   import { QIcon } from "$lib";
   import type { QSelectProps, QSelectOption, QSelectMultipleValue } from "./props";
+  import { QEvent } from "$utils";
 
-  type QSelectEvent<T> = T & {
-    currentTarget: EventTarget & HTMLDivElement;
-  };
+  type QSelectEvent<T> = QEvent<T, HTMLDivElement>;
 
   let {
     options,
