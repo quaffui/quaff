@@ -11,18 +11,12 @@
   }
 
   let { icon, defaultIcon, ...props }: IconSnippetProps = $props();
+
+  const iconToUse = $derived(icon ?? defaultIcon);
 </script>
 
-{#if icon}
-  {#if typeof icon === "string"}
-    <QIcon name={icon} {...props} />
-  {:else}
-    {@render icon()}
-  {/if}
-{:else if defaultIcon}
-  {#if typeof defaultIcon === "string"}
-    <QIcon name={defaultIcon} {...props} />
-  {:else}
-    {@render defaultIcon()}
-  {/if}
+{#if typeof iconToUse === "string"}
+  <QIcon name={iconToUse} {...props} />
+{:else}
+  {@render iconToUse?.()}
 {/if}
