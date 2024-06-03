@@ -137,16 +137,16 @@
       to: "/components/separator",
     },
     {
+      name: "Switch",
+      to: "/components/switch",
+    },
+    {
       name: "Tabs",
       to: "/components/tabs",
     },
     {
       name: "Table",
       to: "/components/table",
-    },
-    {
-      name: "Toggle",
-      to: "/components/toggle",
     },
     {
       name: "Toolbar",
