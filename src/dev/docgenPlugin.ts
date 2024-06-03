@@ -1,9 +1,13 @@
 import { spawn } from "child_process";
-import { basename } from "path";
+import { existsSync } from "fs";
+import { basename, resolve as resolvePath } from "path";
 import updateAllSnippets from "../../docgen/snippets/updateAllSnippets.js";
 import updateSnippetsForPage from "../../docgen/snippets/updateSnippetsForPage.js";
 import getSnippetPagePaths from "../../docgen/snippets/getSnippetPagePaths.js";
-import type { Plugin, ViteDevServer } from "vite";
+import waitForSvelteKit from "./waitForSvelteKit.js";
+import type { Logger, Plugin, ViteDevServer } from "vite";
+
+const SVELTE_KIT_PATH = "./.svelte-kit";
 
 enum HotUpdateFileName {
   Props = "props.ts",
@@ -55,13 +59,28 @@ function docgenPlugin(): Plugin {
     server.config.logger.clearScreen("info");
   }
 
+  async function runDocgen(logger: Logger) {
+    logger.info(DOCGEN_LOG_MESSAGE);
+    snippetPagePaths = await getSnippetPagePaths();
+    await Promise.all([runDocGenProps(), updateAllSnippets()]);
+    logger.clearScreen("info");
+  }
+
   return {
     name: "docgen-plugin",
     async configResolved(config) {
-      config.logger.info(DOCGEN_LOG_MESSAGE);
-      snippetPagePaths = await getSnippetPagePaths();
-      await Promise.all([runDocGenProps(), updateAllSnippets()]);
-      config.logger.clearScreen("info");
+      const svelteKitPathResolved = resolvePath(SVELTE_KIT_PATH);
+      const svelteKitTsconfigPathResolved = resolvePath(SVELTE_KIT_PATH, "tsconfig.json");
+
+      if (existsSync(svelteKitTsconfigPathResolved)) {
+        await runDocgen(config.logger);
+        return;
+      }
+
+      // don't block
+      waitForSvelteKit({ svelteKitPathResolved, svelteKitTsconfigPathResolved }).then(() =>
+        runDocgen(config.logger)
+      );
     },
 
     handleHotUpdate({ file, server }: { file: string; server: ViteDevServer }) {
