@@ -133,7 +133,8 @@ $check-map: (
     place-content: center;
     place-items: center;
 
-    transition: margin 300ms cubic-bezier(0.13, 0.78, 0.33, 1.15);
+    // cubic-bezier(0.13, 0.78, 0.33, 1.15) for little bounce
+    transition: margin 200ms ease;
   }
 
   &#{$checked} :global(#{$handle}-container) {
