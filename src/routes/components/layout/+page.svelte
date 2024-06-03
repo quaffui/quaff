@@ -13,7 +13,7 @@
     QFooter,
     QCard,
     QRadio,
-    QToggle,
+    QSwitch,
   } from "$lib";
   import { QLayoutDocs } from "$lib/components/layout/docs";
   import QDocs from "$lib/components/private/QDocs.svelte";
@@ -298,37 +298,37 @@
               <QList>
                 <QItem>
                   <QItemSection type="toggle">
-                    <QToggle bind:value={header} />
+                    <QSwitch bind:value={header} />
                   </QItemSection>
                   <QItemSection>Header</QItemSection>
                 </QItem>
                 <QItem>
                   <QItemSection type="toggle">
-                    <QToggle bind:value={leftRailbar} />
+                    <QSwitch bind:value={leftRailbar} />
                   </QItemSection>
                   <QItemSection>Left Railbar</QItemSection>
                 </QItem>
                 <QItem>
                   <QItemSection type="toggle">
-                    <QToggle bind:value={rightRailbar} />
+                    <QSwitch bind:value={rightRailbar} />
                   </QItemSection>
                   <QItemSection>Right Railbar</QItemSection>
                 </QItem>
                 <QItem>
                   <QItemSection type="toggle">
-                    <QToggle bind:value={leftDrawer} />
+                    <QSwitch bind:value={leftDrawer} />
                   </QItemSection>
                   <QItemSection>Left Drawer</QItemSection>
                 </QItem>
                 <QItem>
                   <QItemSection type="toggle">
-                    <QToggle bind:value={rightDrawer} />
+                    <QSwitch bind:value={rightDrawer} />
                   </QItemSection>
                   <QItemSection>Right Drawer</QItemSection>
                 </QItem>
                 <QItem>
                   <QItemSection type="toggle">
-                    <QToggle bind:value={footer} />
+                    <QSwitch bind:value={footer} />
                   </QItemSection>
                   <QItemSection>Footer</QItemSection>
                 </QItem>

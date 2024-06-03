@@ -1,3 +1,4 @@
+import type { MaterialSymbol } from "material-symbols";
 import type { HTMLAttributes, HTMLAnchorAttributes, MouseEventHandler } from "svelte/elements";
 
 export type QBtnSizeOptions = Exclude<Q.Size, "xs">;
@@ -21,7 +22,7 @@ export interface QBtnProps extends HTMLAttributes<HTMLButtonElement> {
    * Name of the leading icon to use for the button.
    * @default undefined
    */
-  icon?: string;
+  icon?: MaterialSymbol | `img:${string}`;
 
   /**
    * Text to use for the button.

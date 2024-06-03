@@ -11,76 +11,113 @@ import { convertCase } from "./string.js";
 export type Mode = "light" | "dark";
 export type HexValue = `#${string}`;
 
-type BaseColors = {
-  primary: HexValue;
-  "on-primary": HexValue;
-  "primary-container": HexValue;
-  "on-primary-container": HexValue;
-  secondary: HexValue;
-  "on-secondary": HexValue;
-  "secondary-container": HexValue;
-  "on-secondary-container": HexValue;
-  tertiary: HexValue;
-  "on-tertiary": HexValue;
-  "tertiary-container": HexValue;
-  "on-tertiary-container": HexValue;
-  neutral: HexValue;
-  "on-neutral": HexValue;
-  "neutral-container": HexValue;
-  "on-neutral-container": HexValue;
-  "neutral-variant": HexValue;
-  "on-neutral-variant": HexValue;
-  "neutral-variant-container": HexValue;
-  "on-neutral-variant-container": HexValue;
-  error: HexValue;
-  "on-error": HexValue;
-  "error-container": HexValue;
-  "on-error-container": HexValue;
-};
+type BaseColorNames = [
+  "error",
+  "error-container",
+  "neutral",
+  "neutral-container",
+  "neutral-variant",
+  "neutral-variant-container",
+  "on-error",
+  "on-error-container",
+  "on-neutral",
+  "on-neutral-container",
+  "on-neutral-variant",
+  "on-neutral-variant-container",
+  "on-primary",
+  "on-primary-container",
+  "on-secondary",
+  "on-secondary-container",
+  "on-tertiary",
+  "on-tertiary-container",
+  "primary",
+  "primary-container",
+  "secondary",
+  "secondary-container",
+  "tertiary",
+  "tertiary-container",
+];
 
-type ToneColors = {
-  surface: HexValue;
-  "surface-dim": HexValue;
-  "surface-bright": HexValue;
-  "on-surface": HexValue;
-  "on-surface-variant": HexValue;
-  "surface-container-lowest": HexValue;
-  "surface-container-low": HexValue;
-  "surface-container": HexValue;
-  "surface-container-high": HexValue;
-  "surface-container-highest": HexValue;
-  "inverse-surface": HexValue;
-  "inverse-on-surface": HexValue;
-  "inverse-primary": HexValue;
-  outline: HexValue;
-  "outline-variant": HexValue;
-  scrim: HexValue;
-  shadow: HexValue;
-};
+type BaseColors = Record<BaseColorNames[number], HexValue>;
 
+type ToneColorNames = [
+  "background",
+  "inverse-on-surface",
+  "inverse-primary",
+  "inverse-surface",
+  "on-background",
+  "on-primary-fixed",
+  "on-primary-fixed-variant",
+  "on-secondary-fixed",
+  "on-secondary-fixed-variant",
+  "on-surface",
+  "on-surface-variant",
+  "on-tertiary-fixed",
+  "on-tertiary-fixed-variant",
+  "outline",
+  "outline-variant",
+  "primary-fixed",
+  "primary-fixed-dim",
+  "scrim",
+  "secondary-fixed",
+  "secondary-fixed-dim",
+  "shadow",
+  "surface",
+  "surface-bright",
+  "surface-container",
+  "surface-container-high",
+  "surface-container-highest",
+  "surface-container-low",
+  "surface-container-lowest",
+  "surface-dim",
+  "surface-tint",
+  "surface-variant",
+  "tertiary-fixed",
+  "tertiary-fixed-dim",
+];
+
+type ToneColors = Record<ToneColorNames[number], HexValue>;
+
+export type QuaffColorNames = [...BaseColorNames, ...ToneColorNames];
 export type QuaffColors = BaseColors & ToneColors;
 
 const COLOR_TONES: Record<
   keyof ToneColors,
   { fromColor: keyof Theme["palettes"]; light: number; dark: number }
 > = {
-  surface: { fromColor: "neutral", light: 98, dark: 6 },
-  "surface-dim": { fromColor: "neutral", light: 87, dark: 6 },
-  "surface-bright": { fromColor: "neutral", light: 98, dark: 24 },
-  "on-surface": { fromColor: "neutral", light: 10, dark: 90 },
-  "on-surface-variant": { fromColor: "neutralVariant", light: 30, dark: 90 },
-  "surface-container-lowest": { fromColor: "neutral", light: 100, dark: 4 },
-  "surface-container-low": { fromColor: "neutral", light: 96, dark: 10 },
-  "surface-container": { fromColor: "neutral", light: 94, dark: 12 },
-  "surface-container-high": { fromColor: "neutral", light: 92, dark: 17 },
-  "surface-container-highest": { fromColor: "neutral", light: 90, dark: 24 },
-  "inverse-surface": { fromColor: "neutral", light: 20, dark: 90 },
+  background: { fromColor: "neutral", light: 98, dark: 6 },
   "inverse-on-surface": { fromColor: "neutral", light: 95, dark: 20 },
   "inverse-primary": { fromColor: "primary", light: 80, dark: 40 },
+  "inverse-surface": { fromColor: "neutral", light: 20, dark: 90 },
+  "on-background": { fromColor: "neutral", light: 10, dark: 90 },
+  "on-primary-fixed": { fromColor: "primary", light: 10, dark: 10 },
+  "on-primary-fixed-variant": { fromColor: "primary", light: 30, dark: 30 },
+  "on-secondary-fixed": { fromColor: "secondary", light: 10, dark: 10 },
+  "on-secondary-fixed-variant": { fromColor: "secondary", light: 30, dark: 30 },
+  "on-surface": { fromColor: "neutral", light: 10, dark: 90 },
+  "on-surface-variant": { fromColor: "neutralVariant", light: 30, dark: 80 },
+  "on-tertiary-fixed": { fromColor: "tertiary", light: 10, dark: 10 },
+  "on-tertiary-fixed-variant": { fromColor: "tertiary", light: 30, dark: 30 },
   outline: { fromColor: "neutralVariant", light: 50, dark: 60 },
   "outline-variant": { fromColor: "neutralVariant", light: 80, dark: 30 },
+  "primary-fixed": { fromColor: "primary", light: 90, dark: 90 },
+  "primary-fixed-dim": { fromColor: "primary", light: 80, dark: 80 },
   scrim: { fromColor: "neutral", light: 0, dark: 0 },
+  "secondary-fixed": { fromColor: "secondary", light: 90, dark: 90 },
+  "secondary-fixed-dim": { fromColor: "secondary", light: 80, dark: 80 },
   shadow: { fromColor: "neutral", light: 0, dark: 0 },
+  surface: { fromColor: "neutral", light: 98, dark: 6 },
+  "surface-bright": { fromColor: "neutral", light: 98, dark: 24 },
+  "surface-container": { fromColor: "neutral", light: 94, dark: 12 },
+  "surface-container-high": { fromColor: "neutral", light: 92, dark: 17 },
+  "surface-container-highest": { fromColor: "neutral", light: 90, dark: 22 },
+  "surface-container-low": { fromColor: "neutral", light: 96, dark: 10 },
+  "surface-container-lowest": { fromColor: "neutral", light: 100, dark: 4 },
+  "surface-dim": { fromColor: "neutral", light: 87, dark: 6 },
+  "surface-tint": { fromColor: "primary", light: 40, dark: 80 },
+  "surface-variant": { fromColor: "neutral", light: 90, dark: 30 },
+  "tertiary-fixed": { fromColor: "tertiary", light: 90, dark: 90 },
+  "tertiary-fixed-dim": { fromColor: "tertiary", light: 80, dark: 80 },
 };
 
 export function generateColors(from: string): { light: QuaffColors; dark: QuaffColors } {

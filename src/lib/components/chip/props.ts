@@ -1,3 +1,4 @@
+import type { MaterialSymbol } from "material-symbols";
 import type { HTMLAttributes } from "svelte/elements";
 
 export type QChipKindOptions = "assist" | "filter" | "input" | "suggestion";
@@ -28,13 +29,13 @@ export interface QChipProps extends HTMLAttributes<HTMLDivElement> {
    * Name of the leading icon to use for the chip. If starts with "img:", will be used as an image src instead.
    * @default undefined
    */
-  icon?: string;
+  icon?: MaterialSymbol | `img:${string}`;
 
   /**
    * Only for filter and input chips. Name of the trailing icon to use for the chip.
    * @default undefined
    */
-  trailingIcon?: string;
+  trailingIcon?: MaterialSymbol | `img:${string}`;
 
   /**
    * Puts the chip in a disabled state, making it unactivable.

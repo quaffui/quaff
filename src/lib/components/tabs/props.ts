@@ -1,3 +1,4 @@
+import type { MaterialSymbol } from "material-symbols";
 import type { Snippet } from "svelte";
 import type { HTMLAttributes } from "svelte/elements";
 
@@ -12,5 +13,5 @@ export interface QTabsProps extends HTMLAttributes<HTMLElement> {
 export interface QTabProps extends HTMLAttributes<HTMLElement> {
   name: string;
   to?: string;
-  icon?: string | Snippet;
+  icon?: MaterialSymbol | Snippet;
 }

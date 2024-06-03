@@ -7,12 +7,11 @@
   import type { Direction } from "$lib/utils/events";
   import { getDirection, isActivationKey, isArrowKey, isTabKey } from "$lib/utils/events";
   import { isRouteActive } from "$lib/utils/router";
+  import type { QEvent } from "$utils/types";
   import type { QTabEl } from "./QTabs.svelte";
   import type { QTabProps, QTabsVariants } from "./props";
 
-  type QTabEvent<T> = T & {
-    currentTarget: EventTarget & QTabEl;
-  };
+  type QTabEvent<T> = QEvent<T, QTabEl>;
 
   let { name, to, icon, children, ...props }: QTabProps = $props();
 
