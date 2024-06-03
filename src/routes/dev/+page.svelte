@@ -10,7 +10,7 @@
     QInput,
     QSelect,
     QBtn,
-    QToggle,
+    QSwitch,
     QToolbar,
     QToolbarTitle,
     QList,
@@ -291,11 +291,11 @@
         <div>
           Value: {toggle}
         </div>
-        <QToggle bind:value={toggle} class="q-ma-sm" />
-        <QToggle bind:value={toggle} class="q-ma-sm" label="With label" />
-        <QToggle bind:value={toggle} class="q-ma-sm" icon="favorite" label="With icon" />
-        <QToggle bind:value={toggle} class="q-ma-sm" leftLabel label="Left label" />
-        <QToggle bind:value={toggle} class="q-ma-sm" disable label="Disable" />
+        <QSwitch bind:value={toggle} class="q-ma-sm" />
+        <QSwitch bind:value={toggle} class="q-ma-sm" label="With label" />
+        <QSwitch bind:value={toggle} class="q-ma-sm" checkedIcon="favorite" label="With icon" />
+        <QSwitch bind:value={toggle} class="q-ma-sm" labelPosition="left" label="Left label" />
+        <QSwitch bind:value={toggle} class="q-ma-sm" disabled label="Disable" />
       </QCard>
     </div>
     <div class="col-12">

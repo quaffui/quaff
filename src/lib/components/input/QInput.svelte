@@ -1,7 +1,7 @@
 <script lang="ts">
-  type QInputEvent<T> = T & {
-    currentTarget: EventTarget & HTMLDivElement;
-  };
+  import type { QEvent } from "$utils";
+
+  type QInputFocusEvent = QEvent<FocusEvent, HTMLDivElement>;
 
   let focus = $state(false);
 
@@ -29,12 +29,12 @@
 
   const active = $derived(value || focus);
 
-  function onFocus(e: QInputEvent<FocusEvent>) {
+  function onFocus(e: QInputFocusEvent) {
     focus = true;
     props.onfocus?.(e);
   }
 
-  function onBlur(e: QInputEvent<FocusEvent>) {
+  function onBlur(e: QInputFocusEvent) {
     focus = false;
     props.onblur?.(e);
   }

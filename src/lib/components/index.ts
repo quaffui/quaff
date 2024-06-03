@@ -25,7 +25,7 @@ import QSeparator from "./separator/QSeparator.svelte";
 import QTabs from "./tabs/QTabs.svelte";
 import QTab from "./tabs/QTab.svelte";
 import QTable from "./table/QTable.svelte";
-import QToggle from "./toggle/QToggle.svelte";
+import QSwitch from "./switch/QSwitch.svelte";
 import QToolbar from "./toolbar/QToolbar.svelte";
 import QToolbarTitle from "./toolbar/QToolbarTitle.svelte";
 import QTooltip from "./tooltip/QTooltip.svelte";
@@ -58,7 +58,7 @@ export {
   QTabs,
   QTab,
   QTable,
-  QToggle,
+  QSwitch,
   QToolbar,
   QToolbarTitle,
   QTooltip,
