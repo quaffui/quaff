@@ -5,7 +5,7 @@
   import QDocsSection from "$lib/components/private/QDocsSection.svelte";
   import snippets from "./docs.snippets";
 
-  let toggle = false;
+  let toggle = $state(false);
 </script>
 
 <QDocs componentDocs={QSwitchDocs}>
