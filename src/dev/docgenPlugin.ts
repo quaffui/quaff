@@ -2,6 +2,7 @@ import { spawn } from "child_process";
 import { basename } from "path";
 import updateAllSnippets from "../../docgen/snippets/updateAllSnippets.js";
 import updateSnippetsForPage from "../../docgen/snippets/updateSnippetsForPage.js";
+import getSnippetPagePaths from "../../docgen/snippets/getSnippetPagePaths.js";
 import type { Plugin, ViteDevServer } from "vite";
 
 enum HotUpdateFileName {
@@ -43,10 +44,22 @@ function docgenPlugin(): Plugin {
     at: 0,
   };
 
+  let snippetPagePaths: string[] = [];
+
+  async function updateSnippet(file: string, server: ViteDevServer) {
+    if (!snippetPagePaths.includes(file)) {
+      return;
+    }
+
+    await updateSnippetsForPage(file);
+    server.config.logger.clearScreen("info");
+  }
+
   return {
     name: "docgen-plugin",
     async configResolved(config) {
       config.logger.info(DOCGEN_LOG_MESSAGE);
+      snippetPagePaths = await getSnippetPagePaths();
       await Promise.all([runDocGenProps(), updateAllSnippets()]);
       config.logger.clearScreen("info");
     },
@@ -73,7 +86,7 @@ function docgenPlugin(): Plugin {
       if (isProps) {
         runDocGenProps().then(() => server.config.logger.clearScreen("info"));
       } else {
-        updateSnippetsForPage(file).then(() => server.config.logger.clearScreen("info"));
+        updateSnippet(file, server);
       }
     },
   };
