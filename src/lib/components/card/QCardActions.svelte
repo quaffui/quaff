@@ -19,7 +19,3 @@
 <nav {...props} class="q-card__actions" {...Q.classes}>
   {@render children?.()}
 </nav>
-
-<style lang="scss">
-  @import "./QCardActions.scss";
-</style>

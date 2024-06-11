@@ -127,7 +127,3 @@
     {/if}
   </span>
 </svelte:element>
-
-<style lang="scss">
-  @import "./QBtn.scss";
-</style>

@@ -16,7 +16,3 @@
 <div {...props} class="q-card__section" {...Q.classes} class:row={horizontal}>
   {@render children?.()}
 </div>
-
-<style lang="scss">
-  @import "./QCardSection.scss";
-</style>

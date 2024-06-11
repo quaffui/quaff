@@ -119,7 +119,3 @@
     class="q-switch__icon q-switch__icon--{type}"
   />
 {/snippet}
-
-<style lang="scss">
-  @import "./QSwitch.scss";
-</style>
