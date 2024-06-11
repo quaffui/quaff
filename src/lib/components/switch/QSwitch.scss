@@ -51,11 +51,11 @@ $check-map: (
     height: 2rem;
   }
 
-  &[aria-disabled] :global(:is(.q-switch__track, .q-switch__handle)) {
+  &[aria-disabled] :is(.q-switch__track, .q-switch__handle) {
     @include mixins.disabled;
   }
 
-  & :global(input) {
+  & input {
     appearance: none;
     outline: none;
     margin: 0;
@@ -68,7 +68,7 @@ $check-map: (
 
 // Track
 .q-switch {
-  & :global(#{$track}) {
+  & #{$track} {
     position: absolute;
     width: 100%;
     height: 100%;
@@ -98,12 +98,12 @@ $check-map: (
   }
 
   @each $state, $selector in $check-map {
-    &#{$selector} :global(#{$track}::before) {
+    &#{$selector} #{$track}::before {
       background-color: getColor("track", $state == "checked");
     }
   }
 
-  &#{$checked} :global(#{$track}) {
+  &#{$checked} #{$track} {
     background-color: transparent;
     border-color: transparent;
 
@@ -112,13 +112,13 @@ $check-map: (
     }
   }
 
-  &#{$unchecked} :global(#{$track}::before) {
+  &#{$unchecked} #{$track}::before {
     border-color: var(--outline);
     border-style: solid;
     border-width: 0.125rem;
   }
 
-  &[aria-disabled] :global(#{$track}:is(::before, ::after)) {
+  &[aria-disabled] #{$track}:is(::before, ::after) {
     transition: none;
     opacity: 38%;
   }
@@ -126,7 +126,7 @@ $check-map: (
 
 // Handle container
 .q-switch {
-  & :global(#{$handle}-container) {
+  & #{$handle}-container {
     position: relative;
 
     display: flex;
@@ -137,22 +137,22 @@ $check-map: (
     transition: margin 200ms ease;
   }
 
-  &#{$checked} :global(#{$handle}-container) {
+  &#{$checked} #{$handle}-container {
     margin-inline-start: 1.25rem;
   }
 
-  &#{$unchecked} :global(#{$handle}-container) {
+  &#{$unchecked} #{$handle}-container {
     margin-inline-end: 1.25rem;
   }
 
-  &[aria-disabled] :global(#{$handle}-container) {
+  &[aria-disabled] #{$handle}-container {
     transition: none;
   }
 }
 
 // Handle
 .q-switch {
-  & :global(#{$handle}) {
+  & #{$handle} {
     height: 1rem;
     width: 1rem;
 
@@ -186,21 +186,21 @@ $check-map: (
     }
   }
 
-  &:not([aria-disabled])#{$checked}:is(:hover, :focus-within) :global(#{$handle}::after) {
+  &:not([aria-disabled])#{$checked}:is(:hover, :focus-within) #{$handle}::after {
     background-color: var(--primary);
   }
 
-  &:not([aria-disabled])#{$unchecked}:is(:hover, :focus-within) :global(#{$handle}::after) {
+  &:not([aria-disabled])#{$unchecked}:is(:hover, :focus-within) #{$handle}::after {
     background-color: var(--on-surface);
   }
 
-  & :global(#{$handle}--with-icon),
-  &#{$checked} :global(#{$handle}) {
+  & #{$handle}--with-icon,
+  &#{$checked} #{$handle} {
     height: 1.5rem;
     width: 1.5rem;
   }
 
-  &:not([aria-disabled]):active :global(#{$handle}) {
+  &:not([aria-disabled]):active #{$handle} {
     height: 1.75rem;
     width: 1.75rem;
     transition-timing-function: linear;
@@ -209,24 +209,24 @@ $check-map: (
 
   @each $state, $selector in $check-map {
     &#{$selector} {
-      & :global(#{$handle}::before) {
+      & #{$handle}::before {
         background-color: getColor("handle", $state == "checked", false);
       }
 
-      &:is(:hover, :focus-within, :active) :global(#{$handle}::before) {
+      &:is(:hover, :focus-within, :active) #{$handle}::before {
         background-color: getColor("handle", $state == "checked", true);
       }
     }
   }
 
-  &[aria-disabled] :global(:is(#{$handle}, #{$handle}::before)) {
+  &[aria-disabled] :is(#{$handle}, #{$handle}::before) {
     transition: none;
   }
 }
 
 // Icon
 .q-switch {
-  & :global(#{$icon}) {
+  & #{$icon} {
     position: absolute;
     // Equivalent to top, right, bottom and left set to 0
     inset: 0;
@@ -242,25 +242,25 @@ $check-map: (
     opacity: 0;
   }
 
-  &[aria-checked] :global(#{$icon}--checked),
-  &:not([aria-checked]) :global(#{$icon}--unchecked) {
+  &[aria-checked] #{$icon}--checked,
+  &:not([aria-checked]) #{$icon}--unchecked {
     opacity: 1;
   }
 
   // rotate checked icon into view when there is no unchecked icon
-  &:not([aria-checked]) :global(#{$handle}:not(#{$handle}--with-icon) #{icon}--checked) {
+  &:not([aria-checked]) #{$handle}:not(#{$handle}--with-icon) #{icon}--checked {
     transform: rotate(-45deg);
   }
 
   &#{$checked} {
-    & :global(#{$icon}) {
+    & #{$icon} {
       transition: none;
     }
   }
 
   @each $state, $selector in $check-map {
     &#{$selector} {
-      & :global(#{$icon}--#{$state}) {
+      & #{$icon}--#{$state} {
         color: getColor("icon", $state == "checked");
       }
     }

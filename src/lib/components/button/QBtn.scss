@@ -112,7 +112,7 @@
   }
 }
 
-.q-btn:not(.q-btn--round) > :global(:is(.q-icon, .q-btn__img, .q-circular-progress)) {
+.q-btn:not(.q-btn--round) > :is(.q-icon, .q-btn__img, .q-circular-progress) {
   margin-left: -0.5rem;
   margin-right: 0.5rem;
   --size: 1.5rem;

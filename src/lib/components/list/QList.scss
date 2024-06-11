@@ -19,12 +19,12 @@
     min-height: 2rem;
     padding-block: 0;
 
-    & > :global(.q-item) {
+    & > .q-item {
       min-height: 2rem;
     }
   }
 
-  & > :global(.q-separator__wrapper:first-child) {
+  & > .q-separator__wrapper:first-child {
     display: none !important;
   }
 }

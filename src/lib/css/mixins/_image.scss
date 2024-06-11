@@ -17,33 +17,33 @@
 }
 
 @mixin btn-image($parent: "btn") {
-  &.q-#{$parent}--sm > :global(.q-#{$parent}__img--responsive) {
+  &.q-#{$parent}--sm > .q-#{$parent}__img--responsive {
     height: 2rem;
     width: 2rem;
   }
 
-  &.q-#{$parent}--lg > :global(.q-#{$parent}__img--responsive) {
+  &.q-#{$parent}--lg > .q-#{$parent}__img--responsive {
     height: 3rem;
     width: 3rem;
   }
 
-  &.q-#{$parent}--xl > :global(.q-#{$parent}__img--responsive) {
+  &.q-#{$parent}--xl > .q-#{$parent}__img--responsive {
     height: 3.5rem;
     width: 3.5rem;
   }
 
-  & > :global(.q-#{$parent}__img) {
+  & > .q-#{$parent}__img {
     margin-inline: -0.5rem;
   }
 
-  & > :global(.q-#{$parent}__img:not(.q-#{$parent}__img--responsive)) {
+  & > .q-#{$parent}__img:not(.q-#{$parent}__img--responsive) {
     min-width: 1.5rem;
     max-width: 1.5rem;
     min-height: 1.5rem;
     max-height: 1.5rem;
   }
 
-  & > :global(.q-#{$parent}__img.q-#{$parent}__img--responsive) {
+  & > .q-#{$parent}__img.q-#{$parent}__img--responsive {
     @include responsive($parent);
 
     $marginSize: -1.5rem;
@@ -53,7 +53,7 @@
 
     margin-left: $marginSize !important;
 
-    &:global(.q-#{$parent}__img--trailing) {
+    &.q-#{$parent}__img--trailing {
       margin-left: -0.5rem;
       margin-right: $marginSize;
     }
