@@ -49,7 +49,7 @@
   &.q-chip--sm {
     height: 2rem;
 
-    & > :global(:is(.q-icon, .q-avatar)) {
+    & > :is(.q-icon, .q-avatar) {
       --size: 1.125rem;
     }
   }
@@ -57,7 +57,7 @@
   &.q-chip--md {
     height: 2.5rem;
 
-    & > :global(:is(.q-icon, .q-avatar)) {
+    & > :is(.q-icon, .q-avatar) {
       --size: 1.40625rem;
     }
   }
@@ -65,7 +65,7 @@
   &.q-chip--lg {
     height: 3rem;
 
-    & > :global(:is(.q-icon, .q-avatar)) {
+    & > :is(.q-icon, .q-avatar) {
       --size: 1.6875rem;
     }
   }
@@ -73,7 +73,7 @@
   &:focus {
     outline: 1px solid var(--secondary);
 
-    & > :global(.q-icon) {
+    & > .q-icon {
       color: var(--on-secondary-container);
     }
   }
@@ -132,7 +132,7 @@
     padding-inline: 0.75rem;
     color: var(--on-surface-variant);
 
-    & > :global(.q-icon) {
+    & > .q-icon {
       color: var(--on-surface-variant);
     }
   }
@@ -148,18 +148,18 @@
   }
 }
 
-.q-chip > :global(.q-icon) {
+.q-chip > .q-icon {
   color: var(--primary);
 }
 
-.q-chip > :global(:is(.q-icon.q-chip__leading-icon, .q-avatar.q-chip__avatar)) {
+.q-chip > :is(.q-icon.q-chip__leading-icon, .q-avatar.q-chip__avatar) {
   margin-left: -0.5rem;
 }
 
-.q-chip > :global(.q-icon.q-chip__trailing-icon) {
+.q-chip > .q-icon.q-chip__trailing-icon {
   margin-right: -0.5rem;
 }
 
-.q-chip.q-chip--input > :global(.q-avatar.q-chip__avatar) {
+.q-chip.q-chip--input > .q-avatar.q-chip__avatar {
   --size: 1.5rem;
 }
