@@ -9,10 +9,27 @@
   box-sizing: border-box;
 }
 
+html,
+body {
+  height: 100%;
+  width: 100%;
+  color: var(--on-surface);
+}
+
+.body--light {
+  background-color: rgb(253, 251, 255);
+}
+
+.body--dark {
+  background-color: rgb(20, 19, 20);
+}
+
 body {
   color: var(--on-background);
   background-color: var(--body);
   overflow-x: hidden;
+  height: 100%;
+  width: 100%;
 }
 
 label {
