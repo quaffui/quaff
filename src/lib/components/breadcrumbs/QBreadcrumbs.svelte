@@ -28,7 +28,3 @@
 <div bind:this={breadrumbElement} {...props} class="q-breadcrumbs" {...Q.classes}>
   {@render children?.()}
 </div>
-
-<style lang="scss">
-  @import "./QBreadcrumbs.scss";
-</style>

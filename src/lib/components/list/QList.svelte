@@ -35,7 +35,3 @@
 <svelte:element this={tag} bind:this={listEl} {...props} class="q-list" {...Q.classes}>
   {@render children?.()}
 </svelte:element>
-
-<style lang="scss">
-  @import "./QList.scss";
-</style>

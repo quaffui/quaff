@@ -36,7 +36,3 @@
     {@render children?.()}
   {/if}
 </div>
-
-<style lang="scss">
-  @import "./QAvatar.scss";
-</style>

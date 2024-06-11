@@ -121,7 +121,3 @@
     <QIcon class="q-chip__trailing-icon" name={trailing} />
   {/if}
 </div>
-
-<style lang="scss">
-  @import "./QChip.scss";
-</style>

@@ -79,7 +79,3 @@
     {@render children?.()}
   </svelte:element>
 {/if}
-
-<style lang="scss">
-  @import "./QItem.scss";
-</style>
