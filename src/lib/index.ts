@@ -1,6 +1,1 @@
-import Quaff from "$lib/classes/Quaff.svelte.js";
-
-// Reexport your entry components here
-export * from "$components";
-
-export { Quaff };
+// place files you want to import through the `$lib` alias in this folder.

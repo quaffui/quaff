@@ -1,6 +1,5 @@
-import { derived } from "svelte/store";
 import { page } from "$app/stores";
-import type { Readable } from "svelte/store";
+import { derived } from "svelte/store";
 
 export interface RouterProps {
   activeClass?: string;
@@ -10,12 +9,13 @@ export interface RouterProps {
   to?: string;
 }
 
-export const isRouteActive: Readable<(route?: string) => boolean> = derived(page, ($page) => {
-  return (route?: string) =>
+export const isRouteActive = derived(
+  page,
+  ($page) => (route?: string) =>
     route === "/"
       ? $page.url.pathname === route
-      : $page.url.pathname.slice(0, (route || "").length) === route;
-});
+      : $page.url.pathname.slice(0, (route || "").length) === route
+);
 
 export function getRouterInfo<T extends RouterProps>(props: T) {
   const hasLink = [props.to, props.href].some((entry) => entry !== undefined);

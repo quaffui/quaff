@@ -39,8 +39,6 @@ function convertToKebabSnakeCase(str: string, caseType: keyof typeof cases) {
 }
 
 export function convertCase(str: string, fromCase: keyof typeof cases, toCase: keyof typeof cases) {
-  const uncap = uncapitalize(str);
-
   switch (fromCase) {
     case "camel":
       if (toCase === "pascal") {
@@ -51,6 +49,7 @@ export function convertCase(str: string, fromCase: keyof typeof cases, toCase: k
       }
       break;
     case "pascal":
+      let uncap = uncapitalize(str);
       if (toCase === "camel") {
         return uncap;
       }
@@ -88,5 +87,23 @@ export function convertCase(str: string, fromCase: keyof typeof cases, toCase: k
 }
 
 export function extractImgSrc(prop?: string) {
-  return prop?.startsWith("img:") ? prop.slice(4) : undefined;
+  return prop?.startsWith("img:") ? prop.slice(4) : undefined
+}
+
+export function textWidth(element: HTMLElement, font: string): number {
+  if (element.offsetWidth > 0) return element.offsetWidth;
+  let _canvas = (
+    document.querySelector("canvas[data-quaff]") as HTMLCanvasElement | null
+  )?.getContext("2d");
+
+  if (!_canvas) {
+    const canvasElement = document.createElement("canvas");
+    canvasElement.style.display = "none";
+    canvasElement.setAttribute("data-quaff", "");
+    document.body.append(canvasElement);
+    _canvas = canvasElement.getContext("2d");
+  }
+
+  _canvas!.font = font;
+  return _canvas!.measureText(element.textContent!).width;
 }

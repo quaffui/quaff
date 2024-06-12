@@ -1,0 +1,13 @@
+@use "$css/mixins";
+
+.q-card__section {
+  @include mixins.padding;
+
+  &--horizontal {
+    border-radius: 0;
+
+    &:not(.q-card__title + .q-card__section) {
+      @include mixins.margin("t");
+    }
+  }
+}

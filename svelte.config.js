@@ -1,16 +1,12 @@
 import adapter from "@sveltejs/adapter-auto";
 import { vitePreprocess } from "@sveltejs/vite-plugin-svelte";
-import { preprocessClasses } from "./plugins/class-preprocessor/index.js";
+import { preprocessClasses } from "./plugins/class-preprocess/index.js";
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
   // Consult https://kit.svelte.dev/docs/integrations#preprocessors
   // for more information about preprocessors
-  preprocess: [vitePreprocess(), preprocessClasses("Q")],
-
-  experimental: {
-    useVitePreprocess: true,
-  },
+  preprocess: [vitePreprocess(), preprocessClasses()],
 
   kit: {
     // adapter-auto only supports some environments, see https://kit.svelte.dev/docs/adapter-auto for a list.
@@ -18,6 +14,7 @@ const config = {
     // See https://kit.svelte.dev/docs/adapters for more information about adapters.
     adapter: adapter(),
     alias: {
+      $lib: "./src/lib",
       $components: "./src/lib/components",
       $composables: "./src/lib/composables",
       $utils: "./src/lib/utils",

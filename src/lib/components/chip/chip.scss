@@ -1,0 +1,109 @@
+@use "$css/mixins";
+@import "$css/index";
+@import "$css/states";
+
+.q-chip {
+  box-sizing: content-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 2.5rem;
+  min-width: 2.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  background-color: var(--secondary);
+  color: var(--on-secondary);
+  text-transform: none;
+  border-radius: 0.5em;
+  transition:
+    var(--speed3) transform,
+    var(--speed3) border-radius,
+    var(--speed3) padding;
+  line-height: normal;
+  text-decoration: none;
+  cursor: pointer;
+  border: none;
+
+  @extend .no-select;
+  @include mixins.btn-image("chip");
+  @include mixins.padding("x", "md");
+  @include mixins.margin("x");
+  @include mixins.gap("md");
+  @include mixins.btn-image("chip");
+
+  &--sm {
+    height: 2rem;
+    min-width: 2rem;
+  }
+
+  &--lg {
+    height: 3rem;
+    min-width: 3rem;
+  }
+
+  &--outlined {
+    @include mixins.transparent($ripple: true);
+    @include mixins.border(var(--secondary));
+    color: var(--secondary);
+    --ripple-color: var(--secondary);
+    --focus-color: var(--secondary);
+  }
+
+  &--rounded {
+    border-radius: 1.25rem;
+
+    &.q-chip--sm {
+      border-radius: 1rem;
+    }
+
+    &.q-chip--lg {
+      border-radius: 1.5rem;
+    }
+  }
+
+  &--filled {
+    background-color: var(--secondary-container);
+    color: var(--on-secondary-container);
+    border: none;
+  }
+
+  &--vertical {
+    flex-direction: column;
+    height: auto;
+    max-height: none;
+
+    @include mixins.padding("y");
+    @include mixins.gap("xs");
+  }
+
+  &.q-chip[aria-disabled] {
+    @extend .disabled;
+    @extend .q-chip--outlined;
+    &.q-chip--outlined {
+      border-color: var(--on-surface);
+    }
+  }
+
+  & > :global(.q-icon) {
+    margin-inline: -0.5rem;
+    --size: 1.25rem;
+  }
+
+  &:is(:hover, :focus):not([aria-disabled])::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--focus-color, var(--on-secondary));
+  }
+
+  &:hover:not([aria-disabled])::after {
+    opacity: 0.08;
+  }
+
+  &:focus:not([aria-disabled])::after {
+    opacity: 0.16;
+  }
+}

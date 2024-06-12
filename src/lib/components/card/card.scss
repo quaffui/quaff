@@ -1,0 +1,31 @@
+@use "$css/mixins";
+@import "$css/states.scss";
+
+.q-card {
+  display: block;
+  border-radius: 0.75rem;
+  transition:
+    var(--speed-3) transform,
+    var(--speed-3) padding,
+    var(--speed-3) border-radius;
+  @include mixins.padding("a", "md");
+  @extend .elevate-sm-bottom;
+
+  &--bordered {
+    box-sizing: border-box;
+    @include mixins.border();
+    @extend .elevate-none;
+  }
+
+  &--flat {
+    @extend .elevate-none;
+  }
+
+  &--rounded {
+    border-radius: 2rem;
+  }
+
+  & > :global(.q-card__title) {
+    @include mixins.margin("b");
+  }
+}

@@ -1,0 +1,9 @@
+@use "$css/mixins";
+
+.q-checkbox {
+  @include mixins.selection(checkbox);
+
+  > :global(span::before) {
+    content: "checkbox_outline_blank";
+  }
+}

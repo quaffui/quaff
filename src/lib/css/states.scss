@@ -1,0 +1,47 @@
+@use "./mixins";
+
+// DISABLED
+.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+
+  &::before,
+  &::after {
+    all: unset;
+  }
+}
+
+// BORDERED
+.border {
+  @include mixins.border;
+}
+
+// ELEVATED
+
+.elevate {
+  &-none {
+    box-shadow: none;
+  }
+
+  $elevations: (
+    "sm": 1,
+    "md": 2,
+    "lg": 3,
+  );
+
+  @each $elevation, $value in $elevations {
+    &-#{$elevation} {
+      &-top {
+        @include mixins.elevate($value, "top");
+      }
+      &-bottom {
+        @include mixins.elevate($value, "bottom");
+      }
+    }
+  }
+}
+
+// TRANSPARENT
+.transparent {
+  @include mixins.transparent;
+}

@@ -5,10 +5,16 @@ declare global {
     // interface Error {}
     // interface Locals {}
     // interface PageData {}
+    // interface PageState {}
     // interface Platform {}
   }
 
-  namespace Q {
+  namespace Quaff {
+    export const NativePropsDefaults: NativeProps = {
+      userClasses: undefined,
+      userStyles: undefined,
+    };
+
     export type Size = "none" | "xs" | "sm" | "md" | "lg" | "xl";
 
     export type CssUnit = "px" | "%" | "em" | "ex" | "ch" | "rem" | "vw" | "vh" | "vmin" | "vmax";
@@ -29,7 +35,7 @@ declare global {
     export interface QComponentProp {
       name: string;
       type: string;
-      default?: unknown;
+      default?: any;
       description: string;
       clickableType?: boolean;
       optional?: boolean;
@@ -60,16 +66,15 @@ declare global {
     type ComponentName = `q-${string}`;
 
     interface QuaffClassesParams {
-      bemClasses?: Record<string, unknown>;
-      classes?: unknown[];
+      bemClasses?: Record<string, any>;
+      classes?: any[];
     }
 
     /**
-     * Function that allows a preprocessor to add static and dynamic classes on the chosen component (identified by `componentName`).
      *
-     * @param componentName - Main class of the target element. The element should only have this class to be well targeted. If you need to add other classes, use this function's `classes` parameter.
+     * @param componentName - Main class of the target element. The element should only have this class to be well targeted
      * @param bemClasses - Classes that should be prefixed with `componentName`
-     * @param classes - Classes that should not be prefixed with `componentName`. Use arrow function if Svelte cries about `$derived` values
+     * @param classes - Classes that should not be prefixed with `componentName`. Use arrow function if Svelte cries about $derived values
      */
     export function classes(
       componentName: string,
@@ -78,6 +83,12 @@ declare global {
       class: string;
     };
   }
+}
+
+import type { materialDynamicColors } from "material-dynamic-colors";
+
+declare module "material-dynamic-colors" {
+  export default materialDynamicColors;
 }
 
 export {};

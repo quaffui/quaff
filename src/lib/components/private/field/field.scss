@@ -1,0 +1,158 @@
+.q-field {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 3.5rem;
+  padding-block: 0.5rem;
+  padding-inline: 1rem;
+  border-top-right-radius: 0.25rem;
+  border-top-left-radius: 0.25rem;
+  background-color: transparent;
+
+  & > :global(.q-icon) {
+    --size: 24px;
+  }
+
+  &--filled {
+    background-color: var(--surface-variant);
+  }
+
+  &--outlined {
+    border-radius: 0.25rem;
+  }
+
+  &:not(&--outlined) > :global(input) {
+    translate: 0 15%;
+  }
+
+  & > input {
+    height: 100%;
+    flex: 1 1 auto;
+    border: none;
+    background-color: transparent;
+    color: var(--on-surface-variant);
+
+    &:focus {
+      outline: none;
+      caret-color: var(--primary);
+    }
+  }
+
+  &__filled {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    box-shadow: inset 0 -1px var(--on-surface-variant);
+    align-items: flex-start;
+    transition: padding 0.2s ease-out;
+
+    &--focused {
+      box-shadow: inset 0 -2px var(--primary);
+      color: var(--primary);
+    }
+
+    & > :global(.q-field__label) {
+      transition:
+        transform 0.2s ease-out,
+        alignSelf 0.2s ease-out;
+      transform-origin: top left;
+      transform: translateY(-50%);
+    }
+
+    &:is(&--focused, &--active) {
+      padding-top: 0.5rem !important;
+    }
+
+    &:is(&--focused, &--active) > :global(.q-field__label) {
+      transform: scale(75%) translateY(-10%);
+    }
+  }
+
+  &__outline {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    box-sizing: border-box;
+    pointer-events: none;
+
+    & > :global(.q-field__outline--leading),
+    & > :global(.q-field__outline--trailing) {
+      border-top: 1px solid var(--outline);
+      border-bottom: 1px solid var(--outline);
+    }
+
+    & > :global(.q-field__outline--leading) {
+      transition: width 0.2s ease-out;
+      width: 16px;
+      border-radius: 0;
+      border-top-left-radius: inherit;
+      border-bottom-left-radius: inherit;
+      border-left: 1px solid var(--outline);
+    }
+
+    &--icon > :global(.q-field__outline--leading) {
+      width: 52px;
+    }
+
+    &:is(&--focused, &--active) > :global(.q-field__outline--leading) {
+      width: 12px;
+    }
+
+    &.q-field__outline--focused
+      > :global(
+        :is(.q-field__outline--leading, .q-field__outline--notch, .q-field__outline--trailing)
+      ) {
+      border-color: var(--primary);
+      border-width: 2px;
+    }
+
+    &.q-field__outline--focused > :global(.q-field__outline--notch) {
+      box-shadow: inset 0 -2px var(--primary);
+    }
+
+    & > :global(.q-field__outline--notch) {
+      width: fit-content;
+      border-radius: 0;
+      border-top: 1px solid var(--outline);
+      box-shadow: inset 0 -1px var(--outline);
+    }
+
+    &:is(&--focused, &--active) > :global(.q-field__outline--notch) {
+      border-top: 0;
+    }
+
+    & > :global(.q-field__outline--trailing) {
+      right: 0;
+      flex-grow: 1;
+      border-radius: 0;
+      border-top-right-radius: inherit;
+      border-bottom-right-radius: inherit;
+      border-right: 1px solid var(--outline);
+    }
+
+    & :global(.q-field__label) {
+      transition: transform 0.2s ease-out;
+    }
+
+    &--focused :global(.q-field__label) {
+      color: var(--primary);
+    }
+
+    &:is(&--focused, &--active) :global(.q-field__label) {
+      transform: scale(75%) translateY(-37.5px);
+    }
+  }
+
+  &--focused
+    :global(
+      :is(.q-field__outline--leading, .q-field__outline--trailing, .q-field__outline--notch)
+    ) {
+    border-width: 2px;
+    border-color: var(--primary);
+  }
+}

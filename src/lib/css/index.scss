@@ -1,32 +1,57 @@
 @use "sass:map";
-
+@use "variables";
 @import "./theme/theme";
-@import "classes";
-@import "ripple";
-
-@import "$components/checkbox";
-@import "$components/drawer";
-@import "$components/footer";
-@import "$components/input";
-@import "$components/layout";
-@import "$components/radio";
-@import "$components/railbar";
-@import "$components/select";
-@import "$components/table";
-@import "$components/toolbar";
-@import "$components/tooltip";
+@import "./grid";
+@import "./flex";
+@import "./mixins";
+@import "./grid";
+@import "./states";
+@import "./ripple";
+@import "./fonts";
 
 html,
 body {
   height: 100%;
   width: 100%;
-  color: var(--on-surface);
 }
 
-.body--light {
-  background-color: rgb(253, 251, 255);
+@each $spaceName, $spaceVal in variables.$spaces {
+  @each $posName, $_ in variables.$positions {
+    .q-p#{$posName}-#{$spaceName} {
+      @include padding($posName, $spaceName);
+    }
+
+    .q-m#{$posName}-#{$spaceName} {
+      @include margin($posName, $spaceName);
+    }
+  }
+
+  @if $spaceName != "auto" {
+    .q-gap-#{$spaceName} {
+      gap: $spaceVal;
+    }
+  }
 }
 
-.body--dark {
-  background-color: rgb(20, 19, 20);
+.no-overflow {
+  overflow: hidden;
+}
+.scroll {
+  overflow: scroll;
+}
+
+.no-select {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.absolute-full {
+  position: absolute;
+
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
 }

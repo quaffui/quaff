@@ -1,0 +1,50 @@
+@use "variables";
+
+.row {
+  display: grid;
+  grid-template-columns: repeat(variables.$grid-columns, 1fr);
+  grid-gap: 0;
+
+  // Gutter classes
+  &.q-gutter-xs {
+    grid-gap: variables.$gutter-xs;
+  }
+
+  &.q-gutter-sm {
+    grid-gap: variables.$gutter-sm;
+  }
+
+  &.q-gutter-md {
+    grid-gap: variables.$gutter-md;
+  }
+
+  &.q-gutter-lg {
+    grid-gap: variables.$gutter-lg;
+  }
+
+  &.q-gutter-xl {
+    grid-gap: variables.$gutter-xl;
+  }
+
+  &.q-gutter-none {
+    grid-gap: 0px;
+  }
+
+  // Column classes for all sizes
+  @for $i from 1 through variables.$grid-columns {
+    & > .col-#{$i} {
+      grid-column: span #{$i};
+    }
+  }
+
+  // Column classes for each breakpoint
+  @each $breakpoint, $min-width in variables.$breakpoints {
+    @media (min-width: #{$min-width}) {
+      @for $i from 1 through variables.$grid-columns {
+        & > .col-#{$breakpoint}-#{$i} {
+          grid-column: span #{$i};
+        }
+      }
+    }
+  }
+}
