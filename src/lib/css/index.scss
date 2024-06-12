@@ -1,4 +1,4 @@
-@layer theme, ripple, components, classes;
+@layer theme, ripple, components, classes, disabled;
 
 @layer Quaff {
   @layer theme {
@@ -10,10 +10,14 @@
   }
 
   @layer components {
-    @import "./components";
+    @import "components";
   }
 
   @layer classes {
     @import "classes";
+  }
+
+  @layer disabled {
+    @import "disabled";
   }
 }

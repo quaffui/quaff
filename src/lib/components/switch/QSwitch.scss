@@ -49,10 +49,7 @@ $check-map: (
   &__inner {
     width: 3.25rem;
     height: 2rem;
-  }
-
-  &[aria-disabled] :is(.q-switch__track, .q-switch__handle) {
-    @include mixins.disabled;
+    border-radius: 10rem;
   }
 
   & input {
