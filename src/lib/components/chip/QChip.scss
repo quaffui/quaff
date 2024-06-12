@@ -42,10 +42,6 @@
     --state-layer-opacity: 10%;
   }
 
-  &[aria-disabled] {
-    @include mixins.disabled;
-  }
-
   &.q-chip--sm {
     height: 2rem;
 

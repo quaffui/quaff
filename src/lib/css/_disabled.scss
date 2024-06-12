@@ -1,0 +1,60 @@
+@use "$css/mixins";
+
+@mixin disabled-base() {
+  cursor: not-allowed;
+  box-shadow: none;
+  user-select: none;
+  color: disabled-font();
+  background-color: transparent;
+  transition: none;
+}
+
+@function disabled-font($color: on-surface) {
+  @return mixins.add-transparency(var(--#{$color}), 38%);
+}
+
+@function disabled-rest($color: on-surface) {
+  @return mixins.add-transparency(var(--#{$color}), 12%);
+}
+
+[disabled],
+[aria-disabled] {
+  &:not(.q-switch),
+  & *,
+  & *::before,
+  & *::after {
+    @include disabled-base;
+  }
+
+  & :is(.q-switch__track, .q-switch__handle) {
+    background-color: disabled-rest();
+
+    &::before {
+      border: none;
+    }
+  }
+
+  &:is(:active, :focus, :hover):not([class*="--outlined"]) {
+    outline: none;
+  }
+
+  &::before,
+  &::after {
+    all: unset;
+  }
+
+  &:is(input, button, [role="button"]),
+  & :is(input, button, [role="button"]) {
+    &[class*="--outlined"] {
+      outline-color: disabled-rest();
+    }
+
+    &:not([class*="--outlined"], [class*="--flat"]) {
+      background-color: disabled-rest();
+    }
+  }
+
+  & .q-switch:not([aria-checked] *) {
+    color: disabled-font(surface-container-highest);
+  }
+}

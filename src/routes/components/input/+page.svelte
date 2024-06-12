@@ -18,6 +18,7 @@
       <QDocsSection {snippets} title="State">
         <QInput bind:value={input} label="Default" class="q-mt-md" />
         <QInput bind:value={input} label="Disabled" class="q-mt-md" disable />
+        <QInput bind:value={input} label="Disabled" class="q-mt-md" disable outlined />
       </QDocsSection>
 
       <QDocsSection {snippets} title="Styles">

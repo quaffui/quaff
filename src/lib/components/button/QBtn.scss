@@ -51,10 +51,6 @@
     }
   }
 
-  &[aria-disabled] {
-    @include mixins.disabled;
-  }
-
   &:not([aria-disabled]):hover::after {
     @include mixins.overlay(var(--ripple-color), 0.08);
   }

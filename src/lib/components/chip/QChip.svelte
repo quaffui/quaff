@@ -98,6 +98,7 @@
   {...Q.classes}
   aria-disabled={disabled || undefined}
   {tabindex}
+  role="button"
   onclick={stopIfDisabled}
   {onkeydown}
 >
