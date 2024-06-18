@@ -41,8 +41,9 @@
   );
 
   const tabindex = disabled ? -1 : props.tabindex || 0;
+  const role = $derived(["assist", "filter"].includes(kind) ? "button" : undefined);
 
-  const avatar = extractImgSrc(icon);
+  const avatar = $derived(extractImgSrc(icon));
 
   function stopIfDisabled(e: QChipMouseEvent) {
     if (disabled) {
@@ -98,7 +99,7 @@
   {...Q.classes}
   aria-disabled={disabled || undefined}
   {tabindex}
-  role="button"
+  {role}
   onclick={stopIfDisabled}
   {onkeydown}
 >
