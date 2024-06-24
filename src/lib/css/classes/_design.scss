@@ -1,8 +1,9 @@
+@use "$css/disabled";
 @use "../mixins" as *;
 
 // Disabled
 .disabled {
-  @include disabled;
+  @include disabled.base();
 }
 
 // Borders

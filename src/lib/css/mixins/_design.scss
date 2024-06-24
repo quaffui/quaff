@@ -45,33 +45,6 @@
   }
 }
 
-@mixin disabled {
-  cursor: not-allowed !important;
-  box-shadow: none !important;
-  user-select: none !important;
-
-  &[class*="--outlined"] {
-    outline-color: add-transparency(var(--on-surface), 12%) !important;
-  }
-
-  &:not([class*="--outlined"], [class*="--flat"]) {
-    background-color: add-transparency(var(--on-surface), 12%) !important;
-  }
-
-  & .q-switch:not([aria-checked] *) {
-    color: add-transparency(var(--surface-container-highest), 38%) !important;
-  }
-
-  & * {
-    color: add-transparency(var(--on-surface), 38%) !important;
-  }
-
-  &::before,
-  &::after {
-    all: unset !important;
-  }
-}
-
 @mixin overlay($color: null, $opacity: null) {
   content: "";
   position: absolute;
