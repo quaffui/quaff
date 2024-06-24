@@ -105,7 +105,7 @@
     </span>
   </label>
   {#if label}
-    <span class="q-toggle__label">
+    <span class="q-switch__label">
       {label}
     </span>
   {/if}
