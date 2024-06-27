@@ -14,7 +14,7 @@
     display: none;
   }
 
-  &.q-tabs--secondary :global(.q-tab .q-tab__indicator) {
+  &.q-tabs--secondary .q-tab .q-tab__indicator {
     border-radius: 0;
     height: 0.125rem;
   }
@@ -26,11 +26,11 @@
     border-bottom: unset;
     border-right: solid 0.0625rem var(--outline);
 
-    & > :global(.q-tab) {
+    & > .q-tab {
       @include mixins.padding("x", "md");
     }
 
-    & :global(.q-tab .q-tab__indicator) {
+    & .q-tab .q-tab__indicator {
       inset: 0 0 0 auto;
       border-radius: 0;
       height: unset;

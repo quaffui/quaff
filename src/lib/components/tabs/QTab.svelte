@@ -112,7 +112,3 @@
     <div class="q-tab__indicator"></div>
   {/if}
 </svelte:element>
-
-<style lang="scss">
-  @import "./QTab.scss";
-</style>

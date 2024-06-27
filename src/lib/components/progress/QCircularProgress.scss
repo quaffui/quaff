@@ -20,7 +20,7 @@
       transform-origin: 50% 50%;
       animation: q-spin 2s linear infinite;
 
-      & :global(.q-circular-progress__indicator) {
+      & .q-circular-progress__indicator {
         stroke-dasharray: 1400;
         stroke-dashoffset: 0;
         animation: q-load 1.5s ease-in-out infinite;

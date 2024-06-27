@@ -65,6 +65,7 @@
   class="q-field"
   {...Q.classes}
   style:--snippet-prepend-width="{snippetPrependWidth}px"
+  aria-disabled={disable || undefined}
 >
   {#if before}
     <div class="q-field__snippet-before">

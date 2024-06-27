@@ -1,0 +1,18 @@
+@use "$css/mixins";
+
+@mixin base() {
+  cursor: not-allowed;
+  box-shadow: none;
+  user-select: none;
+  color: font-color();
+  background-color: transparent;
+  transition: none;
+}
+
+@function font-color($color: on-surface) {
+  @return mixins.add-transparency(var(--#{$color}), 38%);
+}
+
+@function rest-color($color: on-surface) {
+  @return mixins.add-transparency(var(--#{$color}), 12%);
+}

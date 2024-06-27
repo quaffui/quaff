@@ -105,7 +105,7 @@
     </span>
   </label>
   {#if label}
-    <span class="q-toggle__label">
+    <span class="q-switch__label">
       {label}
     </span>
   {/if}
@@ -119,7 +119,3 @@
     class="q-switch__icon q-switch__icon--{type}"
   />
 {/snippet}
-
-<style lang="scss">
-  @import "./QSwitch.scss";
-</style>

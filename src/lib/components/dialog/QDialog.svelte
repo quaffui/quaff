@@ -101,7 +101,3 @@
 >
   {@render children?.()}
 </dialog>
-
-<style lang="scss">
-  @import "./QDialog.scss";
-</style>

@@ -71,7 +71,3 @@
     style:transform-origin={origin}
   ></div>
 </div>
-
-<style lang="scss">
-  @import "./QLinearProgress.scss";
-</style>

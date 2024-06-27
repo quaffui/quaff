@@ -1,165 +1,179 @@
 @use "$css/mixins";
+@use "$css/disabled";
 
-.q-chip {
-  $state-layer-opacity: 0;
-  padding-inline: 1rem;
-  border-radius: 0.5rem;
+@layer q-chip {
+  .q-chip {
+    $state-layer-opacity: 0;
+    padding-inline: 1rem;
+    border-radius: 0.5rem;
 
-  display: flex;
-  align-items: center;
-  justify-content: start;
-  gap: 0.5rem;
-  width: fit-content;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    gap: 0.5rem;
+    width: fit-content;
 
-  background-color: transparent;
-  color: var(--on-surface);
+    background-color: transparent;
+    color: var(--on-surface);
 
-  cursor: pointer;
-  user-select: none;
+    cursor: pointer;
+    user-select: none;
 
-  @include mixins.typography(label-large);
+    @include mixins.typography(label-large);
 
-  &::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
 
-    border-radius: inherit;
-    background-color: mixins.add-transparency(
-      var(--state-layer-color, transparent),
-      var(--state-layer-opacity, 0)
-    );
-  }
-
-  &:hover {
-    --state-layer-opacity: 8%;
-  }
-
-  &:focus {
-    --state-layer-opacity: 10%;
-  }
-
-  &[aria-disabled] {
-    @include mixins.disabled;
-  }
-
-  &.q-chip--sm {
-    height: 2rem;
-
-    & > :global(:is(.q-icon, .q-avatar)) {
-      --size: 1.125rem;
-    }
-  }
-
-  &.q-chip--md {
-    height: 2.5rem;
-
-    & > :global(:is(.q-icon, .q-avatar)) {
-      --size: 1.40625rem;
-    }
-  }
-
-  &.q-chip--lg {
-    height: 3rem;
-
-    & > :global(:is(.q-icon, .q-avatar)) {
-      --size: 1.6875rem;
-    }
-  }
-
-  &:focus {
-    outline: 1px solid var(--secondary);
-
-    & > :global(.q-icon) {
-      color: var(--on-secondary-container);
-    }
-  }
-
-  &.q-chip--outlined {
-    outline: 1px solid var(--outline);
-
-    &:focus {
-      outline-color: var(--secondary);
-    }
-  }
-
-  &.q-chip--elevated {
-    @include mixins.elevate(0.5);
-
-    &:hover {
-      @include mixins.elevate(1);
+      border-radius: inherit;
+      background-color: mixins.add-transparency(
+        var(--state-layer-color, transparent),
+        var(--state-layer-opacity, 0)
+      );
     }
 
-    background-color: var(--surface-container-low);
-  }
-
-  &.q-chip--assist {
-    --state-layer-color: var(--on-surface);
-  }
-
-  &.q-chip--filter {
-    --state-layer-color: var(--on-surface-variant);
-
-    &:focus {
-      outline-color: var(--on-surface-variant);
+    &:hover:not([aria-disabled]) {
+      --state-layer-opacity: 8%;
     }
 
-    &.q-chip--selected {
-      --state-layer-color: var(--on-secondary-container);
+    &:focus:not([aria-disabled]) {
+      --state-layer-opacity: 10%;
+    }
 
-      outline-color: var(--secondary-container);
-      outline-width: 0;
+    &.q-chip--sm {
+      height: 2rem;
 
-      background-color: var(--secondary-container);
-
-      &.q-chip--elevated {
-        color: var(--on-secondary-container);
+      & > :is(.q-icon, .q-avatar) {
+        --size: 1.125rem;
       }
+    }
 
-      &:hover {
-        @include mixins.elevate(0.5);
+    &.q-chip--md {
+      height: 2.5rem;
+
+      & > :is(.q-icon, .q-avatar) {
+        --size: 1.40625rem;
+      }
+    }
+
+    &.q-chip--lg {
+      height: 3rem;
+
+      & > :is(.q-icon, .q-avatar) {
+        --size: 1.6875rem;
+      }
+    }
+
+    &:focus:not([aria-disabled]) {
+      outline: 1px solid var(--secondary);
+
+      & > .q-icon {
         color: var(--on-secondary-container);
       }
     }
-  }
 
-  &.q-chip--input {
-    --state-layer-color: var(--on-surface-variant);
+    &.q-chip--outlined {
+      outline: 1px solid var(--outline);
 
-    padding-inline: 0.75rem;
-    color: var(--on-surface-variant);
+      &:focus:not([aria-disabled]) {
+        outline-color: var(--secondary);
+      }
+    }
 
-    & > :global(.q-icon) {
+    &.q-chip--elevated {
+      @include mixins.elevate(0.5);
+
+      &:hover:not([aria-disabled]) {
+        @include mixins.elevate(1);
+      }
+
+      background-color: var(--surface-container-low);
+    }
+
+    &.q-chip--assist {
+      --state-layer-color: var(--on-surface);
+    }
+
+    &.q-chip--filter {
+      --state-layer-color: var(--on-surface-variant);
+
+      &:focus:not([aria-disabled]) {
+        outline-color: var(--on-surface-variant);
+      }
+
+      &.q-chip--selected {
+        --state-layer-color: var(--on-secondary-container);
+
+        outline-color: var(--secondary-container);
+        outline-width: 0;
+
+        background-color: var(--secondary-container);
+
+        &.q-chip--elevated {
+          color: var(--on-secondary-container);
+        }
+
+        &:hover:not([aria-disabled]):not([aria-disabled]) {
+          @include mixins.elevate(0.5);
+          color: var(--on-secondary-container);
+        }
+      }
+    }
+
+    &.q-chip--input {
+      --state-layer-color: var(--on-surface-variant);
+
+      padding-inline: 0.75rem;
       color: var(--on-surface-variant);
+
+      & > .q-icon {
+        color: var(--on-surface-variant);
+      }
+    }
+
+    &.q-chip--suggestion {
+      --state-layer-color: var(--on-surface-variant);
+
+      color: var(--on-surface-variant);
+
+      &:focus:not([aria-disabled]) {
+        outline-color: var(--secondary);
+      }
     }
   }
 
-  &.q-chip--suggestion {
-    --state-layer-color: var(--on-surface-variant);
+  .q-chip > .q-icon {
+    color: var(--primary);
+  }
 
-    color: var(--on-surface-variant);
+  .q-chip > :is(.q-icon.q-chip__leading-icon, .q-avatar.q-chip__avatar) {
+    margin-left: -0.5rem;
+  }
 
-    &:focus {
-      outline-color: var(--secondary);
-    }
+  .q-chip > .q-icon.q-chip__trailing-icon {
+    margin-right: -0.5rem;
+  }
+
+  .q-chip.q-chip--input > .q-avatar.q-chip__avatar {
+    --size: 1.5rem;
   }
 }
 
-.q-chip > :global(.q-icon) {
-  color: var(--primary);
-}
+// Disabled
+@layer q-chip--disabled {
+  .q-chip[aria-disabled] {
+    @include disabled.base();
 
-.q-chip > :global(:is(.q-icon.q-chip__leading-icon, .q-avatar.q-chip__avatar)) {
-  margin-left: -0.5rem;
-}
+    &.q-chip--outlined {
+      outline-color: disabled.rest-color();
+    }
 
-.q-chip > :global(.q-icon.q-chip__trailing-icon) {
-  margin-right: -0.5rem;
-}
-
-.q-chip.q-chip--input > :global(.q-avatar.q-chip__avatar) {
-  --size: 1.5rem;
+    & .q-icon {
+      color: disabled.font-color();
+    }
+  }
 }

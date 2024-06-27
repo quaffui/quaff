@@ -124,7 +124,3 @@
     r={radius}
   />
 {/snippet}
-
-<style lang="scss">
-  @import "./QCircularProgress.scss";
-</style>

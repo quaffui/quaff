@@ -43,7 +43,3 @@
     {@render children?.()}
   {/if}
 </i>
-
-<style lang="scss">
-  @import "./QIcon.scss";
-</style>
