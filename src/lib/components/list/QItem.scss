@@ -49,11 +49,11 @@
   &--multiline {
     padding-block: 0.75rem;
 
-    & > :global(.q-item__section:is(.avatar, .icon, .thumbnail, .trailingIcon, .trailingText)) {
+    & > .q-item__section:is(.avatar, .icon, .thumbnail, .trailingIcon, .trailingText) {
       align-self: start;
     }
 
-    > :global(.q-item__section.video) {
+    > .q-item__section.video {
       margin-left: -1rem !important;
       padding-block: 0;
     }

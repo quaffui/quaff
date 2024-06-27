@@ -34,7 +34,3 @@
 <article {...props} class="q-card" {...Q.classes}>
   {@render children?.()}
 </article>
-
-<style lang="scss">
-  @import "./QCard.scss";
-</style>

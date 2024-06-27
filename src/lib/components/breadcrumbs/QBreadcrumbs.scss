@@ -4,7 +4,7 @@
   justify-content: center;
   width: fit-content;
 
-  & > :global(.q-breadcrumbs__separator:first-child) {
+  & > .q-breadcrumbs__separator:first-child {
     display: none;
   }
 }

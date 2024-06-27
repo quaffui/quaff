@@ -145,7 +145,3 @@
 <nav {...props} bind:this={qTabs} class="q-tabs" {...Q.classes}>
   {@render children?.()}
 </nav>
-
-<style lang="scss">
-  @import "./QTabs.scss";
-</style>

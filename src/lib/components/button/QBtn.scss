@@ -1,119 +1,133 @@
 @use "$css/mixins";
 @use "$css/variables";
+@use "$css/disabled";
 
-.q-btn {
-  position: relative;
+@layer q-btn {
+  .q-btn {
+    position: relative;
 
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 
-  margin: 0 0.5rem;
-  padding: 0 1.5rem;
+    margin: 0 0.5rem;
+    padding: 0 1.5rem;
 
-  box-sizing: content-box;
-  border: none;
-  outline: inherit;
+    box-sizing: content-box;
+    border: none;
+    outline: inherit;
 
-  background-color: transparent;
-  color: var(--ripple-color);
+    background-color: transparent;
+    color: var(--ripple-color);
 
-  font-family: inherit;
-  font-size: 0.875rem;
-  font-weight: 500;
-  line-height: normal;
+    font-family: inherit;
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: normal;
 
-  cursor: pointer;
-  user-select: none;
-  text-decoration: none;
+    cursor: pointer;
+    user-select: none;
+    text-decoration: none;
 
-  transition:
-    variables.$speed3 transform,
-    variables.$speed3 border-radius,
-    variables.$speed3 padding;
+    transition:
+      variables.$speed3 transform,
+      variables.$speed3 border-radius,
+      variables.$speed3 padding;
 
-  @include mixins.btn-image;
+    @include mixins.btn-image;
 
-  $sizeMap: (
-    "sm": -1,
-    "md": 0,
-    "lg": 1,
-    "xl": 2,
-  );
-  @each $size, $val in $sizeMap {
-    &--#{$size} {
-      height: 2.5rem + 0.5 * $val;
-      min-width: 2.5rem + 0.5 * $val;
+    $sizeMap: (
+      "sm": -1,
+      "md": 0,
+      "lg": 1,
+      "xl": 2,
+    );
+    @each $size, $val in $sizeMap {
+      &--#{$size} {
+        height: 2.5rem + 0.5 * $val;
+        min-width: 2.5rem + 0.5 * $val;
 
-      border-radius: 1.25rem + 0.25 * $val;
+        border-radius: 1.25rem + 0.25 * $val;
 
-      font-size: 1rem + 0.125 * $val;
+        font-size: 1rem + 0.125 * $val;
+      }
+    }
+
+    &:not([aria-disabled]):hover::after {
+      @include mixins.overlay(var(--ripple-color), 0.08);
+    }
+
+    &:not([aria-disabled]):focus::after {
+      @include mixins.overlay(var(--ripple-color), 0.1);
+    }
+
+    &--elevated {
+      &:not(.q-btn--unelevated, [aria-disabled]) {
+        @include mixins.elevate(1, "bottom");
+      }
+
+      background-color: var(--surface-container-low);
+
+      // Surface tint overlay
+      &::before {
+        @include mixins.overlay(var(--surface-tint), 0.12);
+      }
+    }
+
+    &--filled {
+      background-color: var(--primary);
+
+      &:hover:not([aria-disabled]) {
+        @include mixins.elevate(1, "bottom");
+      }
+    }
+
+    &--tonal {
+      background-color: var(--secondary-container);
+
+      &:hover:not([aria-disabled]) {
+        @include mixins.elevate(1, "bottom");
+      }
+    }
+
+    &--outlined {
+      outline: solid 0.0625rem var(--outline);
+
+      &:not([aria-disabled]):focus {
+        outline-color: var(--primary);
+      }
+    }
+
+    &--round {
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 50%;
+      padding: 0;
+    }
+
+    &--rectangle {
+      border-radius: 0.5rem;
     }
   }
 
-  &[aria-disabled] {
-    @include mixins.disabled;
-  }
-
-  &:not([aria-disabled]):hover::after {
-    @include mixins.overlay(var(--ripple-color), 0.08);
-  }
-
-  &:not([aria-disabled]):focus::after {
-    @include mixins.overlay(var(--ripple-color), 0.1);
-  }
-
-  &--elevated {
-    &:not(.q-btn--unelevated, [aria-disabled]) {
-      @include mixins.elevate(1, "bottom");
-    }
-
-    background-color: var(--surface-container-low);
-
-    // Surface tint overlay
-    &::before {
-      @include mixins.overlay(var(--surface-tint), 0.12);
-    }
-  }
-
-  &--filled {
-    background-color: var(--primary);
-
-    &:hover:not([aria-disabled]) {
-      @include mixins.elevate(1, "bottom");
-    }
-  }
-
-  &--tonal {
-    background-color: var(--secondary-container);
-
-    &:hover:not([aria-disabled]) {
-      @include mixins.elevate(1, "bottom");
-    }
-  }
-
-  &--outlined {
-    outline: solid 0.0625rem var(--outline);
-
-    &:not([aria-disabled]):focus {
-      outline-color: var(--primary);
-    }
-  }
-
-  &--round {
-    width: 2.5rem;
-    height: 2.5rem;
-    border-radius: 50%;
-    padding: 0;
-  }
-
-  &--rectangle {
-    border-radius: 0.5rem;
+  .q-btn:not(.q-btn--round) > :is(.q-icon, .q-btn__img, .q-circular-progress) {
+    margin-left: -0.5rem;
+    margin-right: 0.5rem;
+    --size: 1.5rem;
   }
 }
 
-.q-btn:not(.q-btn--round) > :global(:is(.q-icon, .q-btn__img, .q-circular-progress)) {
-  margin-left: -0.5rem;
-  margin-right: 0.5rem;
-  --size: 1.5rem;
+// Disabled
+@layer q-btn--disabled {
+  .q-btn[aria-disabled] {
+    @include disabled.base();
+
+    &:not(.q-btn--outlined, .q-btn--flat) {
+      background-color: disabled.rest-color();
+    }
+
+    &.q-btn--outlined {
+      outline-color: disabled.rest-color();
+    }
+  }
 }

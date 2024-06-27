@@ -7,7 +7,7 @@
     margin-left: -1rem;
     padding-block: 0.25rem;
 
-    & :global(video) {
+    & video {
       width: auto;
       height: 4rem;
       object-fit: cover;
@@ -15,7 +15,7 @@
     }
   }
 
-  & :global(.q-avatar) {
+  & .q-avatar {
     height: 2.5rem;
     width: 2.5rem;
   }
@@ -24,7 +24,7 @@
     width: 1.5rem;
   }
 
-  &--thumbnail :global(img) {
+  &--thumbnail img {
     width: 3.5rem;
     height: 3.5rem;
     object-fit: cover;

@@ -1,32 +1,23 @@
-@use "sass:map";
+@layer theme, ripple, components, classes, disabled;
 
-@import "./theme/theme";
-@import "classes";
-@import "ripple";
+@layer Quaff {
+  @layer theme {
+    @import "./theme/theme";
+  }
 
-@import "$components/checkbox";
-@import "$components/drawer";
-@import "$components/footer";
-@import "$components/input";
-@import "$components/layout";
-@import "$components/radio";
-@import "$components/railbar";
-@import "$components/select";
-@import "$components/table";
-@import "$components/toolbar";
-@import "$components/tooltip";
+  @layer ripple {
+    @import "ripple";
+  }
 
-html,
-body {
-  height: 100%;
-  width: 100%;
-  color: var(--on-surface);
-}
+  @layer components {
+    @import "components";
+  }
 
-.body--light {
-  background-color: rgb(253, 251, 255);
-}
+  @layer classes {
+    @import "classes";
+  }
 
-.body--dark {
-  background-color: rgb(20, 19, 20);
+  @layer disabled {
+    @import "disabled";
+  }
 }

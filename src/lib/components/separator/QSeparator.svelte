@@ -55,7 +55,3 @@
     aria-orientation={orientation}
   />
 {/snippet}
-
-<style lang="scss">
-  @import "./QSeparator.scss";
-</style>

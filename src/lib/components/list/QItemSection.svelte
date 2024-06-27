@@ -62,7 +62,3 @@
     </div>
   {/if}
 {/snippet}
-
-<style lang="scss">
-  @import "./QItemSection.scss";
-</style>

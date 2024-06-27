@@ -73,7 +73,3 @@
     {@render breadcrumbEl()}
   </svelte:element>
 {/if}
-
-<style lang="scss">
-  @import "./QBreadcrumbsEl.scss";
-</style>

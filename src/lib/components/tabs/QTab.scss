@@ -17,14 +17,14 @@
   overflow: visible;
   @include mixins.padding("x", "md");
 
-  & :global(.q-tab__icon) {
+  & .q-tab__icon {
     margin-right: 0.25rem;
   }
 
   &.q-tab--active {
     color: var(--primary);
 
-    & :global(.q-tab__indicator) {
+    & .q-tab__indicator {
       opacity: 1;
     }
   }
@@ -49,14 +49,14 @@
     opacity: 0.16;
   }
 
-  & :global(.q-tab__content) {
+  & .q-tab__content {
     height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
   }
 
-  & :global(.q-tab__indicator) {
+  & .q-tab__indicator {
     position: absolute;
     box-sizing: border-box;
     transform-origin: bottom left;
