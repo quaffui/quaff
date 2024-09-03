@@ -1,12 +1,17 @@
 <script lang="ts">
   import { useSize } from "$lib/composables";
   import QContext from "$lib/classes/QContext.svelte";
-  import type { LayoutContext } from "../layout/QLayout.svelte";
+  import type { DrawerContext, LayoutContext } from "../layout/QLayout.svelte";
   import type { QRailbarProps } from "./props";
+  import { untrack } from "svelte";
 
   let { width = 88, side = "left", bordered = false, children, ...props }: QRailbarProps = $props();
 
+  const railbarCtx = QContext.get<DrawerContext>(`QRailbar-${side}`);
+
   const ctx = QContext.get<LayoutContext>("layout");
+
+  let railbarEl = $state<HTMLElement>();
 
   const drawerType = $derived(side === "left" ? "drawerLeft" : "drawerRight");
 
@@ -22,6 +27,13 @@
     // There is no header/footer or there is an offset top/bottom
     return !appBarEl?.display || drawerCtx?.offset[pos];
   };
+
+  $effect(() => {
+    untrack(() => railbarCtx)?.updateEntries({
+      width,
+      takesSpace: railbarEl?.style.display !== "none" || false,
+    });
+  });
 
   Q.classes("q-railbar", {
     bemClasses: {
@@ -50,6 +62,6 @@
   const style = $derived(`${railbarWidthStyle}${props.style ?? ""}`);
 </script>
 
-<nav {...props} class="q-railbar" {...Q.classes} {style}>
+<nav bind:this={railbarEl} {...props} class="q-railbar" {...Q.classes} {style}>
   {@render children?.()}
 </nav>
