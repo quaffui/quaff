@@ -1,0 +1,56 @@
+@use "$css/mixins";
+@use "$css/variables";
+
+.q-header {
+  --header-height: 4rem;
+
+  position: absolute;
+  top: 0;
+  right: var(--offset-right, 0);
+  bottom: auto;
+  left: var(--offset-left, 0);
+  z-index: 100;
+
+  @include mixins.padding("x", "md");
+
+  min-height: unset;
+  height: var(--header-height);
+  width: auto;
+
+  border-radius: 0;
+
+  background-color: var(--surface);
+
+  transition: all variables.$speed3 ease-in-out;
+
+  &.q-header--elevated {
+    @include mixins.elevate(1);
+  }
+
+  &.q-header--bordered {
+    @include mixins.border(var(--outline), "bottom");
+  }
+
+  &.q-header--dense {
+    --header-height: 3rem;
+  }
+
+  &.q-header--prominent {
+    --header-height: 7rem;
+  }
+
+  &.q-header--collapsed {
+    translate: 0 calc(-1.5 * var(--header-height));
+  }
+
+  & > nav {
+    height: 100%;
+    min-height: unset;
+  }
+
+  @each $side in ("left", "right") {
+    &.q-header--offset-#{$side} {
+      #{$side}: var(--offset-#{$side}, 0);
+    }
+  }
+}
