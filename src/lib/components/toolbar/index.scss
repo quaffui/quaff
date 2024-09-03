@@ -1,7 +1,9 @@
 @use "$css/mixins";
 
 .q-toolbar {
-  width: 100%;
+  &:not(.q-header) {
+    width: 100%;
+  }
   padding: 0 1rem;
   transition: all var(--speed3);
   background-color: var(--surface);
