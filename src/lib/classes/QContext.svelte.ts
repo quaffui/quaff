@@ -43,6 +43,7 @@ export default class QContext<T> {
 
   /**
    * Updates the property of id `key` with `newVal` in the context's inner value
+   * @param key - Key to update
    * @param newVal - New value to update the context's property with
    */
   updateEntry(key: keyof T, newVal: NonNullable<T>[keyof T]) {
@@ -51,6 +52,16 @@ export default class QContext<T> {
     }
 
     this.#state![key] = newVal;
+  }
+
+  /**
+   * Updates the given properties their corresponding values in the context's inner value
+   * @param from - Object containing keys to update with their respective value
+   */
+  updateEntries(from: Record<keyof T, NonNullable<T>[keyof T]>) {
+    for (const key in from) {
+      this.updateEntry(key, from[key]);
+    }
   }
 
   /**
