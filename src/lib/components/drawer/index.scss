@@ -5,7 +5,6 @@
   right: auto;
   bottom: 0;
   left: auto;
-  height: 100%;
   background-color: var(--surface);
   color: var(--on-surface);
   transition:
@@ -41,19 +40,9 @@
     transform: translate(0);
   }
 
-  &.q-drawer--offset {
-    &-top {
-      top: var(--header-height);
-      height: calc(100% - var(--header-height));
-
-      &.q-drawer--offset-bottom {
-        height: calc(100% - var(--header-height) - var(--footer-height));
-      }
-    }
-
-    &-bottom {
-      bottom: var(--footer-height);
-      height: calc(100% - var(--footer-height));
+  @each $pos in ("top", "bottom") {
+    &.q-drawer--offset-#{$pos} {
+      #{$pos}: var(--offset-#{$pos}, 0);
     }
   }
 }

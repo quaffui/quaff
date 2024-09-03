@@ -3,8 +3,9 @@
   import { useSize } from "$lib/composables";
   import { clickOutside } from "$lib/helpers";
   import QContext from "$lib/classes/QContext.svelte";
-  import type { LayoutContext } from "../layout/QLayout.svelte";
+  import type { DrawerContext, LayoutContext } from "../layout/QLayout.svelte";
   import type { QDrawerProps } from "./props";
+  import { untrack } from "svelte";
 
   let {
     value = $bindable(false),
@@ -16,6 +17,8 @@
     children,
     ...props
   }: QDrawerProps = $props();
+
+  const drawerContext = QContext.get<DrawerContext>(`QDrawer-${side}`);
 
   const ctx = QContext.get<LayoutContext>("layout");
 
@@ -50,6 +53,13 @@
     if ($navigating && hideOnRouteChange) {
       hide();
     }
+  });
+
+  $effect(() => {
+    untrack(() => drawerContext)?.updateEntries({
+      takesSpace: !!value && !overlay,
+      width,
+    });
   });
 
   const shouldHaveRadius = (pos: "top" | "bottom") => {
