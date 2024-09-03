@@ -1,4 +1,4 @@
-import type { CssValue, NativeProps } from "$lib/utils";
+import type { NativeProps } from "$lib/utils";
 import type { HTMLAttributes } from "svelte/elements";
 
 export type QDrawerSideOptions = "left" | "right";
@@ -21,7 +21,7 @@ export interface QDrawerProps extends NativeProps, HTMLAttributes<HTMLDivElement
    * The width of the drawer. Can be specified with a CSS unit. If no unit is specified, "px" will be used.
    * @default 300
    */
-  width?: number | CssValue;
+  width?: number;
 
   /**
    * The breakpoint at which the drawer behavior changes. (not supported yet)
