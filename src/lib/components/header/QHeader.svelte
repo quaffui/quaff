@@ -1,53 +1,54 @@
-<svelte:options runes={true} />
-
 <script lang="ts">
-  import { untrack } from "svelte";
-  import { createClasses } from "$lib/utils";
-  import { QToolbar } from "$lib";
+  import QToolbar from "$components/toolbar/QToolbar.svelte";
   import QContext from "$lib/classes/QContext.svelte";
-  import type { LayoutContext } from "../layout/QLayout.svelte";
+  import QScrollObserver from "$lib/classes/QScrollObserver.svelte";
+  import { getContext, untrack } from "svelte";
+  import type { AppbarContext } from "$components/layout/QLayout.svelte";
   import type { QHeaderProps } from "./props";
+  import type { QLayoutProps } from "$components/layout/props";
 
   let {
+    elevated = false,
     inset = false,
-    elevate = false,
-    border = false,
+    reveal = false,
+    revealOffset = 250,
+    height = 64,
     children,
     ...props
   }: QHeaderProps = $props();
 
-  const ctx = QContext.get<LayoutContext>("layout");
+  const headerContext = QContext.get<AppbarContext>("QHeader");
+  const layoutView = getContext<{ value: NonNullable<QLayoutProps["view"]> }>("view");
 
-  const header = $derived(ctx?.value?.header);
+  if (!headerContext || !layoutView) {
+    throw new Error("QHeader should be used inside QLayout");
+  }
 
-  $effect(() => {
-    if (!ctx) {
-      console.warn("QHeader should be used inside QLayout");
-    }
+  const scroll = new QScrollObserver();
+
+  const offset = $derived(scroll.position - height);
+  const collapsed = $derived(reveal && scroll.direction === "down" && offset - revealOffset > 0);
+
+  const leftOffset = () => layoutView.value.charAt(0) === "l";
+  const rightOffset = () => layoutView.value.charAt(2) === "r";
+
+  $effect.pre(() => {
+    untrack(() => headerContext).updateEntries({ height, collapsed });
   });
 
-  const classes = $derived(
-    createClasses([header?.fixed && "fixed"], {
-      component: "q-header",
-      userClasses: props.class,
-    })
-  );
-
-  $effect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    props.style;
-
-    untrack(() => {
-      if (header) {
-        ctx?.updateEntry("header", {
-          ...header,
-          display: !props.style?.includes("display: none"),
-        });
-      }
-    });
+  Q.classes("q-header", {
+    bemClasses: {
+      elevated,
+      inset,
+      collapsed,
+      "offset-left": leftOffset(),
+      "offset-right": rightOffset(),
+    },
+    classes: [props.class],
+    isCustomComponent: true,
   });
 </script>
 
-<QToolbar {...props} {inset} {elevate} {border} class={classes} role="header">
+<QToolbar {...props} class="q-header" role="header" {...Q.classes}>
   {@render children?.()}
 </QToolbar>
