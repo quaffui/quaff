@@ -50,7 +50,7 @@ export default class QScrollObserver {
 
     const handler = (e: Event) => {
       const target = e.target as HTMLDivElement | null;
-      if (!target || target.parentElement?.classList.contains("q-layout")) {
+      if (!target /* || target.parentElement?.classList.contains("q-layout") */) {
         return;
       }
 
