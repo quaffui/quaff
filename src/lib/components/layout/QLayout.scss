@@ -1,0 +1,35 @@
+@use "$css/mixins";
+@use "$css/variables";
+
+.q-layout {
+  --header-height: 4rem;
+  --footer-height: 5rem;
+
+  --left-railbar-width: 5.5rem;
+  --right-railbar-width: 5.5rem;
+
+  --left-drawer-width: 22.5rem;
+  --right-drawer-width: 22.5rem;
+
+  --offset-top: 0;
+  --offset-right: 0;
+  --offset-bottom: 0;
+  --offset-left: 0;
+
+  $content-snippet: ":not(.q-header, .q-footer, .q-railbar, .q-drawer)";
+
+  position: relative;
+
+  min-height: 100%;
+  min-width: 100%;
+  height: 100%;
+  width: 100%;
+
+  overflow: hidden;
+
+  & > #{$content-snippet} {
+    height: 100%;
+    overflow: auto;
+    transition: padding variables.$speed3;
+  }
+}
