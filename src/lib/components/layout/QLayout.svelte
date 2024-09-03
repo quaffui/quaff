@@ -120,29 +120,16 @@
   {onscroll}
   {onresize}
 >
-  {#if railbarLeft}
-    {@render railbarLeft()}
-  {/if}
-  {#if railbarRight}
-    {@render railbarRight()}
-  {/if}
-  {#if drawerLeft}
-    {@render drawerLeft()}
-  {/if}
-  {#if drawerRight}
-    {@render drawerRight()}
-  {/if}
-  {#if header}
-    {@render header()}
-  {/if}
-  {#if footer}
-    {@render footer()}
-  {/if}
+  {@render railbarLeft?.()}
+  {@render railbarRight?.()}
+  {@render drawerLeft?.()}
+  {@render drawerRight?.()}
+  {@render header?.()}
+  {@render footer?.()}
+
   <ContextReseter keys="layout">
     {#snippet children()}
-      {#if content}
-        {@render content()}
-      {/if}
+      {@render content?.()}
     {/snippet}
   </ContextReseter>
 </div>
