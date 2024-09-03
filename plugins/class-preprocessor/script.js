@@ -81,8 +81,13 @@ export function prepareScript(instance, source, namespace) {
 
     const bemClasses = options.properties.find((prop) => prop?.key?.name === "bemClasses");
     const classes = options.properties.find((prop) => prop?.key?.name === "classes");
+    // Svelte doesn't accept `class:` directives on custom components
+    const customComponent = options.properties.find(
+      (prop) => prop?.key?.name === "isCustomComponent"
+    );
 
     const componentName = handleComponentName(component);
+    const isCustomComponent = handleCustomComponent(customComponent);
 
     scriptDefs[componentName] = {
       start,
@@ -97,6 +102,7 @@ export function prepareScript(instance, source, namespace) {
       scriptDefs[componentName].bemClasses,
       scriptDefs[componentName].classes,
       componentName,
+      isCustomComponent,
       source
     );
   }
@@ -124,6 +130,27 @@ function handleComponentName(component) {
   }
 
   return /** @type {import("./types").ComponentName} */ (componentName);
+}
+
+/**
+ *
+ * @param {import("estree-walker").Node | undefined} customComponent
+ * @returns
+ */
+function handleCustomComponent(customComponent) {
+  if (!customComponent) {
+    return false;
+  }
+
+  if (
+    customComponent.type !== "Property" ||
+    customComponent.value.type !== "Literal" ||
+    typeof customComponent.value.value !== "boolean"
+  ) {
+    throw new Error("The customComponent property should be a boolean literal.");
+  }
+
+  return customComponent.value;
 }
 
 /**
@@ -192,9 +219,17 @@ function handleClasses(staticClasses, classes, source) {
  * @param {string[]} classes
  * @param {string[]} staticClasses
  * @param {import("./types").ComponentName} componentName
+ * @param {boolean} isCustomComponent
  * @param {string} source
  */
-function handleBemClasses(dynamicClasses, classes, staticClasses, componentName, source) {
+function handleBemClasses(
+  dynamicClasses,
+  classes,
+  staticClasses,
+  componentName,
+  isCustomComponent,
+  source
+) {
   if (!dynamicClasses) {
     return;
   }
@@ -216,10 +251,18 @@ function handleBemClasses(dynamicClasses, classes, staticClasses, componentName,
         const cls = (withDollar) => `${componentName}--${withDollar ? "$" : ""}{${key.name}}`;
         staticClasses.push(val === "true" ? ` ${cls(false)}` : `{${val} ? \` ${cls(true)}\` : ''}`);
       } else {
-        classes.push(classShorthand(componentName, key.name, val));
+        if (isCustomComponent) {
+          staticClasses.push(`{${val} ? \` ${componentName}--${key.name}\` : ''}`);
+        } else {
+          classes.push(classShorthand(componentName, key.name, val));
+        }
       }
     } else if (key.type === "Literal" && typeof key.value === "string") {
-      classes.push(classShorthand(componentName, key.value, val));
+      if (isCustomComponent) {
+        staticClasses.push(`{${val} ? \` ${componentName}--${key.value}\` : ''}`);
+      } else {
+        classes.push(classShorthand(componentName, key.value, val));
+      }
     } else {
       throw new Error("Dynamic classes keys should be Identifiers.");
     }
