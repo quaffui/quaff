@@ -1,4 +1,10 @@
 .q-railbar {
+  z-index: 102;
+
+  &--above {
+    z-index: 105;
+  }
+
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -21,7 +27,7 @@
   color: var(--on-surface);
   background-color: var(--surface);
 
-  z-index: 100;
+  z-index: 3;
   transform: none;
   white-space: nowrap;
   box-sizing: border-box;

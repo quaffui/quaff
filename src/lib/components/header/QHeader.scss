@@ -6,10 +6,10 @@
 
   position: absolute;
   top: 0;
-  right: var(--offset-right, 0);
+  right: 0;
   bottom: auto;
-  left: var(--offset-left, 0);
-  z-index: 100;
+  left: 0;
+  z-index: 103;
 
   @include mixins.padding("x", "md");
 

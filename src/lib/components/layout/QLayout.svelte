@@ -60,9 +60,6 @@
     ...props
   }: QLayoutProps = $props();
 
-  const getStyleValue = (measure: string | number) =>
-    isNumeric(measure) ? `${measure}px` : measure;
-
   Q.classes("q-layout", {
     classes: [props.class],
   });
@@ -115,8 +112,8 @@
   {...props}
   class="q-layout"
   {...Q.classes}
-  style:--left-railbar-width={getStyleValue(leftRailbarWidth)}
-  style:--right-railbar-width={getStyleValue(rightRailbarWidth)}
+  style:--left-railbar-width="{leftRailbarCtx.value.width}px"
+  style:--right-railbar-width="{rightDrawerCtx.value.width}px"
   style:--offset-top="{topOffset}px"
   style:--offset-right="{rightOffset}px"
   style:--offset-bottom="{bottomOffset}px"

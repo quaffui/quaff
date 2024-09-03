@@ -18,8 +18,8 @@
   }
 
   &.q-drawer--left {
-    left: 0px;
-    transform: translate(-100%);
+    left: var(--left-railbar-width, 0);
+    transform: translate(calc(-100% - var(--left-railbar-width, 0)));
     width: var(--left-drawer-width);
     &.q-drawer--bordered {
       border-right: 0.0625rem solid var(--outline);
@@ -27,8 +27,8 @@
   }
 
   &.q-drawer--right {
-    right: 0px;
-    transform: translate(100%);
+    right: var(--right-railbar-width, 0);
+    transform: translate(calc(100% + var(--right-railbar-width, 0)));
     width: var(--right-drawer-width);
 
     &.q-drawer--bordered {
