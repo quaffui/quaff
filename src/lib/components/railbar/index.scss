@@ -36,4 +36,10 @@
   &__right {
     right: 0;
   }
+
+  @each $pos in ("top", "bottom") {
+    &.q-railbar--offset-#{$pos} {
+      #{$pos}: var(--offset-#{$pos}, 0);
+    }
+  }
 }
