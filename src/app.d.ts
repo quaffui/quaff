@@ -62,6 +62,7 @@ declare global {
     interface QuaffClassesParams {
       bemClasses?: Record<string, unknown>;
       classes?: unknown[];
+      isCustomComponent?: boolean;
     }
 
     /**
@@ -73,7 +74,7 @@ declare global {
      */
     export function classes(
       componentName: string,
-      { bemClasses, classes }: QuaffClassesParams
+      { bemClasses, classes, isCustomComponent }: QuaffClassesParams
     ): {
       class: string;
     };
