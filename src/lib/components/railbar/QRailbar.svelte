@@ -3,11 +3,13 @@
   import QContext from "$lib/classes/QContext.svelte";
   import type { DrawerContext, LayoutContext } from "../layout/QLayout.svelte";
   import type { QRailbarProps } from "./props";
-  import { untrack } from "svelte";
+  import { getContext, untrack } from "svelte";
+  import type { QLayoutProps } from "$components/layout/props";
 
   let { width = 88, side = "left", bordered = false, children, ...props }: QRailbarProps = $props();
 
   const railbarCtx = QContext.get<DrawerContext>(`QRailbar-${side}`);
+  const layoutView = getContext<{ value: NonNullable<QLayoutProps["view"]> }>("view");
 
   const ctx = QContext.get<LayoutContext>("layout");
 
@@ -35,12 +37,23 @@
     });
   });
 
+  const offsetTop = $derived.by(() => {
+    const charPos = side === "left" ? 0 : 2;
+    return layoutView?.value.charAt(charPos) === "h";
+  });
+  const offsetBottom = $derived.by(() => {
+    const charPos = side === "left" ? 8 : 10;
+    return layoutView?.value.charAt(charPos) === "h";
+  });
+
+  $inspect({ side, offsetTop });
+
   Q.classes("q-railbar", {
     bemClasses: {
       [side]: true,
       bordered,
-      "offset-top": drawerCtx?.offset.top,
-      "offset-bottom": drawerCtx?.offset.bottom,
+      "offset-top": offsetTop,
+      "offset-bottom": offsetBottom,
       fixed: drawerCtx?.fixed,
       "top-left-radius": side === "left" && shouldHaveRadius("top"),
       "bottom-left-radius": side === "left" && shouldHaveRadius("bottom"),

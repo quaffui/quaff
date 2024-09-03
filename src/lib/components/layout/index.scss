@@ -193,4 +193,9 @@ $contentSlot: ":not(.q-header, .q-footer, .q-railbar, .q-drawer)";
   .q-railbar.q-railbar--#{$side}:not([style="display: none"]) ~ .q-drawer.q-drawer--#{$side} {
     #{$side}: var(--#{$side}-railbar-width);
   }
+
+  // Reset railbar width
+  :not(.q-railbar.q-railbar--#{$side}:not([style="display: none"])) ~ .q-drawer.q-drawer--#{$side} {
+    --#{$side}-railbar-width: 0px;
+  }
 }

@@ -5,7 +5,8 @@
   import QContext from "$lib/classes/QContext.svelte";
   import type { DrawerContext, LayoutContext } from "../layout/QLayout.svelte";
   import type { QDrawerProps } from "./props";
-  import { untrack } from "svelte";
+  import type { QLayoutProps } from "$components/layout/props";
+  import { getContext, untrack } from "svelte";
 
   let {
     value = $bindable(false),
@@ -19,6 +20,7 @@
   }: QDrawerProps = $props();
 
   const drawerContext = QContext.get<DrawerContext>(`QDrawer-${side}`);
+  const layoutView = getContext<{ value: NonNullable<QLayoutProps["view"]> }>("view");
 
   const ctx = QContext.get<LayoutContext>("layout");
 
@@ -29,6 +31,15 @@
   const canHideOnClickOutside = $derived((value && !persistent) || overlay);
 
   const hideOnRouteChange = $derived(!persistent || overlay);
+
+  const offsetTop = $derived.by(() => {
+    const charPos = side === "left" ? 0 : 2;
+    return layoutView?.value.charAt(charPos) === "h";
+  });
+  const offsetBottom = $derived.by(() => {
+    const charPos = side === "left" ? 8 : 10;
+    return layoutView?.value.charAt(charPos) === "h";
+  });
 
   export const show = (e?: MouseEvent) => {
     if (!value) {
@@ -75,8 +86,8 @@
       active: value,
       overlay,
       bordered,
-      "offset-top": drawerCtx?.offset.top,
-      "offset-bottom": drawerCtx?.offset.bottom,
+      "offset-top": offsetTop,
+      "offset-bottom": offsetBottom,
       fixed: drawerCtx?.fixed,
       "top-left-radius": side === "right" && shouldHaveRadius("top"),
       "bottom-left-radius": side === "right" && shouldHaveRadius("bottom"),
