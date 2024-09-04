@@ -1,3 +1,7 @@
+import { elFromSelector } from "$utils";
+
+type Target = HTMLDivElement | typeof window | Document | null;
+
 type Direction = "up" | "right" | "down" | "left";
 
 type WindowScrollType = "scrollX" | "scrollY";
@@ -6,6 +10,12 @@ type DocumentScrollType = "scrollLeft" | "scrollTop";
 type ScrollType = {
   window: WindowScrollType;
   document: DocumentScrollType;
+};
+
+type Options = {
+  horizontal: boolean;
+  debounce: number;
+  ignore: (HTMLElement | null | string)[];
 };
 
 /**
@@ -22,13 +32,13 @@ type ScrollType = {
  * @param debounce - Time in milliseconds between each observation update
  */
 export default class QScrollObserver {
-  private scrollType: ScrollType = {
+  protected scrollType: ScrollType = {
     window: "scrollY",
     document: "scrollTop",
   };
-  private lastScroll: number;
-  private horizontal: boolean = false;
-  private clearTimer: (() => void) | null = null;
+  protected lastScroll: number;
+  protected horizontal: boolean = false;
+  protected clearTimer: (() => void) | null = null;
 
   direction = $state<Direction>("down");
   changedDirection = $state(false);
@@ -36,7 +46,10 @@ export default class QScrollObserver {
   inflectionPoint = $state(0);
   position = $state(0);
 
-  constructor(horizontal = false, debounce = 250) {
+  constructor(
+    target: Target,
+    { horizontal, debounce, ignore }: Options = { horizontal: false, debounce: 250, ignore: [] }
+  ) {
     this.horizontal = horizontal;
 
     this.scrollType = horizontal
@@ -49,20 +62,19 @@ export default class QScrollObserver {
     this.direction = horizontal ? "right" : "down";
 
     const handler = (e: Event) => {
-      const target = e.target as HTMLDivElement | null;
-      if (!target || target.parentElement?.classList.contains("q-layout")) {
+      const eventTarget = e.target as HTMLElement | null;
+      if (
+        !eventTarget ||
+        (!(target instanceof Window) && !target?.contains(eventTarget as Node | null)) ||
+        ignore.map(elFromSelector).includes(eventTarget)
+      ) {
         return;
       }
 
-      if (!debounce) {
-        this.updateDirection(target);
-      } else if (this.clearTimer === null) {
-        const timer = setTimeout(this.updateDirection.bind(this, target), debounce);
-
-        this.clearTimer = () => {
-          clearTimeout(timer);
-          this.clearTimer = null;
-        };
+      if (debounce) {
+        this.handleDebounce(eventTarget, debounce);
+      } else {
+        this.updateDirection(eventTarget);
       }
     };
 
@@ -77,7 +89,7 @@ export default class QScrollObserver {
     });
   }
 
-  private getScrollPosition(target: HTMLElement | typeof window | undefined = window) {
+  protected getScrollPosition(target: HTMLElement | typeof window | undefined = window) {
     return Math.max(
       0,
       target === window
@@ -86,7 +98,7 @@ export default class QScrollObserver {
     );
   }
 
-  private updateDirection(target: HTMLDivElement) {
+  protected updateDirection(target: HTMLElement) {
     this.clearTimer?.();
 
     const newScrollPosition = this.getScrollPosition(target);
@@ -105,5 +117,18 @@ export default class QScrollObserver {
     }
 
     this.lastScroll = newScrollPosition <= 0 ? 0 : newScrollPosition;
+  }
+
+  protected handleDebounce(target: HTMLElement, debounce: number) {
+    if (this.clearTimer) {
+      return;
+    }
+
+    const timer = setTimeout(this.updateDirection.bind(this, target), debounce);
+
+    this.clearTimer = () => {
+      clearTimeout(timer);
+      this.clearTimer = null;
+    };
   }
 }
