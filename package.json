@@ -59,7 +59,7 @@
     "prettier-plugin-svelte": "^3.2.3",
     "publint": "^0.2.8",
     "sass": "^1.77.4",
-    "svelte": "5.0.0-next.142",
+    "svelte": "5.0.0-next.257",
     "svelte-check": "^3.7.1",
     "svelte-eslint-parser": "^0.36.0",
     "ts-node": "^10.9.2",
