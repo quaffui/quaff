@@ -12,8 +12,6 @@
   --right-drawer-width: 300px;
 }
 
-$contentSlot: ":not(.q-header, .q-footer, .q-railbar, .q-drawer)";
-
 .q-layout {
   position: relative;
   width: 100%;
@@ -22,7 +20,7 @@ $contentSlot: ":not(.q-header, .q-footer, .q-railbar, .q-drawer)";
   min-height: 100%;
   overflow: hidden;
 
-  & > #{$contentSlot} {
+  & > .q-layout__content {
     height: 100%;
     overflow: auto;
     transition: padding var(--speed3);
@@ -30,7 +28,7 @@ $contentSlot: ":not(.q-header, .q-footer, .q-railbar, .q-drawer)";
 }
 
 .q-layout > .q-footer {
-  z-index: 103;
+  z-index: 4;
   position: absolute;
   top: auto;
   right: 0px;
@@ -53,13 +51,12 @@ $contentSlot: ":not(.q-header, .q-footer, .q-railbar, .q-drawer)";
     min-height: unset;
   }
 
-  & ~ #{$contentSlot} {
+  & ~ .q-layout__content {
     padding-bottom: var(--footer-height);
   }
 }
 
 .q-layout > .q-railbar {
-  z-index: 102;
   position: absolute;
   top: 0px;
   right: auto;
@@ -67,11 +64,9 @@ $contentSlot: ":not(.q-header, .q-footer, .q-railbar, .q-drawer)";
   left: auto;
   height: 100%;
   overflow: auto;
-  transition: all var(--speed3);
-
-  &--above {
-    z-index: 105;
-  }
+  transition:
+    top var(--speed3),
+    bottom var(--speed3);
 
   &--fixed {
     position: fixed;
@@ -79,7 +74,6 @@ $contentSlot: ":not(.q-header, .q-footer, .q-railbar, .q-drawer)";
 
   &--left {
     left: 0px;
-    width: var(--left-railbar-width);
 
     &.q-railbar--bordered {
       border-right: 0.0625rem solid var(--outline);
@@ -88,7 +82,6 @@ $contentSlot: ":not(.q-header, .q-footer, .q-railbar, .q-drawer)";
 
   &--right {
     right: 0px;
-    width: var(--right-railbar-width);
 
     &.q-railbar--bordered {
       border-left: 0.0625rem solid var(--outline);
@@ -133,23 +126,10 @@ $contentSlot: ":not(.q-header, .q-footer, .q-railbar, .q-drawer)";
 }
 
 .q-layout > .q-drawer {
-  z-index: 101;
   border-radius: 0;
-
-  &--above {
-    z-index: 104;
-  }
 
   $horizontal: "left", "right";
   $vertical: "top", "bottom";
-
-  @each $vPos in $vertical {
-    @each $hPos in $horizontal {
-      &--#{$vPos}-#{$hPos}-radius {
-        border-#{$vPos}-#{$hPos}-radius: 16px;
-      }
-    }
-  }
 
   & .q-list > .q-item.q-link {
     border-radius: 2rem;
@@ -184,8 +164,8 @@ $contentSlot: ":not(.q-header, .q-footer, .q-railbar, .q-drawer)";
 }
 
 // Offset for content
-.q-layout > #{$contentSlot} {
-  padding: var(--offset-top) var(--offset-right) var(--offset-bottom) var(--offset-left);
+.q-layout > .q-layout__content {
+  padding: var(--header-height) var(--offset-right) var(--offset-bottom) var(--offset-left);
 }
 
 // Offset for drawer with railbar
@@ -195,7 +175,7 @@ $contentSlot: ":not(.q-header, .q-footer, .q-railbar, .q-drawer)";
   }
 
   // Reset railbar width
-  :not(.q-railbar.q-railbar--#{$side}:not([style="display: none"])) ~ .q-drawer.q-drawer--#{$side} {
+  .q-railbar.q-railbar--#{$side}[style="display: none"] ~ .q-drawer.q-drawer--#{$side} {
     --#{$side}-railbar-width: 0px;
   }
 }

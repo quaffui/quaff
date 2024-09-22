@@ -16,18 +16,14 @@
   --offset-bottom: 0;
   --offset-left: 0;
 
-  $content-snippet: ":not(.q-header, .q-footer, .q-railbar, .q-drawer)";
-
   position: relative;
 
   min-height: 100%;
   min-width: 100%;
-  height: 100%;
-  width: 100%;
 
   overflow: hidden;
 
-  & > #{$content-snippet} {
+  & > .q-layout__content {
     height: 100%;
     overflow: auto;
     transition: padding variables.$speed3;

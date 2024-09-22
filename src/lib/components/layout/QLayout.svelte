@@ -1,7 +1,6 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   import { setContext, untrack } from "svelte";
   import QContext from "$lib/classes/QContext.svelte";
-  import { isNumeric } from "$lib/utils/number";
   import ContextReseter from "../private/ContextReseter.svelte";
   import type { QLayoutProps } from "./props";
 
@@ -57,6 +56,7 @@
     footer,
     onscroll,
     onresize,
+    children,
     ...props
   }: QLayoutProps = $props();
 
@@ -74,13 +74,11 @@
     height: 64,
     collapsed: false,
   });
-  const topOffset = $derived(!header || headerCtx.value.collapsed ? 0 : headerCtx.value.height);
 
   const footerCtx = new QContext<AppbarContext>("QFooter", {
     height: 80,
     collapsed: false,
   });
-  const bottomOffset = $derived(!footer || footerCtx.value.collapsed ? 0 : footerCtx.value.height);
 
   const leftRailbarCtx = new QContext<DrawerContext>("QRailbar-left", {
     width: 80,
@@ -100,6 +98,8 @@
     takesSpace: false,
   });
 
+  const topOffset = $derived(!header || headerCtx.value.collapsed ? 0 : headerCtx.value.height);
+  const bottomOffset = $derived(!footer || footerCtx.value.collapsed ? 0 : footerCtx.value.height);
   const leftOffset = $derived(handleDrawerCtx(leftRailbarCtx) + handleDrawerCtx(leftDrawerCtx));
   const rightOffset = $derived(handleDrawerCtx(rightRailbarCtx) + handleDrawerCtx(rightDrawerCtx));
 
@@ -113,7 +113,7 @@
   class="q-layout"
   {...Q.classes}
   style:--left-railbar-width="{leftRailbarCtx.value.width}px"
-  style:--right-railbar-width="{rightDrawerCtx.value.width}px"
+  style:--right-railbar-width="{rightRailbarCtx.value.width}px"
   style:--offset-top="{topOffset}px"
   style:--offset-right="{rightOffset}px"
   style:--offset-bottom="{bottomOffset}px"
@@ -129,8 +129,18 @@
   {@render footer?.()}
 
   <ContextReseter keys="layout">
-    {#snippet children()}
-      {@render content?.()}
-    {/snippet}
+    <div
+      class="q-layout__content"
+      style:padding-top="{headerCtx.value.height}px"
+      style:padding-bottom="{footerCtx.value.height}px"
+      style:padding-left="{leftOffset}px"
+      style:padding-right="{rightOffset}px"
+    >
+      {#if content}
+        {@render content()}
+      {:else}
+        {@render children?.()}
+      {/if}
+    </div>
   </ContextReseter>
 </div>
