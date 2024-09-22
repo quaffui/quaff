@@ -1,9 +1,5 @@
 .q-railbar {
-  z-index: 102;
-
-  &--above {
-    z-index: 105;
-  }
+  z-index: 5;
 
   display: flex;
   flex-direction: column;
@@ -21,13 +17,16 @@
   top: 0;
   bottom: 0;
   height: auto;
-  width: auto;
+  @each $side in ("left", "right") {
+    &.q-railbar--#{$side} {
+      width: var(--#{$side}-railbar-width);
+    }
+  }
   gap: 1rem;
 
   color: var(--on-surface);
   background-color: var(--surface);
 
-  z-index: 3;
   transform: none;
   white-space: nowrap;
   box-sizing: border-box;
@@ -41,6 +40,10 @@
   }
   &__right {
     right: 0;
+  }
+
+  &.q-railbar--offset-top {
+    z-index: 3;
   }
 
   @each $pos in ("top", "bottom") {
