@@ -6,7 +6,7 @@
   import type { DrawerContext, LayoutContext } from "../layout/QLayout.svelte";
   import type { QDrawerProps } from "./props";
   import type { QLayoutProps } from "$components/layout/props";
-  import { getContext, untrack } from "svelte";
+  import { getContext, onDestroy, untrack } from "svelte";
 
   let {
     value = $bindable(false),
@@ -64,6 +64,13 @@
     if ($navigating && hideOnRouteChange) {
       hide();
     }
+  });
+
+  onDestroy(() => {
+    untrack(() => drawerContext)?.updateEntries({
+      width: 0,
+      takesSpace: false,
+    });
   });
 
   $effect(() => {
