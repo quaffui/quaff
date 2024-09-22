@@ -214,7 +214,7 @@
 {:else}
   <QLayout view="hhr lpr fff" class="main-layout">
     {#snippet header()}
-      <QHeader class="elevate-2">
+      <QHeader class="elevate-2" reveal>
         <QToolbarTitle>Quaff</QToolbarTitle>
         <QBtn
           icon={Quaff.darkMode.isActive ? "light_mode" : "dark_mode"}
@@ -240,7 +240,7 @@
     {/snippet}
 
     {#snippet drawerLeft()}
-      <QDrawer persistent bind:this={drawerLeftEl} width={240}>
+      <QDrawer persistent bind:this={drawerLeftEl} width={180} bordered>
         {#key drawerContent}
           <div in:fade={{ delay: 200, duration: 200 }} out:fade={{ duration: 200 }}>
             <QList dense>
