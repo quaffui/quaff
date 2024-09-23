@@ -1,9 +1,8 @@
 <script lang="ts">
-  import { useSize } from "$lib/composables";
-  import QContext from "$lib/classes/QContext.svelte";
-  import type { DrawerContext, LayoutContext } from "../layout/QLayout.svelte";
-  import type { QRailbarProps } from "./props";
   import { getContext, onDestroy, untrack } from "svelte";
+  import QContext from "$lib/classes/QContext.svelte";
+  import type { DrawerContext } from "../layout/QLayout.svelte";
+  import type { QRailbarProps } from "./props";
   import type { QLayoutProps } from "$components/layout/props";
 
   let { width = 88, side = "left", bordered = false, children, ...props }: QRailbarProps = $props();
@@ -22,7 +21,7 @@
     });
   });
 
-  $effect(() => {
+  $effect.pre(() => {
     untrack(() => railbarCtx)?.updateEntries({
       width,
       takesSpace: railbarEl?.style.display !== "none" || false,
@@ -35,7 +34,7 @@
   });
   const offsetBottom = $derived.by(() => {
     const charPos = side === "left" ? 8 : 10;
-    return layoutView?.value.charAt(charPos) === "h";
+    return layoutView?.value.charAt(charPos) === "f";
   });
 
   Q.classes("q-railbar", {

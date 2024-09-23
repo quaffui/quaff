@@ -38,7 +38,7 @@
   });
   const offsetBottom = $derived.by(() => {
     const charPos = side === "left" ? 8 : 10;
-    return layoutView?.value.charAt(charPos) === "h";
+    return layoutView?.value.charAt(charPos) === "f";
   });
 
   export const show = (e?: MouseEvent) => {
@@ -67,17 +67,24 @@
   });
 
   onDestroy(() => {
-    untrack(() => drawerContext)?.updateEntries({
+    drawerContext?.updateEntries({
       width: 0,
       takesSpace: false,
     });
   });
 
   $effect(() => {
-    untrack(() => drawerContext)?.updateEntries({
-      takesSpace: !!value && !overlay,
-      width,
-    });
+    // Dependencies to track
+    value;
+    overlay;
+    width;
+
+    untrack(() =>
+      drawerContext?.updateEntries({
+        takesSpace: !!value && !overlay,
+        width,
+      })
+    );
   });
 
   const shouldHaveRadius = (pos: "top" | "bottom") => {
@@ -100,7 +107,6 @@
       "bottom-left-radius": side === "right" && shouldHaveRadius("bottom"),
       "top-right-radius": side === "left" && shouldHaveRadius("top"),
       "bottom-right-radius": side === "left" && shouldHaveRadius("bottom"),
-      above: (["top", "bottom"] as const).some((pos) => !drawerCtx?.offset[pos] && overlay),
     },
     classes: [props.class],
   });

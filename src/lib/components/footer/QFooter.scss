@@ -1,0 +1,42 @@
+@use "$css/mixins";
+@use "$css/variables";
+
+.q-footer {
+  position: absolute;
+  top: auto;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 4;
+
+  @include mixins.padding("x", "md");
+
+  min-height: unset;
+  height: var(--footer-height);
+  width: auto;
+
+  border-radius: 0;
+
+  background-color: var(--surface);
+
+  transition: all variables.$speed3;
+
+  &.q-footer--bordered {
+    @include mixins.border(var(--outline), "top");
+  }
+
+  &.q-footer--collapsed {
+    translate: 0 calc(1.5 * var(--footer-height));
+  }
+
+  & > nav {
+    height: 100%;
+    min-height: unset;
+  }
+
+  @each $side in ("left", "right") {
+    &.q-footer--offset-#{$side} {
+      #{$side}: var(--offset-#{$side}, 0);
+    }
+  }
+}

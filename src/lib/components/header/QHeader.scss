@@ -2,16 +2,12 @@
 @use "$css/variables";
 
 .q-header {
-  --header-height: 4rem;
-
+  z-index: 4;
   position: absolute;
   top: 0;
   right: 0;
   bottom: auto;
   left: 0;
-  z-index: 4;
-
-  @include mixins.padding("x", "md");
 
   min-height: unset;
   height: var(--header-height);
@@ -21,7 +17,7 @@
 
   background-color: var(--surface);
 
-  transition: all variables.$speed3 ease-in-out;
+  transition: all variables.$speed3;
 
   &.q-header--elevated {
     @include mixins.elevate(1);
@@ -46,6 +42,8 @@
   & > nav {
     height: 100%;
     min-height: unset;
+
+    @include mixins.padding("x", "md");
   }
 
   @each $side in ("left", "right") {

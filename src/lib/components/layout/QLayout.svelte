@@ -71,26 +71,26 @@
   });
 
   const headerCtx = new QContext<AppbarContext>("QHeader", {
-    height: 64,
+    height: 0,
     collapsed: false,
   });
 
   const footerCtx = new QContext<AppbarContext>("QFooter", {
-    height: 80,
+    height: 0,
     collapsed: false,
   });
 
   const leftRailbarCtx = new QContext<DrawerContext>("QRailbar-left", {
-    width: 80,
+    width: 0,
     takesSpace: false,
   });
   const rightRailbarCtx = new QContext<DrawerContext>("QRailbar-right", {
-    width: 80,
+    width: 0,
     takesSpace: false,
   });
 
   const leftDrawerCtx = new QContext<DrawerContext>("QDrawer-left", {
-    width: 360,
+    width: 0,
     takesSpace: false,
   });
   const rightDrawerCtx = new QContext<DrawerContext>("QDrawer-right", {
@@ -103,6 +103,10 @@
   const leftOffset = $derived(handleDrawerCtx(leftRailbarCtx) + handleDrawerCtx(leftDrawerCtx));
   const rightOffset = $derived(handleDrawerCtx(rightRailbarCtx) + handleDrawerCtx(rightDrawerCtx));
 
+  const contentMargin = $derived(
+    `${header ? topOffset : 0}px ${rightOffset}px ${footer ? bottomOffset : 0}px ${leftOffset}px`
+  );
+
   function handleDrawerCtx(ctx: QContext<DrawerContext>) {
     return ctx.value.takesSpace ? ctx.value.width : 0;
   }
@@ -112,12 +116,12 @@
   {...props}
   class="q-layout"
   {...Q.classes}
-  style:--left-railbar-width="{leftRailbarCtx.value.width}px"
-  style:--right-railbar-width="{rightRailbarCtx.value.width}px"
-  style:--offset-top="{topOffset}px"
-  style:--offset-right="{rightOffset}px"
-  style:--offset-bottom="{bottomOffset}px"
-  style:--offset-left="{leftOffset}px"
+  style:--left-railbar-width={`${railbarLeft ? leftRailbarCtx.value.width : 0}px`}
+  style:--right-railbar-width={`${railbarRight ? rightRailbarCtx.value.width : 0}px`}
+  style:--offset-top={`${topOffset}px`}
+  style:--offset-right={`${rightOffset}px`}
+  style:--offset-bottom={`${bottomOffset}px`}
+  style:--offset-left={`${leftOffset}px`}
   {onscroll}
   {onresize}
 >
@@ -129,13 +133,7 @@
   {@render footer?.()}
 
   <ContextReseter keys="layout">
-    <div
-      class="q-layout__content"
-      style:padding-top="{headerCtx.value.height}px"
-      style:padding-bottom="{footerCtx.value.height}px"
-      style:padding-left="{leftOffset}px"
-      style:padding-right="{rightOffset}px"
-    >
+    <div class="q-layout__content" style:margin={contentMargin}>
       {#if content}
         {@render content()}
       {:else}

@@ -1,0 +1,54 @@
+@use "$css/mixins";
+
+.q-railbar {
+  z-index: 5;
+  position: fixed;
+  top: 0;
+  right: auto;
+  bottom: 0;
+  left: auto;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  text-align: center;
+  vertical-align: middle;
+
+  height: auto;
+  margin: 0;
+  @include mixins.padding("a", "sm");
+  @include mixins.gap("md");
+
+  background-color: var(--surface);
+  color: var(--on-surface);
+
+  border: 0;
+  border-radius: 0;
+
+  transform: none;
+  white-space: nowrap;
+  box-sizing: border-box;
+  overflow: auto;
+
+  // Hide the scrollbar
+  // Internet Explorer 10+
+  -ms-overflow-style: none;
+  // Firefox
+  scrollbar-width: none;
+  // Other
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  @each $side in ("left", "right") {
+    &.q-railbar--#{$side} {
+      #{$side}: 0;
+      width: var(--#{$side}-railbar-width);
+    }
+
+    &:not(.q-railbar--#{$side}).q-railbar--bordered {
+      @include mixins.border(var(--outline), $side);
+    }
+  }
+}
