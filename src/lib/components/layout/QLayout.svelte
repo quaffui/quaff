@@ -1,5 +1,5 @@
-<script module lang="ts">
-  import { setContext, untrack } from "svelte";
+<script context="module" lang="ts">
+  import { setContext } from "svelte";
   import QContext from "$lib/classes/QContext.svelte";
   import ContextReseter from "../private/ContextReseter.svelte";
   import type { QLayoutProps } from "./props";
@@ -41,12 +41,6 @@
 <script lang="ts">
   let {
     view = "hhh lpr fff",
-    headerHeight = "64px",
-    footerHeight = "80px",
-    leftDrawerWidth = "300px",
-    rightDrawerWidth = "300px",
-    leftRailbarWidth = "88px",
-    rightRailbarWidth = "88px",
     content,
     railbarLeft,
     railbarRight,

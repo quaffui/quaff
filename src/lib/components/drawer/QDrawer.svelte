@@ -1,12 +1,12 @@
 <script lang="ts">
+  import { getContext, onDestroy, untrack } from "svelte";
   import { navigating } from "$app/stores";
   import { useSize } from "$lib/composables";
   import { clickOutside } from "$lib/helpers";
   import QContext from "$lib/classes/QContext.svelte";
+  import type { QLayoutProps } from "$components/layout/props";
   import type { DrawerContext, LayoutContext } from "../layout/QLayout.svelte";
   import type { QDrawerProps } from "./props";
-  import type { QLayoutProps } from "$components/layout/props";
-  import { getContext, onDestroy, untrack } from "svelte";
 
   let {
     value = $bindable(false),
@@ -74,11 +74,11 @@
   });
 
   $effect(() => {
-    // Dependencies to track
-    value;
-    overlay;
-    width;
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+    [value, overlay, width];
 
+    // TODO: Try to make it work without console.debug
+    // writing untrack(() => drawerContext)?.updateEntries(...) doesn't work (infinite $effect loop)
     untrack(() =>
       drawerContext?.updateEntries({
         takesSpace: !!value && !overlay,

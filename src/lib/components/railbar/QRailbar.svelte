@@ -1,9 +1,9 @@
 <script lang="ts">
   import { getContext, onDestroy, untrack } from "svelte";
   import QContext from "$lib/classes/QContext.svelte";
+  import type { QLayoutProps } from "$components/layout/props";
   import type { DrawerContext } from "../layout/QLayout.svelte";
   import type { QRailbarProps } from "./props";
-  import type { QLayoutProps } from "$components/layout/props";
 
   let { width = 88, side = "left", bordered = false, children, ...props }: QRailbarProps = $props();
 
@@ -11,8 +11,6 @@
   const layoutView = getContext<{ value: NonNullable<QLayoutProps["view"]> }>("view");
 
   let railbarEl = $state<HTMLElement>();
-
-  const drawerType = $derived(side === "left" ? "drawerLeft" : "drawerRight");
 
   onDestroy(() => {
     untrack(() => railbarCtx)?.updateEntries({

@@ -4,7 +4,7 @@
   let exampleToggles = $state([true, true, true]);
   let exampleCheckbox = $state(false);
 
-  let { dialogEl }: { dialogEl: QDialog | null } = $props();
+  let { dialogEl }: { dialogEl: ReturnType<typeof QDialog> | null } = $props();
 </script>
 
 <QCard title="Cookie settings" flat>

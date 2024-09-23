@@ -98,9 +98,8 @@
               <QDrawer
                 side="right"
                 class="no-padding api-drawer"
-                style="height: fit-content; max-height: 400%; overflow: auto; border-radius: 0;"
+                style="height: fit-content; width: 50%; max-height: 400%; overflow: auto; border-radius: 0;"
                 bind:value={drawer[QDocument.name][doc.name]}
-                width="50%"
               >
                 <QCodeBlock language="ts" code={drawerContent} />
               </QDrawer>
