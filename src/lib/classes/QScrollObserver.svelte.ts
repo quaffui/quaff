@@ -1,4 +1,6 @@
-import { onMount } from "svelte";
+import { elFromSelector } from "$utils";
+
+type Target = HTMLDivElement | typeof window | Document | null;
 
 type Direction = "up" | "right" | "down" | "left";
 
@@ -10,11 +12,10 @@ type ScrollType = {
   document: DocumentScrollType;
 };
 
-type Target = typeof window | Document | HTMLDivElement | string;
-
-type ScrollObserverOptions = {
-  debounce?: number;
-  horizontal?: boolean;
+type Options = {
+  horizontal: boolean;
+  debounce: number;
+  ignore: (HTMLElement | null | string)[];
 };
 
 /**
@@ -38,20 +39,18 @@ export default class QScrollObserver {
   protected lastScroll: number;
   protected horizontal: boolean = false;
   protected clearTimer: (() => void) | null = null;
-  protected target: Exclude<Target, string> | null = null;
 
-  public direction = $state<Direction>("down");
-  public changedDirection = $state(false);
-  public delta = $state(0);
-  public inflectionPoint = $state(0);
-  public position = $state(0);
+  direction = $state<Direction>("down");
+  changedDirection = $state(false);
+  delta = $state(0);
+  inflectionPoint = $state(0);
+  position = $state(0);
 
   constructor(
-    target?: Target | null,
-    { horizontal, debounce }: ScrollObserverOptions = { horizontal: false, debounce: 250 }
+    target: Target,
+    { horizontal, debounce, ignore }: Options = { horizontal: false, debounce: 250, ignore: [] }
   ) {
-    this.horizontal = horizontal ?? false;
-    debounce = debounce ?? 250;
+    this.horizontal = horizontal;
 
     this.scrollType = horizontal
       ? { window: "scrollX", document: "scrollLeft" }
@@ -63,48 +62,34 @@ export default class QScrollObserver {
     this.direction = horizontal ? "right" : "down";
 
     const handler = (e: Event) => {
-      const target = e.target as HTMLDivElement | null;
-
-      if (!this.target || target !== this.target) {
+      const eventTarget = e.target as HTMLElement | null;
+      if (
+        !eventTarget ||
+        (!(target instanceof Window) && !target?.contains(eventTarget as Node | null)) ||
+        ignore.map(elFromSelector).includes(eventTarget)
+      ) {
         return;
       }
 
-      if (!debounce) {
-        this.updateDirection(this.target);
-      } else if (this.clearTimer === null) {
-        const timer = setTimeout(this.updateDirection.bind(this, this.target), debounce);
-
-        this.clearTimer = () => {
-          clearTimeout(timer);
-          this.clearTimer = null;
-        };
+      if (debounce) {
+        this.handleDebounce(eventTarget, debounce);
+      } else {
+        this.updateDirection(eventTarget);
       }
     };
 
-    onMount(() => {
-      let parsedTarget =
-        typeof target === "string"
-          ? document.querySelector<HTMLDivElement>(target)
-          : target ?? null;
-
-      if (parsedTarget === null) {
-        console.warn(`The given target (${target}) is null, observing window`);
-        parsedTarget = window;
-      }
-
-      this.target = parsedTarget;
-
-      parsedTarget.addEventListener("scroll", handler, { capture: true });
+    $effect(() => {
+      window.addEventListener("scroll", handler, { capture: true });
 
       return () => {
         this.clearTimer?.();
 
-        parsedTarget.removeEventListener("scroll", handler, { capture: true });
+        window.removeEventListener("scroll", handler, true);
       };
     });
   }
 
-  private getScrollPosition(target: HTMLElement | typeof window | undefined = window) {
+  protected getScrollPosition(target: HTMLElement | typeof window | undefined = window) {
     return Math.max(
       0,
       target === window
@@ -113,7 +98,7 @@ export default class QScrollObserver {
     );
   }
 
-  private updateDirection(target: HTMLDivElement) {
+  protected updateDirection(target: HTMLElement) {
     this.clearTimer?.();
 
     const newScrollPosition = this.getScrollPosition(target);
@@ -132,5 +117,18 @@ export default class QScrollObserver {
     }
 
     this.lastScroll = newScrollPosition <= 0 ? 0 : newScrollPosition;
+  }
+
+  protected handleDebounce(target: HTMLElement, debounce: number) {
+    if (this.clearTimer) {
+      return;
+    }
+
+    const timer = setTimeout(this.updateDirection.bind(this, target), debounce);
+
+    this.clearTimer = () => {
+      clearTimeout(timer);
+      this.clearTimer = null;
+    };
   }
 }
