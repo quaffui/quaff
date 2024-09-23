@@ -111,3 +111,7 @@ export function movementDirection(from: HTMLElement, to: HTMLElement): Direction
 export function shouldReduceMotion() {
   return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 }
+
+export function elFromSelector(selector: string | HTMLElement | null) {
+  return typeof selector === "string" ? document.querySelector<HTMLElement>(selector) : selector;
+}
