@@ -3,11 +3,11 @@
   import QContext from "$lib/classes/QContext.svelte";
   import QScrollObserver from "$lib/classes/QScrollObserver.svelte";
   import type { QLayoutProps } from "$components/layout/props";
+  import QToolbar from "$components/toolbar/QToolbar.svelte";
   import type { AppbarContext } from "../layout/QLayout.svelte";
   import type { QFooterProps } from "./props";
-  import QToolbar from "$components/toolbar/QToolbar.svelte";
 
-  const ID = Date.now();
+  const footerIdentifier = Date.now();
 
   let {
     value = $bindable(true),
@@ -27,7 +27,7 @@
   }
 
   const scroll = $derived(
-    reveal ? new QScrollObserver(`.q-footer--${ID} ~ .q-layout__content`) : undefined
+    reveal ? new QScrollObserver(`.q-footer--${footerIdentifier} ~ .q-layout__content`) : undefined
   );
   let contentScrollHeight = $state(0);
 
@@ -46,7 +46,7 @@
 
   onMount(() => {
     // Calculating the layout content's height
-    const content = document.querySelector(`.q-footer--${ID} ~ .q-layout__content`);
+    const content = document.querySelector(`.q-footer--${footerIdentifier} ~ .q-layout__content`);
 
     contentScrollHeight = content ? content.scrollHeight - content.clientHeight : 0;
   });
@@ -57,7 +57,7 @@
 
   Q.classes("q-footer", {
     bemClasses: {
-      [ID]: true,
+      [footerIdentifier]: true,
       collapsed,
       bordered,
       "offset-left": leftOffset(),

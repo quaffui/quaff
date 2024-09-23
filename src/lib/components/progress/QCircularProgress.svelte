@@ -5,6 +5,13 @@
   import { between } from "$lib/utils/number";
   import type { QCircularProgressProps } from "./props";
 
+  type CircleParams = {
+    cls: "track" | "indicator";
+    offset: number;
+    color: string;
+    rounded?: boolean;
+  };
+
   const radius = 50,
     diameter = 2 * radius,
     circumference = diameter * Math.PI,
@@ -91,7 +98,7 @@
       cls: "indicator",
       offset: strokeDashOffset,
       color,
-      rounded: noRound ? undefined : "round",
+      rounded: !noRound,
     })}
   </svg>
 
@@ -109,7 +116,7 @@
   <div>{Math.round(normalized)}</div>
 {/snippet}
 
-{#snippet circle({ offset, color, cls, rounded })}
+{#snippet circle({ offset, color, cls, rounded }: CircleParams)}
   <circle
     class="q-circular-progress__{cls}{color ? ` text-${color}` : ''}"
     style:transition={circleStyle}

@@ -22,7 +22,7 @@
   import type { QLayoutProps } from "$lib/components/layout/props";
   import { snippet } from "./docs.snippets";
 
-  let displayLeftDrawerElement = $state<QDrawer>();
+  let displayLeftDrawerElement = $state<ReturnType<typeof QDrawer>>();
   let displayLeftDrawer = $state(false);
   let viewArr = $state([
     ["h", "h", "h"],
@@ -53,10 +53,10 @@
     }) || undefined
   );
 
-  let leftDrawerElement = $state<QDrawer>();
+  let leftDrawerElement = $state<ReturnType<typeof QDrawer>>();
   let leftDrawerShown = $state(true);
 
-  let rightDrawerElement = $state<QDrawer>();
+  let rightDrawerElement = $state<ReturnType<typeof QDrawer>>();
   let rightDrawerShown = $state(true);
 
   $effect(() => {

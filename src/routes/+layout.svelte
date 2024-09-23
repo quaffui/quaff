@@ -179,8 +179,8 @@
   ];
 
   let contentEl = $state<HTMLDivElement>();
-  let drawerLeftEl = $state<QDrawer>();
-  let drawerRightEl = $state<QDrawer>();
+  let drawerLeftEl = $state<ReturnType<typeof QDrawer>>();
+  let drawerRightEl = $state<ReturnType<typeof QDrawer>>();
 
   const selectedRailbarItem = $derived(
     // eslint-disable-next-line svelte/valid-compile

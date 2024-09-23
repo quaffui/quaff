@@ -4,10 +4,10 @@
   import QContext from "$lib/classes/QContext.svelte";
   import QScrollObserver from "$lib/classes/QScrollObserver.svelte";
   import type { AppbarContext } from "$components/layout/QLayout.svelte";
-  import type { QHeaderProps } from "./props";
   import type { QLayoutProps } from "$components/layout/props";
+  import type { QHeaderProps } from "./props";
 
-  const ID = Date.now();
+  const headerIdentifier = Date.now();
 
   let {
     elevated = false,
@@ -26,7 +26,7 @@
   }
 
   const scroll = $derived(
-    reveal ? new QScrollObserver(`.q-header--${ID} ~ .q-layout__content`) : undefined
+    reveal ? new QScrollObserver(`.q-header--${headerIdentifier} ~ .q-layout__content`) : undefined
   );
   const offset = $derived(scroll ? scroll.position - height : undefined);
   // Collapse the header `${reavealOffset}px` below the top of layout content when scrolling down
@@ -45,7 +45,7 @@
 
   Q.classes("q-header", {
     bemClasses: {
-      [ID]: true,
+      [headerIdentifier]: true,
       elevated,
       collapsed,
       "offset-left": leftOffset(),

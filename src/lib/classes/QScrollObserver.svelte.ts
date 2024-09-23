@@ -11,7 +11,7 @@ type ScrollType = {
   document: DocumentScrollType;
 };
 
-type Target = HTMLDivElement | typeof window | Document;
+type Target = HTMLDivElement | typeof window | Document | string;
 
 type ScrollObserverOptions = {
   debounce?: number;
