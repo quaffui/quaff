@@ -70,9 +70,9 @@
 
 <QDocs componentDocs={QLayoutDocs}>
   {#snippet display()}
-    <QLayout view="lhh lpr lfr" headerHeight="50px" footerHeight="50px">
+    <QLayout view="lhh lpr lfr" headerHeight="50px" footerHeight="50px" style="border-radius: 0">
       {#snippet header()}
-        <QHeader elevate>
+        <QHeader elevated height={48}>
           <QBtn icon="menu" design="flat" onclick={displayLeftDrawerElement?.toggle} />
           <QToolbarTitle>Header</QToolbarTitle>
         </QHeader>
@@ -120,7 +120,7 @@
         </QRailbar>
       {/snippet}
       {#snippet footer()}
-        <QFooter class="no-round flex flex-center">
+        <QFooter class="no-round flex flex-center" height={48}>
           <h3 class="small center">Footer</h3>
         </QFooter>
       {/snippet}
@@ -134,7 +134,7 @@
           <QLayout {view} {style}>
             {#snippet header()}
               {#if showHeader}
-                <QHeader elevate>
+                <QHeader elevated>
                   {#if leftDrawer}
                     <QBtn icon="menu" design="flat" onclick={leftDrawerElement?.toggle} />
                   {/if}
@@ -278,36 +278,38 @@
               {/if}
             {/snippet}
             {#snippet footer()}
-              <QFooter reveal>
-                {#if leftDrawer}
-                  <QBtn icon="menu" design="flat" onclick={leftDrawerElement?.toggle} />
-                {/if}
-                <div class="flex column">
-                  <QRadio bind:selected={viewArr[2][0]} value="f" label="f" />
-                  <QRadio style="margin: 0" bind:selected={viewArr[2][0]} value="l" label="l" />
-                </div>
-                <div class="max flex column items-center" style="flex-grow: 1">
-                  <QRadio
-                    style="width: fit-content"
-                    bind:selected={viewArr[2][1]}
-                    value="f"
-                    label="f"
-                  />
-                  <QRadio
-                    style="width: fit-content; margin: 0"
-                    bind:selected={viewArr[2][1]}
-                    value="F"
-                    label="F"
-                  />
-                </div>
-                <div class="flex column">
-                  <QRadio bind:selected={viewArr[2][2]} value="f" label="f" />
-                  <QRadio style="margin: 0" bind:selected={viewArr[2][2]} value="r" label="r" />
-                </div>
-                {#if rightDrawer}
-                  <QBtn icon="menu" design="flat" onclick={rightDrawerElement?.toggle} />
-                {/if}
-              </QFooter>
+              {#if showFooter}
+                <QFooter bordered>
+                  {#if leftDrawer}
+                    <QBtn icon="menu" design="flat" onclick={leftDrawerElement?.toggle} />
+                  {/if}
+                  <div class="flex column">
+                    <QRadio bind:selected={viewArr[2][0]} value="f" label="f" />
+                    <QRadio style="margin: 0" bind:selected={viewArr[2][0]} value="l" label="l" />
+                  </div>
+                  <div class="max flex column items-center" style="flex-grow: 1">
+                    <QRadio
+                      style="width: fit-content"
+                      bind:selected={viewArr[2][1]}
+                      value="f"
+                      label="f"
+                    />
+                    <QRadio
+                      style="width: fit-content; margin: 0"
+                      bind:selected={viewArr[2][1]}
+                      value="F"
+                      label="F"
+                    />
+                  </div>
+                  <div class="flex column">
+                    <QRadio bind:selected={viewArr[2][2]} value="f" label="f" />
+                    <QRadio style="margin: 0" bind:selected={viewArr[2][2]} value="r" label="r" />
+                  </div>
+                  {#if rightDrawer}
+                    <QBtn icon="menu" design="flat" onclick={rightDrawerElement?.toggle} />
+                  {/if}
+                </QFooter>
+              {/if}
             {/snippet}
             {#snippet content()}
               <QList style="text-align: center">
@@ -348,65 +350,6 @@
                   <QItemSection>Footer</QItemSection>
                 </QItem>
               </QList>
-
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat, atque eveniet,
-                ipsam blanditiis ab alias tenetur sint quidem adipisci amet repellat facilis quos
-                recusandae sapiente laudantium. Est autem minima commodi? Illo inventore nisi iure
-                modi illum et dolore quasi. Quod aperiam ea laboriosam alias laudantium eum. Labore
-                cum laboriosam tempora molestiae vitae odit deleniti eum! Veritatis eos quo nemo
-                quis? In asperiores reiciendis, dolores consequatur omnis molestiae fugit sit
-                similique saepe pariatur sint, harum dolorem. Magnam eius eos minus consequatur non
-                molestias dolore labore ipsum perferendis in? Officiis, fugiat accusantium. Totam ea
-                voluptatem reprehenderit ipsa sit laudantium facilis exercitationem mollitia, modi
-                atque perspiciatis dolorem enim voluptates asperiores eveniet tempore voluptatibus
-                porro officiis eos harum dolor velit a odit tenetur. Rerum! Laborum ducimus minus
-                harum non reiciendis quod mollitia corrupti aliquam placeat. Nemo voluptates
-                laboriosam quas aut exercitationem obcaecati quo, deserunt, quisquam tempora
-                recusandae nobis libero impedit iure eum ad omnis. Maiores minima voluptates
-                dignissimos, numquam libero pariatur deleniti quibusdam eligendi, ullam consequatur
-                odit. Et, eaque, fuga vitae accusamus facere vel dolor iste quos quidem eligendi eum
-                reprehenderit nisi odit deleniti! Beatae placeat quibusdam temporibus libero laborum
-                corrupti sint maiores. Soluta atque vero, natus ipsa inventore aspernatur quos enim
-                ab assumenda. Maiores assumenda ratione illo? Dolor hic similique ipsum repellendus
-                fugiat. Voluptatibus eaque dignissimos sapiente natus quod! Nulla distinctio magnam
-                ea corporis iure harum, officiis id eligendi quia vel sint fugiat itaque maiores!
-                Atque minima optio, accusamus ratione obcaecati exercitationem corporis. Inventore
-                nisi illum fuga debitis error asperiores aperiam illo, sunt neque adipisci. Ut
-                magnam iusto illo, quisquam assumenda laudantium praesentium, reprehenderit
-                consectetur rerum dignissimos autem. Sequi suscipit minus illum quia. At molestiae
-                vero, nisi placeat quis architecto id? Tempore labore magni nulla ut nisi sint modi
-                incidunt sed nam aperiam assumenda quas, illo perferendis velit a qui itaque, beatae
-                deserunt. Provident reiciendis, ex ab sequi eum non ratione, ut obcaecati
-                perspiciatis veritatis dicta velit, quisquam incidunt aliquam id molestiae
-                molestias! Accusantium dolores blanditiis velit autem. Ab error esse a et. Ducimus
-                rerum eos non quidem, dolores inventore voluptatibus doloribus, cumque nihil debitis
-                quaerat. Cum obcaecati distinctio cumque aliquam quia dolorem animi doloribus quo
-                dolor, at, eveniet itaque praesentium corrupti molestiae? Soluta recusandae quis,
-                accusamus praesentium fuga aliquam, architecto aperiam iste ducimus voluptate
-                impedit cumque aspernatur corrupti, rem unde! Sunt ex cum corrupti aut quo hic
-                blanditiis suscipit quis voluptatum itaque. Corporis magni ipsa esse libero eaque
-                molestiae voluptatem, aliquam tempore inventore ab quis obcaecati fugiat at
-                accusantium accusamus ad excepturi illum placeat aut, rem, necessitatibus adipisci.
-                Quisquam voluptates illum eum. Optio aut quibusdam dolorem soluta libero numquam eum
-                aliquid nostrum dignissimos aspernatur, molestiae eius. Velit, similique? Distinctio
-                unde deleniti, corrupti saepe voluptates ipsam accusamus iure totam dolore
-                repellendus reprehenderit. Modi. Vel perferendis placeat tenetur fugiat vitae,
-                officia, consequatur quidem nam facilis numquam architecto obcaecati assumenda ipsum
-                incidunt atque ullam, autem dolorem provident aut rem. Commodi natus saepe nobis
-                minus ea? Dicta, in tenetur! Beatae repudiandae id veritatis quasi alias molestias
-                esse aliquam dolor vero quae aut amet earum cupiditate accusantium sunt pariatur,
-                laudantium commodi laboriosam! Accusantium dolore odio asperiores deleniti? Nihil
-                illo saepe ad. Necessitatibus doloremque explicabo animi accusamus at veniam illum.
-                Pariatur ea, numquam illo sint soluta obcaecati vel perspiciatis incidunt sapiente
-                iure eius commodi, tempore veritatis quaerat provident! Tempora, quos odit. Ullam
-                odit iusto iure nulla, perspiciatis facere ex nemo ad eos id, sit suscipit
-                cupiditate reiciendis repellat autem. Veritatis fuga ipsam voluptas cumque ea
-                similique neque atque. Odio nesciunt quo, deserunt harum suscipit illum, veniam
-                quidem, aspernatur possimus placeat dolore temporibus quos! Facilis voluptas ea
-                cupiditate, sequi doloribus minima numquam porro molestiae sapiente reiciendis
-                necessitatibus sit qui.
-              </p>
             {/snippet}
           </QLayout>
         </QCard>
@@ -419,5 +362,9 @@
   :global(.q-layout__content > .q-list) {
     max-width: fit-content;
     margin-inline: auto;
+  }
+
+  :global(.q-footer > nav) {
+    justify-content: center;
   }
 </style>

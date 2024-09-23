@@ -12,7 +12,7 @@ export interface QFooterProps extends NativeProps, HTMLAttributes<HTMLElement> {
    * Determines whether the footer has a border around it. (not supported yet)
    * @default false
    */
-  border?: boolean;
+  bordered?: boolean;
 
   /**
    * @default false
