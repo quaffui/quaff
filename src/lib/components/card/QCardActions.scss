@@ -2,7 +2,7 @@
 
 .q-card__actions {
   display: flex;
-  @include mixins.margin("t");
+  @include mixins.margin("t-sm");
 
   &--vertical {
     flex-direction: column;

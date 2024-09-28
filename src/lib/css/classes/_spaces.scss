@@ -5,12 +5,12 @@
   @each $posName, $_ in variables.$positions {
     // Padding
     .q-p#{$posName}-#{$spaceName} {
-      @include mixins.padding($posName, $spaceName);
+      @include mixins.padding("#{$posName}-#{$spaceName}");
     }
 
     // Margin
     .q-m#{$posName}-#{$spaceName} {
-      @include mixins.margin($posName, $spaceName);
+      @include mixins.margin("#{$posName}-#{$spaceName}");
     }
   }
 

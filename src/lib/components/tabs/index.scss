@@ -28,7 +28,7 @@
     border-radius: 0;
     gap: 0;
     overflow: hidden;
-    @include mixins.padding("x", "md");
+    @include mixins.padding("x-md");
 
     & .q-tab__icon {
       margin-right: 0.25rem;
@@ -67,7 +67,7 @@
     border-right: solid 0.0625rem var(--outline-4);
 
     & > .q-tab {
-      @include mixins.padding("x", "md");
+      @include mixins.padding("x-md");
     }
 
     &::after {

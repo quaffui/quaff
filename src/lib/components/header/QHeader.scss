@@ -43,7 +43,7 @@
     height: 100%;
     min-height: unset;
 
-    @include mixins.padding("x", "md");
+    @include mixins.padding("x-md");
   }
 
   @each $side in ("left", "right") {
