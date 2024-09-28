@@ -1,20 +1,36 @@
 @use "sass:map";
+@use "sass:string";
 @use "../variables";
 
-@mixin padding($pos: "a", $size: "sm") {
-  $position: map.get(variables.$positions, $pos);
-  $space: map.get(variables.$spaces, $size);
+@mixin space($type: null, $spaces...) {
+  @each $space in $spaces {
+    $pos: string.slice($space, 1, 1);
+    @if not map.has-key(variables.$positions, $pos) {
+      @error "Position error for #{$type}, \"#{$pos}\" is not a valid position. Should be one of a, x, y, t, r, b or l";
+    }
+    $pos: map.get(variables.$positions, $pos);
 
-  padding#{$position}: $space;
+    $spacing: string.slice($space, 3);
+    @if not map.has-key(variables.$spaces, $spacing) {
+      @error "Spacing error for #{$type}, \"#{$space}\" is not a valid spacing. Should be one of auto, none, xs, sm, md, lg or xl";
+    }
+    $spacing: map.get(variables.$spaces, $spacing);
+
+    #{$type}#{$pos}: $spacing;
+  }
 }
 
-@mixin margin($pos: "a", $size: "sm") {
-  $position: map.get(variables.$positions, $pos);
-  $space: map.get(variables.$spaces, $size);
+@mixin padding($paddings...) {
+  @include space("padding", $paddings...);
+}
 
-  margin#{$position}: $space;
+@mixin margin($margins...) {
+  @include space("margin", $margins...);
 }
 
 @mixin gap($space: "sm") {
+  @if not map.has-key(variables.$spaces, $space) {
+    @error "Spacing error for gap, \"#{$space}\" is not a valid spacing. Should be one of auto, none, xs, sm, md, lg or xl";
+  }
   gap: map.get(variables.$spaces, $space);
 }
