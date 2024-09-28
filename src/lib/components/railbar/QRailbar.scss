@@ -17,7 +17,7 @@
 
   height: auto;
   margin: 0;
-  @include mixins.padding("a", "sm");
+  @include mixins.padding("a-sm");
   @include mixins.gap("md");
 
   background-color: var(--surface);

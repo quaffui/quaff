@@ -9,7 +9,7 @@
   left: auto;
 
   height: auto;
-  @include mixins.padding("a", "sm");
+  @include mixins.padding("a-sm");
 
   background-color: var(--surface);
   color: var(--on-surface);

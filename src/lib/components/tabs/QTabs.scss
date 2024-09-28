@@ -27,7 +27,7 @@
     border-right: solid 0.0625rem var(--outline);
 
     & > .q-tab {
-      @include mixins.padding("x", "md");
+      @include mixins.padding("x-md");
     }
 
     & .q-tab .q-tab__indicator {
