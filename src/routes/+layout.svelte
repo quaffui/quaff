@@ -179,8 +179,8 @@
   ];
 
   let contentEl = $state<HTMLDivElement>();
-  let drawerLeftEl = $state<QDrawer>();
-  let drawerRightEl = $state<QDrawer>();
+  let drawerLeftEl = $state<ReturnType<typeof QDrawer>>();
+  let drawerRightEl = $state<ReturnType<typeof QDrawer>>();
 
   const selectedRailbarItem = $derived(
     // eslint-disable-next-line svelte/valid-compile
@@ -212,15 +212,9 @@
 {#if $page.route.id === "/layout"}
   {@render children?.()}
 {:else}
-  <QLayout
-    view="hhr lpr fff"
-    class="main-layout"
-    leftRailbarWidth="120"
-    leftDrawerWidth="15rem"
-    rightDrawerWidth="30vw"
-  >
+  <QLayout view="hhr lpr fff" class="main-layout">
     {#snippet header()}
-      <QHeader class="elevate-2">
+      <QHeader class="elevate-2" reveal>
         <QToolbarTitle>Quaff</QToolbarTitle>
         <QBtn
           icon={Quaff.darkMode.isActive ? "light_mode" : "dark_mode"}
@@ -233,7 +227,7 @@
     {/snippet}
 
     {#snippet railbarLeft()}
-      <QRailbar class="surface no-round" bordered>
+      <QRailbar class="surface no-round" bordered width={120}>
         <QList>
           {#each pages as { name, icon, to }}
             <QItem {to} noRipple>
@@ -246,7 +240,7 @@
     {/snippet}
 
     {#snippet drawerLeft()}
-      <QDrawer persistent bind:this={drawerLeftEl}>
+      <QDrawer persistent bind:this={drawerLeftEl} width={180} bordered>
         {#key drawerContent}
           <div in:fade={{ delay: 200, duration: 200 }} out:fade={{ duration: 200 }}>
             <QList dense>

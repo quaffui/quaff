@@ -1,22 +1,17 @@
 @use "$css/mixins";
 
 .q-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  white-space: nowrap;
+  gap: 1rem;
+
   width: 100%;
+  height: var(--toolbar-height);
   padding: 0 1rem;
   transition: all var(--speed3);
   background-color: var(--surface);
-
-  nav {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    white-space: nowrap;
-    gap: 1rem;
-
-    > * {
-      margin: 0;
-    }
-  }
 
   &--inset {
     padding-left: 58px;

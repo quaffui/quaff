@@ -1,4 +1,3 @@
-import type { CssValue } from "$lib/utils";
 import type { HTMLAttributes } from "svelte/elements";
 
 export interface QToolbarProps extends HTMLAttributes<HTMLElement> {
@@ -15,9 +14,9 @@ export interface QToolbarProps extends HTMLAttributes<HTMLElement> {
    */
   elevate?: boolean;
   /**
-   * @default 64px
+   * @default 64
    */
-  height?: CssValue | number;
+  height?: number;
 }
 
 export interface QToolbarTitleProps extends HTMLAttributes<HTMLDivElement> {

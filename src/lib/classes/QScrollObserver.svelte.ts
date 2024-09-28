@@ -1,6 +1,5 @@
+import { onMount } from "svelte";
 import { elFromSelector } from "$utils";
-
-type Target = HTMLDivElement | typeof window | Document | null;
 
 type Direction = "up" | "right" | "down" | "left";
 
@@ -12,10 +11,11 @@ type ScrollType = {
   document: DocumentScrollType;
 };
 
-type Options = {
-  horizontal: boolean;
-  debounce: number;
-  ignore: (HTMLElement | null | string)[];
+type Target = HTMLDivElement | typeof window | Document | string;
+
+type ScrollObserverOptions = {
+  debounce?: number;
+  horizontal?: boolean;
 };
 
 /**
@@ -28,8 +28,10 @@ type Options = {
  * $inspect(scroll.direction)
  * ```
  *
- * @param horizontal - If set to `true`, observe horizontal scrolling rather than vertical
- * @param debounce - Time in milliseconds between each observation update
+ * @param target - Element or selector of the element to add the scroll listener on
+ * @param options - Options of the observer
+ * @param options.horizontal - If set to `true`, observe horizontal scrolling rather than vertical
+ * @param options.debounce - Time in milliseconds between each observation update
  */
 export default class QScrollObserver {
   protected scrollType: ScrollType = {
@@ -39,6 +41,7 @@ export default class QScrollObserver {
   protected lastScroll: number;
   protected horizontal: boolean = false;
   protected clearTimer: (() => void) | null = null;
+  protected target: Exclude<Target, string> | null = null;
 
   direction = $state<Direction>("down");
   changedDirection = $state(false);
@@ -47,10 +50,10 @@ export default class QScrollObserver {
   position = $state(0);
 
   constructor(
-    target: Target,
-    { horizontal, debounce, ignore }: Options = { horizontal: false, debounce: 250, ignore: [] }
+    target?: Target | null,
+    { horizontal, debounce }: ScrollObserverOptions = { horizontal: false, debounce: 250 }
   ) {
-    this.horizontal = horizontal;
+    this.horizontal = horizontal ?? false;
 
     this.scrollType = horizontal
       ? { window: "scrollX", document: "scrollLeft" }
@@ -63,28 +66,34 @@ export default class QScrollObserver {
 
     const handler = (e: Event) => {
       const eventTarget = e.target as HTMLElement | null;
-      if (
-        !eventTarget ||
-        (!(target instanceof Window) && !target?.contains(eventTarget as Node | null)) ||
-        ignore.map(elFromSelector).includes(eventTarget)
-      ) {
+
+      if (!eventTarget || !this.target || eventTarget !== this.target) {
         return;
       }
 
       if (debounce) {
-        this.handleDebounce(eventTarget, debounce);
+        this.handleDebounce(this.target, debounce);
       } else {
-        this.updateDirection(eventTarget);
+        this.updateDirection(this.target);
       }
     };
 
-    $effect(() => {
-      window.addEventListener("scroll", handler, { capture: true });
+    onMount(() => {
+      let parsedTarget = elFromSelector(target ?? null);
+
+      if (parsedTarget === null) {
+        console.warn(`The given target (${target}) is null, observing window instead`);
+        parsedTarget = window;
+      }
+
+      this.target = parsedTarget;
+
+      parsedTarget.addEventListener("scroll", handler, { capture: true });
 
       return () => {
         this.clearTimer?.();
 
-        window.removeEventListener("scroll", handler, true);
+        parsedTarget.removeEventListener("scroll", handler, true);
       };
     });
   }

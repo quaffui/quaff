@@ -1,4 +1,4 @@
-import type { CssValue, NativeProps } from "$lib/utils";
+import type { NativeProps } from "$lib/utils";
 import type { HTMLAttributes } from "svelte/elements";
 
 export interface QFooterProps extends NativeProps, HTMLAttributes<HTMLElement> {
@@ -12,17 +12,21 @@ export interface QFooterProps extends NativeProps, HTMLAttributes<HTMLElement> {
    * Determines whether the footer has a border around it. (not supported yet)
    * @default false
    */
-  border?: boolean;
+  bordered?: boolean;
 
   /**
-   * Determines whether the footer has an elevated effect. (not supported yet)
    * @default false
    */
-  elevate?: boolean;
+  reveal?: boolean;
+
+  /**
+   * @default 250
+   */
+  revealOffset?: number;
 
   /**
    * The height of the footer. Can be specified with a CSS unit. If not specified, "px" will be used. (not supported yet)
    * @default undefined
    */
-  height?: number | CssValue;
+  height?: number;
 }

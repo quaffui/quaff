@@ -1,11 +1,10 @@
 <script context="module" lang="ts">
-  import { untrack } from "svelte";
+  import { setContext } from "svelte";
   import QContext from "$lib/classes/QContext.svelte";
-  import { isNumeric } from "$lib/utils/number";
   import ContextReseter from "../private/ContextReseter.svelte";
   import type { QLayoutProps } from "./props";
 
-  export interface DrawerContext {
+  export interface DrawerContextLegacy {
     offset: {
       top: boolean;
       bottom: boolean;
@@ -17,27 +16,31 @@
   }
 
   export interface AppbarContext {
+    height: number;
+    collapsed: boolean;
+  }
+
+  export interface DrawerContext {
+    width: number;
+    takesSpace: boolean;
+  }
+
+  export interface AppbarContextLegacy {
     display: boolean;
     fixed: boolean;
   }
 
   export type LayoutContext = {
-    header?: AppbarContext;
-    footer?: AppbarContext;
-    drawerLeft: DrawerContext;
-    drawerRight: DrawerContext;
+    header?: AppbarContextLegacy;
+    footer?: AppbarContextLegacy;
+    drawerLeft: DrawerContextLegacy;
+    drawerRight: DrawerContextLegacy;
   };
 </script>
 
 <script lang="ts">
   let {
     view = "hhh lpr fff",
-    headerHeight = "64px",
-    footerHeight = "80px",
-    leftDrawerWidth = "300px",
-    rightDrawerWidth = "300px",
-    leftRailbarWidth = "88px",
-    rightRailbarWidth = "88px",
     content,
     railbarLeft,
     railbarRight,
@@ -47,102 +50,89 @@
     footer,
     onscroll,
     onresize,
+    children,
     ...props
   }: QLayoutProps = $props();
-
-  const getStyleValue = (measure: string | number) =>
-    isNumeric(measure) ? `${measure}px` : measure;
 
   Q.classes("q-layout", {
     classes: [props.class],
   });
 
-  function prepareCtx(viewProp: typeof view) {
-    const [top, middle, bottom] = viewProp!.split(" ");
-    const headerCtx: AppbarContext | undefined = header
-      ? {
-          display: true,
-          fixed: top.includes("H"),
-        }
-      : undefined;
-    const footerCtx: AppbarContext | undefined = footer
-      ? {
-          display: true,
-          fixed: bottom.includes("F"),
-        }
-      : undefined;
-    const drawerLeftCtx: DrawerContext = {
-      offset: {
-        top: !!header && top[0].toLowerCase() === "h",
-        bottom: !!footer && bottom[0].toLowerCase() === "f",
-      },
-      fixed: [top[0], middle[0], bottom[0]].includes("L"),
-      railbar: !!railbarLeft,
-      drawer: !!drawerLeft,
-      overlay: false,
-    };
-    const drawerRightCtx: DrawerContext = {
-      offset: {
-        top: !!header && top[2].toLowerCase() === "h",
-        bottom: !!footer && bottom[2].toLowerCase() === "f",
-      },
-      fixed: [top[2], middle[2], bottom[2]].includes("R"),
-      railbar: !!railbarRight,
-      drawer: !!drawerRight,
-      overlay: false,
-    };
-
-    return {
-      header: headerCtx,
-      footer: footerCtx,
-      drawerLeft: drawerLeftCtx,
-      drawerRight: drawerRightCtx,
-    };
-  }
-
-  const ctx = new QContext<LayoutContext>("layout", prepareCtx(view));
-
-  $effect(() => {
-    untrack(() => ctx).update(prepareCtx(view));
+  setContext("view", {
+    get value() {
+      return view;
+    },
   });
+
+  const headerCtx = new QContext<AppbarContext>("QHeader", {
+    height: 0,
+    collapsed: false,
+  });
+
+  const footerCtx = new QContext<AppbarContext>("QFooter", {
+    height: 0,
+    collapsed: false,
+  });
+
+  const leftRailbarCtx = new QContext<DrawerContext>("QRailbar-left", {
+    width: 0,
+    takesSpace: false,
+  });
+  const rightRailbarCtx = new QContext<DrawerContext>("QRailbar-right", {
+    width: 0,
+    takesSpace: false,
+  });
+
+  const leftDrawerCtx = new QContext<DrawerContext>("QDrawer-left", {
+    width: 0,
+    takesSpace: false,
+  });
+  const rightDrawerCtx = new QContext<DrawerContext>("QDrawer-right", {
+    width: 360,
+    takesSpace: false,
+  });
+
+  const topOffset = $derived(!header || headerCtx.value.collapsed ? 0 : headerCtx.value.height);
+  const bottomOffset = $derived(!footer || footerCtx.value.collapsed ? 0 : footerCtx.value.height);
+  const leftOffset = $derived(handleDrawerCtx(leftRailbarCtx) + handleDrawerCtx(leftDrawerCtx));
+  const rightOffset = $derived(handleDrawerCtx(rightRailbarCtx) + handleDrawerCtx(rightDrawerCtx));
+
+  const contentMargin = $derived(
+    `${header ? topOffset : 0}px ${rightOffset}px ${footer ? bottomOffset : 0}px ${leftOffset}px`
+  );
+
+  function handleDrawerCtx(ctx: QContext<DrawerContext>) {
+    return ctx.value.takesSpace ? ctx.value.width : 0;
+  }
 </script>
 
 <div
   {...props}
   class="q-layout"
   {...Q.classes}
-  style:--header-height={getStyleValue(headerHeight)}
-  style:--footer-height={getStyleValue(footerHeight)}
-  style:--left-railbar-width={getStyleValue(leftRailbarWidth)}
-  style:--right-railbar-width={getStyleValue(rightRailbarWidth)}
-  style:--left-drawer-width={getStyleValue(leftDrawerWidth)}
-  style:--right-drawer-width={getStyleValue(rightDrawerWidth)}
+  style:--left-railbar-width={`${railbarLeft ? leftRailbarCtx.value.width : 0}px`}
+  style:--right-railbar-width={`${railbarRight ? rightRailbarCtx.value.width : 0}px`}
+  style:--offset-top={`${topOffset}px`}
+  style:--offset-right={`${rightOffset}px`}
+  style:--offset-bottom={`${bottomOffset}px`}
+  style:--offset-left={`${leftOffset}px`}
   {onscroll}
   {onresize}
 >
-  {#if railbarLeft}
-    {@render railbarLeft()}
-  {/if}
-  {#if railbarRight}
-    {@render railbarRight()}
-  {/if}
-  {#if drawerLeft}
-    {@render drawerLeft()}
-  {/if}
-  {#if drawerRight}
-    {@render drawerRight()}
-  {/if}
-  {#if header}
-    {@render header()}
-  {/if}
-  {#if footer}
-    {@render footer()}
-  {/if}
+  {@render railbarLeft?.()}
+  {@render railbarRight?.()}
+  {@render drawerLeft?.()}
+  {@render drawerRight?.()}
+  {@render header?.()}
+  {@render footer?.()}
+
   <ContextReseter keys="layout">
-    {#snippet children()}
+    <div class="q-layout__content" style:margin={contentMargin}>
       {#if content}
         {@render content()}
+      {:else}
+        {@render children?.()}
       {/if}
-    {/snippet}
+    </div>
   </ContextReseter>
 </div>

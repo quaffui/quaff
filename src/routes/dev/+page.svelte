@@ -28,23 +28,23 @@
   import QBreadcrumbsEl from "$lib/components/breadcrumbs/QBreadcrumbsEl.svelte";
   import QCardActions from "$lib/components/card/QCardActions.svelte";
 
-  let option = "option2";
-  let checkBox = false;
-  let toggle = false;
-  let input = "";
-  let activeTab = "foo";
-  let select = "";
-  let selectMultiple: string[] = [];
-  let options = ["Cats", "Dogs", "Capybaras"];
+  let option = $state("option2");
+  let checkBox = $state(false);
+  let toggle = $state(false);
+  let input = $state("");
+  let activeTab = $state("foo");
+  let select = $state("");
+  let selectMultiple = $state<string[]>([]);
+  let options = $state(["Cats", "Dogs", "Capybaras"]);
 
-  let dialog1 = false;
-  let dialog2 = false;
-  let dialog3 = false;
-  let dialog4 = false;
-  let dialog5 = false;
-  let dialog6 = false;
-  let dialog7 = false;
-  let dialogElement1: QDialog;
+  let dialog1 = $state(false);
+  let dialog2 = $state(false);
+  let dialog3 = $state(false);
+  let dialog4 = $state(false);
+  let dialog5 = $state(false);
+  let dialog6 = $state(false);
+  let dialog7 = $state(false);
+  let dialogElement1 = $state<ReturnType<typeof QDialog>>();
 </script>
 
 <div class="q-page" style="max-width: 40rem;">
@@ -264,7 +264,7 @@
           class="q-ma-sm"
           icon="favorite"
           label="Using Label"
-          on:activated={() => alert("Hey you clicked")}
+          onclick={() => alert("Hey you clicked")}
         />
         <QBtn class="q-ma-sm">
           <span>Using</span><span style="color: blue">slot</span>
@@ -275,7 +275,7 @@
           icon="add"
           label="Disabled"
           disabled
-          on:activated={() => alert("Hey you clicked")}
+          onclick={() => alert("Hey you clicked")}
         />
         <QBtn class="q-ma-sm" label="Default (elevated)" />
         <QBtn class="q-ma-sm" label="Unelevated" unelevated />
@@ -553,13 +553,13 @@
               class="tertiary-container"
               label="Click on me!"
               icon="img:/cocktail.jpg"
-              on:click={() => alert("OMG, you actually did it")}
+              onclick={() => alert("OMG, you actually did it")}
             />
             <QChip
               label="Can't click on me, now!"
               disabled
               icon="img:/cocktail.jpg"
-              on:click={() => alert("OMG, you actually did it")}
+              onclick={() => alert("OMG, you actually did it")}
             />
           </div>
         </QCardSection>
@@ -574,8 +574,8 @@
             <h5>This is a dialog</h5>
             <div>Some text here</div>
             <nav class="flex justify-end">
-              <QBtn onclick={() => dialogElement1.hide()} label="Cancel" />
-              <QBtn onclick={() => dialogElement1.hide()} label="Confirm" />
+              <QBtn onclick={() => dialogElement1?.hide()} label="Cancel" />
+              <QBtn onclick={() => dialogElement1?.hide()} label="Confirm" />
             </nav>
           </QDialog>
 

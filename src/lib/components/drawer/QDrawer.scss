@@ -1,0 +1,44 @@
+@use "$css/mixins";
+
+.q-drawer {
+  z-index: 4;
+  position: absolute;
+  top: 0;
+  right: auto;
+  bottom: 0;
+  left: auto;
+
+  height: auto;
+  @include mixins.padding("a", "sm");
+
+  background-color: var(--surface);
+  color: var(--on-surface);
+
+  overflow: auto;
+
+  transition:
+    border-radius var(--speed3),
+    transform var(--speed3),
+    top var(--speed3),
+    bottom var(--speed3);
+
+  &.q-drawer--overlay {
+    z-index: 6;
+  }
+
+  @each $side in ("left", "right") {
+    &.q-drawer--#{$side} {
+      #{$side}: 0;
+      width: var(--#{$side}-drawer-width);
+      transform: translate(if($side == "left", -100%, 100%));
+    }
+
+    &:not(.q-drawer--#{$side}).q-drawer--bordered {
+      @include mixins.border(var(--outline), $side);
+    }
+  }
+
+  &.q-drawer--active {
+    transform: translate(0);
+  }
+}
