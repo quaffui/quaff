@@ -9,7 +9,7 @@
   left: 0;
   z-index: 4;
 
-  @include mixins.padding("x", "md");
+  @include mixins.padding("x-md");
 
   min-height: unset;
   height: var(--footer-height);
