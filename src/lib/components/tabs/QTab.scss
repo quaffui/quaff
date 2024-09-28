@@ -15,7 +15,7 @@
   border-radius: 0;
   gap: 0;
   overflow: visible;
-  @include mixins.padding("x", "md");
+  @include mixins.padding("x-md");
 
   & .q-tab__icon {
     margin-right: 0.25rem;

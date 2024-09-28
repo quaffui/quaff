@@ -41,7 +41,7 @@
       align-items: center;
       justify-content: center;
 
-      @include mixins.padding("x", "sm");
+      @include mixins.padding("x-sm");
       @include mixins.gap("xs");
 
       border-radius: 2rem;
@@ -55,12 +55,12 @@
       }
 
       & > i {
-        @include mixins.padding("a", "xs");
+        @include mixins.padding("a-xs");
         transition: padding variables.$speed1 linear;
       }
 
       &:is(:hover, :focus, .q-item--active) > i {
-        @include mixins.padding("x", "lg");
+        @include mixins.padding("x-lg");
 
         background-color: var(--secondary-container);
         color: var(--on-secondary-container);
