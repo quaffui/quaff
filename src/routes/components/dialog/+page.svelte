@@ -8,7 +8,7 @@
   import snippets from "./docs.snippets";
 
   interface Dialog {
-    el: QDialog | null;
+    el: ReturnType<typeof QDialog> | null;
     value: boolean;
   }
 

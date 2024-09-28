@@ -1,5 +1,3 @@
-<svelte:options runes={true} />
-
 <script lang="ts">
   import type { QToolbarProps } from "./props";
 
@@ -7,12 +5,10 @@
     inset = false,
     border = false,
     elevate = false,
-    height = "64px",
+    height = 64,
     children,
     ...props
   }: QToolbarProps = $props();
-
-  const dynamicHeight = $derived(!props.class?.includes("q-header") ? height : undefined);
 
   Q.classes("q-toolbar", {
     bemClasses: {
@@ -24,8 +20,6 @@
   });
 </script>
 
-<header {...props} class="q-toolbar" {...Q.classes} role="toolbar" style:height={dynamicHeight}>
-  <nav>
-    {@render children?.()}
-  </nav>
-</header>
+<nav {...props} class="q-toolbar" {...Q.classes} role="toolbar" style:--toolbar-height="{height}px">
+  {@render children?.()}
+</nav>

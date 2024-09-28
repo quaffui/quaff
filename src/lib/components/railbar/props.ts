@@ -1,11 +1,11 @@
-import type { NativeProps, CssValue } from "$lib/utils";
+import type { NativeProps } from "$lib/utils";
 import type { HTMLAttributes } from "svelte/elements";
 
 export interface QRailbarProps extends NativeProps, HTMLAttributes<HTMLElement> {
   /**
-   * @default 88px
+   * @default 88
    */
-  width?: CssValue | number;
+  width?: number;
   /**
    * @default left
    */

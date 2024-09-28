@@ -13,20 +13,20 @@
     QFooter,
   } from "$lib";
 
-  let leftDrawer: QDrawer | null = null;
-  let rightDrawer: QDrawer | null = null;
+  let leftDrawer: ReturnType<typeof QDrawer> | null = null;
+  let rightDrawer: ReturnType<typeof QDrawer> | null = null;
 </script>
 
 <QLayout view="hHh LpR fFr" leftRailbarWidth="120">
   {#snippet header()}
     <QHeader class="primary-container">
-      <QBtn icon="menu" design="flat" on:click={() => leftDrawer?.toggle()} />
+      <QBtn icon="menu" design="flat" onclick={() => leftDrawer?.toggle()} />
       <QToolbarTitle>
         <a href="/">Go home</a>
       </QToolbarTitle>
       <QBtn design="flat" icon="attach_file" />
       <QBtn design="flat" icon="today" />
-      <QBtn icon="menu" design="flat" on:click={() => rightDrawer?.toggle()} />
+      <QBtn icon="menu" design="flat" onclick={() => rightDrawer?.toggle()} />
     </QHeader>
   {/snippet}
   {#snippet railbarLeft()}

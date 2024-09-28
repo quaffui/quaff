@@ -1,55 +1,55 @@
 <script lang="ts">
-  import { useSize } from "$lib/composables";
+  import { getContext, onDestroy, untrack } from "svelte";
   import QContext from "$lib/classes/QContext.svelte";
-  import type { LayoutContext } from "../layout/QLayout.svelte";
+  import type { QLayoutProps } from "$components/layout/props";
+  import type { DrawerContext } from "../layout/QLayout.svelte";
   import type { QRailbarProps } from "./props";
 
   let { width = 88, side = "left", bordered = false, children, ...props }: QRailbarProps = $props();
 
-  const ctx = QContext.get<LayoutContext>("layout");
+  const railbarCtx = QContext.get<DrawerContext>(`QRailbar-${side}`);
+  const layoutView = getContext<{ value: NonNullable<QLayoutProps["view"]> }>("view");
 
-  const drawerType = $derived(side === "left" ? "drawerLeft" : "drawerRight");
+  let railbarEl = $state<HTMLElement>();
 
-  const drawerCtx = $derived(ctx?.value?.[drawerType]);
+  onDestroy(() => {
+    untrack(() => railbarCtx)?.updateEntries({
+      width: 0,
+      takesSpace: false,
+    });
+  });
 
-  const shouldHaveRadius = (pos: "top" | "bottom") => {
-    const appBarEl = pos === "top" ? ctx?.value?.header : ctx?.value?.footer;
-    // There is a drawer => no border-radius
-    if (drawerCtx?.drawer) {
-      return false;
-    }
+  $effect.pre(() => {
+    untrack(() => railbarCtx)?.updateEntries({
+      width,
+      takesSpace: railbarEl?.style.display !== "none" || false,
+    });
+  });
 
-    // There is no header/footer or there is an offset top/bottom
-    return !appBarEl?.display || drawerCtx?.offset[pos];
-  };
+  const offsetTop = $derived.by(() => {
+    const charPos = side === "left" ? 0 : 2;
+    return layoutView?.value.charAt(charPos) === "h";
+  });
+  const offsetBottom = $derived.by(() => {
+    const charPos = side === "left" ? 8 : 10;
+    return layoutView?.value.charAt(charPos) === "f";
+  });
 
   Q.classes("q-railbar", {
     bemClasses: {
       [side]: true,
       bordered,
-      "offset-top": drawerCtx?.offset.top,
-      "offset-bottom": drawerCtx?.offset.bottom,
-      fixed: drawerCtx?.fixed,
-      "top-left-radius": side === "left" && shouldHaveRadius("top"),
-      "bottom-left-radius": side === "left" && shouldHaveRadius("bottom"),
-      "top-right-radius": side === "right" && shouldHaveRadius("top"),
-      "bottom-right-radius": side === "right" && shouldHaveRadius("bottom"),
-      above: (["top", "bottom"] as const).some(
-        (pos) => !drawerCtx?.offset[pos] && drawerCtx?.overlay
-      ),
+      "offset-top": offsetTop,
+      "offset-bottom": offsetBottom,
     },
     classes: [props.class],
   });
 
-  const widthStyle = $derived(!ctx ? useSize(width).style : null);
+  const railbarWidthStyle = $derived(`--${side}-railbar-width: ${width}px`);
 
-  const railbarWidthStyle = $derived(
-    widthStyle === null ? "" : `--${side}-railbar-width: ${widthStyle};`
-  );
-
-  const style = $derived(`${railbarWidthStyle}${props.style ?? ""}`);
+  const style = $derived(`${railbarWidthStyle};${props.style ?? ""}`);
 </script>
 
-<nav {...props} class="q-railbar" {...Q.classes} {style}>
+<nav bind:this={railbarEl} {...props} class="q-railbar" {...Q.classes} {style}>
   {@render children?.()}
 </nav>

@@ -13,7 +13,7 @@ jobs:
 
       - uses: actions/setup-node@v3
         with:
-          node-version: "18.x"
+          node-version: "20.x"
 
       - name: Prep
         run: npm install && npm run write-version && npm run docgen-props && npm run docgen-snippets

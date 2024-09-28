@@ -27,15 +27,12 @@
   }
 
   function onclick(event: QSwitchEvent<MouseEvent>) {
+    event.preventDefault();
     if (!qSwitchInput || disabled) {
       return;
     }
 
     props.onclick?.(event);
-
-    if (event.defaultPrevented) {
-      return;
-    }
 
     qSwitchInput.focus();
     toggle();

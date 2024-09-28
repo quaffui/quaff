@@ -4,13 +4,21 @@ export interface QHeaderProps extends QToolbarProps {
   /**
    * @default false
    */
-  inset?: boolean;
+  elevated?: boolean;
   /**
    * @default false
    */
-  elevate?: boolean;
+  bordered?: boolean;
+  /**
+   * @default 64
+   */
+  height?: number;
   /**
    * @default false
    */
-  border?: boolean;
+  reveal?: boolean;
+  /**
+   * @default 250
+   */
+  revealOffset?: number;
 }
