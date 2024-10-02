@@ -126,7 +126,16 @@
   {@render header?.()}
   {@render footer?.()}
 
-  <ContextReseter keys="layout">
+  <ContextReseter
+    keys={[
+      "QHeader",
+      "QFooter",
+      "QRailbar-left",
+      "QRailbar-right",
+      "QDrawer-left",
+      "QDrawer-right",
+    ]}
+  >
     <div class="q-layout__content" style:margin={contentMargin}>
       {#if content}
         {@render content()}
