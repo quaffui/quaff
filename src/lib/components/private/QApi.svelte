@@ -24,13 +24,15 @@
   let { componentDocs }: { componentDocs: QComponentDocs[] } = $props();
 
   let api: (keyof QComponentDocs["docs"])[] = componentDocs.map(() => "props");
-  let drawer = Object.fromEntries(
-    componentDocs.map((doc) => [
-      doc.name,
-      Object.fromEntries(
-        doc.docs.props.map((prop) => [prop.name, prop.clickableType ? false : undefined])
-      ),
-    ])
+  let drawer = $state(
+    Object.fromEntries(
+      componentDocs.map((doc) => [
+        doc.name,
+        Object.fromEntries(
+          doc.docs.props.map((prop) => [prop.name, prop.clickableType ? false : undefined])
+        ),
+      ])
+    )
   );
   let drawerContent: string | undefined = $state("");
 

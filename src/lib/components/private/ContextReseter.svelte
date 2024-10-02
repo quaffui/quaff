@@ -10,12 +10,8 @@
     children?: Snippet;
   } = $props();
 
-  $effect(() => {
-    const keysArr = Array.isArray(keys) ? keys : [keys];
-    keysArr.forEach((key) => QContext.reset(key));
-  });
+  const keysArr = Array.isArray(keys) ? keys : [keys];
+  keysArr.forEach((key) => QContext.reset(key));
 </script>
 
-{#if children}
-  {@render children()}
-{/if}
+{@render children?.()}
