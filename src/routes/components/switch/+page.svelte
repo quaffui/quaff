@@ -44,6 +44,14 @@
 
       <QDocsSection {snippets} title="Disabled state">
         <QSwitch bind:value={toggle} class="q-ma-sm" disabled label="Disable" />
+        <QSwitch
+          bind:value={toggle}
+          showOnlyCheckedIcon
+          class="q-ma-sm"
+          disabled
+          label="Disable with check icon"
+        />
+        <QSwitch bind:value={toggle} icons class="q-ma-sm" disabled label="Disable with icons" />
       </QDocsSection>
     </div>
   {/snippet}
