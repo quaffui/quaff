@@ -5,6 +5,13 @@ import versionPlugin from "./src/dev/versionPlugin";
 import docgenPlugin from "./src/dev/docgenPlugin";
 
 export default defineConfig({
+  css: {
+    preprocessorOptions: {
+      scss: {
+        api: "modern-compiler",
+      },
+    },
+  },
   plugins: [versionPlugin(), docgenPlugin(), sveltekit()],
   test: {
     include: ["src/**/*.{test,spec}.{js,ts}"],
