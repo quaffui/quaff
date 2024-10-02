@@ -271,16 +271,31 @@ $check-map: (
       @include disabled.base();
     }
 
-    & :is(.q-switch__track, .q-switch__handle) {
-      background-color: disabled.rest-color();
-
-      &::before {
-        border: none;
-      }
+    & #{$track}::before {
+      background-color: disabled.rest-color("surface-container-high");
+      border-color: disabled.rest-color("on-surface");
     }
 
-    &:not([aria-checked] *) {
-      color: disabled.font-color(surface-container-highest);
+    & #{$handle} {
+      background-color: disabled.font-color();
+    }
+
+    & #{$icon} {
+      color: disabled.font-color("surface-container-high");
+    }
+
+    &#{$checked} {
+      & #{$track}::before {
+        background-color: disabled.rest-color();
+      }
+
+      & #{$handle} {
+        background-color: var(--surface);
+      }
+
+      & #{$icon} {
+        color: disabled.font-color();
+      }
     }
 
     & :is(#{$handle}, #{$handle}::before) {
