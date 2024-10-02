@@ -10,12 +10,17 @@ export interface RouterProps {
   to?: string;
 }
 
-export const isRouteActive: Readable<(route?: string) => boolean> = derived(page, ($page) => {
-  return (route?: string) =>
-    route === "/"
-      ? $page.url.pathname === route
-      : $page.url.pathname.slice(0, (route || "").length) === route;
-});
+export const isRouteActive: Readable<(route?: string, base?: `/${string}`) => boolean> = derived(
+  page,
+  ($page) => {
+    return (route?: string, base: `/${string}` = "/") => {
+      if (!route) {
+        return false;
+      }
+      return route === base ? $page.url.pathname === route : $page.url.pathname.startsWith(route);
+    };
+  }
+);
 
 export function getRouterInfo<T extends RouterProps>(props: T) {
   const hasLink = [props.to, props.href].some((entry) => entry !== undefined);
