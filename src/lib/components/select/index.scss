@@ -1,4 +1,5 @@
 @use "$css/mixins";
+@use "$css/variables";
 @import "$css/shared/q-field.scss";
 
 .q-select {
@@ -17,17 +18,17 @@
     visibility: hidden;
     transform: scale(0.8) translateY(120%);
     transition:
-      opacity var(--speed2),
-      transform var(--speed2),
-      visibility 0s var(--speed2);
+      opacity variables.$speed2,
+      transform variables.$speed2,
+      visibility 0s variables.$speed2;
 
     &--active {
       opacity: 1;
       visibility: visible;
       transform: scale(1) translateY(100%);
       transition:
-        opacity var(--speed2),
-        transform var(--speed2),
+        opacity variables.$speed2,
+        transform variables.$speed2,
         visibility 0s 0s;
     }
   }

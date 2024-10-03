@@ -1,3 +1,6 @@
+@use "$css/mixins/design";
+@use "$css/variables";
+
 // type can be: checkbox, radio or switch
 @mixin selection($type) {
   width: auto;
@@ -20,8 +23,8 @@
     }
 
     > input:is(:focus, :hover) + span::before {
-      background-color: var(--active);
-      box-shadow: 0 0 0 0.5rem var(--active);
+      background-color: design.with-alpha(var(--primary), 10%);
+      box-shadow: 0 0 0 0.5rem design.with-alpha(var(--primary), 10%);
     }
 
     > input:checked + span::before,
@@ -68,71 +71,8 @@
     border-radius: 50%;
     user-select: none;
     z-index: 1;
-    box-shadow: 0 0 0 0 var(--active);
-    transition: var(--speed1) all;
-  }
-
-  @if $type == switch {
-    > input {
-      width: 3.25rem;
-      height: 2rem;
-      opacity: 0;
-    }
-
-    > span::before,
-    &--icon > span > i {
-      position: absolute;
-      left: 0;
-      top: 50%;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 50%;
-      transition: var(--speed2) all;
-      font-size: 1rem;
-      user-select: none;
-      min-width: auto;
-      content: "";
-      color: var(--surface-variant);
-      background-color: var(--outline);
-      transform: translate(-3rem, -50%) scale(0.6);
-    }
-
-    &--icon > span > i {
-      transform: translate(-3rem, -50%) scale(1);
-    }
-
-    > input:is(:focus, :hover) + span::before,
-    &--icon > input:is(:focus, :hover) + span > i {
-      box-shadow: 0 0 0 0.5rem var(--active);
-    }
-
-    > input:checked + span::after {
-      border: none;
-      background-color: var(--primary);
-    }
-
-    > input:checked + span::before,
-    &--icon > input:checked + span > i {
-      content: "check";
-      color: var(--primary);
-      background-color: var(--on-primary);
-      transform: translate(-1.75rem, -50%) scale(1);
-    }
-
-    > span::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      top: 50%;
-      background-color: var(--active);
-      border: 0.125rem solid var(--outline);
-      box-sizing: border-box;
-      width: 3.25rem;
-      height: 2rem;
-      border-radius: 2rem;
-      transform: translate(-3.25rem, -50%);
-    }
+    box-shadow: 0 0 0 0 design.with-alpha(var(--primary), 10%);
+    transition: variables.$speed1 all;
   }
 
   @if $type == checkbox {
