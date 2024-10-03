@@ -1,4 +1,5 @@
 @use "$css/mixins";
+@use "$css/variables";
 
 .q-drawer {
   z-index: 4;
@@ -17,10 +18,10 @@
   overflow: auto;
 
   transition:
-    border-radius var(--speed3),
-    transform var(--speed3),
-    top var(--speed3),
-    bottom var(--speed3);
+    border-radius variables.$speed3,
+    transform variables.$speed3,
+    top variables.$speed3,
+    bottom variables.$speed3;
 
   &.q-drawer--overlay {
     z-index: 6;
