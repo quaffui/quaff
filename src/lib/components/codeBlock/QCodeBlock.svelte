@@ -1,14 +1,13 @@
 <script lang="ts">
-  import Highlight from "svelte-highlight";
-  import { HighlightSvelte } from "svelte-highlight";
-  import typescript from "svelte-highlight/languages/typescript";
   import "svelte-highlight/styles/material.css";
   import { copy } from "$lib/utils";
   import { QBtn } from "$lib";
   import type { QCodeBlockProps } from "./props";
+  import { codeToHtml } from "shiki";
 
   let {
     language,
+    theme = "github-dark-default",
     code = "/* No code found */",
     title = undefined,
     copiable = undefined,
@@ -16,6 +15,14 @@
 
   let btnContent = $state("Copy");
   let btnColor = $state("primary");
+
+  const html = $derived.by(
+    async () =>
+      await codeToHtml(code, {
+        lang: language,
+        theme,
+      })
+  );
 
   function setBtn(type: "base" | "error" | "success") {
     switch (type) {
@@ -35,7 +42,7 @@
   }
 
   async function copyCode() {
-    await copy(code!).catch(() => {
+    await copy(code).catch(() => {
       setBtn("error");
       setTimeout(() => setBtn("base"), 3000);
     });
@@ -66,15 +73,22 @@
   {:else if title}
     <h4>{title}</h4>
   {/if}
-  {#if language === "ts"}
-    <Highlight language={typescript} {code} />
-  {:else}
-    <HighlightSvelte {code} />
-  {/if}
+  {#await html}
+    <!-- waiting -->
+  {:then htmlContent}
+    {@html htmlContent}
+  {:catch error}
+    <pre>An error occurred: {error}</pre>
+    <!-- error -->
+  {/await}
 </div>
 
 <style>
   .q-code-block {
     border-radius: 0.5em;
+
+    :global(pre) {
+      white-space: break-spaces;
+    }
   }
 </style>

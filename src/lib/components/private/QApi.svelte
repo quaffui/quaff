@@ -103,7 +103,7 @@
                 style="height: fit-content; width: 50%; max-height: 400%; overflow: auto; border-radius: 0;"
                 bind:value={drawer[QDocument.name][doc.name]}
               >
-                <QCodeBlock language="ts" code={drawerContent} />
+                <QCodeBlock language="typescript" code={drawerContent} />
               </QDrawer>
             {/if}
             <QItemSection type="content" style="overflow: visible">
@@ -118,6 +118,8 @@
                         <span
                           class="prop-type clickable"
                           onclick={(e) => isProp(doc, index) && handleDrawer(QDocument, doc, e)}
+                          role="link"
+                          tabindex={-1}
                         >
                           : {doc.type}
                         </span>
