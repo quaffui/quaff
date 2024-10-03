@@ -1,12 +1,14 @@
+@use "$css/variables";
+
 //? Basic styles
 .q-avatar {
   object-fit: cover;
   object-position: center;
   aspect-ratio: 1;
   transition:
-    var(--speed3) transform,
-    var(--speed3) border-radius,
-    var(--speed3) padding;
+    variables.$speed3 transform,
+    variables.$speed3 border-radius,
+    variables.$speed3 padding;
   border-radius: 0;
 
   display: flex;

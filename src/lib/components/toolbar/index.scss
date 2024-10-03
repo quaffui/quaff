@@ -1,4 +1,5 @@
 @use "$css/mixins";
+@use "$css/variables";
 
 .q-toolbar {
   display: flex;
@@ -10,7 +11,7 @@
   width: 100%;
   height: var(--toolbar-height);
   padding: 0 1rem;
-  transition: all var(--speed3);
+  transition: all variables.$speed3;
   background-color: var(--surface);
 
   &--inset {

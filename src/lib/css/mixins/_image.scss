@@ -1,10 +1,12 @@
+@use "$css/variables";
+
 @mixin responsive($parent: null) {
   object-fit: cover;
   object-position: center;
   transition:
-    var(--speed3) transform,
-    var(--speed3) border-radius,
-    var(--speed3) padding;
+    variables.$speed3 transform,
+    variables.$speed3 border-radius,
+    variables.$speed3 padding;
   width: 100%;
   height: 100%;
 

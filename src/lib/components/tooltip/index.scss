@@ -1,3 +1,5 @@
+@use "$css/variables";
+
 .q-tooltip {
   --space: -0.5rem;
   visibility: hidden;
@@ -22,7 +24,7 @@
   white-space: nowrap;
   font-weight: 500;
   opacity: 0;
-  transition: var(--speed2) all;
+  transition: variables.$speed2 all;
   z-index: 9999;
 
   &--top {

@@ -1,3 +1,5 @@
+@use "$css/variables";
+
 @layer q-avatar {
   // Basic styles
   .q-avatar {
@@ -13,9 +15,9 @@
       height: 100%;
     }
     transition:
-      var(--speed3) transform,
-      var(--speed3) border-radius,
-      var(--speed3) padding;
+      variables.$speed3 transform,
+      variables.$speed3 border-radius,
+      variables.$speed3 padding;
     border-radius: 0;
 
     display: flex;

@@ -1,4 +1,5 @@
 @use "$css/mixins";
+@use "$css/variables";
 
 .q-dialog {
   display: block;
@@ -19,7 +20,7 @@
   overflow-x: hidden;
   overflow-y: auto;
   transition:
-    var(--speed3) all,
+    variables.$speed3 all,
     0s background-color;
   transform: translate(-50%, -4rem);
   animation-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
