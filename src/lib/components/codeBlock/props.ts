@@ -1,10 +1,16 @@
 import type { HTMLAttributes } from "svelte/elements";
+import type { SpecialLanguage, BundledLanguage, BundledTheme } from "shiki";
 
 export interface QCodeBlockProps extends HTMLAttributes<HTMLDivElement> {
   /**
    * Language to use for highlighting.
    */
-  language: "ts" | "svelte";
+  language: BundledLanguage | SpecialLanguage;
+
+  /**
+   * Theme to use for highlighting.
+   */
+  theme?: BundledTheme;
 
   /**
    * Code to highlight.
