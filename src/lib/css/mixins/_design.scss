@@ -7,8 +7,7 @@
   }
   $elevate: 0.125rem * $strength;
 
-  box-shadow: 0 $elevate * $coeff $elevate 0
-    add-transparency(var(--shadow), calc(24% + 8% * $strength));
+  box-shadow: 0 $elevate * $coeff $elevate 0 with-alpha(var(--shadow), calc(24% + 8% * $strength));
 }
 
 @mixin border($color: var(--outline), $position: variables.$border-positions) {
@@ -59,6 +58,6 @@
   opacity: $opacity;
 }
 
-@function add-transparency($color-variable: null, $percentage: null) {
+@function with-alpha($color-variable: null, $percentage: null) {
   @return color-mix(in srgb, $color-variable $percentage, transparent);
 }

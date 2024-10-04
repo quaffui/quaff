@@ -30,7 +30,7 @@
       left: 0;
 
       border-radius: inherit;
-      background-color: mixins.add-transparency(
+      background-color: mixins.with-alpha(
         var(--state-layer-color, transparent),
         var(--state-layer-opacity, 0)
       );
