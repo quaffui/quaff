@@ -155,7 +155,7 @@
 
   &--modal::backdrop {
     display: block;
-    background-color: mixins.add-transparency(var(--shadow), 50%);
+    background-color: mixins.with-alpha(var(--shadow), 50%);
   }
 
   &--animating {

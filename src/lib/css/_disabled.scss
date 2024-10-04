@@ -10,9 +10,9 @@
 }
 
 @function font-color($color: on-surface) {
-  @return mixins.add-transparency(var(--#{$color}), 38%);
+  @return mixins.with-alpha(var(--#{$color}), 38%);
 }
 
 @function rest-color($color: on-surface) {
-  @return mixins.add-transparency(var(--#{$color}), 12%);
+  @return mixins.with-alpha(var(--#{$color}), 12%);
 }
