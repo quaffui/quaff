@@ -14,9 +14,6 @@ importers:
       '@material/material-color-utilities':
         specifier: ^0.3.0
         version: 0.3.0
-      '@shikijs/twoslash':
-        specifier: ^1.21.0
-        version: 1.21.0(typescript@5.6.2)
       '@sveltejs/adapter-auto':
         specifier: ^3.2.5
         version: 3.2.5(@sveltejs/kit@2.5.28(@sveltejs/vite-plugin-svelte@3.1.2(svelte@5.0.0-next.257)(vite@5.4.7(@types/node@22.6.1)(sass@1.79.3)))(svelte@5.0.0-next.257)(vite@5.4.7(@types/node@22.6.1)(sass@1.79.3)))
@@ -451,9 +448,6 @@ packages:
   '@shikijs/engine-oniguruma@1.21.0':
     resolution: {integrity: sha512-AIZ76XocENCrtYzVU7S4GY/HL+tgHGbVU+qhiDyNw1qgCA5OSi4B4+HY4BtAoJSMGuD/L5hfTzoRVbzEm2WTvg==}
 
-  '@shikijs/twoslash@1.21.0':
-    resolution: {integrity: sha512-91HTpoIsx6vsJZ0DE1fs/jNeEAL5xJ5hWMVPUSp3iGHxOLH59nGrOcsjSgv4lKaxeE2i6VFvnPANQ5q8I5k2AQ==}
-
   '@shikijs/types@1.21.0':
     resolution: {integrity: sha512-tzndANDhi5DUndBtpojEq/42+dpUF2wS7wdCDQaFtIXm3Rd1QkrcVgSSRLOvEwexekihOXfbYJINW37g96tJRw==}
 
@@ -598,11 +592,6 @@ packages:
   '@typescript-eslint/visitor-keys@8.7.0':
     resolution: {integrity: sha512-b1tx0orFCCh/THWPQa2ZwWzvOeyzzp36vkJYOpVg0u8UVOIsfVrnuC9FqAw9gRKn+rG2VmWQ/zDJZzkxUnj/XQ==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
-
-  '@typescript/vfs@1.6.0':
-    resolution: {integrity: sha512-hvJUjNVeBMp77qPINuUvYXj4FyWeeMMKZkxEATEU3hqBAQ7qdTBCUFT7Sp0Zu0faeEtFf+ldXxMEDr/bk73ISg==}
-    peerDependencies:
-      typescript: '*'
 
   '@ungap/structured-clone@1.2.0':
     resolution: {integrity: sha512-zuVdFrMJiuCDQUMCzQaD6KL28MjnqqN8XnAqiEq9PNm/hCPTSGfrXCOfwj1ow4LFb/tNymJPwsNbVePc1xFqrQ==}
@@ -1697,14 +1686,6 @@ packages:
   tslib@2.7.0:
     resolution: {integrity: sha512-gLXCKdN1/j47AiHiOkJN69hJmcbGTHI0ImLmbYLHykhgeN0jVGola9yVjFgzCUklsZQMW55o+dW7IXv3RCXDzA==}
 
-  twoslash-protocol@0.2.12:
-    resolution: {integrity: sha512-5qZLXVYfZ9ABdjqbvPc4RWMr7PrpPaaDSeaYY55vl/w1j6H6kzsWK/urAEIXlzYlyrFmyz1UbwIt+AA0ck+wbg==}
-
-  twoslash@0.2.12:
-    resolution: {integrity: sha512-tEHPASMqi7kqwfJbkk7hc/4EhlrKCSLcur+TcvYki3vhIfaRMXnXjaYFgXpoZRbT6GdprD4tGuVBEmTpUgLBsw==}
-    peerDependencies:
-      typescript: '*'
-
   type-check@0.4.0:
     resolution: {integrity: sha512-XleUoc9uwGXqjWwXaUTZAmzMcFZ5858QA2vvx1Ur5xIcixXIP+8LnFDgRplU30us6teqdlskFfu+ae4K79Ooew==}
     engines: {node: '>= 0.8.0'}
@@ -2117,15 +2098,6 @@ snapshots:
       '@shikijs/types': 1.21.0
       '@shikijs/vscode-textmate': 9.2.2
 
-  '@shikijs/twoslash@1.21.0(typescript@5.6.2)':
-    dependencies:
-      '@shikijs/core': 1.21.0
-      '@shikijs/types': 1.21.0
-      twoslash: 0.2.12(typescript@5.6.2)
-    transitivePeerDependencies:
-      - supports-color
-      - typescript
-
   '@shikijs/types@1.21.0':
     dependencies:
       '@shikijs/vscode-textmate': 9.2.2
@@ -2308,13 +2280,6 @@ snapshots:
     dependencies:
       '@typescript-eslint/types': 8.7.0
       eslint-visitor-keys: 3.4.3
-
-  '@typescript/vfs@1.6.0(typescript@5.6.2)':
-    dependencies:
-      debug: 4.3.7
-      typescript: 5.6.2
-    transitivePeerDependencies:
-      - supports-color
 
   '@ungap/structured-clone@1.2.0': {}
 
@@ -3421,16 +3386,6 @@ snapshots:
       yn: 3.1.1
 
   tslib@2.7.0: {}
-
-  twoslash-protocol@0.2.12: {}
-
-  twoslash@0.2.12(typescript@5.6.2):
-    dependencies:
-      '@typescript/vfs': 1.6.0(typescript@5.6.2)
-      twoslash-protocol: 0.2.12
-      typescript: 5.6.2
-    transitivePeerDependencies:
-      - supports-color
 
   type-check@0.4.0:
     dependencies:
