@@ -65,7 +65,7 @@
 
   {#snippet usage()}
     <div>
-      <QDocsSection {snippets} title="Positions">
+      <QDocsSection snippet={snippets["Positions"]} title="Positions">
         <QBtn onclick={defaultDialog.el?.show}>Default</QBtn>
         <QDialog bind:this={defaultDialog.el} bind:value={defaultDialog.value}>
           <DialogContent dialogEl={defaultDialog.el} />
@@ -92,7 +92,7 @@
         </QDialog>
       </QDocsSection>
 
-      <QDocsSection {snippets} title="Types">
+      <QDocsSection snippet={snippets["Types"]} title="Types">
         <QBtn onclick={modalDialog.el?.show}>Modal</QBtn>
         <QDialog bind:this={modalDialog.el} bind:value={modalDialog.value} modal>
           <DialogContent dialogEl={modalDialog.el} />
@@ -114,7 +114,7 @@
         </QDialog>
       </QDocsSection>
 
-      <QDocsSection {snippets} title="Programmatic toggle">
+      <QDocsSection snippet={snippets["Programmatic toggle"]} title="Programmatic toggle">
         <QDialog bind:this={methodsDialog.el} bind:value={methodsDialog.value} persistent>
           <DialogContent dialogEl={methodsDialog.el} />
         </QDialog>
@@ -123,7 +123,7 @@
         <QBtn onclick={methodsDialog.el?.toggle}>Toggle</QBtn>
       </QDocsSection>
 
-      <QDocsSection {snippets} title="Value toggle">
+      <QDocsSection snippet={snippets["Value toggle"]} title="Value toggle">
         <QDialog bind:value={methodsDialog.value} persistent>
           <DialogContent dialogEl={methodsDialog.el} />
         </QDialog>
