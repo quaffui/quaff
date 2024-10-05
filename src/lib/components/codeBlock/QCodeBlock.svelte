@@ -1,9 +1,9 @@
 <script lang="ts">
   import "svelte-highlight/styles/material.css";
+  import { codeToHtml } from "shiki";
   import { copy } from "$lib/utils";
   import { QBtn } from "$lib";
   import type { QCodeBlockProps } from "./props";
-  import { codeToHtml } from "shiki";
 
   let {
     language,

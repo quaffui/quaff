@@ -7,7 +7,7 @@
   }
   $elevate: 0.125rem * $strength;
 
-  box-shadow: 0 $elevate * $coeff $elevate 0 with-alpha(var(--shadow), calc(24% + 8% * $strength));
+  box-shadow: 0 $elevate * $coeff $elevate 0 with-alpha(var(--shadow), calc(24% + (8% * $strength)));
 }
 
 @mixin border($color: var(--outline), $position: variables.$border-positions) {
