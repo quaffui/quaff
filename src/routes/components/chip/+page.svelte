@@ -13,7 +13,7 @@
 
   {#snippet usage()}
     <div>
-      <QDocsSection {snippets} title="Default">
+      <QDocsSection snippet={snippets["Default"]} title="Default">
         <div class="flex q-gap-lg items-center">
           <QChip class="bg-green" label="Green Chip" />
           <QChip class="error" label="Error Chip" />
@@ -22,7 +22,7 @@
         </div>
       </QDocsSection>
 
-      <QDocsSection {snippets} title="Chip Sizes">
+      <QDocsSection snippet={snippets["Chip Sizes"]} title="Chip Sizes">
         <div class="flex q-gap-lg items-center">
           <QChip label="Small Chip" size="sm" icon="mail" />
           <QChip label="Medium Chip" size="md" icon="mail" />
@@ -30,7 +30,7 @@
         </div>
       </QDocsSection>
 
-      <QDocsSection {snippets} title="Chip designs">
+      <QDocsSection snippet={snippets["Chip designs"]} title="Chip designs">
         <div class="flex q-gap-lg items-center">
           <QChip icon="map" label="Assist (default)" />
           <QChip kind="filter" icon="filter_list" label="Filter" />
@@ -48,7 +48,7 @@
         </div>
       </QDocsSection>
 
-      <QDocsSection {snippets} title="Chips with Images">
+      <QDocsSection snippet={snippets["Chips with Images"]} title="Chips with Images">
         <div class="flex q-gap-lg items-center">
           <QChip icon="img:/cocktail.jpg" label="Leading avatar" />
           <QChip kind="filter" elevated icon="img:/cocktail.jpg" label="Filter elevated" />

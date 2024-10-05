@@ -129,7 +129,7 @@
 
   {#snippet usage()}
     <div>
-      <QDocsSection {snippets} title="Trying different layouts">
+      <QDocsSection snippet={snippets["Trying different layouts"]} title="Trying different layouts">
         <QCard bordered class="q-pa-none" style="height: 80vh">
           <QLayout {view} {style}>
             {#snippet header()}

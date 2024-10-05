@@ -15,7 +15,7 @@
 
   {#snippet usage()}
     <div>
-      <QDocsSection {snippets} title="Card Variants">
+      <QDocsSection snippet={snippets["Card Variants"]} title="Card Variants">
         <QCard class="q-ma-sm" title="Bordered Card" bordered>
           <QCardSection>This is a card with a border.</QCardSection>
         </QCard>
@@ -29,7 +29,10 @@
         </QCard>
       </QDocsSection>
 
-      <QDocsSection {snippets} title="Card with different sections">
+      <QDocsSection
+        snippet={snippets["Card with different sections"]}
+        title="Card with different sections"
+      >
         <QCard class="q-ma-sm" title="Card with Horizontal Section">
           <QCardSection horizontal>
             <div class="col-6">This is a card with a horizontal section.</div>
@@ -51,7 +54,7 @@
         </QCard>
       </QDocsSection>
 
-      <QDocsSection {snippets} title="Card with fill color">
+      <QDocsSection snippet={snippets["Card with fill color"]} title="Card with fill color">
         <QCard class="q-ma-sm" title="Card with fill color" fill>
           <QCardSection>This is a card with a fill color.</QCardSection>
         </QCard>
