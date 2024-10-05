@@ -37,7 +37,6 @@
   "devDependencies": {
     "@fontsource/roboto": "^5.1.0",
     "@material/material-color-utilities": "^0.3.0",
-    "@shikijs/twoslash": "^1.21.0",
     "@sveltejs/adapter-auto": "^3.2.5",
     "@sveltejs/kit": "^2.5.28",
     "@sveltejs/package": "^2.3.5",

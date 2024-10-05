@@ -14,7 +14,7 @@
 
   let dialog = $state(false);
 
-  const code = $derived(snippets?.[title].replaceAll(/^  /gm, ""));
+  const code = $derived(snippets?.[title].replaceAll(/^ {2}/gm, ""));
 </script>
 
 <div style="margin-bottom:48px">
