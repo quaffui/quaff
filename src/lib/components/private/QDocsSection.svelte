@@ -4,17 +4,17 @@
 
   let {
     title,
-    snippets,
+    snippet,
     children,
   }: {
     title: string;
-    snippets?: Record<string, string>;
+    snippet?: string;
     children?: Snippet;
   } = $props();
 
   let dialog = $state(false);
 
-  const code = $derived(snippets?.[title].replaceAll(/^ {2}/gm, ""));
+  const code = $derived(snippet?.replaceAll(/^ {2}/gm, ""));
 </script>
 
 <div style="margin-bottom:48px">

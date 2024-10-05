@@ -13,7 +13,7 @@
 
   {#snippet usage()}
     <div>
-      <QDocsSection {snippets} title="Default slot">
+      <QDocsSection snippet={snippets["Default slot"]} title="Default slot">
         <div class="flex q-gap-lg items-center">
           <QAvatar class="bg-green">GR</QAvatar>
           <QAvatar class="bg-red-5">RD</QAvatar>
@@ -22,7 +22,7 @@
         </div>
       </QDocsSection>
 
-      <QDocsSection {snippets} title="Avatar Sizes">
+      <QDocsSection snippet={snippets["Avatar Sizes"]} title="Avatar Sizes">
         <div class="flex q-gap-lg items-center">
           <QAvatar src="/cocktail.jpg" size="xs" />
           <QAvatar src="/cocktail.jpg" size="sm" />
@@ -32,13 +32,13 @@
         </div>
       </QDocsSection>
 
-      <QDocsSection {snippets} title="Custom Avatar Sizes">
+      <QDocsSection snippet={snippets["Custom Avatar Sizes"]} title="Custom Avatar Sizes">
         <div class="flex q-gap-lg items-center">
           <QAvatar src="/cocktail.jpg" size="5rem" />
         </div>
       </QDocsSection>
 
-      <QDocsSection {snippets} title="Avatar Shapes">
+      <QDocsSection snippet={snippets["Avatar Shapes"]} title="Avatar Shapes">
         <div class="flex q-gap-lg items-center">
           <QAvatar src="/cocktail.jpg" />
           <QAvatar src="/cocktail.jpg" shape="rounded" />
@@ -47,7 +47,7 @@
         </div>
       </QDocsSection>
 
-      <QDocsSection {snippets} title="Avatar Videos">
+      <QDocsSection snippet={snippets["Avatar Videos"]} title="Avatar Videos">
         <div class="flex q-gap-lg items-center">
           <QAvatar src="/sea.mp4" size="lg" video />
           <QAvatar src="/sea.mp4" shape="rounded" size="lg" video />

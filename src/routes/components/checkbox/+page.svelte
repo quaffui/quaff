@@ -15,16 +15,16 @@
 
   {#snippet usage()}
     <div>
-      <QDocsSection {snippets} title="Default Checkbox">
+      <QDocsSection snippet={snippets["Default Checkbox"]} title="Default Checkbox">
         <QCheckbox class="q-ma-sm" bind:value={value1} />
         <QCheckbox class="q-ma-sm" label="With label" bind:value={value1} />
       </QDocsSection>
 
-      <QDocsSection {snippets} title="Checked Checkbox">
+      <QDocsSection snippet={snippets["Checked Checkbox"]} title="Checked Checkbox">
         <QCheckbox class="q-ma-sm" label="Checkbox checked by default" value={true} />
       </QDocsSection>
 
-      <QDocsSection {snippets} title="Disabled">
+      <QDocsSection snippet={snippets["Disabled"]} title="Disabled">
         <QCheckbox class="q-ma-sm" label="Checkbox with disable prop" value={true} disable />
       </QDocsSection>
     </div>

@@ -15,24 +15,24 @@
 
   {#snippet usage()}
     <div>
-      <QDocsSection {snippets} title="State">
+      <QDocsSection snippet={snippets["State"]} title="State">
         <QInput bind:value={input} label="Default" class="q-mt-md" />
         <QInput bind:value={input} label="Disabled" class="q-mt-md" disable />
         <QInput bind:value={input} label="Disabled" class="q-mt-md" disable outlined />
       </QDocsSection>
 
-      <QDocsSection {snippets} title="Styles">
+      <QDocsSection snippet={snippets["Styles"]} title="Styles">
         <QInput bind:value={input} label="Default" class="q-mt-md" />
         <QInput bind:value={input} label="Rounded" class="q-mt-md" rounded />
         <QInput bind:value={input} label="Outlined" class="q-mt-md" outlined />
         <QInput bind:value={input} label="Filled" class="q-mt-md" filled />
       </QDocsSection>
 
-      <QDocsSection {snippets} title="Dense">
+      <QDocsSection snippet={snippets["Dense"]} title="Dense">
         <QInput bind:value={input} label="Dense" class="q-mt-md" dense />
       </QDocsSection>
 
-      <QDocsSection {snippets} title="Validation and Hints">
+      <QDocsSection snippet={snippets["Validation and Hints"]} title="Validation and Hints">
         <QInput bind:value={input} label="With Hint" class="q-mt-md" hint="This is a hint" />
         <QInput
           bind:value={input}
@@ -43,7 +43,7 @@
         />
       </QDocsSection>
 
-      <QDocsSection {snippets} title="Snippets">
+      <QDocsSection snippet={snippets["Snippets"]} title="Snippets">
         <QInput bind:value={input} label="Prepended Icon">
           {#snippet prepend()}
             <QIcon name="search" />
