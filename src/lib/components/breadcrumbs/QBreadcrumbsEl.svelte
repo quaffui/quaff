@@ -1,10 +1,9 @@
-<svelte:options runes={true} />
-
 <script lang="ts">
   import { getContext, type Snippet } from "svelte";
   import { derived } from "svelte/store";
   import { isRouteActive } from "$utils/router";
   import QIcon from "../icon/QIcon.svelte";
+  import "./QBreadcrumbsEl.scss";
   import type { MaterialSymbol } from "material-symbols";
   import type { QBreadcrumbsElProps } from "./props";
 

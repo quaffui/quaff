@@ -1,6 +1,7 @@
 <script context="module" lang="ts">
   import { setContext } from "svelte";
   import QContext from "$lib/classes/QContext.svelte";
+  import "./QLayout.scss";
   import ContextReseter from "../private/ContextReseter.svelte";
   import type { QLayoutProps } from "./props";
 

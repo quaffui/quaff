@@ -1,4 +1,5 @@
 <script lang="ts">
+  import "./index.scss";
   import type { QTooltipProps } from "./props";
 
   let { value, position = "bottom", children, ...props }: QTooltipProps = $props();

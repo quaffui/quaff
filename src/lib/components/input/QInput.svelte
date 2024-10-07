@@ -1,4 +1,5 @@
 <script lang="ts">
+  import "./index.scss";
   import type { QEvent } from "$utils";
 
   type QInputFocusEvent = QEvent<FocusEvent, HTMLDivElement>;

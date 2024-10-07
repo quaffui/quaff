@@ -4,6 +4,7 @@
   import { useSize } from "$lib/composables";
   import { clickOutside } from "$lib/helpers";
   import QContext from "$lib/classes/QContext.svelte";
+  import "./QDrawer.scss";
   import type { QLayoutProps } from "$components/layout/props";
   import type { DrawerContext, LayoutContext } from "../layout/QLayout.svelte";
   import type { QDrawerProps } from "./props";

@@ -1,52 +1,56 @@
 @use "$css/variables";
 
-.q-separator__wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0.75;
+@layer QTheme, QRipple, QComponents, QClasses, QDisabled;
 
-  &--inset {
-    padding: 0 1rem;
-  }
+@layer QComponents {
+  .q-separator__wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.75;
 
-  &--vertical {
-    height: 100%;
-    flex-direction: column;
+    &--inset {
+      padding: 0 1rem;
+    }
 
-    &.q-separator__wrapper--inset {
-      padding: 1rem 0;
+    &--vertical {
+      height: 100%;
+      flex-direction: column;
+
+      &.q-separator__wrapper--inset {
+        padding: 1rem 0;
+      }
+    }
+
+    &:not(.vertical) {
+      width: 100%;
     }
   }
 
-  &:not(.vertical) {
-    width: 100%;
-  }
-}
+  .q-separator {
+    border: none;
+    flex: 1 1 auto;
 
-.q-separator {
-  border: none;
-  flex: 1 1 auto;
+    &--vertical {
+      width: var(--q-separator--size, 0.0625rem);
 
-  &--vertical {
-    width: var(--q-separator--size, 0.0625rem);
-
-    @each $space, $val in variables.$spaces {
-      @if $space != "none" and $space != "auto" {
-        &.q-separator__spacing--#{$space} {
-          margin-inline: $val;
+      @each $space, $val in variables.$spaces {
+        @if $space != "none" and $space != "auto" {
+          &.q-separator__spacing--#{$space} {
+            margin-inline: $val;
+          }
         }
       }
     }
-  }
 
-  &:not(&--vertical) {
-    height: var(--q-separator--size, 0.0625rem);
+    &:not(&--vertical) {
+      height: var(--q-separator--size, 0.0625rem);
 
-    @each $space, $val in variables.$spaces {
-      @if $space != "auto" {
-        &.q-separator__spacing--#{$space} {
-          margin-block: $val;
+      @each $space, $val in variables.$spaces {
+        @if $space != "auto" {
+          &.q-separator__spacing--#{$space} {
+            margin-block: $val;
+          }
         }
       }
     }

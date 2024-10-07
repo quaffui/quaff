@@ -1,5 +1,6 @@
 <script lang="ts">
   import { setContext } from "svelte";
+  import "./QList.scss";
   import type { QListProps } from "./props";
 
   let {

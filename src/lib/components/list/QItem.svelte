@@ -4,6 +4,7 @@
   import { ripple } from "$lib/helpers/ripple";
   import QContext from "$lib/classes/QContext.svelte";
   import QSeparator from "../separator/QSeparator.svelte";
+  import "./QItem.scss";
   import type { QItemProps, QListProps } from "./props";
 
   let {
