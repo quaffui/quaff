@@ -1,79 +1,83 @@
 @use "$css/mixins";
 
-.q-table {
-  &__table {
-    @include mixins.table;
+@layer QTheme, QRipple, QComponents, QClasses, QDisabled;
 
-    border-radius: 0.75rem;
-    box-shadow: var(--elevate1);
+@layer QComponents {
+  .q-table {
+    &__table {
+      @include mixins.table;
 
-    th {
-      font-weight: 600;
+      border-radius: 0.75rem;
+      box-shadow: var(--elevate1);
 
-      .q-icon {
-        position: relative;
-        top: -1px;
-        opacity: 0;
+      th {
+        font-weight: 600;
 
-        &.q-icon--sort {
-          opacity: 1;
+        .q-icon {
+          position: relative;
+          top: -1px;
+          opacity: 0;
+
+          &.q-icon--sort {
+            opacity: 1;
+          }
+        }
+
+        &:hover {
+          .q-icon:not(.q-icon--sort) {
+            opacity: 0.5;
+          }
+          .q-icon--sort {
+            opacity: 0.8;
+          }
         }
       }
-
-      &:hover {
-        .q-icon:not(.q-icon--sort) {
-          opacity: 0.5;
-        }
-        .q-icon--sort {
-          opacity: 0.8;
-        }
-      }
-    }
-
-    tr:last-child td {
-      border-bottom: none;
-    }
-
-    &--flat {
-      box-shadow: none;
-    }
-
-    &--bordered {
-      border: 1px solid var(--outline);
 
       tr:last-child td {
         border-bottom: none;
       }
-    }
 
-    &--dense {
-      border-radius: 0.5rem;
+      &--flat {
+        box-shadow: none;
+      }
 
-      th,
-      td {
-        padding: 0.25rem;
+      &--bordered {
+        border: 1px solid var(--outline);
+
+        tr:last-child td {
+          border-bottom: none;
+        }
+      }
+
+      &--dense {
+        border-radius: 0.5rem;
+
+        th,
+        td {
+          padding: 0.25rem;
+        }
+      }
+
+      > * {
+        border-radius: 0;
       }
     }
 
-    > * {
-      border-radius: 0;
-    }
-  }
+    &__footer {
+      display: flex;
+      justify-content: end;
+      align-items: center;
 
-  &__footer {
-    display: flex;
-    justify-content: end;
-    align-items: center;
+      &-records-per-page-select {
+        margin-bottom: 0 !important;
+        margin-left: 1em;
+        margin-right: 1em;
+      }
 
-    &-records-per-page-select {
-      margin-bottom: 0 !important;
-      margin-left: 1em;
-      margin-right: 1em;
-    }
-
-    &-records-per-page-select {
-      width: 80px;
-      display: inline-block;
+      &-records-per-page-select {
+        width: 80px;
+        display: inline-block;
+      }
     }
   }
 }

@@ -3,6 +3,7 @@
   import { ripple } from "$helpers";
   import { isActivationKey } from "$utils";
   import type { QEvent } from "$utils";
+  import "./QSwitch.scss";
   import type { QSwitchProps } from "./props";
 
   type QSwitchEvent<T> = QEvent<T, HTMLDivElement>;

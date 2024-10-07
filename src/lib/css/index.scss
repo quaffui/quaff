@@ -1,23 +1,13 @@
-@layer theme, ripple, components, classes, disabled;
+@layer QTheme, QRipple, QComponents, QClasses, QDisabled;
 
-@layer Quaff {
-  @layer theme {
-    @import "./theme/theme";
-  }
+@layer QTheme {
+  @import "./theme/theme";
+}
 
-  @layer ripple {
-    @import "ripple";
-  }
+@layer QRipple {
+  @import "ripple";
+}
 
-  @layer components {
-    @import "components";
-  }
-
-  @layer classes {
-    @import "classes";
-  }
-
-  @layer disabled {
-    @import "disabled";
-  }
+@layer QClasses {
+  @import "classes";
 }

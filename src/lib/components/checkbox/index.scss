@@ -1,9 +1,13 @@
 @use "$css/mixins";
 
-.q-checkbox {
-  @include mixins.selection(checkbox);
+@layer QTheme, QRipple, QComponents, QClasses, QDisabled;
 
-  > span::before {
-    content: "check_box_outline_blank";
+@layer QComponents {
+  .q-checkbox {
+    @include mixins.selection(checkbox);
+
+    > span::before {
+      content: "check_box_outline_blank";
+    }
   }
 }

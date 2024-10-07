@@ -1,7 +1,6 @@
-<svelte:options runes={true} />
-
 <script lang="ts">
   import { useAlign } from "$lib/composables/useAlign";
+  import "./QCardActions.scss";
   import type { QCardActionsProps } from "./props";
 
   let { align, vertical = false, children, ...props }: QCardActionsProps = $props();

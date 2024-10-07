@@ -1,5 +1,6 @@
 <script lang="ts">
   import { QIcon, QSelect, QBtn } from "$lib";
+  import "./index.scss";
   import type { QTableProps, QTableColumn, QTableRow, QTableSort } from "./props";
 
   let {

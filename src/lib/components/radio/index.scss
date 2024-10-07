@@ -1,5 +1,9 @@
 @use "$css/mixins";
 
-.q-radio {
-  @include mixins.selection(radio);
+@layer QTheme, QRipple, QComponents, QClasses, QDisabled;
+
+@layer QComponents {
+  .q-radio {
+    @include mixins.selection(radio);
+  }
 }

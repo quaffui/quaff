@@ -1,4 +1,5 @@
 <script lang="ts">
+  import "./index.scss";
   import type { QCheckboxProps } from "./props";
 
   let { value = $bindable(), label = "", disable = false, ...props }: QCheckboxProps = $props();

@@ -1,5 +1,3 @@
-<svelte:options runes={true} />
-
 <script lang="ts">
   import QCircularProgress from "$lib/components/progress/QCircularProgress.svelte";
   import { useSize } from "$lib/composables/useSize";
@@ -8,6 +6,7 @@
   import type { QEvent } from "$lib/utils";
   import { extractImgSrc } from "$lib/utils/string";
   import QIcon from "../icon/QIcon.svelte";
+  import "./QBtn.scss";
   import type { MaterialSymbol } from "material-symbols";
   import type { QBtnProps } from "./props";
 

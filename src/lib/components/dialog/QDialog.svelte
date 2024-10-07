@@ -1,4 +1,5 @@
 <script lang="ts">
+  import "./QDialog.scss";
   import type { QDialogProps } from "./props";
 
   let {

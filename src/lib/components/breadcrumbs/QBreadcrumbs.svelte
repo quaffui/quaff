@@ -1,7 +1,6 @@
-<svelte:options runes={true} />
-
 <script lang="ts">
   import { setContext, untrack } from "svelte";
+  import "./QBreadcrumbs.scss";
   import type { QBreadcrumbsProps } from "./props";
 
   let {

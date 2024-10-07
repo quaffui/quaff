@@ -1,73 +1,77 @@
-.q-icon {
-  --size: 1.5rem;
-  overflow: visible;
-  font-family: var(--font, "Material Symbols Outlined");
-  font-weight: normal;
-  font-style: normal;
-  font-size: var(--size);
-  letter-spacing: normal;
-  text-transform: none;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  white-space: nowrap;
-  word-wrap: normal;
-  direction: ltr;
-  font-feature-settings: "liga";
-  -webkit-font-smoothing: antialiased;
-  vertical-align: middle;
-  text-align: center;
-  width: var(--size);
-  min-width: var(--size);
-  height: var(--size);
-  min-height: var(--size);
-  box-sizing: content-box;
-  line-height: normal;
+@layer QTheme, QRipple, QComponents, QClasses, QDisabled;
 
-  &--outlined {
-    --font: "Material Symbols Outlined";
-  }
+@layer QComponents {
+  .q-icon {
+    --size: 1.5rem;
+    overflow: visible;
+    font-family: var(--font, "Material Symbols Outlined");
+    font-weight: normal;
+    font-style: normal;
+    font-size: var(--size);
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    font-feature-settings: "liga";
+    -webkit-font-smoothing: antialiased;
+    vertical-align: middle;
+    text-align: center;
+    width: var(--size);
+    min-width: var(--size);
+    height: var(--size);
+    min-height: var(--size);
+    box-sizing: content-box;
+    line-height: normal;
 
-  &--rounded {
-    --font: "Material Symbols Rounded";
-  }
+    &--outlined {
+      --font: "Material Symbols Outlined";
+    }
 
-  &--sharp {
-    --font: "Material Symbols Sharp";
-  }
+    &--rounded {
+      --font: "Material Symbols Rounded";
+    }
 
-  &--xs {
-    --size: 1rem;
-  }
+    &--sharp {
+      --font: "Material Symbols Sharp";
+    }
 
-  &--sm {
-    --size: 1.25rem;
-  }
+    &--xs {
+      --size: 1rem;
+    }
 
-  &--lg {
-    --size: 1.75rem;
-  }
+    &--sm {
+      --size: 1.25rem;
+    }
 
-  &--xl {
-    --size: 2rem;
-  }
+    &--lg {
+      --size: 1.75rem;
+    }
 
-  > :is(img, svg) {
-    width: 100%;
-    height: 100%;
-    background-size: 100%;
-    border-radius: inherit;
-    position: absolute;
-    top: 0;
-    left: 0;
-    padding: inherit;
-  }
+    &--xl {
+      --size: 2rem;
+    }
 
-  &--filled
+    > :is(img, svg) {
+      width: 100%;
+      height: 100%;
+      background-size: 100%;
+      border-radius: inherit;
+      position: absolute;
+      top: 0;
+      left: 0;
+      padding: inherit;
+    }
+
+    &--filled
   // we might need these selectors later:
   // a.row:is(:hover, :focus) > i,
   // .transparent:is(:hover, :focus) > i
-  {
-    font-variation-settings: "FILL" 1;
+    {
+      font-variation-settings: "FILL" 1;
+    }
   }
 }

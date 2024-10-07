@@ -1,7 +1,6 @@
-<svelte:options runes={true} />
-
 <script lang="ts">
   import { useSize } from "$lib/composables/useSize";
+  import "./QAvatar.scss";
   import type { QAvatarProps } from "./props";
 
   let {

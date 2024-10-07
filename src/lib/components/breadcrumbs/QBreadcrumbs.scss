@@ -1,10 +1,14 @@
-.q-breadcrumbs {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: fit-content;
+@layer QTheme, QRipple, QComponents, QClasses, QDisabled;
 
-  & > .q-breadcrumbs__separator:first-child {
-    display: none;
+@layer QComponents {
+  .q-breadcrumbs {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+
+    & > .q-breadcrumbs__separator:first-child {
+      display: none;
+    }
   }
 }

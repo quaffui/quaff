@@ -1,10 +1,14 @@
 @use "$css/mixins";
 
-.q-card__section {
-  @include mixins.padding("a-sm");
+@layer QTheme, QRipple, QComponents, QClasses, QDisabled;
 
-  &--horizontal {
-    border-radius: 0;
-    @include mixins.margin("t-sm");
+@layer QComponents {
+  .q-card__section {
+    @include mixins.padding("a-sm");
+
+    &--horizontal {
+      border-radius: 0;
+      @include mixins.margin("t-sm");
+    }
   }
 }

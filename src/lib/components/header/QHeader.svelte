@@ -5,6 +5,7 @@
   import QScrollObserver from "$lib/classes/QScrollObserver.svelte";
   import type { AppbarContext } from "$components/layout/QLayout.svelte";
   import type { QLayoutProps } from "$components/layout/props";
+  import "./QHeader.scss";
   import type { QHeaderProps } from "./props";
 
   const headerIdentifier = Date.now();

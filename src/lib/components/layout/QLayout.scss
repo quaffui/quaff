@@ -1,178 +1,182 @@
 @use "$css/mixins";
 @use "$css/variables";
 
-.q-layout {
-  z-index: 0;
-  position: relative;
+@layer QTheme, QRipple, QComponents, QClasses, QDisabled;
 
-  width: 100%;
-  height: 100%;
-  min-height: 100%;
-  min-width: 100%;
+@layer QComponents {
+  .q-layout {
+    z-index: 0;
+    position: relative;
 
-  overflow: hidden;
+    width: 100%;
+    height: 100%;
+    min-height: 100%;
+    min-width: 100%;
 
-  border-radius: inherit;
-}
-
-.q-layout > .q-railbar {
-  position: absolute;
-
-  transition:
-    top variables.$speed3,
-    bottom variables.$speed3;
-
-  &.q-railbar--offset-top {
-    // Put the railbar under the header to avoid hiding its box-shadow
-    z-index: 3;
-  }
-
-  @each $pos in ("top", "bottom") {
-    &.q-railbar--offset-#{$pos} {
-      #{$pos}: var(--offset-#{$pos}, 0);
-    }
-  }
-
-  & > .q-list {
-    @include mixins.gap("sm");
-
-    & > .q-item {
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-
-      @include mixins.padding("x-sm");
-      @include mixins.gap("xs");
-
-      border-radius: 2rem;
-
-      &.q-link::after {
-        all: unset;
-      }
-
-      & > .q-item__section {
-        justify-content: start;
-      }
-
-      & > i {
-        @include mixins.padding("a-xs");
-        transition: padding variables.$speed1 linear;
-      }
-
-      &:is(:hover, :focus, .q-item--active) > i {
-        @include mixins.padding("x-lg");
-
-        background-color: var(--secondary-container);
-        color: var(--on-secondary-container);
-
-        font-variation-settings:
-          "FILL" 1,
-          "wght" 400,
-          "opsz" 24;
-      }
-    }
-  }
-}
-
-.q-layout > .q-drawer {
-  border-radius: 0;
-
-  transition:
-    top variables.$speed3,
-    bottom variables.$speed3,
-    transform variables.$speed3;
-
-  &.q-drawer--offset-top {
-    // Put the railbar under the header to avoid hiding its box-shadow
-    z-index: 2;
-  }
-
-  @function shouldHaveRadius($pos) {
-    @if not list-index(("top", "bottom"), $pos) {
-      @error 'The position "#{$pos}" is incorrect, should be "top" or "bottom"';
-    }
-
-    @return unquote(
-      ":is(.q-drawer--overlay,.q-drawer--offset-#{$pos},:not(:has(~ .q-header)),:has(~ .q-header--collapsed))"
-    );
-  }
-
-  $x-pos: "left", "right";
-  $y-pos: "top", "bottom";
-
-  @each $side in $x-pos {
-    &.q-drawer--#{$side} {
-      #{$side}: var(--#{$side}-railbar-width, 0);
-    }
-  }
-
-  @each $pos in $y-pos {
-    @each $side in $x-pos {
-      &:not(.q-drawer--#{$side})#{shouldHaveRadius($pos)} {
-        border-#{$pos}-#{$side}-radius: 1rem;
-      }
-    }
-
-    &.q-drawer--offset-#{$pos} {
-      #{$pos}: var(--offset-#{$pos}, 0);
-    }
-  }
-
-  & .q-list > .q-item.q-link {
-    border-radius: 2rem;
     overflow: hidden;
 
-    &::before {
-      content: "";
+    border-radius: inherit;
+  }
 
-      z-index: -1;
-      position: absolute;
-      bottom: 0;
-      left: 0;
+  .q-layout > .q-railbar {
+    position: absolute;
 
-      width: 100%;
-      height: 100%;
+    transition:
+      top variables.$speed3,
+      bottom variables.$speed3;
 
-      background-color: var(--secondary-container);
-      opacity: 0;
-
-      border-radius: inherit;
-
-      transform: scaleX(0.32);
-
-      transition:
-        transform variables.$speed2,
-        opacity variables.$speed2,
-        top variables.$speed3,
-        bottom variables.$speed3,
-        left variables.$speed3;
+    &.q-railbar--offset-top {
+      // Put the railbar under the header to avoid hiding its box-shadow
+      z-index: 3;
     }
 
-    &.q-item--active {
-      color: var(--on-secondary-container);
+    @each $pos in ("top", "bottom") {
+      &.q-railbar--offset-#{$pos} {
+        #{$pos}: var(--offset-#{$pos}, 0);
+      }
+    }
 
-      &::before {
-        opacity: 1;
-        transform: scaleX(1);
+    & > .q-list {
+      @include mixins.gap("sm");
+
+      & > .q-item {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        @include mixins.padding("x-sm");
+        @include mixins.gap("xs");
+
+        border-radius: 2rem;
+
+        &.q-link::after {
+          all: unset;
+        }
+
+        & > .q-item__section {
+          justify-content: start;
+        }
+
+        & > i {
+          @include mixins.padding("a-xs");
+          transition: padding variables.$speed1 linear;
+        }
+
+        &:is(:hover, :focus, .q-item--active) > i {
+          @include mixins.padding("x-lg");
+
+          background-color: var(--secondary-container);
+          color: var(--on-secondary-container);
+
+          font-variation-settings:
+            "FILL" 1,
+            "wght" 400,
+            "opsz" 24;
+        }
       }
     }
   }
-}
 
-// Offset for drawer with railbar
-@each $side in ("left", "right") {
-  .q-railbar.q-railbar--#{$side}:not([style="display: none"]) ~ .q-drawer.q-drawer--#{$side} {
-    #{$side}: var(--#{$side}-railbar-width);
+  .q-layout > .q-drawer {
+    border-radius: 0;
+
+    transition:
+      top variables.$speed3,
+      bottom variables.$speed3,
+      transform variables.$speed3;
+
+    &.q-drawer--offset-top {
+      // Put the railbar under the header to avoid hiding its box-shadow
+      z-index: 2;
+    }
+
+    @function shouldHaveRadius($pos) {
+      @if not list-index(("top", "bottom"), $pos) {
+        @error 'The position "#{$pos}" is incorrect, should be "top" or "bottom"';
+      }
+
+      @return unquote(
+        ":is(.q-drawer--overlay,.q-drawer--offset-#{$pos},:not(:has(~ .q-header)),:has(~ .q-header--collapsed))"
+      );
+    }
+
+    $x-pos: "left", "right";
+    $y-pos: "top", "bottom";
+
+    @each $side in $x-pos {
+      &.q-drawer--#{$side} {
+        #{$side}: var(--#{$side}-railbar-width, 0);
+      }
+    }
+
+    @each $pos in $y-pos {
+      @each $side in $x-pos {
+        &:not(.q-drawer--#{$side})#{shouldHaveRadius($pos)} {
+          border-#{$pos}-#{$side}-radius: 1rem;
+        }
+      }
+
+      &.q-drawer--offset-#{$pos} {
+        #{$pos}: var(--offset-#{$pos}, 0);
+      }
+    }
+
+    & .q-list > .q-item.q-link {
+      border-radius: 2rem;
+      overflow: hidden;
+
+      &::before {
+        content: "";
+
+        z-index: -1;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+
+        width: 100%;
+        height: 100%;
+
+        background-color: var(--secondary-container);
+        opacity: 0;
+
+        border-radius: inherit;
+
+        transform: scaleX(0.32);
+
+        transition:
+          transform variables.$speed2,
+          opacity variables.$speed2,
+          top variables.$speed3,
+          bottom variables.$speed3,
+          left variables.$speed3;
+      }
+
+      &.q-item--active {
+        color: var(--on-secondary-container);
+
+        &::before {
+          opacity: 1;
+          transform: scaleX(1);
+        }
+      }
+    }
   }
 
-  // Reset railbar width
-  .q-railbar.q-railbar--#{$side}[style="display: none"] ~ .q-drawer.q-drawer--#{$side} {
-    --#{$side}-railbar-width: 0px;
-  }
-}
+  // Offset for drawer with railbar
+  @each $side in ("left", "right") {
+    .q-railbar.q-railbar--#{$side}:not([style="display: none"]) ~ .q-drawer.q-drawer--#{$side} {
+      #{$side}: var(--#{$side}-railbar-width);
+    }
 
-.q-layout > .q-layout__content {
-  height: calc(100% - var(--offset-top) - var(--offset-bottom));
-  overflow: auto;
-  transition: margin variables.$speed3;
+    // Reset railbar width
+    .q-railbar.q-railbar--#{$side}[style="display: none"] ~ .q-drawer.q-drawer--#{$side} {
+      --#{$side}-railbar-width: 0px;
+    }
+  }
+
+  .q-layout > .q-layout__content {
+    height: calc(100% - var(--offset-top) - var(--offset-bottom));
+    overflow: auto;
+    transition: margin variables.$speed3;
+  }
 }

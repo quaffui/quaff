@@ -1,5 +1,6 @@
 <script lang="ts">
   import { useSize } from "$lib/composables/useSize";
+  import "./QSeparator.scss";
   import type { QSeparatorProps } from "./props";
 
   let {

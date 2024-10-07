@@ -4,6 +4,7 @@
   import QScrollObserver from "$lib/classes/QScrollObserver.svelte";
   import type { QLayoutProps } from "$components/layout/props";
   import QToolbar from "$components/toolbar/QToolbar.svelte";
+  import "./QFooter.scss";
   import type { AppbarContext } from "../layout/QLayout.svelte";
   import type { QFooterProps } from "./props";
 

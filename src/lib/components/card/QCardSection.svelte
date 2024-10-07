@@ -1,6 +1,5 @@
-<svelte:options runes={true} />
-
 <script lang="ts">
+  import "./QCardSection.scss";
   import type { QCardSectionProps } from "./props";
 
   let { horizontal = false, children, ...props }: QCardSectionProps = $props();
