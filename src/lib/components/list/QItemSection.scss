@@ -1,45 +1,49 @@
 @use "$css/mixins";
 
-.q-item__section {
-  display: flex;
+@layer QTheme, QRipple, QComponents, QClasses, QDisabled;
 
-  &--video {
-    margin-left: -1rem;
-    padding-block: 0.25rem;
+@layer QComponents {
+  .q-item__section {
+    display: flex;
 
-    & video {
-      width: auto;
-      height: 4rem;
+    &--video {
+      margin-left: -1rem;
+      padding-block: 0.25rem;
+
+      & video {
+        width: auto;
+        height: 4rem;
+        object-fit: cover;
+        object-position: center;
+      }
+    }
+
+    & .q-avatar {
+      height: 2.5rem;
+      width: 2.5rem;
+    }
+    &--icon {
+      height: 1.5rem;
+      width: 1.5rem;
+    }
+
+    &--thumbnail img {
+      width: 3.5rem;
+      height: 3.5rem;
       object-fit: cover;
       object-position: center;
     }
-  }
 
-  & .q-avatar {
-    height: 2.5rem;
-    width: 2.5rem;
-  }
-  &--icon {
-    height: 1.5rem;
-    width: 1.5rem;
-  }
+    &--content {
+      flex-direction: column;
+      flex: 10000 1 0;
+      justify-content: center;
+      align-items: start;
+    }
 
-  &--thumbnail img {
-    width: 3.5rem;
-    height: 3.5rem;
-    object-fit: cover;
-    object-position: center;
-  }
-
-  &--content {
-    flex-direction: column;
-    flex: 10000 1 0;
-    justify-content: center;
-    align-items: start;
-  }
-
-  &--toggle {
-    height: 1.5rem;
-    width: 3.25rem;
+    &--toggle {
+      height: 1.5rem;
+      width: 3.25rem;
+    }
   }
 }

@@ -1,6 +1,5 @@
-<svelte:options runes={true} />
-
 <script lang="ts">
+  import "./QCard.scss";
   import type { QCardProps } from "./props";
 
   let {

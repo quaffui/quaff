@@ -1,170 +1,174 @@
 @use "$css/mixins";
 @use "$css/disabled";
 
-@layer q-chip {
-  .q-chip {
-    $state-layer-opacity: 0;
-    padding-inline: 1rem;
-    border-radius: 0.5rem;
+@layer QTheme, QRipple, QComponents, QClasses, QDisabled;
 
-    display: flex;
-    align-items: center;
-    justify-content: start;
-    gap: 0.5rem;
-    width: fit-content;
+@layer QComponents {
+  @layer q-chip {
+    .q-chip {
+      $state-layer-opacity: 0;
+      padding-inline: 1rem;
+      border-radius: 0.5rem;
 
-    background-color: transparent;
-    color: var(--on-surface);
+      display: flex;
+      align-items: center;
+      justify-content: start;
+      gap: 0.5rem;
+      width: fit-content;
 
-    cursor: pointer;
-    user-select: none;
+      background-color: transparent;
+      color: var(--on-surface);
 
-    @include mixins.typography(label-large);
+      cursor: pointer;
+      user-select: none;
 
-    &::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
+      @include mixins.typography(label-large);
 
-      border-radius: inherit;
-      background-color: mixins.with-alpha(
-        var(--state-layer-color, transparent),
-        var(--state-layer-opacity, 0)
-      );
-    }
+      &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
 
-    &:hover:not([aria-disabled]) {
-      --state-layer-opacity: 8%;
-    }
-
-    &:focus:not([aria-disabled]) {
-      --state-layer-opacity: 10%;
-    }
-
-    &.q-chip--sm {
-      height: 2rem;
-
-      & > :is(.q-icon, .q-avatar) {
-        --size: 1.125rem;
+        border-radius: inherit;
+        background-color: mixins.with-alpha(
+          var(--state-layer-color, transparent),
+          var(--state-layer-opacity, 0)
+        );
       }
-    }
-
-    &.q-chip--md {
-      height: 2.5rem;
-
-      & > :is(.q-icon, .q-avatar) {
-        --size: 1.40625rem;
-      }
-    }
-
-    &.q-chip--lg {
-      height: 3rem;
-
-      & > :is(.q-icon, .q-avatar) {
-        --size: 1.6875rem;
-      }
-    }
-
-    &:focus:not([aria-disabled]) {
-      outline: 1px solid var(--secondary);
-
-      & > .q-icon {
-        color: var(--on-secondary-container);
-      }
-    }
-
-    &.q-chip--outlined {
-      outline: 1px solid var(--outline);
-
-      &:focus:not([aria-disabled]) {
-        outline-color: var(--secondary);
-      }
-    }
-
-    &.q-chip--elevated {
-      @include mixins.elevate(0.5);
 
       &:hover:not([aria-disabled]) {
-        @include mixins.elevate(1);
+        --state-layer-opacity: 8%;
       }
-
-      background-color: var(--surface-container-low);
-    }
-
-    &.q-chip--assist {
-      --state-layer-color: var(--on-surface);
-    }
-
-    &.q-chip--filter {
-      --state-layer-color: var(--on-surface-variant);
 
       &:focus:not([aria-disabled]) {
-        outline-color: var(--on-surface-variant);
+        --state-layer-opacity: 10%;
       }
 
-      &.q-chip--selected {
-        --state-layer-color: var(--on-secondary-container);
+      &.q-chip--sm {
+        height: 2rem;
 
-        outline-color: var(--secondary-container);
-        outline-width: 0;
-
-        background-color: var(--secondary-container);
-
-        &.q-chip--elevated {
-          color: var(--on-secondary-container);
+        & > :is(.q-icon, .q-avatar) {
+          --size: 1.125rem;
         }
+      }
 
-        &:hover:not([aria-disabled]):not([aria-disabled]) {
-          @include mixins.elevate(0.5);
+      &.q-chip--md {
+        height: 2.5rem;
+
+        & > :is(.q-icon, .q-avatar) {
+          --size: 1.40625rem;
+        }
+      }
+
+      &.q-chip--lg {
+        height: 3rem;
+
+        & > :is(.q-icon, .q-avatar) {
+          --size: 1.6875rem;
+        }
+      }
+
+      &:focus:not([aria-disabled]) {
+        outline: 1px solid var(--secondary);
+
+        & > .q-icon {
           color: var(--on-secondary-container);
         }
       }
-    }
 
-    &.q-chip--input {
-      --state-layer-color: var(--on-surface-variant);
+      &.q-chip--outlined {
+        outline: 1px solid var(--outline);
 
-      padding-inline: 0.75rem;
-      color: var(--on-surface-variant);
+        &:focus:not([aria-disabled]) {
+          outline-color: var(--secondary);
+        }
+      }
 
-      & > .q-icon {
+      &.q-chip--elevated {
+        @include mixins.elevate(0.5);
+
+        &:hover:not([aria-disabled]) {
+          @include mixins.elevate(1);
+        }
+
+        background-color: var(--surface-container-low);
+      }
+
+      &.q-chip--assist {
+        --state-layer-color: var(--on-surface);
+      }
+
+      &.q-chip--filter {
+        --state-layer-color: var(--on-surface-variant);
+
+        &:focus:not([aria-disabled]) {
+          outline-color: var(--on-surface-variant);
+        }
+
+        &.q-chip--selected {
+          --state-layer-color: var(--on-secondary-container);
+
+          outline-color: var(--secondary-container);
+          outline-width: 0;
+
+          background-color: var(--secondary-container);
+
+          &.q-chip--elevated {
+            color: var(--on-secondary-container);
+          }
+
+          &:hover:not([aria-disabled]):not([aria-disabled]) {
+            @include mixins.elevate(0.5);
+            color: var(--on-secondary-container);
+          }
+        }
+      }
+
+      &.q-chip--input {
+        --state-layer-color: var(--on-surface-variant);
+
+        padding-inline: 0.75rem;
         color: var(--on-surface-variant);
+
+        & > .q-icon {
+          color: var(--on-surface-variant);
+        }
+      }
+
+      &.q-chip--suggestion {
+        --state-layer-color: var(--on-surface-variant);
+
+        color: var(--on-surface-variant);
+
+        &:focus:not([aria-disabled]) {
+          outline-color: var(--secondary);
+        }
       }
     }
 
-    &.q-chip--suggestion {
-      --state-layer-color: var(--on-surface-variant);
-
-      color: var(--on-surface-variant);
-
-      &:focus:not([aria-disabled]) {
-        outline-color: var(--secondary);
-      }
+    .q-chip > .q-icon {
+      color: var(--primary);
     }
-  }
 
-  .q-chip > .q-icon {
-    color: var(--primary);
-  }
+    .q-chip > :is(.q-icon.q-chip__leading-icon, .q-avatar.q-chip__avatar) {
+      margin-left: -0.5rem;
+    }
 
-  .q-chip > :is(.q-icon.q-chip__leading-icon, .q-avatar.q-chip__avatar) {
-    margin-left: -0.5rem;
-  }
+    .q-chip > .q-icon.q-chip__trailing-icon {
+      margin-right: -0.5rem;
+    }
 
-  .q-chip > .q-icon.q-chip__trailing-icon {
-    margin-right: -0.5rem;
-  }
-
-  .q-chip.q-chip--input > .q-avatar.q-chip__avatar {
-    --size: 1.5rem;
+    .q-chip.q-chip--input > .q-avatar.q-chip__avatar {
+      --size: 1.5rem;
+    }
   }
 }
 
 // Disabled
-@layer q-chip--disabled {
+@layer QDisabled {
   .q-chip[aria-disabled] {
     @include disabled.base();
 

@@ -1,25 +1,29 @@
 @use "$css/mixins";
 
-.q-card {
-  display: block;
-  border-radius: 0.75rem;
-  transition: transform var(--speed-3) padding var(--speed-3) border-radius var(--speed-3);
+@layer QTheme, QRipple, QComponents, QClasses, QDisabled;
 
-  @include mixins.padding("a-md");
-  @include mixins.elevate(1, "bottom");
+@layer QComponents {
+  .q-card {
+    display: block;
+    border-radius: 0.75rem;
+    transition: transform var(--speed-3) padding var(--speed-3) border-radius var(--speed-3);
 
-  &--bordered {
-    box-sizing: border-box;
-    box-shadow: none;
+    @include mixins.padding("a-md");
+    @include mixins.elevate(1, "bottom");
 
-    @include mixins.border;
-  }
+    &--bordered {
+      box-sizing: border-box;
+      box-shadow: none;
 
-  &--flat {
-    box-shadow: none;
-  }
+      @include mixins.border;
+    }
 
-  &--rounded {
-    border-radius: 2rem;
+    &--flat {
+      box-shadow: none;
+    }
+
+    &--rounded {
+      border-radius: 2rem;
+    }
   }
 }
