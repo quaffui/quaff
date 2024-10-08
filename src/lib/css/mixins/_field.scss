@@ -1,3 +1,5 @@
+@use "sass:math";
+
 @mixin reset-form-element {
   padding: 0px;
   background: none;
@@ -19,8 +21,8 @@
   );
 }
 
-@mixin border-substitute($variant: "outlined") {
-  $border-radius: if($variant == "outlined", 0.25rem, calc(var(--wrapper-height) / 2));
+@mixin border-substitute($variant: "outlined", $wrapper-height, $dense: false) {
+  $border-radius: if($variant == "outlined", 0.25rem, math.div($wrapper-height, 2));
 
   &::before,
   &::after {
@@ -28,8 +30,8 @@
     position: absolute;
     top: -0.0625rem;
     bottom: -0.0625rem;
-    width: calc(var(--wrapper-height) / 2);
-    height: var(--wrapper-height);
+    width: math.div($wrapper-height, 2);
+    height: $wrapper-height;
     border: 0.0625rem solid transparent;
     border-top-color: var(--decorator-color);
     border-radius: $border-radius;
@@ -41,7 +43,16 @@
     border-top-right-radius: 0px;
     border-bottom-right-radius: 0px;
     $clip-height: 0.25rem;
-    $clip-width: if($variant == "outlined", 0.9375rem, 0.3125rem);
+    $clip-width: if($variant == "outlined", 0.9375rem, 0.25rem);
+
+    @if $dense == true and $variant == "outlined" {
+      $clip-width: math.div($clip-width, 1.4);
+    }
+
+    @if $dense == true and $variant != "outlined" {
+      $clip-width: 0rem;
+    }
+
     @include clip-border($clip-width, $clip-height);
   }
 
