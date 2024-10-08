@@ -3,13 +3,10 @@
 
 .q-field {
   $transition-duration: 0.2s;
+  $wrapper-height: 3rem;
+  $wrapper-height-dense: 2.5rem;
 
   display: flex;
-  --wrapper-height: 3rem;
-
-  &--dense {
-    --wrapper-height: 2.5rem;
-  }
 
   &__inner {
     display: flex;
@@ -21,7 +18,11 @@
     --decorator-color: var(--outline);
     display: flex;
     position: relative;
-    height: var(--wrapper-height);
+    height: $wrapper-height;
+  }
+
+  &--dense &__wrapper {
+    height: $wrapper-height-dense;
   }
 
   &--rounded#{&}--active &__wrapper {
@@ -70,7 +71,11 @@
   }
 
   &--rounded &__wrapper {
-    border-radius: calc(var(--wrapper-height) / 2);
+    border-radius: math.div($wrapper-height, 2);
+  }
+
+  &--rounded#{&}--dense &__wrapper {
+    border-radius: math.div($wrapper-height-dense, 2);
   }
 
   &--outlined &__wrapper {
@@ -96,11 +101,19 @@
   }
 
   &--label#{&}--active#{&}--rounded &__wrapper {
-    @include mixins.border-substitute("rounded");
+    @include mixins.border-substitute("rounded", $wrapper-height);
+  }
+
+  &--label#{&}--active#{&}--rounded#{&}--dense &__wrapper {
+    @include mixins.border-substitute("rounded", $wrapper-height-dense, true);
   }
 
   &--label#{&}--active#{&}--outlined &__wrapper {
-    @include mixins.border-substitute("outlined");
+    @include mixins.border-substitute("outlined", $wrapper-height);
+  }
+
+  &--label#{&}--active#{&}--outlined#{&}--dense &__wrapper {
+    @include mixins.border-substitute("outlined", $wrapper-height-dense, true);
   }
 
   // in case we have no label
@@ -114,7 +127,7 @@
     top: 0px;
     right: 0px;
     font-size: 1rem;
-    line-height: calc(var(--wrapper-height) - 0.25rem);
+    line-height: $wrapper-height - 0.25rem;
     color: var(--decorator-color);
     pointer-events: none;
     transition:
@@ -125,6 +138,10 @@
       line-height $transition-duration ease 0s,
       border-color $transition-duration ease 0s;
     will-change: top, left, font-size, line-height;
+  }
+
+  &--label#{&}--dense &__label {
+    line-height: $wrapper-height-dense - 0.25rem;
   }
 
   &--default &__label,
@@ -195,17 +212,29 @@
   }
 
   &--active#{&}--rounded &__label {
-    right: calc(var(--wrapper-height) / 2 - 0.125rem);
+    right: math.div($wrapper-height, 2) - 0.125rem;
+  }
+
+  &--active#{&}--rounded#{&}--dense &__label {
+    right: math.div($wrapper-height-dense, 2) - 0.125rem;
   }
 
   &--active#{&}--outlined &__label {
     right: 1.375rem;
   }
 
+  &--active#{&}--outlined#{&}--dense &__label {
+    right: 1.125rem;
+  }
+
   &--active &__label {
     font-size: 0.75rem;
     line-height: 0px;
     margin-top: -0.0625rem;
+  }
+
+  &--active#{&}--dense &__label {
+    line-height: 0px;
   }
 
   &--active#{&}--default &__label,
