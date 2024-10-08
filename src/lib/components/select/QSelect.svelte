@@ -42,7 +42,7 @@
     return (value as QSelectMultipleValue).join(", ");
   });
 
-  const active = $derived(currentDisplayValue ?? focus);
+  const active = $derived(currentDisplayValue || focus);
 
   let wrapper: HTMLDivElement | null = $state(null);
   let isMenuOpen = $state(false);
