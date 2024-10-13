@@ -4,20 +4,20 @@
   "scripts": {
     "dev": "vite dev",
     "open": "vite dev --open",
-    "build": "vite build && npm run package && npm run build:css",
+    "build": "vite build && bun run package && bun run build:css",
     "build:css": "vite build --config vite.config.scss.ts",
     "preview": "vite preview",
     "package": "svelte-kit sync && svelte-package && publint",
-    "prepublishOnly": "npm run build",
+    "prepublishOnly": "bun run build",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
     "test:unit": "vitest",
     "lint": "prettier --plugin prettier-plugin-svelte . --check . && eslint .",
     "format": "prettier --plugin prettier-plugin-svelte . --write .",
-    "docgen-props": "node --loader ts-node/esm/transpile-only --no-warnings scripts/docgenProps.ts",
-    "colorgen": "node --loader ts-node/esm/transpile-only --no-warnings scripts/colorgen.ts",
-    "docgen-snippets": "node --loader ts-node/esm/transpile-only --no-warnings scripts/docgenSnippets.ts",
-    "write-version": "node --loader ts-node/esm/transpile-only --no-warnings scripts/writeVersion.ts"
+    "docgen-props": "bun scripts/docgenProps.ts",
+    "colorgen": "bun scripts/colorgen.ts",
+    "docgen-snippets": "bun scripts/docgenSnippets.ts",
+    "write-version": "bun scripts/writeVersion.ts"
   },
   "exports": {
     ".": {
@@ -41,7 +41,7 @@
     "@sveltejs/kit": "^2.5.28",
     "@sveltejs/package": "^2.3.5",
     "@sveltejs/vite-plugin-svelte": "^3.1.2",
-    "@types/node": "^22.6.1",
+    "@types/bun": "^1.1.11",
     "@types/prettier": "^3.0.0",
     "@types/prismjs": "^1.26.4",
     "@typescript-eslint/eslint-plugin": "^8.7.0",
@@ -63,7 +63,6 @@
     "svelte": "5.0.0-next.257",
     "svelte-check": "^4.0.3",
     "svelte-eslint-parser": "^0.41.1",
-    "ts-node": "^10.9.2",
     "tslib": "^2.7.0",
     "typescript": "^5.6.2",
     "vite": "^5.4.7",

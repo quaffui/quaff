@@ -16,12 +16,11 @@ enum HotUpdateFileName {
 
 function runDocGenProps(): Promise<void> {
   return new Promise((resolve, reject) => {
-    const cmd = "node";
+    const cmd = "bun";
     const args = ["scripts/docgenProps.ts"];
     const options = {
       env: {
         ...process.env,
-        NODE_OPTIONS: "--loader ts-node/esm/transpile-only --no-warnings",
       },
       stdio: "inherit" as const,
     };
