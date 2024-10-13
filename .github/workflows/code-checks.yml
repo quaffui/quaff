@@ -9,17 +9,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v3
+      - uses: oven-sh/setup-bun@v2
         with:
-          node-version: "20.x"
+          bun-version: 1.1.30
 
       - name: Prep
-        run: npm install && npm run write-version && npm run docgen-props && npm run docgen-snippets
+        run: bun install --frozen-lockfile && bun run write-version && bun run docgen-props && bun run docgen-snippets
 
       - name: Run Type Check
-        run: npm run check
+        run: bun run check
 
       - name: Run Lint
-        run: npm run lint
+        run: bun run lint
