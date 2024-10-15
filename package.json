@@ -1,6 +1,6 @@
 {
   "name": "@quaffui/quaff",
-  "version": "0.1.0-prealpha19",
+  "version": "0.1.0-prealpha20",
   "scripts": {
     "dev": "vite dev",
     "open": "vite dev --open",
