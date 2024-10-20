@@ -60,7 +60,6 @@
   };
 
   $effect(() => {
-    // eslint-disable-next-line svelte/valid-compile
     if ($navigating && hideOnRouteChange) {
       hide();
     }

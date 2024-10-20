@@ -27,8 +27,6 @@
 
   const qTabsValueCtx = QContext.get<string | undefined | null>("QTabsValue")!;
   const variant = getContext<QTabsVariants>("QTabsVariant");
-
-  // eslint-disable-next-line svelte/valid-compile
   const isActive = $derived(to ? $isRouteActive(to) : name === qTabsValueCtx.value);
 
   function onclick(e: QTabEvent<MouseEvent>) {

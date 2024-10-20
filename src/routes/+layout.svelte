@@ -183,7 +183,6 @@
   let drawerRightEl = $state<ReturnType<typeof QDrawer>>();
 
   const selectedRailbarItem = $derived(
-    // eslint-disable-next-line svelte/valid-compile
     $isRouteActive("/components") ? "components" : $isRouteActive("/utils") ? "utils" : null
   );
 
