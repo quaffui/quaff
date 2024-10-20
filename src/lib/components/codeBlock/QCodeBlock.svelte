@@ -1,7 +1,8 @@
 <script lang="ts">
-  import { codeToHtml } from "shiki";
+  import { onMount } from "svelte";
   import { copy } from "$lib/utils";
   import { QBtn } from "$lib";
+  import type { CodeToHastOptions, BundledLanguage, BundledTheme } from "shiki";
   import type { QCodeBlockProps } from "./props";
 
   let {
@@ -14,6 +15,21 @@
 
   let btnContent = $state("Copy");
   let btnColor = $state("primary");
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  let codeToHtml = async (str: string, opts: CodeToHastOptions<BundledLanguage, BundledTheme>) =>
+    "";
+
+  async function loadShiki() {
+    try {
+      // prevent vite "optimization", which would lead to errors here
+      const shikiPackage = "shiki";
+      const { codeToHtml: codeToHtmlShiki } = await import(/* @vite-ignore */ shikiPackage);
+      codeToHtml = codeToHtmlShiki;
+    } catch (e) {
+      console.error("error loading shiki, please make sure it is installed", e);
+    }
+  }
 
   const html = $derived.by(
     async () =>
@@ -51,6 +67,8 @@
       setBtn("base");
     }, 3000);
   }
+
+  onMount(() => loadShiki());
 </script>
 
 <div class="q-code-block">
