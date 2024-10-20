@@ -13,7 +13,7 @@
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
     "test:unit": "vitest",
     "lint": "prettier --plugin prettier-plugin-svelte . --check . && eslint .",
-    "format": "prettier --plugin prettier-plugin-svelte . --write .",
+    "format": "prettier --plugin prettier-plugin-svelte . --write . && eslint . --fix",
     "docgen-props": "bun scripts/docgenProps.ts",
     "colorgen": "bun scripts/colorgen.ts",
     "docgen-snippets": "bun scripts/docgenSnippets.ts",
