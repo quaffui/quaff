@@ -183,7 +183,6 @@
   let drawerRightEl = $state<ReturnType<typeof QDrawer>>();
 
   const selectedRailbarItem = $derived(
-    // eslint-disable-next-line svelte/valid-compile
     $isRouteActive("/components") ? "components" : $isRouteActive("/utils") ? "utils" : null
   );
 
@@ -214,7 +213,7 @@
 {:else}
   <QLayout view="hhr lpr fff" class="main-layout">
     {#snippet header()}
-      <QHeader class="elevate-2" reveal>
+      <QHeader class="elevate-2">
         <QToolbarTitle>Quaff</QToolbarTitle>
         <QBtn
           icon={Quaff.darkMode.isActive ? "light_mode" : "dark_mode"}
