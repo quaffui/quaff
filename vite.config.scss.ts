@@ -1,6 +1,13 @@
 import { resolve } from "path";
 
 export default {
+  css: {
+    preprocessorOptions: {
+      scss: {
+        api: "modern-compiler",
+      },
+    },
+  },
   resolve: {
     alias: {
       $lib: resolve(__dirname, "src/lib"),

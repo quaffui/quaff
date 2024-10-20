@@ -45,7 +45,6 @@
     bemClasses: {
       multiline: multiline.value,
       dense,
-      // eslint-disable-next-line svelte/valid-compile
       active: isActive,
     },
     classes: [routerInfo.linkClasses, isActive && activeClass, props.class],
