@@ -2,7 +2,9 @@
 @use "$css/variables";
 @use "$css/disabled";
 
-@layer q-btn {
+@layer QTheme, QRipple, QComponents, QClasses, QDisabled;
+
+@layer QComponents {
   .q-btn {
     position: relative;
 
@@ -118,7 +120,7 @@
 }
 
 // Disabled
-@layer q-btn--disabled {
+@layer QDisabled {
   .q-btn[aria-disabled] {
     @include disabled.base();
 

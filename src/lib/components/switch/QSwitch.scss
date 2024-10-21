@@ -31,7 +31,9 @@ $check-map: (
   @error "The given element #{$el} is not supported.";
 }
 
-@layer q-switch {
+@layer QTheme, QRipple, QComponents, QClasses, QDisabled;
+
+@layer QComponents {
   .q-switch {
     position: relative;
 

@@ -2,6 +2,7 @@
   import { ripple } from "$lib/helpers";
   import { extractImgSrc, isActivationKey } from "$lib/utils";
   import { QAvatar, QIcon } from "$lib";
+  import "./QChip.scss";
   import type { QEvent } from "$lib/utils";
   import type { MaterialSymbol } from "material-symbols";
   import type { QChipProps } from "./props";

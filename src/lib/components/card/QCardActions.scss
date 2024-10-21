@@ -1,10 +1,14 @@
 @use "$css/mixins";
 
-.q-card__actions {
-  display: flex;
-  @include mixins.margin("t-sm");
+@layer QTheme, QRipple, QComponents, QClasses, QDisabled;
 
-  &--vertical {
-    flex-direction: column;
+@layer QComponents {
+  .q-card__actions {
+    display: flex;
+    @include mixins.margin("t-sm");
+
+    &--vertical {
+      flex-direction: column;
+    }
   }
 }

@@ -2,54 +2,58 @@
 @use "$css/variables";
 @import "$css/shared/q-field.scss";
 
-.q-select {
-  &__option--selected {
-    color: var(--primary);
-  }
+@layer QTheme, QRipple, QComponents, QClasses, QDisabled;
 
-  .q-field__wrapper,
-  .q-field__input {
-    cursor: pointer;
-  }
+@layer QComponents {
+  .q-select {
+    &__option--selected {
+      color: var(--primary);
+    }
 
-  &__menu {
-    @include mixins.menu;
-    opacity: 0;
-    visibility: hidden;
-    transform: scale(0.8) translateY(120%);
-    transition:
-      opacity variables.$speed2,
-      transform variables.$speed2,
-      visibility 0s variables.$speed2;
+    .q-field__wrapper,
+    .q-field__input {
+      cursor: pointer;
+    }
 
-    &--active {
-      opacity: 1;
-      visibility: visible;
-      transform: scale(1) translateY(100%);
+    &__menu {
+      @include mixins.menu;
+      opacity: 0;
+      visibility: hidden;
+      transform: scale(0.8) translateY(120%);
       transition:
         opacity variables.$speed2,
         transform variables.$speed2,
-        visibility 0s 0s;
+        visibility 0s variables.$speed2;
+
+      &--active {
+        opacity: 1;
+        visibility: visible;
+        transform: scale(1) translateY(100%);
+        transition:
+          opacity variables.$speed2,
+          transform variables.$speed2,
+          visibility 0s 0s;
+      }
     }
-  }
 
-  &.q-field--bottom-space &__menu {
-    bottom: 1.0625rem;
-  }
-
-  & &__arrow-toggle {
-    cursor: pointer;
-
-    &--has-append {
-      margin-left: 0.5rem;
+    &.q-field--bottom-space &__menu {
+      bottom: 1.0625rem;
     }
-  }
 
-  &.q-field--disable {
-    opacity: 0.5;
-    &,
-    * {
-      cursor: not-allowed;
+    & &__arrow-toggle {
+      cursor: pointer;
+
+      &--has-append {
+        margin-left: 0.5rem;
+      }
+    }
+
+    &.q-field--disable {
+      opacity: 0.5;
+      &,
+      * {
+        cursor: not-allowed;
+      }
     }
   }
 }

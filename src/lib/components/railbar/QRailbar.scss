@@ -1,54 +1,58 @@
 @use "$css/mixins";
 
-.q-railbar {
-  z-index: 5;
-  position: fixed;
-  top: 0;
-  right: auto;
-  bottom: 0;
-  left: auto;
+@layer QTheme, QRipple, QComponents, QClasses, QDisabled;
 
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  text-align: center;
-  vertical-align: middle;
+@layer QComponents {
+  .q-railbar {
+    z-index: 5;
+    position: fixed;
+    top: 0;
+    right: auto;
+    bottom: 0;
+    left: auto;
 
-  height: auto;
-  margin: 0;
-  @include mixins.padding("a-sm");
-  @include mixins.gap("md");
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    text-align: center;
+    vertical-align: middle;
 
-  background-color: var(--surface);
-  color: var(--on-surface);
+    height: auto;
+    margin: 0;
+    @include mixins.padding("a-sm");
+    @include mixins.gap("md");
 
-  border: 0;
-  border-radius: 0;
+    background-color: var(--surface);
+    color: var(--on-surface);
 
-  transform: none;
-  white-space: nowrap;
-  box-sizing: border-box;
-  overflow: auto;
+    border: 0;
+    border-radius: 0;
 
-  // Hide the scrollbar
-  // Internet Explorer 10+
-  -ms-overflow-style: none;
-  // Firefox
-  scrollbar-width: none;
-  // Other
-  &::-webkit-scrollbar {
-    display: none;
-  }
+    transform: none;
+    white-space: nowrap;
+    box-sizing: border-box;
+    overflow: auto;
 
-  @each $side in ("left", "right") {
-    &.q-railbar--#{$side} {
-      #{$side}: 0;
-      width: var(--#{$side}-railbar-width);
+    // Hide the scrollbar
+    // Internet Explorer 10+
+    -ms-overflow-style: none;
+    // Firefox
+    scrollbar-width: none;
+    // Other
+    &::-webkit-scrollbar {
+      display: none;
     }
 
-    &:not(.q-railbar--#{$side}).q-railbar--bordered {
-      @include mixins.border(var(--outline), $side);
+    @each $side in ("left", "right") {
+      &.q-railbar--#{$side} {
+        #{$side}: 0;
+        width: var(--#{$side}-railbar-width);
+      }
+
+      &:not(.q-railbar--#{$side}).q-railbar--bordered {
+        @include mixins.border(var(--outline), $side);
+      }
     }
   }
 }

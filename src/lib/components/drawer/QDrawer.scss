@@ -1,45 +1,49 @@
 @use "$css/mixins";
 @use "$css/variables";
 
-.q-drawer {
-  z-index: 4;
-  position: absolute;
-  top: 0;
-  right: auto;
-  bottom: 0;
-  left: auto;
+@layer QTheme, QRipple, QComponents, QClasses, QDisabled;
 
-  height: auto;
-  @include mixins.padding("a-sm");
+@layer QComponents {
+  .q-drawer {
+    z-index: 4;
+    position: absolute;
+    top: 0;
+    right: auto;
+    bottom: 0;
+    left: auto;
 
-  background-color: var(--surface);
-  color: var(--on-surface);
+    height: auto;
+    @include mixins.padding("a-sm");
 
-  overflow: auto;
+    background-color: var(--surface);
+    color: var(--on-surface);
 
-  transition:
-    border-radius variables.$speed3,
-    transform variables.$speed3,
-    top variables.$speed3,
-    bottom variables.$speed3;
+    overflow: auto;
 
-  &.q-drawer--overlay {
-    z-index: 6;
-  }
+    transition:
+      border-radius variables.$speed3,
+      transform variables.$speed3,
+      top variables.$speed3,
+      bottom variables.$speed3;
 
-  @each $side in ("left", "right") {
-    &.q-drawer--#{$side} {
-      #{$side}: 0;
-      width: var(--#{$side}-drawer-width);
-      transform: translate(if($side == "left", -100%, 100%));
+    &.q-drawer--overlay {
+      z-index: 6;
     }
 
-    &:not(.q-drawer--#{$side}).q-drawer--bordered {
-      @include mixins.border(var(--outline), $side);
-    }
-  }
+    @each $side in ("left", "right") {
+      &.q-drawer--#{$side} {
+        #{$side}: 0;
+        width: var(--#{$side}-drawer-width);
+        transform: translate(if($side == "left", -100%, 100%));
+      }
 
-  &.q-drawer--active {
-    transform: translate(0);
+      &:not(.q-drawer--#{$side}).q-drawer--bordered {
+        @include mixins.border(var(--outline), $side);
+      }
+    }
+
+    &.q-drawer--active {
+      transform: translate(0);
+    }
   }
 }

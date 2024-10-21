@@ -1,4 +1,5 @@
 <script lang="ts">
+  import "./index.scss";
   import type { QToolbarProps } from "./props";
 
   let {

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import "./index.scss";
   import type { QRadioProps } from "./props";
 
   let {

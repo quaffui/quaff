@@ -1,40 +1,44 @@
 @use "$css/mixins";
 @use "$css/variables";
 
-.q-toolbar {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  white-space: nowrap;
-  gap: 1rem;
+@layer QTheme, QRipple, QComponents, QClasses, QDisabled;
 
-  width: 100%;
-  height: var(--toolbar-height);
-  padding: 0 1rem;
-  transition: all variables.$speed3;
-  background-color: var(--surface);
+@layer QComponents {
+  .q-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    white-space: nowrap;
+    gap: 1rem;
 
-  &--inset {
-    padding-left: 58px;
+    width: 100%;
+    height: var(--toolbar-height);
+    padding: 0 1rem;
+    transition: all variables.$speed3;
+    background-color: var(--surface);
+
+    &--inset {
+      padding-left: 58px;
+    }
+
+    &--elevated {
+      @include mixins.elevate(1, "bottom");
+    }
+
+    &--bordered {
+      border-bottom: solid 0.0625rem var(--outline);
+    }
   }
 
-  &--elevated {
-    @include mixins.elevate(1, "bottom");
-  }
+  .q-toolbar-title {
+    display: flex;
+    flex: auto;
+    font-size: 1.75rem;
+    font-weight: 400;
+    justify-content: center;
 
-  &--bordered {
-    border-bottom: solid 0.0625rem var(--outline);
-  }
-}
-
-.q-toolbar-title {
-  display: flex;
-  flex: auto;
-  font-size: 1.75rem;
-  font-weight: 400;
-  justify-content: center;
-
-  &--shrink {
-    flex: unset;
+    &--shrink {
+      flex: unset;
+    }
   }
 }

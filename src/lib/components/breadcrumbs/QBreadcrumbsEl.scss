@@ -1,10 +1,14 @@
 @use "$css/mixins";
 
-.q-breadcrumbs__el {
-  display: flex;
-  align-items: center;
+@layer QTheme, QRipple, QComponents, QClasses, QDisabled;
 
-  & > .q-icon {
-    @include mixins.margin("r-sm");
+@layer QComponents {
+  .q-breadcrumbs__el {
+    display: flex;
+    align-items: center;
+
+    & > .q-icon {
+      @include mixins.margin("r-sm");
+    }
   }
 }

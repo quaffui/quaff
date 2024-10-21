@@ -1,6 +1,8 @@
 @use "$css/variables";
 
-@layer q-avatar {
+@layer QTheme, QRipple, QComponents, QClasses, QDisabled;
+
+@layer QComponents {
   // Basic styles
   .q-avatar {
     height: var(--size);
