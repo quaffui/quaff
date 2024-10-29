@@ -21,7 +21,7 @@
   <div class="flex justify-between q-mb-md">
     <h5>{title}</h5>
     {#if code}
-      <QBtn icon="code" design="outlined" round onclick={() => (dialog = true)} />
+      <QBtn icon="code" variant="outlined" round onclick={() => (dialog = true)} />
       <QDialog class="snippet-dialog" bind:value={dialog} modal>
         <QCodeBlock {code} language="svelte" {title} copiable />
       </QDialog>

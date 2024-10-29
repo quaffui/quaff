@@ -81,7 +81,7 @@
         class="border-{btnColor} text-{btnColor}"
         size="sm"
         icon="content_copy"
-        design="outlined"
+        variant="outlined"
         onclick={copyCode}
       >
         {btnContent}

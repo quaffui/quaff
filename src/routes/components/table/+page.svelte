@@ -248,8 +248,8 @@
               {:else if column.field === "author"}
                 {row.author}
               {:else if column.field === "actions"}
-                <QBtn icon="edit" design="flat" />
-                <QBtn icon="delete" design="flat" />
+                <QBtn icon="edit" variant="flat" />
+                <QBtn icon="delete" variant="flat" />
               {/if}
             </td>
           {/snippet}

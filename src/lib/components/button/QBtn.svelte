@@ -13,7 +13,11 @@
 
   let {
     disabled = false,
-    design = "elevated",
+    variant = "elevated",
+    filled = false,
+    tonal = false,
+    outlined = false,
+    flat = false,
     icon,
     label,
     loading = false,
@@ -39,8 +43,22 @@
 
   const src = $derived(extractImgSrc(icon));
 
+  const finalVariant = $derived<typeof variant>(
+    variant !== "elevated"
+      ? variant
+      : filled
+        ? "filled"
+        : tonal
+          ? "tonal"
+          : outlined
+            ? "outlined"
+            : flat
+              ? "flat"
+              : "elevated"
+  );
+
   const color = $derived(
-    `var(--${design === "filled" ? "on-primary" : design === "tonal" ? "on-secondary-container" : "primary"})`
+    `var(--${finalVariant === "filled" ? "on-primary" : finalVariant === "tonal" ? "on-secondary-container" : "primary"})`
   );
 
   const rippleColorVar = $derived(rippleColor ? `var(--${rippleColor}, ${rippleColor})` : color);
@@ -73,7 +91,7 @@
 
   Q.classes("q-btn", {
     bemClasses: {
-      [design]: true,
+      [finalVariant]: true,
       unelevated,
       rectangle,
       round: round || (!children && !label),

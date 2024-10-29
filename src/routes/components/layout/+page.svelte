@@ -73,7 +73,7 @@
     <QLayout view="lhh lpr lfr" headerHeight="50px" footerHeight="50px" style="border-radius: 0">
       {#snippet header()}
         <QHeader elevated height={48}>
-          <QBtn icon="menu" design="flat" onclick={displayLeftDrawerElement?.toggle} />
+          <QBtn icon="menu" variant="flat" onclick={displayLeftDrawerElement?.toggle} />
           <QToolbarTitle>Header</QToolbarTitle>
         </QHeader>
       {/snippet}
@@ -136,7 +136,7 @@
               {#if showHeader}
                 <QHeader elevated>
                   {#if leftDrawer}
-                    <QBtn icon="menu" design="flat" onclick={leftDrawerElement?.toggle} />
+                    <QBtn icon="menu" variant="flat" onclick={leftDrawerElement?.toggle} />
                   {/if}
                   <div class="flex column">
                     <QRadio bind:selected={viewArr[0][0]} value="h" label="h" />
@@ -161,7 +161,7 @@
                     <QRadio style="margin: 0" bind:selected={viewArr[0][2]} value="r" label="r" />
                   </div>
                   {#if rightDrawer}
-                    <QBtn icon="menu" design="flat" onclick={rightDrawerElement?.toggle} />
+                    <QBtn icon="menu" variant="flat" onclick={rightDrawerElement?.toggle} />
                   {/if}
                 </QHeader>
               {/if}
@@ -281,7 +281,7 @@
               {#if showFooter}
                 <QFooter bordered>
                   {#if leftDrawer}
-                    <QBtn icon="menu" design="flat" onclick={leftDrawerElement?.toggle} />
+                    <QBtn icon="menu" variant="flat" onclick={leftDrawerElement?.toggle} />
                   {/if}
                   <div class="flex column">
                     <QRadio bind:selected={viewArr[2][0]} value="f" label="f" />
@@ -306,7 +306,7 @@
                     <QRadio style="margin: 0" bind:selected={viewArr[2][2]} value="r" label="r" />
                   </div>
                   {#if rightDrawer}
-                    <QBtn icon="menu" design="flat" onclick={rightDrawerElement?.toggle} />
+                    <QBtn icon="menu" variant="flat" onclick={rightDrawerElement?.toggle} />
                   {/if}
                 </QFooter>
               {/if}
