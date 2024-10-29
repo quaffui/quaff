@@ -49,13 +49,28 @@
 
         <QBtn class="q-ma-sm" label="Unelevated" unelevated />
 
-        <QBtn class="q-ma-sm" label="Tonal" design="tonal" />
+        <QBtn class="q-ma-sm" label="Tonal" variant="tonal" />
 
-        <QBtn class="q-ma-sm" label="Outlined" design="outlined" />
+        <QBtn class="q-ma-sm" label="Outlined" variant="outlined" />
 
-        <QBtn class="q-ma-sm" label="Flat" design="flat" />
+        <QBtn class="q-ma-sm" label="Flat" variant="flat" />
 
         <QBtn class="q-ma-sm" label="With image" icon="img:/cocktail.jpg" />
+      </QDocsSection>
+
+      <QDocsSection
+        snippet={snippets["Button Variants"]}
+        title="Button Variants Using Boolean Props"
+      >
+        <QBtn class="q-ma-sm" label="Elevated (default)" />
+
+        <QBtn class="q-ma-sm" label="Unelevated" unelevated />
+
+        <QBtn class="q-ma-sm" label="Tonal" tonal />
+
+        <QBtn class="q-ma-sm" label="Outlined" outlined />
+
+        <QBtn class="q-ma-sm" label="Flat" flat />
       </QDocsSection>
 
       <QDocsSection snippet={snippets["Size"]} title="Size">

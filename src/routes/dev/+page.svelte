@@ -279,10 +279,10 @@
         />
         <QBtn class="q-ma-sm" label="Default (elevated)" />
         <QBtn class="q-ma-sm" label="Unelevated" unelevated />
-        <QBtn class="q-ma-sm" label="Filled" design="filled" />
-        <QBtn class="q-ma-sm" label="Outline" design="outlined" />
+        <QBtn class="q-ma-sm" label="Filled" variant="filled" />
+        <QBtn class="q-ma-sm" label="Outline" variant="outlined" />
         <QBtn class="q-ma-sm" label="Rectangle" rectangle />
-        <QBtn class="q-ma-sm" label="Flat" design="flat" />
+        <QBtn class="q-ma-sm" label="Flat" variant="flat" />
         <QBtn class="q-ma-sm" icon="open_in_new" label="With router link" to="/layout" />
       </QCard>
     </div>
@@ -301,11 +301,11 @@
     <div class="col-12">
       <QCard title="Toolbar">
         <QToolbar class="text-primary q-mt-md">
-          <QBtn icon="menu" design="flat" />
+          <QBtn icon="menu" variant="flat" />
           <QToolbarTitle>Title</QToolbarTitle>
-          <QBtn design="flat" icon="attach_file" />
-          <QBtn design="flat" icon="today" />
-          <QBtn design="flat" icon="more_vert" />
+          <QBtn variant="flat" icon="attach_file" />
+          <QBtn variant="flat" icon="today" />
+          <QBtn variant="flat" icon="more_vert" />
         </QToolbar>
       </QCard>
     </div>

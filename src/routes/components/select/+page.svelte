@@ -32,7 +32,7 @@
   <div class="s12 q-pa-md">
     <div class="heading">
       <h4 class="q-my-xl">Usage</h4>
-      <QBtn icon="code" design="outlined" />
+      <QBtn icon="code" variant="outlined" />
     </div>
 
     <QDocsSection snippet={snippets["State"]} title="State">
