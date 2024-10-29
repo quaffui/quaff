@@ -217,11 +217,11 @@
         <QToolbarTitle>Quaff</QToolbarTitle>
         <QBtn
           icon={Quaff.darkMode.isActive ? "light_mode" : "dark_mode"}
-          design="flat"
+          variant="flat"
           round
           onclick={Quaff.darkMode.toggle}
         />
-        <QBtn icon="palette" design="flat" onclick={drawerRightEl?.toggle} />
+        <QBtn icon="palette" variant="flat" onclick={drawerRightEl?.toggle} />
       </QHeader>
     {/snippet}
 

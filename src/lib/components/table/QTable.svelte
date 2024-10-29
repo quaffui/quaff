@@ -162,14 +162,14 @@
     <QBtn
       icon="chevron_left"
       size="sm"
-      design="flat"
+      variant="flat"
       disabled={page === 1}
       onclick={() => page--}
     />
     <QBtn
       icon="chevron_right"
       size="sm"
-      design="flat"
+      variant="flat"
       disabled={page * rowsPerPage >= rows.length}
       onclick={() => page++}
     />

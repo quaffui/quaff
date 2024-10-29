@@ -20,13 +20,13 @@
 <QLayout view="hHh LpR fFr" leftRailbarWidth="120">
   {#snippet header()}
     <QHeader class="primary-container">
-      <QBtn icon="menu" design="flat" onclick={() => leftDrawer?.toggle()} />
+      <QBtn icon="menu" variant="flat" onclick={() => leftDrawer?.toggle()} />
       <QToolbarTitle>
         <a href="/">Go home</a>
       </QToolbarTitle>
-      <QBtn design="flat" icon="attach_file" />
-      <QBtn design="flat" icon="today" />
-      <QBtn icon="menu" design="flat" onclick={() => rightDrawer?.toggle()} />
+      <QBtn variant="flat" icon="attach_file" />
+      <QBtn variant="flat" icon="today" />
+      <QBtn icon="menu" variant="flat" onclick={() => rightDrawer?.toggle()} />
     </QHeader>
   {/snippet}
   {#snippet railbarLeft()}
@@ -97,22 +97,22 @@
     <QRailbar bordered side="right">
       <QList dense>
         <QItem>
-          <QBtn design="flat" class="circle transparent">
+          <QBtn variant="flat" class="circle transparent">
             <QIcon name="check_box" />
           </QBtn>
         </QItem>
         <QItem>
-          <QBtn design="flat" class="circle transparent">
+          <QBtn variant="flat" class="circle transparent">
             <QIcon name="brush" />
           </QBtn>
         </QItem>
         <QItem>
-          <QBtn design="flat" class="circle transparent">
+          <QBtn variant="flat" class="circle transparent">
             <QIcon name="mic" />
           </QBtn>
         </QItem>
         <QItem>
-          <QBtn design="flat" class="circle transparent">
+          <QBtn variant="flat" class="circle transparent">
             <QIcon name="image" />
           </QBtn>
         </QItem>
@@ -171,16 +171,16 @@
 
   {#snippet footer()}
     <QFooter class="secondary-container">
-      <QBtn design="flat" class="circle transparent">
+      <QBtn variant="flat" class="circle transparent">
         <QIcon name="check_box" />
       </QBtn>
-      <QBtn design="flat" class="circle transparent">
+      <QBtn variant="flat" class="circle transparent">
         <QIcon name="brush" />
       </QBtn>
-      <QBtn design="flat" class="circle transparent">
+      <QBtn variant="flat" class="circle transparent">
         <QIcon name="mic" />
       </QBtn>
-      <QBtn design="flat" class="circle transparent">
+      <QBtn variant="flat" class="circle transparent">
         <QIcon name="image" />
       </QBtn>
       <div class="max"></div>

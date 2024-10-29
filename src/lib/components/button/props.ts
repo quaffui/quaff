@@ -13,10 +13,34 @@ export interface QBtnProps extends HTMLAttributes<HTMLButtonElement> {
   disabled?: boolean;
 
   /**
-   * Choose the design for the button.
+   * Choose the variant for the button. If a variant is specified, it overwrites all other variants defined with boolean attributes.
    * @default "elevated"
    */
-  design?: QBtnDesignOptions;
+  variant?: QBtnDesignOptions;
+
+  /**
+   * Equivalent to `variant="filled"`. Overwritten by `variant` but overwrites `tonal`, `outlined` and `flat`.
+   * @default false
+   */
+  filled?: boolean;
+
+  /**
+   * Equivalent to `variant="tonal"`. Overwritten by `variant` and `filled` but overwrites `outlined` and `flat`.
+   * @default false
+   */
+  tonal?: boolean;
+
+  /**
+   * Equivalent to `variant="outlined"`. Overwritten by `variant`, `filled` and `tonal` but overwrites `flat`.
+   * @default false
+   */
+  outlined?: boolean;
+
+  /**
+   * Equivalent to `variant="flat"`. Overwritten by any other variant if defined with the `variant` prop or other boolean variant props.
+   * @default false
+   */
+  flat?: boolean;
 
   /**
    * Name of the leading icon to use for the button.
