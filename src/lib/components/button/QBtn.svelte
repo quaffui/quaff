@@ -43,25 +43,36 @@
 
   const src = $derived(extractImgSrc(icon));
 
+  const variants: Partial<Record<typeof variant, boolean>> = {
+    filled,
+    tonal,
+    outlined,
+    flat,
+  };
+
   const finalVariant = $derived<typeof variant>(
     variant !== "elevated"
       ? variant
-      : filled
-        ? "filled"
-        : tonal
-          ? "tonal"
-          : outlined
-            ? "outlined"
-            : flat
-              ? "flat"
-              : "elevated"
+      : (Object.keys(variants) as (typeof variant)[]).find((key) => variants[key]) || "elevated"
   );
 
-  const color = $derived(
-    `var(--${finalVariant === "filled" ? "on-primary" : finalVariant === "tonal" ? "on-secondary-container" : "primary"})`
-  );
+  const color = $derived.by(() => {
+    switch (finalVariant) {
+      case "filled": {
+        return "on-primary";
+      }
+      case "tonal": {
+        return "on-secondary-container";
+      }
+      default: {
+        return "primary";
+      }
+    }
+  });
 
-  const rippleColorVar = $derived(rippleColor ? `var(--${rippleColor}, ${rippleColor})` : color);
+  const colorVar = $derived(`var(--${color})`);
+
+  const rippleColorVar = $derived(rippleColor ? `var(--${rippleColor}, ${rippleColor})` : colorVar);
 
   function stopIfDisabled(e: QBtnMouseEvent) {
     if (disabled) {
@@ -111,7 +122,7 @@
   class="q-btn"
   {...Q.classes}
   style:--q-btn-size={qSize.style}
-  style:--ripple-color={color}
+  style:--ripple-color={colorVar}
   {target}
   role={tag === "a" ? "button" : undefined}
   aria-disabled={disabled || undefined}
