@@ -45,15 +45,17 @@
       </QDocsSection>
 
       <QDocsSection snippet={snippets["Button Variants"]} title="Button Variants">
-        <QBtn class="q-ma-sm" label="Elevated (default)" />
+        <QBtn class="q-ma-sm" label="Elevated (default)" icon="star" />
 
-        <QBtn class="q-ma-sm" label="Unelevated" unelevated />
+        <QBtn class="q-ma-sm" label="Unelevated" unelevated icon="star" />
 
-        <QBtn class="q-ma-sm" label="Tonal" variant="tonal" />
+        <QBtn class="q-ma-sm" label="Filled" variant="filled" icon="star" />
 
-        <QBtn class="q-ma-sm" label="Outlined" variant="outlined" />
+        <QBtn class="q-ma-sm" label="Tonal" variant="tonal" icon="star" />
 
-        <QBtn class="q-ma-sm" label="Flat" variant="flat" />
+        <QBtn class="q-ma-sm" label="Outlined" variant="outlined" icon="star" />
+
+        <QBtn class="q-ma-sm" label="Flat" variant="flat" icon="star" />
 
         <QBtn class="q-ma-sm" label="With image" icon="img:/cocktail.jpg" />
       </QDocsSection>
@@ -65,6 +67,8 @@
         <QBtn class="q-ma-sm" label="Elevated (default)" />
 
         <QBtn class="q-ma-sm" label="Unelevated" unelevated />
+
+        <QBtn class="q-ma-sm" label="Filled" filled />
 
         <QBtn class="q-ma-sm" label="Tonal" tonal />
 
