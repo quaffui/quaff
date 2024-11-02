@@ -9,11 +9,11 @@
   import { extractImgSrc } from "$lib/utils/string";
   import QIcon from "../icon/QIcon.svelte";
   import type { MaterialSymbol } from "material-symbols";
-  import type { QBtnProps } from "./props";
+  import type { QBtnVariantOptions, QBtnProps } from "./props";
 
   let {
     disabled = false,
-    variant = "elevated",
+    variant,
     filled = false,
     tonal = false,
     outlined = false,
@@ -43,31 +43,29 @@
 
   const src = $derived(extractImgSrc(icon));
 
-  const variants: Partial<Record<typeof variant, boolean>> = {
+  const variants: Partial<Record<QBtnVariantOptions, boolean>> = {
     filled,
     tonal,
     outlined,
     flat,
   };
 
-  const finalVariant = $derived<typeof variant>(
-    variant !== "elevated"
-      ? variant
-      : (Object.keys(variants) as (typeof variant)[]).find((key) => variants[key]) || "elevated"
+  const boolVariant = $derived(
+    (Object.keys(variants) as QBtnVariantOptions[]).find((key) => variants[key])
   );
 
+  const finalVariant = $derived<QBtnVariantOptions>(variant || boolVariant || "elevated");
+
   const color = $derived.by(() => {
-    switch (finalVariant) {
-      case "filled": {
-        return "on-primary";
-      }
-      case "tonal": {
-        return "on-secondary-container";
-      }
-      default: {
-        return "primary";
-      }
+    if (finalVariant === "filled") {
+      return "on-primary";
     }
+
+    if (finalVariant === "tonal") {
+      return "on-secondary-container";
+    }
+
+    return "primary";
   });
 
   const colorVar = $derived(`var(--${color})`);
