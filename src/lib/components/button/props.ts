@@ -3,7 +3,7 @@ import type { HTMLAttributes, HTMLAnchorAttributes, MouseEventHandler } from "sv
 
 export type QBtnSizeOptions = Exclude<Q.Size, "xs">;
 
-export type QBtnDesignOptions = "elevated" | "filled" | "tonal" | "outlined" | "flat";
+export type QBtnVariantOptions = "elevated" | "filled" | "tonal" | "outlined" | "flat";
 
 export interface QBtnProps extends HTMLAttributes<HTMLButtonElement> {
   /**
@@ -13,10 +13,10 @@ export interface QBtnProps extends HTMLAttributes<HTMLButtonElement> {
   disabled?: boolean;
 
   /**
-   * Choose the variant for the button. If a variant is specified, it overwrites all other variants defined with boolean attributes.
-   * @default "elevated"
+   * Choose the variant for the button. If a variant is specified, it overwrites all other variants defined with boolean attributes. If no variant is specified using this prop or boolean props, the `elevated` variant will be used.
+   * @default undefined
    */
-  variant?: QBtnDesignOptions;
+  variant?: QBtnVariantOptions;
 
   /**
    * Equivalent to `variant="filled"`. Overwritten by `variant` but overwrites `tonal`, `outlined` and `flat`.
