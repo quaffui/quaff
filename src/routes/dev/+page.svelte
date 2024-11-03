@@ -464,23 +464,44 @@
         </QCardSection>
         <QCardSection>
           <h6>With position</h6>
-          <div class="flex justify-between" style="align-items: center">
-            <QBtn label="Right">
-              <QTooltip position="right">Awesome</QTooltip>
-            </QBtn>
-            <QBtn label="Left">
-              <QTooltip position="left">Awesome</QTooltip>
-            </QBtn>
-            <QBtn label="Top">
-              <QTooltip position="top">Awesome</QTooltip>
-            </QBtn>
+          <div class="flex" style="align-items: center; justify-content: space-around; gap: 2rem">
+            <div class="flex justify-between">
+              <QBtn label="Top Left">
+                <QTooltip anchor="top left" self="bottom right">Awesome</QTooltip>
+              </QBtn>
+              <QBtn label="Top">
+                <QTooltip anchor="top center" self="bottom center">Awesome</QTooltip>
+              </QBtn>
+              <QBtn label="Top Right">
+                <QTooltip anchor="top right" self="bottom left">Awesome</QTooltip>
+              </QBtn>
+            </div>
+            <div class="flex justify-between">
+              <QBtn label="Left">
+                <QTooltip anchor="middle left" self="middle right">Awesome</QTooltip>
+              </QBtn>
+              <QBtn label="Right">
+                <QTooltip anchor="middle right" self="middle left">Awesome</QTooltip>
+              </QBtn>
+            </div>
+            <div class="flex justify-between">
+              <QBtn label="Bottom Left">
+                <QTooltip anchor="bottom left" self="top right">Awesome</QTooltip>
+              </QBtn>
+              <QBtn label="Bottom">
+                <QTooltip anchor="bottom center" self="top center">Awesome</QTooltip>
+              </QBtn>
+              <QBtn label="Bottom Right">
+                <QTooltip anchor="bottom right" self="top left">Awesome</QTooltip>
+              </QBtn>
+            </div>
           </div>
         </QCardSection>
         <QCardSection>
           <h6>Rich tooltip</h6>
           <div class="flex justify-between" style="align-items: center">
             <QBtn label="I'm rich">
-              <QTooltip position="right" class="q-pa-none">
+              <QTooltip class="q-pa-none">
                 <QCard
                   title="Wow this is a card"
                   class="primary-container"

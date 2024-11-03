@@ -2,6 +2,7 @@
 
 .q-tooltip {
   --space: -0.5rem;
+  position: absolute;
   visibility: hidden;
   display: flex;
   align-items: center;
@@ -19,7 +20,7 @@
   left: 50%;
   bottom: auto;
   right: auto;
-  transform: translate(-50%, -100%) scale(0.9);
+  transform: /* translate(-50%, -100%) */ scale(0.9);
   width: auto;
   white-space: nowrap;
   font-weight: 500;
@@ -61,12 +62,11 @@
 }
 
 // Not easily integratable into the block above due to the :hover
-:hover > .q-tooltip,
 .q-tooltip--active {
   visibility: visible;
   opacity: 1;
 
-  &.q-tooltip {
+  /* &.q-tooltip {
     &--top {
       transform: translate(-50%, -100%) scale(1);
     }
@@ -81,5 +81,5 @@
     &--bottom {
       transform: translate(-50%, 100%) scale(1);
     }
-  }
+  } */
 }
