@@ -1,7 +1,8 @@
+@use "sass:string";
 @use "@fontsource/roboto";
 
 @mixin font-face-declaration($font-name) {
-  $file-name: to-lower-case($font-name);
+  $file-name: string.to-lower-case($font-name);
 
   @font-face {
     font-family: "Material Symbols #{$font-name}";
