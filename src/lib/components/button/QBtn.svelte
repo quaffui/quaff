@@ -149,7 +149,8 @@
   <span class="q-btn__label">
     {#if label}
       {label}
+    {:else}
+      {@render children?.()}
     {/if}
-    {@render children?.()}
   </span>
 </svelte:element>
