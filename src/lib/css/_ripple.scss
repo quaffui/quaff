@@ -9,13 +9,13 @@
     transition: 0.6s;
     -webkit-animation: ripple var(--ripple-duration, 0.4s) cubic-bezier(0.4, 0, 0.2, 1);
     animation: ripple var(--ripple-duration, 0.4s) cubic-bezier(0.4, 0, 0.2, 1);
-  
+
     &--center .q-ripple {
       top: 50% !important;
       left: 50% !important;
       translate: -50% -50% !important;
     }
-  
+
     &--effect {
       position: absolute;
       left: 0;
@@ -28,22 +28,22 @@
       z-index: 999;
     }
   }
-  
+
   @-webkit-keyframes ripple {
     from {
       scale: 0;
     }
-  
+
     to {
       scale: 1;
     }
   }
-  
+
   @keyframes ripple {
     from {
       scale: 0;
     }
-  
+
     to {
       scale: 1;
     }
