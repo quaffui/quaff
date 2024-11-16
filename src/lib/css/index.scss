@@ -1,23 +1,25 @@
+@use "sass:meta";
+
 @layer theme, ripple, components, classes, disabled;
 
 @layer Quaff {
   @layer theme {
-    @import "./theme/theme";
+    @include meta.load-css("theme");
   }
 
   @layer ripple {
-    @import "ripple";
+    @include meta.load-css("ripple");
   }
 
   @layer components {
-    @import "components";
+    @include meta.load-css("components");
   }
 
   @layer classes {
-    @import "classes";
+    @include meta.load-css("classes");
   }
 
   @layer disabled {
-    @import "disabled";
+    @include meta.load-css("disabled");
   }
 }

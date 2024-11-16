@@ -1,4 +1,5 @@
 @use "$css/variables";
+@use "spaces";
 
 @mixin responsive($parent: null) {
   object-fit: cover;
@@ -10,7 +11,7 @@
   width: 100%;
   height: 100%;
 
-  @include margin("x-auto");
+  @include spaces.margin("x-auto");
 
   @if $parent != null {
     width: 2.5rem;

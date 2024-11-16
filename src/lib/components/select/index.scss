@@ -1,6 +1,6 @@
 @use "$css/mixins";
 @use "$css/variables";
-@import "$css/shared/q-field.scss";
+@use "$css/shared/q-field.scss";
 
 .q-select {
   &__option--selected {

@@ -1,3 +1,4 @@
+@use "sass:string";
 @use "$css/mixins";
 @use "$css/variables";
 
@@ -92,7 +93,7 @@
       @error 'The position "#{$pos}" is incorrect, should be "top" or "bottom"';
     }
 
-    @return unquote(
+    @return string.unquote(
       ":is(.q-drawer--overlay,.q-drawer--offset-#{$pos},:not(:has(~ .q-header)),:has(~ .q-header--collapsed))"
     );
   }

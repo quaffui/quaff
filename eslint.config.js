@@ -102,6 +102,13 @@ export default [
       "object-shorthand": "error",
       "svelte/valid-compile": ["error", { ignoreWarnings: true }],
       "svelte/no-at-html-tags": ["warn"],
+      "@typescript-eslint/no-unused-expressions": [
+        "error",
+        {
+          allowShortCircuit: true,
+          allowTernary: true,
+        },
+      ],
     },
   },
   // adjustments for .svelte files

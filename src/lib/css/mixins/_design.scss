@@ -1,3 +1,4 @@
+@use "sass:list";
 @use "../variables";
 
 @mixin elevate($strength, $position: null) {
@@ -11,19 +12,19 @@
 }
 
 @mixin border($color: var(--outline), $position: variables.$border-positions) {
-  @if index($list: $position, $value: top) {
+  @if list.index($list: $position, $value: top) {
     border-top: 0.0625rem solid $color;
   }
 
-  @if index($list: $position, $value: right) {
+  @if list.index($list: $position, $value: right) {
     border-right: 0.0625rem solid $color;
   }
 
-  @if index($list: $position, $value: bottom) {
+  @if list.index($list: $position, $value: bottom) {
     border-bottom: 0.0625rem solid $color;
   }
 
-  @if index($list: $position, $value: left) {
+  @if list.index($list: $position, $value: left) {
     border-left: 0.0625rem solid $color;
   }
 }

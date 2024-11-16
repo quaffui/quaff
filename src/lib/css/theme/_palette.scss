@@ -1,3 +1,5 @@
+@use "sass:list";
+
 $red6: #f44336;
 
 $red1: #ffebee;
@@ -611,8 +613,8 @@ $colors-list: (
 
 :root {
   @each $color-name, $color-values in $colors-list {
-    @for $i from 1 through length($color-values) {
-      $color: nth($color-values, $i);
+    @for $i from 1 through list.length($color-values) {
+      $color: list.nth($color-values, $i);
       $var-name: "--color-#{$color-name}-#{$i}";
       #{$var-name}: $color;
 
@@ -625,7 +627,7 @@ $colors-list: (
 }
 
 @each $color-name, $color-values in $colors-list {
-  @for $i from 1 through length($color-values) {
+  @for $i from 1 through list.length($color-values) {
     $var-name: "--color-#{$color-name}-#{$i}";
     $text-selector: ".text-#{$color-name}-#{$i}";
     $bg-selector: ".bg-#{$color-name}-#{$i}";

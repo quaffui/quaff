@@ -1,7 +1,7 @@
-@import "design";
-@import "flex";
-@import "grid";
-@import "overflow";
-@import "position";
-@import "select";
-@import "spaces";
+@forward "design";
+@forward "flex";
+@forward "grid";
+@forward "overflow";
+@forward "position";
+@forward "select";
+@forward "spaces";
