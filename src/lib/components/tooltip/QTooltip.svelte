@@ -188,4 +188,6 @@
   }
 </script>
 
-<div bind:this={tooltipHelperEl} class="q-tooltip__helper"></div>
+{#if !target}
+  <div bind:this={tooltipHelperEl} class="q-tooltip__helper"></div>
+{/if}
