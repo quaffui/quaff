@@ -50,6 +50,6 @@
   const style = $derived(`${railbarWidthStyle};${props.style ?? ""}`);
 </script>
 
-<nav bind:this={railbarEl} {...props} class="q-railbar" {...Q.classes} {style}>
+<nav bind:this={railbarEl} {...props} class="q-railbar" {...Q.classes} {style} data-quaff>
   {@render children?.()}
 </nav>

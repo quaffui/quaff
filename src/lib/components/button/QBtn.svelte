@@ -127,6 +127,7 @@
   tabindex={disabled ? -1 : 0}
   {onkeydown}
   onclick={stopIfDisabled}
+  data-quaff
 >
   {#if icon && !loading}
     {#if src}
@@ -149,8 +150,8 @@
   <span class="q-btn__label">
     {#if label}
       {label}
-    {:else}
-      {@render children?.()}
     {/if}
+
+    {@render children?.()}
   </span>
 </svelte:element>

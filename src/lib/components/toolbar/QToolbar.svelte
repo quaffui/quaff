@@ -20,6 +20,13 @@
   });
 </script>
 
-<nav {...props} class="q-toolbar" {...Q.classes} role="toolbar" style:--toolbar-height="{height}px">
+<nav
+  {...props}
+  class="q-toolbar"
+  {...Q.classes}
+  role="toolbar"
+  style:--toolbar-height="{height}px"
+  data-quaff
+>
   {@render children?.()}
 </nav>

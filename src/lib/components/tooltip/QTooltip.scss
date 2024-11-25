@@ -1,0 +1,28 @@
+@use "$css/variables";
+
+.q-tooltip {
+  --space: -0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: auto;
+  gap: 0.5rem;
+  background-color: var(--inverse-surface);
+  color: var(--inverse-on-surface);
+  font-size: 0.75rem;
+  text-align: center;
+  border-radius: 0.25rem;
+  padding: 0.5rem;
+  position: absolute;
+  bottom: auto;
+  right: auto;
+  transform: translateY(-0.25rem) scale(0.9);
+  width: auto;
+  white-space: nowrap;
+  font-weight: 500;
+  opacity: 0;
+  transition:
+    transform variables.$speed2,
+    opacity variables.$speed2;
+  z-index: 9999;
+}

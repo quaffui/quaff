@@ -34,7 +34,7 @@
   });
 </script>
 
-<i {...props} class="q-icon" {...Q.classes} style:--size={qSize.style}>
+<i {...props} class="q-icon" {...Q.classes} style:--size={qSize.style} data-quaff>
   {#if name !== undefined}
     {name}
   {:else if img !== undefined}

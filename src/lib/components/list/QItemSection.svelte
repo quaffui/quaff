@@ -33,7 +33,7 @@
   });
 </script>
 
-<div {...props} class="q-item__section" {...Q.classes}>
+<div {...props} class="q-item__section" {...Q.classes} data-quaff>
   {#if type === "content"}
     {#if !headline && !line1 && !line2 && !line3}
       {@render children?.()}
