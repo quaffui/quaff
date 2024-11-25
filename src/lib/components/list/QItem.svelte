@@ -65,6 +65,7 @@
     tabindex={isClickable ? tabindex || 0 : undefined}
     aria-disabled={isActionable && disabled ? true : undefined}
     {...routerInfo.linkAttributes}
+    data-quaff
   >
     {@render children?.()}
   </a>
@@ -76,6 +77,7 @@
     {...Q.classes}
     tabindex={isClickable ? tabindex || 0 : undefined}
     aria-disabled={isActionable && disabled ? true : undefined}
+    data-quaff
   >
     {@render children?.()}
   </svelte:element>

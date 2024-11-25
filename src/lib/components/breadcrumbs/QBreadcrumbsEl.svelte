@@ -52,7 +52,7 @@
   {@render children()}
 {/snippet}
 
-<div {...props} class="q-breadcrumbs__separator" {...Q.classes}>
+<div {...props} class="q-breadcrumbs__separator" {...Q.classes} data-quaff>
   {#if typeof separator.type === "string"}
     {#if separator.type.startsWith("icon:")}
       <QIcon name={separator.type.replace("icon:", "") as MaterialSymbol} size="1rem" />

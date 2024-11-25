@@ -91,6 +91,7 @@
   aria-label={name}
   {onclick}
   {onkeydown}
+  data-quaff
 >
   <div class="q-tab__content">
     {#if typeof icon === "string"}

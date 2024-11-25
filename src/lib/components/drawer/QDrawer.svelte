@@ -125,6 +125,7 @@
   class="q-drawer"
   {...Q.classes}
   {style}
+  data-quaff
 >
   {@render children?.()}
 </div>

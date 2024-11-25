@@ -11,7 +11,7 @@
   });
 </script>
 
-<label {...props} class="q-checkbox" {...Q.classes} aria-disabled={disable || undefined}>
+<label {...props} class="q-checkbox" {...Q.classes} aria-disabled={disable || undefined} data-quaff>
   <input type="checkbox" bind:checked={value} disabled={disable} />
   <span>{label}</span>
 </label>

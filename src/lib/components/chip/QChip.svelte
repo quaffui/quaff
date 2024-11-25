@@ -102,6 +102,7 @@
   {role}
   onclick={stopIfDisabled}
   {onkeydown}
+  data-quaff
 >
   {#if icon && !selected && !avatar}
     <QIcon class="q-chip__leading-icon" name={icon as MaterialSymbol} />

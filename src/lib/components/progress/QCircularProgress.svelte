@@ -79,6 +79,7 @@
   aria-valuemin={min}
   aria-valuemax={max}
   aria-valuenow={indeterminate ? undefined : normalized}
+  data-quaff
 >
   <svg
     class="q-circular-progress__svg"

@@ -50,7 +50,7 @@
 <div class="q-page" style="max-width: 40rem;">
   <div class="row q-gutter-lg">
     <div class="col-12">
-      <QCard title="Tabs">
+      <QCard>
         <QCardSection>
           Value: {activeTab}
         </QCardSection>
@@ -103,7 +103,7 @@
       </QCard>
     </div>
     <div class="col-12">
-      <QCard title="The quaff object">
+      <QCard>
         <QCardSection>
           <h6>Version</h6>
           <p>Quaff.version: {Quaff.version}</p>
@@ -127,7 +127,7 @@
       </QCard>
     </div>
     <div class="col-12">
-      <QCard title="Checkbox">
+      <QCard>
         <div>
           Value: {checkBox}
         </div>
@@ -135,7 +135,7 @@
       </QCard>
     </div>
     <div class="col-12">
-      <QCard title="Radio">
+      <QCard>
         <div>
           Value: {option}
         </div>
@@ -144,14 +144,14 @@
       </QCard>
     </div>
     <div class="col-12">
-      <QCard title="Linear Progress">
+      <QCard>
         <QLinearProgress indeterminate class="q-mt-md" />
         <QLinearProgress value={30} class="q-mt-md" />
         <QLinearProgress value={40} class="q-mt-md" reverse noRound />
       </QCard>
     </div>
     <div class="col-12">
-      <QCard title="Separators">
+      <QCard>
         <div>
           <QSeparator spacing="md" />
           <QSeparator text="Left separator" textAlign="left" />
@@ -167,7 +167,7 @@
       </QCard>
     </div>
     <div class="col-12">
-      <QCard title="Inputs">
+      <QCard>
         <div>
           Value: {input}
         </div>
@@ -203,7 +203,7 @@
       </QCard>
     </div>
     <div class="col-12">
-      <QCard title="Select">
+      <QCard>
         <div>
           <QSelect bind:value={select} {options} label="Default" class="q-mt-md" />
           <QSelect
@@ -259,7 +259,7 @@
       </QCard>
     </div>
     <div class="col-12">
-      <QCard title="Buttons">
+      <QCard>
         <QBtn
           class="q-ma-sm"
           icon="favorite"
@@ -287,7 +287,7 @@
       </QCard>
     </div>
     <div class="col-12">
-      <QCard title="Toggle">
+      <QCard>
         <div>
           Value: {toggle}
         </div>
@@ -299,7 +299,7 @@
       </QCard>
     </div>
     <div class="col-12">
-      <QCard title="Toolbar">
+      <QCard>
         <QToolbar class="text-primary q-mt-md">
           <QBtn icon="menu" variant="flat" />
           <QToolbarTitle>Title</QToolbarTitle>
@@ -310,7 +310,7 @@
       </QCard>
     </div>
     <div class="col-12">
-      <QCard title="List">
+      <QCard>
         <QList separator bordered roundedBorders>
           <QItem>
             <QItemSection type="icon">
@@ -415,7 +415,7 @@
       </QCard>
     </div>
     <div class="col-12">
-      <QCard title="Avatar">
+      <QCard>
         <QCardSection>
           <h6>Sizes</h6>
           <div class="flex justify-between" style="align-items: center">
@@ -453,7 +453,7 @@
       </QCard>
     </div>
     <div class="col-12">
-      <QCard title="Tooltip">
+      <QCard>
         <QCardSection>
           <h6>Default</h6>
           <div class="flex justify-between" style="align-items: center">
@@ -464,16 +464,38 @@
         </QCardSection>
         <QCardSection>
           <h6>With position</h6>
-          <div class="flex justify-between" style="align-items: center">
-            <QBtn label="Right">
-              <QTooltip position="right">Awesome</QTooltip>
-            </QBtn>
-            <QBtn label="Left">
-              <QTooltip position="left">Awesome</QTooltip>
-            </QBtn>
-            <QBtn label="Top">
-              <QTooltip position="top">Awesome</QTooltip>
-            </QBtn>
+          <div class="flex column justify-between" style="align-items: center">
+            <div class="flex justify-between" style="width: 100%">
+              <QBtn label="Top Left">
+                <QTooltip position="top-left">Awesome</QTooltip>
+              </QBtn>
+              <QBtn label="Top">
+                <QTooltip position="top">Awesome</QTooltip>
+              </QBtn>
+              <QBtn label="Top Right">
+                <QTooltip position="top-right">Awesome</QTooltip>
+              </QBtn>
+            </div>
+            <div class="flex justify-between q-my-md" style="width: 100%">
+              <QBtn label="Left">
+                <QTooltip position="left">Awesome</QTooltip>
+              </QBtn>
+
+              <QBtn label="Right">
+                <QTooltip position="right">Awesome</QTooltip>
+              </QBtn>
+            </div>
+            <div class="flex justify-between" style="width: 100%">
+              <QBtn label="Bottom Left">
+                <QTooltip position="bottom-left">Awesome</QTooltip>
+              </QBtn>
+              <QBtn label="Bottom">
+                <QTooltip position="bottom">Awesome</QTooltip>
+              </QBtn>
+              <QBtn label="Bottom Right">
+                <QTooltip position="bottom-right">Awesome</QTooltip>
+              </QBtn>
+            </div>
           </div>
         </QCardSection>
         <QCardSection>
@@ -481,11 +503,7 @@
           <div class="flex justify-between" style="align-items: center">
             <QBtn label="I'm rich">
               <QTooltip position="right" class="q-pa-none">
-                <QCard
-                  title="Wow this is a card"
-                  class="primary-container"
-                  style="border-radius: inherit"
-                >
+                <QCard class="primary-container" style="border-radius: inherit">
                   <QCardSection class="items-center">
                     <QIcon name="help" class="q-mr-md" />
                     I'm inside the tooltip
@@ -502,7 +520,7 @@
       </QCard>
     </div>
     <div class="col-12">
-      <QCard title="Chips">
+      <QCard>
         <QCardSection>
           <h6>Default</h6>
           <div class="flex justify-around" style="align-items: center">
@@ -566,7 +584,7 @@
       </QCard>
     </div>
     <div class="col-12">
-      <QCard title="Dialogs">
+      <QCard>
         <QCardSection>
           <h6>Basics</h6>
           <QBtn onclick={dialogElement1?.show}>Default dialog</QBtn>
@@ -645,7 +663,7 @@
       </QCard>
     </div>
     <div class="col-12">
-      <QCard title="Breadcrumbs">
+      <QCard>
         <QCardSection>
           <h6>Default breadcrumbs</h6>
           <QBreadcrumbs>
