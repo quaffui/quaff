@@ -79,6 +79,7 @@
   role="switch"
   aria-checked={value || undefined}
   tabindex={disabled ? -1 : 0}
+  data-quaff
 >
   <label class="q-switch__inner">
     <input

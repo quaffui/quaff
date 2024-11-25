@@ -152,6 +152,7 @@
   class="q-field"
   {...Q.classes}
   style:--snippet-prepend-width="{snippetPrependWidth}px"
+  data-quaff
 >
   {#if before}
     <div class="q-field__snippet-before">

@@ -71,7 +71,7 @@
   onMount(() => loadShiki());
 </script>
 
-<div class="q-code-block">
+<div class="q-code-block" data-quaff>
   {#if copiable}
     <div class="flex justify-between {title ? 'items-center' : 'justify-end'} q-pb-sm">
       {#if title}

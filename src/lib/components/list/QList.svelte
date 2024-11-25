@@ -32,6 +32,6 @@
   });
 </script>
 
-<svelte:element this={tag} bind:this={listEl} {...props} class="q-list" {...Q.classes}>
+<svelte:element this={tag} bind:this={listEl} {...props} class="q-list" {...Q.classes} data-quaff>
   {@render children?.()}
 </svelte:element>

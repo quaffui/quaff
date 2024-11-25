@@ -68,7 +68,7 @@
 </script>
 
 {#if value}
-  <footer {...props} class="q-footer" {...Q.classes} style:--footer-height="{height}px">
+  <footer {...props} class="q-footer" {...Q.classes} style:--footer-height="{height}px" data-quaff>
     <QToolbar>
       {@render children?.()}
     </QToolbar>

@@ -16,6 +16,6 @@
   });
 </script>
 
-<nav {...props} class="q-card__actions" {...Q.classes}>
+<nav {...props} class="q-card__actions" {...Q.classes} data-quaff>
   {@render children?.()}
 </nav>

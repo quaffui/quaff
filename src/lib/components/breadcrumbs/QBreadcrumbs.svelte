@@ -25,6 +25,6 @@
   Q.classes("q-breadcrumbs", { classes: [props.class] });
 </script>
 
-<div bind:this={breadrumbElement} {...props} class="q-breadcrumbs" {...Q.classes}>
+<div bind:this={breadrumbElement} {...props} class="q-breadcrumbs" {...Q.classes} data-quaff>
   {@render children?.()}
 </div>
