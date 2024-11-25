@@ -19,8 +19,8 @@
 
   let realTarget = $state<HTMLElement>();
 
-  let timerShow = $state<NodeJS.Timer | null>(null);
-  let timerHide = $state<NodeJS.Timer | null>(null);
+  let timerShow = $state<ReturnType<typeof setTimeout> | null>(null);
+  let timerHide = $state<ReturnType<typeof setTimeout> | null>(null);
 
   let mountedTooltip: ReturnType<typeof mountTooltip> | null = null;
 
