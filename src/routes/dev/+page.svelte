@@ -45,6 +45,8 @@
   let dialog6 = $state(false);
   let dialog7 = $state(false);
   let dialogElement1 = $state<ReturnType<typeof QDialog>>();
+
+  let richTooltip = $state<ReturnType<typeof QTooltip>>();
 </script>
 
 <div class="q-page" style="max-width: 40rem;">
@@ -502,19 +504,21 @@
           <h6>Rich tooltip</h6>
           <div class="flex justify-between" style="align-items: center">
             <QBtn label="I'm rich">
-              <QTooltip position="right" class="q-pa-none">
-                <QCard class="primary-container" style="border-radius: inherit">
+              <QTooltip bind:this={richTooltip} class="q-pa-none">
+                <QCard style="border-radius: inherit" fill="tertiary">
                   <QCardSection class="items-center">
                     <QIcon name="help" class="q-mr-md" />
                     I'm inside the tooltip
                   </QCardSection>
                   <QCardActions>
-                    <QBtn>Cancel</QBtn>
-                    <QBtn>Confirm</QBtn>
+                    <QBtn class="tertiary">Cancel</QBtn>
+                    <QBtn class="tertiary">Confirm</QBtn>
                   </QCardActions>
                 </QCard>
               </QTooltip>
             </QBtn>
+
+            <QBtn label="Programatically toggle" onclick={richTooltip?.toggle} />
           </div>
         </QCardSection>
       </QCard>
