@@ -1,5 +1,5 @@
 <script lang="ts" generics="T extends HTMLElement | string">
-  import { mount, unmount, onMount } from "svelte";
+  import { mount, unmount, onMount, untrack } from "svelte";
   import QTooltipBase from "./QTooltipBase.svelte";
   import type { QTooltipProps } from "./props";
 
@@ -28,11 +28,9 @@
 
   $effect(() => {
     if (value) {
-      show();
+      untrack(show);
     } else {
-      if (mountedTooltip) {
-        hide();
-      }
+      untrack(hide);
     }
   });
 
@@ -93,17 +91,6 @@
       return;
     }
 
-    if (!delay) {
-      mountedTooltip = mountTooltip();
-
-      tooltipEl = (document.getElementById(`qtooltip-${id}`) as HTMLDivElement) || undefined;
-      tooltipEl?.addEventListener("mouseenter", abortHide);
-      tooltipEl?.addEventListener("mouseleave", hide);
-      window?.addEventListener("wheel", hide);
-
-      return;
-    }
-
     if (timerShow) {
       clearTimeout(timerShow);
     }
@@ -116,6 +103,10 @@
       tooltipEl?.addEventListener("mouseenter", abortHide);
       tooltipEl?.addEventListener("mouseleave", hide);
       window?.addEventListener("wheel", hide);
+
+      if (!value) {
+        value = true;
+      }
 
       return;
     }, delay);
@@ -130,15 +121,6 @@
     }
 
     if (!mountedTooltip) {
-      return;
-    }
-
-    if (!hideDelay) {
-      tooltipEl?.removeEventListener("mouseenter", abortHide);
-      window?.removeEventListener("wheel", hide);
-      unmount(mountedTooltip);
-      mountedTooltip = null;
-
       return;
     }
 
@@ -158,7 +140,15 @@
       window?.removeEventListener("wheel", hide);
       mountedTooltip = null;
       timerHide = null;
+
+      if (value) {
+        value = false;
+      }
     }, hideDelay);
+  }
+
+  export function toggle() {
+    value = !value;
   }
 
   function abortHide() {

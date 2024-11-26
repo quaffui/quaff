@@ -1,11 +1,11 @@
 <script lang="ts">
   import { onMount } from "svelte";
+  import { scale } from "svelte/transition";
   import type { QTooltipProps } from "./props";
 
   let {
     // At this point, target should be guaranteed to be a DOM element
     target,
-    value = $bindable(true),
     position = "bottom",
     offset = { x: 0, y: 0 },
     children,
@@ -56,8 +56,6 @@
   });
 </script>
 
-<svelte:window onwheel={() => (value = false)} />
-
 <div
   bind:this={tooltipEl}
   {...props}
@@ -66,6 +64,7 @@
   style:top={styles?.top}
   style:left={styles?.left}
   style:transform="unset"
+  transition:scale|global={{ duration: 100 }}
 >
   {@render children?.()}
 </div>
