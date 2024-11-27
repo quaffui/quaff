@@ -1,5 +1,6 @@
 <script lang="ts" generics="T extends HTMLElement | string">
   import { mount, unmount, onMount, untrack } from "svelte";
+  import { addEventListener } from "$lib/utils/events";
   import QTooltipBase from "./QTooltipBase.svelte";
   import type { QTooltipProps } from "./props";
 
@@ -24,14 +25,16 @@
 
   let mountedTooltip: ReturnType<typeof mountTooltip> | null = null;
 
+  let targetMouseEnterListener: ReturnType<typeof addEventListener> | null = null;
+  let targetMouseLeaveListener: ReturnType<typeof addEventListener> | null = null;
+  let tooltipMouseEnterListener: ReturnType<typeof addEventListener> | null = null;
+  let tooltipMouseLeaveListener: ReturnType<typeof addEventListener> | null = null;
+  let windowWheelListener: ReturnType<typeof addEventListener> | null = null;
+
   const id = Date.now();
 
   $effect(() => {
-    if (value) {
-      untrack(show);
-    } else {
-      untrack(hide);
-    }
+    value ? untrack(show) : untrack(hide);
   });
 
   onMount(() => {
@@ -53,17 +56,17 @@
       }
     }
 
-    realTarget?.addEventListener("mouseenter", show);
-    realTarget?.addEventListener("mouseleave", hide);
+    targetMouseEnterListener = addEventListener(realTarget, "mouseenter", show);
+    targetMouseLeaveListener = addEventListener(realTarget, "mouseleave", hide);
 
     return () => {
-      realTarget?.removeEventListener("mouseenter", show);
-      realTarget?.removeEventListener("mouseleave", hide);
+      targetMouseEnterListener?.remove();
+      targetMouseLeaveListener?.remove();
 
-      tooltipEl?.removeEventListener("mouseenter", abortHide);
-      tooltipEl?.removeEventListener("mouseleave", hide);
+      tooltipMouseEnterListener?.remove();
+      tooltipMouseLeaveListener?.remove();
 
-      window.removeEventListener("wheel", hide);
+      windowWheelListener?.remove();
 
       if (tooltipHelperEl && realTarget) {
         document.body.removeChild(tooltipHelperEl);
@@ -100,9 +103,10 @@
       mountedTooltip = mountTooltip();
 
       tooltipEl = (document.getElementById(`qtooltip-${id}`) as HTMLDivElement) || undefined;
-      tooltipEl?.addEventListener("mouseenter", abortHide);
-      tooltipEl?.addEventListener("mouseleave", hide);
-      window?.addEventListener("wheel", hide);
+      tooltipMouseEnterListener = addEventListener(tooltipEl, "mouseenter", abortHide);
+      tooltipMouseLeaveListener = addEventListener(tooltipEl, "mouseleave", hide);
+
+      windowWheelListener = addEventListener(window, "wheel", hide);
 
       if (!value) {
         value = true;
@@ -130,14 +134,16 @@
     }
 
     timerHide = setTimeout(() => {
-      tooltipEl?.removeEventListener("mouseenter", abortHide);
+      tooltipMouseEnterListener?.remove();
 
       if (!mountedTooltip) {
         return;
       }
 
       unmount(mountedTooltip);
-      window?.removeEventListener("wheel", hide);
+
+      windowWheelListener?.remove();
+
       mountedTooltip = null;
       timerHide = null;
 

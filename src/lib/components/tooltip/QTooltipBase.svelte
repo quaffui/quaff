@@ -27,22 +27,8 @@
       return;
     }
 
-    const anchorRect = target.getBoundingClientRect();
-
-    // 0.5rem offset so the tooltip is not stuck to the anchor
-    const defaultOffset = position.includes("-") ? 0 : 8;
-
-    const top = position.includes("top")
-      ? anchorRect.top - tooltipEl.offsetHeight + (offset.y || 0) - defaultOffset
-      : position.includes("bottom")
-        ? anchorRect.bottom + (offset.y || 0) + defaultOffset
-        : anchorRect.top + anchorRect.height / 2 - tooltipEl.offsetHeight / 2 + (offset.y || 0);
-
-    const left = position.includes("left")
-      ? anchorRect.left - tooltipEl.offsetWidth + (offset.x || 0) - defaultOffset
-      : position.includes("right")
-        ? anchorRect.right + (offset.x || 0) + defaultOffset
-        : anchorRect.left + anchorRect.width / 2 - tooltipEl.offsetWidth / 2 + (offset.x || 0);
+    const top = calculatePosition(target, tooltipEl, "y");
+    const left = calculatePosition(target, tooltipEl, "x");
 
     return { top, left };
   });
@@ -50,6 +36,33 @@
   const styles = $derived(
     tooltipPosition && { top: `${tooltipPosition.top}px`, left: `${tooltipPosition.left}px` }
   );
+
+  function calculatePosition(anchor: HTMLElement, tooltip: HTMLElement, axis: "x" | "y") {
+    const anchorRect = anchor.getBoundingClientRect();
+
+    const anchorPosition = {
+      start: axis === "x" ? "left" : "top",
+      end: axis === "x" ? "right" : "bottom",
+    } as const;
+    const anchorDimension = axis === "x" ? "width" : "height";
+    const tooltipDimension = axis === "x" ? "offsetWidth" : "offsetHeight";
+
+    const offsetToUse = offset[axis];
+    // 0.5rem offset so the tooltip is not stuck to the anchor
+    const defaultOffset = position.includes("-") ? 0 : 8;
+
+    return position.includes(anchorPosition.start)
+      ? anchorRect[anchorPosition.start] -
+          tooltip[tooltipDimension] +
+          (offsetToUse || 0) -
+          defaultOffset
+      : position.includes(anchorPosition.end)
+        ? anchorRect[anchorPosition.end] + (offsetToUse || 0) + defaultOffset
+        : anchorRect[anchorPosition.start] +
+          anchorRect[anchorDimension] / 2 -
+          tooltip[tooltipDimension] / 2 +
+          (offsetToUse || 0);
+  }
 
   Q.classes("q-tooltip", {
     classes: [props.class],
