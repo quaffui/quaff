@@ -1,4 +1,6 @@
 <script lang="ts">
+  import QStep from "$components/stepper/QStep.svelte";
+  import QStepper from "$components/stepper/QStepper.svelte";
   import {
     QDialog,
     QCard,
@@ -47,10 +49,27 @@
   let dialogElement1 = $state<ReturnType<typeof QDialog>>();
 
   let richTooltip = $state<ReturnType<typeof QTooltip>>();
+
+  let stepperValue = $state("step1");
 </script>
 
 <div class="q-page" style="max-width: 40rem;">
   <div class="row q-gutter-lg">
+    <div class="col-12">
+      <QCard>
+        <QCardSection>Stepper value:</QCardSection>
+        <QCardSection>
+          <QStepper bind:value={stepperValue} steps={["step1", "step2"] as const}>
+            {#snippet step1()}
+              <QStep name="step1" title="My step1 title">My step1 content</QStep>
+            {/snippet}
+            {#snippet step2()}
+              <QStep name="step2" title="My step2 title">My step2 content</QStep>
+            {/snippet}
+          </QStepper>
+        </QCardSection>
+      </QCard>
+    </div>
     <div class="col-12">
       <QCard>
         <QCardSection>
