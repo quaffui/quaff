@@ -1,20 +1,15 @@
-<script lang="ts" generics="T extends string[]">
-  import { setContext, type Snippet } from "svelte";
-  import { isSvelteSnippet } from "$utils";
+<script lang="ts">
+  import { setContext, untrack, type Snippet } from "svelte";
   import QStepHeader from "./QStepHeader.svelte";
-  import { qStepPropsDefault, stepperKey, type QStepperProps, type QStepProps } from "./props";
-  import QContext from "$lib/classes/QContext.svelte";
-  import QStep from "./QStep.svelte";
+  import { stepperKey, stepsPropsKey, type QStepperProps, type QStepProps } from "./props";
 
   let {
     value = $bindable(),
-    steps,
     infinite = false,
-    swipeable = false,
     vertical = false,
-    transitionPrev,
-    transitionNext,
-    transitionDuration = 300,
+    // transitionPrev,
+    // transitionNext,
+    // transitionDuration = 300,
     flat = false,
     bordered = false,
     alternativeLabels = false,
@@ -29,16 +24,19 @@
     activeColor,
     errorIcon,
     errorColor,
-    stepsProps = qStepPropsDefault,
     children,
     navigation,
     message,
     ...props
-  }: QStepperProps<T> = $props();
+  }: QStepperProps = $props();
+
+  let stepperEl = $state<HTMLDivElement>();
 
   const stepper = $derived({
-    goToPanel,
+    goTo,
+    stepperContent,
     value,
+    vertical,
     headerNav,
     inactiveIcon,
     activeIcon,
@@ -53,13 +51,72 @@
 
   const axis = vertical ? "vertical" : "horizontal";
 
-  const altLabel = $derived(`${alternativeLabels ? "alternative" : "standard"}-labels`);
+  const altLabel = $derived(
+    `q-stepper__header--${alternativeLabels ? "alternative" : "standard"}-labels`
+  );
 
-  function goToPanel(name: string) {
+  let stepsProps = $state<QStepProps[]>([]);
+
+  setContext(stepperKey, () => stepper);
+  setContext(stepsPropsKey, (stepProps: QStepProps) => untrack(() => handleStepProps(stepProps)));
+
+  function handleStepProps(stepProps: QStepProps) {
+    const index = stepsProps.findIndex((step) => step.name === stepProps.name);
+    if (index === -1) {
+      return stepsProps.push(stepProps);
+    }
+
+    stepsProps[index] = stepProps;
+  }
+
+  function moveSteps(direction: "next" | "prev", fromIndex?: number) {
+    const dir = direction === "next" ? 1 : -1;
+    const steps = stepperEl?.querySelectorAll(".q-stepper__tab");
+
+    if (!steps || !steps.length) {
+      return;
+    }
+
+    const activeStep = Array.from(steps).find((step) =>
+      step.classList.contains("q-stepper__tab--active")
+    );
+
+    if (!activeStep) {
+      return;
+    }
+
+    const index = Array.from(steps).indexOf(activeStep);
+
+    if (index === -1) {
+      return;
+    }
+
+    const indexStart = (fromIndex || index) + dir;
+    for (let i = indexStart; i >= 0 && i < steps.length; i += dir) {
+      if (!stepsProps[i].disabled) {
+        value = stepsProps[i].name;
+        return;
+      }
+    }
+
+    if (index === (dir === 1 ? steps.length - 1 : 0)) {
+      if (infinite) {
+        moveSteps(direction, index === 0 ? steps.length : -1);
+      }
+    }
+  }
+
+  export function goTo(name: string) {
     value = name;
   }
 
-  setContext(stepperKey, () => stepper);
+  export function next() {
+    moveSteps("next");
+  }
+
+  export function previous() {
+    moveSteps("prev");
+  }
 
   Q.classes("q-stepper", {
     bemClasses: {
@@ -71,27 +128,31 @@
 
   Q.classes("q-stepper__header", {
     bemClasses: {
-      [altLabel]: alternativeLabels,
       border: bordered || !flat,
       contracted,
     },
-    classes: [headerClass],
+    classes: [headerClass, altLabel],
   });
 </script>
 
-<div class="q-stepper" {...Q.classes} data-quaff>
-  {@render navigation?.()}
+{#snippet stepperContent(contentChildren?: Snippet)}
+  <div class="q-stepper__content{!vertical ? ' q-panel-parent' : ''}">
+    {@render contentChildren?.()}
+  </div>
+{/snippet}
+
+<div bind:this={stepperEl} class="q-stepper" {...Q.classes} data-quaff>
   {#if vertical}
     {@render message?.()}
-    <div class="q-stepper__content">
-      {@render children?.()}
-    </div>
+    {@render stepperContent(children)}
   {:else}
     <div class="q-stepper__header" {...Q.classes}>
-      {#each steps as step}
-        {setContext("QHello", step)}
-        {@render props[step as keyof typeof props]?.()}
+      {#each stepsProps as stepProps}
+        <QStepHeader stepper={() => stepper} step={stepProps} />
       {/each}
     </div>
+    {@render message?.()}
+    {@render children?.()}
   {/if}
+  {@render navigation?.()}
 </div>

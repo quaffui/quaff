@@ -1,7 +1,7 @@
 <script lang="ts">
   import QIcon from "$components/icon/QIcon.svelte";
-  import type { QStepHeaderProps } from "./props";
   import { ripple } from "$helpers";
+  import type { QStepHeaderProps } from "./props";
 
   enum DefaultIcons {
     Active = "edit",
@@ -31,17 +31,17 @@
 
     if (active) {
       const icon = step.activeIcon || stepper().activeIcon;
-      return icon || defaultIcon || DefaultIcons.Active;
+      return icon === "none" ? defaultIcon : icon || DefaultIcons.Active;
     }
 
     if (step.error) {
       const icon = step.errorIcon || stepper().errorIcon;
-      return icon || defaultIcon || DefaultIcons.Error;
+      return icon === "none" ? defaultIcon : icon || DefaultIcons.Error;
     }
 
     if (!step.disabled && step.done) {
       const icon = step.doneIcon || stepper().doneIcon;
-      return icon || defaultIcon || DefaultIcons.Done;
+      return icon === "none" ? defaultIcon : icon || DefaultIcons.Done;
     }
 
     return defaultIcon;
@@ -73,7 +73,7 @@
 
     stepEl.focus();
     if (!active) {
-      stepper().goToPanel(step.name);
+      stepper().goTo(step.name);
     }
   }
 
@@ -114,16 +114,16 @@
       {#if hasPrefix}
         {step.prefix}
       {:else if icon}
-        <QIcon name={icon} />
+        <QIcon name={icon} style="font-size: 0.875rem" />
       {/if}
     </span>
-    {#if step.title}
-      <div class="q-stepper__label q-stepper__line">
-        <div class="q-stepper__title">{step.title}</div>
-        {#if step.caption}
-          <div class="q-stepper__caption">{step.caption}</div>
-        {/if}
-      </div>
-    {/if}
   </div>
+  {#if step.title}
+    <div class="q-stepper__label q-stepper__line">
+      <div class="q-stepper__title">{step.title}</div>
+      {#if step.caption}
+        <div class="q-stepper__caption">{step.caption}</div>
+      {/if}
+    </div>
+  {/if}
 </div>

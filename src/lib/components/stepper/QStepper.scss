@@ -1,0 +1,243 @@
+@use "$css/disabled";
+@use "$css/variables";
+@use "$css/mixins";
+@use "./QStepHeader.scss";
+
+.q-stepper {
+  background-color: var(--surface);
+
+  border-radius: 0.25rem;
+  @include mixins.elevate(1);
+
+  &--horizontal {
+    .q-stepper__step-inner {
+      padding: 1.5rem;
+    }
+
+    .q-stepper__tab {
+      overflow: hidden;
+      border-radius: 0;
+
+      &:first-child {
+        border-top-left-radius: inherit;
+      }
+      &:last-child {
+        border-top-right-radius: inherit;
+      }
+
+      &:first-child .q-stepper__dot::before,
+      &:last-child .q-stepper__label::after,
+      &:last-child .q-stepper__dot::after {
+        display: none;
+      }
+    }
+
+    .q-stepper__line {
+      contain: layout;
+
+      &::before,
+      &::after {
+        position: absolute;
+        top: 50%;
+
+        height: 0.0625rem;
+        width: 100vw;
+
+        background-color: var(--outline);
+      }
+    }
+
+    .q-stepper__label::after,
+    .q-stepper__dot::after {
+      content: "";
+      left: 100%;
+      margin-left: 0.5rem;
+    }
+
+    .q-stepper__dot::before {
+      content: "";
+      right: 100%;
+      margin-right: 0.5rem;
+    }
+
+    & > .q-stepper__nav {
+      padding: 0 1.5rem 1.5rem;
+    }
+  }
+
+  &--vertical {
+    padding: 1rem 0;
+
+    .q-stepper__tab {
+      padding: 0.75rem 1.5rem;
+    }
+
+    .q-stepper__title {
+      line-height: 1.125rem;
+    }
+
+    .q-stepper__step-inner {
+      padding: 0 1.5rem 2rem 3.75rem;
+    }
+
+    & > .q-stepper__nav {
+      padding: 1.5rem 1.5rem 0;
+    }
+
+    .q-stepper__step {
+      overflow: hidden;
+
+      &:first-child .q-stepper__dot::before,
+      &:last-child .q-stepper__dot::after {
+        display: none;
+      }
+
+      &:last-child .q-stepper__step-inner {
+        padding-bottom: 0.5rem;
+      }
+    }
+
+    .q-stepper__dot {
+      margin-right: 0.75rem;
+
+      &::before,
+      &::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+
+        width: 0.0625rem;
+        height: 9999rem;
+
+        background-color: var(--outline);
+      }
+
+      &::before {
+        bottom: 100%;
+        margin-bottom: 0.5rem;
+      }
+
+      &::after {
+        top: 100%;
+        margin-top: 0.5rem;
+      }
+    }
+  }
+
+  &--flat {
+    box-shadow: none;
+  }
+
+  &--bordered {
+    @include mixins.border;
+  }
+
+  &__title {
+    font-size: 0.875rem;
+    line-height: 1.125rem;
+    letter-spacing: 0.00625rem;
+  }
+
+  &__caption {
+    font-size: 0.75rem;
+    line-height: 0.875rem;
+  }
+
+  &__nav {
+    padding-top: 1.5rem;
+  }
+
+  &__tab {
+    position: relative;
+
+    display: flex;
+    flex: 1 0 auto;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: nowrap;
+
+    padding: 0.5rem 1.5rem;
+    font-size: 0.875rem;
+    color: var(--on-surface);
+
+    &--navigation {
+      user-select: none;
+      cursor: pointer;
+
+      &::after {
+        @include mixins.overlay(var(--on-surface), 0);
+
+        transition: opacity variables.$speed3;
+      }
+
+      &:hover::after,
+      &:focus::after {
+        opacity: 0.12;
+      }
+    }
+
+    &--active,
+    &--done {
+      color: var(--primary);
+
+      .q-stepper__dot,
+      .q-stepper__label {
+        text-shadow: 0 0 0 currentColor;
+      }
+    }
+
+    &--disabled {
+      @include disabled.base();
+
+      .q-stepper__dot {
+        background-color: disabled.rest-color();
+      }
+
+      .q-stepper__label {
+        color: disabled.font-color();
+      }
+    }
+
+    &--error {
+      color: var(--error);
+
+      &-with-icon {
+        .q-stepper__dot {
+          background-color: disabled.rest-color();
+
+          span {
+            color: currentColor;
+            font-size: 1.5rem;
+          }
+        }
+      }
+    }
+  }
+
+  &__dot {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+
+    contain: layout;
+
+    width: 1.5rem;
+    min-width: 1.5rem;
+    height: 1.5rem;
+
+    margin-right: 0.5rem;
+
+    border-radius: 50%;
+
+    background-color: currentColor;
+
+    font-size: 0.875rem;
+
+    span {
+      color: var(--surface);
+    }
+  }
+}

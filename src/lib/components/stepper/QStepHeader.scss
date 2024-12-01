@@ -1,0 +1,108 @@
+@use "$css/mixins";
+
+.q-stepper .q-stepper__header {
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  flex-wrap: wrap;
+
+  border-radius: 0;
+  border-top-left-radius: inherit;
+  border-top-right-radius: inherit;
+
+  &--border {
+    @include mixins.border($position: bottom);
+  }
+
+  &--standard-labels {
+    .q-stepper__tab {
+      min-height: 4.5rem;
+
+      justify-content: center;
+      &:first-child {
+        justify-content: flex-start;
+      }
+      &:last-child {
+        justify-content: flex-end;
+      }
+      &:only-child {
+        justify-content: center;
+      }
+    }
+
+    .q-stepper__dot::after {
+      display: none;
+    }
+  }
+
+  &--alternative-labels {
+    .q-stepper__tab {
+      flex-direction: column;
+      justify-content: flex-start;
+
+      min-height: 6.5rem;
+
+      padding: 1.5rem 2rem;
+    }
+
+    .q-stepper__dot {
+      margin-right: 0;
+    }
+
+    .q-stepper__label {
+      margin-top: 0.5rem;
+
+      text-align: center;
+
+      &::before,
+      &::after {
+        display: none;
+      }
+    }
+  }
+
+  &--contracted {
+    min-height: 4.5rem;
+
+    &.q-stepper--alternative-labels {
+      .q-stepper__tab {
+        min-height: 4.5rem;
+      }
+      &:first-child {
+        align-items: flex-start;
+      }
+      &:last-child {
+        align-items: flex-end;
+      }
+    }
+
+    .q-stepper__tab {
+      padding: 1.5rem 0;
+
+      &:first-child {
+        .q-stepper__dot {
+          transform: translateX(1.5rem);
+        }
+      }
+      &:last-child {
+        .q-stepper__dot {
+          transform: translateX(-1.5rem);
+        }
+      }
+
+      &:not(:last-child) {
+        .q-stepper__dot::after {
+          display: block !important;
+        }
+      }
+    }
+
+    .q-stepper__dot {
+      margin: 0;
+    }
+
+    .q-stepper__label {
+      display: none;
+    }
+  }
+}

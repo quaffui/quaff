@@ -1,6 +1,7 @@
 <script lang="ts">
   import QStep from "$components/stepper/QStep.svelte";
   import QStepper from "$components/stepper/QStepper.svelte";
+  import QStepperNavigation from "$components/stepper/QStepperNavigation.svelte";
   import {
     QDialog,
     QCard,
@@ -51,21 +52,97 @@
   let richTooltip = $state<ReturnType<typeof QTooltip>>();
 
   let stepperValue = $state("step1");
+  let stepper1 = $state<ReturnType<typeof QStepper>>();
+  let stepper2 = $state<ReturnType<typeof QStepper>>();
 </script>
 
-<div class="q-page" style="max-width: 40rem;">
+<div class="q-page">
   <div class="row q-gutter-lg">
     <div class="col-12">
       <QCard>
-        <QCardSection>Stepper value:</QCardSection>
+        <QCardSection>Stepper value: {stepperValue}</QCardSection>
         <QCardSection>
-          <QStepper bind:value={stepperValue} steps={["step1", "step2"] as const}>
-            {#snippet step1()}
-              <QStep name="step1" title="My step1 title">My step1 content</QStep>
+          <QStepper bind:this={stepper1} bind:value={stepperValue} bordered headerNav>
+            {#snippet message()}
+              <QToolbar class="primary-container flex flex-center">Hello world</QToolbar>
             {/snippet}
-            {#snippet step2()}
-              <QStep name="step2" title="My step2 title">My step2 content</QStep>
+
+            {#snippet navigation()}
+              <QStepperNavigation>
+                <QBtn
+                  label={stepperValue === "step4" ? "Finish" : "Continue"}
+                  filled
+                  onclick={stepper1?.next}
+                />
+                {#if stepperValue !== "step1"}
+                  <QBtn label="Back" flat onclick={stepper1?.previous} />
+                {/if}
+              </QStepperNavigation>
             {/snippet}
+
+            <QStep name="step1" title="Select campaign settings" icon="settings">
+              For each ad campaign that you create, you can control how much you're willing to spend
+              on clicks and conversions, which networks and geographical locations you want your ads
+              to show on, and more.
+            </QStep>
+            <QStep
+              name="step2"
+              title="Create an ad group"
+              caption="Optional"
+              icon="create_new_folder"
+            >
+              An ad group contains one or more ads which target a shared set of keywords.
+            </QStep>
+            <QStep name="step3" title="Ad template" icon="assignment" disabled>
+              This step won't show up because it is disabled.
+            </QStep>
+            <QStep name="step4" title="Create an ad" icon="add_comment">
+              Try out different ad text to see what brings in the most customers, and learn how to
+              enhance your ads using features like ad extensions. If you run into any problems with
+              your ads, find out how to tell if they're running and how to resolve approval issues.
+            </QStep>
+          </QStepper>
+        </QCardSection>
+        <QCardSection>
+          <QStepper bind:this={stepper2} bind:value={stepperValue} vertical bordered headerNav>
+            {#snippet message()}
+              <QToolbar class="primary-container flex flex-center">Hello world</QToolbar>
+            {/snippet}
+
+            {#snippet navigation()}
+              <QStepperNavigation>
+                <QBtn
+                  label={stepperValue === "step4" ? "Finish" : "Continue"}
+                  filled
+                  onclick={stepper1?.next}
+                />
+                {#if stepperValue !== "step1"}
+                  <QBtn label="Back" flat onclick={stepper1?.previous} />
+                {/if}
+              </QStepperNavigation>
+            {/snippet}
+
+            <QStep name="step1" title="Select campaign settings" icon="settings">
+              For each ad campaign that you create, you can control how much you're willing to spend
+              on clicks and conversions, which networks and geographical locations you want your ads
+              to show on, and more.
+            </QStep>
+            <QStep
+              name="step2"
+              title="Create an ad group"
+              caption="Optional"
+              icon="create_new_folder"
+            >
+              An ad group contains one or more ads which target a shared set of keywords.
+            </QStep>
+            <QStep name="step3" title="Ad template" icon="assignment" disabled>
+              This step won't show up because it is disabled.
+            </QStep>
+            <QStep name="step4" title="Create an ad" icon="add_comment">
+              Try out different ad text to see what brings in the most customers, and learn how to
+              enhance your ads using features like ad extensions. If you run into any problems with
+              your ads, find out how to tell if they're running and how to resolve approval issues.
+            </QStep>
           </QStepper>
         </QCardSection>
       </QCard>

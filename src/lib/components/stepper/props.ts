@@ -6,8 +6,11 @@ import type { HTMLAttributes } from "svelte/elements";
  * Used as the symbol for QStepper to pass context to QStep
  */
 export const stepperKey = "QStepper";
+export const stepsPropsKey = "QStepsProps";
 
-interface QStepperBaseProps {
+type HTMLDivAttributes = HTMLAttributes<HTMLDivElement>;
+
+export interface QStepperProps extends HTMLDivAttributes {
   /**
    *
    */
@@ -20,24 +23,21 @@ interface QStepperBaseProps {
   /**
    * @default false
    */
-  swipeable?: boolean;
-  /**
-   * @default false
-   */
   vertical?: boolean;
 
-  /**
-   * @default undefined
-   */
-  transitionPrev?: unknown;
-  /**
-   * @default undefined
-   */
-  transitionNext?: unknown;
-  /**
-   * @default 300
-   */
-  transitionDuration?: unknown;
+  // TODO: Add support for transitions using Svelte transitions
+  // /**
+  //  * @default undefined
+  //  */
+  // transitionPrev?: unknown;
+  // /**
+  //  * @default undefined
+  //  */
+  // transitionNext?: unknown;
+  // /**
+  //  * @default 300
+  //  */
+  // transitionDuration?: unknown;
 
   /**
    * @default false
@@ -75,7 +75,7 @@ interface QStepperBaseProps {
   /**
    * @default undefined
    */
-  doneIcon?: MaterialSymbol;
+  doneIcon?: MaterialSymbol | "none";
   /**
    * @default undefined
    */
@@ -83,7 +83,7 @@ interface QStepperBaseProps {
   /**
    * @default undefined
    */
-  activeIcon?: MaterialSymbol;
+  activeIcon?: MaterialSymbol | "none";
   /**
    * @default undefined
    */
@@ -91,7 +91,7 @@ interface QStepperBaseProps {
   /**
    * @default undefined
    */
-  errorIcon?: MaterialSymbol;
+  errorIcon?: MaterialSymbol | "none";
   /**
    * @default undefined
    */
@@ -107,18 +107,6 @@ interface QStepperBaseProps {
    */
   message?: Snippet;
 }
-
-type HTMLDivAttributes = HTMLAttributes<HTMLDivElement>;
-
-export type QStepperProps<T extends string[]> = QStepperBaseProps &
-  HTMLDivAttributes & {
-    steps: T;
-    stepsProps?:
-      | Omit<QStepProps, "name" | "title">
-      | Record<T[number], Omit<QStepProps, "name" | "title">>;
-  } & {
-    [K in T[number]]: Snippet;
-  };
 
 export interface QStepProps extends HTMLAttributes<HTMLDivElement> {
   /**
@@ -159,7 +147,7 @@ export interface QStepProps extends HTMLAttributes<HTMLDivElement> {
   /**
    * @default undefined
    */
-  doneIcon?: MaterialSymbol;
+  doneIcon?: MaterialSymbol | "none";
   /**
    * @default undefined
    */
@@ -168,7 +156,7 @@ export interface QStepProps extends HTMLAttributes<HTMLDivElement> {
   /**
    * @default undefined
    */
-  activeIcon?: MaterialSymbol;
+  activeIcon?: MaterialSymbol | "none";
   /**
    * @default undefined
    */
@@ -177,7 +165,7 @@ export interface QStepProps extends HTMLAttributes<HTMLDivElement> {
   /**
    * @default undefined
    */
-  errorIcon?: MaterialSymbol;
+  errorIcon?: MaterialSymbol | "none";
   /**
    * @default undefined
    */
@@ -199,18 +187,12 @@ export interface QStepProps extends HTMLAttributes<HTMLDivElement> {
   error?: boolean;
 }
 
-export interface QStepperContext extends QStepperBaseProps, HTMLAttributes<HTMLDivElement> {
-  goToPanel: (name: string) => void; // TODO
+export interface QStepperContext extends QStepperProps, HTMLAttributes<HTMLDivElement> {
+  goTo: (name: string) => void; // TODO
+  stepperContent: Snippet<[Snippet]>;
 }
 
 export interface QStepHeaderProps extends HTMLAttributes<HTMLDivElement> {
   stepper: () => QStepperContext;
   step: QStepProps;
 }
-
-export const qStepPropsDefault: Omit<QStepProps, "name" | "title"> = {
-  headerNav: true,
-  disabled: false,
-  done: false,
-  error: false,
-};
