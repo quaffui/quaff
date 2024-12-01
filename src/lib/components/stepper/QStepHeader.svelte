@@ -3,11 +3,11 @@
   import { ripple } from "$helpers";
   import type { QStepHeaderProps } from "./props";
 
-  enum DefaultIcons {
-    Active = "edit",
-    Done = "check",
-    Error = "error",
-  }
+  const defaultIcons = {
+    active: "edit",
+    done: "check",
+    error: "error",
+  };
 
   let stepEl = $state<HTMLDivElement>();
 
@@ -31,17 +31,17 @@
 
     if (active) {
       const icon = step.activeIcon || stepper().activeIcon;
-      return icon === "none" ? defaultIcon : icon || DefaultIcons.Active;
+      return icon === "none" ? defaultIcon : icon || defaultIcons.active;
     }
 
     if (step.error) {
       const icon = step.errorIcon || stepper().errorIcon;
-      return icon === "none" ? defaultIcon : icon || DefaultIcons.Error;
+      return icon === "none" ? defaultIcon : icon || defaultIcons.error;
     }
 
     if (!step.disabled && step.done) {
       const icon = step.doneIcon || stepper().doneIcon;
-      return icon === "none" ? defaultIcon : icon || DefaultIcons.Done;
+      return icon === "none" ? defaultIcon : icon || defaultIcons.done;
     }
 
     return defaultIcon;
@@ -93,7 +93,7 @@
     },
     classes: [
       color && `text-${color}`,
-      step.error && `q-stepper__tab--error-with${hasPrefix ? "prefix" : "icon"}`,
+      step.error && `q-stepper__tab--error-with-${hasPrefix ? "prefix" : "icon"}`,
     ],
   });
 </script>
