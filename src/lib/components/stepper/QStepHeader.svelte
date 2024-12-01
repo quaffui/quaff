@@ -7,7 +7,7 @@
     active: "edit",
     done: "check",
     error: "error",
-  };
+  } as const;
 
   let stepEl = $state<HTMLDivElement>();
 
