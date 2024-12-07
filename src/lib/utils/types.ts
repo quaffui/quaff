@@ -1,3 +1,5 @@
+import { Snippet } from "svelte";
+
 export interface NativeProps {
   userClasses?: string | null;
   userStyles?: string | null;
@@ -63,3 +65,9 @@ export type Entries<T> = {
 export type QEvent<T, E> = T & {
   currentTarget: EventTarget & E;
 };
+
+export type ValueOf<T> = T[keyof T];
+
+export function isSvelteSnippet(val: unknown): val is Snippet {
+  return val?.toString().includes("var previous_component_function") || false;
+}

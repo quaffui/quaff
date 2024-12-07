@@ -133,18 +133,12 @@
     {#if src}
       <img {src} alt="q-btn leading icon" class="q-btn__img q-btn__img--responsive" />
     {:else}
-      <QIcon name={icon as MaterialSymbol} {color} class="q-btn__icon" />
+      <QIcon name={icon as MaterialSymbol} class="q-btn__icon" />
     {/if}
   {/if}
 
   {#if loading}
-    <QCircularProgress
-      indeterminate
-      trackColor="transparent"
-      {color}
-      size="1.5em"
-      class="q-btn__loader"
-    />
+    <QCircularProgress indeterminate trackColor="transparent" size="1.5em" class="q-btn__loader" />
   {/if}
 
   <span class="q-btn__label">
