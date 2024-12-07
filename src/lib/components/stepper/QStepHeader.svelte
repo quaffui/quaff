@@ -1,4 +1,5 @@
 <script lang="ts">
+  import QBtn from "$components/button/QBtn.svelte";
   import QIcon from "$components/icon/QIcon.svelte";
   import { ripple } from "$helpers";
   import type { QStepHeaderProps } from "./props";
@@ -109,15 +110,15 @@
   onclick={!step.disabled ? onActivate : undefined}
   onkeyup={!step.disabled ? onKeyup : undefined}
 >
-  <div class="q-stepper__dot q-stepper__line">
-    <span>
-      {#if hasPrefix}
-        {step.prefix}
-      {:else if icon}
-        <QIcon name={icon} style="font-size: 0.875rem" />
-      {/if}
-    </span>
-  </div>
+  <QBtn
+    class="q-stepper__dot q-stepper__line"
+    icon={!hasPrefix ? icon : undefined}
+    label={hasPrefix ? step.prefix : undefined}
+    noRipple
+    disabled={step.disabled}
+    variant={active || done ? "filled" : "outlined"}
+    style="cursor: inherit;"
+  />
   {#if step.title}
     <div class="q-stepper__label q-stepper__line">
       <div class="q-stepper__title">{step.title}</div>

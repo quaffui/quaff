@@ -80,20 +80,32 @@
               </QStepperNavigation>
             {/snippet}
 
-            <QStep name="step1" title="Select campaign settings" icon="settings">
+            <QStep
+              name="step1"
+              done={+stepperValue.slice(-1) > 1}
+              title="Select campaign settings"
+              icon="settings"
+            >
               For each ad campaign that you create, you can control how much you're willing to spend
               on clicks and conversions, which networks and geographical locations you want your ads
               to show on, and more.
             </QStep>
             <QStep
               name="step2"
+              done={+stepperValue.slice(-1) > 2}
               title="Create an ad group"
               caption="Optional"
               icon="create_new_folder"
             >
               An ad group contains one or more ads which target a shared set of keywords.
             </QStep>
-            <QStep name="step3" title="Ad template" icon="assignment" disabled>
+            <QStep
+              name="step3"
+              done={+stepperValue.slice(-1) > 3}
+              title="Ad template"
+              icon="assignment"
+              disabled
+            >
               This step won't show up because it is disabled.
             </QStep>
             <QStep name="step4" title="Create an ad" icon="add_comment">
@@ -122,20 +134,32 @@
               </QStepperNavigation>
             {/snippet}
 
-            <QStep name="step1" title="Select campaign settings" icon="settings">
+            <QStep
+              name="step1"
+              done={+stepperValue.slice(-1) > 1}
+              title="Select campaign settings"
+              icon="settings"
+            >
               For each ad campaign that you create, you can control how much you're willing to spend
               on clicks and conversions, which networks and geographical locations you want your ads
               to show on, and more.
             </QStep>
             <QStep
               name="step2"
+              done={+stepperValue.slice(-1) > 2}
               title="Create an ad group"
               caption="Optional"
               icon="create_new_folder"
             >
               An ad group contains one or more ads which target a shared set of keywords.
             </QStep>
-            <QStep name="step3" title="Ad template" icon="assignment" disabled>
+            <QStep
+              name="step3"
+              done={+stepperValue.slice(-1) > 3}
+              title="Ad template"
+              icon="assignment"
+              disabled
+            >
               This step won't show up because it is disabled.
             </QStep>
             <QStep name="step4" title="Create an ad" icon="add_comment">
@@ -382,6 +406,7 @@
         <QBtn class="q-ma-sm" label="Rectangle" rectangle />
         <QBtn class="q-ma-sm" label="Flat" variant="flat" />
         <QBtn class="q-ma-sm" icon="open_in_new" label="With router link" to="/layout" />
+        <QBtn class="q-ma-sm" icon="create_new_folder" round flat />
       </QCard>
     </div>
     <div class="col-12">
