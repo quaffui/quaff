@@ -1,5 +1,12 @@
 import type { QComponentDocs } from "$lib/utils";
-import { QCardActionsDocsProps, QCardDocsProps, QCardSectionDocsProps } from "./docs.props";
+import {
+  QCardActionsDocsProps,
+  QCardActionsDocsSnippets,
+  QCardDocsProps,
+  QCardDocsSnippets,
+  QCardSectionDocsProps,
+  QCardSectionDocsSnippets,
+} from "./docs.props";
 
 export const QCardDocs: QComponentDocs = {
   name: "QCard",
@@ -7,12 +14,7 @@ export const QCardDocs: QComponentDocs = {
     "Cards provide a clean, flexible, and convenient means of displaying a wide variety of content.",
   docs: {
     props: QCardDocsProps,
-    slots: [
-      {
-        name: "default",
-        description: "Use this slot to add content to the card.",
-      },
-    ],
+    snippets: QCardDocsSnippets,
     methods: [],
     events: [],
   },
@@ -23,12 +25,7 @@ export const QCardSectionDocs: QComponentDocs = {
   description: "Sections are used to group similar content within a card.",
   docs: {
     props: QCardSectionDocsProps,
-    slots: [
-      {
-        name: "default",
-        description: "Use this slot to add content to the card section.",
-      },
-    ],
+    snippets: QCardSectionDocsSnippets,
     methods: [],
     events: [],
   },
@@ -39,12 +36,7 @@ export const QCardActionsDocs: QComponentDocs = {
   description: "Actions hold actionable items like buttons within a card.",
   docs: {
     props: QCardActionsDocsProps,
-    slots: [
-      {
-        name: "default",
-        description: "Use this slot to add action items to the card.",
-      },
-    ],
+    snippets: QCardActionsDocsSnippets,
     methods: [],
     events: [],
   },

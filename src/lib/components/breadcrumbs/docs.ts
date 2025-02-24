@@ -1,5 +1,5 @@
 import type { QComponentDocs } from "$lib/utils";
-import { QBreadcrumbsDocsProps } from "./docs.props";
+import { QBreadcrumbsDocsProps, QBreadcrumbsDocsSnippets } from "./docs.props";
 
 export const QBreadcrumbsDocs: QComponentDocs = {
   name: "QBreadcrumbs",
@@ -7,13 +7,7 @@ export const QBreadcrumbsDocs: QComponentDocs = {
     "Breadcrumbs are mostly used as a navigation aid. They allow users to keep track of their location within the page.",
   docs: {
     props: QBreadcrumbsDocsProps,
-    slots: [
-      {
-        name: "default",
-        description:
-          "The default slot is used to inserts breadcrumb elements. Use QBreadcrumbsEl to insert elements.",
-      },
-    ],
+    snippets: QBreadcrumbsDocsSnippets,
     methods: [],
     events: [],
   },

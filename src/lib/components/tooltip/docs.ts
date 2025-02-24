@@ -1,3 +1,4 @@
+import { QToolbarDocsSnippets } from "$components/header/docs.props";
 import type { QComponentDocs } from "$lib/utils";
 import { QTooltipDocsProps } from "./docs.props";
 
@@ -7,7 +8,7 @@ export const QTooltipDocs: QComponentDocs = {
     "The Tooltip component displays informative text on hover or focus, providing additional context.",
   docs: {
     props: QTooltipDocsProps,
-    slots: [],
+    snippets: QToolbarDocsSnippets,
     methods: [],
     events: [],
   },

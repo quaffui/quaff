@@ -1,5 +1,5 @@
 import type { QComponentDocs } from "$lib/utils";
-import { QToolbarDocsProps } from "./docs.props";
+import { QToolbarDocsProps, QToolbarDocsSnippets } from "./docs.props";
 
 export const QToolbarDocs: QComponentDocs = {
   name: "QToolbar",
@@ -7,7 +7,7 @@ export const QToolbarDocs: QComponentDocs = {
     "The Toolbar component is used to hold common actions and controls, often located at the top of an application or view.",
   docs: {
     props: QToolbarDocsProps,
-    slots: [],
+    snippets: QToolbarDocsSnippets,
     methods: [],
     events: [],
   },

@@ -1,5 +1,5 @@
 import type { QComponentDocs } from "$lib/utils";
-import { QListDocsProps } from "./docs.props";
+import { QListDocsProps, QListDocsSnippets } from "./docs.props";
 
 export const QListDocs: QComponentDocs = {
   name: "QList",
@@ -7,7 +7,7 @@ export const QListDocs: QComponentDocs = {
     "The QList component is used to display a list of items with options for adding text, icons and actions.",
   docs: {
     props: QListDocsProps,
-    slots: [],
+    snippets: QListDocsSnippets,
     methods: [],
     events: [],
   },

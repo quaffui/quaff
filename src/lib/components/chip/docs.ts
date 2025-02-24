@@ -1,5 +1,5 @@
 import type { QComponentDocs } from "$lib/utils";
-import { QChipDocsProps } from "./docs.props";
+import { QChipDocsProps, QChipDocsSnippets } from "./docs.props";
 
 export const QChipDocs: QComponentDocs = {
   name: "QChip",
@@ -7,23 +7,7 @@ export const QChipDocs: QComponentDocs = {
     "Chips help people enter information, make selections, filter content, or trigger actions. They represent options in a specific context, unlike buttons, which are persistent.",
   docs: {
     props: QChipDocsProps,
-    slots: [
-      {
-        name: "default",
-        description:
-          'The default slot for the chip\'s content. Is overwritten by the "content" prop',
-      },
-      {
-        name: "leading",
-        description:
-          "Slot for content to display at the start of the chip. Use with an icon or a media.",
-      },
-      {
-        name: "trailing",
-        description:
-          "Slot for content to display at the end of the chip. Use with an icon or a media.",
-      },
-    ],
+    snippets: QChipDocsSnippets,
     methods: [],
     events: [
       {
