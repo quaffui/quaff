@@ -8,46 +8,22 @@
     QList,
     QItem,
     QItemSection,
-    QDrawer,
     QCodeBlock,
   } from "$lib";
   import { capitalize } from "$lib/utils";
   import Types from "$lib/utils/types.json";
+  import type { QComponentDocs, QComponentEvent, QComponentMethod } from "$lib/utils";
   import type {
-    QComponentDocs,
-    QComponentProp,
-    QComponentSlot,
-    QComponentType,
-    QComponentEvent,
-  } from "$lib/utils";
+    ParsedProp,
+    ParsedSnippet,
+    PropType,
+    SnippetType,
+  } from "$docgen/props/parseInterface";
+  import QTooltip from "$components/tooltip/QTooltip.svelte";
 
   let { componentDocs }: { componentDocs: QComponentDocs[] } = $props();
 
-  let api: (keyof QComponentDocs["docs"])[] = componentDocs.map(() => "props");
-  let drawer = $state(
-    Object.fromEntries(
-      componentDocs.map((doc) => [
-        doc.name,
-        Object.fromEntries(
-          doc.docs.props.map((prop) => [prop.name, prop.clickableType ? false : undefined])
-        ),
-      ])
-    )
-  );
-  let drawerContent: string | undefined = $state("");
-
-  function isProp(
-    doc: QComponentProp | QComponentSlot | QComponentType | QComponentEvent,
-    index: number
-  ): doc is QComponentProp {
-    return api[index] === "props";
-  }
-  function isEvent(
-    doc: QComponentProp | QComponentSlot | QComponentType | QComponentEvent,
-    index: number
-  ): doc is QComponentEvent {
-    return api[index] === "events";
-  }
+  let api: (keyof QComponentDocs["docs"])[] = $state(componentDocs.map(() => "props"));
 
   function getType(type: string) {
     type = type.replace("[]", "");
@@ -55,23 +31,29 @@
     return found;
   }
 
-  function handleDrawer(QDocument: QComponentDocs, doc: QComponentProp, e: Event) {
-    e.stopPropagation();
-    let content = getType(doc.type);
-    for (let docName in drawer[QDocument.name]) {
-      if (drawer[QDocument.name][docName] && docName !== doc.name) {
-        drawer[QDocument.name][docName] = false;
-      }
-    }
+  function isProp(
+    doc: ParsedProp | ParsedSnippet | QComponentEvent | QComponentMethod,
+    index: number
+  ): doc is ParsedProp {
+    return api[index] === "props";
+  }
 
-    if (!drawer[QDocument.name][doc.name]) {
-      setTimeout(() => {
-        drawerContent = content;
-        drawer[QDocument.name][doc.name] = true;
-      }, 100);
-    } else {
-      drawer[QDocument.name][doc.name] = false;
-    }
+  function isEvent(
+    doc: ParsedProp | ParsedSnippet | QComponentEvent | QComponentMethod,
+    index: number
+  ): doc is QComponentEvent {
+    return api[index] === "events";
+  }
+
+  function isSnippet(
+    doc: ParsedProp | ParsedSnippet | QComponentEvent | QComponentMethod,
+    index: number
+  ): doc is ParsedSnippet {
+    return api[index] === "snippets";
+  }
+
+  function hasClickableTypes(doc: ParsedProp | ParsedSnippet) {
+    return Array.isArray(doc.type) ? doc.type.some((t) => t.isClickable) : doc.type.isClickable;
   }
 </script>
 
@@ -82,7 +64,7 @@
         <QIcon name="info" />
         <span class="q-ml-md">{QDocument.name} API</span>
       </h5>
-      <QTabs bind:value={api[index]} class="no-margin">
+      <QTabs bind:value={api[index]} noSeparator class="no-margin">
         {#each Object.entries(QDocument.docs) as [tabName, _tabDoc]}
           {#if _tabDoc.length !== 0}
             <QTab name={tabName} style="min-width: 100px">
@@ -93,45 +75,75 @@
       </QTabs>
     </div>
     <QCardSection style="max-height: 416px; overflow-y: scroll">
-      <QList separator bordered style="overflow:hidden">
+      <QList separator bordered style="overflow-x:hidden">
         {#each QDocument.docs[api[index]] as doc}
-          <QItem style="overflow: visible">
-            {#if isProp(doc, index) && doc.clickableType}
-              <QDrawer
-                side="right"
-                class="no-padding api-drawer"
-                style="height: fit-content; width: 50%; max-height: 400%; overflow: auto; border-radius: 0;"
-                bind:value={drawer[QDocument.name][doc.name]}
-              >
-                <QCodeBlock language="typescript" code={drawerContent} />
-              </QDrawer>
-            {/if}
-            <QItemSection type="content" style="overflow: visible">
+          <QItem>
+            <QItemSection type="content">
               {#snippet headline()}
-                <div class="q-my-sm" style="flex: 1 1 0; white-space: nowrap">
-                  <span class="q-pa-sm surface-variant">
+                <div class="q-my-sm" style="display: flex; flex: 1 1 0; white-space: pre">
+                  <span class="surface-variant">
                     <b>{doc.name}</b>
-                    {#if isProp(doc, index)}
-                      {doc.optional ? "?" : ""}
-                      {#if doc.clickableType}
-                        <span
-                          class="prop-type clickable"
-                          onclick={(e) => isProp(doc, index) && handleDrawer(QDocument, doc, e)}
-                        >
-                          : {doc.type}
-                        </span>
-                      {:else}
-                        <span class="prop-type">
-                          : {doc.type}
-                        </span>
-                      {/if}
-                      {doc.default === "" ? "" : ` = ${doc.default}`}
-                    {:else if isEvent(doc, index)}
-                      <span class="prop-type">
-                        : {doc.type}
-                      </span>
-                    {/if}
                   </span>
+                  {#if isProp(doc, index)}
+                    {#if doc.optional}
+                      <span class="prop-type">?</span>
+                    {/if} :
+
+                    {#if hasClickableTypes(doc)}
+                      {#if Array.isArray(doc.type)}
+                        {#each doc.type as type, i}
+                          {@render span(type)}
+                          {i < doc.type.length - 1 ? " | " : ""}
+                        {/each}
+                      {:else}
+                        {@render span(doc.type)}
+                      {/if}
+                    {:else}
+                      {#snippet span(typeName: string)}
+                        <span class="prop-type">
+                          {typeName}
+                        </span>
+                      {/snippet}
+
+                      {#if Array.isArray(doc.type)}
+                        {#each doc.type as { name }, i}
+                          {@render span(name)}
+                          {i < doc.type.length - 1 ? " | " : ""}
+                        {/each}
+                      {:else}
+                        {@render span(doc.type.name)}
+                      {/if}
+                    {/if}
+                    {doc.default === "" ? "" : `= ${doc.default}`}
+                  {:else if isEvent(doc, index)}
+                    <span class="prop-type">
+                      : {doc.type}
+                    </span>
+                  {:else if isSnippet(doc, index)}
+                    <span>
+                      {#if doc.optional}
+                        <span class="prop-type">?</span>
+                      {/if}{!Array.isArray(doc.type) || doc.type.length ? " : { " : ""}
+                    </span>
+
+                    {#if Array.isArray(doc.type)}
+                      {#each doc.type as type, i}
+                        <span>
+                          <b>{type.propName}</b>
+                          {#if type.optional}
+                            <span class="prop-type">?</span>
+                          {/if}
+                        </span>:
+                        {@render span(type)}{i < doc.type.length - 1 ? "; " : "}"}
+                      {/each}
+                    {:else}
+                      <b>{doc.type.propName}</b>
+                      {#if doc.type.optional}
+                        <span class="prop-type">?</span>
+                      {/if}:
+                      {@render span(doc.type)}
+                    {/if}
+                  {/if}
                 </div>
               {/snippet}
               {#snippet line1()}
@@ -147,6 +159,17 @@
   </QCard>
 {/each}
 
+{#snippet span(type: PropType | SnippetType)}
+  <span data-quaff class="prop-type" class:clickable={type.isClickable}>
+    {type.name}
+    {#if type.isClickable}
+      <QTooltip class="q-pa-none">
+        <QCodeBlock language="typescript" code={getType(type.name)} style="border-radius: 0" />
+      </QTooltip>
+    {/if}
+  </span>
+{/snippet}
+
 <style lang="scss">
   .clickable {
     cursor: pointer;
@@ -157,6 +180,7 @@
 
   .prop-type {
     opacity: 0.75;
+    width: 100%;
 
     &.clickable {
       cursor: pointer;
