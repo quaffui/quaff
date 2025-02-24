@@ -1,24 +1,10 @@
 <script lang="ts">
-  import {
-    QCard,
-    QIcon,
-    QTabs,
-    QTab,
-    QCardSection,
-    QList,
-    QItem,
-    QItemSection,
-    QCodeBlock,
-  } from "$lib";
-  import { capitalize } from "$lib/utils";
+  import { createRawSnippet, mount, tick } from "svelte";
+  import { QCard, QIcon, QTabs, QTab, QCardSection, QList, QItem, QItemSection } from "$lib";
+  import { capitalize, escape } from "$lib/utils";
   import Types from "$lib/utils/types.json";
   import type { QComponentDocs, QComponentEvent, QComponentMethod } from "$lib/utils";
-  import type {
-    ParsedProp,
-    ParsedSnippet,
-    PropType,
-    SnippetType,
-  } from "$docgen/props/parseInterface";
+  import type { ParsedProp, ParsedSnippet } from "$docgen/props/parseInterface";
   import QTooltip from "$components/tooltip/QTooltip.svelte";
 
   let { componentDocs }: { componentDocs: QComponentDocs[] } = $props();
@@ -52,9 +38,117 @@
     return api[index] === "snippets";
   }
 
-  function hasClickableTypes(doc: ParsedProp | ParsedSnippet) {
-    return Array.isArray(doc.type) ? doc.type.some((t) => t.isClickable) : doc.type.isClickable;
+  function prepareHeader(prop: ParsedProp | ParsedSnippet) {
+    const className = (typeStyle: boolean, isClickable: boolean, typeName: string) => {
+      if (!typeStyle && !isClickable) {
+        return "";
+      }
+
+      return ` class="${typeStyle ? "prop-type" : ""} ${isClickable ? "clickable" : ""}"${isClickable ? ' data-quaff data-type-name="' + typeName + '"' : ""}`;
+    };
+    const inSpan = (
+      spanContent: string,
+      { typeStyle = false, isClickable = false, typeName = "" } = {}
+    ) => `<span${className(typeStyle, isClickable, typeName)}>${spanContent}</span>`;
+
+    let content = "<pre>";
+
+    if (prop.optional) {
+      content += inSpan("?", { typeStyle: true });
+    }
+
+    if (!Array.isArray(prop.type) || prop.type.length) {
+      content += inSpan(":\u00A0");
+    }
+
+    if (prop.isArray) {
+      content += inSpan(Array.isArray(prop.type) ? "(" : "", { typeStyle: true });
+    }
+
+    if (prop.isSnippet && Array.isArray(prop.type) && prop.type.length) {
+      content += inSpan("{\u00A0", { typeStyle: true });
+    }
+
+    if (Array.isArray(prop.type)) {
+      content += prop.type
+        .map((t) =>
+          inSpan(escape(t.name), {
+            typeStyle: true,
+            isClickable: t.isClickable,
+            typeName: t.name,
+          })
+        )
+        .join("\u00A0|\u00A0");
+    } else {
+      content += inSpan(escape(prop.type.name), {
+        typeStyle: true,
+        isClickable: prop.type.isClickable,
+        typeName: prop.type.name,
+      });
+    }
+
+    if (prop.isSnippet && Array.isArray(prop.type) && prop.type.length) {
+      content += inSpan("\u00A0}", { typeStyle: true });
+    }
+
+    if (prop.isArray) {
+      content += inSpan(Array.isArray(prop.type) ? ")[]" : "[]", { typeStyle: true });
+    }
+
+    if (prop.default) {
+      content += inSpan(`\u00A0=\u00A0${prop.default}`);
+    }
+
+    content += "</pre>";
+    return content;
   }
+
+  async function attachTooltips() {
+    await tick();
+
+    document.querySelectorAll("span.clickable").forEach((el) => {
+      const typeName = el.getAttribute("data-type-name");
+
+      if (!typeName) {
+        return;
+      }
+
+      const type = getType(typeName) || "/* No definition found */";
+
+      import("shiki").then(({ codeToHtml }) => {
+        codeToHtml(type, {
+          lang: "typescript",
+          theme: "github-dark-default",
+          transformers: [
+            {
+              pre(node) {
+                node.properties.style += ";padding: 1rem; text-align: left;";
+              },
+            },
+          ],
+        }).then((html) => {
+          const snip = createRawSnippet(() => ({
+            render: () => html,
+          }));
+
+          mount(QTooltip, {
+            target: el,
+            props: {
+              class: "q-pa-none transparent",
+              children: snip,
+            },
+          });
+        });
+      });
+    });
+  }
+
+  $effect(() => {
+    // Doesn't rerun if we don't use JSON.stringify
+    void JSON.stringify(api);
+
+    attachTooltips();
+  });
 </script>
 
 {#each componentDocs as QDocument, index}
@@ -80,69 +174,16 @@
           <QItem>
             <QItemSection type="content">
               {#snippet headline()}
-                <div class="q-my-sm" style="display: flex; flex: 1 1 0; white-space: pre">
+                <div class="q-my-sm" style="display: flex; flex: 1 1 0">
                   <span class="surface-variant">
                     <b>{doc.name}</b>
                   </span>
-                  {#if isProp(doc, index)}
-                    {#if doc.optional}
-                      <span class="prop-type">?</span>
-                    {/if} :
-
-                    {#if hasClickableTypes(doc)}
-                      {#if Array.isArray(doc.type)}
-                        {#each doc.type as type, i}
-                          {@render span(type)}
-                          {i < doc.type.length - 1 ? " | " : ""}
-                        {/each}
-                      {:else}
-                        {@render span(doc.type)}
-                      {/if}
-                    {:else}
-                      {#snippet span(typeName: string)}
-                        <span class="prop-type">
-                          {typeName}
-                        </span>
-                      {/snippet}
-
-                      {#if Array.isArray(doc.type)}
-                        {#each doc.type as { name }, i}
-                          {@render span(name)}
-                          {i < doc.type.length - 1 ? " | " : ""}
-                        {/each}
-                      {:else}
-                        {@render span(doc.type.name)}
-                      {/if}
-                    {/if}
-                    {doc.default === "" ? "" : `= ${doc.default}`}
+                  {#if isProp(doc, index) || isSnippet(doc, index)}
+                    {@html prepareHeader(doc)}
                   {:else if isEvent(doc, index)}
                     <span class="prop-type">
                       : {doc.type}
                     </span>
-                  {:else if isSnippet(doc, index)}
-                    <span>
-                      {#if doc.optional}
-                        <span class="prop-type">?</span>
-                      {/if}{!Array.isArray(doc.type) || doc.type.length ? " : { " : ""}
-                    </span>
-
-                    {#if Array.isArray(doc.type)}
-                      {#each doc.type as type, i}
-                        <span>
-                          <b>{type.propName}</b>
-                          {#if type.optional}
-                            <span class="prop-type">?</span>
-                          {/if}
-                        </span>:
-                        {@render span(type)}{i < doc.type.length - 1 ? "; " : "}"}
-                      {/each}
-                    {:else}
-                      <b>{doc.type.propName}</b>
-                      {#if doc.type.optional}
-                        <span class="prop-type">?</span>
-                      {/if}:
-                      {@render span(doc.type)}
-                    {/if}
                   {/if}
                 </div>
               {/snippet}
@@ -159,30 +200,20 @@
   </QCard>
 {/each}
 
-{#snippet span(type: PropType | SnippetType)}
-  <span data-quaff class="prop-type" class:clickable={type.isClickable}>
-    {type.name}
-    {#if type.isClickable}
-      <QTooltip class="q-pa-none">
-        <QCodeBlock language="typescript" code={getType(type.name)} style="border-radius: 0" />
-      </QTooltip>
-    {/if}
-  </span>
-{/snippet}
-
 <style lang="scss">
-  .clickable {
+  :global(.clickable) {
     cursor: pointer;
     &:hover {
       color: var(--primary);
     }
   }
 
-  .prop-type {
+  :global(.prop-type) {
     opacity: 0.75;
     width: 100%;
+    letter-spacing: 0.5px;
 
-    &.clickable {
+    &:global(.clickable) {
       cursor: pointer;
 
       &:hover {
