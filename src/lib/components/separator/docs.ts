@@ -1,13 +1,30 @@
 import type { QComponentDocs } from "$lib/utils";
-import { QSeparatorPropsVertical } from "./docs.props";
+import {
+  QSeparatorVerticalDocsSnippets,
+  QSeparatorVerticalDocsProps,
+  QSeparatorHorizontalDocsProps,
+  QSeparatorHorizontalDocsSnippets,
+} from "./docs.props";
 
-export const QSeparatorDocs: QComponentDocs = {
+export const QSeparatorVerticalDocs: QComponentDocs = {
   name: "QSeparator",
   description:
     "Separators can be used to create a dividing line or space between elements within a layout, offering visual separation and organization.",
   docs: {
-    props: QSeparatorPropsVertical,
-    slots: [],
+    props: QSeparatorVerticalDocsProps,
+    snippets: QSeparatorVerticalDocsSnippets,
+    methods: [],
+    events: [],
+  },
+};
+
+export const QSeparatorHorizontalDocs: QComponentDocs = {
+  name: "QSeparator",
+  description:
+    "Separators can be used to create a dividing line or space between elements within a layout, offering visual separation and organization.",
+  docs: {
+    props: QSeparatorHorizontalDocsProps,
+    snippets: QSeparatorHorizontalDocsSnippets,
     methods: [],
     events: [],
   },

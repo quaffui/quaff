@@ -1,5 +1,5 @@
 import type { QComponentDocs } from "$lib/utils";
-import { QIconDocsProps } from "./docs.props";
+import { QIconDocsProps, QIconDocsSnippets } from "./docs.props";
 
 export const QIconDocs: QComponentDocs = {
   name: "QIcon",
@@ -7,7 +7,7 @@ export const QIconDocs: QComponentDocs = {
     "This component allows you to insert icons within elements of the page. Supported cions are Material Symbols icons.",
   docs: {
     props: QIconDocsProps,
-    slots: [],
+    snippets: QIconDocsSnippets,
     methods: [],
     events: [],
   },
