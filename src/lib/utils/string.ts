@@ -90,3 +90,12 @@ export function convertCase(str: string, fromCase: keyof typeof cases, toCase: k
 export function extractImgSrc(prop?: string) {
   return prop?.startsWith("img:") ? prop.slice(4) : undefined;
 }
+
+export function escape(str: string) {
+  return str
+    .replace("&", "&amp;")
+    .replace('"', "&quot;")
+    .replace("'", "&#39;")
+    .replace("<", "&lt;")
+    .replace(">", "&gt;");
+}
