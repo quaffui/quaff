@@ -19,13 +19,22 @@ parentPort.on("message", async (workerData) => {
   const parsedInterface = parseInterface(propsFilePath);
   const types = await parseTypes(propsFilePath);
 
-  let contents = "";
+  let contents = 'import { ParsedProp, ParsedSnippet } from "$docgen/props/parseInterface"\n\n';
 
   Object.keys(parsedInterface).forEach((varName) => {
     const interfaceResults = parsedInterface[varName];
 
-    contents += `export const ${varName.replace(/Props$/, "DocsProps")} = ${JSON.stringify(
-      interfaceResults,
+    const props = interfaceResults.filter((prop) => !prop.isSnippet);
+    const snippets = interfaceResults.filter((prop) => prop.isSnippet);
+
+    contents += `export const ${varName.replace(/Props$/, "DocsProps")}: ParsedProp[] = ${JSON.stringify(
+      props,
+      null,
+      2
+    )};\n\n`;
+
+    contents += `export const ${varName.replace(/Props$/, "DocsSnippets")}: ParsedSnippet[] = ${JSON.stringify(
+      snippets,
       null,
       2
     )};\n\n`;

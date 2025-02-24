@@ -22,13 +22,13 @@ export default async function getInfo(
     return { needsToBeGenerated: false };
   }
 
-  const hashProps = await generateHash(await readFile(propsFilePath, "utf8"));
+  const hashProps = generateHash(await readFile(propsFilePath, "utf8"));
 
   if (!(await pathExists(docsPropsFilePath))) {
     return { needsToBeGenerated: true, hashProps };
   }
 
-  const hashFromDocsProps = await extractHash(await readFile(docsPropsFilePath, "utf8"));
+  const hashFromDocsProps = extractHash(await readFile(docsPropsFilePath, "utf8"));
   const needsToBeGenerated = hashProps !== hashFromDocsProps;
 
   return { needsToBeGenerated, hashProps };

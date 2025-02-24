@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   export type QTabEl = HTMLAnchorElement | HTMLButtonElement;
   export type QTabsElementsContext = {
     previous: QTabEl | null;
@@ -16,6 +16,7 @@
     value = $bindable(),
     variant = "primary",
     round = false,
+    noSeparator = false,
     children,
     ...props
   }: QTabsProps = $props();
@@ -137,6 +138,7 @@
     bemClasses: {
       rounded: round,
       [variant]: true,
+      "no-separator": noSeparator,
     },
     classes: [props.class],
   });
