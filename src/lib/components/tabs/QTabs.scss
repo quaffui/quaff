@@ -10,8 +10,13 @@
   scroll-behavior: smooth;
   border-radius: 0;
   border-bottom: solid 0.0625rem var(--outline);
+
   &::-webkit-scrollbar {
     display: none;
+  }
+
+  &.q-tabs--no-separator {
+    border: unset;
   }
 
   &.q-tabs--secondary .q-tab .q-tab__indicator {
@@ -25,6 +30,10 @@
     align-items: stretch;
     border-bottom: unset;
     border-right: solid 0.0625rem var(--outline);
+
+    &.q-tabs--no-separator {
+      border: unset;
+    }
 
     & > .q-tab {
       @include mixins.padding("x-md");

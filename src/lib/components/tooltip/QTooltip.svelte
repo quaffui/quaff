@@ -69,7 +69,7 @@
       windowWheelListener?.remove();
 
       if (tooltipHelperEl && realTarget) {
-        document.body.removeChild(tooltipHelperEl);
+        realTarget.removeChild(tooltipHelperEl);
       }
 
       if (timerShow) {

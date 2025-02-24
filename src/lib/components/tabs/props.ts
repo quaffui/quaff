@@ -8,6 +8,7 @@ export interface QTabsProps extends HTMLAttributes<HTMLElement> {
   value?: string;
   variant?: QTabsVariants;
   round?: boolean;
+  noSeparator?: boolean;
 }
 
 export interface QTabProps extends HTMLAttributes<HTMLElement> {

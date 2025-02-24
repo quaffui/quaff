@@ -1,3 +1,5 @@
+import { ParsedProp, ParsedSnippet } from "../../../docgen/props/parseInterface";
+
 export interface NativeProps {
   userClasses?: string | null;
   userStyles?: string | null;
@@ -18,25 +20,11 @@ export interface QComponentDocs {
   name: string;
   description: string;
   docs: {
-    props: QComponentProp[];
-    slots: QComponentSlot[];
+    props: ParsedProp[];
+    snippets: ParsedSnippet[];
     methods: QComponentMethod[];
     events: QComponentEvent[];
   };
-}
-
-export interface QComponentProp {
-  name: string;
-  type: string;
-  default?: unknown;
-  description: string;
-  clickableType?: boolean;
-  optional?: boolean;
-}
-
-export interface QComponentSlot {
-  name: string;
-  description: string;
 }
 
 export interface QComponentType {

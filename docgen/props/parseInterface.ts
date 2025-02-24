@@ -1,13 +1,34 @@
 import ts from "typescript";
 
-export type ParsedProp = {
+export interface PropType {
   name: string;
-  type: string;
+  isClickable: boolean;
+}
+
+export interface SnippetType extends PropType {
+  optional: boolean;
+  propName: string;
+}
+
+export interface ParsedPropBase {
+  name: string;
   optional: boolean;
   description?: string;
   default?: string;
-  clickableType?: boolean;
-};
+  isArray: boolean;
+}
+
+export interface ParsedProp extends ParsedPropBase {
+  isSnippet: false;
+  type: PropType | PropType[];
+}
+
+export interface ParsedSnippet extends ParsedPropBase {
+  isSnippet: true;
+  type: SnippetType | SnippetType[];
+}
+
+export type ParsedPropOrSnippet = ParsedProp | ParsedSnippet;
 
 function getJSDocComment(declaration: ts.Declaration) {
   if (ts.isPropertySignature(declaration)) {
@@ -43,7 +64,7 @@ export default function parseInterface(fileName: string) {
   const program = ts.createProgram([fileName], { allowJs: true });
   const checker = program.getTypeChecker();
   const componentsToProps: {
-    [key: string]: ParsedProp[];
+    [key: string]: ParsedPropOrSnippet[];
   } = {};
 
   const visit = (node: ts.Node) => {
@@ -54,26 +75,41 @@ export default function parseInterface(fileName: string) {
     if (ts.isInterfaceDeclaration(node)) {
       const symbol = checker.getSymbolAtLocation(node.name)!;
 
-      const props: ParsedProp[] = [];
+      const props: ParsedPropOrSnippet[] = [];
       const interfaceName = symbol.getName();
       componentsToProps[interfaceName] = props;
 
       for (const member of node.members) {
-        let curProp: ParsedProp = { name: "", type: "", optional: false };
+        let curProp = { isArray: false, optional: false, isSnippet: false } as ParsedPropOrSnippet;
         if (ts.isPropertySignature(member) || ts.isPropertyDeclaration(member)) {
           curProp.name = member.name.getText();
-          curProp.type = member.getText().split(": ").at(-1)?.replace(";", "") || "";
           curProp.optional = !!member.questionToken;
 
-          const type = checker.getTypeAtLocation(member);
+          const memberType = member.type;
+          if (!memberType) {
+            continue;
+          }
 
-          if (member.type && ts.isArrayTypeNode(member.type)) {
-            const elementTypeNode = member.type!.elementType;
+          if (ts.isArrayTypeNode(memberType)) {
+            curProp.isArray = true;
 
-            curProp.clickableType = ts.isTypeReferenceNode(elementTypeNode);
+            const elementTypeNode = memberType.elementType;
+            curProp.type = evaluateTypeNode(elementTypeNode);
+          } else if (
+            memberType.getText().startsWith("Snippet") &&
+            ts.isTypeReferenceNode(memberType)
+          ) {
+            curProp.isSnippet = true;
+
+            const args = memberType.typeArguments?.[0];
+
+            if (args && ts.isTupleTypeNode(args)) {
+              curProp.type = evaluateTypeNode(args.elements[0]);
+            } else {
+              curProp.type = [];
+            }
           } else {
-            curProp.clickableType =
-              type.aliasSymbol !== undefined || curProp.type !== checker.typeToString(type);
+            curProp.type = evaluateTypeNode(memberType);
           }
 
           curProp = { ...curProp, ...getJSDocComment(member) };
@@ -92,12 +128,41 @@ export default function parseInterface(fileName: string) {
     }
   }
 
-  function isNodeExported(node: ts.Node): boolean {
-    return (
-      (ts.getCombinedModifierFlags(node as ts.Declaration) & ts.ModifierFlags.Export) !== 0 ||
-      (!!node.parent && node.parent.kind === ts.SyntaxKind.SourceFile)
-    );
+  return componentsToProps;
+}
+
+function isNodeExported(node: ts.Node): boolean {
+  return (
+    (ts.getCombinedModifierFlags(node as ts.Declaration) & ts.ModifierFlags.Export) !== 0 ||
+    (!!node.parent && node.parent.kind === ts.SyntaxKind.SourceFile)
+  );
+}
+
+function evaluateTypeNode(node: ts.TypeNode): PropType | SnippetType | (PropType | SnippetType)[] {
+  if (ts.isUnionTypeNode(node)) {
+    return node.types.map(evaluateTypeNode) as PropType[];
   }
 
-  return componentsToProps;
+  if (ts.isTypeLiteralNode(node)) {
+    if (!node.members.every(ts.isPropertySignature)) {
+      return [];
+    }
+
+    return (node.members as ts.NodeArray<ts.PropertySignature>).map((member) => ({
+      propName: member.name.getText(),
+      isClickable: !!member.type && ts.isTypeReferenceNode(member.type),
+      optional: !!member.questionToken,
+      name: member.type!.getText().trim(),
+    }));
+  }
+
+  const name = node.getText().trim();
+
+  const typesToIgnore = ["MaterialSymbol", "MouseEventHandler", "Snippet", "HTML", "Q.", "Exclude"];
+
+  return {
+    name,
+    isClickable:
+      ts.isTypeReferenceNode(node) && typesToIgnore.every((type) => !name.startsWith(type)),
+  };
 }

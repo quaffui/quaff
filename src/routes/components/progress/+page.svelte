@@ -1,12 +1,12 @@
 <script lang="ts">
-  import { QProgressDocs } from "$components/progress/docs";
+  import { QLinearProgressDocs, QCircularProgressDocs } from "$components/progress/docs";
   import QDocs from "$lib/components/private/QDocs.svelte";
   import QDocsSection from "$lib/components/private/QDocsSection.svelte";
   import QLinearProgress from "$lib/components/progress/QLinearProgress.svelte";
   import QCircularProgress from "$lib/components/progress/QCircularProgress.svelte";
 </script>
 
-<QDocs componentDocs={QProgressDocs}>
+<QDocs componentDocs={[QLinearProgressDocs, QCircularProgressDocs]}>
   {#snippet usage()}
     <div>
       <QDocsSection title="Linear Progress">

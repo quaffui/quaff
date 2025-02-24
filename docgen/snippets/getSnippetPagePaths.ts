@@ -6,7 +6,7 @@ const dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.resolve(dirname, "../../src/routes/components");
 
 export default async function getSnippetPagePaths() {
-  const componentsToIgnore = ["layout"];
+  const componentsToIgnore = ["layout", "private"];
 
   const componentDirs = (await getComponentDirs(rootDir)).filter(
     (dir) => !componentsToIgnore.includes(dir)

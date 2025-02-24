@@ -24,13 +24,13 @@ export default async function getInfo(
   }
 
   const sections = await parseSvelteFile(pageFilePath);
-  const hashSections = await generateHash(stringifySectionsForHash(sections));
+  const hashSections = generateHash(stringifySectionsForHash(sections));
 
   if (!(await pathExists(docsSnippetsFilePath))) {
     return { needsToBeGenerated: true, hashSections, sections };
   }
 
-  const hashFromDocsProps = await extractHash(await readFile(docsSnippetsFilePath, "utf8"));
+  const hashFromDocsProps = extractHash(await readFile(docsSnippetsFilePath, "utf8"));
   const needsToBeGenerated = hashSections !== hashFromDocsProps;
 
   return { needsToBeGenerated, hashSections, sections };
