@@ -1,5 +1,5 @@
 import type { QComponentDocs } from "$lib/utils";
-import { QBtnDocsProps } from "./docs.props";
+import { QBtnDocsProps, QBtnDocsSnippets } from "./docs.props";
 
 export const QBtnDocs: QComponentDocs = {
   name: "QBtn",
@@ -7,13 +7,7 @@ export const QBtnDocs: QComponentDocs = {
     "Buttons help users take action, such as sending an email, sharing a document, or liking a comment.",
   docs: {
     props: QBtnDocsProps,
-    slots: [
-      {
-        name: "default",
-        description:
-          "The default slot can be used to display the button's text. This slot doesn't overwrite the label prop but appends to it.",
-      },
-    ],
+    snippets: QBtnDocsSnippets,
     methods: [],
     events: [
       {

@@ -1,5 +1,5 @@
 import type { QComponentDocs } from "$lib/utils";
-import { QFooterDocsProps } from "./docs.props";
+import { QFooterDocsProps, QFooterDocsSnippets } from "./docs.props";
 
 export const QFooterDocs: QComponentDocs = {
   name: "QFooter",
@@ -7,7 +7,7 @@ export const QFooterDocs: QComponentDocs = {
     "Footers can be used to display navigation and key actions at the bottom of the screen.",
   docs: {
     props: QFooterDocsProps,
-    slots: [],
+    snippets: QFooterDocsSnippets,
     methods: [],
     events: [],
   },
