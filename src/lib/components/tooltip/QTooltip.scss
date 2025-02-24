@@ -21,4 +21,9 @@
   font-weight: 500;
   transition: opacity variables.$speed2;
   z-index: 9999;
+
+  &__helper {
+    // Remove the helper element from the flow so it doesn't affect pre elements
+    position: absolute;
+  }
 }

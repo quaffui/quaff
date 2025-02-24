@@ -1,14 +1,14 @@
 <script lang="ts">
   import QTab from "$components/tabs/QTab.svelte";
   import QTabs from "$components/tabs/QTabs.svelte";
-  import { QTabsDocs } from "$components/tabs/docs";
+  import { QTabsDocs, QTabDocs } from "$components/tabs/docs";
   import QDocs from "$lib/components/private/QDocs.svelte";
   import QDocsSection from "$lib/components/private/QDocsSection.svelte";
 
   let activeTab = $state("hello");
 </script>
 
-<QDocs componentDocs={QTabsDocs}>
+<QDocs componentDocs={[QTabsDocs, QTabDocs]}>
   {#snippet usage()}
     <div>
       <QDocsSection title="Primary Tabs">
