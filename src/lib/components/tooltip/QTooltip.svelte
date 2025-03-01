@@ -68,8 +68,8 @@
 
       windowWheelListener?.remove();
 
-      if (tooltipHelperEl && realTarget && realTarget.contains(tooltipHelperEl)) {
-        realTarget.removeChild(tooltipHelperEl);
+      if (mountedTooltip) {
+        unmount(mountedTooltip);
       }
 
       if (timerShow) {
