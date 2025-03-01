@@ -25,7 +25,7 @@ export interface ParsedProp extends ParsedPropBase {
 
 export interface ParsedSnippet extends ParsedPropBase {
   isSnippet: true;
-  type: SnippetType | SnippetType[];
+  type: SnippetType[];
 }
 
 export type ParsedPropOrSnippet = ParsedProp | ParsedSnippet;
@@ -138,7 +138,7 @@ function isNodeExported(node: ts.Node): boolean {
   );
 }
 
-function evaluateTypeNode(node: ts.TypeNode): PropType | SnippetType | (PropType | SnippetType)[] {
+function evaluateTypeNode(node: ts.TypeNode): PropType | (PropType | SnippetType)[] {
   if (ts.isUnionTypeNode(node)) {
     return node.types.map(evaluateTypeNode) as PropType[];
   }
