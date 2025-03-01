@@ -8,7 +8,7 @@ export interface QListProps extends HTMLAttributes<HTMLElement> {
   roundedBorders?: boolean;
   dense?: boolean;
   separator?: boolean;
-  separatorOptions?: Exclude<QSeparatorProps, "vertical">;
+  separatorOptions?: Omit<QSeparatorProps, "vertical">;
   padding?: boolean;
   tag?: string;
 }
