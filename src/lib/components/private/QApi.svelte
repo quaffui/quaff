@@ -38,68 +38,76 @@
     return api[index] === "snippets";
   }
 
-  function prepareHeader(prop: ParsedProp | ParsedSnippet) {
-    const className = (typeStyle: boolean, isClickable: boolean, typeName: string) => {
-      if (!typeStyle && !isClickable) {
-        return "";
-      }
+  function inSpan(
+    spanContent: string,
+    { typeStyle = false, isClickable = false, typeName = "" } = {}
+  ) {
+    const classes = [typeStyle && "prop-type", isClickable && "clickable"].filter(Boolean);
+    const classString = classes.length ? ` class="${classes.join(" ")}"` : "";
 
-      return ` class="${typeStyle ? "prop-type" : ""} ${isClickable ? "clickable" : ""}"${isClickable ? ' data-quaff data-type-name="' + escape(typeName) + '"' : ""}`;
-    };
-    const inSpan = (
-      spanContent: string,
-      { typeStyle = false, isClickable = false, typeName = "" } = {}
-    ) => `<span${className(typeStyle, isClickable, typeName)}>${spanContent}</span>`;
+    const dataAttrs = isClickable ? ` data-quaff data-type-name="${escape(typeName)}"` : "";
 
+    return `<span${classString}${dataAttrs}>${spanContent}</span>`;
+  }
+
+  function prepareHeaderForSnippet(snippet: ParsedSnippet) {
+    let content = "<pre>";
+
+    if (snippet.optional) {
+      content += inSpan("?.", { typeStyle: true });
+    }
+
+    content += inSpan("(", { typeStyle: true });
+
+    if (snippet.type.length) {
+      content += inSpan("{ ", { typeStyle: true });
+
+      content += snippet.type
+        .map((arg) => {
+          return inSpan(escape(arg.propName)).concat(
+            inSpan(": "),
+            inSpan(escape(arg.name), {
+              typeStyle: true,
+              isClickable: arg.isClickable,
+              typeName: arg.name,
+            })
+          );
+        })
+        .join(", ");
+
+      content += inSpan(" }", { typeStyle: true });
+    }
+
+    content += inSpan(")", { typeStyle: true });
+
+    content += "</pre>";
+
+    return content;
+  }
+
+  function prepareHeaderForProp(prop: ParsedProp) {
     let content = "<pre>";
 
     if (prop.optional) {
       content += inSpan("?", { typeStyle: true });
-
-      if (prop.isSnippet) {
-        content += inSpan(".", { typeStyle: true });
-      }
     }
 
-    if (prop.isSnippet) {
-      content += inSpan("(", { typeStyle: true });
-    } else if (!Array.isArray(prop.type) || prop.type.length) {
-      content += inSpan(": ");
-    }
+    content += inSpan(": ", { typeStyle: true });
 
     if (prop.isArray && Array.isArray(prop.type)) {
       content += inSpan("(", { typeStyle: true });
     }
 
-    if (prop.isSnippet && Array.isArray(prop.type) && prop.type.length) {
-      content += inSpan("{ ", { typeStyle: true });
-    }
-
     if (Array.isArray(prop.type)) {
-      if (prop.isSnippet) {
-        content += prop.type
-          .map((arg) => {
-            return inSpan(escape(arg.propName)).concat(
-              inSpan(": "),
-              inSpan(escape(arg.name), {
-                typeStyle: true,
-                isClickable: arg.isClickable,
-                typeName: arg.name,
-              })
-            );
+      content += prop.type
+        .map((type) =>
+          inSpan(escape(type.name), {
+            typeStyle: true,
+            isClickable: type.isClickable,
+            typeName: type.name,
           })
-          .join(", ");
-      } else {
-        content += prop.type
-          .map((t) =>
-            inSpan(escape(t.name), {
-              typeStyle: true,
-              isClickable: t.isClickable,
-              typeName: t.name,
-            })
-          )
-          .join(" | ");
-      }
+        )
+        .join(" | ");
     } else {
       content += inSpan(escape(prop.type.name), {
         typeStyle: true,
@@ -108,16 +116,12 @@
       });
     }
 
-    if (prop.isSnippet) {
-      if (Array.isArray(prop.type) && prop.type.length) {
-        content += inSpan(" }", { typeStyle: true });
+    if (prop.isArray) {
+      if (Array.isArray(prop.type)) {
+        content += inSpan(")", { typeStyle: true });
       }
 
-      content += inSpan(")", { typeStyle: true });
-    }
-
-    if (prop.isArray) {
-      content += inSpan(Array.isArray(prop.type) ? ")[]" : "[]", { typeStyle: true });
+      content += inSpan("[]", { typeStyle: true });
     }
 
     if (prop.default) {
@@ -125,13 +129,14 @@
     }
 
     content += "</pre>";
+
     return content;
   }
 
   async function attachTooltips() {
     await tick();
 
-    document.querySelectorAll("span.clickable").forEach((el) => {
+    document.querySelectorAll("span.clickable").forEach(async (el) => {
       const typeName = el.getAttribute("data-type-name");
 
       if (!typeName) {
@@ -140,30 +145,30 @@
 
       const type = getType(typeName) || "/* No definition found */";
 
-      import("shiki").then(({ codeToHtml }) => {
-        codeToHtml(type, {
-          lang: "typescript",
-          theme: "github-dark-default",
-          transformers: [
-            {
-              pre(node) {
-                node.properties.style += ";padding: 1rem; text-align: left;";
-              },
-            },
-          ],
-        }).then((html) => {
-          const snip = createRawSnippet(() => ({
-            render: () => html,
-          }));
+      const { codeToHtml } = await import("shiki");
 
-          mount(QTooltip, {
-            target: el,
-            props: {
-              class: "q-pa-none transparent",
-              children: snip,
+      const html = await codeToHtml(type, {
+        lang: "typescript",
+        theme: "github-dark-default",
+        transformers: [
+          {
+            pre(node) {
+              node.properties.style += ";padding: 1rem; text-align: left;";
             },
-          });
-        });
+          },
+        ],
+      });
+
+      const snip = createRawSnippet(() => ({
+        render: () => html,
+      }));
+
+      mount(QTooltip, {
+        target: el,
+        props: {
+          class: "q-pa-none transparent",
+          children: snip,
+        },
       });
     });
   }
@@ -203,8 +208,10 @@
                   <span class="surface-variant">
                     <b>{doc.name}</b>
                   </span>
-                  {#if isProp(doc, index) || isSnippet(doc, index)}
-                    {@html prepareHeader(doc)}
+                  {#if isProp(doc, index)}
+                    {@html prepareHeaderForProp(doc)}
+                  {:else if isSnippet(doc, index)}
+                    {@html prepareHeaderForSnippet(doc)}
                   {:else if isEvent(doc, index)}
                     <span class="prop-type">
                       : {doc.type}
