@@ -145,7 +145,7 @@
 
   $effect(() => {
     // Doesn't rerun if we don't use JSON.stringify
-    void JSON.stringify(api);
+    JSON.stringify(api);
 
     attachTooltips();
   });
