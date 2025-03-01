@@ -68,7 +68,7 @@
 
       windowWheelListener?.remove();
 
-      if (tooltipHelperEl && realTarget) {
+      if (tooltipHelperEl && realTarget && realTarget.contains(tooltipHelperEl)) {
         realTarget.removeChild(tooltipHelperEl);
       }
 

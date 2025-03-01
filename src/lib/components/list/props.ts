@@ -1,6 +1,6 @@
 import type { RouterProps } from "$lib/utils/router";
 import type { Snippet } from "svelte";
-import type { QSeparatorProps } from "../separator/props";
+import type { QSeparatorHorizontalProps } from "../separator/props";
 import type { HTMLAnchorAttributes, HTMLAttributes } from "svelte/elements";
 
 export interface QListProps extends HTMLAttributes<HTMLElement> {
@@ -8,7 +8,7 @@ export interface QListProps extends HTMLAttributes<HTMLElement> {
   roundedBorders?: boolean;
   dense?: boolean;
   separator?: boolean;
-  separatorOptions?: Omit<QSeparatorProps, "vertical">;
+  separatorOptions?: Omit<QSeparatorHorizontalProps, "vertical">;
   padding?: boolean;
   tag?: string;
 }

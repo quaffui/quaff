@@ -1,6 +1,6 @@
 import type { HTMLAttributes } from "svelte/elements";
 
-interface QSeparatorVerticalProps {
+export interface QSeparatorVerticalProps {
   spacing?: Q.Size;
   inset?: boolean;
   vertical?: true;
@@ -10,7 +10,7 @@ interface QSeparatorVerticalProps {
   textAlign?: "top" | "middle" | "bottom";
 }
 
-interface QSeparatorHorizontalProps {
+export interface QSeparatorHorizontalProps {
   spacing?: Q.Size;
   inset?: boolean;
   vertical?: false;
