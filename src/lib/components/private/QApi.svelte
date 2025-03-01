@@ -44,7 +44,7 @@
         return "";
       }
 
-      return ` class="${typeStyle ? "prop-type" : ""} ${isClickable ? "clickable" : ""}"${isClickable ? ' data-quaff data-type-name="' + typeName + '"' : ""}`;
+      return ` class="${typeStyle ? "prop-type" : ""} ${isClickable ? "clickable" : ""}"${isClickable ? ' data-quaff data-type-name="' + escape(typeName) + '"' : ""}`;
     };
     const inSpan = (
       spanContent: string,
@@ -55,30 +55,51 @@
 
     if (prop.optional) {
       content += inSpan("?", { typeStyle: true });
+
+      if (prop.isSnippet) {
+        content += inSpan(".", { typeStyle: true });
+      }
     }
 
-    if (!Array.isArray(prop.type) || prop.type.length) {
-      content += inSpan(":\u00A0");
+    if (prop.isSnippet) {
+      content += inSpan("(", { typeStyle: true });
+    } else if (!Array.isArray(prop.type) || prop.type.length) {
+      content += inSpan(": ");
     }
 
-    if (prop.isArray) {
-      content += inSpan(Array.isArray(prop.type) ? "(" : "", { typeStyle: true });
+    if (prop.isArray && Array.isArray(prop.type)) {
+      content += inSpan("(", { typeStyle: true });
     }
 
     if (prop.isSnippet && Array.isArray(prop.type) && prop.type.length) {
-      content += inSpan("{\u00A0", { typeStyle: true });
+      content += inSpan("{ ", { typeStyle: true });
     }
 
     if (Array.isArray(prop.type)) {
-      content += prop.type
-        .map((t) =>
-          inSpan(escape(t.name), {
-            typeStyle: true,
-            isClickable: t.isClickable,
-            typeName: t.name,
+      if (prop.isSnippet) {
+        content += prop.type
+          .map((arg) => {
+            return inSpan(escape(arg.propName)).concat(
+              inSpan(": "),
+              inSpan(escape(arg.name), {
+                typeStyle: true,
+                isClickable: arg.isClickable,
+                typeName: arg.name,
+              })
+            );
           })
-        )
-        .join("\u00A0|\u00A0");
+          .join(", ");
+      } else {
+        content += prop.type
+          .map((t) =>
+            inSpan(escape(t.name), {
+              typeStyle: true,
+              isClickable: t.isClickable,
+              typeName: t.name,
+            })
+          )
+          .join(" | ");
+      }
     } else {
       content += inSpan(escape(prop.type.name), {
         typeStyle: true,
@@ -87,8 +108,12 @@
       });
     }
 
-    if (prop.isSnippet && Array.isArray(prop.type) && prop.type.length) {
-      content += inSpan("\u00A0}", { typeStyle: true });
+    if (prop.isSnippet) {
+      if (Array.isArray(prop.type) && prop.type.length) {
+        content += inSpan(" }", { typeStyle: true });
+      }
+
+      content += inSpan(")", { typeStyle: true });
     }
 
     if (prop.isArray) {
@@ -96,7 +121,7 @@
     }
 
     if (prop.default) {
-      content += inSpan(`\u00A0=\u00A0${prop.default}`);
+      content += inSpan(` = ${prop.default}`);
     }
 
     content += "</pre>";
@@ -168,8 +193,8 @@
         {/each}
       </QTabs>
     </div>
-    <QCardSection style="max-height: 416px; overflow-y: scroll">
-      <QList separator bordered style="overflow-x:hidden">
+    <QCardSection style="max-height: 416px; overflow-y: auto">
+      <QList separator bordered style="overflow-x:auto">
         {#each QDocument.docs[api[index]] as doc}
           <QItem>
             <QItemSection type="content">

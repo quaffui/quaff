@@ -158,7 +158,15 @@ function evaluateTypeNode(node: ts.TypeNode): PropType | SnippetType | (PropType
 
   const name = node.getText().trim();
 
-  const typesToIgnore = ["MaterialSymbol", "MouseEventHandler", "Snippet", "HTML", "Q.", "Exclude"];
+  const typesToIgnore = [
+    "MaterialSymbol",
+    "MouseEventHandler",
+    "Snippet",
+    "HTML",
+    "Q.",
+    "Exclude",
+    "Omit",
+  ];
 
   return {
     name,
