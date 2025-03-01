@@ -3,7 +3,7 @@
   import QDocs from "$lib/components/private/QDocs.svelte";
 </script>
 
-<QDocs componentDocs={[QSeparatorVerticalDocs, QSeparatorHorizontalDocs]}>
+<QDocs componentDocs={[QSeparatorHorizontalDocs, QSeparatorVerticalDocs]}>
   {#snippet usage()}
     <div></div>
   {/snippet}
