@@ -181,7 +181,7 @@
   });
 </script>
 
-{#each componentDocs as QDocument, index}
+{#each componentDocs as QDocument, index (index)}
   <QCard class="q-px-none q-pb-none q-mt-lg">
     <div class="flex justify-between items-center q-px-md">
       <h5 class="no-margin">
@@ -189,7 +189,7 @@
         <span class="q-ml-md">{QDocument.name} API</span>
       </h5>
       <QTabs bind:value={api[index]} noSeparator class="no-margin">
-        {#each Object.entries(QDocument.docs) as [tabName, _tabDoc]}
+        {#each Object.entries(QDocument.docs) as [tabName, _tabDoc] (tabName)}
           {#if _tabDoc.length !== 0}
             <QTab name={tabName} style="min-width: 100px">
               <h6 style="margin: 0">{capitalize(tabName)}</h6>
@@ -200,7 +200,7 @@
     </div>
     <QCardSection style="max-height: 416px; overflow-y: auto">
       <QList separator bordered style="overflow-x:auto">
-        {#each QDocument.docs[api[index]] as doc}
+        {#each QDocument.docs[api[index]] as doc (doc)}
           <QItem>
             <QItemSection type="content">
               {#snippet headline()}
