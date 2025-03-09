@@ -10,7 +10,7 @@
 <QCard title="Cookie settings" flat>
   <QCardSection>
     <!-- eslint-disable-next-line @typescript-eslint/no-unused-vars -->
-    {#each exampleToggles as _, index}
+    {#each exampleToggles as _, index (index)}
       <div class="flex justify-between q-my-sm">
         {#if index === 0}
           <h6 class="small">Cookies {index + 1} (always active)</h6>

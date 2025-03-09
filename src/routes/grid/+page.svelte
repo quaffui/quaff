@@ -11,7 +11,7 @@
   </p>
 
   <div class="row">
-    {#each cols as col}
+    {#each cols as col (col)}
       <div
         class="col-xs-12 col-md-6 col-lg-3 {col % 2 === 0 ? 'primary' : 'secondary'} text-center"
       >
@@ -27,7 +27,7 @@
     md, lg, xl or none.
   </p>
 
-  {#each ["xs", "sm", "md", "lg", "xl", "none"] as size}
+  {#each ["xs", "sm", "md", "lg", "xl", "none"] as size (size)}
     <h4>{size}</h4>
 
     <div class="row q-gutter-{size}">
@@ -46,7 +46,7 @@
   <h2 class="q-my-lg">Breakpoints</h2>
 
   <ul class="q-ml-lg">
-    {#each [["xs", 0, 599], ["sm", 600, 959], ["md", 960, 1279], ["lg", 1280, 1919], ["xl", 1920]] as info}
+    {#each [["xs", 0, 599], ["sm", 600, 959], ["md", 960, 1279], ["lg", 1280, 1919], ["xl", 1920]] as info (info)}
       <li class="q-mb-md">
         <strong>{info[0]}</strong>
         {#if info.length === 3}

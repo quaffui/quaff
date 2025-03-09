@@ -192,7 +192,7 @@
     </label>
 
     <div class="q-select__menu {isMenuOpen ? 'q-select__menu--active' : ''}">
-      {#each options as option, idx}
+      {#each options as option, idx (idx)}
         <a
           href={multiple ? "javascript:void(0)" : undefined}
           class="q-select__option {selectedOptions[idx] ? 'q-select__option--selected' : ''}"

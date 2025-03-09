@@ -228,7 +228,7 @@
     {#snippet railbarLeft()}
       <QRailbar class="surface no-round" bordered width={120}>
         <QList>
-          {#each pages as { name, icon, to }}
+          {#each pages as { name, icon, to } (`${name}-${icon}-${to}`)}
             <QItem {to} noRipple>
               <QIcon name={icon} />
               <QItemSection>{name}</QItemSection>
@@ -243,7 +243,7 @@
         {#key drawerContent}
           <div in:fade={{ delay: 200, duration: 200 }} out:fade={{ duration: 200 }}>
             <QList dense>
-              {#each drawerContent as { name, to }}
+              {#each drawerContent as { name, to } (`${name}-${to}`)}
                 <QItem
                   {to}
                   onclick={() => contentEl?.scrollTo({ top: 0, behavior: "smooth" })}
@@ -263,7 +263,7 @@
         <div class="q-pa-md">
           <h6 class="q-mb-lg">Want a different color theme?</h6>
           <div class="flex q-gap-md">
-            {#each colors as color, index}
+            {#each colors as color, index (index)}
               <QBtn
                 round
                 onclick={() => {
