@@ -73,7 +73,6 @@
 <div
   {...props}
   class="q-circular-progress"
-  {...Q.classes}
   style:--size={qSize.style}
   role="progressbar"
   aria-valuemin={min}

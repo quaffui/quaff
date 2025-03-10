@@ -56,7 +56,7 @@
   });
 </script>
 
-<header {...props} class="q-header" {...Q.classes} style:--header-height="{height}px" data-quaff>
+<header {...props} class="q-header" style:--header-height="{height}px" data-quaff>
   <QToolbar {inset}>
     {@render children?.()}
   </QToolbar>

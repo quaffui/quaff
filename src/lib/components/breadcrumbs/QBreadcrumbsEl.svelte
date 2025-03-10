@@ -52,7 +52,7 @@
   {@render children()}
 {/snippet}
 
-<div {...props} class="q-breadcrumbs__separator" {...Q.classes} data-quaff>
+<div {...props} class="q-breadcrumbs__separator" data-quaff>
   {#if typeof separator.type === "string"}
     {#if separator.type.startsWith("icon:")}
       <QIcon name={separator.type.replace("icon:", "") as MaterialSymbol} size="1rem" />
@@ -65,11 +65,11 @@
 </div>
 
 {#if href !== undefined || to !== undefined}
-  <a href={href || to} class="q-breadcrumbs__el" {...Q.classes}>
+  <a href={href || to} class="q-breadcrumbs__el">
     {@render breadcrumbEl()}
   </a>
 {:else}
-  <svelte:element this={tag} class="q-breadcrumbs__el" {...Q.classes}>
+  <svelte:element this={tag} class="q-breadcrumbs__el">
     {@render breadcrumbEl()}
   </svelte:element>
 {/if}

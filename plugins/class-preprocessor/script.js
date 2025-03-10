@@ -1,24 +1,7 @@
 /**
- * Converts the given value to a conditional string empty if it's false
- *
- * @param {string} value
- * @return {string}
+ * @template {string | undefined} [T=undefined]
+ * @typedef {import("./types").Node<T>} Node
  */
-function conditionalString(value) {
-  return `{${value} ? \` \${${value}}\` : ''}`;
-}
-
-/**
- * Converts the given data to a svelte class: shorthand attribute
- *
- * @param {import("./types").ComponentName} componentName
- * @param {string} key
- * @param {string} value
- * @returns
- */
-function classShorthand(componentName, key, value) {
-  return `class:${componentName}--${key}={${value}}`;
-}
 
 /**
  * Grabs, if needed, the classes definitions in the script.
@@ -55,7 +38,7 @@ export function prepareScript(instance, source, namespace) {
 
     // We found an instance definition
     // We grab the start and end of the expression so we can remove it from the script
-    const { start, end } = expression;
+    const { start, end } = /** @type {Node<"SimpleCallExpression">} */ (expression);
 
     if (expression.arguments.length !== 2) {
       throw new Error("The ${namespace}.classes function takes exactly 2 arguments");
@@ -79,32 +62,37 @@ export function prepareScript(instance, source, namespace) {
       );
     }
 
-    const bemClasses = options.properties.find((prop) => prop?.key?.name === "bemClasses");
-    const classes = options.properties.find((prop) => prop?.key?.name === "classes");
-    // Svelte doesn't accept `class:` directives on custom components
-    const customComponent = options.properties.find(
-      (prop) => prop?.key?.name === "isCustomComponent"
+    /**
+     * @typedef {Node<"Property"> & { value: Node & Node<"Property">["value"] }} Property
+     */
+
+    const bemClasses = /** @type {Property | undefined} */ (
+      options.properties.find(
+        (prop) =>
+          prop.type !== "SpreadElement" &&
+          prop.key.type === "Identifier" &&
+          prop.key.name === "bemClasses"
+      )
+    );
+    const classes = /** @type {Property | undefined} */ (
+      options.properties.find(
+        (prop) =>
+          prop.type !== "SpreadElement" &&
+          prop.key.type === "Identifier" &&
+          prop.key.name === "classes"
+      )
     );
 
     const componentName = handleComponentName(component);
-    const isCustomComponent = handleCustomComponent(customComponent);
 
     scriptDefs[componentName] = {
       start,
       end,
-      classes: [],
-      bemClasses: [],
+      classes: [`"${componentName}"`],
     };
 
     handleClasses(classes?.value, scriptDefs[componentName].classes, source);
-    handleBemClasses(
-      bemClasses?.value,
-      scriptDefs[componentName].bemClasses,
-      scriptDefs[componentName].classes,
-      componentName,
-      isCustomComponent,
-      source
-    );
+    handleBemClasses(bemClasses?.value, scriptDefs[componentName].classes, componentName, source);
   }
 
   return scriptDefs;
@@ -134,28 +122,7 @@ function handleComponentName(component) {
 
 /**
  *
- * @param {import("estree-walker").Node | undefined} customComponent
- * @returns
- */
-function handleCustomComponent(customComponent) {
-  if (!customComponent) {
-    return false;
-  }
-
-  if (
-    customComponent.type !== "Property" ||
-    customComponent.value.type !== "Literal" ||
-    typeof customComponent.value.value !== "boolean"
-  ) {
-    throw new Error("The customComponent property should be a boolean literal.");
-  }
-
-  return customComponent.value;
-}
-
-/**
- *
- * @param {import("estree-walker").Node | undefined} staticClasses
+ * @param {Node | undefined} staticClasses
  * @param {string[]} classes
  * @param {string} source
  */
@@ -168,68 +135,68 @@ function handleClasses(staticClasses, classes, source) {
     throw new Error("The static classes should be an array of values");
   }
 
-  for (const cls of staticClasses.elements) {
+  for (const cls of /** @type {(Node & typeof staticClasses.elements[0])[]} */ (
+    staticClasses.elements
+  )) {
     if (cls?.type === "Literal") {
       if (typeof cls.value !== "string") {
         throw new Error("The static class literals should be strings.");
       }
 
       if (cls.value.length) {
-        classes.push(` ${cls.value}`);
+        // Normal class string, quote it so it's seen as a string in the result code
+        classes.push(`"${cls.value}"`);
       }
     } else if (cls?.type === "Identifier") {
-      classes.push(conditionalString(cls.name));
+      // Class that comes from a variable, no quotes needed
+      // so it's seen as an identifier in the result code
+      classes.push(cls.name);
     } else if (cls?.type === "ArrowFunctionExpression") {
+      // Class written like () => ...
       const { body } = cls;
 
       if (body.type === "Identifier") {
-        classes.push(conditionalString(body.name));
+        // Class that comes from a variable, no quotes needed
+        // so it's seen as an identifier in the result code
+        classes.push(body.name);
       } else if (body.type === "MemberExpression") {
+        // Class like variable.nested.in.object, we need to convert it to a string
         const result = handleMemberExpression(body);
-        classes.push(conditionalString(result));
+        // No quotes needed so it's seen as identifiers in the result code
+        classes.push(result);
       } else {
         throw new Error(
           "Arrow function expressions should only have an Identifier or a MemberExpression in their body."
         );
       }
     } else if (cls?.type === "MemberExpression") {
+      // Class like variable.nested.in.object, we need to convert it to a string
       const result = handleMemberExpression(cls);
-      classes.push(conditionalString(result));
+      // No quotes needed so it's seen as identifiers in the result code
+      classes.push(result);
     } else if (cls?.type === "TemplateLiteral") {
-      const template = source.slice(cls.start, cls.end).replaceAll("`", "").replace("${", "{");
-      classes.push(` ${template}`);
+      // Class like `class-with-${variable}`
+      classes.push(source.slice(cls.start, cls.end));
     } else if (cls?.type === "LogicalExpression") {
-      const left = source.slice(cls.left.start, cls.left.end);
-      const right = source.slice(cls.right.start, cls.right.end);
+      // Class like var1 || var2, var1 && "static-class", etc.
+      // we push it as it is
+      const left = /** @type {Node<"Expression">} */ (cls.left);
+      const right = /** @type {Node<"Expression">} */ (cls.right);
 
-      if (cls.operator === "||") {
-        classes.push(`{${left} ? \` \${${left}}\` : ${right} ? \` \${${right}}\` : ''}`);
-      } else if (cls.operator === "&&") {
-        classes.push(`{${left} ? ' ' + ${right} : ''}`);
-      } else {
-        classes.push(`{${left} !== null && ${left} !== undefined ? \` \${${right}}\` : ''}`);
-      }
+      const expr = source.slice(left.start, right.end);
+      classes.push(expr);
     }
   }
 }
 
 /**
  *
- * @param {import("estree-walker").Node | undefined} dynamicClasses
+ * @param {Node | undefined} dynamicClasses
  * @param {string[]} classes
- * @param {string[]} staticClasses
  * @param {import("./types").ComponentName} componentName
- * @param {boolean} isCustomComponent
  * @param {string} source
  */
-function handleBemClasses(
-  dynamicClasses,
-  classes,
-  staticClasses,
-  componentName,
-  isCustomComponent,
-  source
-) {
+function handleBemClasses(dynamicClasses, classes, componentName, source) {
   if (!dynamicClasses) {
     return;
   }
@@ -243,26 +210,31 @@ function handleBemClasses(
       throw new Error("The dynamic classes can't be spread.");
     }
 
-    const { key, value } = prop;
+    const { key, value } =
+      /** @type {Node<"Property"> & { key: Node & Node<"Property">["key"] } & { value: Node & Node<"Property">["value"] }} */ (
+        prop
+      );
     const val = source.slice(value.start, value.end);
+
+    /**
+     * Prefixes the class with the component name
+     *
+     * @param {string} suffix the class name
+     * @param {boolean} [computed = false] wether the property is computed or not
+     * @returns {string} the class name prefixed with the component name
+     */
+    const bem = (suffix, computed) =>
+      computed ? `\`${componentName}--$\{${suffix}}\`` : `"${componentName}--${suffix}"`;
 
     if (key.type === "Identifier") {
       if (prop.computed) {
-        const cls = (withDollar) => `${componentName}--${withDollar ? "$" : ""}{${key.name}}`;
-        staticClasses.push(val === "true" ? ` ${cls(false)}` : `{${val} ? \` ${cls(true)}\` : ''}`);
+        // Class of the form { [variable]: true } or { [variable]: condition }
+        classes.push(val === "true" ? bem(key.name, true) : `(${val}) && ${bem(key.name, true)}`);
       } else {
-        if (isCustomComponent) {
-          staticClasses.push(`{${val} ? \` ${componentName}--${key.name}\` : ''}`);
-        } else {
-          classes.push(classShorthand(componentName, key.name, val));
-        }
+        classes.push(`(${val}) && ${bem(key.name)}`);
       }
     } else if (key.type === "Literal" && typeof key.value === "string") {
-      if (isCustomComponent) {
-        staticClasses.push(`{${val} ? \` ${componentName}--${key.value}\` : ''}`);
-      } else {
-        classes.push(classShorthand(componentName, key.value, val));
-      }
+      classes.push(`(${val}) && ${bem(key.value)}`);
     } else {
       throw new Error("Dynamic classes keys should be Identifiers.");
     }

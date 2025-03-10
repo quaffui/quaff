@@ -84,7 +84,6 @@
   use:ripple
   {...props}
   class="q-tab"
-  {...Q.classes}
   href={to}
   role={tag === "a" ? "button" : undefined}
   aria-current={isActive || undefined}
