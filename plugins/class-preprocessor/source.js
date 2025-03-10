@@ -1,6 +1,6 @@
 /**
  *
- * @param {import("magic-string").MagicString} source
+ * @param {import("magic-string").default} source
  * @param {import("./types").Result} result
  */
 export function changeSource(source, result) {
@@ -12,10 +12,8 @@ export function changeSource(source, result) {
   }
 
   for (const use of result.uses) {
-    // Replace the {...${namespace}.classes} attribute by class:dynamicClass attributes
-    source.overwrite(use.start, use.end, result.def.bemClasses.join("\n"));
-
-    // Add the new classes
-    source.appendRight(use.classEnd - 1, result.def.classes.join(""));
+    // As the class is of the form class="q-component",
+    // We need to change it to class={["q-component",...]}
+    source.update(use.start - 1, use.end + 1, `{[${result.def.classes.join(",")}]}`);
   }
 }

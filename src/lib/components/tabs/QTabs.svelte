@@ -144,6 +144,6 @@
   });
 </script>
 
-<nav {...props} bind:this={qTabs} class="q-tabs" {...Q.classes} data-quaff>
+<nav {...props} bind:this={qTabs} class="q-tabs" data-quaff>
   {@render children?.()}
 </nav>

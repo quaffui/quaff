@@ -150,7 +150,6 @@
   bind:this={wrapper}
   {...props}
   class="q-field"
-  {...Q.classes}
   style:--snippet-prepend-width="{snippetPrependWidth}px"
   data-quaff
 >

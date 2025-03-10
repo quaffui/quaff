@@ -31,7 +31,7 @@
   });
 </script>
 
-<div {...props} class="q-separator__wrapper" {...Q.classes} data-quaff>
+<div {...props} class="q-separator__wrapper" data-quaff>
   {#if text}
     {#if (vertical && textAlign !== "top") || (!vertical && textAlign !== "left")}
       {@render hr()}
@@ -48,10 +48,5 @@
 </div>
 
 {#snippet hr()}
-  <hr
-    class="q-separator"
-    {...Q.classes}
-    style:--q-separator-size={size}
-    aria-orientation={orientation}
-  />
+  <hr class="q-separator" style:--q-separator-size={size} aria-orientation={orientation} />
 {/snippet}

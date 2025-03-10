@@ -13,6 +13,6 @@
   });
 </script>
 
-<div {...props} class="q-card__section" {...Q.classes} class:row={horizontal} data-quaff>
+<div {...props} class="q-card__section" class:row={horizontal} data-quaff>
   {@render children?.()}
 </div>

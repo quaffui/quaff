@@ -16,5 +16,5 @@
     "verbatimModuleSyntax": false
   },
   "exclude": ["./dist/**/*"],
-  "include": ["./docgen/**/*", "./scripts/**/*", "./src/**/*"]
+  "include": ["./docgen/**/*", "./scripts/**/*", "./src/**/*", "./plugins/**/*"]
 }
