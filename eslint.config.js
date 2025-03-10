@@ -34,6 +34,7 @@ export default [
       "package-lock.json",
       "yarn.lock",
       ".DS_Store",
+      "vite.config.ts*",
     ],
   },
   // configs to extend
