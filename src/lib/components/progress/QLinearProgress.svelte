@@ -46,7 +46,6 @@
 <div
   {...props}
   class="q-linear-progress"
-  {...Q.classes}
   style:font-size={qSize.style}
   style:border-radius={radius}
   role="progressbar"
@@ -65,7 +64,6 @@
 
   <div
     class="q-linear-progress__indicator"
-    {...Q.classes}
     style:--q-indicator-color="var(--{color}, {color})"
     style:transition
     style:transform={indicatorTransform}

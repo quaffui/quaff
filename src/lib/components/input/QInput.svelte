@@ -63,7 +63,6 @@
 <div
   {...props}
   class="q-field"
-  {...Q.classes}
   style:--snippet-prepend-width="{snippetPrependWidth}px"
   aria-disabled={disable || undefined}
   data-quaff

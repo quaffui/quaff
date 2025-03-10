@@ -73,7 +73,6 @@
   bind:this={tooltipEl}
   {...props}
   class="q-tooltip"
-  {...Q.classes}
   style:top={styles?.top}
   style:left={styles?.left}
   style:transform="unset"

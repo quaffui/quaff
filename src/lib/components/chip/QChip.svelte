@@ -96,7 +96,6 @@
   }}
   {...props}
   class="q-chip"
-  {...Q.classes}
   aria-disabled={disabled || undefined}
   {tabindex}
   {role}

@@ -110,7 +110,7 @@
 </script>
 
 <div {...props} class="q-table" data-quaff>
-  <table class="q-table__table" {...Q.classes}>
+  <table class="q-table__table">
     <thead>
       <tr>
         {#each columns as column}

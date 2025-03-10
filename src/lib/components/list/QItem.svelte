@@ -61,7 +61,6 @@
     use:ripple={{ disabled: !isClickable || noRipple }}
     {...props}
     class="q-item"
-    {...Q.classes}
     tabindex={isClickable ? tabindex || 0 : undefined}
     aria-disabled={isActionable && disabled ? true : undefined}
     {...routerInfo.linkAttributes}
@@ -74,7 +73,6 @@
     this={tag}
     {...props}
     class="q-item"
-    {...Q.classes}
     tabindex={isClickable ? tabindex || 0 : undefined}
     aria-disabled={isActionable && disabled ? true : undefined}
     data-quaff

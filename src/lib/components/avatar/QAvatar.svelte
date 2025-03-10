@@ -23,7 +23,7 @@
   });
 </script>
 
-<div {...props} class="q-avatar" {...Q.classes} style:--size={qSize.style} data-quaff>
+<div {...props} class="q-avatar" style:--size={qSize.style} data-quaff>
   {#if video}
     <video>
       <source {src} type="video/mp4" />

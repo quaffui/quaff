@@ -17,7 +17,7 @@
   });
 </script>
 
-<label {...props} class="q-radio" {...Q.classes} aria-disabled={disable || undefined} data-quaff>
+<label {...props} class="q-radio" aria-disabled={disable || undefined} data-quaff>
   <input type="radio" bind:group={selected} {value} disabled={disable} />
   <span>{label}</span>
 </label>

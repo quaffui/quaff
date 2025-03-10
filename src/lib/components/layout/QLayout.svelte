@@ -109,7 +109,6 @@
 <div
   {...props}
   class="q-layout"
-  {...Q.classes}
   style:--left-railbar-width={`${railbarLeft ? leftRailbarCtx.value.width : 0}px`}
   style:--right-railbar-width={`${railbarRight ? rightRailbarCtx.value.width : 0}px`}
   style:--offset-top={`${topOffset}px`}

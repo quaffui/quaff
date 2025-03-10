@@ -93,7 +93,6 @@
   bind:this={dialogEl}
   {...props}
   class="q-dialog"
-  {...Q.classes}
   onclick={handleClickInside}
   oncancel={tryCancel}
   {onkeydown}

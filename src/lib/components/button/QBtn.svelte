@@ -118,7 +118,6 @@
   }}
   {...props}
   class="q-btn"
-  {...Q.classes}
   style:--q-btn-size={qSize.style}
   style:--ripple-color={colorVar}
   {target}

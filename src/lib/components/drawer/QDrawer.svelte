@@ -123,7 +123,6 @@
   {...props}
   use:clickOutside={() => canHideOnClickOutside && hide()}
   class="q-drawer"
-  {...Q.classes}
   {style}
   data-quaff
 >

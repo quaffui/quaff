@@ -31,6 +31,6 @@
   });
 </script>
 
-<article {...props} class="q-card" {...Q.classes} data-quaff>
+<article {...props} class="q-card" data-quaff>
   {@render children?.()}
 </article>

@@ -72,7 +72,6 @@
   bind:this={qSwitch}
   {...props}
   class="q-switch"
-  {...Q.classes}
   {onclick}
   {onkeydown}
   aria-disabled={disabled || undefined}
@@ -91,7 +90,7 @@
     <span class="q-switch__track">
       <span class="q-switch__touch"></span>
       <span class="q-switch__handle-container" use:ripple={{ disabled }}>
-        <span class="q-switch__handle" {...Q.classes}>
+        <span class="q-switch__handle">
           {#if (uncheckedIcon || icons) && !showOnlyCheckedIcon}
             {@render icon("unchecked")}
           {/if}

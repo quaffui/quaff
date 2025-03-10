@@ -20,7 +20,7 @@ export function prepareMarkup(fragment, component, uses, namespace) {
     } else if (node.type === "AwaitBlock") {
       /** @type {"pending" | "then" | "catch"} */
       let awaitKey;
-      for (awaitKey of ["pending", "then", "catch"]) {
+      for (awaitKey of /** @type {const} */ (["pending", "then", "catch"])) {
         let frag = node[awaitKey];
         if (frag) {
           prepareMarkup(frag, component, uses, namespace);
@@ -34,6 +34,10 @@ export function prepareMarkup(fragment, component, uses, namespace) {
       continue;
     }
 
+    if (!("fragment" in node)) {
+      continue;
+    }
+
     if (node.fragment) {
       prepareMarkup(node.fragment, component, uses, namespace);
     }
@@ -42,10 +46,10 @@ export function prepareMarkup(fragment, component, uses, namespace) {
       continue;
     }
 
-    /** @type {(typeof node.attributes[0]) & { type: "Attribute" }} */
-    const classAttribute = node.attributes.find(
-      (attr) => attr.type === "Attribute" && attr.name === "class"
-    );
+    const classAttribute =
+      /** @type {((typeof node.attributes[0]) & { type: "Attribute" }) | undefined} */ (
+        node.attributes.find((attr) => attr.type === "Attribute" && attr.name === "class")
+      );
 
     if (
       !classAttribute ||
@@ -59,31 +63,12 @@ export function prepareMarkup(fragment, component, uses, namespace) {
     if (cls.type !== "Text" || cls.data !== component) {
       continue;
     }
-    // Possible element to add classes on
+    // Elements to attach the classes to
 
-    // Check for `{...${namespace}.classes}` attribute
-    const quaffClassesAttr = node.attributes.find(
-      (attr) =>
-        attr.type === "SpreadAttribute" &&
-        attr.expression.type === "MemberExpression" &&
-        attr.expression.object.type === "Identifier" &&
-        attr.expression.object.name === namespace &&
-        attr.expression.property.type === "Identifier" &&
-        attr.expression.property.name === "classes"
-    );
-
-    if (!quaffClassesAttr) {
-      continue;
-    }
-    // We found the element on which to add the classes
-
-    // We grab the end to append new classes
-    const classEnd = classAttribute.end;
-    // We grab the attribute to remove it
-    const { start, end } = quaffClassesAttr;
+    // We grab the start and end of the class definition to replace with the new classes
+    const { start, end } = cls;
 
     uses.push({
-      classEnd,
       start,
       end,
     });
