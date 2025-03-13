@@ -18,9 +18,7 @@ export function prepareMarkup(fragment, component, uses, namespace) {
 
       continue;
     } else if (node.type === "AwaitBlock") {
-      /** @type {"pending" | "then" | "catch"} */
-      let awaitKey;
-      for (awaitKey of /** @type {const} */ (["pending", "then", "catch"])) {
+      for (const awaitKey of /** @type {const} */ (["pending", "then", "catch"])) {
         let frag = node[awaitKey];
         if (frag) {
           prepareMarkup(frag, component, uses, namespace);
@@ -38,9 +36,7 @@ export function prepareMarkup(fragment, component, uses, namespace) {
       continue;
     }
 
-    if (node.fragment) {
-      prepareMarkup(node.fragment, component, uses, namespace);
-    }
+    prepareMarkup(node.fragment, component, uses, namespace);
 
     if (!("attributes" in node)) {
       continue;
