@@ -113,7 +113,7 @@
   <table class="q-table__table">
     <thead>
       <tr>
-        {#each columns as column}
+        {#each columns as column (column)}
           <th style={getThStyle(column)} onclick={() => setSort(column)}>
             {#if column.align === "left"}
               {column.label}
@@ -134,9 +134,9 @@
       </tr>
     </thead>
     <tbody>
-      {#each rowsPaginated as row}
+      {#each rowsPaginated as row (row)}
         <tr>
-          {#each columns as column}
+          {#each columns as column (column)}
             {#if bodyCell}
               {@render bodyCell({ column, row, style: getCellStyle(column) })}
             {:else}
