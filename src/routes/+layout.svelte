@@ -23,7 +23,7 @@
   } from "$lib";
   import QTheme from "$lib/classes/QTheme.svelte";
   import { isRouteActive } from "$lib/utils/router";
-  import { page } from "$app/stores";
+  import { page } from "$app/state";
   import type { MaterialSymbol } from "material-symbols";
 
   const { data, children } = $props();
@@ -183,7 +183,7 @@
   let drawerRightEl = $state<ReturnType<typeof QDrawer>>();
 
   const selectedRailbarItem = $derived(
-    $isRouteActive("/components") ? "components" : $isRouteActive("/utils") ? "utils" : null
+    isRouteActive("/components") ? "components" : isRouteActive("/utils") ? "utils" : null
   );
 
   $effect(() => {
@@ -208,7 +208,7 @@
 </script>
 
 <!-- eslint-disable-next-line svelte/valid-compile -->
-{#if $page.route.id === "/layout"}
+{#if page.route.id === "/layout"}
   {@render children?.()}
 {:else}
   <QLayout view="hhr lpr fff" class="main-layout">

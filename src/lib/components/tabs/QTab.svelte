@@ -27,7 +27,7 @@
 
   const qTabsValueCtx = QContext.get<string | undefined | null>("QTabsValue")!;
   const variant = getContext<QTabsVariants>("QTabsVariant");
-  const isActive = $derived(to ? $isRouteActive(to) : name === qTabsValueCtx.value);
+  const isActive = $derived(to ? isRouteActive(to) : name === qTabsValueCtx.value);
 
   function onclick(e: QTabEvent<MouseEvent>) {
     props.onclick?.(e);
