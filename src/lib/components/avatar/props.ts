@@ -3,7 +3,7 @@ import type { HTMLAttributes } from "svelte/elements";
 
 export type QAvatarShapeOptions =
   | "circle"
-  | "rounded"
+  | "square"
   | "top-round"
   | "left-round"
   | "right-round"

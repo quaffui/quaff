@@ -88,7 +88,6 @@
     border-radius: inherit;
 
     :global(pre) {
-      white-space: break-spaces;
       text-align: left;
       padding: 1rem;
     }
