@@ -1,4 +1,6 @@
 import QAvatar from "./avatar/QAvatar.svelte";
+import QBreadcrumbs from "./breadcrumbs/QBreadcrumbs.svelte";
+import QBreadcrumbsEl from "./breadcrumbs/QBreadcrumbsEl.svelte";
 import QBtn from "./button/QBtn.svelte";
 import QCard from "./card/QCard.svelte";
 import QCardSection from "./card/QCardSection.svelte";
@@ -32,6 +34,8 @@ import QTooltip from "./tooltip/QTooltip.svelte";
 
 export {
   QAvatar,
+  QBreadcrumbs,
+  QBreadcrumbsEl,
   QBtn,
   QCard,
   QCardSection,
