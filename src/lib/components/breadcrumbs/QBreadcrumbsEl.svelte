@@ -2,7 +2,6 @@
 
 <script lang="ts">
   import { getContext, type Snippet } from "svelte";
-  import { derived } from "svelte/store";
   import { isRouteActive } from "$utils/router";
   import QIcon from "../icon/QIcon.svelte";
   import type { MaterialSymbol } from "material-symbols";
@@ -26,14 +25,14 @@
     gutter: string;
   }>("separator");
 
-  const classesIfActive = derived(isRouteActive, ($isRouteActive) =>
-    $isRouteActive(href || to) ? `${activeClass} text-${activeColor}` : undefined
+  const classesIfActive = $derived(
+    isRouteActive(href || to) ? `${activeClass} text-${activeColor}` : undefined
   );
 
   Q.classes("q-breadcrumbs__separator", {
     classes: [`q-px-${separator.gutter}`, props.class],
   });
-  Q.classes("q-breadcrumbs__el", { classes: [$classesIfActive] });
+  Q.classes("q-breadcrumbs__el", { classes: [classesIfActive] });
 </script>
 
 {#snippet fallback()}

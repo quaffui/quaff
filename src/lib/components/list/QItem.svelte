@@ -39,7 +39,7 @@
   const isActionable = $derived(clickable || routerInfo.hasLink || tag === "label");
   const isClickable = $derived(isActionable && !disabled);
 
-  const isActive = $derived($isRouteActive(to || href) || (routerInfo.hasLink && active));
+  const isActive = $derived(isRouteActive(to || href) || (routerInfo.hasLink && active));
 
   Q.classes("q-item", {
     bemClasses: {
