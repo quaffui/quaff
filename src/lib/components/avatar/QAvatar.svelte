@@ -25,7 +25,7 @@
 
 <div {...props} class="q-avatar" style:--size={qSize.style} data-quaff>
   {#if video}
-    <video>
+    <video autoplay loop muted playsinline>
       <source {src} type="video/mp4" />
       <track kind="captions" />
       {@render videoAccessibility?.()}
