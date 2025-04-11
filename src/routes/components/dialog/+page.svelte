@@ -14,9 +14,8 @@
   import { QDialogDocs } from "$components/dialog/docs";
   import QDocs from "$lib/components/private/QDocs.svelte";
   import QDocsSection from "$lib/components/private/QDocsSection.svelte";
-
-  import snippets from "./docs.snippets";
   import type { QDialogPositionOptions } from "$components/dialog/props";
+  import snippets from "./docs.snippets";
 
   let basicDialogOpen = $state(false);
   let modalDialogOpen = $state(false);

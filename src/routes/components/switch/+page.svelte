@@ -8,7 +8,7 @@
   let toggle = $state(false);
 </script>
 
-<QDocs componentDocs={QSwitchDocs}>
+<QDocs {snippets} componentDocs={QSwitchDocs}>
   {#snippet display()}
     <QSwitch bind:value={toggle} class="q-ma-sm" />
   {/snippet}

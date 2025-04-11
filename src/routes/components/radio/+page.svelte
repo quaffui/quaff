@@ -8,7 +8,7 @@
   let selectedValue = "option1";
 </script>
 
-<QDocs componentDocs={QRadioDocs}>
+<QDocs {snippets} componentDocs={QRadioDocs}>
   {#snippet display()}
     <QRadio value="option1" selected={selectedValue} label="Option 1" />
   {/snippet}

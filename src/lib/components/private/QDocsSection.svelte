@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { QCodeBlock, QDialog, QBtn } from "$lib";
   import { getContext, type Snippet } from "svelte";
+  import { QCodeBlock, QDialog, QBtn } from "$lib";
 
   type QDocsSectionProps = {
     title: string;

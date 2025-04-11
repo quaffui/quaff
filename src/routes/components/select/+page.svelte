@@ -24,7 +24,7 @@
   });
 </script>
 
-<QDocs componentDocs={QSelectDocs}>
+<QDocs {snippets} componentDocs={QSelectDocs}>
   {#snippet display()}
     <QSelect label="Favorite animal" {options} {value} />
   {/snippet}
