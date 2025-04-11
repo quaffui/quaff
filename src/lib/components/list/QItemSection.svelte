@@ -1,6 +1,6 @@
 <script lang="ts">
   import { QContext } from "$lib/classes/QContext.svelte";
-  import type { Snippet } from "svelte";
+  import { getContext, type Snippet } from "svelte";
   import type { QItemSectionProps } from "./props";
 
   let {
@@ -13,6 +13,8 @@
     ...props
   }: QItemSectionProps = $props();
 
+  const activeClass = getContext<() => string>("itemActiveClass");
+
   const multiline = QContext.get<boolean>("multiline");
 
   $effect(() => {
@@ -22,12 +24,13 @@
   });
 
   function getClass(snip: Snippet) {
-    return snip === headline ? "body-large text-on-surface" : "body-medium text-on-surface-variant";
+    return snip === headline ? "q-item__section--headline" : undefined;
   }
 
   Q.classes("q-item__section", {
     bemClasses: {
       [type]: true,
+      trailing: type === "trailingText",
     },
     classes: [props.class],
   });
@@ -47,17 +50,19 @@
       {@render line(line3)}
     {/if}
   {:else if type === "trailingText"}
-    <div class="label-small text-on-surface-variant">
+    <div class={["label-small", activeClass()]}>
       {@render children?.()}
     </div>
   {:else}
-    {@render children?.()}
+    <div class={activeClass() || undefined}>
+      {@render children?.()}
+    </div>
   {/if}
 </div>
 
 {#snippet line(snip: Snippet | undefined)}
   {#if snip}
-    <div class={getClass(snip)}>
+    <div class={[getClass(snip), activeClass()]}>
       {@render snip()}
     </div>
   {/if}

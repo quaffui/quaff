@@ -10,9 +10,12 @@
     separatorOptions = {},
     padding = false,
     tag = "div",
+    activeClass,
     children,
     ...props
   }: QListProps = $props();
+
+  setContext("listItemsActiveClass", () => activeClass);
 
   let listEl: HTMLElement;
 

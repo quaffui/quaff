@@ -346,37 +346,37 @@
               <div class="flex items-center q-mx-auto" style="height: 60vh; max-width: 12rem">
                 <QList style="text-align: center;">
                   <QItem>
-                    <QItemSection type="toggle">
+                    <QItemSection type="switch">
                       <QSwitch bind:value={showHeader} />
                     </QItemSection>
                     <QItemSection>Header</QItemSection>
                   </QItem>
                   <QItem>
-                    <QItemSection type="toggle">
+                    <QItemSection type="switch">
                       <QSwitch bind:value={leftRailbar} />
                     </QItemSection>
                     <QItemSection>Left Railbar</QItemSection>
                   </QItem>
                   <QItem>
-                    <QItemSection type="toggle">
+                    <QItemSection type="switch">
                       <QSwitch bind:value={rightRailbar} />
                     </QItemSection>
                     <QItemSection>Right Railbar</QItemSection>
                   </QItem>
                   <QItem>
-                    <QItemSection type="toggle">
+                    <QItemSection type="switch">
                       <QSwitch bind:value={leftDrawer} />
                     </QItemSection>
                     <QItemSection>Left Drawer</QItemSection>
                   </QItem>
                   <QItem>
-                    <QItemSection type="toggle">
+                    <QItemSection type="switch">
                       <QSwitch bind:value={rightDrawer} />
                     </QItemSection>
                     <QItemSection>Right Drawer</QItemSection>
                   </QItem>
                   <QItem>
-                    <QItemSection type="toggle">
+                    <QItemSection type="switch">
                       <QSwitch bind:value={showFooter} />
                     </QItemSection>
                     <QItemSection>Footer</QItemSection>

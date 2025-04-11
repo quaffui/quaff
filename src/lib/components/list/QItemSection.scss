@@ -3,6 +3,18 @@
 .q-item__section {
   display: flex;
 
+  @include mixins.typography("body-medium");
+  color: var(--on-surface-variant);
+
+  &--headline {
+    @include mixins.typography("body-large");
+    color: var(--on-surface);
+  }
+
+  &--trailing {
+    @include mixins.typography("label-small");
+  }
+
   &--video {
     margin-left: -1rem;
     padding-block: 0.25rem;
@@ -39,6 +51,8 @@
   }
 
   &--toggle {
+    align-items: center;
+    justify-content: center;
     height: 1.5rem;
     width: 3.25rem;
   }
