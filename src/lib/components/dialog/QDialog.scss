@@ -23,13 +23,8 @@
     variables.$speed3 all,
     0s background-color;
   transform: translate(-50%, -4rem);
+  transform-origin: center left;
   animation-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
-
-  &:is(&.active, [open]) {
-    opacity: 1;
-    visibility: visible;
-    transform: translate(-50%, 0);
-  }
 
   &::backdrop {
     pointer-events: none;
@@ -54,7 +49,7 @@
     height: 75%;
   }
 
-  &:is(&--active, [open]) {
+  &:is(&--active, [open], .active) {
     opacity: 1;
     visibility: visible;
     transform: translate(-50%, 0);
@@ -169,7 +164,7 @@
     scale: 1;
   }
   50% {
-    scale: 1.04;
+    scale: 1.01;
   }
   100% {
     scale: 1;

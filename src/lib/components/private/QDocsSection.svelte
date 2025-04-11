@@ -1,15 +1,18 @@
 <script lang="ts">
   import { QCodeBlock, QDialog, QBtn } from "$lib";
-  import type { Snippet } from "svelte";
+  import { getContext, type Snippet } from "svelte";
 
   type QDocsSectionProps = {
     title: string;
-    snippet?: string;
     sectionDescription?: Snippet;
     children?: Snippet;
   };
 
-  let { title, snippet, sectionDescription, children }: QDocsSectionProps = $props();
+  let { title, sectionDescription, children }: QDocsSectionProps = $props();
+
+  const snippets = getContext<() => Record<string, string>>("QDocsSnippets");
+
+  const code = $derived(snippets()[title]);
 
   let dialog = $state(false);
 
@@ -20,10 +23,10 @@
 <div {id} style="margin-bottom:48px">
   <div class="flex justify-between q-mb-sm">
     <h5>{title}</h5>
-    {#if snippet}
+    {#if code}
       <QBtn icon="code" variant="outlined" round onclick={() => (dialog = true)} />
       <QDialog class="snippet-dialog" bind:value={dialog} modal>
-        <QCodeBlock code={snippet} language="svelte" {title} copiable />
+        <QCodeBlock {code} language="svelte" {title} copiable />
       </QDialog>
     {/if}
   </div>
@@ -34,5 +37,7 @@
     </div>
   {/if}
 
-  {@render children?.()}
+  <div class="q-ma-sm">
+    {@render children?.()}
+  </div>
 </div>

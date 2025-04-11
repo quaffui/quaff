@@ -35,7 +35,7 @@
       <QBtn icon="code" variant="outlined" />
     </div>
 
-    <QDocsSection snippet={snippets["State"]} title="State">
+    <QDocsSection title="State">
       <QSelect bind:value={select} {options} label="Default" class="q-mt-md" />
       <QSelect bind:value={select} {options} label="Disabled" class="q-mt-md" disable />
       <QSelect bind:value={selectMultiple} {options} label="Multiple" class="q-mt-md" multiple />
@@ -49,18 +49,18 @@
       />
     </QDocsSection>
 
-    <QDocsSection snippet={snippets["Style"]} title="Style">
+    <QDocsSection title="Style">
       <QSelect bind:value={select} {options} label="Default" class="q-mt-md" />
       <QSelect bind:value={select} {options} label="Rounded" class="q-mt-md" rounded />
       <QSelect bind:value={select} {options} label="Outlined" class="q-mt-md" outlined />
       <QSelect bind:value={select} {options} label="Filled" class="q-mt-md" filled />
     </QDocsSection>
 
-    <QDocsSection snippet={snippets["Dense"]} title="Dense">
+    <QDocsSection title="Dense">
       <QSelect bind:value={select} {options} label="Dense" class="q-mt-md" outlined dense />
     </QDocsSection>
 
-    <QDocsSection snippet={snippets["Validation and Hints"]} title="Validation and Hints">
+    <QDocsSection title="Validation and Hints">
       <QSelect
         bind:value={select}
         {options}
@@ -78,7 +78,7 @@
       />
     </QDocsSection>
 
-    <QDocsSection snippet={snippets["Snippets"]} title="Snippets">
+    <QDocsSection title="Snippets">
       <QSelect bind:value={select} {options} label="Prepended Icon">
         {#snippet prepend()}
           <QIcon name="favorite" />

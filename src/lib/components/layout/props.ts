@@ -14,53 +14,46 @@ export interface QLayoutProps extends NativeProps, HTMLAttributes<HTMLDivElement
   view?: QLayoutViewOptions;
 
   /**
-   * The height of the header. Can be specified with CSS units. If no unit is specified, "px" will be used.
-   * @default 64px
+   * Main area of the layout where the content will be displayed, meaning everything besides the layout components (header, railbars, drawers, footer).
+   * It overrides the default children snippet.
+   * @default undefined
    */
-  headerHeight?: string | number;
-
-  /**
-   * The height of the footer. Can be specified with CSS units. If no unit is specified, "px" will be used.
-   * @default 80px
-   */
-  footerHeight?: string | number;
-
-  /**
-   * The width of the left drawer. Can be specified with CSS units. If no unit is specified, "px" will be used.
-   * @default 300px
-   */
-  leftDrawerWidth?: string | number;
-
-  /**
-   * The width of the right drawer. Can be specified with CSS units. If no unit is specified, "px" will be used.
-   * @default 300px
-   */
-  rightDrawerWidth?: string | number;
-
-  /**
-   * The width of the left railbar. Can be specified with CSS units. If no unit is specified, "px" will be used.
-   * @default 88px
-   */
-  leftRailbarWidth?: string | number;
-
-  /**
-   * The width of the right railbar. Can be specified with CSS units. If no unit is specified, "px" will be used.
-   * @default 88px
-   */
-  rightRailbarWidth?: string | number;
-
   content?: Snippet;
 
+  /**
+   * The railbar on the left side of the layout.
+   * @default undefined
+   */
   railbarLeft?: Snippet;
 
+  /**
+   * The railbar on the right side of the layout.
+   * @default undefined
+   */
   railbarRight?: Snippet;
 
+  /**
+   * The drawer on the left side of the layout.
+   * @default undefined
+   */
   drawerLeft?: Snippet;
 
+  /**
+   * The drawer on the right side of the layout.
+   * @default undefined
+   */
   drawerRight?: Snippet;
 
+  /**
+   * The header of the layout.
+   * @default undefined
+   */
   header?: Snippet;
 
+  /**
+   * The footer of the layout.
+   * @default undefined
+   */
   footer?: Snippet;
 }
 

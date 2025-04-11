@@ -18,7 +18,7 @@ export default async function parseSvelteFile(svelteFilePath: string) {
     const content = match[2].trim();
 
     const contentWithoutDescription = content.replace(
-      /\{#snippet sectionDescription\(\)\}.+\{\/snippet\}/gms,
+      /\{#snippet sectionDescription\(\)\}.+?\s{8}\{\/snippet\}/gms,
       ""
     );
 

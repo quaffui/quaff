@@ -1,11 +1,11 @@
 <script lang="ts">
   import { getContext, onDestroy, untrack } from "svelte";
-  import { navigating } from "$app/stores";
+  import { navigating } from "$app/state";
   import { useSize } from "$lib/composables";
   import { clickOutside } from "$lib/helpers";
-  import QContext from "$lib/classes/QContext.svelte";
+  import { QContext } from "$lib/classes/QContext.svelte";
   import type { QLayoutProps } from "$components/layout/props";
-  import type { DrawerContext, LayoutContext } from "../layout/QLayout.svelte";
+  import type { DrawerContext } from "../layout/QLayout.svelte";
   import type { QDrawerProps } from "./props";
 
   let {
@@ -21,12 +21,6 @@
 
   const drawerContext = QContext.get<DrawerContext>(`QDrawer-${side}`);
   const layoutView = getContext<{ value: NonNullable<QLayoutProps["view"]> }>("view");
-
-  const ctx = QContext.get<LayoutContext>("layout");
-
-  const drawerType = $derived(side === "left" ? "drawerLeft" : "drawerRight");
-
-  const drawerCtx = $derived(ctx?.value?.[drawerType]);
 
   const canHideOnClickOutside = $derived((value && !persistent) || overlay);
 
@@ -60,7 +54,7 @@
   };
 
   $effect(() => {
-    if ($navigating && hideOnRouteChange) {
+    if (navigating.type && hideOnRouteChange) {
       hide();
     }
   });
@@ -76,8 +70,6 @@
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     [value, overlay, width];
 
-    // TODO: Try to make it work without console.debug
-    // writing untrack(() => drawerContext)?.updateEntries(...) doesn't work (infinite $effect loop)
     untrack(() =>
       drawerContext?.updateEntries({
         takesSpace: !!value && !overlay,
@@ -85,13 +77,6 @@
       })
     );
   });
-
-  const shouldHaveRadius = (pos: "top" | "bottom") => {
-    const appBarEl = pos === "top" ? ctx?.value?.header : ctx?.value?.footer;
-
-    // This is an overlay, or there is no header/footer, or there is an offset top/bottom
-    return overlay || !appBarEl?.display || drawerCtx?.offset[pos];
-  };
 
   Q.classes("q-drawer", {
     bemClasses: {
@@ -101,16 +86,11 @@
       bordered,
       "offset-top": offsetTop,
       "offset-bottom": offsetBottom,
-      fixed: drawerCtx?.fixed,
-      "top-left-radius": side === "right" && shouldHaveRadius("top"),
-      "bottom-left-radius": side === "right" && shouldHaveRadius("bottom"),
-      "top-right-radius": side === "left" && shouldHaveRadius("top"),
-      "bottom-right-radius": side === "left" && shouldHaveRadius("bottom"),
     },
     classes: [props.class],
   });
 
-  const widthStyle = $derived(!ctx ? useSize(width).style : null);
+  const widthStyle = $derived(!drawerContext ? useSize(width).style : null);
 
   const drawerWidthStyle = $derived(
     widthStyle === null ? "" : `--${side}-drawer-width: ${widthStyle};`

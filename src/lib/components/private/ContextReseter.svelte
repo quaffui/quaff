@@ -1,5 +1,5 @@
 <script lang="ts">
-  import QContext from "$lib/classes/QContext.svelte";
+  import { QContext } from "$lib/classes/QContext.svelte";
   import type { Snippet } from "svelte";
 
   let {

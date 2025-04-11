@@ -1,7 +1,7 @@
 <script lang="ts">
   import { getContext, hasContext } from "svelte";
   import { QIcon } from "$lib";
-  import QContext from "$lib/classes/QContext.svelte";
+  import { QContext } from "$lib/classes/QContext.svelte";
   import { ripple } from "$lib/helpers";
   import { getClosestFocusableBlock, getClosestFocusableSibling } from "$lib/utils/dom";
   import type { Direction } from "$lib/utils/events";

@@ -35,7 +35,7 @@ export interface QAvatarProps extends HTMLAttributes<HTMLElement> {
    */
   src?: string;
   /**
-   * If set to true, the "src" prop will be used as a video source.
+   * If set to true, the "src" prop will be used as a video source. As of today, only mp4 videos are supported.
    *
    * @default false
    */

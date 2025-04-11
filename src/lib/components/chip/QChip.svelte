@@ -6,7 +6,7 @@
   import type { MaterialSymbol } from "material-symbols";
   import type { QChipProps } from "./props";
 
-  type QChipMouseEvent = QEvent<MouseEvent, HTMLDivElement>;
+  type QChipMouseEvent = QEvent<MouseEvent, HTMLElement>;
 
   let {
     kind = "assist",
@@ -18,6 +18,7 @@
     noRipple = false,
     selected = $bindable(kind === "filter" ? false : undefined),
     size = "sm",
+    onTrailingIconClick,
     children,
     ...props
   }: QChipProps = $props();
@@ -45,7 +46,7 @@
 
   const avatar = $derived(extractImgSrc(icon));
 
-  function stopIfDisabled(e: QChipMouseEvent) {
+  function stopIfDisabled(e: QChipMouseEvent, iconClick = false) {
     if (disabled) {
       e.preventDefault();
       e.stopImmediatePropagation();
@@ -57,7 +58,11 @@
     }
 
     e.stopPropagation();
-    props.onclick?.(e);
+    if (iconClick) {
+      onTrailingIconClick?.(e);
+    } else {
+      props.onclick?.(e as QEvent<MouseEvent, HTMLDivElement>);
+    }
   }
 
   function onkeydown(e: KeyboardEvent) {
@@ -120,6 +125,6 @@
   </div>
 
   {#if trailing}
-    <QIcon class="q-chip__trailing-icon" name={trailing} />
+    <QIcon class="q-chip__trailing-icon" name={trailing} onclick={(e) => stopIfDisabled(e, true)} />
   {/if}
 </div>
