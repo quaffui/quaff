@@ -2,7 +2,6 @@
   import {
     QDialog,
     QBtn,
-    QCard,
     QCardSection,
     QCardActions,
     QRadio,
@@ -34,15 +33,13 @@
   {#snippet display()}
     <QBtn label="Open Dialog" onclick={() => (basicDialogOpen = true)} />
     <QDialog bind:value={basicDialogOpen}>
-      <QCard style="min-width: 300px">
-        <QCardSection>
-          <h6 class="q-mb-sm">Dialog Title</h6>
-          <p>This is a simple dialog example.</p>
-        </QCardSection>
-        <QCardActions align="right">
-          <QBtn flat label="Close" onclick={() => (basicDialogOpen = false)} />
-        </QCardActions>
-      </QCard>
+      <QCardSection>
+        <h6 class="q-mb-sm">Dialog Title</h6>
+        <p>This is a simple dialog example.</p>
+      </QCardSection>
+      <QCardActions align="right">
+        <QBtn flat label="Close" onclick={() => (basicDialogOpen = false)} />
+      </QCardActions>
     </QDialog>
   {/snippet}
 
@@ -58,17 +55,15 @@
         <QBtn label="Open Basic Dialog" onclick={() => (basicDialogOpen = true)} />
 
         <QDialog bind:value={basicDialogOpen}>
-          <QCard style="min-width: 300px">
-            <QCardSection>
-              <h6 class="q-mb-sm">Basic Dialog</h6>
-              <p>
-                This is a simple dialog that can be closed by clicking outside or pressing Escape.
-              </p>
-            </QCardSection>
-            <QCardActions align="right">
-              <QBtn flat label="Close" onclick={() => (basicDialogOpen = false)} />
-            </QCardActions>
-          </QCard>
+          <QCardSection>
+            <h6 class="q-mb-sm">Basic Dialog</h6>
+            <p>
+              This is a simple dialog that can be closed by clicking outside or pressing Escape.
+            </p>
+          </QCardSection>
+          <QCardActions align="right">
+            <QBtn flat label="Close" onclick={() => (basicDialogOpen = false)} />
+          </QCardActions>
         </QDialog>
       </QDocsSection>
 
@@ -81,19 +76,17 @@
         <QBtn label="Open Modal Dialog" onclick={() => (modalDialogOpen = true)} />
 
         <QDialog bind:value={modalDialogOpen} modal>
-          <QCard style="min-width: 300px">
-            <QCardSection>
-              <h6 class="q-mb-sm">Modal Dialog</h6>
-              <p>
-                This is a modal dialog. Unlike regular dialogs, it blocks interaction with the
-                background content. It can still be closed by clicking outside or pressing Escape.
-              </p>
-            </QCardSection>
-            <QCardActions align="right">
-              <QBtn flat label="Cancel" onclick={() => (modalDialogOpen = false)} />
-              <QBtn label="Confirm" onclick={() => (modalDialogOpen = false)} />
-            </QCardActions>
-          </QCard>
+          <QCardSection>
+            <h6 class="q-mb-sm">Modal Dialog</h6>
+            <p>
+              This is a modal dialog. Unlike regular dialogs, it blocks interaction with the
+              background content. It can still be closed by clicking outside or pressing Escape.
+            </p>
+          </QCardSection>
+          <QCardActions align="right">
+            <QBtn flat label="Cancel" onclick={() => (modalDialogOpen = false)} />
+            <QBtn label="Confirm" onclick={() => (modalDialogOpen = false)} />
+          </QCardActions>
         </QDialog>
       </QDocsSection>
 
@@ -107,18 +100,16 @@
         <QBtn label="Open Persistent Dialog" onclick={() => (persistentDialogOpen = true)} />
 
         <QDialog bind:value={persistentDialogOpen} persistent>
-          <QCard style="min-width: 300px">
-            <QCardSection>
-              <h6 class="q-mb-sm">Persistent Dialog</h6>
-              <p>
-                This dialog cannot be dismissed by clicking outside or pressing Escape. Try it! The
-                dialog will animate to indicate it's persistent.
-              </p>
-            </QCardSection>
-            <QCardActions align="right">
-              <QBtn label="I understand" onclick={() => (persistentDialogOpen = false)} />
-            </QCardActions>
-          </QCard>
+          <QCardSection>
+            <h6 class="q-mb-sm">Persistent Dialog</h6>
+            <p>
+              This dialog cannot be dismissed by clicking outside or pressing Escape. Try it! The
+              dialog will animate to indicate it's persistent.
+            </p>
+          </QCardSection>
+          <QCardActions align="right">
+            <QBtn label="I understand" onclick={() => (persistentDialogOpen = false)} />
+          </QCardActions>
         </QDialog>
       </QDocsSection>
 
@@ -144,15 +135,13 @@
         </div>
 
         <QDialog bind:this={positionDialogRef} position={selectedPosition}>
-          <QCard style="min-width: 300px">
-            <QCardSection>
-              <h6 class="q-mb-sm">Position: {selectedPosition}</h6>
-              <p>This dialog is positioned at the {selectedPosition} of the screen.</p>
-            </QCardSection>
-            <QCardActions align="right">
-              <QBtn flat label="Close" onclick={positionDialogRef?.hide} />
-            </QCardActions>
-          </QCard>
+          <QCardSection>
+            <h6 class="q-mb-sm">Position: {selectedPosition}</h6>
+            <p>This dialog is positioned at the {selectedPosition} of the screen.</p>
+          </QCardSection>
+          <QCardActions align="right">
+            <QBtn flat label="Close" onclick={positionDialogRef?.hide} />
+          </QCardActions>
         </QDialog>
       </QDocsSection>
 
@@ -203,19 +192,17 @@
         </div>
 
         <QDialog bind:value={customDialogOpen} bind:this={dialogRef}>
-          <QCard style="min-width: 300px">
-            <QCardSection>
-              <h6 class="q-mb-sm">Programmatic Control</h6>
-              <p>
-                This dialog can be controlled both through the bound value and by calling methods
-                directly on the component reference.
-              </p>
-            </QCardSection>
-            <QCardActions align="right">
-              <QBtn flat label="Close with hide()" onclick={dialogRef?.hide} />
-              <QBtn flat label="Close with value" onclick={() => (customDialogOpen = false)} />
-            </QCardActions>
-          </QCard>
+          <QCardSection>
+            <h6 class="q-mb-sm">Programmatic Control</h6>
+            <p>
+              This dialog can be controlled both through the bound value and by calling methods
+              directly on the component reference.
+            </p>
+          </QCardSection>
+          <QCardActions align="right">
+            <QBtn flat label="Close with hide()" onclick={dialogRef?.hide} />
+            <QBtn flat label="Close with value" onclick={() => (customDialogOpen = false)} />
+          </QCardActions>
         </QDialog>
       </QDocsSection>
 
@@ -228,26 +215,24 @@
         <QBtn label="Combined Features Dialog" onclick={() => (combinedDialogOpen = true)} />
 
         <QDialog bind:value={combinedDialogOpen} modal persistent position="top">
-          <QCard style="min-width: 300px">
-            <QCardSection>
-              <h6 class="q-mb-sm">Combined Features</h6>
-              <div>
-                This dialog combines multiple features:
-                <ul>
-                  <li>Modal (blocks background interaction)</li>
-                  <li>Persistent (can't dismiss with outside click)</li>
-                  <li>Positioned at the top</li>
-                </ul>
-              </div>
-            </QCardSection>
-            <QCardActions align="right">
-              <QBtn label="I understand" onclick={() => (combinedDialogOpen = false)} />
-            </QCardActions>
-          </QCard>
+          <QCardSection>
+            <h6 class="q-mb-sm">Combined Features</h6>
+            <div>
+              This dialog combines multiple features:
+              <ul>
+                <li>Modal (blocks background interaction)</li>
+                <li>Persistent (can't dismiss with outside click)</li>
+                <li>Positioned at the top</li>
+              </ul>
+            </div>
+          </QCardSection>
+          <QCardActions align="right">
+            <QBtn label="I understand" onclick={() => (combinedDialogOpen = false)} />
+          </QCardActions>
         </QDialog>
       </QDocsSection>
 
-      <QDocsSection title="Accessibility">
+      <QDocsSection title="Accessibility" noCode>
         {#snippet sectionDescription()}
           QDialog is built with accessibility in mind. It manages focus appropriately, can be closed
           with the Escape key (unless persistent), and includes proper ARIA attributes.

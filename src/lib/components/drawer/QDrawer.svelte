@@ -2,7 +2,6 @@
   import { getContext, onDestroy, untrack } from "svelte";
   import { navigating } from "$app/state";
   import { useSize } from "$lib/composables";
-  import { clickOutside } from "$lib/helpers";
   import { QContext } from "$lib/classes/QContext.svelte";
   import type { QLayoutProps } from "$components/layout/props";
   import type { DrawerContext } from "../layout/QLayout.svelte";
@@ -18,6 +17,8 @@
     children,
     ...props
   }: QDrawerProps = $props();
+
+  let drawerEl: HTMLDivElement;
 
   const drawerContext = QContext.get<DrawerContext>(`QDrawer-${side}`);
   const layoutView = getContext<{ value: NonNullable<QLayoutProps["view"]> }>("view");
@@ -59,6 +60,16 @@
     }
   });
 
+  $effect(() => {
+    if (value) {
+      setTimeout(() => {
+        window.addEventListener("click", tryClose);
+      }, 150);
+    } else {
+      window.removeEventListener("click", tryClose);
+    }
+  });
+
   onDestroy(() => {
     drawerContext?.updateEntries({
       width: 0,
@@ -97,11 +108,22 @@
   );
 
   const style = $derived(`${drawerWidthStyle}${props.style ?? ""}`);
+
+  function handleClickInside(e: MouseEvent) {
+    e.stopPropagation();
+  }
+
+  function tryClose() {
+    if (canHideOnClickOutside) {
+      hide();
+    }
+  }
 </script>
 
 <div
+  bind:this={drawerEl}
+  onclick={handleClickInside}
   {...props}
-  use:clickOutside={() => canHideOnClickOutside && hide()}
   class="q-drawer"
   {style}
   data-quaff

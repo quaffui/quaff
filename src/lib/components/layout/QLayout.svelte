@@ -86,6 +86,8 @@
 <div
   {...props}
   class="q-layout"
+  style:--left-drawer-width={`${drawerLeft ? leftDrawerCtx.value.width : 0}px`}
+  style:--right-drawer-width={`${drawerRight ? rightDrawerCtx.value.width : 0}px`}
   style:--left-railbar-width={`${railbarLeft ? leftRailbarCtx.value.width : 0}px`}
   style:--right-railbar-width={`${railbarRight ? rightRailbarCtx.value.width : 0}px`}
   style:--offset-top={`${topOffset}px`}

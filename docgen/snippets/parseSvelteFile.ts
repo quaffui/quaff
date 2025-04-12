@@ -8,7 +8,8 @@ export type SnippetSection = {
 
 export default async function parseSvelteFile(svelteFilePath: string) {
   const fileContent = await readFile(svelteFilePath, "utf-8");
-  const qDocsSectionPattern = /<QDocsSection[^>]*?title="(.*?)"\s*>(.*?)<\/QDocsSection>/gms;
+  const qDocsSectionPattern =
+    /<QDocsSection[^>]*?title="(.*?)"\s*(?:noCode)?\s*>(.*?)<\/QDocsSection>/gms;
 
   let match;
   const sections: SnippetSection[] = [];

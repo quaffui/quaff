@@ -432,15 +432,12 @@
 
           <div class="q-pa-md">
             <p>This example shows a complete layout with:</p>
-            <ul>
+            <ul class="q-ma-md">
               <li>Header at the top</li>
               <li>Navigation drawer on the left</li>
               <li>Footer at the bottom</li>
             </ul>
             <QBtn label="Toggle Navigation" onclick={() => (leftDrawerOpen = !leftDrawerOpen)} />
-            <p class="text-caption q-mt-md">
-              The view prop "lHh Lpr lff" controls how these elements interact.
-            </p>
           </div>
         </QLayout>
       </QDocsSection>

@@ -6,9 +6,10 @@
     title: string;
     sectionDescription?: Snippet;
     children?: Snippet;
+    noCode?: boolean;
   };
 
-  let { title, sectionDescription, children }: QDocsSectionProps = $props();
+  let { title, noCode = false, sectionDescription, children }: QDocsSectionProps = $props();
 
   const snippets = getContext<() => Record<string, string>>("QDocsSnippets");
 
@@ -23,7 +24,7 @@
 <div {id} style="margin-bottom:48px">
   <div class="flex justify-between q-mb-sm">
     <h5>{title}</h5>
-    {#if code}
+    {#if code && !noCode}
       <QBtn icon="code" variant="outlined" round onclick={() => (dialog = true)} />
       <QDialog class="snippet-dialog" bind:value={dialog} modal>
         <QCodeBlock {code} language="svelte" {title} copiable />
