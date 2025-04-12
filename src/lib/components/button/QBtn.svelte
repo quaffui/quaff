@@ -57,6 +57,10 @@
   const finalVariant = $derived<QBtnVariantOptions>(variant || boolVariant || "elevated");
 
   const color = $derived.by(() => {
+    if (disabled) {
+      return undefined;
+    }
+
     if (finalVariant === "filled") {
       return "on-primary";
     }
@@ -68,7 +72,7 @@
     return "primary";
   });
 
-  const colorVar = $derived(`var(--${color})`);
+  const colorVar = $derived(color && `var(--${color})`);
 
   const rippleColorVar = $derived(rippleColor ? `var(--${rippleColor}, ${rippleColor})` : colorVar);
 
@@ -121,6 +125,7 @@
   style:--q-btn-size={qSize.style}
   style:--ripple-color={colorVar}
   {target}
+  href={to}
   role={tag === "a" ? "button" : undefined}
   aria-disabled={disabled || undefined}
   tabindex={disabled ? -1 : 0}

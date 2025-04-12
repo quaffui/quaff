@@ -52,6 +52,13 @@ export interface QListProps extends HTMLAttributes<HTMLElement> {
    * @default "div"
    */
   tag?: string;
+
+  /**
+   * The class to apply to items that are active. For more granular control, you can also use the `activeClass` prop on each QItem.
+   *
+   * @default undefined
+   */
+  activeClass?: string;
 }
 
 export interface QItemProps extends RouterProps, HTMLAttributes<HTMLElement> {

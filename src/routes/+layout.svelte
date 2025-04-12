@@ -73,6 +73,10 @@
       to: "/components/avatar",
     },
     {
+      name: "Breadcrumbs",
+      to: "/components/breadcrumbs",
+    },
+    {
       name: "Button",
       to: "/components/button",
     },
@@ -274,7 +278,6 @@
               >
                 <QAvatar
                   class={chosenColor === index ? "chosen" : ""}
-                  shape="rounded"
                   size="2.5rem"
                   style="background-color:{color}; border: solid 0.0625rem var(--outline)"
                 />

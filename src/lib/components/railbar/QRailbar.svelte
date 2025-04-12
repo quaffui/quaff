@@ -1,6 +1,6 @@
 <script lang="ts">
   import { getContext, onDestroy, untrack } from "svelte";
-  import QContext from "$lib/classes/QContext.svelte";
+  import { QContext } from "$lib/classes/QContext.svelte";
   import type { QLayoutProps } from "$components/layout/props";
   import type { DrawerContext } from "../layout/QLayout.svelte";
   import type { QRailbarProps } from "./props";

@@ -15,7 +15,15 @@
   padding: 0.5rem 1.5rem 0.5rem 1rem;
   gap: 1rem;
 
-  &.q-link {
+  &--clickable {
+    cursor: pointer;
+  }
+
+  &--dense {
+    min-height: 2rem;
+  }
+
+  &:is(.q-link, &--clickable:not(label)) {
     padding: 0.5rem 1.5rem 0.5rem 1rem;
 
     &:is(:hover, :focus):not([aria-disabled])::after {

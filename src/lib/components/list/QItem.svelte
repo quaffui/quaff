@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { getContext } from "svelte";
+  import { getContext, setContext } from "svelte";
   import { getRouterInfo, isRouteActive } from "$lib/utils/router";
   import { ripple } from "$lib/helpers/ripple";
-  import QContext from "$lib/classes/QContext.svelte";
+  import { QContext } from "$lib/classes/QContext.svelte";
   import QSeparator from "../separator/QSeparator.svelte";
   import type { QItemProps, QListProps } from "./props";
 
@@ -32,6 +32,14 @@
     })
   );
 
+  const listActiveClass = getContext<() => string>("listItemsActiveClass");
+
+  const activeClassToUse = $derived(
+    activeClass === "active" ? listActiveClass() || activeClass : activeClass
+  );
+
+  setContext("itemActiveClass", () => active && activeClassToUse);
+
   const multiline = new QContext("multiline", false);
 
   const separatorOptions = getContext<QListProps["separatorOptions"] | undefined>("separator");
@@ -39,15 +47,16 @@
   const isActionable = $derived(clickable || routerInfo.hasLink || tag === "label");
   const isClickable = $derived(isActionable && !disabled);
 
-  const isActive = $derived(isRouteActive(to || href) || (routerInfo.hasLink && active));
+  const isActive = $derived(isRouteActive(to || href) || active);
 
   Q.classes("q-item", {
     bemClasses: {
       multiline: multiline.value,
       dense,
       active: isActive,
+      clickable,
     },
-    classes: [routerInfo.linkClasses, isActive && activeClass, props.class],
+    classes: [routerInfo.linkClasses, isActive && activeClassToUse, props.class],
   });
 </script>
 
