@@ -10,9 +10,9 @@ function hfBuilder(
   leftDrawer: boolean,
   rightDrawer: boolean
 ) {
-  const classes = !leftDrawer || rightDrawer ? ' class="justify-between"' : ""
+  const classes = (!leftDrawer || rightDrawer) ? ' class="justify-between"' : ""
 
-  const arr = [
+  const snippetTemplate = [
     `  {#snippet ${kind}()}`,
     `    <Q${capitalize(kind)}${classes}>`,
     leftDrawer && drawerBtn("left"),
@@ -22,7 +22,7 @@ function hfBuilder(
     `  {/snippet}${kind === "header" ? "\n" : ""}`,
   ]
 
-  return arr.filter(Boolean).join("\n")
+  return snippetTemplate.filter(Boolean).join("\n")
 }
 
 function navbarBuilder(kind: "railbar" | "drawer", side: "left" | "right") {
