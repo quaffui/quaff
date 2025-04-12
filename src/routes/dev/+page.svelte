@@ -438,7 +438,7 @@
           <h6>Shapes</h6>
           <div class="flex justify-between" style="align-items: center">
             <QAvatar src="/cocktail.jpg" shape="circle" />
-            <QAvatar src="/cocktail.jpg" shape="rounded" />
+            <QAvatar src="/cocktail.jpg" shape="square" />
             <QAvatar src="/cocktail.jpg" shape="top-round" />
             <QAvatar src="/cocktail.jpg" shape="bottom-left-round" />
           </div>
@@ -447,7 +447,7 @@
           <h6>Video</h6>
           <div class="flex justify-between" style="align-items: center">
             <QAvatar src="/sea.mp4" shape="circle" size="lg" video />
-            <QAvatar src="/sea.mp4" shape="rounded" size="lg" video />
+            <QAvatar src="/sea.mp4" shape="square" size="lg" video />
             <QAvatar src="/sea.mp4" shape="left-round" size="lg" video />
             <QAvatar src="/sea.mp4" shape="top-right-round" size="lg" video />
           </div>

@@ -1,7 +1,7 @@
 <script lang="ts">
   import { getContext, onDestroy, untrack } from "svelte";
   import QToolbar from "$components/toolbar/QToolbar.svelte";
-  import QContext from "$lib/classes/QContext.svelte";
+  import { QContext } from "$lib/classes/QContext.svelte";
   import QScrollObserver from "$lib/classes/QScrollObserver.svelte";
   import type { AppbarContext } from "$components/layout/QLayout.svelte";
   import type { QLayoutProps } from "$components/layout/props";

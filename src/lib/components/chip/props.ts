@@ -1,5 +1,5 @@
 import type { MaterialSymbol } from "material-symbols";
-import type { HTMLAttributes } from "svelte/elements";
+import type { HTMLAttributes, MouseEventHandler } from "svelte/elements";
 
 export type QChipKindOptions = "assist" | "filter" | "input" | "suggestion";
 export type QChipFillOptions =
@@ -66,4 +66,10 @@ export interface QChipProps extends HTMLAttributes<HTMLDivElement> {
    * @default sm
    */
   size?: QChipSizeOptions;
+
+  /**
+   * Click event handler for the trailing icon of the chip. This can be useful with input chips to clear them.
+   * @default undefined
+   */
+  onTrailingIconClick?: MouseEventHandler<HTMLElement>;
 }

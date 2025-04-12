@@ -8,18 +8,18 @@
   let toggle = $state(false);
 </script>
 
-<QDocs componentDocs={QSwitchDocs}>
+<QDocs {snippets} componentDocs={QSwitchDocs}>
   {#snippet display()}
     <QSwitch bind:value={toggle} class="q-ma-sm" />
   {/snippet}
 
   {#snippet usage()}
     <div>
-      <QDocsSection snippet={snippets["Default Toggle"]} title="Default Toggle">
+      <QDocsSection title="Default Toggle">
         <QSwitch bind:value={toggle} class="q-ma-sm" />
       </QDocsSection>
 
-      <QDocsSection snippet={snippets["Toggle with label"]} title="Toggle with label">
+      <QDocsSection title="Toggle with label">
         <QSwitch bind:value={toggle} class="q-ma-sm" label="With label" />
         <QSwitch bind:value={toggle} class="q-ma-sm" icons label="With default icons" />
         <QSwitch bind:value={toggle} class="q-ma-sm" showOnlyCheckedIcon label="Only check icon" />
@@ -37,15 +37,12 @@
         />
       </QDocsSection>
 
-      <QDocsSection
-        snippet={snippets["Toggle with label position"]}
-        title="Toggle with label position"
-      >
+      <QDocsSection title="Toggle with label position">
         <QSwitch bind:value={toggle} class="q-ma-sm" label="Right label (default)" />
         <QSwitch bind:value={toggle} class="q-ma-sm" labelPosition="left" label="Left label" />
       </QDocsSection>
 
-      <QDocsSection snippet={snippets["Disabled state"]} title="Disabled state">
+      <QDocsSection title="Disabled state">
         <QSwitch bind:value={toggle} class="q-ma-sm" disabled label="Disable" />
         <QSwitch
           bind:value={toggle}

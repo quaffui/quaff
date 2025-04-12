@@ -22,12 +22,12 @@
       padding-left: 0.25rem;
     }
 
-    > input:is(:focus, :hover) + span::before {
+    > input:not(label[aria-disabled] > input):is(:focus, :hover) + span::before {
       background-color: design.with-alpha(var(--primary), 10%);
       box-shadow: 0 0 0 0.5rem design.with-alpha(var(--primary), 10%);
     }
 
-    > input:checked + span::before,
+    > input:not([aria-disabled], label[aria-disabled] > input):checked + span::before,
     &--icon > input:checked + span > i {
       color: var(--primary);
     }
@@ -118,7 +118,7 @@
     cursor: not-allowed;
   }
 
-  & + & {
+  & + &:not(.column > &) {
     margin-left: 0.5rem;
   }
 }

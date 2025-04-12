@@ -1,30 +1,34 @@
 <script lang="ts">
+  import { setContext, type Snippet } from "svelte";
   import { QCard, QCardSection } from "$lib";
   import type { QComponentDocs } from "$lib/utils";
   import Quaff from "$lib/classes/Quaff.svelte";
   import QApi from "./QApi.svelte";
-  import type { Snippet } from "svelte";
 
   let {
     children,
     display,
     pre,
     usage,
+    snippets,
     componentDocs,
   }: {
     children?: Snippet;
     display?: Snippet;
     pre?: Snippet;
     usage?: Snippet;
+    snippets?: Record<string, string>;
     componentDocs: QComponentDocs | QComponentDocs[];
   } = $props();
 
   const isDark = $derived(Quaff.darkMode.isActive);
 
+  setContext("QDocsSnippets", () => snippets);
+
   let principalDocument = Array.isArray(componentDocs) ? componentDocs[0] : componentDocs;
 </script>
 
-<div class="q-docs" style="margin: 1rem">
+<div class="q-docs" style="padding: 1rem">
   <div class="row q-gutter-lg" style="min-height: 400px">
     <QCard class="col-sm-12 col-lg-6 flex flex-center" fill="primary" style="min-height: 400px">
       <h1 class="large no-margin">{principalDocument.name}</h1>
@@ -79,6 +83,12 @@
   .q-docs {
     :global(.q-pa-none) {
       padding: 0 !important;
+    }
+
+    :global(code:not(pre > code)) {
+      background-color: var(--surface-container);
+      padding: 0.25rem 0.5rem;
+      border-radius: 0.25rem;
     }
 
     &__image {

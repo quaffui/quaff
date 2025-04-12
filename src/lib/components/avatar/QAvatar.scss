@@ -63,6 +63,10 @@
   .q-avatar {
     border-radius: 50%;
 
+    &--square {
+      border-radius: 0;
+    }
+
     &--top-right-round {
       border-bottom-left-radius: 0;
     }

@@ -14,15 +14,12 @@
   let btnContent = $state("Copy");
   let btnColor = $state("primary");
 
-  const html = $derived.by(
-    async () =>
-      await (
-        await import(/* @vite-ignore */ "shiki")
-      ).codeToHtml(code, {
-        lang: language,
-        theme,
-      })
-  );
+  let html = $state("");
+
+  $effect(() => {
+    // This is required to have the html updated when the code changes
+    getHtml(code);
+  });
 
   function setBtn(type: "base" | "error" | "success") {
     switch (type) {
@@ -51,6 +48,20 @@
     setTimeout(() => {
       setBtn("base");
     }, 3000);
+  }
+
+  async function getHtml(code: string) {
+    try {
+      const { codeToHtml } = await import("shiki");
+
+      html = await codeToHtml(code, {
+        lang: language,
+        theme,
+      });
+    } catch {
+      console.error("Error while loading shiki, make sure it is installed");
+      html = `<pre>${code}</pre>`;
+    }
   }
 </script>
 
@@ -88,7 +99,6 @@
     border-radius: inherit;
 
     :global(pre) {
-      white-space: break-spaces;
       text-align: left;
       padding: 1rem;
     }

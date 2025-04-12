@@ -204,8 +204,11 @@
           <QItem>
             <QItemSection type="content">
               {#snippet headline()}
-                <div class="q-my-sm" style="display: flex; flex: 1 1 0">
-                  <span class="surface-variant">
+                <div class="q-my-sm flex-center" style="display: flex; flex: 1 1 0">
+                  <span
+                    class="q-px-sm q-py-xs q-mr-xs"
+                    style="background-color: var(--surface-container); border-radius: 0.5rem"
+                  >
                     <b>{doc.name}</b>
                   </span>
                   {#if isProp(doc, index)}

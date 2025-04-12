@@ -8,19 +8,19 @@
   let selectedValue = "option1";
 </script>
 
-<QDocs componentDocs={QRadioDocs}>
+<QDocs {snippets} componentDocs={QRadioDocs}>
   {#snippet display()}
     <QRadio value="option1" selected={selectedValue} label="Option 1" />
   {/snippet}
 
   {#snippet usage()}
     <div>
-      <QDocsSection snippet={snippets["Radio Group"]} title="Radio Group">
+      <QDocsSection title="Radio Group">
         <QRadio class="q-ma-sm" value="option1" bind:selected={selectedValue} label="Option 1" />
         <QRadio class="q-ma-sm" value="option2" bind:selected={selectedValue} label="Option 2" />
       </QDocsSection>
 
-      <QDocsSection snippet={snippets["Disabled Radio Button"]} title="Disabled Radio Button">
+      <QDocsSection title="Disabled Radio Button">
         <QRadio class="q-ma-sm" value="option3" label="Option 3" disable />
       </QDocsSection>
     </div>

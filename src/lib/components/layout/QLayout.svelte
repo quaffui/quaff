@@ -1,19 +1,8 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   import { setContext } from "svelte";
-  import QContext from "$lib/classes/QContext.svelte";
+  import { QContext } from "$lib/classes/QContext.svelte";
   import ContextReseter from "../private/ContextReseter.svelte";
   import type { QLayoutProps } from "./props";
-
-  export interface DrawerContextLegacy {
-    offset: {
-      top: boolean;
-      bottom: boolean;
-    };
-    fixed: boolean;
-    railbar: boolean;
-    drawer: boolean;
-    overlay: boolean;
-  }
 
   export interface AppbarContext {
     height: number;
@@ -24,18 +13,6 @@
     width: number;
     takesSpace: boolean;
   }
-
-  export interface AppbarContextLegacy {
-    display: boolean;
-    fixed: boolean;
-  }
-
-  export type LayoutContext = {
-    header?: AppbarContextLegacy;
-    footer?: AppbarContextLegacy;
-    drawerLeft: DrawerContextLegacy;
-    drawerRight: DrawerContextLegacy;
-  };
 </script>
 
 <script lang="ts">
@@ -109,6 +86,8 @@
 <div
   {...props}
   class="q-layout"
+  style:--left-drawer-width={`${drawerLeft ? leftDrawerCtx.value.width : 0}px`}
+  style:--right-drawer-width={`${drawerRight ? rightDrawerCtx.value.width : 0}px`}
   style:--left-railbar-width={`${railbarLeft ? leftRailbarCtx.value.width : 0}px`}
   style:--right-railbar-width={`${railbarRight ? rightRailbarCtx.value.width : 0}px`}
   style:--offset-top={`${topOffset}px`}

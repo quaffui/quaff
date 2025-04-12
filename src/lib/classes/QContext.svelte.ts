@@ -6,7 +6,7 @@ import { getContext, setContext } from "svelte";
  *
  * This class should be used when the context has to be modified from a child component. Otherwise, using svelte's context API should be enough.
  */
-export default class QContext<T> {
+export class QContext<T> {
   #state = $state<T>();
 
   constructor(contextName: string, init: T) {

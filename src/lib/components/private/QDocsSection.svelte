@@ -1,31 +1,44 @@
 <script lang="ts">
+  import { getContext, type Snippet } from "svelte";
   import { QCodeBlock, QDialog, QBtn } from "$lib";
-  import type { Snippet } from "svelte";
 
-  let {
-    title,
-    snippet,
-    children,
-  }: {
+  type QDocsSectionProps = {
     title: string;
-    snippet?: string;
+    sectionDescription?: Snippet;
     children?: Snippet;
-  } = $props();
+    noCode?: boolean;
+  };
+
+  let { title, noCode = false, sectionDescription, children }: QDocsSectionProps = $props();
+
+  const snippets = getContext<() => Record<string, string>>("QDocsSnippets");
+
+  const code = $derived(snippets()[title]);
 
   let dialog = $state(false);
 
-  const code = $derived(snippet?.replaceAll(/^ {2}/gm, ""));
+  // Create a kebab-case id from the title to be able to link to this section
+  const id = $derived(title.toLowerCase().replaceAll(" ", "-"));
 </script>
 
-<div style="margin-bottom:48px">
-  <div class="flex justify-between q-mb-md">
+<div {id} style="margin-bottom:48px">
+  <div class="flex justify-between q-mb-sm">
     <h5>{title}</h5>
-    {#if code}
+    {#if code && !noCode}
       <QBtn icon="code" variant="outlined" round onclick={() => (dialog = true)} />
       <QDialog class="snippet-dialog" bind:value={dialog} modal>
         <QCodeBlock {code} language="svelte" {title} copiable />
       </QDialog>
     {/if}
   </div>
-  {@render children?.()}
+
+  {#if sectionDescription}
+    <div class="q-mb-md" style="text-wrap: balance">
+      {@render sectionDescription()}
+    </div>
+  {/if}
+
+  <div class="q-ma-sm">
+    {@render children?.()}
+  </div>
 </div>

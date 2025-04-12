@@ -1,135 +1,271 @@
 <script lang="ts">
-  import QBtn from "$lib/components/button/QBtn.svelte";
-  import QDialog from "$lib/components/dialog/QDialog.svelte";
-  import { QDialogDocs } from "$lib/components/dialog/docs";
+  import {
+    QDialog,
+    QBtn,
+    QCardSection,
+    QCardActions,
+    QRadio,
+    QList,
+    QItem,
+    QItemSection,
+    QIcon,
+  } from "$lib";
+  import { QDialogDocs } from "$components/dialog/docs";
   import QDocs from "$lib/components/private/QDocs.svelte";
   import QDocsSection from "$lib/components/private/QDocsSection.svelte";
-  import DialogContent from "./DialogContent.svelte";
+  import type { QDialogPositionOptions } from "$components/dialog/props";
   import snippets from "./docs.snippets";
 
-  interface Dialog {
-    el: ReturnType<typeof QDialog> | null;
-    value: boolean;
-  }
+  let basicDialogOpen = $state(false);
+  let modalDialogOpen = $state(false);
+  let persistentDialogOpen = $state(false);
+  let fullscreenDialogOpen = $state(false);
+  let customDialogOpen = $state(false);
+  let combinedDialogOpen = $state(false);
 
-  let exampleDialog: Dialog = {
-      el: null,
-      value: false,
-    },
-    topDialog: Dialog = {
-      el: null,
-      value: false,
-    },
-    defaultDialog: Dialog = {
-      el: null,
-      value: false,
-    },
-    rightDialog: Dialog = {
-      el: null,
-      value: false,
-    },
-    bottomDialog: Dialog = {
-      el: null,
-      value: false,
-    },
-    leftDialog: Dialog = {
-      el: null,
-      value: false,
-    },
-    modalDialog: Dialog = {
-      el: null,
-      value: false,
-    },
-    persistentDialog: Dialog = {
-      el: null,
-      value: false,
-    },
-    fullscreenDialog: Dialog = {
-      el: null,
-      value: false,
-    },
-    methodsDialog: Dialog = {
-      el: null,
-      value: false,
-    };
+  let dialogRef = $state<QDialog>();
+  let positionDialogRef = $state<QDialog>();
+
+  let selectedPosition: QDialogPositionOptions = $state("default");
 </script>
 
-<QDocs componentDocs={QDialogDocs}>
+<QDocs {snippets} componentDocs={QDialogDocs}>
   {#snippet display()}
-    <QBtn onclick={exampleDialog.el?.show}>Open cookie settings</QBtn>
-
-    <QDialog modal persistent bind:value={exampleDialog.value} bind:this={exampleDialog.el}>
-      <DialogContent dialogEl={exampleDialog.el} />
+    <QBtn label="Open Dialog" onclick={() => (basicDialogOpen = true)} />
+    <QDialog bind:value={basicDialogOpen}>
+      <QCardSection>
+        <h6 class="q-mb-sm">Dialog Title</h6>
+        <p>This is a simple dialog example.</p>
+      </QCardSection>
+      <QCardActions align="right">
+        <QBtn flat label="Close" onclick={() => (basicDialogOpen = false)} />
+      </QCardActions>
     </QDialog>
   {/snippet}
 
   {#snippet usage()}
     <div>
-      <QDocsSection snippet={snippets["Positions"]} title="Positions">
-        <QBtn onclick={defaultDialog.el?.show}>Default</QBtn>
-        <QDialog bind:this={defaultDialog.el} bind:value={defaultDialog.value}>
-          <DialogContent dialogEl={defaultDialog.el} />
-        </QDialog>
+      <QDocsSection title="Basic Dialog">
+        {#snippet sectionDescription()}
+          QDialog is a versatile component for showing content in an overlay. It's commonly used for
+          confirmations, settings panels, or any content that requires user attention without
+          leaving the current page.
+        {/snippet}
 
-        <QBtn onclick={topDialog.el?.show}>Top</QBtn>
-        <QDialog bind:this={topDialog.el} bind:value={topDialog.value} position="top">
-          <DialogContent dialogEl={topDialog.el} />
-        </QDialog>
+        <QBtn label="Open Basic Dialog" onclick={() => (basicDialogOpen = true)} />
 
-        <QBtn onclick={rightDialog.el?.show}>Right</QBtn>
-        <QDialog bind:this={rightDialog.el} bind:value={rightDialog.value} position="right">
-          <DialogContent dialogEl={rightDialog.el} />
-        </QDialog>
-
-        <QBtn onclick={bottomDialog.el?.show}>Bottom</QBtn>
-        <QDialog bind:this={bottomDialog.el} bind:value={bottomDialog.value} position="bottom">
-          <DialogContent dialogEl={bottomDialog.el} />
-        </QDialog>
-
-        <QBtn onclick={leftDialog.el?.show}>Left</QBtn>
-        <QDialog bind:this={leftDialog.el} bind:value={leftDialog.value} position="left">
-          <DialogContent dialogEl={leftDialog.el} />
+        <QDialog bind:value={basicDialogOpen}>
+          <QCardSection>
+            <h6 class="q-mb-sm">Basic Dialog</h6>
+            <p>
+              This is a simple dialog that can be closed by clicking outside or pressing Escape.
+            </p>
+          </QCardSection>
+          <QCardActions align="right">
+            <QBtn flat label="Close" onclick={() => (basicDialogOpen = false)} />
+          </QCardActions>
         </QDialog>
       </QDocsSection>
 
-      <QDocsSection snippet={snippets["Types"]} title="Types">
-        <QBtn onclick={modalDialog.el?.show}>Modal</QBtn>
-        <QDialog bind:this={modalDialog.el} bind:value={modalDialog.value} modal>
-          <DialogContent dialogEl={modalDialog.el} />
-        </QDialog>
+      <QDocsSection title="Modal Dialog">
+        {#snippet sectionDescription()}
+          Modal dialogs are more disruptive as they prevent interaction with the page behind them.
+          They're useful when you need the user's full attention or a decision before proceeding.
+        {/snippet}
 
-        <QBtn onclick={fullscreenDialog.el?.show}>Fullscreen</QBtn>
-        <QDialog bind:this={fullscreenDialog.el} bind:value={fullscreenDialog.value} fullscreen>
-          <DialogContent dialogEl={fullscreenDialog.el} />
-        </QDialog>
+        <QBtn label="Open Modal Dialog" onclick={() => (modalDialogOpen = true)} />
 
-        <QBtn onclick={persistentDialog.el?.show}>Persistent</QBtn>
-        <QDialog
-          bind:this={persistentDialog.el}
-          bind:value={persistentDialog.value}
-          persistent
-          modal
-        >
-          <DialogContent dialogEl={persistentDialog.el} />
+        <QDialog bind:value={modalDialogOpen} modal>
+          <QCardSection>
+            <h6 class="q-mb-sm">Modal Dialog</h6>
+            <p>
+              This is a modal dialog. Unlike regular dialogs, it blocks interaction with the
+              background content. It can still be closed by clicking outside or pressing Escape.
+            </p>
+          </QCardSection>
+          <QCardActions align="right">
+            <QBtn flat label="Cancel" onclick={() => (modalDialogOpen = false)} />
+            <QBtn label="Confirm" onclick={() => (modalDialogOpen = false)} />
+          </QCardActions>
         </QDialog>
       </QDocsSection>
 
-      <QDocsSection snippet={snippets["Programmatic toggle"]} title="Programmatic toggle">
-        <QDialog bind:this={methodsDialog.el} bind:value={methodsDialog.value} persistent>
-          <DialogContent dialogEl={methodsDialog.el} />
+      <QDocsSection title="Persistent Dialog">
+        {#snippet sectionDescription()}
+          Persistent dialogs cannot be closed by clicking outside or pressing Escape. They require
+          an explicit action from the user, making them suitable for critical confirmations or
+          mandatory forms.
+        {/snippet}
+
+        <QBtn label="Open Persistent Dialog" onclick={() => (persistentDialogOpen = true)} />
+
+        <QDialog bind:value={persistentDialogOpen} persistent>
+          <QCardSection>
+            <h6 class="q-mb-sm">Persistent Dialog</h6>
+            <p>
+              This dialog cannot be dismissed by clicking outside or pressing Escape. Try it! The
+              dialog will animate to indicate it's persistent.
+            </p>
+          </QCardSection>
+          <QCardActions align="right">
+            <QBtn label="I understand" onclick={() => (persistentDialogOpen = false)} />
+          </QCardActions>
         </QDialog>
-        <QBtn onclick={methodsDialog.el?.show}>Show</QBtn>
-        <QBtn onclick={methodsDialog.el?.hide}>Hide</QBtn>
-        <QBtn onclick={methodsDialog.el?.toggle}>Toggle</QBtn>
       </QDocsSection>
 
-      <QDocsSection snippet={snippets["Value toggle"]} title="Value toggle">
-        <QDialog bind:value={methodsDialog.value} persistent>
-          <DialogContent dialogEl={methodsDialog.el} />
+      <QDocsSection title="Dialog Positioning">
+        {#snippet sectionDescription()}
+          Dialogs can be positioned at different locations on the screen using the
+          <code>position</code> prop. Available positions are: default (center), top, right, bottom,
+          and left. Avoid repositioning the dialog at the same time as opening it. This will cause animation
+          issues as the dialog doesn't have time to reposition before being visible.
+        {/snippet}
+
+        <div class="q-ma-sm row">
+          <div class="col-3 flex column q-gap-md">
+            <QRadio bind:selected={selectedPosition} label="Default (Center)" value="default" />
+            <QRadio bind:selected={selectedPosition} label="Top" value="top" />
+            <QRadio bind:selected={selectedPosition} label="Right" value="right" />
+            <QRadio bind:selected={selectedPosition} label="Bottom" value="bottom" />
+            <QRadio bind:selected={selectedPosition} label="Left" value="left" />
+          </div>
+          <div class="col-9 flex items-center">
+            <QBtn label="Open Position Dialog" onclick={positionDialogRef?.toggle} />
+          </div>
+        </div>
+
+        <QDialog bind:this={positionDialogRef} position={selectedPosition}>
+          <QCardSection>
+            <h6 class="q-mb-sm">Position: {selectedPosition}</h6>
+            <p>This dialog is positioned at the {selectedPosition} of the screen.</p>
+          </QCardSection>
+          <QCardActions align="right">
+            <QBtn flat label="Close" onclick={positionDialogRef?.hide} />
+          </QCardActions>
         </QDialog>
-        <QBtn onclick={() => (methodsDialog.value = true)}>Show</QBtn>
-        <QBtn onclick={() => (methodsDialog.value = false)}>Hide</QBtn>
-        <QBtn onclick={() => (methodsDialog.value = !methodsDialog.value)}>Toggle</QBtn>
+      </QDocsSection>
+
+      <QDocsSection title="Fullscreen Dialog">
+        {#snippet sectionDescription()}
+          Fullscreen dialogs occupy the entire viewport, providing maximum space for complex content
+          or mobile interfaces. They're ideal for immersive experiences or detailed forms.
+        {/snippet}
+
+        <QBtn label="Open Fullscreen Dialog" onclick={() => (fullscreenDialogOpen = true)} />
+
+        <QDialog bind:value={fullscreenDialogOpen} fullscreen>
+          <div class="full-height column no-wrap">
+            <div class="q-px-md q-py-sm flex justify-between">
+              <h6 class="q-mb-none">Fullscreen Dialog</h6>
+              <QBtn flat round icon="close" onclick={() => (fullscreenDialogOpen = false)} />
+            </div>
+
+            <div class="q-pa-md">
+              <p>
+                This dialog takes up the full screen, making it ideal for detailed forms, complex
+                interfaces, or when you need maximum screen real estate on mobile devices.
+              </p>
+              <p>
+                Fullscreen dialogs typically have their own navigation structure, including a way to
+                close the dialog (usually a close button in the header).
+              </p>
+            </div>
+
+            <div class="q-pa-md row justify-end">
+              <QBtn label="Close" onclick={() => (fullscreenDialogOpen = false)} />
+            </div>
+          </div>
+        </QDialog>
+      </QDocsSection>
+
+      <QDocsSection title="Programmatic Control">
+        {#snippet sectionDescription()}
+          QDialog can be controlled programmatically using the <code>bind:value</code> directive or
+          by obtaining a reference to the dialog instance and calling its <code>show()</code>,
+          <code>hide()</code>, or
+          <code>toggle()</code> methods.
+        {/snippet}
+
+        <div class="flex q-gap-md">
+          <QBtn label="Open Dialog" onclick={dialogRef?.show} />
+          <QBtn label="Toggle Dialog" onclick={dialogRef?.toggle} />
+        </div>
+
+        <QDialog bind:value={customDialogOpen} bind:this={dialogRef}>
+          <QCardSection>
+            <h6 class="q-mb-sm">Programmatic Control</h6>
+            <p>
+              This dialog can be controlled both through the bound value and by calling methods
+              directly on the component reference.
+            </p>
+          </QCardSection>
+          <QCardActions align="right">
+            <QBtn flat label="Close with hide()" onclick={dialogRef?.hide} />
+            <QBtn flat label="Close with value" onclick={() => (customDialogOpen = false)} />
+          </QCardActions>
+        </QDialog>
+      </QDocsSection>
+
+      <QDocsSection title="Combined Features">
+        {#snippet sectionDescription()}
+          QDialog features can be combined to create exactly the dialog experience you need. Here's
+          an example of a modal, persistent dialog positioned at the top of the screen.
+        {/snippet}
+
+        <QBtn label="Combined Features Dialog" onclick={() => (combinedDialogOpen = true)} />
+
+        <QDialog bind:value={combinedDialogOpen} modal persistent position="top">
+          <QCardSection>
+            <h6 class="q-mb-sm">Combined Features</h6>
+            <div>
+              This dialog combines multiple features:
+              <ul>
+                <li>Modal (blocks background interaction)</li>
+                <li>Persistent (can't dismiss with outside click)</li>
+                <li>Positioned at the top</li>
+              </ul>
+            </div>
+          </QCardSection>
+          <QCardActions align="right">
+            <QBtn label="I understand" onclick={() => (combinedDialogOpen = false)} />
+          </QCardActions>
+        </QDialog>
+      </QDocsSection>
+
+      <QDocsSection title="Accessibility" noCode>
+        {#snippet sectionDescription()}
+          QDialog is built with accessibility in mind. It manages focus appropriately, can be closed
+          with the Escape key (unless persistent), and includes proper ARIA attributes.
+        {/snippet}
+
+        <QList dense>
+          <QItem>
+            <QItemSection type="avatar">
+              <QIcon name="chevron_right" />
+            </QItemSection>
+            <QItemSection>Modal dialogs trap focus within them when open</QItemSection>
+          </QItem>
+          <QItem>
+            <QItemSection type="avatar">
+              <QIcon name="chevron_right" />
+            </QItemSection>
+            <QItemSection>Escape key closes non-persistent dialogs</QItemSection>
+          </QItem>
+          <QItem>
+            <QItemSection type="avatar">
+              <QIcon name="chevron_right" />
+            </QItemSection>
+            <QItemSection
+              >Modal dialogs prevent screen reader access to background content</QItemSection
+            >
+          </QItem>
+          <QItem>
+            <QItemSection type="avatar">
+              <QIcon name="chevron_right" />
+            </QItemSection>
+            <QItemSection>Proper ARIA attributes are applied automatically</QItemSection>
+          </QItem>
+        </QList>
       </QDocsSection>
     </div>
   {/snippet}

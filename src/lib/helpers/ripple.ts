@@ -107,7 +107,7 @@ export function ripple(el: HTMLElement, options: RippleOptions = {}) {
       cancelEvents.forEach((event) => el.removeEventListener(event, removeRipple));
     }
 
-    cancelEvents.forEach((event) => el.addEventListener(event, removeRipple));
+    cancelEvents.forEach((event) => el.addEventListener(event, removeRipple, { passive: true }));
   }
 
   triggerEvents.forEach((event) =>

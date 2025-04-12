@@ -9,6 +9,7 @@
     shape = "circle",
     size = "md",
     src,
+    sources,
     video = false,
     children,
     videoAccessibility,
@@ -25,12 +26,18 @@
 
 <div {...props} class="q-avatar" style:--size={qSize.style} data-quaff>
   {#if video}
-    <video>
-      <source {src} type="video/mp4" />
-      <track kind="captions" />
+    <video autoplay loop muted playsinline>
+      {#if sources && sources.length > 0}
+        {#each sources as { src, type } (type)}
+          <source {src} {type} />
+        {/each}
+      {:else if src}
+        <source {src} type="video/mp4" />
+      {/if}
+
       {@render videoAccessibility?.()}
     </video>
-  {:else if src !== undefined}
+  {:else if src}
     <img {src} {alt} />
   {:else}
     {@render children?.()}

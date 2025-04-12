@@ -17,7 +17,7 @@
   let rightDrawer: ReturnType<typeof QDrawer> | null = null;
 </script>
 
-<QLayout view="hHh LpR fFr" leftRailbarWidth="120">
+<QLayout view="hHh LpR fFr">
   {#snippet header()}
     <QHeader class="primary-container">
       <QBtn icon="menu" variant="flat" onclick={() => leftDrawer?.toggle()} />

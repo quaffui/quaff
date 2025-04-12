@@ -3,9 +3,10 @@
   import { QIconDocs } from "$components/icon/docs";
   import QDocs from "$lib/components/private/QDocs.svelte";
   import QDocsSection from "$lib/components/private/QDocsSection.svelte";
+  import snippets from "./docs.snippets";
 </script>
 
-<QDocs componentDocs={QIconDocs}>
+<QDocs {snippets} componentDocs={QIconDocs}>
   {#snippet display()}
     <QIcon name="check" />
   {/snippet}
