@@ -3,6 +3,7 @@
   import { QTableDocs } from "$components/table/docs";
   import QDocs from "$lib/components/private/QDocs.svelte";
   import QDocsSection from "$lib/components/private/QDocsSection.svelte";
+  import snippets from "./docs.snippets";
   import type { QTableColumn, QTableRow } from "$lib/components/table/props";
 
   const columns: QTableColumn[] = [
@@ -221,7 +222,7 @@
   ];
 </script>
 
-<QDocs componentDocs={QTableDocs}>
+<QDocs {snippets} componentDocs={QTableDocs}>
   {#snippet display()}
     <QTable {columns} rows={rows.slice(0, 1)} />
   {/snippet}
