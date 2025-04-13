@@ -110,7 +110,10 @@
   const style = $derived(`${drawerWidthStyle}${props.style ?? ""}`);
 
   function tryClose(e: MouseEvent) {
-    if (canHideOnClickOutside && e.target !== drawerEl && !drawerEl.contains(e.target as Node)) {
+    const isTargetDrawer = e.target === drawerEl;
+    const isTargetInsideDrawer = drawerEl.contains(e.target as Node);
+
+    if (canHideOnClickOutside && !isTargetDrawer && !isTargetInsideDrawer) {
       e.stopPropagation();
       hide();
     }

@@ -21,12 +21,14 @@
     "grey",
   ];
 
-  const textColor = (color: string, step: number) => {
-    if (step <= 5 + Number(["lime", "yellow"].includes(color))) {
-      return `${color}-10`;
-    } else {
-      return `${color}-1`;
-    }
+  const textColor = (color: string, index: number) => {
+    const colorsTooLightForIndex5LightText = ["lime", "yellow"];
+
+    // Change to a light text color at index 6 for light colors
+    // and at index 5 for the rest
+    const switchingTextColorIndex = 5 + Number(colorsTooLightForIndex5LightText.includes(color));
+
+    return index <= switchingTextColorIndex ? `${color}-10` : `${color}-1`;
   };
 </script>
 
@@ -37,10 +39,10 @@
     {#each colors as color (color)}
       <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2 palette">
         <div class="bg-{color} text-{color}-10 title-large q-pa-sm">{color}</div>
-        {#each { length: 10 }, step (step)}
-          {@const stepp = step + 1}
-          <div class="bg-{color}-{stepp} q-pa-sm text-{textColor(color, stepp)}">
-            {color}-{stepp}
+        {#each { length: 10 }, index (index)}
+          {@const shadeNumber = index + 1}
+          <div class="bg-{color}-{shadeNumber} q-pa-sm text-{textColor(color, shadeNumber)}">
+            {color}-{shadeNumber}
           </div>
         {/each}
       </div>
