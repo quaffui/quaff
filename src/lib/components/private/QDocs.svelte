@@ -41,7 +41,7 @@
       <QCardSection class="q-pa-none">
         <div
           class="flex flex-center"
-          style="position: absolute; height: 100%; width: 100%; z-index: 1;"
+          style="position: absolute; height: 100%; width: 100%; z-index: 1; overflow: hidden;"
         >
           {@render display?.()}
         </div>

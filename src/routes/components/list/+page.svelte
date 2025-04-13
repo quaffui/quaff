@@ -396,7 +396,7 @@
           </QItem>
           <QItem href="#">
             <QItemSection type="icon">
-              <QIcon name="open_in_new" />
+              <QIcon name="link" />
             </QItemSection>
             <QItemSection>External Link</QItemSection>
             <QItemSection type="trailingIcon">

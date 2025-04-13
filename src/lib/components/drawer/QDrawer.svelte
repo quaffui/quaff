@@ -109,24 +109,17 @@
 
   const style = $derived(`${drawerWidthStyle}${props.style ?? ""}`);
 
-  function handleClickInside(e: MouseEvent) {
-    e.stopPropagation();
-  }
+  function tryClose(e: MouseEvent) {
+    const isTargetDrawer = e.target === drawerEl;
+    const isTargetInsideDrawer = drawerEl.contains(e.target as Node);
 
-  function tryClose() {
-    if (canHideOnClickOutside) {
+    if (canHideOnClickOutside && !isTargetDrawer && !isTargetInsideDrawer) {
+      e.stopPropagation();
       hide();
     }
   }
 </script>
 
-<div
-  bind:this={drawerEl}
-  onclick={handleClickInside}
-  {...props}
-  class="q-drawer"
-  {style}
-  data-quaff
->
+<div bind:this={drawerEl} {...props} class="q-drawer" {style} data-quaff>
   {@render children?.()}
 </div>

@@ -20,6 +20,16 @@
     "blue-grey",
     "grey",
   ];
+
+  const textColor = (color: string, index: number) => {
+    const colorsTooLightForIndex5LightText = ["lime", "yellow"];
+
+    // Change to a light text color at index 6 for light colors
+    // and at index 5 for the rest
+    const switchingTextColorIndex = 5 + Number(colorsTooLightForIndex5LightText.includes(color));
+
+    return index <= switchingTextColorIndex ? `${color}-10` : `${color}-1`;
+  };
 </script>
 
 <div class="q-page">
@@ -28,10 +38,11 @@
   <div class="row q-gutter-md">
     {#each colors as color (color)}
       <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2 palette">
-        <div class="bg-{color} text-grey-10 heading q-pa-sm">{color}</div>
-        {#each [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] as step (step)}
-          <div class="bg-{color}-{step} q-pa-sm {step < 5 ? 'text-grey-8' : ''}">
-            {color}-{step}
+        <div class="bg-{color} text-{color}-10 title-large q-pa-sm">{color}</div>
+        {#each { length: 10 }, index (index)}
+          {@const shadeNumber = index + 1}
+          <div class="bg-{color}-{shadeNumber} q-pa-sm text-{textColor(color, shadeNumber)}">
+            {color}-{shadeNumber}
           </div>
         {/each}
       </div>
@@ -47,7 +58,7 @@
     overflow: hidden;
 
     .heading {
-      font-weight: bold;
+      font-weight: bolder;
     }
 
     > * {
