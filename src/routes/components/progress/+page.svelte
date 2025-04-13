@@ -4,9 +4,10 @@
   import QDocsSection from "$lib/components/private/QDocsSection.svelte";
   import QLinearProgress from "$lib/components/progress/QLinearProgress.svelte";
   import QCircularProgress from "$lib/components/progress/QCircularProgress.svelte";
+  import snippets from "./docs.snippets";
 </script>
 
-<QDocs componentDocs={[QLinearProgressDocs, QCircularProgressDocs]}>
+<QDocs {snippets} componentDocs={[QLinearProgressDocs, QCircularProgressDocs]}>
   {#snippet usage()}
     <div>
       <QDocsSection title="Linear Progress">

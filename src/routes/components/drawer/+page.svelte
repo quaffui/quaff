@@ -16,6 +16,9 @@
 
   import snippets from "./docs.snippets";
 
+  let displayDrawerOpen = $state(false);
+  let basicDrawerOpen = $state(false);
+
   let leftDrawerOpen = $state(false);
   let rightDrawerOpen = $state(false);
   let overlayDrawerOpen = $state(false);
@@ -23,46 +26,34 @@
   let borderedDrawerOpen = $state(false);
   let customWidthDrawerOpen = $state(false);
   let programmaticDrawerState = $state(false);
+  let layoutDrawerOpen = $state(false);
 
   let drawerRef = $state<QDrawer>();
 </script>
 
 <QDocs {snippets} componentDocs={QDrawerDocs}>
   {#snippet display()}
-    <QLayout view="hHh LpR fFf">
-      {#snippet header()}
-        <QHeader>
-          <QBtn flat round icon="menu" onclick={() => (leftDrawerOpen = !leftDrawerOpen)} />
-          <h6 class="q-mx-md q-mb-none">App Title</h6>
-        </QHeader>
-      {/snippet}
+    <QBtn label="Open drawer" onclick={() => (displayDrawerOpen = !displayDrawerOpen)} />
 
-      {#snippet drawerLeft()}
-        <QDrawer bind:value={leftDrawerOpen} bordered>
-          <div class="q-py-md">
-            <h6>Navigation</h6>
-            <QList dense>
-              <QItem>
-                <QItemSection type="avatar">
-                  <QIcon name="home" />
-                </QItemSection>
-                <QItemSection>Home</QItemSection>
-              </QItem>
-              <QItem>
-                <QItemSection type="avatar">
-                  <QIcon name="settings" />
-                </QItemSection>
-                <QItemSection>Settings</QItemSection>
-              </QItem>
-            </QList>
-          </div>
-        </QDrawer>
-      {/snippet}
-
-      <div class="q-pa-md">
-        <p>Click the menu button to toggle the drawer.</p>
+    <QDrawer bind:value={displayDrawerOpen} overlay>
+      <div class="q-py-md">
+        <h5>Navigation</h5>
+        <QList dense>
+          <QItem>
+            <QItemSection type="avatar">
+              <QIcon name="home" />
+            </QItemSection>
+            <QItemSection>Home</QItemSection>
+          </QItem>
+          <QItem>
+            <QItemSection type="avatar">
+              <QIcon name="settings" />
+            </QItemSection>
+            <QItemSection>Settings</QItemSection>
+          </QItem>
+        </QList>
       </div>
-    </QLayout>
+    </QDrawer>
   {/snippet}
 
   {#snippet usage()}
@@ -80,13 +71,13 @@
         >
           {#snippet header()}
             <QHeader>
-              <QBtn flat round icon="menu" onclick={() => (leftDrawerOpen = !leftDrawerOpen)} />
+              <QBtn flat round icon="menu" onclick={() => (basicDrawerOpen = !basicDrawerOpen)} />
               <h6 class="q-mx-md q-mb-none">App Title</h6>
             </QHeader>
           {/snippet}
 
           {#snippet drawerLeft()}
-            <QDrawer bind:value={leftDrawerOpen}>
+            <QDrawer bind:value={basicDrawerOpen}>
               <div class="q-pa-md">
                 <h6>Navigation</h6>
                 <QList dense>
@@ -104,7 +95,7 @@
                   </QItem>
                 </QList>
                 <div class="q-mt-lg">
-                  <QBtn label="Close Drawer" onclick={() => (leftDrawerOpen = false)} />
+                  <QBtn label="Close Drawer" onclick={() => (basicDrawerOpen = false)} />
                 </div>
               </div>
             </QDrawer>
@@ -112,7 +103,7 @@
 
           <div class="q-pa-md">
             <p>Click the menu button to toggle the drawer:</p>
-            <QBtn label="Toggle Drawer" onclick={() => (leftDrawerOpen = !leftDrawerOpen)} />
+            <QBtn label="Toggle Drawer" onclick={() => (basicDrawerOpen = !basicDrawerOpen)} />
           </div>
         </QLayout>
       </QDocsSection>
@@ -397,13 +388,13 @@
         >
           {#snippet header()}
             <QHeader>
-              <QBtn flat round icon="menu" onclick={() => (leftDrawerOpen = !leftDrawerOpen)} />
+              <QBtn flat round icon="menu" onclick={() => (layoutDrawerOpen = !layoutDrawerOpen)} />
               <h6 class="q-mx-md q-mb-none">App with Layout</h6>
             </QHeader>
           {/snippet}
 
           {#snippet drawerLeft()}
-            <QDrawer bind:value={leftDrawerOpen} bordered>
+            <QDrawer bind:value={layoutDrawerOpen} bordered>
               <div class="q-pa-md">
                 <h6>Navigation</h6>
                 <QList dense>
@@ -437,7 +428,10 @@
               <li>Navigation drawer on the left</li>
               <li>Footer at the bottom</li>
             </ul>
-            <QBtn label="Toggle Navigation" onclick={() => (leftDrawerOpen = !leftDrawerOpen)} />
+            <QBtn
+              label="Toggle Navigation"
+              onclick={() => (layoutDrawerOpen = !layoutDrawerOpen)}
+            />
           </div>
         </QLayout>
       </QDocsSection>
