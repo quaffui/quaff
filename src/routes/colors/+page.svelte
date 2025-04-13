@@ -20,6 +20,14 @@
     "blue-grey",
     "grey",
   ];
+
+  const textColor = (color: string, step: number) => {
+    if (step <= 5 + Number(["lime", "yellow"].includes(color))) {
+      return `${color}-10`;
+    } else {
+      return `${color}-1`;
+    }
+  };
 </script>
 
 <div class="q-page">
@@ -28,10 +36,11 @@
   <div class="row q-gutter-md">
     {#each colors as color (color)}
       <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2 palette">
-        <div class="bg-{color} text-grey-10 heading q-pa-sm">{color}</div>
-        {#each [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] as step (step)}
-          <div class="bg-{color}-{step} q-pa-sm {step < 5 ? 'text-grey-8' : ''}">
-            {color}-{step}
+        <div class="bg-{color} text-{color}-10 title-large q-pa-sm">{color}</div>
+        {#each { length: 10 }, step (step)}
+          {@const stepp = step + 1}
+          <div class="bg-{color}-{stepp} q-pa-sm text-{textColor(color, stepp)}">
+            {color}-{stepp}
           </div>
         {/each}
       </div>
@@ -47,7 +56,7 @@
     overflow: hidden;
 
     .heading {
-      font-weight: bold;
+      font-weight: bolder;
     }
 
     > * {

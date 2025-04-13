@@ -16,6 +16,7 @@
   import type { QDialogPositionOptions } from "$components/dialog/props";
   import snippets from "./docs.snippets";
 
+  let displayDialogOpen = $state(false);
   let basicDialogOpen = $state(false);
   let modalDialogOpen = $state(false);
   let persistentDialogOpen = $state(false);
@@ -31,14 +32,14 @@
 
 <QDocs {snippets} componentDocs={QDialogDocs}>
   {#snippet display()}
-    <QBtn label="Open Dialog" onclick={() => (basicDialogOpen = true)} />
-    <QDialog bind:value={basicDialogOpen}>
+    <QBtn label="Open Dialog" onclick={() => (displayDialogOpen = true)} />
+    <QDialog bind:value={displayDialogOpen}>
       <QCardSection>
         <h6 class="q-mb-sm">Dialog Title</h6>
         <p>This is a simple dialog example.</p>
       </QCardSection>
       <QCardActions align="right">
-        <QBtn flat label="Close" onclick={() => (basicDialogOpen = false)} />
+        <QBtn flat label="Close" onclick={() => (displayDialogOpen = false)} />
       </QCardActions>
     </QDialog>
   {/snippet}
