@@ -7,7 +7,7 @@ import {
 } from "./docs.props";
 
 export const QLinearProgressDocs: QComponentDocs = {
-  name: "QProgress",
+  name: "QLinearProgress",
   description:
     "The QLinearProgress component is used to display a progress bar, indicating the completion status of a task or process.",
   docs: {
@@ -19,7 +19,7 @@ export const QLinearProgressDocs: QComponentDocs = {
 };
 
 export const QCircularProgressDocs: QComponentDocs = {
-  name: "QProgress",
+  name: "QCircularProgress",
   description:
     "The QCircularProgress component is used to display a cicular progress bar, indicating the completion status of a task or process.",
   docs: {
