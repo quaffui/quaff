@@ -15,7 +15,6 @@
   let {
     value = $bindable(),
     variant = "primary",
-    round = false,
     noSeparator = false,
     children,
     ...props
@@ -136,7 +135,6 @@
 
   Q.classes("q-tabs", {
     bemClasses: {
-      rounded: round,
       [variant]: true,
       "no-separator": noSeparator,
     },

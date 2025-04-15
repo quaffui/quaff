@@ -411,7 +411,7 @@
         </div>
       </QDocsSection>
 
-      <QDocsSection title="Accessibility">
+      <QDocsSection title="Accessibility" noCode>
         {#snippet sectionDescription()}
           Both QLinearProgress and QCircularProgress include appropriate ARIA attributes to ensure
           accessibility for screen readers.

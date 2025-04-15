@@ -17,8 +17,8 @@
   overflow: visible;
   @include mixins.padding("x-md");
 
-  & .q-tab__icon {
-    margin-right: 0.25rem;
+  & .q-tab__icon + span {
+    margin-left: 0.5rem;
   }
 
   &.q-tab--active {

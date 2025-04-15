@@ -20,13 +20,6 @@ export interface QTabsProps extends HTMLAttributes<HTMLElement> {
   variant?: QTabsVariants;
 
   /**
-   * Applies rounded corners to the tabs.
-   *
-   * @default false
-   */
-  round?: boolean;
-
-  /**
    * Removes the separator line under the tabs (or to the right for vertical tabs).
    *
    * @default false
