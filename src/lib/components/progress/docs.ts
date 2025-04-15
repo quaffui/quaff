@@ -21,7 +21,7 @@ export const QLinearProgressDocs: QComponentDocs = {
 export const QCircularProgressDocs: QComponentDocs = {
   name: "QCircularProgress",
   description:
-    "The QCircularProgress component is used to display a cicular progress bar, indicating the completion status of a task or process.",
+    "The QCircularProgress component is used to display a circular progress bar, indicating the completion status of a task or process.",
   docs: {
     props: QCircularProgressDocsProps,
     snippets: QCircularProgressDocsSnippets,
