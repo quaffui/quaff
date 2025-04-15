@@ -1,12 +1,9 @@
 <script lang="ts">
-  import { QSelect, QBtn, QIcon, QCard, QCardSection } from "$lib";
+  import { QSelect, QBtn, QIcon, QCard, QCardSection, QCardActions, QList, QItem } from "$lib";
   import { QSelectDocs } from "$components/select/docs";
   import QDocs from "$lib/components/private/QDocs.svelte";
   import QDocsSection from "$lib/components/private/QDocsSection.svelte";
   import snippets from "./docs.snippets";
-  import QCardActions from "$components/card/QCardActions.svelte";
-  import QList from "$components/list/QList.svelte";
-  import QItem from "$components/list/QItem.svelte";
 
   let selectDisabled = $state(true);
   let dynamicSelect = $state("");
@@ -373,10 +370,3 @@
     </div>
   {/snippet}
 </QDocs>
-
-<style lang="scss">
-  .heading {
-    display: flex;
-    align-items: center;
-  }
-</style>

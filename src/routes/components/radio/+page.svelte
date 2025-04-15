@@ -191,7 +191,7 @@
         <div class="q-ma-sm">
           <QCard class="q-pa-md" style="max-width: 400px;">
             <div class="text-subtitle1 q-mb-xs">Favorite programming language:</div>
-            {#each ["JavaScript", "TypeScript", "Svelte", "Vue", "React"] as language}
+            {#each ["JavaScript", "TypeScript", "Svelte", "Vue", "React"] as language (language)}
               <QRadio
                 class="q-ma-sm"
                 value={language.toLowerCase()}

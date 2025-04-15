@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { QSeparator, QCard, QCardSection, QBtn, QList, QItem, QItemSection } from "$lib";
+  import { QSeparator, QCard, QCardSection } from "$lib";
   import { QSeparatorVerticalDocs, QSeparatorHorizontalDocs } from "$components/separator/docs";
   import QDocs from "$lib/components/private/QDocs.svelte";
   import QDocsSection from "$lib/components/private/QDocsSection.svelte";

@@ -1,10 +1,9 @@
 <script lang="ts">
-  import { QToolbar, QToolbarTitle, QBtn, QIcon, QList, QItem, QItemSection } from "$lib";
+  import { QToolbar, QToolbarTitle, QBtn, QIcon, QInput } from "$lib";
   import { QToolbarDocs } from "$components/toolbar/docs";
   import QDocs from "$lib/components/private/QDocs.svelte";
   import QDocsSection from "$lib/components/private/QDocsSection.svelte";
   import snippets from "./docs.snippets";
-  import QInput from "$components/input/QInput.svelte";
 </script>
 
 <QDocs {snippets} componentDocs={QToolbarDocs}>

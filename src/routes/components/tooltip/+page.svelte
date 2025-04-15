@@ -1,10 +1,9 @@
 <script lang="ts">
-  import { QTooltip, QBtn, QCard, QCardSection, QIcon } from "$lib";
+  import { QTooltip, QBtn, QCard, QCardSection, QCardActions, QIcon } from "$lib";
   import { QTooltipDocs } from "$components/tooltip/docs";
   import QDocs from "$lib/components/private/QDocs.svelte";
   import QDocsSection from "$lib/components/private/QDocsSection.svelte";
   import snippets from "./docs.snippets";
-  import QCardActions from "$components/card/QCardActions.svelte";
 
   let tooltipRef = $state<QTooltip<string>>();
   let showControlledTooltip = $state(false);
