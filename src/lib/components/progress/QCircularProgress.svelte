@@ -18,7 +18,7 @@
     strokeDashArray = Math.round(circumference * 1000) / 1000;
 
   let {
-    value = 0,
+    value = $bindable(0),
     indeterminate = false,
     size = "2em",
     fontSize = "0.25em",
@@ -37,6 +37,11 @@
   }: QCircularProgressProps = $props();
 
   const qSize = $derived(useSize(size, "q-circular-progress"));
+
+  const parsedColor = $derived(color.includes("#") ? color : `var(--${color}, ${color})`);
+  const parsedTrackColor = $derived(
+    trackColor.includes("#") ? trackColor : `var(--${trackColor}, ${trackColor})`
+  );
 
   const svgStyle = $derived(`rotate3d(0, 0, 1, ${angle - 90}deg)`);
   const circleStyle = $derived(
@@ -90,14 +95,14 @@
       {@render circle({
         cls: "track",
         offset: 0,
-        color: trackColor,
+        color: parsedTrackColor,
       })}
     {/if}
 
     {@render circle({
       cls: "indicator",
       offset: strokeDashOffset,
-      color,
+      color: parsedColor,
       rounded: !noRound,
     })}
   </svg>
@@ -118,8 +123,9 @@
 
 {#snippet circle({ offset, color, cls, rounded }: CircleParams)}
   <circle
-    class="q-circular-progress__{cls}{color ? ` text-${color}` : ''}"
+    class="q-circular-progress__{cls}"
     style:transition={circleStyle}
+    style:color
     fill="transparent"
     stroke="currentColor"
     stroke-width={strokeWidth}

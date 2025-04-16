@@ -99,7 +99,9 @@
       {@render icon?.()}
     {/if}
 
-    {@render children?.()}
+    {#if children}
+      <span>{@render children?.()}</span>
+    {/if}
 
     {#if variant === "primary"}
       <div class="q-tab__indicator"></div>

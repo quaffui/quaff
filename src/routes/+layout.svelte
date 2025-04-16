@@ -144,12 +144,12 @@
       to: "/components/switch",
     },
     {
-      name: "Tabs",
-      to: "/components/tabs",
-    },
-    {
       name: "Table",
       to: "/components/table",
+    },
+    {
+      name: "Tabs",
+      to: "/components/tabs",
     },
     {
       name: "Toolbar",

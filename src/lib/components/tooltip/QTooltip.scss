@@ -26,4 +26,15 @@
     // Remove the helper element from the flow so it doesn't affect pre elements
     position: absolute;
   }
+
+  &:has(> .q-card) {
+    padding: 0;
+    overflow: hidden;
+    background-color: transparent;
+    text-align: unset;
+
+    & > .q-card {
+      box-shadow: none;
+    }
+  }
 }

@@ -1,6 +1,7 @@
 <svelte:options runes={true} />
 
 <script lang="ts">
+  import { onMount } from "svelte";
   import QCircularProgress from "$lib/components/progress/QCircularProgress.svelte";
   import { useSize } from "$lib/composables/useSize";
   import { ripple } from "$lib/helpers";
@@ -35,6 +36,7 @@
   }: QBtnProps = $props();
 
   let qBtn: HTMLButtonElement | HTMLAnchorElement;
+  let qBtnLabel: HTMLSpanElement;
 
   type QBtnMouseEvent = QEvent<MouseEvent, typeof qBtn>;
 
@@ -102,6 +104,15 @@
     stopIfDisabled(click);
   }
 
+  onMount(() => {
+    const { width, height } = qBtnLabel.getBoundingClientRect();
+
+    // This is required for buttons with no label and with a tooltip to be round
+    if (width === 0 && height === 0) {
+      qBtn.classList.add("q-btn--round");
+    }
+  });
+
   Q.classes("q-btn", {
     bemClasses: {
       [finalVariant]: true,
@@ -151,7 +162,7 @@
     />
   {/if}
 
-  <span class="q-btn__label">
+  <span bind:this={qBtnLabel} class="q-btn__label">
     {#if label}
       {label}
     {/if}

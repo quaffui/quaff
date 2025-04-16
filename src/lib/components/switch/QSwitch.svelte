@@ -24,6 +24,8 @@
 
   function toggle() {
     value = !value;
+
+    qSwitch.dispatchEvent(new Event("change", { bubbles: true }));
   }
 
   function onclick(event: QSwitchEvent<MouseEvent>) {
@@ -77,7 +79,6 @@
   aria-disabled={disabled || undefined}
   role="switch"
   aria-checked={value || undefined}
-  tabindex={disabled ? -1 : 0}
   data-quaff
 >
   <label class="q-switch__inner">

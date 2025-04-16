@@ -37,6 +37,10 @@
 
     & > .q-tab {
       @include mixins.padding("x-md");
+
+      &:has(.q-tab__icon) {
+        justify-content: flex-start;
+      }
     }
 
     & .q-tab .q-tab__indicator {

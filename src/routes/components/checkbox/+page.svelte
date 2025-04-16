@@ -31,8 +31,8 @@
       <QDocsSection title="Checkbox States">
         {#snippet sectionDescription()}
           Checkboxes can be in different states: unchecked, checked, or disabled. The state is
-          controlled by the `value` prop for checked/unchecked and the `disable` prop for disabled
-          state.
+          controlled by the <code>value</code> prop for checked/unchecked and the
+          <code>disable</code> prop for disabled state.
         {/snippet}
 
         <QCheckbox class="q-ma-sm" label="Unchecked by default" bind:value={value3} />
@@ -43,8 +43,8 @@
 
       <QDocsSection title="Two-way Binding">
         {#snippet sectionDescription()}
-          QCheckbox supports Svelte's two-way binding with the `bind:value` directive. The example
-          below shows how the checkbox state updates the bound variable and vice versa.
+          QCheckbox supports Svelte's two-way binding with the <code>bind:value</code> directive. The
+          example below shows how the checkbox state updates the bound variable and vice versa.
         {/snippet}
 
         <div class="flex items-center q-gap-md q-ma-sm">
