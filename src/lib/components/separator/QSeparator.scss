@@ -19,7 +19,7 @@
     }
   }
 
-  &:not(.vertical) {
+  &:not(&--vertical) {
     width: 100%;
   }
 }

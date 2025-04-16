@@ -9,7 +9,7 @@
   }
 
   let {
-    value = 0,
+    value = $bindable(0),
     buffer,
     reverse = false,
     noRound = false,
@@ -23,6 +23,12 @@
   }: QLinearProgressProps = $props();
 
   const normalized = $derived(value > 1 ? value / 100 : value);
+  const normalizedBuffer = $derived(buffer && buffer > 1 ? buffer / 100 : buffer);
+
+  const parsedColor = $derived(color.includes("#") ? color : `var(--${color}, ${color})`);
+  const parsedTrackColor = $derived(
+    trackColor.includes("#") ? trackColor : `var(--${trackColor}, ${trackColor})`
+  );
 
   const qSize = $derived(useSize(size, "q-linear-progress"));
 
@@ -31,7 +37,7 @@
   const transition = $derived(
     instantFeedback || indeterminate ? undefined : `transform ${animationSpeed}ms`
   );
-  const trackTransform = $derived(width(buffer ?? 1, reverse));
+  const trackTransform = $derived(width(normalizedBuffer ?? 1, reverse));
   const indicatorTransform = $derived(width(+indeterminate || normalized, reverse));
 
   Q.classes("q-linear-progress", {
@@ -58,13 +64,13 @@
     class="q-linear-progress__track absolute-full"
     style:transition
     style:transform-origin={origin}
-    style:background-color="var(--{trackColor}, {trackColor})"
+    style:background-color={parsedTrackColor}
     style:transform={trackTransform}
   ></div>
 
   <div
     class="q-linear-progress__indicator"
-    style:--q-indicator-color="var(--{color}, {color})"
+    style:--q-indicator-color={parsedColor}
     style:transition
     style:transform={indicatorTransform}
     style:transform-origin={origin}
