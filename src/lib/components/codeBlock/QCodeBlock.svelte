@@ -1,14 +1,16 @@
 <script lang="ts">
+  import { untrack } from "svelte";
   import { copy } from "$lib/utils";
-  import { QBtn } from "$lib";
+  import { QBtn, Quaff } from "$lib";
   import type { QCodeBlockProps } from "./props";
 
   let {
     language,
     theme = "github-dark-default",
     code = "/* No code found */",
-    title = undefined,
-    copiable = undefined,
+    title,
+    copiable,
+    ...props
   }: QCodeBlockProps = $props();
 
   let btnContent = $state("Copy");
@@ -19,6 +21,16 @@
   $effect(() => {
     // This is required to have the html updated when the code changes
     getHtml(code);
+  });
+
+  $effect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+    Quaff.darkMode.isActive;
+
+    untrack(() => {
+      theme = Quaff.darkMode.isActive ? "github-dark-default" : "github-light-default";
+      getHtml(code);
+    });
   });
 
   function setBtn(type: "base" | "error" | "success") {
@@ -65,7 +77,7 @@
   }
 </script>
 
-<div class="q-code-block" data-quaff>
+<div {...props} class="q-code-block" data-quaff>
   {#if copiable}
     <div class="flex justify-between {title ? 'items-center' : 'justify-end'} q-pb-sm">
       {#if title}

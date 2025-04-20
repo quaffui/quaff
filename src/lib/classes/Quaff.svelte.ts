@@ -1,11 +1,11 @@
-import { get } from "svelte/store";
 import version from "$lib/helpers/version";
-import { page } from "$app/stores";
+import { page } from "$app/state";
 
 type Mode = "light" | "dark";
 
 class Quaff {
   public version = version;
+  public router = $derived(page);
 
   protected dark = $state(false);
   private toggleDarkMode() {
@@ -35,10 +35,6 @@ class Quaff {
       toggle: () => this.toggleDarkMode(),
       set: (newVal: boolean) => this.setDarkMode(newVal),
     };
-  }
-
-  public get router() {
-    return get(page);
   }
 }
 

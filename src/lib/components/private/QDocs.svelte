@@ -12,18 +12,24 @@
     usage,
     snippets,
     componentDocs,
+    docName,
+    docDescription,
   }: {
     children?: Snippet;
     display?: Snippet;
     pre?: Snippet;
     usage?: Snippet;
     snippets?: Record<string, string>;
-    componentDocs: QComponentDocs | QComponentDocs[];
+    componentDocs?: QComponentDocs | QComponentDocs[];
+    docName?: string;
+    docDescription?: string;
   } = $props();
 
   const isDark = $derived(Quaff.darkMode.isActive);
 
-  setContext("QDocsSnippets", () => snippets);
+  if (snippets) {
+    setContext("QDocsSnippets", () => snippets);
+  }
 
   let principalDocument = Array.isArray(componentDocs) ? componentDocs[0] : componentDocs;
 </script>
@@ -31,7 +37,7 @@
 <div class="q-docs" style="padding: 1rem">
   <div class="row q-gutter-lg" style="min-height: 400px">
     <QCard class="col-sm-12 col-lg-6 flex flex-center" fill="primary" style="min-height: 400px">
-      <h1 class="large no-margin">{principalDocument.name}</h1>
+      <h1 class="large no-margin">{principalDocument?.name || docName}</h1>
     </QCard>
     <QCard
       class="q-docs__preview col-sm-12 col-lg-6 q-mt-none q-pa-none"
@@ -54,14 +60,16 @@
       </QCardSection>
       <QCardSection class="q-docs__description flex flex-center">
         <h3 class="q-docs__description-text">
-          {principalDocument.description}
+          {principalDocument?.description || docDescription}
         </h3>
       </QCardSection>
     </QCard>
   </div>
 
   <div class="q-page">
-    <QApi componentDocs={Array.isArray(componentDocs) ? componentDocs : [componentDocs]} />
+    {#if componentDocs}
+      <QApi componentDocs={Array.isArray(componentDocs) ? componentDocs : [componentDocs]} />
+    {/if}
 
     {@render pre?.()}
 

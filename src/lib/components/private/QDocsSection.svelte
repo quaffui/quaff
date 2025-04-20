@@ -11,9 +11,9 @@
 
   let { title, noCode = false, sectionDescription, children }: QDocsSectionProps = $props();
 
-  const snippets = getContext<() => Record<string, string>>("QDocsSnippets");
+  const snippets = getContext<undefined | (() => Record<string, string>)>("QDocsSnippets");
 
-  const code = $derived(snippets()[title]);
+  const code = $derived(snippets && snippets()[title]);
 
   let dialog = $state(false);
 

@@ -11,7 +11,7 @@ type ScrollType = {
   document: DocumentScrollType;
 };
 
-type Target = HTMLDivElement | typeof window | Document | string;
+type Target = HTMLElement | typeof window | Document | string;
 
 type ScrollObserverOptions = {
   debounce?: number;
@@ -42,6 +42,7 @@ export default class QScrollObserver {
   protected horizontal: boolean = false;
   protected clearTimer: (() => void) | null = null;
   protected target: Exclude<Target, string> | null = null;
+  protected debounce: number = 0;
 
   direction = $state<Direction>("down");
   changedDirection = $state(false);
@@ -51,9 +52,10 @@ export default class QScrollObserver {
 
   constructor(
     target?: Target | null,
-    { horizontal, debounce }: ScrollObserverOptions = { horizontal: false, debounce: 250 }
+    { horizontal, debounce }: ScrollObserverOptions = { horizontal: false, debounce: 0 }
   ) {
     this.horizontal = horizontal ?? false;
+    this.debounce = debounce ?? 0;
 
     this.scrollType = horizontal
       ? { window: "scrollX", document: "scrollLeft" }
@@ -63,20 +65,6 @@ export default class QScrollObserver {
     this.position = 0;
     this.inflectionPoint = 0;
     this.direction = horizontal ? "right" : "down";
-
-    const handler = (e: Event) => {
-      const eventTarget = e.target as HTMLElement | null;
-
-      if (!eventTarget || !this.target || eventTarget !== this.target) {
-        return;
-      }
-
-      if (debounce) {
-        this.handleDebounce(this.target, debounce);
-      } else {
-        this.updateDirection(this.target);
-      }
-    };
 
     onMount(() => {
       let parsedTarget = elFromSelector(target ?? null);
@@ -88,12 +76,12 @@ export default class QScrollObserver {
 
       this.target = parsedTarget;
 
-      parsedTarget.addEventListener("scroll", handler, { capture: true });
+      parsedTarget.addEventListener("scroll", this.handler.bind(this), { capture: true });
 
       return () => {
         this.clearTimer?.();
 
-        parsedTarget.removeEventListener("scroll", handler, true);
+        parsedTarget.removeEventListener("scroll", this.handler.bind(this), true);
       };
     });
   }
@@ -105,6 +93,20 @@ export default class QScrollObserver {
         ? target[this.scrollType.window]
         : (target as HTMLElement)[this.scrollType.document]
     );
+  }
+
+  protected handler(e: Event) {
+    const eventTarget = e.target as HTMLElement | null;
+
+    if (!eventTarget || !this.target || eventTarget !== this.target) {
+      return;
+    }
+
+    if (this.debounce) {
+      this.handleDebounce(this.target, this.debounce);
+    } else {
+      this.updateDirection(this.target);
+    }
   }
 
   protected updateDirection(target: HTMLElement) {
@@ -139,5 +141,19 @@ export default class QScrollObserver {
       clearTimeout(timer);
       this.clearTimer = null;
     };
+  }
+
+  destroy() {
+    this.clearTimer?.();
+    this.clearTimer = null;
+
+    this.target?.removeEventListener("scroll", this.handler.bind(this));
+
+    this.target = null;
+    this.direction = "down";
+    this.changedDirection = false;
+    this.delta = 0;
+    this.inflectionPoint = 0;
+    this.position = 0;
   }
 }
