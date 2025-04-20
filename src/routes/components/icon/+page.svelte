@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { assets } from "$app/paths";
   import { QIcon } from "$lib";
   import { QIconDocs } from "$components/icon/docs";
   import QDocs from "$lib/components/private/QDocs.svelte";
@@ -44,7 +45,7 @@
       </QDocsSection>
       <QDocsSection title="Image">
         <div class="flex q-gap-lg items-center">
-          <QIcon img="/cocktail.jpg" />
+          <QIcon img="{assets}/cocktail.jpg" />
         </div>
       </QDocsSection>
     </div>

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { base, assets } from "$app/paths";
   import { QList, QItem, QItemSection, QIcon, QAvatar, QCheckbox, QSwitch } from "$lib";
   import { QListDocs, QItemDocs, QItemSectionDocs } from "$components/list/docs";
   import QDocs from "$lib/components/private/QDocs.svelte";
@@ -208,7 +209,7 @@
         <QList bordered class="q-my-md">
           <QItem>
             <QItemSection type="avatar">
-              <QAvatar src="/cocktail.jpg" />
+              <QAvatar src="{assets}/cocktail.jpg" />
             </QItemSection>
             <QItemSection>
               <span>John Smith</span>
@@ -224,7 +225,7 @@
           </QItem>
           <QItem>
             <QItemSection type="thumbnail">
-              <img src="/cocktail.jpg" alt="Thumbnail" />
+              <img src="{assets}/cocktail.jpg" alt="Thumbnail" />
             </QItemSection>
             <QItemSection>
               <span>Image Thumbnail</span>
@@ -376,7 +377,7 @@
         {/snippet}
 
         <QList bordered class="q-my-md">
-          <QItem to="/components/button">
+          <QItem to="{base}/components/button">
             <QItemSection type="icon">
               <QIcon name="touch_app" />
             </QItemSection>
@@ -385,7 +386,7 @@
               <QIcon name="chevron_right" />
             </QItemSection>
           </QItem>
-          <QItem to="/components/checkbox">
+          <QItem to="{base}/components/checkbox">
             <QItemSection type="icon">
               <QIcon name="check_box" />
             </QItemSection>
@@ -417,7 +418,7 @@
           <QItem>
             <QItemSection type="avatar">
               <QAvatar>
-                <img src="/cocktail.jpg" alt="Avatar" />
+                <img src="{assets}/cocktail.jpg" alt="Avatar" />
               </QAvatar>
             </QItemSection>
             <QItemSection>
@@ -503,7 +504,7 @@
 
           <QItem>
             <QItemSection type="thumbnail">
-              <img src="/cocktail.jpg" alt="Cocktail" />
+              <img src="{assets}/cocktail.jpg" alt="Cocktail" />
             </QItemSection>
             <QItemSection>
               <div class="body-large">type="thumbnail"</div>
@@ -517,7 +518,7 @@
             <QItemSection type="video">
               <video autoplay loop playsinline>
                 <track kind="captions" />
-                <source src="/sea.mp4" type="video/mp4" />
+                <source src="{assets}/sea.mp4" type="video/mp4" />
               </video>
             </QItemSection>
             <QItemSection>

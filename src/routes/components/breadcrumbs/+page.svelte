@@ -3,14 +3,15 @@
   import { QBreadcrumbsDocs } from "$components/breadcrumbs/docs";
   import QDocs from "$lib/components/private/QDocs.svelte";
   import QDocsSection from "$lib/components/private/QDocsSection.svelte";
+  import { base } from "$app/paths";
   import snippets from "./docs.snippets";
 </script>
 
 <QDocs {snippets} componentDocs={QBreadcrumbsDocs}>
   {#snippet display()}
     <QBreadcrumbs>
-      <QBreadcrumbsEl to="/" label="Home" />
-      <QBreadcrumbsEl to="/components" label="Components" />
+      <QBreadcrumbsEl to="{base}/" label="Home" />
+      <QBreadcrumbsEl to="{base}/components" label="Components" />
       <QBreadcrumbsEl label="Breadcrumbs" />
     </QBreadcrumbs>
   {/snippet}
@@ -27,8 +28,8 @@
         {/snippet}
         <div class="q-mb-md">
           <QBreadcrumbs>
-            <QBreadcrumbsEl to="/" label="Home" />
-            <QBreadcrumbsEl to="/components" label="Components" />
+            <QBreadcrumbsEl to="{base}/" label="Home" />
+            <QBreadcrumbsEl to="{base}/components" label="Components" />
             <QBreadcrumbsEl label="Breadcrumbs" />
           </QBreadcrumbs>
         </div>
@@ -44,15 +45,15 @@
         {/snippet}
         <div class="q-mb-md">
           <QBreadcrumbs separator=">">
-            <QBreadcrumbsEl to="/" label="Home" />
-            <QBreadcrumbsEl to="/components" label="Components" />
+            <QBreadcrumbsEl to="{base}/" label="Home" />
+            <QBreadcrumbsEl to="{base}/components" label="Components" />
             <QBreadcrumbsEl label="Breadcrumbs" />
           </QBreadcrumbs>
         </div>
         <div class="q-mb-md">
           <QBreadcrumbs separator="icon:chevron_right">
-            <QBreadcrumbsEl to="/" label="Home" />
-            <QBreadcrumbsEl to="/components" label="Components" />
+            <QBreadcrumbsEl to="{base}/" label="Home" />
+            <QBreadcrumbsEl to="{base}/components" label="Components" />
             <QBreadcrumbsEl label="Breadcrumbs" />
           </QBreadcrumbs>
         </div>
@@ -71,8 +72,8 @@
               <span class="text-red">•••</span>
             {/snippet}
 
-            <QBreadcrumbsEl to="/" label="Home" />
-            <QBreadcrumbsEl to="/components" label="Components" />
+            <QBreadcrumbsEl to="{base}/" label="Home" />
+            <QBreadcrumbsEl to="{base}/components" label="Components" />
             <QBreadcrumbsEl label="Breadcrumbs" />
           </QBreadcrumbs>
         </div>
@@ -88,8 +89,8 @@
         {/snippet}
         <div class="q-mb-md">
           <QBreadcrumbs activeColor="secondary" separatorColor="tertiary">
-            <QBreadcrumbsEl to="/" label="Home" />
-            <QBreadcrumbsEl to="/components" label="Components" />
+            <QBreadcrumbsEl to="{base}/" label="Home" />
+            <QBreadcrumbsEl to="{base}/components" label="Components" />
             <QBreadcrumbsEl label="Breadcrumbs" />
           </QBreadcrumbs>
         </div>
@@ -104,8 +105,8 @@
         {/snippet}
         <div class="q-mb-md">
           <QBreadcrumbs>
-            <QBreadcrumbsEl to="/" label="Home" icon="home" />
-            <QBreadcrumbsEl to="/components" label="Components" icon="widgets" />
+            <QBreadcrumbsEl to="{base}/" label="Home" icon="home" />
+            <QBreadcrumbsEl to="{base}/components" label="Components" icon="widgets" />
             <QBreadcrumbsEl label="Breadcrumbs" icon="list_alt" />
           </QBreadcrumbs>
         </div>
@@ -121,12 +122,12 @@
         {/snippet}
         <div class="q-mb-md">
           <QBreadcrumbs>
-            <QBreadcrumbsEl to="/" label="Home">
+            <QBreadcrumbsEl to="{base}/" label="Home">
               {#snippet icon()}
                 <span>🏠</span>
               {/snippet}
             </QBreadcrumbsEl>
-            <QBreadcrumbsEl to="/components" label="Components" />
+            <QBreadcrumbsEl to="{base}/components" label="Components" />
             <QBreadcrumbsEl label="Breadcrumbs" />
           </QBreadcrumbs>
         </div>
@@ -141,19 +142,19 @@
         {/snippet}
         <div class="q-mb-md">
           <QBreadcrumbs gutter="sm">
-            <QBreadcrumbsEl to="/" label="Small Gutter (default)" />
+            <QBreadcrumbsEl to="{base}/" label="Small Gutter (default)" />
             <QBreadcrumbsEl label="Breadcrumbs" />
           </QBreadcrumbs>
         </div>
         <div class="q-mb-md">
           <QBreadcrumbs gutter="md">
-            <QBreadcrumbsEl to="/" label="Medium Gutter" />
+            <QBreadcrumbsEl to="{base}/" label="Medium Gutter" />
             <QBreadcrumbsEl label="Breadcrumbs" />
           </QBreadcrumbs>
         </div>
         <div class="q-mb-md">
           <QBreadcrumbs gutter="lg">
-            <QBreadcrumbsEl to="/" label="Large Gutter" />
+            <QBreadcrumbsEl to="{base}/" label="Large Gutter" />
             <QBreadcrumbsEl label="Breadcrumbs" />
           </QBreadcrumbs>
         </div>
@@ -168,10 +169,10 @@
         {/snippet}
         <div class="q-mb-md">
           <QBreadcrumbs>
-            <QBreadcrumbsEl to="/">
+            <QBreadcrumbsEl to="{base}/">
               <span class="font-bold">Home</span>
             </QBreadcrumbsEl>
-            <QBreadcrumbsEl to="/components">
+            <QBreadcrumbsEl to="{base}/components">
               <span class="text-green">Components</span>
             </QBreadcrumbsEl>
             <QBreadcrumbsEl>
@@ -192,7 +193,7 @@
         {/snippet}
         <div class="q-mb-md">
           <QBreadcrumbs>
-            <QBreadcrumbsEl to="/" label="Router Link" />
+            <QBreadcrumbsEl to="{base}/" label="Router Link" />
             <QBreadcrumbsEl href="#navigation" label="Anchor Link" />
             <QBreadcrumbsEl label="Non-navigational" />
           </QBreadcrumbs>
@@ -208,7 +209,7 @@
         {/snippet}
         <div class="q-mb-md">
           <QBreadcrumbs>
-            <QBreadcrumbsEl to="/" label="Link Element (a)" />
+            <QBreadcrumbsEl to="{base}/" label="Link Element (a)" />
             <QBreadcrumbsEl tag="span" label="Span Element" />
             <QBreadcrumbsEl label="Div Element (default)" />
           </QBreadcrumbs>

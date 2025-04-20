@@ -3,6 +3,7 @@
   import { QCard, QCardSection } from "$lib";
   import type { QComponentDocs } from "$lib/utils";
   import Quaff from "$lib/classes/Quaff.svelte";
+  import { assets } from "$app/paths";
   import QApi from "./QApi.svelte";
 
   let {
@@ -31,6 +32,12 @@
     setContext("QDocsSnippets", () => snippets);
   }
 
+  let image = $state<string>();
+
+  $effect(() => {
+    image = `${assets}/beer-splash-${isDark ? "dark" : "light"}.jpg`;
+  });
+
   let principalDocument = Array.isArray(componentDocs) ? componentDocs[0] : componentDocs;
 </script>
 
@@ -53,7 +60,7 @@
         </div>
         <img
           class="q-docs__image"
-          src="/beer-splash-{isDark ? 'dark' : 'light'}.jpg"
+          src={image}
           alt="Close-up of the content of a glass of beer"
           style={isDark ? "filter:brightness(0.3)" : ""}
         />

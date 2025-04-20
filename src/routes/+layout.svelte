@@ -7,6 +7,7 @@
   import "../lib/css/fonts.scss";
 
   import { fade } from "svelte/transition";
+  import { onMount } from "svelte";
   import Quaff from "$lib/classes/Quaff.svelte";
   import {
     QLayout,
@@ -23,147 +24,154 @@
   } from "$lib";
   import QTheme from "$lib/classes/QTheme.svelte";
   import { isRouteActive } from "$lib/utils/router";
+  import { base } from "$app/paths";
   import type { MaterialSymbol } from "material-symbols";
 
-  const { data, children } = $props();
+  const { children } = $props();
 
   let chosenColor = $state(0);
+
+  function to(uri: string) {
+    return `${base}${uri}`;
+  }
 
   const pages: { name: string; icon: MaterialSymbol; to: string }[] = [
     {
       name: "Home",
       icon: "home",
-      to: "/",
+      to: to("/"),
     },
     {
       name: "Components",
       icon: "grid_view",
-      to: "/components",
+      to: to("/components"),
     },
     {
       name: "Grid",
       icon: "grid_on",
-      to: "/grid",
+      to: to("/grid"),
     },
     {
       name: "Colors",
       icon: "palette",
-      to: "/colors",
+      to: to("/colors"),
     },
     {
       name: "Quaff utils",
       icon: "construction",
-      to: "/utils",
+      to: to("/utils"),
     },
   ];
   const components = [
     {
       name: "Avatar",
-      to: "/components/avatar",
+      to: to("/components/avatar"),
     },
     {
       name: "Breadcrumbs",
-      to: "/components/breadcrumbs",
+      to: to("/components/breadcrumbs"),
     },
     {
       name: "Button",
-      to: "/components/button",
+      to: to("/components/button"),
     },
     {
       name: "Card",
-      to: "/components/card",
+      to: to("/components/card"),
     },
     {
       name: "Checkbox",
-      to: "/components/checkbox",
+      to: to("/components/checkbox"),
     },
     {
       name: "Chip",
-      to: "/components/chip",
+      to: to("/components/chip"),
     },
     {
       name: "Dialog",
-      to: "/components/dialog",
+      to: to("/components/dialog"),
     },
     {
       name: "Drawer",
-      to: "/components/drawer",
+      to: to("/components/drawer"),
     },
     {
       name: "Footer",
-      to: "/components/footer",
+      to: to("/components/footer"),
     },
     {
       name: "Icon",
-      to: "/components/icon",
+      to: to("/components/icon"),
     },
     {
       name: "Input",
-      to: "/components/input",
+      to: to("/components/input"),
     },
     {
       name: "Layout",
-      to: "/components/layout",
+      to: to("/components/layout"),
     },
     {
       name: "List",
-      to: "/components/list",
+      to: to("/components/list"),
     },
     {
       name: "Progress",
-      to: "/components/progress",
+      to: to("/components/progress"),
     },
     {
       name: "Radio",
-      to: "/components/radio",
+      to: to("/components/radio"),
     },
     {
       name: "Railbar",
-      to: "/components/railbar",
+      to: to("/components/railbar"),
     },
     {
       name: "Select",
-      to: "/components/select",
+      to: to("/components/select"),
     },
     {
       name: "Separator",
-      to: "/components/separator",
+      to: to("/components/separator"),
     },
     {
       name: "Switch",
-      to: "/components/switch",
+      to: to("/components/switch"),
     },
     {
       name: "Table",
-      to: "/components/table",
+      to: to("/components/table"),
     },
     {
       name: "Tabs",
-      to: "/components/tabs",
+      to: to("/components/tabs"),
     },
     {
       name: "Toolbar",
-      to: "/components/toolbar",
+      to: to("/components/toolbar"),
     },
     {
       name: "Tooltip",
-      to: "/components/tooltip",
+      to: to("/components/tooltip"),
     },
   ];
+
   const quaffUtils = [
     {
       name: "The Quaff class",
-      to: "/utils/quaff",
+      to: to("/utils/quaff"),
     },
     {
       name: "QTheme",
-      to: "/utils/q-theme",
+      to: to("/utils/q-theme"),
     },
     {
       name: "QScrollObserver",
-      to: "/utils/q-scroll-observer",
+      to: to("/utils/q-scroll-observer"),
     },
   ];
+
   const colors = [
     "#0039b4",
     ...[
@@ -184,7 +192,11 @@
   let drawerRightEl = $state<ReturnType<typeof QDrawer>>();
 
   const selectedRailbarItem = $derived(
-    isRouteActive("/components") ? "components" : isRouteActive("/utils") ? "utils" : null
+    isRouteActive(`${base}/components`)
+      ? `${base}/components`
+      : isRouteActive(`${base}/utils`)
+        ? `${base}/utils`
+        : null
   );
 
   $effect(() => {
@@ -196,16 +208,16 @@
   });
 
   const drawerContent = $derived(
-    selectedRailbarItem === "components"
+    selectedRailbarItem === `${base}/components`
       ? components
-      : selectedRailbarItem === "utils"
+      : selectedRailbarItem === `${base}/utils`
         ? quaffUtils
         : []
   );
 
-  if (data.isDark) {
-    Quaff.darkMode.set(true);
-  }
+  onMount(() => {
+    Quaff.darkMode.set(window.matchMedia("(prefers-color-scheme: dark)").matches);
+  });
 </script>
 
 <!-- eslint-disable-next-line svelte/valid-compile -->
