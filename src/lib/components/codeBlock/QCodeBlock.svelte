@@ -1,14 +1,16 @@
 <script lang="ts">
   import { copy } from "$lib/utils";
-  import { QBtn } from "$lib";
+  import { QBtn, Quaff } from "$lib";
   import type { QCodeBlockProps } from "./props";
 
   let {
     language,
-    theme = "github-dark-default",
+    lightTheme = "github-light-default",
+    darkTheme = "github-dark-default",
     code = "/* No code found */",
-    title = undefined,
-    copiable = undefined,
+    title,
+    copiable,
+    ...props
   }: QCodeBlockProps = $props();
 
   let btnContent = $state("Copy");
@@ -17,6 +19,9 @@
   let html = $state("");
 
   $effect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+    Quaff.darkMode.isActive;
+
     // This is required to have the html updated when the code changes
     getHtml(code);
   });
@@ -56,7 +61,7 @@
 
       html = await codeToHtml(code, {
         lang: language,
-        theme,
+        theme: Quaff.darkMode.isActive ? darkTheme : lightTheme,
       });
     } catch {
       console.error("Error while loading shiki, make sure it is installed");
@@ -65,7 +70,7 @@
   }
 </script>
 
-<div class="q-code-block" data-quaff>
+<div {...props} class="q-code-block" data-quaff>
   {#if copiable}
     <div class="flex justify-between {title ? 'items-center' : 'justify-end'} q-pb-sm">
       {#if title}
