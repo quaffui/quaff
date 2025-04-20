@@ -1,12 +1,12 @@
 <script lang="ts">
-  import { untrack } from "svelte";
   import { copy } from "$lib/utils";
   import { QBtn, Quaff } from "$lib";
   import type { QCodeBlockProps } from "./props";
 
   let {
     language,
-    theme = "github-dark-default",
+    lightTheme = "github-light-default",
+    darkTheme = "github-dark-default",
     code = "/* No code found */",
     title,
     copiable,
@@ -19,18 +19,11 @@
   let html = $state("");
 
   $effect(() => {
-    // This is required to have the html updated when the code changes
-    getHtml(code);
-  });
-
-  $effect(() => {
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     Quaff.darkMode.isActive;
 
-    untrack(() => {
-      theme = Quaff.darkMode.isActive ? "github-dark-default" : "github-light-default";
-      getHtml(code);
-    });
+    // This is required to have the html updated when the code changes
+    getHtml(code);
   });
 
   function setBtn(type: "base" | "error" | "success") {
@@ -68,7 +61,7 @@
 
       html = await codeToHtml(code, {
         lang: language,
-        theme,
+        theme: Quaff.darkMode.isActive ? darkTheme : lightTheme,
       });
     } catch {
       console.error("Error while loading shiki, make sure it is installed");
