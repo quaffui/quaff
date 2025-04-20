@@ -6,7 +6,7 @@ Quaff is a component library for Svelte that follows the [Material Design 3](htt
 
 ## Overview
 
-Quaff is project that draws some inspiration from [Quasar Framework](https://quasar.dev/), adapted specifically for Svelte 5. It implements Material Design 3 (Material You) principles while providing a developer-friendly API.
+Quaff is project that draws some inspiration from [Quasar Framework](https://quasar.dev/), [Material Web](https://material-web.dev/) and [BeerCSS](https://www.beercss.com/) adapted specifically for Svelte 5. It implements Material Design 3 (Material You) principles while providing a developer-friendly API.
 This is an independent project and is not endorsed by or affiliated with Material Design 3 or Quasar Framework.
 
 Key features:
@@ -68,6 +68,8 @@ You can preview the production build with `bun run preview`.
 This project draws inspiration from:
 
 - [Quasar Framework](https://quasar.dev/): Copyright (c) 2015-present Razvan Stoenescu. Licensed under the [MIT License](https://github.com/quasarframework/quasar/blob/dev/LICENSE)
+- [Material Web Components](https://github.com/material-components/material-web): Copyright (c) Google LLC. Licensed under the [Apache License 2.0 License](https://github.com/material-components/material-web/blob/main/LICENSE)
+- [BeerCSS](https://www.beercss.com/): Copyright (c) 2021 Beer css! Licensed under the [MIT License](https://github.com/beercss/beercss/blob/main/LICENSE)
 
 ## License
 
