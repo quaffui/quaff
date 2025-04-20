@@ -43,6 +43,7 @@ export default class QScrollObserver {
   protected clearTimer: (() => void) | null = null;
   protected target: Exclude<Target, string> | null = null;
   protected debounce: number = 0;
+  protected handler: (e: Event) => void;
 
   direction = $state<Direction>("down");
   changedDirection = $state(false);
@@ -56,6 +57,7 @@ export default class QScrollObserver {
   ) {
     this.horizontal = horizontal ?? false;
     this.debounce = debounce ?? 0;
+    this.handler = this.baseHandler.bind(this);
 
     this.scrollType = horizontal
       ? { window: "scrollX", document: "scrollLeft" }
@@ -76,7 +78,7 @@ export default class QScrollObserver {
 
       this.target = parsedTarget;
 
-      parsedTarget.addEventListener("scroll", this.handler.bind(this), { capture: true });
+      parsedTarget.addEventListener("scroll", this.handler, { capture: true });
 
       return this.destroy.bind(this);
     });
@@ -91,7 +93,7 @@ export default class QScrollObserver {
     );
   }
 
-  protected handler(e: Event) {
+  protected baseHandler(e: Event) {
     const eventTarget = e.target as HTMLElement | null;
 
     if (!eventTarget || !this.target || eventTarget !== this.target) {
@@ -143,7 +145,7 @@ export default class QScrollObserver {
     this.clearTimer?.();
     this.clearTimer = null;
 
-    this.target?.removeEventListener("scroll", this.handler.bind(this));
+    this.target?.removeEventListener("scroll", this.handler);
 
     this.target = null;
     this.direction = "down";
