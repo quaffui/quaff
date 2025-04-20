@@ -1,4 +1,4 @@
-# QuaffUI
+# Quaff
 
 Quaff is a component library for Svelte that follows the [Material Design 3](https://m3.material.io/) guidelines. It provides a comprehensive set of UI components designed to create beautiful, consistent, and accessible web applications.
 
