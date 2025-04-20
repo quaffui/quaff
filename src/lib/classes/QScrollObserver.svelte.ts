@@ -78,11 +78,7 @@ export default class QScrollObserver {
 
       parsedTarget.addEventListener("scroll", this.handler.bind(this), { capture: true });
 
-      return () => {
-        this.clearTimer?.();
-
-        parsedTarget.removeEventListener("scroll", this.handler.bind(this), true);
-      };
+      return this.destroy.bind(this);
     });
   }
 
