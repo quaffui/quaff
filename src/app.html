@@ -7,6 +7,14 @@
     %sveltekit.head%
   </head>
   <body data-sveltekit-preload-data="hover" class="">
+    <script>
+      // Set dark mode based on system preference
+      const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+
+      if (prefersDarkScheme.matches) {
+        document.body.classList.add("body--dark");
+      }
+    </script>
     %sveltekit.body%
   </body>
 </html>

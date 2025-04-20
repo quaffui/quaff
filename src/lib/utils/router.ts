@@ -12,6 +12,7 @@ export function isRouteActive(route?: string) {
   if (!route) {
     return false;
   }
+
   return page.url.pathname === route || page.url.pathname.startsWith(`${route}/`);
 }
 

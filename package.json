@@ -6,6 +6,7 @@
     "open": "vite dev --open",
     "build": "vite build && bun run package && bun run build:css",
     "build:css": "vite build --config vite.config.scss.ts",
+    "build:docs": "bun run build:css && svelte-kit sync && vite build",
     "preview": "vite preview",
     "package": "svelte-kit sync && svelte-package && publint",
     "prepublishOnly": "bun run build",
@@ -36,7 +37,7 @@
   },
   "devDependencies": {
     "@fontsource/roboto": "^5.2.5",
-    "@sveltejs/adapter-auto": "^6.0.0",
+    "@sveltejs/adapter-static": "^3.0.8",
     "@sveltejs/kit": "^2.20.5",
     "@sveltejs/package": "^2.3.10",
     "@sveltejs/vite-plugin-svelte": "^5.0.3",
