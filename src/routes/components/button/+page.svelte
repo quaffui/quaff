@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { assets } from "$app/paths";
   import QBtn from "$lib/components/button/QBtn.svelte";
   import { QBtnDocs } from "$lib/components/button/docs";
   import QDocs from "$lib/components/private/QDocs.svelte";
@@ -70,7 +71,7 @@
         <QBtn class="q-ma-sm" label="Tonal" variant="tonal" icon="star" />
         <QBtn class="q-ma-sm" label="Outlined" variant="outlined" icon="star" />
         <QBtn class="q-ma-sm" label="Flat" variant="flat" icon="star" />
-        <QBtn class="q-ma-sm" label="With image" icon="img:/cocktail.jpg" />
+        <QBtn class="q-ma-sm" label="With image" icon="img:{assets}/cocktail.jpg" />
       </QDocsSection>
 
       <QDocsSection title="Button Variants Using Boolean Props">

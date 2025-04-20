@@ -3,12 +3,13 @@
   import { QAvatarDocs } from "$components/avatar/docs";
   import QDocs from "$lib/components/private/QDocs.svelte";
   import QDocsSection from "$lib/components/private/QDocsSection.svelte";
+  import { assets } from "$app/paths";
   import snippets from "./docs.snippets";
 </script>
 
 <QDocs {snippets} componentDocs={QAvatarDocs}>
   {#snippet display()}
-    <QAvatar src="/cocktail.jpg" size="5rem" />
+    <QAvatar src="{assets}/cocktail.jpg" size="5rem" />
   {/snippet}
 
   {#snippet usage()}
@@ -34,11 +35,11 @@
         {/snippet}
 
         <div class="flex q-gap-lg items-center">
-          <QAvatar src="/cocktail.jpg" size="xs" />
-          <QAvatar src="/cocktail.jpg" size="sm" />
-          <QAvatar src="/cocktail.jpg" />
-          <QAvatar src="/cocktail.jpg" size="lg" />
-          <QAvatar src="/cocktail.jpg" size="xl" />
+          <QAvatar src="{assets}/cocktail.jpg" size="xs" />
+          <QAvatar src="{assets}/cocktail.jpg" size="sm" />
+          <QAvatar src="{assets}/cocktail.jpg" />
+          <QAvatar src="{assets}/cocktail.jpg" size="lg" />
+          <QAvatar src="{assets}/cocktail.jpg" size="xl" />
         </div>
       </QDocsSection>
 
@@ -50,7 +51,7 @@
         {/snippet}
 
         <div class="flex q-gap-lg items-center">
-          <QAvatar src="/cocktail.jpg" size="5rem" />
+          <QAvatar src="{assets}/cocktail.jpg" size="5rem" />
         </div>
       </QDocsSection>
 
@@ -62,10 +63,10 @@
         {/snippet}
 
         <div class="flex q-gap-lg items-center">
-          <QAvatar src="/cocktail.jpg" />
-          <QAvatar src="/cocktail.jpg" shape="square" />
-          <QAvatar src="/cocktail.jpg" shape="top-round" />
-          <QAvatar src="/cocktail.jpg" shape="bottom-left-round" />
+          <QAvatar src="{assets}/cocktail.jpg" />
+          <QAvatar src="{assets}/cocktail.jpg" shape="square" />
+          <QAvatar src="{assets}/cocktail.jpg" shape="top-round" />
+          <QAvatar src="{assets}/cocktail.jpg" shape="bottom-left-round" />
         </div>
       </QDocsSection>
 
@@ -76,10 +77,10 @@
         {/snippet}
 
         <div class="flex q-gap-lg items-center">
-          <QAvatar src="/sea.mp4" size="lg" video />
-          <QAvatar src="/sea.mp4" shape="square" size="lg" video />
-          <QAvatar src="/sea.mp4" shape="left-round" size="lg" video />
-          <QAvatar src="/sea.mp4" shape="top-right-round" size="lg" video />
+          <QAvatar src="{assets}/sea.mp4" size="lg" video />
+          <QAvatar src="{assets}/sea.mp4" shape="square" size="lg" video />
+          <QAvatar src="{assets}/sea.mp4" shape="left-round" size="lg" video />
+          <QAvatar src="{assets}/sea.mp4" shape="top-right-round" size="lg" video />
         </div>
       </QDocsSection>
 
@@ -91,8 +92,8 @@
         {/snippet}
 
         <div class="flex q-gap-lg items-center">
-          <QAvatar src="/cocktail.jpg" alt="Cocktail avatar" />
-          <QAvatar src="/sea.mp4" size="lg" video aria-label="Sea">
+          <QAvatar src="{assets}/cocktail.jpg" alt="Cocktail avatar" />
+          <QAvatar src="{assets}/sea.mp4" size="lg" video aria-label="Sea">
             {#snippet videoAccessibility()}
               <p>Your browser does not support the video tag.</p>
             {/snippet}

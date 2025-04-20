@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { assets } from "$app/paths";
   import { QChip } from "$lib";
   import { QChipDocs } from "$components/chip/docs";
   import QDocs from "$lib/components/private/QDocs.svelte";
@@ -11,7 +12,7 @@
 
 <QDocs {snippets} componentDocs={QChipDocs}>
   {#snippet display()}
-    <QChip elevated icon="img:/cocktail.jpg" label="Cocktail" />
+    <QChip elevated icon="img:{assets}/cocktail.jpg" label="Cocktail" />
   {/snippet}
 
   {#snippet usage()}
@@ -117,12 +118,12 @@
         {/snippet}
 
         <div class="flex flex-wrap q-gap-lg items-center q-ma-sm">
-          <QChip icon="img:/cocktail.jpg" label="Cocktail" />
-          <QChip elevated icon="img:/cocktail.jpg" label="Elevated with image" />
-          <QChip kind="filter" icon="img:/cocktail.jpg" label="Filter with image" />
+          <QChip icon="img:{assets}/cocktail.jpg" label="Cocktail" />
+          <QChip elevated icon="img:{assets}/cocktail.jpg" label="Elevated with image" />
+          <QChip kind="filter" icon="img:{assets}/cocktail.jpg" label="Filter with image" />
           <QChip
             kind="input"
-            icon="img:/cocktail.jpg"
+            icon="img:{assets}/cocktail.jpg"
             label="Input with image"
             trailingIcon="close"
           />
