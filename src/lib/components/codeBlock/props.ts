@@ -8,9 +8,14 @@ export interface QCodeBlockProps extends HTMLAttributes<HTMLDivElement> {
   language: BundledLanguage | SpecialLanguage;
 
   /**
-   * Theme to use for highlighting.
+   * Theme to use for highlighting for light mode.
    */
-  theme?: BundledTheme;
+  lightTheme?: BundledTheme;
+
+  /**
+   * Theme to use for highlighting for dark mode.
+   */
+  darkTheme?: BundledTheme;
 
   /**
    * Code to highlight.

@@ -1,6 +1,6 @@
 <script lang="ts">
   import { createRawSnippet, mount, tick } from "svelte";
-  import { QCard, QIcon, QTabs, QTab, QCardSection, QList, QItem, QItemSection } from "$lib";
+  import { QCard, QIcon, QTabs, QTab, QCardSection, QList, QItem, QItemSection, Quaff } from "$lib";
   import { capitalize, escape } from "$lib/utils";
   import Types from "$lib/utils/types.json";
   import type { QComponentDocs, QComponentEvent, QComponentMethod } from "$lib/utils";
@@ -149,7 +149,7 @@
 
       const html = await codeToHtml(type, {
         lang: "typescript",
-        theme: "github-dark-default",
+        theme: Quaff.darkMode.isActive ? "github-dark-default" : "github-light-default",
         transformers: [
           {
             pre(node) {

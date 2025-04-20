@@ -53,6 +53,20 @@ class QTheme {
 
   updateThemeColor(color: keyof ThemeColors, newVal: HexValue) {
     this.themeColors[color] = newVal;
+    this.apply();
+  }
+
+  updateThemeColors(colors: Partial<ThemeColors>) {
+    let colorName: keyof ThemeColors;
+    for (colorName in colors) {
+      const color = colors[colorName];
+
+      if (color) {
+        this.themeColors[colorName] = color;
+      }
+    }
+
+    this.apply();
   }
 
   setTheme(from: string) {

@@ -55,16 +55,6 @@
       icon: "construction",
       to: "/utils",
     },
-    {
-      name: "Dev tests",
-      icon: "code",
-      to: "/dev",
-    },
-    {
-      name: "Layout tests",
-      icon: "dashboard_customize",
-      to: "/layout",
-    },
   ];
   const components = [
     {
@@ -162,8 +152,16 @@
   ];
   const quaffUtils = [
     {
-      name: "The Quaff object",
+      name: "The Quaff class",
       to: "/utils/quaff",
+    },
+    {
+      name: "QTheme",
+      to: "/utils/q-theme",
+    },
+    {
+      name: "QScrollObserver",
+      to: "/utils/q-scroll-observer",
     },
   ];
   const colors = [
