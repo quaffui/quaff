@@ -7,12 +7,22 @@
     %sveltekit.head%
   </head>
   <body data-sveltekit-preload-data="hover" class="">
-    <script>
+    <script type="module">
       // Set dark mode based on system preference
-      const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+      const cachedScheme = localStorage.getItem("current_mode");
+      console.log({ cachedScheme });
 
-      if (prefersDarkScheme.matches) {
-        document.body.classList.add("body--dark");
+      if (cachedScheme) {
+        document.body.classList.add(`body--${cachedScheme}`);
+      } else {
+        const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+
+        if (prefersDarkScheme.matches) {
+          document.body.classList.add("body--dark");
+          localStorage.setItem("current_mode", "dark");
+        } else {
+          localStorage.setItem("current_mode", "light");
+        }
       }
     </script>
     %sveltekit.body%
