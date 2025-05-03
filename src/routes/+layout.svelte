@@ -29,6 +29,8 @@
 
   const { children } = $props();
 
+  Quaff.init();
+
   let chosenColor = $state(0);
 
   function to(uri: string) {
@@ -214,10 +216,6 @@
         ? quaffUtils
         : []
   );
-
-  onMount(() => {
-    Quaff.darkMode.set(window.matchMedia("(prefers-color-scheme: dark)").matches);
-  });
 </script>
 
 <!-- eslint-disable-next-line svelte/valid-compile -->
