@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { getContext, onDestroy, untrack } from "svelte";
+  import { getContext, onDestroy, onMount, untrack } from "svelte";
   import { navigating } from "$app/state";
   import { useSize } from "$lib/composables";
   import { QContext } from "$lib/classes/QContext.svelte";
@@ -54,6 +54,14 @@
     e?.stopPropagation();
   };
 
+  onMount(() => {
+    if (drawerContext) {
+      setTimeout(() => {
+        drawerEl.style.transition = "top 0.3s, bottom 0.3s, transform 0.3s";
+      }, 100);
+    }
+  });
+
   $effect(() => {
     if (navigating.type && hideOnRouteChange) {
       hide();
@@ -74,6 +82,7 @@
     drawerContext?.updateEntries({
       width: 0,
       takesSpace: false,
+      ready: false,
     });
   });
 
@@ -85,6 +94,7 @@
       drawerContext?.updateEntries({
         takesSpace: !!value && !overlay,
         width,
+        ready: true,
       })
     );
   });

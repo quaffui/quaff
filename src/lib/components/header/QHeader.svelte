@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { getContext, onDestroy, untrack } from "svelte";
+  import { getContext, onDestroy, onMount, untrack } from "svelte";
   import QToolbar from "$components/toolbar/QToolbar.svelte";
   import { QContext } from "$lib/classes/QContext.svelte";
   import QScrollObserver from "$lib/classes/QScrollObserver.svelte";
@@ -19,6 +19,8 @@
     ...props
   }: QHeaderProps = $props();
 
+  let headerEl: HTMLElement;
+
   const headerContext = QContext.get<AppbarContext>("QHeader");
   const layoutView = getContext<{ value: NonNullable<QLayoutProps["view"]> }>("view");
   if (!headerContext || !layoutView) {
@@ -36,11 +38,19 @@
   const rightOffset = () => layoutView.value.charAt(2) === "r";
 
   $effect.pre(() => {
-    untrack(() => headerContext).updateEntries({ height, collapsed });
+    untrack(() => headerContext).updateEntries({ height, collapsed, ready: true });
+  });
+
+  onMount(() => {
+    if (headerContext) {
+      setTimeout(() => {
+        headerEl.style.transition = "all 0.3s";
+      }, 100);
+    }
   });
 
   onDestroy(() => {
-    untrack(() => headerContext).updateEntries({ height: 0, collapsed: false });
+    untrack(() => headerContext).updateEntries({ height: 0, collapsed: false, ready: false });
   });
 
   Q.classes("q-header", {
@@ -56,7 +66,13 @@
   });
 </script>
 
-<header {...props} class="q-header" style:--header-height="{height}px" data-quaff>
+<header
+  bind:this={headerEl}
+  {...props}
+  class="q-header"
+  style:--header-height="{height}px"
+  data-quaff
+>
   <QToolbar {inset}>
     {@render children?.()}
   </QToolbar>

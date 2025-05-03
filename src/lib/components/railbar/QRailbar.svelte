@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { getContext, onDestroy, untrack } from "svelte";
+  import { getContext, onDestroy, onMount, untrack } from "svelte";
   import { QContext } from "$lib/classes/QContext.svelte";
   import type { QLayoutProps } from "$components/layout/props";
   import type { DrawerContext } from "../layout/QLayout.svelte";
@@ -10,12 +10,21 @@
   const railbarCtx = QContext.get<DrawerContext>(`QRailbar-${side}`);
   const layoutView = getContext<{ value: NonNullable<QLayoutProps["view"]> }>("view");
 
-  let railbarEl = $state<HTMLElement>();
+  let railbarEl: HTMLElement;
+
+  onMount(() => {
+    if (railbarCtx) {
+      setTimeout(() => {
+        railbarEl.style.transition = "top 0.3s, bottom 0.3s, transform 0.3s";
+      }, 100);
+    }
+  });
 
   onDestroy(() => {
     untrack(() => railbarCtx)?.updateEntries({
       width: 0,
       takesSpace: false,
+      ready: false,
     });
   });
 
@@ -23,6 +32,7 @@
     untrack(() => railbarCtx)?.updateEntries({
       width,
       takesSpace: railbarEl?.style.display !== "none" || false,
+      ready: true,
     });
   });
 

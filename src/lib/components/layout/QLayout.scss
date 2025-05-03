@@ -14,14 +14,15 @@
   overflow: hidden;
 
   border-radius: inherit;
+  opacity: 0;
+
+  &.q-layout--ready {
+    opacity: 1;
+  }
 }
 
 .q-layout > .q-railbar {
   position: absolute;
-
-  transition:
-    top variables.$speed3,
-    bottom variables.$speed3;
 
   &.q-railbar--offset-top {
     // Put the railbar under the header to avoid hiding its box-shadow
@@ -77,11 +78,6 @@
 
 .q-layout > .q-drawer {
   border-radius: 0;
-
-  transition:
-    top variables.$speed3,
-    bottom variables.$speed3,
-    transform variables.$speed3;
 
   &.q-drawer--offset-top {
     // Put the railbar under the header to avoid hiding its box-shadow
@@ -175,5 +171,4 @@
 .q-layout > .q-layout__content {
   height: calc(100% - var(--offset-top) - var(--offset-bottom));
   overflow: auto;
-  transition: margin variables.$speed3;
 }

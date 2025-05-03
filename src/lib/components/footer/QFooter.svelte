@@ -9,6 +9,8 @@
 
   const footerIdentifier = Date.now();
 
+  let footerEl = $state<HTMLElement>();
+
   let {
     value = $bindable(true),
     bordered = false,
@@ -41,7 +43,7 @@
   const rightOffset = () => layoutView.value.charAt(10) === "r";
 
   $effect.pre(() => {
-    untrack(() => footerContext).updateEntries({ height, collapsed });
+    untrack(() => footerContext).updateEntries({ height, collapsed, ready: true });
   });
 
   onMount(() => {
@@ -49,10 +51,16 @@
     const content = document.querySelector(`.q-footer--${footerIdentifier} ~ .q-layout__content`);
 
     contentScrollHeight = content ? content.scrollHeight - content.clientHeight : 0;
+
+    setTimeout(() => {
+      if (footerEl) {
+        footerEl.style.transition = "all 0.3s";
+      }
+    }, 100);
   });
 
   onDestroy(() => {
-    untrack(() => footerContext).updateEntries({ height: 0, collapsed: false });
+    untrack(() => footerContext).updateEntries({ height: 0, collapsed: false, ready: false });
   });
 
   Q.classes("q-footer", {
@@ -68,7 +76,13 @@
 </script>
 
 {#if value}
-  <footer {...props} class="q-footer" style:--footer-height="{height}px" data-quaff>
+  <footer
+    bind:this={footerEl}
+    {...props}
+    class="q-footer"
+    style:--footer-height="{height}px"
+    data-quaff
+  >
     <QToolbar>
       {@render children?.()}
     </QToolbar>

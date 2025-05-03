@@ -19,8 +19,6 @@
 
   background-color: var(--surface);
 
-  transition: all variables.$speed3;
-
   &.q-footer--bordered {
     @include mixins.border(var(--outline), "top");
   }

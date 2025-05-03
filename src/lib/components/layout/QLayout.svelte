@@ -7,11 +7,13 @@
   export interface AppbarContext {
     height: number;
     collapsed: boolean;
+    ready: boolean;
   }
 
   export interface DrawerContext {
     width: number;
     takesSpace: boolean;
+    ready: boolean;
   }
 </script>
 
@@ -31,10 +33,6 @@
     ...props
   }: QLayoutProps = $props();
 
-  Q.classes("q-layout", {
-    classes: [props.class],
-  });
-
   setContext("view", {
     get value() {
       return view;
@@ -44,29 +42,35 @@
   const headerCtx = new QContext<AppbarContext>("QHeader", {
     height: 0,
     collapsed: false,
+    ready: false,
   });
 
   const footerCtx = new QContext<AppbarContext>("QFooter", {
     height: 0,
     collapsed: false,
+    ready: false,
   });
 
   const leftRailbarCtx = new QContext<DrawerContext>("QRailbar-left", {
     width: 0,
     takesSpace: false,
+    ready: false,
   });
   const rightRailbarCtx = new QContext<DrawerContext>("QRailbar-right", {
     width: 0,
     takesSpace: false,
+    ready: false,
   });
 
   const leftDrawerCtx = new QContext<DrawerContext>("QDrawer-left", {
     width: 0,
     takesSpace: false,
+    ready: false,
   });
   const rightDrawerCtx = new QContext<DrawerContext>("QDrawer-right", {
     width: 360,
     takesSpace: false,
+    ready: false,
   });
 
   const topOffset = $derived(!header || headerCtx.value.collapsed ? 0 : headerCtx.value.height);
@@ -78,9 +82,25 @@
     `${header ? topOffset : 0}px ${rightOffset}px ${footer ? bottomOffset : 0}px ${leftOffset}px`
   );
 
+  const isReady = $derived(
+    (!header || headerCtx.value.ready) &&
+      (!footer || footerCtx.value.ready) &&
+      (!railbarLeft || leftRailbarCtx.value.ready) &&
+      (!railbarRight || rightRailbarCtx.value.ready) &&
+      (!drawerLeft || leftDrawerCtx.value.ready) &&
+      (!drawerRight || rightDrawerCtx.value.ready)
+  );
+
   function handleDrawerCtx(ctx: QContext<DrawerContext>) {
     return ctx.value.takesSpace ? ctx.value.width : 0;
   }
+
+  Q.classes("q-layout", {
+    bemClasses: {
+      ready: isReady,
+    },
+    classes: [props.class],
+  });
 </script>
 
 <div

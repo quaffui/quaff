@@ -17,12 +17,6 @@
 
   overflow: auto;
 
-  transition:
-    border-radius variables.$speed3,
-    transform variables.$speed3,
-    top variables.$speed3,
-    bottom variables.$speed3;
-
   &.q-drawer--overlay {
     z-index: 6;
   }

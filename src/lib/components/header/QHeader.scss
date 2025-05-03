@@ -17,8 +17,6 @@
 
   background-color: var(--surface);
 
-  transition: all variables.$speed3;
-
   &.q-header--elevated {
     @include mixins.elevate(1);
   }
