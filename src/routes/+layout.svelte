@@ -7,7 +7,6 @@
   import "../lib/css/fonts.scss";
 
   import { fade } from "svelte/transition";
-  import { onMount } from "svelte";
   import Quaff from "$lib/classes/Quaff.svelte";
   import {
     QLayout,
