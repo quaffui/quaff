@@ -10,7 +10,6 @@
     <script type="module">
       // Set dark mode based on system preference
       const cachedScheme = localStorage.getItem("current_mode");
-      console.log({ cachedScheme });
 
       if (cachedScheme) {
         document.body.classList.add(`body--${cachedScheme}`);
