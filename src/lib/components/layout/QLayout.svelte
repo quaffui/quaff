@@ -1,5 +1,5 @@
 <script module lang="ts">
-  import { setContext } from "svelte";
+  import { onMount, setContext } from "svelte";
   import { QContext } from "$lib/classes/QContext.svelte";
   import ContextReseter from "../private/ContextReseter.svelte";
   import type { QLayoutProps } from "./props";
@@ -32,6 +32,14 @@
     children,
     ...props
   }: QLayoutProps = $props();
+
+  let contentEl: HTMLDivElement;
+
+  onMount(() => {
+    setTimeout(() => {
+      contentEl.style.transition = "margin 0.3s";
+    }, 100);
+  });
 
   setContext("view", {
     get value() {
@@ -134,7 +142,7 @@
       "QDrawer-right",
     ]}
   >
-    <div class="q-layout__content" style:margin={contentMargin}>
+    <div bind:this={contentEl} class="q-layout__content" style:margin={contentMargin}>
       {#if content}
         {@render content()}
       {:else}
