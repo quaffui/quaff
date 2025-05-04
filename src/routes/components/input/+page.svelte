@@ -5,19 +5,19 @@
   import QDocsSection from "$lib/components/private/QDocsSection.svelte";
   import snippets from "./docs.snippets";
 
-  let defaultValue = "Initial Value";
-  let outlinedValue = "";
-  let filledValue = "Filled Input";
-  let roundedValue = "";
-  let denseValue = "";
-  let disabledValue = "Cannot edit";
-  let errorValue = "Invalid data";
-  let hintValue = "";
-  let prependValue = "";
-  let appendValue = "";
-  let beforeValue = "";
-  let afterValue = "";
-  let combinedValue = "";
+  let defaultValue = $state("Initial Value");
+  let outlinedValue = $state("");
+  let filledValue = $state("Filled Input");
+  let roundedValue = $state("");
+  let denseValue = $state("");
+  let disabledValue = $state("Cannot edit");
+  let errorValue = $state("Invalid data");
+  let hintValue = $state("");
+  let prependValue = $state("");
+  let appendValue = $state("");
+  let beforeValue = $state("");
+  let afterValue = $state("");
+  let combinedValue = $state("");
 </script>
 
 <QDocs {snippets} componentDocs={QInputDocs}>
