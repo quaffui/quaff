@@ -43,7 +43,7 @@
         {/snippet}
         <QInput bind:value={outlinedValue} label="Outlined" class="q-mt-md" outlined />
         <QInput bind:value={filledValue} label="Filled" class="q-mt-md" filled />
-        <QInput bind:value={roundedValue} label="Rounded" class="q-mt-md" rounded outlined />
+        <QInput bind:value={roundedValue} label="Rounded" class="q-mt-md" rounded />
         <p class="text-sm q-mt-sm">Note: Rounded requires outlined or filled.</p>
       </QDocsSection>
 
@@ -133,7 +133,7 @@
             <QBtn outlined class="q-ml-sm" onclick={() => alert("Button clicked!")}>Go</QBtn>
           {/snippet}
         </QInput>
-        <QInput bind:value={combinedValue} label="Combined Slots" class="q-mt-md" outlined rounded>
+        <QInput bind:value={combinedValue} label="Combined Slots" class="q-mt-md" rounded>
           {#snippet prepend()}
             <QIcon name="attach_money" />
           {/snippet}
