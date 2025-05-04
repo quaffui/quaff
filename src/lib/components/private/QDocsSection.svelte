@@ -26,7 +26,7 @@
     <h5>{title}</h5>
     {#if code && !noCode}
       <QBtn icon="code" variant="outlined" round onclick={() => (dialog = true)} />
-      <QDialog class="snippet-dialog" bind:value={dialog} modal>
+      <QDialog class="snippet-dialog" bind:value={dialog} modal style="max-width: 75vw">
         <QCodeBlock {code} language="svelte" {title} copiable />
       </QDialog>
     {/if}

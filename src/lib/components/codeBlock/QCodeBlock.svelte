@@ -106,6 +106,7 @@
     :global(pre) {
       text-align: left;
       padding: 1rem;
+      overflow: auto;
     }
   }
 </style>
