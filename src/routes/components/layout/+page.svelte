@@ -158,190 +158,15 @@
         {/snippet}
 
         <QCard bordered class="q-pa-none">
-          <QLayout {view}>
-            {#snippet header()}
-              {#if showHeader}
-                <QHeader elevated>
-                  {#if leftDrawer}
-                    <QBtn icon="menu" variant="flat" onclick={leftDrawerElement?.toggle} />
-                  {/if}
-                  <div class="flex column">
-                    <QRadio bind:selected={viewArr[0][0]} value="h" label="h" />
-                    <QRadio style="margin: 0" bind:selected={viewArr[0][0]} value="l" label="l" />
-                  </div>
-                  <div class="max flex column items-center" style="flex-grow: 1">
-                    <QRadio
-                      style="width: fit-content"
-                      bind:selected={viewArr[0][1]}
-                      value="h"
-                      label="h"
-                    />
-                    <QRadio
-                      style="width: fit-content; margin: 0"
-                      bind:selected={viewArr[0][1]}
-                      value="H"
-                      label="H"
-                    />
-                  </div>
-                  <div class="flex column">
-                    <QRadio bind:selected={viewArr[0][2]} value="h" label="h" />
-                    <QRadio style="margin: 0" bind:selected={viewArr[0][2]} value="r" label="r" />
-                  </div>
-                  {#if rightDrawer}
-                    <QBtn icon="menu" variant="flat" onclick={rightDrawerElement?.toggle} />
-                  {/if}
-                </QHeader>
-              {/if}
-            {/snippet}
-
-            {#snippet railbarLeft()}
-              {#if leftRailbar}
-                <QRailbar bordered>
-                  <QList>
-                    <QItem to="#" noRipple>
-                      <QIcon name="home" />
-                      <QItemSection>Home</QItemSection>
-                    </QItem>
-                    <QItem to="#" noRipple>
-                      <QIcon name="help" />
-                      <QItemSection>About</QItemSection>
-                    </QItem>
-                    <QItem to="#" noRipple>
-                      <QIcon name="shopping_cart" />
-                      <QItemSection>Store</QItemSection>
-                    </QItem>
-                    <QItem to="#" noRipple>
-                      <QIcon name="mail" />
-                      <QItemSection>Contact</QItemSection>
-                    </QItem>
-                  </QList>
-                </QRailbar>
-              {/if}
-            {/snippet}
-
-            {#snippet railbarRight()}
-              {#if rightRailbar}
-                <QRailbar side="right" bordered>
-                  <QList>
-                    <QItem to="#" noRipple>
-                      <QIcon name="home" />
-                      <QItemSection>Home</QItemSection>
-                    </QItem>
-                    <QItem to="#" noRipple>
-                      <QIcon name="help" />
-                      <QItemSection>About</QItemSection>
-                    </QItem>
-                    <QItem to="#" noRipple>
-                      <QIcon name="shopping_cart" />
-                      <QItemSection>Store</QItemSection>
-                    </QItem>
-                    <QItem to="#" noRipple>
-                      <QIcon name="mail" />
-                      <QItemSection>Contact</QItemSection>
-                    </QItem>
-                  </QList>
-                </QRailbar>
-              {/if}
-            {/snippet}
-
-            {#snippet drawerLeft()}
-              {#if leftDrawer}
-                <QDrawer
-                  bordered
-                  width={160}
-                  persistent
-                  bind:value={leftDrawerShown}
-                  bind:this={leftDrawerElement}
-                >
-                  <QList>
-                    <QItem to="#">
-                      <QIcon name="home" />
-                      <QItemSection>Home</QItemSection>
-                    </QItem>
-                    <QItem to="#">
-                      <QIcon name="help" />
-                      <QItemSection>About</QItemSection>
-                    </QItem>
-                    <QItem to="#">
-                      <QIcon name="shopping_cart" />
-                      <QItemSection>Store</QItemSection>
-                    </QItem>
-                    <QItem to="#">
-                      <QIcon name="mail" />
-                      <QItemSection>Contact</QItemSection>
-                    </QItem>
-                  </QList>
-                </QDrawer>
-              {/if}
-            {/snippet}
-
-            {#snippet drawerRight()}
-              {#if rightDrawer}
-                <QDrawer
-                  side="right"
-                  bordered
-                  persistent
-                  width={160}
-                  bind:value={rightDrawerShown}
-                  bind:this={rightDrawerElement}
-                >
-                  <QList>
-                    <QItem to="#">
-                      <QIcon name="home" />
-                      <QItemSection>Home</QItemSection>
-                    </QItem>
-                    <QItem to="#">
-                      <QIcon name="help" />
-                      <QItemSection>About</QItemSection>
-                    </QItem>
-                    <QItem to="#">
-                      <QIcon name="shopping_cart" />
-                      <QItemSection>Store</QItemSection>
-                    </QItem>
-                    <QItem to="#">
-                      <QIcon name="mail" />
-                      <QItemSection>Contact</QItemSection>
-                    </QItem>
-                  </QList>
-                </QDrawer>
-              {/if}
-            {/snippet}
-
-            {#snippet footer()}
-              {#if showFooter}
-                <QFooter bordered>
-                  {#if leftDrawer}
-                    <QBtn icon="menu" variant="flat" onclick={leftDrawerElement?.toggle} />
-                  {/if}
-                  <div class="flex column">
-                    <QRadio bind:selected={viewArr[2][0]} value="f" label="f" />
-                    <QRadio style="margin: 0" bind:selected={viewArr[2][0]} value="l" label="l" />
-                  </div>
-                  <div class="max flex column items-center" style="flex-grow: 1">
-                    <QRadio
-                      style="width: fit-content"
-                      bind:selected={viewArr[2][1]}
-                      value="f"
-                      label="f"
-                    />
-                    <QRadio
-                      style="width: fit-content; margin: 0"
-                      bind:selected={viewArr[2][1]}
-                      value="F"
-                      label="F"
-                    />
-                  </div>
-                  <div class="flex column">
-                    <QRadio bind:selected={viewArr[2][2]} value="f" label="f" />
-                    <QRadio style="margin: 0" bind:selected={viewArr[2][2]} value="r" label="r" />
-                  </div>
-                  {#if rightDrawer}
-                    <QBtn icon="menu" variant="flat" onclick={rightDrawerElement?.toggle} />
-                  {/if}
-                </QFooter>
-              {/if}
-            {/snippet}
-
+          <QLayout
+            {view}
+            header={showHeader ? header : undefined}
+            railbarLeft={leftRailbar ? railbarLeft : undefined}
+            drawerLeft={leftDrawer ? drawerLeft : undefined}
+            railbarRight={rightRailbar ? railbarRight : undefined}
+            drawerRight={rightDrawer ? drawerRight : undefined}
+            footer={showFooter ? footer : undefined}
+          >
             {#snippet content()}
               <div class="flex items-center q-mx-auto" style="height: 60vh; max-width: 12rem">
                 <QList style="text-align: center;">
@@ -390,6 +215,167 @@
     </div>
   {/snippet}
 </QDocs>
+
+{#snippet header()}
+  <QHeader elevated>
+    {#if leftDrawer}
+      <QBtn icon="menu" variant="flat" onclick={leftDrawerElement?.toggle} />
+    {/if}
+    <div class="flex column">
+      <QRadio bind:selected={viewArr[0][0]} value="h" label="h" />
+      <QRadio style="margin: 0" bind:selected={viewArr[0][0]} value="l" label="l" />
+    </div>
+    <div class="max flex column items-center" style="flex-grow: 1">
+      <QRadio style="width: fit-content" bind:selected={viewArr[0][1]} value="h" label="h" />
+      <QRadio
+        style="width: fit-content; margin: 0"
+        bind:selected={viewArr[0][1]}
+        value="H"
+        label="H"
+      />
+    </div>
+    <div class="flex column">
+      <QRadio bind:selected={viewArr[0][2]} value="h" label="h" />
+      <QRadio style="margin: 0" bind:selected={viewArr[0][2]} value="r" label="r" />
+    </div>
+    {#if rightDrawer}
+      <QBtn icon="menu" variant="flat" onclick={rightDrawerElement?.toggle} />
+    {/if}
+  </QHeader>
+{/snippet}
+
+{#snippet railbarLeft()}
+  <QRailbar bordered>
+    <QList>
+      <QItem to="#" noRipple>
+        <QIcon name="home" />
+        <QItemSection>Home</QItemSection>
+      </QItem>
+      <QItem to="#" noRipple>
+        <QIcon name="help" />
+        <QItemSection>About</QItemSection>
+      </QItem>
+      <QItem to="#" noRipple>
+        <QIcon name="shopping_cart" />
+        <QItemSection>Store</QItemSection>
+      </QItem>
+      <QItem to="#" noRipple>
+        <QIcon name="mail" />
+        <QItemSection>Contact</QItemSection>
+      </QItem>
+    </QList>
+  </QRailbar>
+{/snippet}
+
+{#snippet railbarRight()}
+  <QRailbar side="right" bordered>
+    <QList>
+      <QItem to="#" noRipple>
+        <QIcon name="home" />
+        <QItemSection>Home</QItemSection>
+      </QItem>
+      <QItem to="#" noRipple>
+        <QIcon name="help" />
+        <QItemSection>About</QItemSection>
+      </QItem>
+      <QItem to="#" noRipple>
+        <QIcon name="shopping_cart" />
+        <QItemSection>Store</QItemSection>
+      </QItem>
+      <QItem to="#" noRipple>
+        <QIcon name="mail" />
+        <QItemSection>Contact</QItemSection>
+      </QItem>
+    </QList>
+  </QRailbar>
+{/snippet}
+
+{#snippet drawerLeft()}
+  <QDrawer
+    bordered
+    width={160}
+    persistent
+    bind:value={leftDrawerShown}
+    bind:this={leftDrawerElement}
+  >
+    <QList>
+      <QItem to="#">
+        <QIcon name="home" />
+        <QItemSection>Home</QItemSection>
+      </QItem>
+      <QItem to="#">
+        <QIcon name="help" />
+        <QItemSection>About</QItemSection>
+      </QItem>
+      <QItem to="#">
+        <QIcon name="shopping_cart" />
+        <QItemSection>Store</QItemSection>
+      </QItem>
+      <QItem to="#">
+        <QIcon name="mail" />
+        <QItemSection>Contact</QItemSection>
+      </QItem>
+    </QList>
+  </QDrawer>
+{/snippet}
+
+{#snippet drawerRight()}
+  <QDrawer
+    side="right"
+    bordered
+    persistent
+    width={160}
+    bind:value={rightDrawerShown}
+    bind:this={rightDrawerElement}
+  >
+    <QList>
+      <QItem to="#">
+        <QIcon name="home" />
+        <QItemSection>Home</QItemSection>
+      </QItem>
+      <QItem to="#">
+        <QIcon name="help" />
+        <QItemSection>About</QItemSection>
+      </QItem>
+      <QItem to="#">
+        <QIcon name="shopping_cart" />
+        <QItemSection>Store</QItemSection>
+      </QItem>
+      <QItem to="#">
+        <QIcon name="mail" />
+        <QItemSection>Contact</QItemSection>
+      </QItem>
+    </QList>
+  </QDrawer>
+{/snippet}
+
+{#snippet footer()}
+  <QFooter bordered>
+    {#if leftDrawer}
+      <QBtn icon="menu" variant="flat" onclick={leftDrawerElement?.toggle} />
+    {/if}
+    <div class="flex column">
+      <QRadio bind:selected={viewArr[2][0]} value="f" label="f" />
+      <QRadio style="margin: 0" bind:selected={viewArr[2][0]} value="l" label="l" />
+    </div>
+    <div class="max flex column items-center" style="flex-grow: 1">
+      <QRadio style="width: fit-content" bind:selected={viewArr[2][1]} value="f" label="f" />
+      <QRadio
+        style="width: fit-content; margin: 0"
+        bind:selected={viewArr[2][1]}
+        value="F"
+        label="F"
+      />
+    </div>
+    <div class="flex column">
+      <QRadio bind:selected={viewArr[2][2]} value="f" label="f" />
+      <QRadio style="margin: 0" bind:selected={viewArr[2][2]} value="r" label="r" />
+    </div>
+    {#if rightDrawer}
+      <QBtn icon="menu" variant="flat" onclick={rightDrawerElement?.toggle} />
+    {/if}
+  </QFooter>
+{/snippet}
 
 <style lang="scss">
   :global(.q-layout__content > .q-list) {
