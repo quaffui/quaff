@@ -19,6 +19,8 @@
 
   const qSize = $derived(useSize(size, "q-icon"));
 
+  const parsedColor = $derived(color && `var(--${color.replace("#", "")}, {color})`);
+
   const imgAttrs = $derived({
     alt: "Quaff Image Icon",
     ...imgAttributes,
@@ -38,7 +40,7 @@
   {...props}
   class="q-icon"
   style:--size={qSize.style}
-  style:color="var(--{color?.replace('#', '')}, {color})"
+  style:color={parsedColor}
   data-quaff
 >
   {#if name !== undefined}
