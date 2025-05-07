@@ -27,7 +27,7 @@ export interface QFooterProps extends NativeProps, HTMLAttributes<HTMLElement> {
   revealOffset?: number;
 
   /**
-   * The height of the footer. Can be specified with a CSS unit. If not specified, "px" will be used. (CSS unit is not supported yet)
+   * The height of the footer. Can be specified with a CSS unit. If not specified, "px" will be used. (specified CSS units are not supported yet)
    * @default undefined
    */
   height?: number;
