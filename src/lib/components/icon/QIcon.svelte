@@ -30,16 +30,24 @@
     bemClasses: {
       filled,
     },
-    classes: [typeClass, color && `text-${color}`, qSize.class, props.class],
+    classes: [typeClass, qSize.class, props.class],
   });
 </script>
 
-<i {...props} class="q-icon" style:--size={qSize.style} data-quaff>
+<i
+  {...props}
+  class="q-icon"
+  style:--size={qSize.style}
+  style:color="var(--{color?.replace('#', '')}, {color})"
+  data-quaff
+>
   {#if name !== undefined}
     {name}
   {:else if img !== undefined}
     <img src={img} {...imgAttrs} />
-  {:else if svg !== undefined}
+  {:else if svg}
+    {@html svg}
+  {:else}
     {@render children?.()}
   {/if}
 </i>
