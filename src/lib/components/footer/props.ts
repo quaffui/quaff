@@ -15,7 +15,7 @@ export interface QFooterProps extends NativeProps, HTMLAttributes<HTMLElement> {
   bordered?: boolean;
 
   /**
-   * Determines wether the footer should hide on scroll.
+   * Determines whether the footer should hide on scroll.
    * @default false
    */
   reveal?: boolean;
