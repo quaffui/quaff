@@ -156,7 +156,7 @@
           <QToolbar border>
             <QBtn flat icon="arrow_back" />
             <QToolbarTitle>
-              <QInput value="how to center a div" dense outlined rounded style="width: 33%;">
+              <QInput value="how to center a div" dense rounded style="width: 33%;">
                 {#snippet prepend()}
                   <QIcon name="search" />
                 {/snippet}

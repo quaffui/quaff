@@ -7,8 +7,6 @@
   import type { AppbarContext } from "../layout/QLayout.svelte";
   import type { QFooterProps } from "./props";
 
-  const footerIdentifier = Date.now();
-
   let footerEl = $state<HTMLElement>();
 
   let {
@@ -21,6 +19,8 @@
     ...props
   }: QFooterProps = $props();
 
+  const uid = $props.id();
+
   const footerContext = QContext.get<AppbarContext>("QFooter");
   const layoutView = getContext<{ value: NonNullable<QLayoutProps["view"]> }>("view");
 
@@ -29,7 +29,7 @@
   }
 
   const scroll = $derived(
-    reveal ? new QScrollObserver(`.q-footer--${footerIdentifier} ~ .q-layout__content`) : undefined
+    reveal ? new QScrollObserver(`.q-footer--${uid} ~ .q-layout__content`) : undefined
   );
   let contentScrollHeight = $state(0);
 
@@ -48,7 +48,7 @@
 
   onMount(() => {
     // Calculating the layout content's height
-    const content = document.querySelector(`.q-footer--${footerIdentifier} ~ .q-layout__content`);
+    const content = document.querySelector(`.q-footer--${uid} ~ .q-layout__content`);
 
     contentScrollHeight = content ? content.scrollHeight - content.clientHeight : 0;
 
@@ -65,7 +65,7 @@
 
   Q.classes("q-footer", {
     bemClasses: {
-      [footerIdentifier]: true,
+      [uid]: true,
       collapsed,
       bordered,
       "offset-left": leftOffset(),

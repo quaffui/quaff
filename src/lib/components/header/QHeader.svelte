@@ -7,8 +7,6 @@
   import type { QLayoutProps } from "$components/layout/props";
   import type { QHeaderProps } from "./props";
 
-  const headerIdentifier = Date.now();
-
   let {
     elevated = false,
     inset = false,
@@ -19,6 +17,8 @@
     ...props
   }: QHeaderProps = $props();
 
+  const uid = $props.id();
+
   let headerEl: HTMLElement;
 
   const headerContext = QContext.get<AppbarContext>("QHeader");
@@ -28,7 +28,7 @@
   }
 
   const scroll = $derived(
-    reveal ? new QScrollObserver(`.q-header--${headerIdentifier} ~ .q-layout__content`) : undefined
+    reveal ? new QScrollObserver(`.q-header--${uid} ~ .q-layout__content`) : undefined
   );
   const offset = $derived(scroll ? scroll.position - height : undefined);
   // Collapse the header `${reavealOffset}px` below the top of layout content when scrolling down
@@ -55,7 +55,7 @@
 
   Q.classes("q-header", {
     bemClasses: {
-      [headerIdentifier]: true,
+      [uid]: true,
       elevated,
       collapsed,
       "offset-left": leftOffset(),

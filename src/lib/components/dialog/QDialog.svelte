@@ -11,7 +11,7 @@
     ...props
   }: QDialogProps = $props();
 
-  let dialogEl: HTMLDialogElement;
+  let dialogEl = $state<HTMLDialogElement>();
 
   const canHide = $derived(value && !persistent);
 
@@ -30,19 +30,19 @@
   });
 
   export function hide() {
-    if (dialogEl.open) {
+    if (dialogEl?.open) {
       value = false;
     }
   }
 
   export function show() {
-    if (!dialogEl.open) {
+    if (!dialogEl?.open) {
       value = true;
     }
   }
 
   export function toggle() {
-    if (dialogEl.open) {
+    if (dialogEl?.open) {
       hide();
     } else {
       show();
@@ -51,10 +51,10 @@
 
   function addAnimation() {
     if (persistent && value) {
-      dialogEl.classList.add("q-dialog--animating");
+      dialogEl?.classList.add("q-dialog--animating");
 
       setTimeout(() => {
-        dialogEl.classList.remove("q-dialog--animating");
+        dialogEl?.classList.remove("q-dialog--animating");
       }, 150);
     }
   }
