@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { copy } from "$lib/utils";
   import { QBtn, Quaff } from "$lib";
+  import { copy } from "$utils";
   import type { QCodeBlockProps } from "./props";
 
   let {

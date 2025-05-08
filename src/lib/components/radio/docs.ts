@@ -1,4 +1,4 @@
-import type { QComponentDocs } from "$lib/utils";
+import type { QComponentDocs } from "$utils";
 import { QRadioDocsProps, QRadioDocsSnippets } from "./docs.props";
 
 export const QRadioDocs: QComponentDocs = {

@@ -1,8 +1,7 @@
 <script lang="ts">
-  import { QLinearProgress, QCircularProgress, QBtn, QCard, QCardSection } from "$lib";
-  import { QLinearProgressDocs, QCircularProgressDocs } from "$components/progress/docs";
-  import QDocs from "$lib/components/private/QDocs.svelte";
-  import QDocsSection from "$lib/components/private/QDocsSection.svelte";
+  import { QCircularProgressDocs, QLinearProgressDocs } from "$components/progress/docs";
+  import { QBtn, QCard, QCardSection, QCircularProgress, QLinearProgress } from "$lib";
+  import { QDocs, QDocsSection } from "$private";
 
   import snippets from "./docs.snippets";
 

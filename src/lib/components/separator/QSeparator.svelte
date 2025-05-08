@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { useSize } from "$lib/composables/useSize";
+  import { useSize } from "$composables";
   import type { QSeparatorProps } from "./props";
 
   let {

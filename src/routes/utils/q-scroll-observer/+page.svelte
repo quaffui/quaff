@@ -1,6 +1,5 @@
 <script lang="ts">
-  import QDocs from "$components/private/QDocs.svelte";
-  import QDocsSection from "$components/private/QDocsSection.svelte";
+  import { QDocs, QDocsSection } from "$private";
   import { QCodeBlock, QScrollObserver } from "$lib";
 
   const displayObserver = new QScrollObserver("#display-observer");

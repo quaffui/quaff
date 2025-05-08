@@ -1,4 +1,4 @@
-import type { QComponentDocs } from "$lib/utils";
+import type { QComponentDocs } from "$utils";
 import { QFooterDocsProps, QFooterDocsSnippets } from "./docs.props";
 
 export const QFooterDocs: QComponentDocs = {

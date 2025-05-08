@@ -1,9 +1,8 @@
 <script lang="ts">
   import { getContext, setContext } from "svelte";
-  import { getRouterInfo, isRouteActive } from "$lib/utils/router";
-  import { ripple } from "$lib/helpers/ripple";
+  import { ripple } from "$helpers";
   import { QContext } from "$lib/classes/QContext.svelte";
-  import { QItemCtxName, QListCtxName } from "$utils/context";
+  import { getRouterInfo, isRouteActive, QItemCtxName, QListCtxName } from "$utils";
   import QSeparator from "../separator/QSeparator.svelte";
   import type { QItemProps, QListProps } from "./props";
 

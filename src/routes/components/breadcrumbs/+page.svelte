@@ -1,9 +1,8 @@
 <script lang="ts">
-  import { QBreadcrumbs, QBreadcrumbsEl } from "$lib";
-  import { QBreadcrumbsDocs } from "$components/breadcrumbs/docs";
-  import QDocs from "$lib/components/private/QDocs.svelte";
-  import QDocsSection from "$lib/components/private/QDocsSection.svelte";
   import { base } from "$app/paths";
+  import { QBreadcrumbsDocs } from "$components/breadcrumbs/docs";
+  import { QBreadcrumbs, QBreadcrumbsEl } from "$lib";
+  import { QDocs, QDocsSection } from "$private";
   import snippets from "./docs.snippets";
 </script>
 

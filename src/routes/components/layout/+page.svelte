@@ -1,24 +1,23 @@
 <script lang="ts">
+  import { QLayoutDocs } from "$components/layout/docs";
   import {
-    QDrawer,
-    QLayout,
     QBtn,
-    QToolbarTitle,
-    QList,
-    QHeader,
-    QItem,
-    QIcon,
-    QItemSection,
-    QRailbar,
-    QFooter,
     QCard,
+    QDrawer,
+    QFooter,
+    QHeader,
+    QIcon,
+    QItem,
+    QItemSection,
+    QLayout,
+    QList,
     QRadio,
+    QRailbar,
     QSwitch,
+    QToolbarTitle,
   } from "$lib";
-  import { QLayoutDocs } from "$lib/components/layout/docs";
-  import QDocs from "$lib/components/private/QDocs.svelte";
-  import QDocsSection from "$lib/components/private/QDocsSection.svelte";
-  import type { QLayoutProps } from "$lib/components/layout/props";
+  import { QDocs, QDocsSection } from "$private";
+  import type { QLayoutProps } from "$components/layout/props";
   import { snippet } from "./docs.snippets";
 
   let displayLeftDrawerElement = $state<ReturnType<typeof QDrawer>>();

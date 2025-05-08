@@ -1,6 +1,6 @@
 <script lang="ts" generics="T extends HTMLElement | string">
-  import { mount, unmount, onMount, untrack } from "svelte";
-  import { addEventListener } from "$lib/utils/events";
+  import { mount, onMount, unmount, untrack } from "svelte";
+  import { addEventListener } from "$utils";
   import QTooltipBase from "./QTooltipBase.svelte";
   import type { QTooltipProps } from "./props";
 
