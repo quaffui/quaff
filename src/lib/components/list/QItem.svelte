@@ -3,6 +3,7 @@
   import { getRouterInfo, isRouteActive } from "$lib/utils/router";
   import { ripple } from "$lib/helpers/ripple";
   import { QContext } from "$lib/classes/QContext.svelte";
+  import { QItemCtxName, QListCtxName } from "$utils/context";
   import QSeparator from "../separator/QSeparator.svelte";
   import type { QItemProps, QListProps } from "./props";
 
@@ -32,17 +33,19 @@
     })
   );
 
-  const listActiveClass = getContext<() => string>("listItemsActiveClass");
+  const listActiveClass = getContext<() => string>(QListCtxName.activeClass);
 
   const activeClassToUse = $derived(
     activeClass === "active" ? listActiveClass() || activeClass : activeClass
   );
 
-  setContext("itemActiveClass", () => active && activeClassToUse);
+  setContext(QItemCtxName.activeClass, () => active && activeClassToUse);
 
-  const multiline = new QContext("multiline", false);
+  const multiline = new QContext(QItemCtxName.multiline, false);
 
-  const separatorOptions = getContext<QListProps["separatorOptions"] | undefined>("separator");
+  const separatorOptions = getContext<QListProps["separatorOptions"] | undefined>(
+    QListCtxName.separator
+  );
 
   const isActionable = $derived(clickable || routerInfo.hasLink || tag === "label");
   const isClickable = $derived(isActionable && !disabled);

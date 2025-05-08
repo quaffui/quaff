@@ -9,28 +9,28 @@ import { getContext, setContext } from "svelte";
 export class QContext<T> {
   #state = $state<T>();
 
-  constructor(contextName: string, init: T) {
+  constructor(contextSymbol: symbol, init: T) {
     this.#state = init;
 
-    setContext(contextName, this);
+    setContext(contextSymbol, this);
   }
 
   /**
-   * Gets the value of context with id `contextName`
-   * @param contextName - Name of the context to get
+   * Gets the value of context with id `contextSymbol`
+   * @param contextSymbol - Name of the context to get
    * @returns The context's value
    */
-  static get<T>(contextName: string) {
-    return getContext<QContext<T> | undefined>(contextName);
+  static get<T>(contextSymbol: symbol) {
+    return getContext<QContext<T> | undefined>(contextSymbol);
   }
 
   /**
    * Prevents the propagation of the context further down
-   * @param contextName - Name of the context to get
+   * @param contextSymbol - Name of the context to get
    * @returns The context result
    */
-  static reset(contextName: string) {
-    setContext(contextName, undefined);
+  static reset(contextSymbol: symbol) {
+    setContext(contextSymbol, undefined);
   }
 
   /**

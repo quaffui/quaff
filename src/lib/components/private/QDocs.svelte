@@ -1,9 +1,10 @@
 <script lang="ts">
   import { setContext, type Snippet } from "svelte";
+  import { assets } from "$app/paths";
   import { QCard, QCardSection } from "$lib";
   import type { QComponentDocs } from "$lib/utils";
   import Quaff from "$lib/classes/Quaff.svelte";
-  import { assets } from "$app/paths";
+  import { QDocsCtxName } from "$utils/context";
   import QApi from "./QApi.svelte";
 
   let {
@@ -29,7 +30,7 @@
   const isDark = $derived(Quaff.darkMode.isActive);
 
   if (snippets) {
-    setContext("QDocsSnippets", () => snippets);
+    setContext(QDocsCtxName.snippets, () => snippets);
   }
 
   let image = $state<string>();

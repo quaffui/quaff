@@ -1,6 +1,7 @@
 <script lang="ts">
   import { getContext, type Snippet } from "svelte";
   import { QCodeBlock, QDialog, QBtn } from "$lib";
+  import { QDocsCtxName } from "$utils/context";
 
   type QDocsSectionProps = {
     title: string;
@@ -11,7 +12,7 @@
 
   let { title, noCode = false, sectionDescription, children }: QDocsSectionProps = $props();
 
-  const snippets = getContext<undefined | (() => Record<string, string>)>("QDocsSnippets");
+  const snippets = getContext<undefined | (() => Record<string, string>)>(QDocsCtxName.snippets);
 
   const code = $derived(snippets && snippets()[title]);
 

@@ -3,6 +3,7 @@
   import { navigating } from "$app/state";
   import { useSize } from "$lib/composables";
   import { QContext } from "$lib/classes/QContext.svelte";
+  import { QLayoutCtxName } from "$utils/context";
   import type { QLayoutProps } from "$components/layout/props";
   import type { DrawerContext } from "../layout/QLayout.svelte";
   import type { QDrawerProps } from "./props";
@@ -20,8 +21,8 @@
 
   let drawerEl: HTMLDivElement;
 
-  const drawerContext = QContext.get<DrawerContext>(`QDrawer-${side}`);
-  const layoutView = getContext<{ value: NonNullable<QLayoutProps["view"]> }>("view");
+  const drawerContext = QContext.get<DrawerContext>(QLayoutCtxName.drawer[side]);
+  const layoutView = getContext<{ value: NonNullable<QLayoutProps["view"]> }>(QLayoutCtxName.view);
 
   const canHideOnClickOutside = $derived((value && !persistent) || overlay);
 

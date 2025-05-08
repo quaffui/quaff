@@ -1,6 +1,7 @@
 <script lang="ts">
   import { getContext, type Snippet } from "svelte";
   import { QContext } from "$lib/classes/QContext.svelte";
+  import { QItemCtxName } from "$utils/context";
   import type { QItemSectionProps } from "./props";
 
   let {
@@ -13,9 +14,9 @@
     ...props
   }: QItemSectionProps = $props();
 
-  const activeClass = getContext<() => string>("itemActiveClass");
+  const activeClass = getContext<() => string>(QItemCtxName.activeClass);
 
-  const multiline = QContext.get<boolean>("multiline");
+  const multiline = QContext.get<boolean>(QItemCtxName.multiline);
 
   $effect(() => {
     if (type === "content") {

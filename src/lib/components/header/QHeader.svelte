@@ -3,6 +3,7 @@
   import QToolbar from "$components/toolbar/QToolbar.svelte";
   import { QContext } from "$lib/classes/QContext.svelte";
   import QScrollObserver from "$lib/classes/QScrollObserver.svelte";
+  import { QLayoutCtxName } from "$utils/context";
   import type { AppbarContext } from "$components/layout/QLayout.svelte";
   import type { QLayoutProps } from "$components/layout/props";
   import type { QHeaderProps } from "./props";
@@ -21,8 +22,8 @@
 
   let headerEl: HTMLElement;
 
-  const headerContext = QContext.get<AppbarContext>("QHeader");
-  const layoutView = getContext<{ value: NonNullable<QLayoutProps["view"]> }>("view");
+  const headerContext = QContext.get<AppbarContext>(QLayoutCtxName.header);
+  const layoutView = getContext<{ value: NonNullable<QLayoutProps["view"]> }>(QLayoutCtxName.view);
   if (!headerContext || !layoutView) {
     throw new Error("QHeader should be used inside QLayout");
   }
