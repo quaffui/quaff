@@ -1,9 +1,8 @@
 <script lang="ts">
   import { onDestroy } from "svelte";
-  import QDocs from "$components/private/QDocs.svelte";
-  import QDocsSection from "$components/private/QDocsSection.svelte";
+  import { QDocs, QDocsSection } from "$private";
   import { QBtn, QCodeBlock, QTheme, Quaff } from "$lib";
-  import type { HexValue } from "$utils/colors";
+  import type { HexValue } from "$utils";
 
   let hexColor = $state("");
   let customPrimary = $state<HexValue>(

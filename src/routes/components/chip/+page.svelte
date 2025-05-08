@@ -1,9 +1,8 @@
 <script lang="ts">
   import { assets } from "$app/paths";
-  import { QChip } from "$lib";
   import { QChipDocs } from "$components/chip/docs";
-  import QDocs from "$lib/components/private/QDocs.svelte";
-  import QDocsSection from "$lib/components/private/QDocsSection.svelte";
+  import { QChip } from "$lib";
+  import { QDocs, QDocsSection } from "$private";
 
   import snippets from "./docs.snippets";
 

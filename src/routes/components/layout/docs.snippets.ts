@@ -1,5 +1,5 @@
-import { capitalize } from "$lib/utils";
-import type { QLayoutProps } from "$lib/components/layout/props";
+import { capitalize } from "$utils";
+import type { QLayoutProps } from "$components/layout/props";
 
 function drawerBtn (side: "left" | "right") {
  return `      <QBtn icon="menu" flat onclick={() => (${side}DrawerShown = !${side}DrawerShown)} />`

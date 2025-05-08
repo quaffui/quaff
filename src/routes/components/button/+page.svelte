@@ -1,9 +1,8 @@
 <script lang="ts">
   import { assets } from "$app/paths";
-  import QBtn from "$lib/components/button/QBtn.svelte";
-  import { QBtnDocs } from "$lib/components/button/docs";
-  import QDocs from "$lib/components/private/QDocs.svelte";
-  import QDocsSection from "$lib/components/private/QDocsSection.svelte";
+  import { QBtnDocs } from "$components/button/docs";
+  import { QBtn } from "$lib";
+  import { QDocs, QDocsSection } from "$private";
 
   import snippets from "./docs.snippets";
 </script>

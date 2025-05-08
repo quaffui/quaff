@@ -1,8 +1,7 @@
 <script lang="ts">
-  import { QSwitch, QBtn, QCard, QCardSection, QList, QItem, QItemSection, QIcon } from "$lib";
-  import { QSwitchDocs } from "$lib/components/switch/docs";
-  import QDocs from "$lib/components/private/QDocs.svelte";
-  import QDocsSection from "$lib/components/private/QDocsSection.svelte";
+  import { QSwitchDocs } from "$components/switch/docs";
+  import { QBtn, QCard, QCardSection, QIcon, QItem, QItemSection, QList, QSwitch } from "$lib";
+  import { QDocs, QDocsSection } from "$private";
   import snippets from "./docs.snippets";
 
   let toggle = $state(false);

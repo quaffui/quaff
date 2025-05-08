@@ -1,6 +1,6 @@
 <script lang="ts">
   import { setContext } from "svelte";
-  import { QListCtxName } from "$utils/context";
+  import { QListCtxName } from "$utils";
   import type { QListProps } from "./props";
 
   let {

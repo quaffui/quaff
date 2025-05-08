@@ -1,8 +1,7 @@
 <script lang="ts">
-  import { QIcon, QInput, QBtn } from "$lib";
-  import { QInputDocs } from "$lib/components/input/docs";
-  import QDocs from "$lib/components/private/QDocs.svelte";
-  import QDocsSection from "$lib/components/private/QDocsSection.svelte";
+  import { QInputDocs } from "$components/input/docs";
+  import { QBtn, QIcon, QInput } from "$lib";
+  import { QDocs, QDocsSection } from "$private";
   import snippets from "./docs.snippets";
 
   let defaultValue = $state("Initial Value");

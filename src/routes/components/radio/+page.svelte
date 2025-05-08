@@ -1,8 +1,7 @@
 <script lang="ts">
-  import { QRadio, QBtn, QList, QItem, QItemSection, QIcon, QCard, QCardSection } from "$lib";
-  import { QRadioDocs } from "$lib/components/radio/docs";
-  import QDocs from "$lib/components/private/QDocs.svelte";
-  import QDocsSection from "$lib/components/private/QDocsSection.svelte";
+  import { QRadioDocs } from "$components/radio/docs";
+  import { QBtn, QCard, QCardSection, QIcon, QItem, QItemSection, QList, QRadio } from "$lib";
+  import { QDocs, QDocsSection } from "$private";
   import snippets from "./docs.snippets";
 
   let displayValue = $state("option1");

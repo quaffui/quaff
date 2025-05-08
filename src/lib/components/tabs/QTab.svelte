@@ -2,13 +2,20 @@
   import { getContext, hasContext } from "svelte";
   import { QIcon } from "$lib";
   import { QContext } from "$lib/classes/QContext.svelte";
-  import { ripple } from "$lib/helpers";
-  import { getClosestFocusableBlock, getClosestFocusableSibling } from "$lib/utils/dom";
-  import { getDirection, isActivationKey, isArrowKey, isTabKey } from "$lib/utils/events";
-  import { isRouteActive } from "$lib/utils/router";
-  import { QTabsCtxName } from "$utils/context";
-  import type { Direction } from "$lib/utils/events";
-  import type { QEvent } from "$utils/types";
+  import { ripple } from "$helpers";
+  import {
+    getClosestFocusableBlock,
+    getClosestFocusableSibling,
+    getDirection,
+    isActivationKey,
+    isArrowKey,
+    isRouteActive,
+    isTabKey,
+    QTabsCtxName,
+    type Direction,
+    type QEvent,
+  } from "$utils";
+
   import type { QTabEl } from "./QTabs.svelte";
   import type { QTabProps, QTabsVariants } from "./props";
 

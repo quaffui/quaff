@@ -1,8 +1,7 @@
 <script lang="ts">
-  import { QCheckbox, QBtn, QList, QItem, QItemSection, QIcon } from "$lib";
-  import { QCheckboxDocs } from "$lib/components/checkbox/docs";
-  import QDocs from "$lib/components/private/QDocs.svelte";
-  import QDocsSection from "$lib/components/private/QDocsSection.svelte";
+  import { QCheckboxDocs } from "$components/checkbox/docs";
+  import { QBtn, QCheckbox, QIcon, QItem, QItemSection, QList } from "$lib";
+  import { QDocs, QDocsSection } from "$private";
 
   import snippets from "./docs.snippets";
 

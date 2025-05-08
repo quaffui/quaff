@@ -1,4 +1,4 @@
-import type { NativeProps } from "$lib/utils";
+import type { NativeProps } from "$utils";
 import type { HTMLAttributes } from "svelte/elements";
 
 export type QDialogPositionOptions = "default" | "top" | "right" | "bottom" | "left";

@@ -1,29 +1,25 @@
-<svelte:options runes={true} />
-
 <script lang="ts">
-  // Comment this in again while needed during development
-  //import "beercss/dist/cdn/beer.min.css";
-  import "../lib/css/index.scss";
-  import "../lib/css/fonts.scss";
+  import "$lib/css/fonts.scss";
+  import "$lib/css/index.scss";
 
   import { fade } from "svelte/transition";
-  import Quaff from "$lib/classes/Quaff.svelte";
+  import { base } from "$app/paths";
   import {
-    QLayout,
-    QToolbarTitle,
+    QAvatar,
     QBtn,
-    QRailbar,
-    QList,
-    QItem,
-    QIcon,
-    QItemSection,
     QDrawer,
     QHeader,
-    QAvatar,
+    QIcon,
+    QItem,
+    QItemSection,
+    QLayout,
+    QList,
+    QRailbar,
+    QToolbarTitle,
+    QTheme,
+    Quaff,
   } from "$lib";
-  import QTheme from "$lib/classes/QTheme.svelte";
-  import { isRouteActive } from "$lib/utils/router";
-  import { base } from "$app/paths";
+  import { isRouteActive } from "$utils";
   import type { MaterialSymbol } from "material-symbols";
 
   const { children } = $props();

@@ -1,5 +1,5 @@
 import { QToolbarDocsSnippets } from "$components/header/docs.props";
-import type { QComponentDocs } from "$lib/utils";
+import type { QComponentDocs } from "$utils";
 import { QTooltipDocsProps } from "./docs.props";
 
 export const QTooltipDocs: QComponentDocs = {

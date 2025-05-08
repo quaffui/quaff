@@ -1,7 +1,11 @@
 export * from "./clipboard";
+export * from "./colors";
 export { default as QColors } from "./colors";
+export * from "./context";
 export * from "./dom";
 export * from "./events";
+export * from "./number";
 export * from "./props";
+export * from "./router";
 export * from "./string";
 export * from "./types";

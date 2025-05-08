@@ -1,9 +1,8 @@
 <script lang="ts">
-  import { QTab, QTabs, QCard, QCardSection, QIcon, QList, QItem, QItemSection } from "$lib";
-  import { QTabsDocs, QTabDocs } from "$components/tabs/docs";
-  import QDocs from "$lib/components/private/QDocs.svelte";
-  import QDocsSection from "$lib/components/private/QDocsSection.svelte";
   import { base } from "$app/paths";
+  import { QTabDocs, QTabsDocs } from "$components/tabs/docs";
+  import { QCard, QCardSection, QIcon, QItem, QItemSection, QList, QTab, QTabs } from "$lib";
+  import { QDocs, QDocsSection } from "$private";
   import snippets from "./docs.snippets";
 
   let activeTab = $state("hello");

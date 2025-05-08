@@ -1,7 +1,5 @@
-<svelte:options runes={true} />
-
 <script lang="ts">
-  import { useSize } from "$lib/composables/useSize";
+  import { useSize } from "$composables";
   import type { QLinearProgressProps } from "./props";
 
   function width(val: number, reverse: boolean) {

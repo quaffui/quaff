@@ -1,8 +1,7 @@
 <script lang="ts">
-  import { ripple } from "$lib/helpers";
-  import { extractImgSrc, isActivationKey } from "$lib/utils";
   import { QAvatar, QIcon } from "$lib";
-  import type { QEvent } from "$lib/utils";
+  import { ripple } from "$helpers";
+  import { extractImgSrc, isActivationKey, type QEvent } from "$utils";
   import type { MaterialSymbol } from "material-symbols";
   import type { QChipProps } from "./props";
 

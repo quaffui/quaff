@@ -1,6 +1,5 @@
 <script lang="ts">
-  import QDocs from "$components/private/QDocs.svelte";
-  import QDocsSection from "$components/private/QDocsSection.svelte";
+  import { QDocs, QDocsSection } from "$private";
   import { Quaff, QBtn, QChip, QCodeBlock } from "$lib";
 </script>
 

@@ -1,9 +1,8 @@
 <script lang="ts">
   import { assets, base } from "$app/paths";
-  import { QIcon } from "$lib";
   import { QIconDocs } from "$components/icon/docs";
-  import QDocs from "$lib/components/private/QDocs.svelte";
-  import QDocsSection from "$lib/components/private/QDocsSection.svelte";
+  import { QIcon } from "$lib";
+  import { QDocs, QDocsSection } from "$private";
   import snippets from "./docs.snippets";
 </script>
 

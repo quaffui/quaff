@@ -1,4 +1,4 @@
-import { isNumeric } from "$utils/number.js";
+import { isNumeric } from "$utils";
 
 export const sizes: Q.Size[] = ["none", "xs", "sm", "md", "lg", "xl"];
 

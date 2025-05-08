@@ -1,8 +1,7 @@
 <script lang="ts">
-  import { QCard, QCardSection, QCardActions, QBtn } from "$lib";
-  import { QCardDocs, QCardSectionDocs, QCardActionsDocs } from "$lib/components/card/docs";
-  import QDocs from "$lib/components/private/QDocs.svelte";
-  import QDocsSection from "$lib/components/private/QDocsSection.svelte";
+  import { QCardActionsDocs, QCardDocs, QCardSectionDocs } from "$components/card/docs";
+  import { QBtn, QCard, QCardActions, QCardSection } from "$lib";
+  import { QDocs, QDocsSection } from "$private";
   import snippets from "./docs.snippets";
 </script>
 

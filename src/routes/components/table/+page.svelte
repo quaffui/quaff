@@ -1,9 +1,8 @@
 <script lang="ts">
-  import { QTable, QBtn, QIcon, QCard, QCardSection, QCodeBlock } from "$lib";
   import { QTableDocs } from "$components/table/docs";
-  import QDocs from "$lib/components/private/QDocs.svelte";
-  import QDocsSection from "$lib/components/private/QDocsSection.svelte";
-  import type { QTableColumn, QTableRow } from "$lib/components/table/props";
+  import { QBtn, QCard, QCardSection, QCodeBlock, QIcon, QTable } from "$lib";
+  import { QDocs, QDocsSection } from "$private";
+  import type { QTableColumn, QTableRow } from "$components/table/props";
   import snippets from "./docs.snippets";
 
   const columnsDefCode = `const columns = [

@@ -1,10 +1,8 @@
 <script lang="ts">
   import { setContext, type Snippet } from "svelte";
   import { assets } from "$app/paths";
-  import { QCard, QCardSection } from "$lib";
-  import type { QComponentDocs } from "$lib/utils";
-  import Quaff from "$lib/classes/Quaff.svelte";
-  import { QDocsCtxName } from "$utils/context";
+  import { QCard, QCardSection, Quaff } from "$lib";
+  import { QDocsCtxName, type QComponentDocs } from "$utils";
   import QApi from "./QApi.svelte";
 
   let {

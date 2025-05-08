@@ -1,16 +1,11 @@
-<svelte:options runes={true} />
-
 <script lang="ts">
   import { onMount } from "svelte";
-  import QCircularProgress from "$lib/components/progress/QCircularProgress.svelte";
-  import { useSize } from "$lib/composables/useSize";
-  import { ripple } from "$lib/helpers";
-  import { isActivationKey } from "$lib/utils";
-  import type { QEvent } from "$lib/utils";
-  import { extractImgSrc } from "$lib/utils/string";
-  import QIcon from "../icon/QIcon.svelte";
+  import { QCircularProgress, QIcon } from "$lib";
+  import { useSize } from "$composables";
+  import { ripple } from "$helpers";
+  import { isActivationKey, extractImgSrc, type QEvent } from "$utils";
   import type { MaterialSymbol } from "material-symbols";
-  import type { QBtnVariantOptions, QBtnProps } from "./props";
+  import type { QBtnProps, QBtnVariantOptions } from "./props";
 
   let {
     disabled = false,

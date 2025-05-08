@@ -1,19 +1,18 @@
 <script lang="ts">
+  import { QRailbarDocs } from "$components/railbar/docs";
   import {
-    QRailbar,
-    QLayout,
-    QList,
+    QBtn,
+    QDrawer,
+    QFooter,
+    QHeader,
+    QIcon,
     QItem,
     QItemSection,
-    QIcon,
-    QBtn,
-    QHeader,
-    QFooter,
-    QDrawer,
+    QLayout,
+    QList,
+    QRailbar,
   } from "$lib";
-  import { QRailbarDocs } from "$components/railbar/docs";
-  import QDocs from "$lib/components/private/QDocs.svelte";
-  import QDocsSection from "$lib/components/private/QDocsSection.svelte";
+  import { QDocs, QDocsSection } from "$private";
   import snippets from "./docs.snippets";
 
   let selectedRoute = $state("home");

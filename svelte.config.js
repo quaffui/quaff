@@ -37,6 +37,7 @@ const config = {
       $css: "./src/lib/css",
       $stores: "./src/lib/stores",
       $helpers: "./src/lib/helpers",
+      $private: "./src/lib/components/private",
     },
   },
 };

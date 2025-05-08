@@ -1,5 +1,4 @@
-import { generateColors } from "$lib/utils/colors";
-import type { HexValue, QuaffColors, Mode } from "$lib/utils/colors";
+import { generateColors, type HexValue, type QuaffColors, type Mode } from "$utils";
 
 type ThemeColors = Record<`${keyof QuaffColors}-${Mode}`, HexValue>;
 

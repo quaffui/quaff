@@ -1,8 +1,7 @@
 <script lang="ts">
-  import { QToolbar, QToolbarTitle, QBtn, QIcon, QInput } from "$lib";
   import { QToolbarDocs } from "$components/toolbar/docs";
-  import QDocs from "$lib/components/private/QDocs.svelte";
-  import QDocsSection from "$lib/components/private/QDocsSection.svelte";
+  import { QBtn, QIcon, QInput, QToolbar, QToolbarTitle } from "$lib";
+  import { QDocs, QDocsSection } from "$private";
   import snippets from "./docs.snippets";
 </script>
 

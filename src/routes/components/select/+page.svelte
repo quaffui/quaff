@@ -1,8 +1,7 @@
 <script lang="ts">
-  import { QSelect, QBtn, QIcon, QCard, QCardSection, QCardActions, QList, QItem } from "$lib";
   import { QSelectDocs } from "$components/select/docs";
-  import QDocs from "$lib/components/private/QDocs.svelte";
-  import QDocsSection from "$lib/components/private/QDocsSection.svelte";
+  import { QBtn, QCard, QCardActions, QCardSection, QIcon, QItem, QList, QSelect } from "$lib";
+  import { QDocs, QDocsSection } from "$private";
   import snippets from "./docs.snippets";
 
   let selectDisabled = $state(true);
