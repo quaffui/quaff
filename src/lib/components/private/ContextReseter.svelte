@@ -6,7 +6,7 @@
     keys,
     children,
   }: {
-    keys: string | string[];
+    keys: symbol | symbol[];
     children?: Snippet;
   } = $props();
 

@@ -1,14 +1,15 @@
 <script lang="ts">
   import { getContext, onDestroy, onMount, untrack } from "svelte";
   import { QContext } from "$lib/classes/QContext.svelte";
+  import { QLayoutCtxName } from "$utils/context";
   import type { QLayoutProps } from "$components/layout/props";
   import type { DrawerContext } from "../layout/QLayout.svelte";
   import type { QRailbarProps } from "./props";
 
   let { width = 88, side = "left", bordered = false, children, ...props }: QRailbarProps = $props();
 
-  const railbarCtx = QContext.get<DrawerContext>(`QRailbar-${side}`);
-  const layoutView = getContext<{ value: NonNullable<QLayoutProps["view"]> }>("view");
+  const railbarCtx = QContext.get<DrawerContext>(QLayoutCtxName.railbar[side]);
+  const layoutView = getContext<{ value: NonNullable<QLayoutProps["view"]> }>(QLayoutCtxName.view);
 
   let railbarEl: HTMLElement;
 

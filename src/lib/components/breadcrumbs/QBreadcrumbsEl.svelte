@@ -3,6 +3,7 @@
 <script lang="ts">
   import { getContext, type Snippet } from "svelte";
   import { isRouteActive } from "$utils/router";
+  import { QBreadcrumbsCtxName } from "$utils/context";
   import QIcon from "../icon/QIcon.svelte";
   import type { MaterialSymbol } from "material-symbols";
   import type { QBreadcrumbsElProps } from "./props";
@@ -18,12 +19,12 @@
     ...props
   }: QBreadcrumbsElProps = $props();
 
-  const activeColor = getContext<string>("activeColor");
+  const activeColor = getContext<string>(QBreadcrumbsCtxName.activeColor);
   const separator = getContext<{
     type: `icon:${MaterialSymbol}` | Snippet;
     color: string;
     gutter: string;
-  }>("separator");
+  }>(QBreadcrumbsCtxName.separator);
 
   const classesIfActive = $derived(
     isRouteActive(href || to) ? `${activeClass} text-${activeColor}` : undefined

@@ -2,6 +2,7 @@
 
 <script lang="ts">
   import { setContext, untrack } from "svelte";
+  import { QBreadcrumbsCtxName } from "$utils/context";
   import type { QBreadcrumbsProps } from "./props";
 
   let {
@@ -19,8 +20,8 @@
     untrack(() => breadrumbElement.firstChild?.remove());
   });
 
-  setContext("activeColor", activeColor);
-  setContext("separator", { type: separator, color: separatorColor, gutter });
+  setContext(QBreadcrumbsCtxName.activeColor, activeColor);
+  setContext(QBreadcrumbsCtxName.separator, { type: separator, color: separatorColor, gutter });
 
   Q.classes("q-breadcrumbs", { classes: [props.class] });
 </script>

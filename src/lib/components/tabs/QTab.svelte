@@ -4,9 +4,10 @@
   import { QContext } from "$lib/classes/QContext.svelte";
   import { ripple } from "$lib/helpers";
   import { getClosestFocusableBlock, getClosestFocusableSibling } from "$lib/utils/dom";
-  import type { Direction } from "$lib/utils/events";
   import { getDirection, isActivationKey, isArrowKey, isTabKey } from "$lib/utils/events";
   import { isRouteActive } from "$lib/utils/router";
+  import { QTabsCtxName } from "$utils/context";
+  import type { Direction } from "$lib/utils/events";
   import type { QEvent } from "$utils/types";
   import type { QTabEl } from "./QTabs.svelte";
   import type { QTabProps, QTabsVariants } from "./props";
@@ -19,14 +20,14 @@
 
   const tag = $derived(to ? "a" : "button");
 
-  if (!hasContext("QTabsValue")) {
+  if (!hasContext(QTabsCtxName.value)) {
     console.warn("QTab should be use inside QTabs.");
   }
 
-  const qTabsRequestCtx = QContext.get<string | null>("QTabsRequest")!;
+  const qTabsRequestCtx = QContext.get<string | null>(QTabsCtxName.request)!;
 
-  const qTabsValueCtx = QContext.get<string | undefined | null>("QTabsValue")!;
-  const variant = getContext<QTabsVariants>("QTabsVariant");
+  const qTabsValueCtx = QContext.get<string | undefined | null>(QTabsCtxName.value)!;
+  const variant = getContext<QTabsVariants>(QTabsCtxName.variant);
   const isActive = $derived(to ? isRouteActive(to) : name === qTabsValueCtx.value);
 
   function onclick(e: QTabEvent<MouseEvent>) {
