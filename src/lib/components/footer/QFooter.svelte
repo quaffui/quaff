@@ -2,8 +2,9 @@
   import { getContext, onDestroy, onMount, untrack } from "svelte";
   import { QContext } from "$lib/classes/QContext.svelte";
   import QScrollObserver from "$lib/classes/QScrollObserver.svelte";
-  import type { QLayoutProps } from "$components/layout/props";
   import QToolbar from "$components/toolbar/QToolbar.svelte";
+  import { QLayoutCtxName } from "$utils/context";
+  import type { QLayoutProps } from "$components/layout/props";
   import type { AppbarContext } from "../layout/QLayout.svelte";
   import type { QFooterProps } from "./props";
 
@@ -21,8 +22,8 @@
 
   const uid = $props.id();
 
-  const footerContext = QContext.get<AppbarContext>("QFooter");
-  const layoutView = getContext<{ value: NonNullable<QLayoutProps["view"]> }>("view");
+  const footerContext = QContext.get<AppbarContext>(QLayoutCtxName.footer);
+  const layoutView = getContext<{ value: NonNullable<QLayoutProps["view"]> }>(QLayoutCtxName.view);
 
   if (!footerContext || !layoutView) {
     throw new Error("QFooter should be used inside QLayout");

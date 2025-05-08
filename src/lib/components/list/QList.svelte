@@ -1,5 +1,6 @@
 <script lang="ts">
   import { setContext } from "svelte";
+  import { QListCtxName } from "$utils/context";
   import type { QListProps } from "./props";
 
   let {
@@ -15,15 +16,14 @@
     ...props
   }: QListProps = $props();
 
-  setContext("listItemsActiveClass", () => activeClass);
+  setContext(QListCtxName.activeClass, () => activeClass);
+  setContext(QListCtxName.separator, separator ? separatorOptions : undefined);
 
   let listEl: HTMLElement;
 
   $effect(() => {
     listEl.querySelector(".q-separator__wrapper:first-child")?.remove();
   });
-
-  setContext("separator", separator ? separatorOptions : undefined);
 
   Q.classes("q-list", {
     bemClasses: {

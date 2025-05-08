@@ -1,6 +1,7 @@
 <script module lang="ts">
   import { onMount, setContext } from "svelte";
   import { QContext } from "$lib/classes/QContext.svelte";
+  import { QLayoutCtxName } from "$utils/context";
   import ContextReseter from "../private/ContextReseter.svelte";
   import type { QLayoutProps } from "./props";
 
@@ -41,41 +42,41 @@
     }, 100);
   });
 
-  setContext("view", {
+  setContext(QLayoutCtxName.view, {
     get value() {
       return view;
     },
   });
 
-  const headerCtx = new QContext<AppbarContext>("QHeader", {
+  const headerCtx = new QContext<AppbarContext>(QLayoutCtxName.header, {
     height: 0,
     collapsed: false,
     ready: false,
   });
 
-  const footerCtx = new QContext<AppbarContext>("QFooter", {
+  const footerCtx = new QContext<AppbarContext>(QLayoutCtxName.footer, {
     height: 0,
     collapsed: false,
     ready: false,
   });
 
-  const leftRailbarCtx = new QContext<DrawerContext>("QRailbar-left", {
+  const leftRailbarCtx = new QContext<DrawerContext>(QLayoutCtxName.railbar.left, {
     width: 0,
     takesSpace: false,
     ready: false,
   });
-  const rightRailbarCtx = new QContext<DrawerContext>("QRailbar-right", {
+  const rightRailbarCtx = new QContext<DrawerContext>(QLayoutCtxName.railbar.right, {
     width: 0,
     takesSpace: false,
     ready: false,
   });
 
-  const leftDrawerCtx = new QContext<DrawerContext>("QDrawer-left", {
+  const leftDrawerCtx = new QContext<DrawerContext>(QLayoutCtxName.drawer.left, {
     width: 0,
     takesSpace: false,
     ready: false,
   });
-  const rightDrawerCtx = new QContext<DrawerContext>("QDrawer-right", {
+  const rightDrawerCtx = new QContext<DrawerContext>(QLayoutCtxName.drawer.right, {
     width: 360,
     takesSpace: false,
     ready: false,
@@ -134,12 +135,12 @@
 
   <ContextReseter
     keys={[
-      "QHeader",
-      "QFooter",
-      "QRailbar-left",
-      "QRailbar-right",
-      "QDrawer-left",
-      "QDrawer-right",
+      QLayoutCtxName.header,
+      QLayoutCtxName.footer,
+      QLayoutCtxName.railbar.left,
+      QLayoutCtxName.railbar.right,
+      QLayoutCtxName.drawer.left,
+      QLayoutCtxName.drawer.right,
     ]}
   >
     <div bind:this={contentEl} class="q-layout__content" style:margin={contentMargin}>

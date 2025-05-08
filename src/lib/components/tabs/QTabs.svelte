@@ -10,6 +10,7 @@
   import { setContext, untrack } from "svelte";
   import { QContext } from "$lib/classes/QContext.svelte";
   import { shouldReduceMotion } from "$lib/utils/dom";
+  import { QTabsCtxName } from "$utils/context";
   import type { QTabsProps } from "./props";
 
   let {
@@ -23,11 +24,11 @@
   let qTabs: HTMLElement;
   let tabList: HTMLElement[];
 
-  const valueContext = new QContext<string | undefined | null>("QTabsValue", value);
-  const requestContext = new QContext<string | null>("QTabsRequest", null);
+  const valueContext = new QContext<string | undefined | null>(QTabsCtxName.value, value);
+  const requestContext = new QContext<string | null>(QTabsCtxName.request, null);
 
   // Set the variant context
-  setContext("QTabsVariant", variant);
+  setContext(QTabsCtxName.variant, variant);
 
   $effect(() => {
     tabList = Array.from(qTabs.querySelectorAll(".q-tab"));
