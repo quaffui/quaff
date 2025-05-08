@@ -1,8 +1,6 @@
-<svelte:options runes={true} />
-
 <script lang="ts">
-  import { useSize } from "$lib/composables/useSize";
-  import { between } from "$lib/utils/number";
+  import { useSize } from "$composables";
+  import { between } from "$utils";
   import type { QCircularProgressProps } from "./props";
 
   type CircleParams = {

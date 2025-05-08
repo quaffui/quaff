@@ -2,8 +2,8 @@
 <script lang="ts">
   import QIcon from "$components/icon/QIcon.svelte";
   import type { QIconProps } from "$components/icon/props";
-  import type { Snippet } from "svelte";
   import type { MaterialSymbol } from "material-symbols";
+  import type { Snippet } from "svelte";
 
   interface IconSnippetProps extends Omit<QIconProps, "name"> {
     icon?: MaterialSymbol | Snippet;

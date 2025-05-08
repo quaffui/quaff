@@ -1,8 +1,7 @@
 <script lang="ts">
-  import { QSeparator, QCard, QCardSection } from "$lib";
-  import { QSeparatorVerticalDocs, QSeparatorHorizontalDocs } from "$components/separator/docs";
-  import QDocs from "$lib/components/private/QDocs.svelte";
-  import QDocsSection from "$lib/components/private/QDocsSection.svelte";
+  import { QSeparatorHorizontalDocs, QSeparatorVerticalDocs } from "$components/separator/docs";
+  import { QCard, QCardSection, QSeparator } from "$lib";
+  import { QDocs, QDocsSection } from "$private";
   import snippets from "./docs.snippets";
 </script>
 

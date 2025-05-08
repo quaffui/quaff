@@ -1,9 +1,8 @@
 <script lang="ts">
-  import { base, assets } from "$app/paths";
-  import { QList, QItem, QItemSection, QIcon, QAvatar, QCheckbox, QSwitch } from "$lib";
-  import { QListDocs, QItemDocs, QItemSectionDocs } from "$components/list/docs";
-  import QDocs from "$lib/components/private/QDocs.svelte";
-  import QDocsSection from "$lib/components/private/QDocsSection.svelte";
+  import { assets, base } from "$app/paths";
+  import { QItemDocs, QItemSectionDocs, QListDocs } from "$components/list/docs";
+  import { QAvatar, QCheckbox, QIcon, QItem, QItemSection, QList, QSwitch } from "$lib";
+  import { QDocs, QDocsSection } from "$private";
   import snippets from "./docs.snippets";
 
   let selectedItem = $state(0);

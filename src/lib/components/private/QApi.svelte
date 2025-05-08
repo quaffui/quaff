@@ -1,11 +1,21 @@
 <script lang="ts">
   import { createRawSnippet, mount, tick } from "svelte";
-  import { QCard, QIcon, QTabs, QTab, QCardSection, QList, QItem, QItemSection, Quaff } from "$lib";
-  import { capitalize, escape } from "$lib/utils";
-  import Types from "$lib/utils/types.json";
-  import type { QComponentDocs, QComponentEvent, QComponentMethod } from "$lib/utils";
+  import Types from "$utils/types.json";
+  import {
+    QCard,
+    QCardSection,
+    QIcon,
+    QItem,
+    QItemSection,
+    QList,
+    QTab,
+    QTabs,
+    QTooltip,
+    Quaff,
+  } from "$lib";
+  import { capitalize, escape } from "$utils";
+  import type { QComponentDocs, QComponentEvent, QComponentMethod } from "$utils";
   import type { ParsedProp, ParsedSnippet } from "$docgen/props/parseInterface";
-  import QTooltip from "$components/tooltip/QTooltip.svelte";
 
   let { componentDocs }: { componentDocs: QComponentDocs[] } = $props();
 

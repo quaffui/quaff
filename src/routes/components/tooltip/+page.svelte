@@ -1,8 +1,7 @@
 <script lang="ts">
-  import { QTooltip, QBtn, QCard, QCardSection, QCardActions, QIcon } from "$lib";
   import { QTooltipDocs } from "$components/tooltip/docs";
-  import QDocs from "$lib/components/private/QDocs.svelte";
-  import QDocsSection from "$lib/components/private/QDocsSection.svelte";
+  import { QBtn, QCard, QCardActions, QCardSection, QIcon, QTooltip } from "$lib";
+  import { QDocs, QDocsSection } from "$private";
   import snippets from "./docs.snippets";
 
   let tooltipRef = $state<QTooltip<string>>();

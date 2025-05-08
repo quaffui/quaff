@@ -1,4 +1,4 @@
-import type { UseAlignProps } from "$lib/composables/useAlign";
+import type { UseAlignProps } from "$composables";
 import type { HTMLAttributes } from "svelte/elements";
 
 export type QCardFillColors = "primary" | "secondary" | "tertiary";

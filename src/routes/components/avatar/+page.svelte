@@ -1,9 +1,8 @@
 <script lang="ts">
-  import { QAvatar } from "$lib";
-  import { QAvatarDocs } from "$components/avatar/docs";
-  import QDocs from "$lib/components/private/QDocs.svelte";
-  import QDocsSection from "$lib/components/private/QDocsSection.svelte";
   import { assets } from "$app/paths";
+  import { QAvatarDocs } from "$components/avatar/docs";
+  import { QAvatar } from "$lib";
+  import { QDocs, QDocsSection } from "$private";
   import snippets from "./docs.snippets";
 </script>
 

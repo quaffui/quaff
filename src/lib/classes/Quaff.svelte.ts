@@ -1,5 +1,5 @@
 import { onMount } from "svelte";
-import version from "$lib/helpers/version";
+import { version } from "$helpers";
 import { page } from "$app/state";
 
 type Mode = "light" | "dark";

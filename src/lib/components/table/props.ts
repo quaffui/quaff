@@ -1,4 +1,4 @@
-import type { NativeProps } from "$lib/utils";
+import type { NativeProps } from "$utils";
 import type { Snippet } from "svelte";
 import type { HTMLAttributes } from "svelte/elements";
 

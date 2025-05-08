@@ -1,7 +1,7 @@
 <script lang="ts">
   import { getContext, type Snippet } from "svelte";
   import { QContext } from "$lib/classes/QContext.svelte";
-  import { QItemCtxName } from "$utils/context";
+  import { QItemCtxName } from "$utils";
   import type { QItemSectionProps } from "./props";
 
   let {

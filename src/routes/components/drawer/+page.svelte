@@ -1,18 +1,17 @@
 <script lang="ts">
+  import { QDrawerDocs } from "$components/drawer/docs";
   import {
-    QDrawer,
-    QLayout,
-    QHeader,
-    QFooter,
     QBtn,
-    QList,
+    QDrawer,
+    QFooter,
+    QHeader,
+    QIcon,
     QItem,
     QItemSection,
-    QIcon,
+    QLayout,
+    QList,
   } from "$lib";
-  import { QDrawerDocs } from "$components/drawer/docs";
-  import QDocs from "$lib/components/private/QDocs.svelte";
-  import QDocsSection from "$lib/components/private/QDocsSection.svelte";
+  import { QDocs, QDocsSection } from "$private";
 
   import snippets from "./docs.snippets";
 

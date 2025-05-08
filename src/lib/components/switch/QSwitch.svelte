@@ -1,8 +1,7 @@
 <script lang="ts">
-  import QIconSnippet from "$components/private/QIconSnippet.svelte";
   import { ripple } from "$helpers";
-  import { isActivationKey } from "$utils";
-  import type { QEvent } from "$utils";
+  import { QIconSnippet } from "$private";
+  import { isActivationKey, type QEvent } from "$utils";
   import type { QSwitchProps } from "./props";
 
   type QSwitchEvent<T> = QEvent<T, HTMLDivElement>;
