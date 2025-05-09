@@ -228,15 +228,6 @@
   @extend .text-on-surface;
 }
 
-.bg-surface-variant {
-  background-color: var(--surface-variant) !important;
-}
-.text-surface-variant {
-  color: var(--surface-variant) !important;
-}
-.border-surface-variant {
-  border-color: var(--surface-variant) !important;
-}
 .bg-on-surface-variant {
   background-color: var(--on-surface-variant) !important;
 }
@@ -245,10 +236,6 @@
 }
 .border-on-surface-variant {
   border-color: var(--on-surface-variant) !important;
-}
-.surface-variant {
-  @extend .bg-surface-variant;
-  @extend .text-on-surface-variant;
 }
 
 .bg-outline {
