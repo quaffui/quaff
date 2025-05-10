@@ -14,16 +14,8 @@ export type HexValue = `#${string}`;
 type BaseColorNames = [
   "error",
   "error-container",
-  "neutral",
-  "neutral-container",
-  "neutral-variant",
-  "neutral-variant-container",
   "on-error",
   "on-error-container",
-  "on-neutral",
-  "on-neutral-container",
-  "on-neutral-variant",
-  "on-neutral-variant-container",
   "on-primary",
   "on-primary-container",
   "on-secondary",
@@ -115,7 +107,7 @@ const COLOR_TONES: Record<
   "surface-container-lowest": { fromColor: "neutral", light: 100, dark: 4 },
   "surface-dim": { fromColor: "neutral", light: 87, dark: 6 },
   "surface-tint": { fromColor: "primary", light: 40, dark: 80 },
-  "surface-variant": { fromColor: "neutral", light: 90, dark: 30 },
+  "surface-variant": { fromColor: "neutralVariant", light: 90, dark: 30 },
   "tertiary-fixed": { fromColor: "tertiary", light: 90, dark: 90 },
   "tertiary-fixed-dim": { fromColor: "tertiary", light: 80, dark: 80 },
 };
@@ -137,7 +129,7 @@ function getColors(palettes: Theme["palettes"], mode: "light" | "dark") {
           base: 40,
           onBase: 100,
           baseContainer: 90,
-          onBaseContainer: 10,
+          onBaseContainer: 30,
         }
       : {
           base: 80,
@@ -159,6 +151,7 @@ function getColors(palettes: Theme["palettes"], mode: "light" | "dark") {
 
   const results: Record<keyof QuaffColors, number> = Object.fromEntries(
     Object.entries(palettes)
+      .filter(([color]) => !["neutral", "neutralVariant"].includes(color))
       .map(([color, palette]) => getColor(color, palette))
       .flat(1)
   );
