@@ -294,6 +294,51 @@ class QColors {
 
     return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
   }
+
+  static hexToHsl(hex: HexValue): { h: number; s: number; l: number } {
+    const r = parseInt(hex.slice(1, 3), 16) / 255;
+    const g = parseInt(hex.slice(3, 5), 16) / 255;
+    const b = parseInt(hex.slice(5, 7), 16) / 255;
+
+    const max = Math.max(r, g, b),
+      min = Math.min(r, g, b);
+    let h = 0,
+      s;
+
+    const l = (max + min) / 2;
+
+    if (max === min) {
+      h = s = 0; // achromatic
+    } else {
+      const d = max - min;
+      s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+      switch (max) {
+        case r:
+          h = (g - b) / d + (g < b ? 6 : 0);
+          break;
+        case g:
+          h = (b - r) / d + 2;
+          break;
+        case b:
+          h = (r - g) / d + 4;
+          break;
+      }
+      h *= 60;
+    }
+
+    return { h, s: s * 100, l: l * 100 };
+  }
+
+  static calculateHueRotate(fromHex: HexValue, toHex: HexValue): number {
+    const from = QColors.hexToHsl(fromHex);
+    const to = QColors.hexToHsl(toHex);
+    let rotate = to.h - from.h;
+    if (rotate < 0) {
+      rotate += 360;
+    }
+
+    return Math.round(rotate);
+  }
 }
 
 export default QColors;
