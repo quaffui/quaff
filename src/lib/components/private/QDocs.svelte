@@ -1,8 +1,8 @@
 <script lang="ts">
   import { setContext, type Snippet } from "svelte";
   import { assets } from "$app/paths";
-  import { QCard, QCardSection, Quaff } from "$lib";
-  import { QDocsCtxName, type QComponentDocs } from "$utils";
+  import { QCard, QCardSection, QTheme, Quaff } from "$lib";
+  import { QColors, QDocsCtxName, type QComponentDocs } from "$utils";
   import QApi from "./QApi.svelte";
 
   let {
@@ -27,23 +27,35 @@
 
   const isDark = $derived(Quaff.darkMode.isActive);
 
+  const hueRotate = $derived(
+    QColors.calculateHueRotate(
+      "#ec6b08",
+      QTheme.themeColors[`primary-${isDark ? "dark" : "light"}`]
+    )
+  );
+
   if (snippets) {
     setContext(QDocsCtxName.snippets, () => snippets);
   }
 
-  let image = $state<string>();
-
-  $effect(() => {
-    image = `${assets}/beer-splash-${isDark ? "dark" : "light"}.jpg`;
-  });
+  const image = $derived(`${assets}/cocktail-close-up.jpg`);
 
   let principalDocument = Array.isArray(componentDocs) ? componentDocs[0] : componentDocs;
 </script>
 
 <div class="q-docs" style="padding: 1rem">
   <div class="row q-gutter-lg" style="min-height: 400px">
-    <QCard class="col-sm-12 col-lg-6 flex flex-center" fill="primary" style="min-height: 400px">
+    <QCard
+      class="col-sm-12 col-lg-6 flex flex-center"
+      fill="primary"
+      style="min-height: 400px; align-content: center;"
+    >
       <h1 class="large no-margin">{principalDocument?.name || docName}</h1>
+      <QCardSection class="q-docs__description flex flex-center">
+        <h3 class="q-docs__description-text">
+          {principalDocument?.description || docDescription}
+        </h3>
+      </QCardSection>
     </QCard>
     <QCard
       class="q-docs__preview col-sm-12 col-lg-6 q-mt-none q-pa-none"
@@ -60,14 +72,9 @@
         <img
           class="q-docs__image"
           src={image}
-          alt="Close-up of the content of a glass of beer"
-          style={isDark ? "filter:brightness(0.3)" : ""}
+          alt="Close-up of the content of a cocktail"
+          style={`filter: hue-rotate(${hueRotate}deg) ${isDark ? "brightness(0.7)" : "brightness(1.2)"}`}
         />
-      </QCardSection>
-      <QCardSection class="q-docs__description flex flex-center">
-        <h3 class="q-docs__description-text">
-          {principalDocument?.description || docDescription}
-        </h3>
       </QCardSection>
     </QCard>
   </div>
@@ -107,10 +114,8 @@
 
     &__image {
       width: 100%;
-      height: 12rem;
+      height: 25rem;
       object-fit: cover;
-      border-bottom-left-radius: 0;
-      border-bottom-right-radius: 0;
     }
 
     :global(.q-docs__preview) {
@@ -127,6 +132,7 @@
 
     :global(.q-docs__description-text) {
       font-size: 1.75rem;
+      text-align: center;
     }
 
     .q-page {
