@@ -285,8 +285,9 @@
     </QDrawer>
   {/snippet}
   {#snippet content()}
-    <div bind:this={contentEl}>
+    <div bind:this={contentEl} style="position: relative; min-height: 100%">
       {@render children?.()}
+      <div class="privacy-policy"><a href="{base}/privacy-policy">Privacy Policy</a></div>
     </div>
   {/snippet}
 </QLayout>
@@ -307,5 +308,15 @@
     align-items: center;
     justify-content: center;
     color: white;
+  }
+
+  .privacy-policy {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+    padding: 1rem;
+    font-size: 0.8rem;
   }
 </style>
