@@ -33,9 +33,10 @@ function prepareThemeColors(from: string) {
 
 class QTheme {
   themeColors = $state({} as ThemeColors);
+  srcColor = $state("#0039b4");
 
   constructor() {
-    this.themeColors = prepareThemeColors("#0039b4");
+    this.themeColors = prepareThemeColors(this.srcColor);
   }
 
   private apply() {
@@ -71,6 +72,7 @@ class QTheme {
   setTheme(from: string) {
     const newTheme = prepareThemeColors(from);
     this.themeColors = newTheme;
+    this.srcColor = from;
     this.apply();
   }
 }
