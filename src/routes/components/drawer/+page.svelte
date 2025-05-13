@@ -1,5 +1,6 @@
 <script lang="ts">
   import { QDrawerDocs } from "$components/drawer/docs";
+  import { pageTitle } from "$helpers/pageTitle";
   import {
     QBtn,
     QDrawer,
@@ -29,6 +30,10 @@
 
   let drawerRef = $state<QDrawer>();
 </script>
+
+<svelte:head>
+  <title>{pageTitle("QDrawer")}</title>
+</svelte:head>
 
 <QDocs {snippets} componentDocs={QDrawerDocs}>
   {#snippet display()}

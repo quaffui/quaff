@@ -1,6 +1,12 @@
 <script lang="ts">
+  import { pageTitle } from "$helpers/pageTitle";
+
   const cols = [1, 2, 3, 4];
 </script>
+
+<svelte:head>
+  <title>{pageTitle("Grid")}</title>
+</svelte:head>
 
 <div class="q-page">
   <h1 class="q-mb-xl">Grid system</h1>

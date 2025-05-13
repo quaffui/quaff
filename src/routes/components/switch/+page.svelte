@@ -1,5 +1,6 @@
 <script lang="ts">
   import { QSwitchDocs } from "$components/switch/docs";
+  import { pageTitle } from "$helpers/pageTitle";
   import { QBtn, QCard, QCardSection, QIcon, QItem, QItemSection, QList, QSwitch } from "$lib";
   import { QDocs, QDocsSection } from "$private";
   import snippets from "./docs.snippets";
@@ -10,6 +11,10 @@
   let darkMode = $state(false);
   let notificationsEnabled = $state(true);
 </script>
+
+<svelte:head>
+  <title>{pageTitle("QSwitch")}</title>
+</svelte:head>
 
 <QDocs {snippets} componentDocs={QSwitchDocs}>
   {#snippet display()}

@@ -1,5 +1,6 @@
 <script lang="ts">
   import { QInputDocs } from "$components/input/docs";
+  import { pageTitle } from "$helpers/pageTitle";
   import { QBtn, QIcon, QInput } from "$lib";
   import { QDocs, QDocsSection } from "$private";
   import snippets from "./docs.snippets";
@@ -18,6 +19,10 @@
   let afterValue = $state("");
   let combinedValue = $state("");
 </script>
+
+<svelte:head>
+  <title>{pageTitle("QInput")}</title>
+</svelte:head>
 
 <QDocs {snippets} componentDocs={QInputDocs}>
   {#snippet display()}

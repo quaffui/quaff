@@ -1,9 +1,14 @@
 <script lang="ts">
   import { QSeparatorHorizontalDocs, QSeparatorVerticalDocs } from "$components/separator/docs";
+  import { pageTitle } from "$helpers/pageTitle";
   import { QCard, QCardSection, QSeparator } from "$lib";
   import { QDocs, QDocsSection } from "$private";
   import snippets from "./docs.snippets";
 </script>
+
+<svelte:head>
+  <title>{pageTitle("QSeparator")}</title>
+</svelte:head>
 
 <QDocs {snippets} componentDocs={[QSeparatorHorizontalDocs, QSeparatorVerticalDocs]}>
   {#snippet display()}

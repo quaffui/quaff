@@ -13,6 +13,7 @@
   } from "$lib";
   import { QDocs, QDocsSection } from "$private";
   import type { QDialogPositionOptions } from "$components/dialog/props";
+  import { pageTitle } from "$helpers/pageTitle";
   import snippets from "./docs.snippets";
 
   let displayDialogOpen = $state(false);
@@ -28,6 +29,10 @@
 
   let selectedPosition: QDialogPositionOptions = $state("default");
 </script>
+
+<svelte:head>
+  <title>{pageTitle("QDialog")}</title>
+</svelte:head>
 
 <QDocs {snippets} componentDocs={QDialogDocs}>
   {#snippet display()}

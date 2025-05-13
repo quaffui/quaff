@@ -1,6 +1,7 @@
 <script lang="ts">
   import { assets } from "$app/paths";
   import { QChipDocs } from "$components/chip/docs";
+  import { pageTitle } from "$helpers/pageTitle";
   import { QChip } from "$lib";
   import { QDocs, QDocsSection } from "$private";
 
@@ -8,6 +9,10 @@
 
   let selectedValue = false;
 </script>
+
+<svelte:head>
+  <title>{pageTitle("QChip")}</title>
+</svelte:head>
 
 <QDocs {snippets} componentDocs={QChipDocs}>
   {#snippet display()}

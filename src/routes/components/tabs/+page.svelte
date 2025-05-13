@@ -1,6 +1,7 @@
 <script lang="ts">
   import { base } from "$app/paths";
   import { QTabDocs, QTabsDocs } from "$components/tabs/docs";
+  import { pageTitle } from "$helpers/pageTitle";
   import { QCard, QCardSection, QIcon, QItem, QItemSection, QList, QTab, QTabs } from "$lib";
   import { QDocs, QDocsSection } from "$private";
   import snippets from "./docs.snippets";
@@ -9,6 +10,10 @@
   let contentTab = $state("tab1");
   let mobileTab = $state("feed");
 </script>
+
+<svelte:head>
+  <title>{pageTitle("QTabs")}</title>
+</svelte:head>
 
 <QDocs {snippets} componentDocs={[QTabsDocs, QTabDocs]}>
   {#snippet display()}

@@ -1,9 +1,14 @@
 <script lang="ts">
   import { QCardActionsDocs, QCardDocs, QCardSectionDocs } from "$components/card/docs";
+  import { pageTitle } from "$helpers/pageTitle";
   import { QBtn, QCard, QCardActions, QCardSection } from "$lib";
   import { QDocs, QDocsSection } from "$private";
   import snippets from "./docs.snippets";
 </script>
+
+<svelte:head>
+  <title>{pageTitle("QCard")}</title>
+</svelte:head>
 
 <QDocs {snippets} componentDocs={[QCardDocs, QCardSectionDocs, QCardActionsDocs]}>
   {#snippet display()}

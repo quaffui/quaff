@@ -3,6 +3,7 @@
   import { QDocs, QDocsSection } from "$private";
   import { QBtn, QCodeBlock, QTheme, Quaff } from "$lib";
   import type { HexValue } from "$utils";
+  import { pageTitle } from "$helpers/pageTitle";
 
   let hexColor = $state("");
   let customPrimary = $state<HexValue>(
@@ -31,6 +32,10 @@
 
   onDestroy(resetTheme);
 </script>
+
+<svelte:head>
+  <title>{pageTitle("QTheme")}</title>
+</svelte:head>
 
 <QDocs
   docName="QTheme"

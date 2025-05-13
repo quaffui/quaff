@@ -2,6 +2,10 @@
   import { assets, base } from "$app/paths";
 </script>
 
+<svelte:head>
+  <title>Quaff – Svelte Material 3 UI Framework</title>
+</svelte:head>
+
 <div class="q-page page-home">
   <div class="page-home__logo-container">
     <img

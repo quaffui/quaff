@@ -1,9 +1,14 @@
 <script lang="ts">
   import { QToolbarDocs } from "$components/toolbar/docs";
+  import { pageTitle } from "$helpers/pageTitle";
   import { QBtn, QIcon, QInput, QToolbar, QToolbarTitle } from "$lib";
   import { QDocs, QDocsSection } from "$private";
   import snippets from "./docs.snippets";
 </script>
+
+<svelte:head>
+  <title>{pageTitle("QToolbar")}</title>
+</svelte:head>
 
 <QDocs {snippets} componentDocs={QToolbarDocs}>
   {#snippet display()}

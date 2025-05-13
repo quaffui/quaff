@@ -3,6 +3,7 @@
   import { QBtn, QCard, QCardSection, QCodeBlock, QIcon, QTable } from "$lib";
   import { QDocs, QDocsSection } from "$private";
   import type { QTableColumn, QTableRow } from "$components/table/props";
+  import { pageTitle } from "$helpers/pageTitle";
   import snippets from "./docs.snippets";
 
   const columnsDefCode = `const columns = [
@@ -136,6 +137,10 @@
     { id: 35, title: "The Sound and the Fury", author: "William Faulkner" },
   ];
 </script>
+
+<svelte:head>
+  <title>{pageTitle("QTable")}</title>
+</svelte:head>
 
 <QDocs {snippets} componentDocs={QTableDocs}>
   {#snippet display()}

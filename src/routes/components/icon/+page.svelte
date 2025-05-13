@@ -1,10 +1,15 @@
 <script lang="ts">
   import { assets, base } from "$app/paths";
   import { QIconDocs } from "$components/icon/docs";
+  import { pageTitle } from "$helpers/pageTitle";
   import { QIcon } from "$lib";
   import { QDocs, QDocsSection } from "$private";
   import snippets from "./docs.snippets";
 </script>
+
+<svelte:head>
+  <title>{pageTitle("QIcon")}</title>
+</svelte:head>
 
 <QDocs {snippets} componentDocs={QIconDocs}>
   {#snippet display()}
