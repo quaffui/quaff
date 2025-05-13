@@ -18,6 +18,7 @@
   } from "$lib";
   import { QDocs, QDocsSection } from "$private";
   import type { QLayoutProps } from "$components/layout/props";
+  import { pageTitle } from "$helpers/pageTitle";
   import { snippet } from "./docs.snippets";
 
   let displayLeftDrawerElement = $state<ReturnType<typeof QDrawer>>();
@@ -54,6 +55,10 @@
     }
   });
 </script>
+
+<svelte:head>
+  <title>{pageTitle("QLayout")}</title>
+</svelte:head>
 
 <QDocs {snippets} componentDocs={QLayoutDocs}>
   {#snippet display()}

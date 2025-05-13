@@ -1,5 +1,6 @@
 <script lang="ts">
   import { QSelectDocs } from "$components/select/docs";
+  import { pageTitle } from "$helpers/pageTitle";
   import { QBtn, QCard, QCardActions, QCardSection, QIcon, QItem, QList, QSelect } from "$lib";
   import { QDocs, QDocsSection } from "$private";
   import snippets from "./docs.snippets";
@@ -46,6 +47,10 @@
     return selectMultiple[0];
   });
 </script>
+
+<svelte:head>
+  <title>{pageTitle("QSelect")}</title>
+</svelte:head>
 
 <QDocs {snippets} componentDocs={QSelectDocs}>
   {#snippet display()}

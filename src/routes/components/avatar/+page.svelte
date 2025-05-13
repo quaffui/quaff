@@ -1,10 +1,15 @@
 <script lang="ts">
   import { assets } from "$app/paths";
   import { QAvatarDocs } from "$components/avatar/docs";
+  import { pageTitle } from "$helpers/pageTitle";
   import { QAvatar } from "$lib";
   import { QDocs, QDocsSection } from "$private";
   import snippets from "./docs.snippets";
 </script>
+
+<svelte:head>
+  <title>{pageTitle("QAvatar")}</title>
+</svelte:head>
 
 <QDocs {snippets} componentDocs={QAvatarDocs}>
   {#snippet display()}

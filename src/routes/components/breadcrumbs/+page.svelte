@@ -1,10 +1,15 @@
 <script lang="ts">
   import { base } from "$app/paths";
   import { QBreadcrumbsDocs } from "$components/breadcrumbs/docs";
+  import { pageTitle } from "$helpers/pageTitle";
   import { QBreadcrumbs, QBreadcrumbsEl } from "$lib";
   import { QDocs, QDocsSection } from "$private";
   import snippets from "./docs.snippets";
 </script>
+
+<svelte:head>
+  <title>{pageTitle("QBreadcrumbs")}</title>
+</svelte:head>
 
 <QDocs {snippets} componentDocs={QBreadcrumbsDocs}>
   {#snippet display()}
