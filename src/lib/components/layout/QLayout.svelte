@@ -34,6 +34,7 @@
     ...props
   }: QLayoutProps = $props();
 
+  let layoutEl = $state<HTMLDivElement>();
   let contentEl: HTMLDivElement;
 
   onMount(() => {
@@ -92,12 +93,20 @@
   );
 
   const isReady = $derived(
-    (!header || headerCtx.value.ready) &&
-      (!footer || footerCtx.value.ready) &&
-      (!railbarLeft || leftRailbarCtx.value.ready) &&
-      (!railbarRight || rightRailbarCtx.value.ready) &&
-      (!drawerLeft || leftDrawerCtx.value.ready) &&
-      (!drawerRight || rightDrawerCtx.value.ready)
+    (!header || headerCtx.value.ready || (layoutEl && !layoutEl.querySelector(".q-header"))) &&
+      (!footer || footerCtx.value.ready || (layoutEl && !layoutEl.querySelector(".q-footer"))) &&
+      (!railbarLeft ||
+        leftRailbarCtx.value.ready ||
+        (layoutEl && !layoutEl.querySelector(".q-railbar--left"))) &&
+      (!railbarRight ||
+        rightRailbarCtx.value.ready ||
+        (layoutEl && !layoutEl.querySelector(".q-railbar--right"))) &&
+      (!drawerLeft ||
+        leftDrawerCtx.value.ready ||
+        (layoutEl && !layoutEl.querySelector(".q-drawer--left"))) &&
+      (!drawerRight ||
+        rightDrawerCtx.value.ready ||
+        (layoutEl && !layoutEl.querySelector(".q-drawer--right")))
   );
 
   function handleDrawerCtx(ctx: QContext<DrawerContext>) {
@@ -113,6 +122,7 @@
 </script>
 
 <div
+  bind:this={layoutEl}
   {...props}
   class="q-layout"
   style:--left-drawer-width={`${drawerLeft ? leftDrawerCtx.value.width : 0}px`}
