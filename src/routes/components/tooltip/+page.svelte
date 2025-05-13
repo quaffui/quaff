@@ -1,5 +1,6 @@
 <script lang="ts">
   import { QTooltipDocs } from "$components/tooltip/docs";
+  import { pageTitle } from "$helpers/pageTitle";
   import { QBtn, QCard, QCardActions, QCardSection, QIcon, QTooltip } from "$lib";
   import { QDocs, QDocsSection } from "$private";
   import snippets from "./docs.snippets";
@@ -7,6 +8,10 @@
   let tooltipRef = $state<QTooltip<string>>();
   let showControlledTooltip = $state(false);
 </script>
+
+<svelte:head>
+  <title>{pageTitle("QTooltip")}</title>
+</svelte:head>
 
 <QDocs {snippets} componentDocs={QTooltipDocs}>
   {#snippet display()}

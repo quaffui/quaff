@@ -1,6 +1,7 @@
 <script lang="ts">
   import { assets, base } from "$app/paths";
   import { QItemDocs, QItemSectionDocs, QListDocs } from "$components/list/docs";
+  import { pageTitle } from "$helpers/pageTitle";
   import { QAvatar, QCheckbox, QIcon, QItem, QItemSection, QList, QSwitch } from "$lib";
   import { QDocs, QDocsSection } from "$private";
   import snippets from "./docs.snippets";
@@ -9,6 +10,10 @@
   let checkboxValue = $state(false);
   let switchValue = $state(false);
 </script>
+
+<svelte:head>
+  <title>{pageTitle("QList")}</title>
+</svelte:head>
 
 <QDocs {snippets} componentDocs={[QListDocs, QItemDocs, QItemSectionDocs]}>
   {#snippet display()}

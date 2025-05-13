@@ -1,5 +1,6 @@
 <script lang="ts">
   import { QFooterDocs } from "$components/footer/docs";
+  import { pageTitle } from "$helpers/pageTitle";
   import { QFooter, QLayout } from "$lib";
   import { QDocs, QDocsSection } from "$private";
 
@@ -26,6 +27,10 @@
             Odit corporis explicabo labore nisi officiis illum a. Provident repellat vitae pariatur molestias quae hic molestiae, neque eaque at velit quidem deserunt error architecto. Non a tenetur nihil eveniet inventore.
             Voluptas, molestiae consequatur vero sunt id hic modi expedita pariatur ullam vel, magni excepturi libero minus maxime perspiciatis voluptatibus enim amet, error optio fugit maiores debitis ab. Assumenda, veritatis ad.`;
 </script>
+
+<svelte:head>
+  <title>{pageTitle("QFooter")}</title>
+</svelte:head>
 
 <QDocs {snippets} componentDocs={QFooterDocs}>
   {#snippet display()}

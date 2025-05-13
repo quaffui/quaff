@@ -1,11 +1,16 @@
 <script lang="ts">
   import { assets } from "$app/paths";
   import { QBtnDocs } from "$components/button/docs";
+  import { pageTitle } from "$helpers/pageTitle";
   import { QBtn } from "$lib";
   import { QDocs, QDocsSection } from "$private";
 
   import snippets from "./docs.snippets";
 </script>
+
+<svelte:head>
+  <title>{pageTitle("QButton")}</title>
+</svelte:head>
 
 <QDocs {snippets} componentDocs={QBtnDocs}>
   {#snippet display()}

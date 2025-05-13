@@ -1,7 +1,12 @@
 <script lang="ts">
   import { QDocs, QDocsSection } from "$private";
   import { Quaff, QBtn, QChip, QCodeBlock } from "$lib";
+  import { pageTitle } from "$helpers/pageTitle";
 </script>
+
+<svelte:head>
+  <title>{pageTitle("The Quaff class")}</title>
+</svelte:head>
 
 <div>
   <QDocs

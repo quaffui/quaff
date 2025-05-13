@@ -1,5 +1,6 @@
 <script lang="ts">
   import { QCheckboxDocs } from "$components/checkbox/docs";
+  import { pageTitle } from "$helpers/pageTitle";
   import { QBtn, QCheckbox, QIcon, QItem, QItemSection, QList } from "$lib";
   import { QDocs, QDocsSection } from "$private";
 
@@ -9,6 +10,10 @@
   let value2 = true;
   let value3 = false;
 </script>
+
+<svelte:head>
+  <title>{pageTitle("QCheckbox")}</title>
+</svelte:head>
 
 <QDocs {snippets} componentDocs={QCheckboxDocs}>
   {#snippet display()}

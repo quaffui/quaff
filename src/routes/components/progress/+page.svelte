@@ -1,5 +1,6 @@
 <script lang="ts">
   import { QCircularProgressDocs, QLinearProgressDocs } from "$components/progress/docs";
+  import { pageTitle } from "$helpers/pageTitle";
   import { QBtn, QCard, QCardSection, QCircularProgress, QLinearProgress } from "$lib";
   import { QDocs, QDocsSection } from "$private";
 
@@ -9,6 +10,10 @@
   let circularValue = 25;
   let indeterminateProgress = true;
 </script>
+
+<svelte:head>
+  <title>{pageTitle("QProgress")}</title>
+</svelte:head>
 
 <QDocs {snippets} componentDocs={[QLinearProgressDocs, QCircularProgressDocs]}>
   {#snippet display()}

@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { pageTitle } from "$helpers/pageTitle";
+
   const colors = [
     "red",
     "pink",
@@ -31,6 +33,10 @@
     return index <= switchingTextColorIndex ? `${color}-10` : `${color}-1`;
   };
 </script>
+
+<svelte:head>
+  <title>{pageTitle("Colors")}</title>
+</svelte:head>
 
 <div class="q-page">
   <h1 class="q-mb-xl">Colors</h1>

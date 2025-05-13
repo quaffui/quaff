@@ -1,6 +1,7 @@
 <script lang="ts">
   import { QDocs, QDocsSection } from "$private";
   import { QCodeBlock, QScrollObserver } from "$lib";
+  import { pageTitle } from "$helpers/pageTitle";
 
   const displayObserver = new QScrollObserver("#display-observer");
   const usageObserver = new QScrollObserver("#usage-observer");
@@ -13,6 +14,10 @@
     inflectionPoint: usageObserver.inflectionPoint,
   });
 </script>
+
+<svelte:head>
+  <title>{pageTitle("QScrollObserver")}</title>
+</svelte:head>
 
 <QDocs
   docName="QScrollObserver"

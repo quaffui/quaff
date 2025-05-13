@@ -1,5 +1,6 @@
 <script lang="ts">
   import { QRadioDocs } from "$components/radio/docs";
+  import { pageTitle } from "$helpers/pageTitle";
   import { QBtn, QCard, QCardSection, QIcon, QItem, QItemSection, QList, QRadio } from "$lib";
   import { QDocs, QDocsSection } from "$private";
   import snippets from "./docs.snippets";
@@ -12,6 +13,10 @@
   let selectedProgrammingLanguage = $state("");
   let eventSelectedValue = $state("event-option1");
 </script>
+
+<svelte:head>
+  <title>{pageTitle("QRadio")}</title>
+</svelte:head>
 
 <QDocs {snippets} componentDocs={QRadioDocs}>
   {#snippet display()}

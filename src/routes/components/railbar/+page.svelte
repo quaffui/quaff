@@ -1,5 +1,6 @@
 <script lang="ts">
   import { QRailbarDocs } from "$components/railbar/docs";
+  import { pageTitle } from "$helpers/pageTitle";
   import {
     QBtn,
     QDrawer,
@@ -19,6 +20,10 @@
   let leftDrawerOpen = $state(false);
   let rightDrawerOpen = $state(false);
 </script>
+
+<svelte:head>
+  <title>{pageTitle("QRailbar")}</title>
+</svelte:head>
 
 <QDocs {snippets} componentDocs={QRailbarDocs}>
   {#snippet display()}
