@@ -143,7 +143,7 @@
     {#if src}
       <img {src} alt="q-btn leading icon" class="q-btn__img q-btn__img--responsive" />
     {:else}
-      <QIcon name={icon as MaterialSymbol} {color} class="q-btn__icon" />
+      <QIcon name={icon as MaterialSymbol} {color} class="q-btn__icon" {size} />
     {/if}
   {/if}
 
