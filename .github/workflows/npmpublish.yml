@@ -11,7 +11,7 @@ jobs:
       # Setup .npmrc file to publish to npm
       - uses: oven-sh/setup-bun@v2
         with:
-          bun-version: 1.2.9
+          bun-version: 1.2.13
           registry-url: "https://registry.npmjs.org"
       - run: echo "//registry.npmjs.org/:_authToken=${{secrets.NPM_TOKEN}}" > .npmrc
       - run: bun install --frozen-lockfile
