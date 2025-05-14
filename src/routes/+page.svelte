@@ -1,5 +1,16 @@
 <script lang="ts">
   import { assets, base } from "$app/paths";
+  import QBtn from "$components/button/QBtn.svelte";
+  import { copy } from "$utils";
+
+  let copied = false;
+  const npmCommand = "npm create quaff@latest";
+
+  async function copyNpmCommandToClipboard() {
+    await copy(npmCommand);
+    copied = true;
+    setTimeout(() => (copied = false), 600);
+  }
 </script>
 
 <svelte:head>
@@ -14,10 +25,16 @@
       alt="Quaff logo, a cocktail with a slice of orange"
     />
   </div>
-  <div class="page-home__teaser">Quaff UI is a Component Framework built on top of SvelteKit.</div>
+  <div class="page-home__teaser">Quaff is a UI Component Framework built on top of SvelteKit.</div>
   <ul class="page-home__get-started-list">
-    <li>
+    <li class="page-home__install">
       <pre class="language-svelte">npm create quaff@latest</pre>
+      <QBtn
+        icon={copied ? "check" : "copy_all"}
+        onclick={copyNpmCommandToClipboard}
+        title="Copy to clipboard"
+        size="sm"
+      ></QBtn>
     </li>
     <li>
       Check our <a href="{base}/components">components</a> and familiarize yourself with our
@@ -70,6 +87,13 @@
 
         margin: 1em 0;
       }
+    }
+
+    &__install {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0.4em;
     }
 
     a {
