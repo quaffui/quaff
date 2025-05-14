@@ -42,8 +42,8 @@
     &__logo {
       max-width: 15.75rem;
       margin: 0 auto;
+      margin-top: 10%;
       margin-bottom: 1.75rem;
-      margin-top: 1.5rem;
     }
 
     &__teaser {

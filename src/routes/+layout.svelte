@@ -285,7 +285,7 @@
     </QDrawer>
   {/snippet}
   {#snippet content()}
-    <div bind:this={contentEl} style="position: relative; min-height: 100%; padding-top: 10%">
+    <div bind:this={contentEl} style="position: relative; min-height: 100%;">
       {@render children?.()}
       <div class="privacy-policy"><a href="{base}/privacy-policy">Privacy Policy</a></div>
     </div>
