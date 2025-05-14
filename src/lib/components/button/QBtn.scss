@@ -44,12 +44,17 @@
     );
     @each $size, $val in $sizeMap {
       &--#{$size} {
-        height: 2.5rem + 0.5 * $val;
-        min-width: 2.5rem + 0.5 * $val;
+        $dim: 2.5rem + 0.5 * $val;
+        height: $dim;
+        min-width: $dim;
 
         border-radius: 1.25rem + 0.25 * $val;
 
         font-size: 1rem + 0.125 * $val;
+
+        &.q-btn--round {
+          width: $dim;
+        }
       }
     }
 
@@ -99,8 +104,6 @@
     }
 
     &--round {
-      width: 2.5rem;
-      height: 2.5rem;
       border-radius: 50%;
       padding: 0;
     }
