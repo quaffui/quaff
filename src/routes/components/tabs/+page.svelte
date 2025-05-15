@@ -195,10 +195,10 @@
             </div>
             <div style="position: absolute; bottom: 0; left: 0; right: 0;">
               <QTabs bind:value={mobileTab} class="bg-surface">
-                <QTab name="feed" icon="home"></QTab>
-                <QTab name="search" icon="search"></QTab>
-                <QTab name="notifications" icon="notifications"></QTab>
-                <QTab name="profile" icon="person"></QTab>
+                <QTab name="feed" icon="home" />
+                <QTab name="search" icon="search" />
+                <QTab name="notifications" icon="notifications" />
+                <QTab name="profile" icon="person" />
               </QTabs>
             </div>
           </QCardSection>

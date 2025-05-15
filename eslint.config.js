@@ -101,6 +101,7 @@ export default [
       ],
       "no-undef": ["off"],
       "object-shorthand": "error",
+      "svelte/html-self-closing": ["error", "default"],
       "svelte/valid-compile": ["error", { ignoreWarnings: true }],
       "svelte/no-at-html-tags": ["warn"],
       "@typescript-eslint/no-unused-expressions": [
