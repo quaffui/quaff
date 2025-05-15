@@ -34,7 +34,7 @@
         onclick={copyNpmCommandToClipboard}
         title="Copy to clipboard"
         size="sm"
-      ></QBtn>
+      />
     </li>
     <li>
       Check our <a href="{base}/components">components</a> and familiarize yourself with our
