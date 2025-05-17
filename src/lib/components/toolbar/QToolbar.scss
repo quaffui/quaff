@@ -2,11 +2,7 @@
 @use "$css/variables";
 
 .q-toolbar {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  white-space: nowrap;
-  gap: 1rem;
+  @include mixins.toolbarDisplay;
 
   width: 100%;
   height: var(--toolbar-height);
@@ -23,7 +19,7 @@
   }
 
   &--bordered {
-    border-bottom: solid 0.0625rem var(--outline);
+    @include mixins.border($position: "bottom");
   }
 }
 

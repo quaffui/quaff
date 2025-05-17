@@ -2,18 +2,14 @@
 @use "$css/variables";
 
 .q-footer {
+  z-index: 4;
   position: absolute;
   top: auto;
   right: 0;
   bottom: 0;
   left: 0;
-  z-index: 4;
 
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  white-space: nowrap;
-  gap: 1rem;
+  @include mixins.toolbarDisplay;
 
   @include mixins.padding("x-md");
 

@@ -9,11 +9,7 @@
   bottom: auto;
   left: 0;
 
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  white-space: nowrap;
-  gap: 1rem;
+  @include mixins.toolbarDisplay;
 
   min-height: unset;
   height: var(--header-height);
