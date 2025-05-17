@@ -9,13 +9,21 @@
   bottom: auto;
   left: 0;
 
+  @include mixins.toolbarDisplay;
+
   min-height: unset;
   height: var(--header-height);
   width: auto;
 
+  @include mixins.padding("x-md");
+
   border-radius: 0;
 
   background-color: var(--surface);
+
+  &--inset {
+    padding-left: 3.625rem;
+  }
 
   &.q-header--elevated {
     @include mixins.elevate(1);
@@ -35,13 +43,6 @@
 
   &.q-header--collapsed {
     translate: 0 calc(-1.5 * var(--header-height));
-  }
-
-  & > nav {
-    height: 100%;
-    min-height: unset;
-
-    @include mixins.padding("x-md");
   }
 
   @each $side in ("left", "right") {

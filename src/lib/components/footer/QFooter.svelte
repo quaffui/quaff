@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { getContext, onDestroy, onMount, untrack } from "svelte";
-  import { QScrollObserver, QToolbar } from "$lib";
+  import { getContext, onMount, untrack } from "svelte";
+  import { QScrollObserver } from "$lib";
   import { QContext } from "$lib/classes/QContext.svelte";
   import { QLayoutCtxName } from "$utils";
   import type { QLayoutProps } from "$components/layout/props";
@@ -57,10 +57,10 @@
         footerEl.style.transition = "all 0.3s";
       }
     }, 100);
-  });
 
-  onDestroy(() => {
-    untrack(() => footerContext).updateEntries({ height: 0, collapsed: false, ready: false });
+    return () => {
+      footerContext.updateEntries({ height: 0, collapsed: false, ready: false });
+    };
   });
 
   Q.classes("q-footer", {
@@ -83,8 +83,6 @@
     style:--footer-height="{height}px"
     data-quaff
   >
-    <QToolbar>
-      {@render children?.()}
-    </QToolbar>
+    {@render children?.()}
   </footer>
 {/if}

@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { getContext, onDestroy, onMount, untrack } from "svelte";
-  import { QScrollObserver, QToolbar } from "$lib";
+  import { getContext, onMount, untrack } from "svelte";
+  import { QScrollObserver } from "$lib";
   import { QContext } from "$lib/classes/QContext.svelte";
   import { QLayoutCtxName } from "$utils";
   import type { AppbarContext } from "$components/layout/QLayout.svelte";
@@ -47,10 +47,13 @@
         headerEl.style.transition = "all 0.3s";
       }, 100);
     }
-  });
 
-  onDestroy(() => {
-    untrack(() => headerContext).updateEntries({ height: 0, collapsed: false, ready: false });
+    return () => {
+      if (headerContext) {
+        headerEl.style.transition = "none";
+        headerContext.updateEntries({ height: 0, collapsed: false, ready: false });
+      }
+    };
   });
 
   Q.classes("q-header", {
@@ -60,6 +63,7 @@
       collapsed,
       "offset-left": leftOffset(),
       "offset-right": rightOffset(),
+      inset,
     },
     classes: [props.class],
     isCustomComponent: true,
@@ -73,7 +77,5 @@
   style:--header-height="{height}px"
   data-quaff
 >
-  <QToolbar {inset}>
-    {@render children?.()}
-  </QToolbar>
+  {@render children?.()}
 </header>
