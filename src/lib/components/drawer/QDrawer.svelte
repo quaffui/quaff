@@ -56,11 +56,9 @@
   };
 
   onMount(() => {
-    if (drawerContext) {
-      setTimeout(() => {
-        drawerEl.style.transition = "top 0.3s, bottom 0.3s, transform 0.3s";
-      }, 100);
-    }
+    setTimeout(() => {
+      drawerEl.style.transition = "top 0.3s, bottom 0.3s, transform 0.3s";
+    }, 100);
 
     return () => {
       window.removeEventListener("click", tryClose);
