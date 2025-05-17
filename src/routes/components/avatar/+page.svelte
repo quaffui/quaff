@@ -81,10 +81,10 @@
         {/snippet}
 
         <div class="flex q-gap-lg items-center">
-          <QAvatar src="{assets}/sea.mp4" size="lg" video />
-          <QAvatar src="{assets}/sea.mp4" shape="square" size="lg" video />
-          <QAvatar src="{assets}/sea.mp4" shape="left-round" size="lg" video />
-          <QAvatar src="{assets}/sea.mp4" shape="top-right-round" size="lg" video />
+          <QAvatar src="{assets}/cocktail.mp4" size="lg" video />
+          <QAvatar src="{assets}/cocktail.mp4" shape="square" size="lg" video />
+          <QAvatar src="{assets}/cocktail.mp4" shape="left-round" size="lg" video />
+          <QAvatar src="{assets}/cocktail.mp4" shape="top-right-round" size="lg" video />
         </div>
       </QDocsSection>
 
@@ -97,7 +97,7 @@
 
         <div class="flex q-gap-lg items-center">
           <QAvatar src="{assets}/cocktail.jpg" alt="Cocktail avatar" />
-          <QAvatar src="{assets}/sea.mp4" size="lg" video aria-label="Sea">
+          <QAvatar src="{assets}/cocktail.mp4" size="lg" video aria-label="Sea">
             {#snippet videoAccessibility()}
               <p>Your browser does not support the video tag.</p>
             {/snippet}
