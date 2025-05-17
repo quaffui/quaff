@@ -9,6 +9,12 @@
   left: 0;
   z-index: 4;
 
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  white-space: nowrap;
+  gap: 1rem;
+
   @include mixins.padding("x-md");
 
   min-height: unset;
