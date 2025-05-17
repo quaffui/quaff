@@ -522,7 +522,7 @@
             <QItemSection type="video">
               <video autoplay loop playsinline>
                 <track kind="captions" />
-                <source src="{assets}/sea.mp4" type="video/mp4" />
+                <source src="{assets}/cocktail.mp4" type="video/mp4" />
               </video>
             </QItemSection>
             <QItemSection>
