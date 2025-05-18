@@ -19,7 +19,7 @@
     ...props
   }: QDrawerProps = $props();
 
-  let drawerEl: HTMLDivElement;
+  let drawerEl = $state<HTMLDivElement>();
 
   const drawerContext = QContext.get<DrawerContext>(QLayoutCtxName.drawer[side]);
   const layoutView = getContext<{ value: NonNullable<QLayoutProps["view"]> }>(QLayoutCtxName.view);
@@ -57,7 +57,9 @@
 
   onMount(() => {
     setTimeout(() => {
-      drawerEl.style.transition = "top 0.3s, bottom 0.3s, transform 0.3s";
+      if (drawerEl) {
+        drawerEl.style.transition = "top 0.3s, bottom 0.3s, transform 0.3s";
+      }
     }, 100);
 
     return () => {
@@ -124,7 +126,7 @@
 
   function tryClose(e: MouseEvent) {
     const isTargetDrawer = e.target === drawerEl;
-    const isTargetInsideDrawer = drawerEl.contains(e.target as Node);
+    const isTargetInsideDrawer = drawerEl?.contains(e.target as Node);
 
     if (canHideOnClickOutside && !isTargetDrawer && !isTargetInsideDrawer) {
       e.stopPropagation();

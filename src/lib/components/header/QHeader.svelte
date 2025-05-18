@@ -13,13 +13,14 @@
     reveal = false,
     revealOffset = 250,
     height = 64,
+    bordered = false, // Added bordered here for explicitness, though it's in props
     children,
     ...props
   }: QHeaderProps = $props();
 
   const uid = $props.id();
 
-  let headerEl: HTMLElement;
+  let headerEl = $state<HTMLElement>();
 
   const headerContext = QContext.get<AppbarContext>(QLayoutCtxName.header);
   const layoutView = getContext<{ value: NonNullable<QLayoutProps["view"]> }>(QLayoutCtxName.view);
@@ -44,12 +45,14 @@
   onMount(() => {
     if (headerContext) {
       setTimeout(() => {
-        headerEl.style.transition = "all 0.3s";
+        if (headerEl) {
+          headerEl.style.transition = "all 0.3s";
+        }
       }, 100);
     }
 
     return () => {
-      if (headerContext) {
+      if (headerContext && headerEl) {
         headerEl.style.transition = "none";
         headerContext.updateEntries({ height: 0, collapsed: false, ready: false });
       }
@@ -60,6 +63,7 @@
     bemClasses: {
       [uid]: true,
       elevated,
+      bordered,
       collapsed,
       "offset-left": leftOffset(),
       "offset-right": rightOffset(),
