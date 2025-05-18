@@ -1,6 +1,6 @@
 <script lang="ts">
   import { pageTitle } from "$helpers/pageTitle";
-  import { QHeader, QToolbar, QToolbarTitle, QBtn, QLayout, QDrawer } from "$lib";
+  import { QHeader, QToolbarTitle, QBtn, QLayout } from "$lib";
   import { QHeaderDocs } from "$lib/components/header/docs";
   import { QDocs, QDocsSection } from "$private";
   import snippets from "./docs.snippets";
