@@ -35,11 +35,13 @@
   }: QLayoutProps = $props();
 
   let layoutEl = $state<HTMLDivElement>();
-  let contentEl: HTMLDivElement;
+  let contentEl = $state<HTMLDivElement>();
 
   onMount(() => {
     setTimeout(() => {
-      contentEl.style.transition = "margin 0.3s";
+      if (contentEl) {
+        contentEl.style.transition = "margin 0.3s";
+      }
     }, 100);
   });
 
