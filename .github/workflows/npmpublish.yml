@@ -1,18 +1,28 @@
 name: Publish Package to npmjs
 on:
-  release:
-    types: [published]
   workflow_dispatch:
+    inputs:
+      version:
+        description: "version (e.g. 1.2.3)"
+        required: true
+
 jobs:
-  build:
+  publish:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      # Setup .npmrc file to publish to npm
+
       - uses: oven-sh/setup-bun@v2
         with:
-          bun-version: 1.2.13
+          bun-version: "1.2.13"
           registry-url: "https://registry.npmjs.org"
-      - run: echo "//registry.npmjs.org/:_authToken=${{secrets.NPM_TOKEN}}" > .npmrc
-      - run: bun install --frozen-lockfile
-      - run: bun publish --access public
+
+      - name: Set version in package.json
+        run: |
+          jq --arg v "${{ github.event.inputs.version }}" '.version = $v' package.json > tmp && mv tmp package.json
+
+      - name: Publish to npm
+        run: |
+          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > .npmrc
+          bun install --frozen-lockfile
+          bun publish --access public
