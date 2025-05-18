@@ -97,6 +97,10 @@
       to: to("/components/footer"),
     },
     {
+      name: "Header",
+      to: to("/components/header"),
+    },
+    {
       name: "Icon",
       to: to("/components/icon"),
     },
