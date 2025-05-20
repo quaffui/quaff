@@ -23,7 +23,6 @@ jobs:
         run: bun run build:docs
         env:
           BUILD_DOCS: "true"
-          BASE_PATH: "/${{ github.event.repository.name }}"
 
       - name: Upload Artifacts
         uses: actions/upload-pages-artifact@v3
