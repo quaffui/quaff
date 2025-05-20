@@ -2,9 +2,6 @@ import adapter from "@sveltejs/adapter-static";
 import { vitePreprocess } from "@sveltejs/vite-plugin-svelte";
 import { preprocessClasses } from "./plugins/class-preprocessor/index.js";
 
-const isDocs = process.env.BUILD_DOCS === "true";
-const base = isDocs ? "/quaff" : "";
-
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
   // Consult https://kit.svelte.dev/docs/integrations#preprocessors
@@ -22,10 +19,6 @@ const config = {
       fallback: "404.html",
       precompress: true,
     }),
-
-    paths: {
-      base: process.argv.includes("dev") ? "" : process.env.BASE_PATH || base,
-    },
 
     prerender: { entries: ["*"] },
 
