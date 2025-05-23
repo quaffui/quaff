@@ -50,10 +50,10 @@
       fill="primary"
       style="min-height: 400px; align-content: center;"
     >
-      <h1 class="large no-margin">{principalDocument?.name || docName}</h1>
+      <h1 class="large no-margin">{docName || principalDocument?.name}</h1>
       <QCardSection class="q-docs__description flex flex-center">
         <h3 class="q-docs__description-text">
-          {principalDocument?.description || docDescription}
+          {docDescription || principalDocument?.description}
         </h3>
       </QCardSection>
     </QCard>
