@@ -172,3 +172,13 @@
   height: calc(100% - var(--offset-top) - var(--offset-bottom));
   overflow: auto;
 }
+
+.q-layout > .q-header ~ .q-layout__content {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.q-layout > .q-footer ~ .q-layout__content {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}

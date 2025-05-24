@@ -7,6 +7,7 @@
   color: var(--on-surface-variant);
 
   &--headline {
+    max-width: 100%;
     @include mixins.typography("body-large");
     color: var(--on-surface);
   }
