@@ -15,7 +15,12 @@
   <title>{pageTitle("QProgress")}</title>
 </svelte:head>
 
-<QDocs {snippets} componentDocs={[QLinearProgressDocs, QCircularProgressDocs]}>
+<QDocs
+  {snippets}
+  componentDocs={[QLinearProgressDocs, QCircularProgressDocs]}
+  docName="QProgress"
+  docDescription="QProgress provides visual feedback about the progress of a task or operation. It can be used to indicate the completion status of a process, such as file uploads, downloads, or any other time-consuming tasks."
+>
   {#snippet display()}
     <div class="flex column q-gap-lg" style="width: 75%;">
       <QLinearProgress value={75} color="primary" trackColor="secondary" />

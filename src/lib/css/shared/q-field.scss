@@ -84,6 +84,9 @@
 
   &--filled &__wrapper {
     background-color: var(--surface-container-highest);
+  }
+
+  &--filled:not(&--rounded) &__wrapper {
     border-top-left-radius: 0.25rem;
     border-top-right-radius: 0.25rem;
   }
