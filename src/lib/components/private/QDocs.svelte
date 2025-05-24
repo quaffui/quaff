@@ -15,7 +15,7 @@
     docName,
     docDescription,
   }: {
-    children?: Snippet;
+    children?: Snippet<[hueRotate: number]>;
     display?: Snippet;
     pre?: Snippet;
     usage?: Snippet;
@@ -37,8 +37,6 @@
   if (snippets) {
     setContext(QDocsCtxName.snippets, () => snippets);
   }
-
-  const image = $derived(`${assets}/cocktail-close-up.jpg`);
 
   let principalDocument = Array.isArray(componentDocs) ? componentDocs[0] : componentDocs;
 </script>
@@ -71,9 +69,11 @@
         </div>
         <img
           class="q-docs__image"
-          src={image}
+          src="{assets}/cocktail-close-up.jpg"
           alt="Close-up of the content of a cocktail"
-          style={`filter: hue-rotate(${hueRotate}deg) ${isDark ? "brightness(0.7)" : "brightness(1.2)"}`}
+          style="filter: hue-rotate({hueRotate}deg) {isDark
+            ? 'brightness(0.7)'
+            : 'brightness(1.2)'}"
         />
       </QCardSection>
     </QCard>
@@ -96,7 +96,7 @@
       </div>
     {/if}
 
-    {@render children?.()}
+    {@render children?.(hueRotate)}
   </div>
 </div>
 
