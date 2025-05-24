@@ -219,51 +219,47 @@
       </div>
     {/snippet}
 
-    {#snippet children(hueRotate)}
-      <div class="row q-gap-md q-mt-lg">
-        {#each components as component (component.name)}
-          <div
-            class="col-sm-6 col-lg-4"
-            role="link"
-            tabindex="0"
-            style="grid-auto-rows: 1fr; cursor: pointer;"
-            onmouseenter={() => (active = component.name)}
-            onmouseleave={() => (active = null)}
-            onclick={() => goto(component.href)}
-            onkeypress={(e) => {
-              if (e.key === "Enter") {
-                e.preventDefault();
-                goto(component.href);
-              }
-            }}
+    <div class="row q-gap-md q-mt-lg">
+      {#each components as component (component.name)}
+        <div
+          class="col-sm-6 col-lg-4"
+          role="link"
+          tabindex="0"
+          style="grid-auto-rows: 1fr; cursor: pointer;"
+          onmouseenter={() => (active = component.name)}
+          onmouseleave={() => (active = null)}
+          onclick={() => goto(component.href)}
+          onkeypress={(e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+              goto(component.href);
+            }
+          }}
+        >
+          <QCard
+            class="q-pa-none"
+            style="height: 100%; transition: all 0.3s; overflow: hidden;"
+            fill={active === component.name ? "primary" : undefined}
           >
-            <QCard
-              class="q-pa-none"
-              style="height: 100%; transition: all 0.3s; overflow: hidden;"
-              fill={active === component.name ? "primary" : undefined}
+            <div
+              class={[
+                "q-component-card q-pa-md flex flex-center secondary-container",
+                active === component.name && "q-component-card--active",
+              ]}
+              style="height: 14rem;"
+              inert
             >
-              <div
-                class={[
-                  "q-component-card q-pa-md flex flex-center secondary-container",
-                  active === component.name && "q-component-card--active",
-                ]}
-                data-hue={hueRotate}
-                data-brightness={Quaff.darkMode.isActive ? 70 : 120}
-                style="height: 14rem;"
-                inert
-              >
-                {@render component.snippet()}
-              </div>
+              {@render component.snippet()}
+            </div>
 
-              <QCardSection class="q-px-lg flex column flex-center">
-                <h4 class="text-md">{component.name}</h4>
-                <p class="text-center" style="text-wrap: balance">{component.description}</p>
-              </QCardSection>
-            </QCard>
-          </div>
-        {/each}
-      </div>
-    {/snippet}
+            <QCardSection class="q-px-lg flex column flex-center">
+              <h4 class="text-md">{component.name}</h4>
+              <p class="text-center" style="text-wrap: balance">{component.description}</p>
+            </QCardSection>
+          </QCard>
+        </div>
+      {/each}
+    </div>
   </QDocs>
 </div>
 
@@ -531,7 +527,7 @@
 {#snippet select()}
   {@const options = ["Apple", "Banana", "Cherry", "Strawberry"]}
 
-  <QSelect class="q-select__demo" value="Apple" {options} label="Favorite fruit" outlined />
+  <QSelect class="q-select__demo" value="Apple" {options} label="Favorite fruit" filled />
 {/snippet}
 
 {#snippet qswitch()}
@@ -676,11 +672,11 @@
       right: 0;
       bottom: 0;
 
-      background-image: url("cocktail-close-up-2.png");
+      background-image: url("cocktail-close-up-2.jpg");
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
-      filter: hue-rotate(attr(data-hue deg)) brightness(attr(data-brightness %));
+      filter: hue-rotate(var(--q-hue-rotate)) brightness(var(--q-brightness));
 
       opacity: 0;
     }

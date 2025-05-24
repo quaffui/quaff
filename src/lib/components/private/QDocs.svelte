@@ -15,7 +15,7 @@
     docName,
     docDescription,
   }: {
-    children?: Snippet<[hueRotate: number]>;
+    children?: Snippet;
     display?: Snippet;
     pre?: Snippet;
     usage?: Snippet;
@@ -39,9 +39,14 @@
   }
 
   let principalDocument = Array.isArray(componentDocs) ? componentDocs[0] : componentDocs;
+
+  const brightness = $derived(Quaff.darkMode.isActive ? 0.7 : 1.2);
 </script>
 
-<div class="q-docs" style="padding: 1rem">
+<div
+  class="q-docs"
+  style="padding: 1rem; --q-hue-rotate: {hueRotate}deg; --q-brightness: {brightness}"
+>
   <div class="row q-gutter-lg" style="min-height: 400px">
     <QCard
       class="col-sm-12 col-lg-6 flex flex-center"
@@ -71,9 +76,6 @@
           class="q-docs__image"
           src="{assets}/cocktail-close-up.jpg"
           alt="Close-up of the content of a cocktail"
-          style="filter: hue-rotate({hueRotate}deg) {isDark
-            ? 'brightness(0.7)'
-            : 'brightness(1.2)'}"
         />
       </QCardSection>
     </QCard>
@@ -96,7 +98,7 @@
       </div>
     {/if}
 
-    {@render children?.(hueRotate)}
+    {@render children?.()}
   </div>
 </div>
 
@@ -116,6 +118,7 @@
       width: 100%;
       height: 25rem;
       object-fit: cover;
+      filter: hue-rotate(var(--q-hue-rotate)) brightness(var(--q-brightness));
     }
 
     :global(.q-docs__preview) {
