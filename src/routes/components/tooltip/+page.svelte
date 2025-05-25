@@ -161,9 +161,9 @@
 
         <div class="flex q-gap-md q-ma-sm">
           <QBtn icon="info">
-            <QTooltip>
+            <QTooltip class="error">
               <div class="flex items-center">
-                <QIcon name="warning" class="q-mr-sm" color="error" />
+                <QIcon name="warning" class="q-mr-sm" />
                 <span>Important information</span>
               </div>
             </QTooltip>
@@ -172,7 +172,7 @@
           <QBtn>
             Rich tooltip
             <QTooltip>
-              <QCard style="width: 250px; margin: 0; padding: 0;">
+              <QCard>
                 <QCardSection>
                   <h6 class="q-mt-none q-mb-sm">Tooltip Title</h6>
                   <p class="q-mb-none">

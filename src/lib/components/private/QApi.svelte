@@ -209,9 +209,9 @@
       </QTabs>
     </div>
     <QCardSection style="max-height: 416px; overflow-y: auto">
-      <QList separator bordered style="overflow-x:auto">
+      <QList separator bordered>
         {#each QDocument.docs[api[index]] as doc (doc)}
-          <QItem>
+          <QItem style="overflow-x: auto">
             <QItemSection type="content">
               {#snippet headline()}
                 <div class="q-my-sm flex-center" style="display: flex; flex: 1 1 0">
