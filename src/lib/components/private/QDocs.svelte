@@ -49,11 +49,13 @@
 >
   <div class="row q-gutter-lg" style="min-height: 400px">
     <QCard
-      class="col-sm-12 col-lg-6 flex flex-center"
+      class="col-sm-12 col-xs-12 col-lg-6 flex flex-center"
       fill="primary"
       style="min-height: 400px; align-content: center;"
     >
-      <h1 class="large no-margin">{docName || principalDocument?.name}</h1>
+      <h1 class={["no-margin", Quaff.breakpoints.isMoreThan("sm", true) ? "large" : "small"]}>
+        {docName || principalDocument?.name}
+      </h1>
       <QCardSection class="q-docs__description flex flex-center">
         <h3 class="q-docs__description-text">
           {docDescription || principalDocument?.description}
@@ -61,7 +63,7 @@
       </QCardSection>
     </QCard>
     <QCard
-      class="q-docs__preview col-sm-12 col-lg-6 q-mt-none q-pa-none"
+      class="q-docs__preview col-sm-12 col-xs-12 col-lg-6 q-mt-none q-pa-none"
       fill="secondary"
       style="min-height: 400px"
     >

@@ -193,75 +193,73 @@
   <title>{pageTitle("Components")}</title>
 </svelte:head>
 
-<div class="q-page">
-  <QDocs
-    docName="Components"
-    docDescription="Find a large set of reusable components to build your projects. They are styled following Material Design 3 guidelines, for a consistent and modern look."
-  >
-    {#snippet display()}
-      <div class="row q-gap-lg q-pa-lg flex-center">
-        <QSwitch value={true} class="col-3" />
-        <QCheckbox value={true} class="col-2" color="secondary" />
-        <QCircularProgress indeterminate class="col-2" />
-        <QBtn label="Accept" icon="img:{assets}/cocktail.jpg" class="col-5" />
-      </div>
-      <div class="row q-gap-lg q-pa-lg flex-center">
-        <QInput value="Hello world" label="Greeting" filled class="col-7" />
-        <QLinearProgress indeterminate class="col-5" trackColor="secondary" color="on-secondary" />
-      </div>
-      <div class="row q-gap-lg q-pa-lg flex-center">
-        <QChip label="Hey!" icon="waving_hand" class="col-3 secondary-container" />
-        <QTabs value="home" class="col-9">
-          <QTab name="home" icon="home">Home</QTab>
-          <QTab name="about" icon="info">About</QTab>
-          <QTab name="account" icon="person">Account</QTab>
-        </QTabs>
-      </div>
-    {/snippet}
-
-    <div class="row q-gap-md q-mt-lg">
-      {#each components as component (component.name)}
-        <div
-          class="col-sm-6 col-lg-4"
-          role="link"
-          tabindex="0"
-          style="grid-auto-rows: 1fr; cursor: pointer;"
-          onmouseenter={() => (active = component.name)}
-          onmouseleave={() => (active = null)}
-          onclick={() => goto(component.href)}
-          onkeypress={(e) => {
-            if (e.key === "Enter") {
-              e.preventDefault();
-              goto(component.href);
-            }
-          }}
-        >
-          <QCard
-            class="q-pa-none"
-            style="height: 100%; transition: all 0.3s; overflow: hidden;"
-            fill={active === component.name ? "primary" : undefined}
-          >
-            <div
-              class={[
-                "q-component-card q-pa-md flex flex-center secondary-container",
-                active === component.name && "q-component-card--active",
-              ]}
-              style="height: 14rem;"
-              inert
-            >
-              {@render component.snippet()}
-            </div>
-
-            <QCardSection class="q-px-lg flex column flex-center">
-              <h4 class="text-md">{component.name}</h4>
-              <p class="text-center" style="text-wrap: balance">{component.description}</p>
-            </QCardSection>
-          </QCard>
-        </div>
-      {/each}
+<QDocs
+  docName="Components"
+  docDescription="Find a large set of reusable components to build your projects. They are styled following Material Design 3 guidelines, for a consistent and modern look."
+>
+  {#snippet display()}
+    <div class="row q-gap-lg q-pa-lg flex-center">
+      <QSwitch value={true} class="col-3" />
+      <QCheckbox value={true} class="col-2" color="secondary" />
+      <QCircularProgress indeterminate class="col-2" />
+      <QBtn label="Accept" icon="img:{assets}/cocktail.jpg" class="col-5" />
     </div>
-  </QDocs>
-</div>
+    <div class="row q-gap-lg q-pa-lg flex-center">
+      <QInput value="Hello world" label="Greeting" filled class="col-7" />
+      <QLinearProgress indeterminate class="col-5" trackColor="secondary" color="on-secondary" />
+    </div>
+    <div class="row q-gap-lg q-pa-lg flex-center">
+      <QChip label="Hey!" icon="waving_hand" class="col-3 secondary-container" />
+      <QTabs value="home" class="col-9">
+        <QTab name="home" icon="home">Home</QTab>
+        <QTab name="about" icon="info">About</QTab>
+        <QTab name="account" icon="person">Account</QTab>
+      </QTabs>
+    </div>
+  {/snippet}
+
+  <div class="row q-gap-md q-mt-lg">
+    {#each components as component (component.name)}
+      <div
+        class="col-sm-6 col-lg-4 col-xs-12"
+        role="link"
+        tabindex="0"
+        style="grid-auto-rows: 1fr; cursor: pointer;"
+        onmouseenter={() => (active = component.name)}
+        onmouseleave={() => (active = null)}
+        onclick={() => goto(component.href)}
+        onkeypress={(e) => {
+          if (e.key === "Enter") {
+            e.preventDefault();
+            goto(component.href);
+          }
+        }}
+      >
+        <QCard
+          class="q-pa-none"
+          style="height: 100%; transition: all 0.3s; overflow: hidden;"
+          fill={active === component.name ? "primary" : undefined}
+        >
+          <div
+            class={[
+              "q-component-card q-pa-md flex flex-center secondary-container",
+              active === component.name && "q-component-card--active",
+            ]}
+            style="height: 14rem;"
+            inert
+          >
+            {@render component.snippet()}
+          </div>
+
+          <QCardSection class="q-px-lg flex column flex-center">
+            <h4 class="text-md">{component.name}</h4>
+            <p class="text-center" style="text-wrap: balance">{component.description}</p>
+          </QCardSection>
+        </QCard>
+      </div>
+    {/each}
+  </div>
+</QDocs>
 
 {#snippet avatar()}
   <QList>
