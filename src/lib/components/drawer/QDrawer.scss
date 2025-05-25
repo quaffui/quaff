@@ -21,6 +21,15 @@
     z-index: 6;
   }
 
+  &__swipearea {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    z-index: 2;
+
+    touch-action: none;
+  }
+
   @each $side in ("left", "right") {
     &.q-drawer--#{$side} {
       #{$side}: 0;
@@ -35,5 +44,12 @@
 
   &.q-drawer--active {
     transform: translate(0);
+  }
+}
+
+@each $side in ("left", "right") {
+  .q-drawer__swipearea--#{$side} {
+    #{$side}: 0;
+    width: 1.25rem;
   }
 }

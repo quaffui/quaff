@@ -66,20 +66,15 @@ export interface QDrawerProps extends NativeProps, HTMLAttributes<HTMLDivElement
   persistent?: boolean;
 
   /**
-   * Determines whether swipe gestures can open the drawer. (not supported yet)
+   * Determines whether swipe gestures opening the drawer should be disabled or not.
    * @default false
    */
-  noSwipeOpen?: boolean;
+  noSwipe?: boolean;
 
   /**
-   * Determines whether swipe gestures can close the drawer. (not supported yet)
-   * @default false
+   * The threshold in percentage of the drawer width that must be swiped for the drawer to snap open/close.
+   * This is only applicable if swipe gestures are enabled.
+   * @default "50%"
    */
-  noSwipeClose?: boolean;
-
-  /**
-   * Determines whether swipe gestures on the backdrop can close the drawer. (not supported yet)
-   * @default false
-   */
-  noSwipeBackdrop?: boolean;
+  swipeThreshold?: `${number}%`;
 }
