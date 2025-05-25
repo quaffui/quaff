@@ -71,6 +71,15 @@
           </p>
 
           <QCodeBlock language="ts" code={JSON.stringify(Quaff.breakpoints, null, 2)} />
+
+          <p>
+            It also provides two methods to check if the current viewport is more than or less than
+            a given breakpoint: <code>isMoreThan</code> and <code>isLessThan</code>. These methods
+            take a breakpoint name and an optional boolean value to determine if the given
+            breakpoint should be inclusive. For example, to check if the current viewport is larger
+            than <code>md</code> (included), you can use
+            <code>Quaff.breakpoints.isMoreThan("md", true)</code>.
+          </p>
         {/snippet}
       </QDocsSection>
 

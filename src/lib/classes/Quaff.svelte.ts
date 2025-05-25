@@ -7,6 +7,15 @@ type Mode = "light" | "dark";
 
 class Quaff {
   public version = version;
+
+  private static readonly breakpointList = {
+    xs: 0,
+    sm: 600,
+    md: 960,
+    lg: 1280,
+    xl: 1920,
+  };
+
   public readonly breakpoints = $derived.by(() => {
     type Breakpoint = "xs" | "sm" | "md" | "lg" | "xl";
     const currentWidth = innerWidth.current;
@@ -26,13 +35,7 @@ class Quaff {
     }
 
     return {
-      list: {
-        xs: 0,
-        sm: 600,
-        md: 960,
-        lg: 1280,
-        xl: 1920,
-      },
+      ...Quaff.breakpointList,
       currentWidth: currentWidth || 0,
       current,
       isMoreThan(breakpoint: Breakpoint, included = false) {
@@ -40,7 +43,7 @@ class Quaff {
           return false;
         }
 
-        const breakpointWidth = this.list[breakpoint];
+        const breakpointWidth = this[breakpoint];
         return included ? currentWidth >= breakpointWidth : currentWidth > breakpointWidth;
       },
       isLessThan(breakpoint: Breakpoint, included = false) {
@@ -48,7 +51,7 @@ class Quaff {
           return false;
         }
 
-        const breakpointWidth = this.list[breakpoint];
+        const breakpointWidth = this[breakpoint];
         return included ? currentWidth <= breakpointWidth : currentWidth < breakpointWidth;
       },
     };

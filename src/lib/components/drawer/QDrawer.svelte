@@ -276,7 +276,6 @@
   }
 
   function handlePointerUp() {
-    console.log("hello");
     if (noSwipe || !drawerEl || !swipeAreaEl || !isSwiping) {
       return;
     }
