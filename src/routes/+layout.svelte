@@ -2,7 +2,6 @@
   import "$lib/css/fonts.scss";
   import "$lib/css/index.scss";
 
-  import { fade } from "svelte/transition";
   import { base } from "$app/paths";
   import {
     QAvatar,
@@ -21,6 +20,11 @@
   } from "$lib";
   import { isRouteActive } from "$utils";
   import type { MaterialSymbol } from "material-symbols";
+
+  type Item = {
+    name: string;
+    to: string;
+  };
 
   const { children } = $props();
 
@@ -59,7 +63,7 @@
       to: to("/utils"),
     },
   ];
-  const components = [
+  const components: Item[] = [
     {
       name: "Avatar",
       to: to("/components/avatar"),
@@ -158,7 +162,7 @@
     },
   ];
 
-  const quaffUtils = [
+  const quaffUtils: Item[] = [
     {
       name: "The Quaff class",
       to: to("/utils/quaff"),
@@ -200,7 +204,16 @@
         : null
   );
 
+  const previousItem = $derived(
+    prepareItem(selectedRailbarItem, Quaff.router.url.pathname, "previous")
+  );
+  const nextItem = $derived(prepareItem(selectedRailbarItem, Quaff.router.url.pathname, "next"));
+
   $effect(() => {
+    if (Quaff.breakpoints.isLessThan("md")) {
+      return;
+    }
+
     if (selectedRailbarItem !== null) {
       drawerLeftEl?.show();
     } else {
@@ -215,12 +228,46 @@
         ? quaffUtils
         : []
   );
+
+  const drawerLeft = $derived(
+    Quaff.breakpoints.isMoreThan("md", true) ? desktopDrawer : mobileDrawer
+  );
+
+  function prepareItem(selected: string | null, route: string, kind: "previous" | "next") {
+    if (
+      selected === null ||
+      Quaff.breakpoints.isMoreThan("md", true) ||
+      !["/components/", "/utils/"].some((r) => route.includes(r))
+    ) {
+      return null;
+    }
+
+    const path = route.includes("/components/") ? components : quaffUtils;
+
+    const currentIndex = path.findIndex((item) => item.to === route);
+
+    if (currentIndex === -1) {
+      return null;
+    }
+
+    if (kind === "previous" && currentIndex > 0) {
+      return path[currentIndex - 1];
+    } else if (kind === "next" && currentIndex < path.length - 1) {
+      return path[currentIndex + 1];
+    }
+
+    return null;
+  }
 </script>
 
 <!-- eslint-disable-next-line svelte/valid-compile -->
-<QLayout view="hhr lpr fff" class="main-layout">
+<QLayout view="hhr lpr fff" class="main-layout" {drawerLeft}>
   {#snippet header()}
     <QHeader class="elevate-2">
+      {#if Quaff.breakpoints.isLessThan("md")}
+        <QBtn icon="menu" variant="flat" round onclick={drawerLeftEl?.toggle} class="q-mr-sm" />
+      {/if}
+
       <QToolbarTitle>Quaff</QToolbarTitle>
       <QBtn
         icon={Quaff.darkMode.isActive ? "light_mode" : "dark_mode"}
@@ -233,34 +280,9 @@
   {/snippet}
 
   {#snippet railbarLeft()}
-    <QRailbar class="surface no-round" bordered width={120}>
-      <QList>
-        {#each pages as { name, icon, to } (`${name}-${icon}-${to}`)}
-          <QItem {to} noRipple>
-            <QIcon name={icon} />
-            <QItemSection>{name}</QItemSection>
-          </QItem>
-        {/each}
-      </QList>
-    </QRailbar>
-  {/snippet}
-
-  {#snippet drawerLeft()}
-    <QDrawer persistent bind:this={drawerLeftEl} width={180} bordered>
-      <div in:fade={{ delay: 200, duration: 200 }} out:fade={{ duration: 200 }}>
-        <QList dense>
-          {#each drawerContent as { name, to } (`${name}-${to}`)}
-            <QItem
-              {to}
-              onclick={() => contentEl?.scrollTo({ top: 0, behavior: "smooth" })}
-              activeClass="text-primary"
-            >
-              {name}
-            </QItem>
-          {/each}
-        </QList>
-      </div>
-    </QDrawer>
+    {#if Quaff.breakpoints.isMoreThan("md", true)}
+      {@render railbar()}
+    {/if}
   {/snippet}
 
   {#snippet drawerRight()}
@@ -288,13 +310,66 @@
       </div>
     </QDrawer>
   {/snippet}
+
   {#snippet content()}
     <div bind:this={contentEl} style="position: relative; min-height: 100%;">
       {@render children?.()}
+
+      {#if Quaff.breakpoints.isLessThan("md") && (nextItem || previousItem)}
+        <div class="q-px-md flex justify-center q-gap-md" style="padding-bottom: 4rem;">
+          {#if previousItem}
+            <QBtn icon="arrow_back" label={previousItem.name} to={previousItem.to} filled />
+          {/if}
+
+          {#if nextItem}
+            <QBtn icon="arrow_forward" label={nextItem.name} to={nextItem.to} filled />
+          {/if}
+        </div>
+      {/if}
+
       <div class="privacy-policy"><a href="{base}/privacy-policy">Privacy Policy</a></div>
     </div>
   {/snippet}
 </QLayout>
+
+{#snippet mainRoutesList()}
+  <QList>
+    {#each pages as { name, icon, to } (`${name}-${icon}-${to}`)}
+      <QItem {to} noRipple>
+        <QIcon name={icon} />
+        <QItemSection>{name}</QItemSection>
+      </QItem>
+    {/each}
+  </QList>
+{/snippet}
+
+{#snippet railbar()}
+  <QRailbar class="surface no-round" bordered width={120}>
+    {@render mainRoutesList()}
+  </QRailbar>
+{/snippet}
+
+{#snippet mobileDrawer()}
+  <QDrawer bind:this={drawerLeftEl} overlay bordered>
+    {@render mainRoutesList()}
+  </QDrawer>
+{/snippet}
+
+{#snippet desktopDrawer()}
+  <QDrawer persistent bind:this={drawerLeftEl} width={180} bordered>
+    <QList dense>
+      {#each drawerContent as { name, to } (`${name}-${to}`)}
+        <QItem
+          {to}
+          onclick={() => contentEl?.scrollTo({ top: 0, behavior: "smooth" })}
+          activeClass="text-primary"
+        >
+          {name}
+        </QItem>
+      {/each}
+    </QList>
+  </QDrawer>
+{/snippet}
 
 <style>
   :global(.q-avatar.chosen::after) {
