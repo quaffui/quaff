@@ -61,6 +61,19 @@
         </div>
       </QDocsSection>
 
+      <QDocsSection title="Breakpoints">
+        {#snippet sectionDescription()}
+          <p>
+            Quaff provides a simple way to manage breakpoints with its
+            <code>breakpoints</code> property. This property is an object that contains the current breakpoints
+            of the framework. You can use it to check the current breakpoint and react to changes in
+            the viewport size.
+          </p>
+
+          <QCodeBlock language="ts" code={JSON.stringify(Quaff.breakpoints, null, 2)} />
+        {/snippet}
+      </QDocsSection>
+
       <QDocsSection title="Sveltekit router">
         {#snippet sectionDescription()}
           <p>
