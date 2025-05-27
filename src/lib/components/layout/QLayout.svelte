@@ -99,16 +99,16 @@
       (!footer || footerCtx.value.ready || (layoutEl && !layoutEl.querySelector(".q-footer"))) &&
       (!railbarLeft ||
         leftRailbarCtx.value.ready ||
-        (layoutEl && !layoutEl.querySelector(".q-railbar--left"))) &&
+        (layoutEl && !layoutEl.querySelector(":scope > .q-railbar--left"))) &&
       (!railbarRight ||
         rightRailbarCtx.value.ready ||
-        (layoutEl && !layoutEl.querySelector(".q-railbar--right"))) &&
+        (layoutEl && !layoutEl.querySelector(":scope > .q-railbar--right"))) &&
       (!drawerLeft ||
         leftDrawerCtx.value.ready ||
-        (layoutEl && !layoutEl.querySelector(".q-drawer--left"))) &&
+        (layoutEl && !layoutEl.querySelector(":scope > .q-drawer--left"))) &&
       (!drawerRight ||
         rightDrawerCtx.value.ready ||
-        (layoutEl && !layoutEl.querySelector(".q-drawer--right")))
+        (layoutEl && !layoutEl.querySelector(":scope > .q-drawer--right")))
   );
 
   function handleDrawerCtx(ctx: QContext<DrawerContext>) {
