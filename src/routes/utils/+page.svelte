@@ -39,7 +39,7 @@
         class="col-sm-6 col-lg-4 col-xs-12"
         role="link"
         tabindex="0"
-        style="grid=auto=rows: 1fr; cursor: pointer;"
+        style="grid-auto-rows: 1fr; cursor: pointer;"
         onmouseenter={() => (util.hovered = true)}
         onmouseleave={() => (util.hovered = false)}
         onclick={() => goto(util.href)}
