@@ -229,9 +229,7 @@
         : []
   );
 
-  const drawerLeft = $derived(
-    Quaff.breakpoints.isMoreThan("md", true) ? desktopDrawer : mobileDrawer
-  );
+  const drawerLeft = $derived(Quaff.breakpoints.isLessThan("md") ? mobileDrawer : desktopDrawer);
 
   function prepareItem(selected: string | null, route: string, kind: "previous" | "next") {
     if (
@@ -260,7 +258,6 @@
   }
 </script>
 
-<!-- eslint-disable-next-line svelte/valid-compile -->
 <QLayout view="hhr lpr fff" class="main-layout" {drawerLeft}>
   {#snippet header()}
     <QHeader class="elevate-2">

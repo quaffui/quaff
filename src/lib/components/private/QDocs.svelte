@@ -45,15 +45,21 @@
 
 <div
   class="q-docs"
-  style="padding: 1rem; --q-hue-rotate: {hueRotate}deg; --q-brightness: {brightness}"
+  style="padding: 1rem; --q-hue-rotate: {hueRotate}deg; --q-brightness: {brightness}; max-width: {Quaff
+    .breakpoints.lg}px; margin: auto;"
 >
   <div class="row q-gutter-lg" style="min-height: 400px">
     <QCard
-      class="col-sm-12 col-xs-12 col-lg-6 flex flex-center"
+      class="col-sm-12 col-xs-12 col-lg-6"
       fill="primary"
       style="min-height: 400px; align-content: center;"
     >
-      <h1 class={["no-margin", Quaff.breakpoints.isMoreThan("sm", true) ? "large" : "small"]}>
+      <h1
+        class={[
+          "no-margin justify-center",
+          Quaff.breakpoints.isMoreThan("sm", true) ? "large" : "small",
+        ]}
+      >
         {docName || principalDocument?.name}
       </h1>
       <QCardSection class="q-docs__description flex flex-center">
