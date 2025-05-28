@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { assets } from "$app/paths";
   import { QIconDocs } from "$components/icon/docs";
   import { pageTitle } from "$helpers/pageTitle";
   import { QIcon } from "$lib";
@@ -109,9 +108,9 @@
           <code>imgAttributes</code>, such as <code>alt</code> text.
         {/snippet}
         <div class="flex q-gap-lg items-center">
-          <QIcon img="{assets}/cocktail.jpg" size="lg" />
+          <QIcon img="/cocktail.jpg" size="lg" />
           <QIcon
-            img="{assets}/cocktail.jpg"
+            img="/cocktail.jpg"
             size="xl"
             imgAttributes={{ alt: "A delicious cocktail", style: "border-radius: 50%;" }}
           />

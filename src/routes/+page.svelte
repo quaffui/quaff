@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { assets } from "$app/paths";
   import QBtn from "$components/button/QBtn.svelte";
   import { copy } from "$utils";
 
@@ -21,7 +20,7 @@
   <div class="page-home__logo-container">
     <img
       class="page-home__logo"
-      src="{assets}/logo.svg"
+      src="/logo.svg"
       alt="Quaff logo, a cocktail with a slice of orange"
     />
   </div>
