@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { assets, base } from "$app/paths";
+  import { assets } from "$app/paths";
   import QBtn from "$components/button/QBtn.svelte";
   import { copy } from "$utils";
 
@@ -37,8 +37,8 @@
       />
     </li>
     <li>
-      Check our <a href="{base}/components">components</a> and familiarize yourself with our
-      <a href="{base}/grid">grid</a>, <a href="{base}/utils">utils</a> and the rest of our docs.
+      Check our <a href="/components">components</a> and familiarize yourself with our
+      <a href="/grid">grid</a>, <a href="/utils">utils</a> and the rest of our docs.
     </li>
     <li>
       Found an issue? <s>Rage</s> Comment on Quaff's

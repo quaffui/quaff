@@ -1,6 +1,5 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
-  import { base } from "$app/paths";
   import { QCard, QCardSection } from "$components";
   import QDocs from "$components/private/QDocs.svelte";
   import { pageTitle } from "$helpers/pageTitle";
@@ -10,19 +9,19 @@
       name: "Quaff",
       description:
         "Main class of the framework, for managing different states like dark mode or breakpoints.",
-      href: `${base}/utils/quaff`,
+      href: "/utils/quaff",
       hovered: false,
     },
     {
       name: "QTheme",
       description: "Class for managing the application's color theme.",
-      href: `${base}/utils/qtheme`,
+      href: "/utils/qtheme",
       hovered: false,
     },
     {
       name: "QScrollObserver",
       description: "Utility for observing different properties related to scrolling.",
-      href: `${base}/utils/qscrollobserver`,
+      href: "/utils/qscrollobserver",
       hovered: false,
     },
   ];

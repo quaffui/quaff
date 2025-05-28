@@ -2,7 +2,6 @@
   import "$lib/css/fonts.scss";
   import "$lib/css/index.scss";
 
-  import { base } from "$app/paths";
   import {
     QAvatar,
     QBtn,
@@ -32,148 +31,144 @@
 
   let chosenColor = $state(0);
 
-  function to(uri: string) {
-    return `${base}${uri}`;
-  }
-
   const pages: { name: string; icon: MaterialSymbol; to: string }[] = [
     {
       name: "Home",
       icon: "home",
-      to: to("/"),
+      to: "/",
     },
     {
       name: "Components",
       icon: "grid_view",
-      to: to("/components"),
+      to: "/components",
     },
     {
       name: "Grid",
       icon: "grid_on",
-      to: to("/grid"),
+      to: "/grid",
     },
     {
       name: "Colors",
       icon: "palette",
-      to: to("/colors"),
+      to: "/colors",
     },
     {
       name: "Quaff utils",
       icon: "construction",
-      to: to("/utils"),
+      to: "/utils",
     },
   ];
   const components: Item[] = [
     {
       name: "Avatar",
-      to: to("/components/avatar"),
+      to: "/components/avatar",
     },
     {
       name: "Breadcrumbs",
-      to: to("/components/breadcrumbs"),
+      to: "/components/breadcrumbs",
     },
     {
       name: "Button",
-      to: to("/components/button"),
+      to: "/components/button",
     },
     {
       name: "Card",
-      to: to("/components/card"),
+      to: "/components/card",
     },
     {
       name: "Checkbox",
-      to: to("/components/checkbox"),
+      to: "/components/checkbox",
     },
     {
       name: "Chip",
-      to: to("/components/chip"),
+      to: "/components/chip",
     },
     {
       name: "Dialog",
-      to: to("/components/dialog"),
+      to: "/components/dialog",
     },
     {
       name: "Drawer",
-      to: to("/components/drawer"),
+      to: "/components/drawer",
     },
     {
       name: "Footer",
-      to: to("/components/footer"),
+      to: "/components/footer",
     },
     {
       name: "Header",
-      to: to("/components/header"),
+      to: "/components/header",
     },
     {
       name: "Icon",
-      to: to("/components/icon"),
+      to: "/components/icon",
     },
     {
       name: "Input",
-      to: to("/components/input"),
+      to: "/components/input",
     },
     {
       name: "Layout",
-      to: to("/components/layout"),
+      to: "/components/layout",
     },
     {
       name: "List",
-      to: to("/components/list"),
+      to: "/components/list",
     },
     {
       name: "Progress",
-      to: to("/components/progress"),
+      to: "/components/progress",
     },
     {
       name: "Radio",
-      to: to("/components/radio"),
+      to: "/components/radio",
     },
     {
       name: "Railbar",
-      to: to("/components/railbar"),
+      to: "/components/railbar",
     },
     {
       name: "Select",
-      to: to("/components/select"),
+      to: "/components/select",
     },
     {
       name: "Separator",
-      to: to("/components/separator"),
+      to: "/components/separator",
     },
     {
       name: "Switch",
-      to: to("/components/switch"),
+      to: "/components/switch",
     },
     {
       name: "Table",
-      to: to("/components/table"),
+      to: "/components/table",
     },
     {
       name: "Tabs",
-      to: to("/components/tabs"),
+      to: "/components/tabs",
     },
     {
       name: "Toolbar",
-      to: to("/components/toolbar"),
+      to: "/components/toolbar",
     },
     {
       name: "Tooltip",
-      to: to("/components/tooltip"),
+      to: "/components/tooltip",
     },
   ];
 
   const quaffUtils: Item[] = [
     {
       name: "The Quaff class",
-      to: to("/utils/quaff"),
+      to: "/utils/quaff",
     },
     {
       name: "QTheme",
-      to: to("/utils/q-theme"),
+      to: "/utils/q-theme",
     },
     {
       name: "QScrollObserver",
-      to: to("/utils/q-scroll-observer"),
+      to: "/utils/q-scroll-observer",
     },
   ];
 
@@ -197,11 +192,7 @@
   let drawerRightEl = $state<ReturnType<typeof QDrawer>>();
 
   const selectedRailbarItem = $derived(
-    isRouteActive(`${base}/components`)
-      ? `${base}/components`
-      : isRouteActive(`${base}/utils`)
-        ? `${base}/utils`
-        : null
+    isRouteActive("/components") ? "/components" : isRouteActive("/utils") ? "/utils" : null
   );
 
   const previousItem = $derived(
@@ -222,9 +213,9 @@
   });
 
   const drawerContent = $derived(
-    selectedRailbarItem === `${base}/components`
+    selectedRailbarItem === "/components"
       ? components
-      : selectedRailbarItem === `${base}/utils`
+      : selectedRailbarItem === "/utils"
         ? quaffUtils
         : []
   );
@@ -324,7 +315,7 @@
         </div>
       {/if}
 
-      <div class="privacy-policy"><a href="{base}/privacy-policy">Privacy Policy</a></div>
+      <div class="privacy-policy"><a href="/privacy-policy">Privacy Policy</a></div>
     </div>
   {/snippet}
 </QLayout>

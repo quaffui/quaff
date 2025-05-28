@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { assets, base } from "$app/paths";
+  import { assets } from "$app/paths";
   import { QIconDocs } from "$components/icon/docs";
   import { pageTitle } from "$helpers/pageTitle";
   import { QIcon } from "$lib";
@@ -90,7 +90,7 @@
         {#snippet sectionDescription()}
           Use the <code>color</code> prop to apply theme colors or standard CSS colors. You can also
           use utility classes like <code>text-primary</code>, <code>text-red-5</code> (see
-          <a class="text-primary" href="{base}/colors">the colors page</a> for a list of available colors),
+          <a class="text-primary" href="/colors">the colors page</a> for a list of available colors),
           etc.
         {/snippet}
         <div class="flex q-gap-lg items-center">
