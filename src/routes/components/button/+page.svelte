@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { assets } from "$app/paths";
   import { QBtnDocs } from "$components/button/docs";
   import { pageTitle } from "$helpers/pageTitle";
   import { QBtn } from "$lib";
@@ -75,7 +74,7 @@
         <QBtn class="q-ma-sm" label="Tonal" variant="tonal" icon="star" />
         <QBtn class="q-ma-sm" label="Outlined" variant="outlined" icon="star" />
         <QBtn class="q-ma-sm" label="Flat" variant="flat" icon="star" />
-        <QBtn class="q-ma-sm" label="With image" icon="img:{assets}/cocktail.jpg" />
+        <QBtn class="q-ma-sm" label="With image" icon="img:/cocktail.jpg" />
       </QDocsSection>
 
       <QDocsSection title="Button Variants Using Boolean Props">

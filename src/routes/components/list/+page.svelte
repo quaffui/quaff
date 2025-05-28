@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { assets } from "$app/paths";
   import { QItemDocs, QItemSectionDocs, QListDocs } from "$components/list/docs";
   import { pageTitle } from "$helpers/pageTitle";
   import { QAvatar, QCheckbox, QIcon, QItem, QItemSection, QList, QSwitch } from "$lib";
@@ -213,7 +212,7 @@
         <QList bordered class="q-my-md">
           <QItem>
             <QItemSection type="avatar">
-              <QAvatar src="{assets}/cocktail.jpg" />
+              <QAvatar src="/cocktail.jpg" />
             </QItemSection>
             <QItemSection>
               <span>John Smith</span>
@@ -229,7 +228,7 @@
           </QItem>
           <QItem>
             <QItemSection type="thumbnail">
-              <img src="{assets}/cocktail.jpg" alt="Thumbnail" />
+              <img src="/cocktail.jpg" alt="Thumbnail" />
             </QItemSection>
             <QItemSection>
               <span>Image Thumbnail</span>
@@ -422,7 +421,7 @@
           <QItem>
             <QItemSection type="avatar">
               <QAvatar>
-                <img src="{assets}/cocktail.jpg" alt="Avatar" />
+                <img src="/cocktail.jpg" alt="Avatar" />
               </QAvatar>
             </QItemSection>
             <QItemSection>
@@ -508,7 +507,7 @@
 
           <QItem>
             <QItemSection type="thumbnail">
-              <img src="{assets}/cocktail.jpg" alt="Cocktail" />
+              <img src="/cocktail.jpg" alt="Cocktail" />
             </QItemSection>
             <QItemSection>
               <div class="body-large">type="thumbnail"</div>
@@ -522,7 +521,7 @@
             <QItemSection type="video">
               <video autoplay loop playsinline>
                 <track kind="captions" />
-                <source src="{assets}/cocktail.mp4" type="video/mp4" />
+                <source src="/cocktail.mp4" type="video/mp4" />
               </video>
             </QItemSection>
             <QItemSection>

@@ -1,6 +1,5 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
-  import { assets } from "$app/paths";
   import {
     QAvatar,
     QBreadcrumbs,
@@ -202,7 +201,7 @@
       <QSwitch value={true} class="col-3" />
       <QCheckbox value={true} class="col-2" color="secondary" />
       <QCircularProgress indeterminate class="col-2" />
-      <QBtn label="Accept" icon="img:{assets}/cocktail.jpg" class="col-5" />
+      <QBtn label="Accept" icon="img:/cocktail.jpg" class="col-5" />
     </div>
     <div class="row q-gap-lg q-pa-lg flex-center">
       <QInput value="Hello world" label="Greeting" filled class="col-7" />
@@ -488,7 +487,7 @@
   <QCard class="q-pa-none" style="position: absolute; bottom: 1rem; left: 1rem; right: 1rem;">
     <div class="q-py-lg q-px-xl q-mx-auto" style="width: 100%;">
       <img
-        src="{assets}/cocktail.jpg"
+        src="/cocktail.jpg"
         alt="Cocktail"
         width="100%"
         style="aspect-ratio: 1; object-fit: cover"

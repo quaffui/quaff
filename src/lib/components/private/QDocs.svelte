@@ -1,6 +1,5 @@
 <script lang="ts">
   import { setContext, type Snippet } from "svelte";
-  import { assets } from "$app/paths";
   import { QCard, QCardSection, QTheme, Quaff } from "$lib";
   import { QColors, QDocsCtxName, type QComponentDocs } from "$utils";
   import QApi from "./QApi.svelte";
@@ -82,7 +81,7 @@
         </div>
         <img
           class="q-docs__image"
-          src="{assets}/cocktail-close-up.jpg"
+          src="/cocktail-close-up.jpg"
           alt="Close-up of the content of a cocktail"
         />
       </QCardSection>
