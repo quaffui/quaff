@@ -1,6 +1,6 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
-  import { assets, base } from "$app/paths";
+  import { assets } from "$app/paths";
   import {
     QAvatar,
     QBreadcrumbs,
@@ -55,133 +55,133 @@
     {
       name: "QAvatar",
       description: "Display user profiles or visual identities with customizable avatars.",
-      href: `${base}/components/avatar`,
+      href: "/components/avatar",
       snippet: avatar,
     },
     {
       name: "QBreadcrumbs",
       description: "Guide users through your site with intuitive breadcrumb navigation.",
-      href: `${base}/components/breadcrumbs`,
+      href: "/components/breadcrumbs",
       snippet: breadcrumbs,
     },
     {
       name: "QBtn",
       description: "Enable user interactions with versatile and stylish buttons.",
-      href: `${base}/components/button`,
+      href: "/components/button",
       snippet: button,
     },
     {
       name: "QCard",
       description: "Organize and present content elegantly using flexible card layouts.",
-      href: `${base}/components/card`,
+      href: "/components/card",
       snippet: card,
     },
     {
       name: "QCheckbox",
       description: "Allow users to make single or multiple selections with checkboxes.",
-      href: `${base}/components/checkbox`,
+      href: "/components/checkbox",
       snippet: checkbox,
     },
     {
       name: "QChip",
       description: "Showcase compact information or tags with interactive chips.",
-      href: `${base}/components/chip`,
+      href: "/components/chip",
       snippet: chips,
     },
     {
       name: "QDialog",
       description: "Capture user attention for important actions with dialogs.",
-      href: `${base}/components/dialog`,
+      href: "/components/dialog",
       snippet: dialog,
     },
     {
       name: "QDrawer",
       description: "Offer persistent or temporary side navigation with drawers.",
-      href: `${base}/components/drawer`,
+      href: "/components/drawer",
       snippet: drawer,
     },
     {
       name: "QFooter",
       description: "Display consistent information at the bottom of your pages.",
-      href: `${base}/components/footer`,
+      href: "/components/footer",
       snippet: footer,
     },
     {
       name: "QHeader",
       description: "Provide a prominent top section for branding and navigation.",
-      href: `${base}/components/header`,
+      href: "/components/header",
       snippet: header,
     },
     {
       name: "QIcon",
       description: "Enhance visual communication with a wide array of material symbols.",
-      href: `${base}/components/icon`,
+      href: "/components/icon",
       snippet: icons,
     },
     {
       name: "QInput",
       description: "Collect user data seamlessly with various input field styles.",
-      href: `${base}/components/input`,
+      href: "/components/input",
       snippet: input,
     },
     {
       name: "QLayout",
       description: "Structure your application interface with responsive layouts.",
-      href: `${base}/components/layout`,
+      href: "/components/layout",
       snippet: layout,
     },
     {
       name: "QList",
       description: "Present ordered or unordered collections of items clearly.",
-      href: `${base}/components/list`,
+      href: "/components/list",
       snippet: list,
     },
     {
       name: "QProgress",
       description: "Indicate task completion or loading status with linear or cicular indicators.",
-      href: `${base}/components/progress`,
+      href: "/components/progress",
       snippet: progress,
     },
     {
       name: "QRadio",
       description: "Enable exclusive choices from a set using radio buttons.",
-      href: `${base}/components/radio`,
+      href: "/components/radio",
       snippet: radio,
     },
     {
       name: "QSelect",
       description: "Offer users a dropdown list for making single or multiple selections.",
-      href: `${base}/components/select`,
+      href: "/components/select",
       snippet: select,
     },
     {
       name: "QSwitch",
       description: "Provide on/off toggles for binary state management.",
-      href: `${base}/components/switch`,
+      href: "/components/switch",
       snippet: qswitch,
     },
     {
       name: "QTable",
       description: "Display structured data effectively in rows and columns.",
-      href: `${base}/components/table`,
+      href: "/components/table",
       snippet: table,
     },
     {
       name: "QTabs",
       description: "Organize content into switchable sections with tabbed navigation.",
-      href: `${base}/components/tabs`,
+      href: "/components/tabs",
       snippet: tabs,
     },
     {
       name: "QToolbar",
       description: "Group actions and navigation elements within a toolbar.",
-      href: `${base}/components/toolbar`,
+      href: "/components/toolbar",
       snippet: toolbar,
     },
     {
       name: "QTooltip",
       description: "Offer contextual information on hover with helpful tooltips.",
-      href: `${base}/components/tooltip`,
+      href: "/components/tooltip",
       snippet: tooltip,
     },
   ];
@@ -265,7 +265,7 @@
   <QList>
     <QItem class="surface">
       <QItemSection type="avatar">
-        <QAvatar src="{base}/cocktail.jpg" />
+        <QAvatar src="/cocktail.jpg" />
       </QItemSection>
       <QItemSection type="content" style="min-width: 0; flex: 1; overflow: hidden;">
         <div style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden; width: 100%;">

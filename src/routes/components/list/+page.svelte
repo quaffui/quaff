@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { assets, base } from "$app/paths";
+  import { assets } from "$app/paths";
   import { QItemDocs, QItemSectionDocs, QListDocs } from "$components/list/docs";
   import { pageTitle } from "$helpers/pageTitle";
   import { QAvatar, QCheckbox, QIcon, QItem, QItemSection, QList, QSwitch } from "$lib";
@@ -381,7 +381,7 @@
         {/snippet}
 
         <QList bordered class="q-my-md">
-          <QItem to="{base}/components/button">
+          <QItem to="/components/button">
             <QItemSection type="icon">
               <QIcon name="touch_app" />
             </QItemSection>
@@ -390,7 +390,7 @@
               <QIcon name="chevron_right" />
             </QItemSection>
           </QItem>
-          <QItem to="{base}/components/checkbox">
+          <QItem to="/components/checkbox">
             <QItemSection type="icon">
               <QIcon name="check_box" />
             </QItemSection>

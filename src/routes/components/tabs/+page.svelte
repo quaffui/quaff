@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { base } from "$app/paths";
   import { QTabDocs, QTabsDocs } from "$components/tabs/docs";
   import { pageTitle } from "$helpers/pageTitle";
   import { QCard, QCardSection, QIcon, QItem, QItemSection, QList, QTab, QTabs } from "$lib";
@@ -126,9 +125,9 @@
 
         <div class="q-ma-sm">
           <QTabs>
-            <QTab name="home" icon="home" to="{base}/">Home</QTab>
-            <QTab name="components" icon="grid_view" to="{base}/components">Components</QTab>
-            <QTab name="utils" icon="construction" to="{base}/utils">Utils</QTab>
+            <QTab name="home" icon="home" to="/">Home</QTab>
+            <QTab name="components" icon="grid_view" to="/components">Components</QTab>
+            <QTab name="utils" icon="construction" to="/utils">Utils</QTab>
           </QTabs>
           <div class="q-pa-sm text-caption text-italic">
             Note: When using router links, the active tab is determined by the current route rather
