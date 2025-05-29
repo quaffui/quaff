@@ -72,9 +72,13 @@
 
 <div {...props} class="q-code-block" data-quaff>
   {#if copiable}
-    <div class="flex justify-between {title ? 'items-center' : 'justify-end'} q-pb-sm">
+    <div
+      class="q-code-block__title-section justify-between {title
+        ? 'items-center'
+        : 'justify-end'} q-pb-sm"
+    >
       {#if title}
-        <h4 class="q-ma-none q-pr-lg">{title}</h4>
+        <h4 class="q-ma-none">{title}</h4>
       {/if}
       <QBtn
         class="border-{btnColor} text-{btnColor}"
@@ -99,7 +103,9 @@
   {/await}
 </div>
 
-<style>
+<style lang="scss">
+  @use "$css/mixins";
+
   .q-code-block {
     border-radius: inherit;
 
@@ -107,6 +113,21 @@
       text-align: left;
       padding: 1rem;
       overflow: auto;
+    }
+  }
+
+  .q-code-block__title-section {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  @include mixins.up-to-sm {
+    :global(.q-dialog:has(.q-code-block__title-section)) {
+      min-width: auto;
+    }
+
+    .q-code-block__title-section {
+      flex-direction: column;
     }
   }
 </style>

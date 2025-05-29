@@ -48,7 +48,7 @@
 
 <style lang="scss">
   .page-home {
-    padding: 0;
+    padding-top: 0;
     text-align: center;
 
     &__logo-container {
