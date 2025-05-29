@@ -1,0 +1,56 @@
+@use "sass:map";
+@use "$css/variables";
+
+@mixin xs {
+  @media only screen and (max-width: #{map.get(variables.$breakpoints, sm) - 1px}) {
+    @content;
+  }
+}
+
+@mixin sm {
+  @media only screen and (min-width: #{map.get(variables.$breakpoints, sm)}) and (max-width: #{map.get(variables.$breakpoints, md) - 1px}) {
+    @content;
+  }
+}
+
+@mixin md {
+  @media only screen and (min-width: #{map.get(variables.$breakpoints, md)}) and (max-width: #{map.get(variables.$breakpoints, lg) - 1px}) {
+    @content;
+  }
+}
+
+@mixin lg {
+  @media only screen and (min-width: #{map.get(variables.$breakpoints, lg)}) and (max-width: #{map.get(variables.$breakpoints, xl) - 1px}) {
+    @content;
+  }
+}
+
+@mixin xl {
+  @media only screen and (min-width: #{map.get(variables.$breakpoints, xl)}) {
+    @content;
+  }
+}
+
+@mixin up-to-sm {
+  @media only screen and (max-width: #{map.get(variables.$breakpoints, sm) - 1px}) {
+    @content;
+  }
+}
+
+@mixin up-to-md {
+  @media only screen and (max-width: #{map.get(variables.$breakpoints, md) - 1px}) {
+    @content;
+  }
+}
+
+@mixin up-to-lg {
+  @media only screen and (max-width: #{map.get(variables.$breakpoints, lg) - 1px}) {
+    @content;
+  }
+}
+
+@mixin up-to-xl {
+  @media only screen and (max-width: #{map.get(variables.$breakpoints, xl) - 1px}) {
+    @content;
+  }
+}
