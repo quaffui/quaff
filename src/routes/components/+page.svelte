@@ -184,8 +184,6 @@
       snippet: tooltip,
     },
   ];
-
-  let active = $state<Component["name"] | null>(null);
 </script>
 
 <svelte:head>
@@ -197,19 +195,34 @@
   docDescription="Find a large set of reusable components to build your projects. They are styled following Material Design 3 guidelines, for a consistent and modern look."
 >
   {#snippet display()}
-    <div class="row q-gap-lg q-pa-lg flex-center">
+    <div class="row q-gap-lg q-pa-lg items-center">
       <QSwitch value={true} class="col-3" />
-      <QCheckbox value={true} class="col-2" color="secondary" />
+
+      {#if Quaff.breakpoints.isMoreThan("sm")}
+        <QCheckbox value={true} class="col-2" color="secondary" />
+      {/if}
+
       <QCircularProgress indeterminate class="col-2" />
-      <QBtn label="Accept" icon="img:/cocktail.jpg" class="col-5" />
+
+      <QBtn label="Accept" icon="img:/cocktail.jpg" class="col-xs-7 col-md-5" />
     </div>
-    <div class="row q-gap-lg q-pa-lg flex-center">
-      <QInput value="Hello world" label="Greeting" filled class="col-7" />
-      <QLinearProgress indeterminate class="col-5" trackColor="secondary" color="on-secondary" />
+    <div class="row q-gap-lg q-pa-lg items-center">
+      <QInput value="Hello world" label="Greeting" filled class="col-xs-12 col-sm-7" />
+      {#if Quaff.breakpoints.isMoreThan("sm")}
+        <QLinearProgress
+          indeterminate
+          class="col-5"
+          trackColor="secondary"
+          color="on-secondary"
+          style="width: 100%"
+        />
+      {/if}
     </div>
-    <div class="row q-gap-lg q-pa-lg flex-center">
-      <QChip label="Hey!" icon="waving_hand" class="col-3 secondary-container" />
-      <QTabs value="home" class="col-9">
+    <div class="row q-gap-lg q-pa-lg items-center">
+      {#if Quaff.breakpoints.isMoreThan("sm")}
+        <QChip label="Hey!" icon="waving_hand" class="col-3 secondary-container" />
+      {/if}
+      <QTabs value="home" class="col-12 col-sm-9">
         <QTab name="home" icon="home">Home</QTab>
         <QTab name="about" icon="info">About</QTab>
         <QTab name="account" icon="person">Account</QTab>
@@ -220,12 +233,10 @@
   <div class="row q-gap-md q-mt-lg">
     {#each components as component (component.name)}
       <div
-        class="col-sm-6 col-lg-4 col-xs-12"
+        class="q-component-card col-sm-6 col-lg-4 col-xs-12"
         role="link"
         tabindex="0"
         style="grid-auto-rows: 1fr; cursor: pointer;"
-        onmouseenter={() => (active = component.name)}
-        onmouseleave={() => (active = null)}
         onclick={() => goto(component.href)}
         onkeypress={(e) => {
           if (e.key === "Enter") {
@@ -234,16 +245,9 @@
           }
         }}
       >
-        <QCard
-          class="q-pa-none"
-          style="height: 100%; transition: all 0.3s; overflow: hidden;"
-          fill={active === component.name ? "primary" : undefined}
-        >
+        <QCard class="q-pa-none" style="height: 100%; transition: all 0.3s; overflow: hidden;">
           <div
-            class={[
-              "q-component-card q-pa-md flex flex-center secondary-container",
-              active === component.name && "q-component-card--active",
-            ]}
+            class="q-component-card__display q-pa-md flex flex-center secondary-container"
             style="height: 14rem;"
             inert
           >
@@ -651,41 +655,62 @@
   <QBtn class="q-mt-sm" label="Tooltip" variant="filled" />
 {/snippet}
 
-<style>
+<style lang="scss">
   .q-component-card {
-    position: relative;
-    overflow: hidden;
-    transition: all 0.3s;
+    max-width: 100%;
 
-    width: 100%;
-    min-height: 14rem;
-    pointer-events: none;
+    & &__display {
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s;
 
-    &::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
+      width: 100%;
+      min-height: 14rem;
+      pointer-events: none;
 
-      background-image: url("cocktail-close-up-2.jpg");
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      filter: hue-rotate(var(--q-hue-rotate)) brightness(var(--q-brightness));
+      &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
 
-      opacity: 0;
+        background-image: url("cocktail-close-up-2.jpg");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        filter: hue-rotate(var(--q-hue-rotate)) brightness(var(--q-brightness));
+
+        opacity: 0;
+      }
     }
-  }
 
-  .q-component-card--active::before {
-    opacity: 1;
+    &:hover,
+    &:focus-within,
+    &:focus {
+      & :global(> .q-card) {
+        background-color: var(--primary-container);
+        color: var(--on-primary-container);
+      }
+
+      & :global(.q-component-card__display::before) {
+        opacity: 1;
+      }
+    }
   }
 
   :global(.q-select__demo .q-select__menu) {
     opacity: 1;
     visibility: visible;
     transform: scale(1) translateY(100%);
+  }
+
+  .row {
+    justify-items: center;
+  }
+
+  :global(.q-page) {
+    padding-inline: 0;
   }
 </style>

@@ -17,12 +17,11 @@
     overlay = false,
     persistent = false,
     noSwipe = false,
-    swipeThreshold = "50%",
+    swipeThreshold = "30%",
     children,
     ...props
   }: QDrawerProps = $props();
 
-  const EDGE_ACTIVATION_THRESHOLD = 20; // How close in px to the edge of the screen to activate the swipe
   const PEEK_THRESHOLD = 30; // How far the drawer peeks out when cursor is near the edge
   const TRANSITION = "top 0.3s, bottom 0.3s, transform 0.3s";
 
@@ -38,7 +37,6 @@
   let isSwiping = $state(false);
   let startX = $state(0);
   let dragOffset = $state(0);
-  let initialOffset = $state(0);
 
   const drawerContext = QContext.get<DrawerContext>(QLayoutCtxName.drawer[side]);
   const layoutView = getContext<{ value: NonNullable<QLayoutProps["view"]> }>(QLayoutCtxName.view);
@@ -122,7 +120,7 @@
 
       if (!noSwipe) {
         unlistenPointerdown = on(swipeAreaEl!, "pointerdown", handlePointerDown);
-        swipeAreaEl?.style.setProperty("z-index", "2");
+        swipeAreaEl?.style.setProperty("z-index", "10");
       }
     }
   });
@@ -193,17 +191,6 @@
     startX = e.clientX;
 
     if (!value) {
-      const drawerEdge = side === "left" ? drawerRect.right : drawerRect.left;
-
-      initialOffset = startX - drawerEdge;
-
-      // If drawer is closed, only allow swipe if pointer is close to the edge
-      const isInActivationZone = Math.abs(initialOffset) <= EDGE_ACTIVATION_THRESHOLD;
-
-      if (!isInActivationZone) {
-        return;
-      }
-
       swipeAllowed = true;
 
       const baseWidth = side === "left" ? -width : width;
@@ -288,12 +275,14 @@
     drawerEl.style.transform = "";
     drawerEl.style.touchAction = ""; // Re-enable touch actions
 
-    swipeAreaEl?.style.setProperty("width", `${EDGE_ACTIVATION_THRESHOLD}px`);
+    swipeAreaEl?.style.removeProperty("width"); // Reset swipe area width
 
-    const thresholdPx = (width * parseInt(swipeThreshold.replace("%", ""))) / 100;
+    const thresholdWidth = (width * parseInt(swipeThreshold.replace("%", ""))) / 100;
+    const realThreshold = value ? width - thresholdWidth : thresholdWidth;
+
     const swiped = width + (side === "left" ? dragOffset : -dragOffset);
 
-    if (swiped >= thresholdPx) {
+    if (swiped >= realThreshold) {
       if (!value) {
         show(); // Snap open
       }

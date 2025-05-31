@@ -5,6 +5,9 @@
   border-radius: 0.75rem;
   transition: transform var(--speed-3) padding var(--speed-3) border-radius var(--speed-3);
 
+  background-color: var(--surface);
+  color: var(--on-surface);
+
   @include mixins.padding("a-md");
   @include mixins.elevate(1, "bottom");
 
@@ -21,5 +24,24 @@
 
   &--rounded {
     border-radius: 2rem;
+  }
+
+  &--fill {
+    background-color: var(--surface-variant);
+
+    &.q-card--primary {
+      background-color: var(--primary-container);
+      color: var(--on-primary-container);
+    }
+
+    &.q-card--secondary {
+      background-color: var(--secondary-container);
+      color: var(--on-secondary-container);
+    }
+
+    &.q-card--tertiary {
+      background-color: var(--tertiary-container);
+      color: var(--on-tertiary-container);
+    }
   }
 }
