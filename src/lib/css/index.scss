@@ -18,8 +18,4 @@
   @layer classes {
     @include meta.load-css("classes");
   }
-
-  @layer disabled {
-    @include meta.load-css("disabled");
-  }
 }
