@@ -15,13 +15,13 @@
     {
       name: "QTheme",
       description: "Class for managing the application's color theme.",
-      href: "/utils/qtheme",
+      href: "/utils/q-theme",
       hovered: false,
     },
     {
       name: "QScrollObserver",
       description: "Utility for observing different properties related to scrolling.",
-      href: "/utils/qscrollobserver",
+      href: "/utils/q-scroll-observer",
       hovered: false,
     },
   ];
