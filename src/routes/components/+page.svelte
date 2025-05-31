@@ -204,10 +204,16 @@
 
       <QCircularProgress indeterminate class="col-2" />
 
-      <QBtn label="Accept" icon="img:/cocktail.jpg" class="col-xs-7 col-md-5" />
+      <QBtn label="Accept" icon="img:/cocktail.jpg" class="col-xs-7 col-sm-5" />
     </div>
     <div class="row q-gap-lg q-pa-lg items-center">
-      <QInput value="Hello world" label="Greeting" filled class="col-xs-12 col-sm-7" />
+      <QInput
+        value="Hello world"
+        label="Greeting"
+        filled
+        class="col-xs-12 col-sm-7"
+        style="width: 100%"
+      />
       {#if Quaff.breakpoints.isMoreThan("sm")}
         <QLinearProgress
           indeterminate
@@ -218,6 +224,23 @@
         />
       {/if}
     </div>
+    {#if Quaff.breakpoints.isLessThan("sm", true)}
+      <div class="row q-gap-lg q-pa-lg items-center">
+        <QLinearProgress
+          indeterminate
+          class="col-7"
+          trackColor="secondary"
+          color="on-secondary"
+          style="width: 100%"
+        />
+
+        <div class="col-1"></div>
+
+        <QChip label="Hey!" icon="waving_hand" class="col-3 secondary-container" />
+
+        <div class="col-1"></div>
+      </div>
+    {/if}
     <div class="row q-gap-lg q-pa-lg items-center">
       {#if Quaff.breakpoints.isMoreThan("sm")}
         <QChip label="Hey!" icon="waving_hand" class="col-3 secondary-container" />
@@ -236,7 +259,7 @@
         class="q-component-card col-sm-6 col-lg-4 col-xs-12"
         role="link"
         tabindex="0"
-        style="grid-auto-rows: 1fr; cursor: pointer;"
+        style="grid-auto-rows: 1fr; cursor: pointer; width: 100%"
         onclick={() => goto(component.href)}
         onkeypress={(e) => {
           if (e.key === "Enter") {
@@ -604,7 +627,13 @@
     { id: 5, title: "The Catcher in the Rye", author: "J.D. Salinger" },
   ]}
 
-  <QTable {columns} {rows} bordered dense style="position: absolute; left: 1rem; top: 1rem;" />
+  <QTable
+    {columns}
+    {rows}
+    bordered
+    dense
+    style="position: absolute; left: 1rem; top: 1rem; min-width: 110%"
+  />
 {/snippet}
 
 {#snippet tabs()}
@@ -708,9 +737,5 @@
 
   .row {
     justify-items: center;
-  }
-
-  :global(.q-page) {
-    padding-inline: 0;
   }
 </style>
