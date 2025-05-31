@@ -16,7 +16,7 @@
 
   const color = $derived.by(() => {
     if (fill) {
-      return typeof fill === "boolean" || !colorOptions.includes(fill as ColorOptions)
+      return fill === true || !colorOptions.includes(fill as ColorOptions)
         ? "surface-variant"
         : fill;
     }

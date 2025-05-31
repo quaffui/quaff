@@ -209,7 +209,13 @@
     <div class="row q-gap-lg q-pa-lg items-center">
       <QInput value="Hello world" label="Greeting" filled class="col-xs-12 col-sm-7" />
       {#if Quaff.breakpoints.isMoreThan("sm")}
-        <QLinearProgress indeterminate class="col-5" trackColor="secondary" color="on-secondary" />
+        <QLinearProgress
+          indeterminate
+          class="col-5"
+          trackColor="secondary"
+          color="on-secondary"
+          style="width: 100%"
+        />
       {/if}
     </div>
     <div class="row q-gap-lg q-pa-lg items-center">
