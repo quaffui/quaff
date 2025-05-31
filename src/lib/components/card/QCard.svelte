@@ -10,12 +10,17 @@
     ...props
   }: QCardProps = $props();
 
-  const colorOptions: (typeof fill)[] = ["primary", "secondary", "tertiary"];
+  type ColorOptions = "primary" | "secondary" | "tertiary";
+
+  const colorOptions: ColorOptions[] = ["primary", "secondary", "tertiary"] as const;
 
   const color = $derived.by(() => {
     if (fill) {
-      return colorOptions.includes(fill) ? `${fill}-container` : "surface-variant";
+      return fill === true || !colorOptions.includes(fill as ColorOptions)
+        ? "surface-variant"
+        : fill;
     }
+
     return "surface";
   });
 
@@ -24,8 +29,10 @@
       flat,
       bordered,
       rounded,
+      fill,
+      [color]: fill && color !== "surface",
     },
-    classes: [color, props.class],
+    classes: [props.class],
   });
 </script>
 

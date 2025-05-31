@@ -74,7 +74,7 @@ export interface QDrawerProps extends NativeProps, HTMLAttributes<HTMLDivElement
   /**
    * The threshold in percentage of the drawer width that must be swiped for the drawer to snap open/close.
    * This is only applicable if swipe gestures are enabled.
-   * @default "50%"
+   * @default "30%"
    */
   swipeThreshold?: `${number}%`;
 }
