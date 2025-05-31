@@ -122,7 +122,7 @@
 
       if (!noSwipe) {
         unlistenPointerdown = on(swipeAreaEl!, "pointerdown", handlePointerDown);
-        swipeAreaEl?.style.setProperty("z-index", "2");
+        swipeAreaEl?.style.setProperty("z-index", "10");
       }
     }
   });
