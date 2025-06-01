@@ -57,35 +57,6 @@
     },
   ];
 
-  // Custom format columns
-  const columnsWithFormat: QTableColumn[] = [
-    {
-      name: "id",
-      required: true,
-      label: "Book ID",
-      align: "left",
-      field: "id",
-      sortable: true,
-    },
-    {
-      name: "title",
-      required: true,
-      label: "Book Title",
-      align: "left",
-      field: "title",
-      sortable: true,
-    },
-    {
-      name: "author",
-      required: true,
-      label: "Author",
-      align: "right",
-      field: "author",
-      sortable: true,
-      format: (val) => `By ${val}`,
-    },
-  ];
-
   // Function field column example
   const columnsWithFunction: QTableColumn[] = [
     ...columns,
@@ -152,9 +123,9 @@
       <QDocsSection title="Basic Table">
         {#snippet sectionDescription()}
           QTable is a versatile component for displaying tabular data. It supports pagination,
-          sorting, and custom cell rendering. The basic implementation requires just <code
-            >columns</code
-          >
+          sorting, and custom cell rendering. The basic implementation requires just <code>
+            columns
+          </code>
           and <code>rows</code> props.
         {/snippet}
 
@@ -232,16 +203,6 @@
         {/snippet}
 
         <QTable {columns} rows={rows.slice(0, 10)} />
-      </QDocsSection>
-
-      <QDocsSection title="Custom Data Formatting - Not supported yet">
-        {#snippet sectionDescription()}
-          Columns can include a <code>format</code> function to transform the displayed data without
-          affecting the underlying value. This is useful for adding prefixes, suffixes, or transforming
-          values into a more readable format.
-        {/snippet}
-
-        <QTable columns={columnsWithFormat} rows={rows.slice(0, 5)} />
       </QDocsSection>
 
       <QDocsSection title="Function Fields">
