@@ -554,11 +554,15 @@
             {/snippet}
 
             <div class="flex flex-center column" style="height: 100%">
-              <h5>Header Integration</h5>
+              <h5>Alternative Header Integration</h5>
               <p>This layout uses the <code>view="hhh lpr fff"</code> configuration.</p>
               <p>
-                The lowercase <code>l</code> in the 1st and 3rd groups means the railbar extends beside
-                the header and the footer.
+                The lowercase <code>h</code> (1st letter) means the header extends to the top left edge,
+                above the railbar.
+              </p>
+              <p>
+                The lowercase <code>f</code> (3rd to last letter) means the footer extends to the bottom
+                left edge, under the railbar.
               </p>
             </div>
           </QLayout>
@@ -615,13 +619,11 @@
             {/snippet}
 
             <div class="flex flex-center column" style="height: 100%">
-              <h5>Alternative Header Integration</h5>
+              <h5>Header Integration</h5>
               <p>This layout uses the <code>view="lhh lpr lff"</code> configuration.</p>
               <p>
-                The lowercase <code>h</code> means the header extends to the top edge, above the railbar.
-              </p>
-              <p>
-                The lowercase <code>f</code> means the footer extends to the bottom edge, under the railbar.
+                The lowercase <code>l</code> in the 1st and 3rd groups (1st letter of each groups) means
+                the railbar extends beside the header and the footer.
               </p>
             </div>
           </QLayout>
