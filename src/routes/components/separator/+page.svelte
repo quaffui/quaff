@@ -13,7 +13,7 @@
 <QDocs {snippets} componentDocs={[QSeparatorHorizontalDocs, QSeparatorVerticalDocs]}>
   {#snippet display()}
     <div>Me</div>
-    <QSeparator text="My procrastination" />
+    <QSeparator text="My procrastination" spacing="lg" />
     <div>My projects</div>
   {/snippet}
 
