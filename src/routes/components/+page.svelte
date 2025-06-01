@@ -705,7 +705,7 @@
         right: 0;
         bottom: 0;
 
-        background-image: url("cocktail-close-up-2.jpg");
+        background-image: url("/cocktail-close-up-2.jpg");
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
