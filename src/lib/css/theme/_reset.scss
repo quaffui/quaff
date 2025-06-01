@@ -17,7 +17,8 @@ body {
   background-color: var(--surface);
 }
 
-body {
+body,
+body > div {
   background-color: var(--surface-container-lowest);
   overflow-x: hidden;
   height: 100vh;

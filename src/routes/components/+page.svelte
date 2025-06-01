@@ -358,7 +358,7 @@
 
     <QCardActions align="right">
       <QBtn label="Cancel" variant="flat" />
-      <QBtn label="Delete" class="error" />
+      <QBtn label="Delete" class="error-container" />
     </QCardActions>
   </QCard>
 {/snippet}
