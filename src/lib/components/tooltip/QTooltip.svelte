@@ -31,7 +31,7 @@
   let tooltipMouseLeaveListener: ReturnType<typeof addEventListener> | null = null;
   let windowWheelListener: ReturnType<typeof addEventListener> | null = null;
 
-  const id = Date.now();
+  const id = $props.id();
 
   $effect(() => {
     value ? untrack(show) : untrack(hide);
@@ -102,7 +102,7 @@
       timerShow = null;
       mountedTooltip = mountTooltip();
 
-      tooltipEl = (document.getElementById(`qtooltip-${id}`) as HTMLDivElement) || undefined;
+      tooltipEl = (document.getElementById(`q-tooltip-${id}`) as HTMLDivElement) || undefined;
       tooltipMouseEnterListener = addEventListener(tooltipEl, "mouseenter", abortHide);
       tooltipMouseLeaveListener = addEventListener(tooltipEl, "mouseleave", hide);
 
@@ -177,7 +177,7 @@
         position,
         offset,
         children,
-        id: `qtooltip-${id}`,
+        id: `q-tooltip-${id}`,
         ...props,
       },
     });
