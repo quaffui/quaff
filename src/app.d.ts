@@ -15,6 +15,8 @@ declare global {
 
     export type CssValue = `${number}${CssUnit}`;
 
+    export type StringWithSuggestions<T extends string> = T | (string & {});
+
     export interface QComponentDocs {
       name: string;
       description: string;

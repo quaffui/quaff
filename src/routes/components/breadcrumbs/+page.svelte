@@ -91,7 +91,11 @@
           </p>
         {/snippet}
         <div class="q-mb-md">
-          <QBreadcrumbs activeColor="secondary" separatorColor="tertiary">
+          <QBreadcrumbs
+            activeColor="error-container"
+            separatorColor="green"
+            separator="icon:chevron_right"
+          >
             <QBreadcrumbsEl to="/" label="Home" />
             <QBreadcrumbsEl to="/components" label="Components" />
             <QBreadcrumbsEl label="Breadcrumbs" />
@@ -145,20 +149,20 @@
         {/snippet}
         <div class="q-mb-md">
           <QBreadcrumbs gutter="sm">
-            <QBreadcrumbsEl to="/" label="Small Gutter (default)" />
-            <QBreadcrumbsEl label="Breadcrumbs" />
+            <QBreadcrumbsEl label="Small" />
+            <QBreadcrumbsEl label="Gutter" />
           </QBreadcrumbs>
         </div>
         <div class="q-mb-md">
           <QBreadcrumbs gutter="md">
-            <QBreadcrumbsEl to="/" label="Medium Gutter" />
-            <QBreadcrumbsEl label="Breadcrumbs" />
+            <QBreadcrumbsEl label="Medium" />
+            <QBreadcrumbsEl label="Gutter" />
           </QBreadcrumbs>
         </div>
         <div class="q-mb-md">
           <QBreadcrumbs gutter="lg">
-            <QBreadcrumbsEl to="/" label="Large Gutter" />
-            <QBreadcrumbsEl label="Breadcrumbs" />
+            <QBreadcrumbsEl label="Large" />
+            <QBreadcrumbsEl label="Gutter" />
           </QBreadcrumbs>
         </div>
       </QDocsSection>
@@ -173,13 +177,17 @@
         <div class="q-mb-md">
           <QBreadcrumbs>
             <QBreadcrumbsEl to="/">
+              {#snippet icon()}
+                <span>🏠</span>
+              {/snippet}
+
               <span class="font-bold">Home</span>
             </QBreadcrumbsEl>
             <QBreadcrumbsEl to="/components">
               <span class="text-green">Components</span>
             </QBreadcrumbsEl>
             <QBreadcrumbsEl>
-              <span class="text-decoration-underline">Breadcrumbs</span>
+              <span>Breadcrumbs</span>
             </QBreadcrumbsEl>
           </QBreadcrumbs>
         </div>
@@ -191,7 +199,8 @@
             Breadcrumb elements become navigational links when you add the <code>to</code> or
             <code>href</code>
             prop. The <code>to</code> prop is typically used with your router, while
-            <code>href</code> can be used for standard hyperlinks or anchor links.
+            <code>href</code> can be used for standard hyperlinks or anchor links, although you can use
+            them interchangeably.
           </p>
         {/snippet}
         <div class="q-mb-md">
@@ -206,15 +215,15 @@
       <QDocsSection title="Custom Element Tag">
         {#snippet sectionDescription()}
           <p>
-            By default, non-navigational breadcrumb elements use a <code>div</code> tag. You can
+            By default, non-navigational breadcrumb elements use a <code>span</code> tag. You can
             change this using the <code>tag</code> prop.
           </p>
         {/snippet}
         <div class="q-mb-md">
           <QBreadcrumbs>
             <QBreadcrumbsEl to="/" label="Link Element (a)" />
-            <QBreadcrumbsEl tag="span" label="Span Element" />
-            <QBreadcrumbsEl label="Div Element (default)" />
+            <QBreadcrumbsEl tag="div" label="Div Element" />
+            <QBreadcrumbsEl label="Span Element (default)" />
           </QBreadcrumbs>
         </div>
       </QDocsSection>

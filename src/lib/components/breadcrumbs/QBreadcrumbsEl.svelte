@@ -1,36 +1,33 @@
 <script lang="ts">
-  import { getContext, type Snippet } from "svelte";
+  import { getContext } from "svelte";
   import { QIcon } from "$lib";
   import { isRouteActive, QBreadcrumbsCtxName } from "$utils";
   import type { MaterialSymbol } from "material-symbols";
-  import type { QBreadcrumbsElProps } from "./props";
+  import type { QBreadcrumbsElProps, QBreadcrumbsProps } from "./props";
 
   let {
     activeClass = "active",
     href,
     label = "",
     icon,
-    tag = "div",
+    tag = "span",
     to,
     children = fallback,
     ...props
   }: QBreadcrumbsElProps = $props();
 
-  const activeColor = getContext<string>(QBreadcrumbsCtxName.activeColor);
   const separator = getContext<{
-    type: `icon:${MaterialSymbol}` | Snippet;
-    color: string;
-    gutter: string;
+    type: QBreadcrumbsProps["separator"];
+    gutter: QBreadcrumbsProps["gutter"];
   }>(QBreadcrumbsCtxName.separator);
 
-  const classesIfActive = $derived(
-    isRouteActive(href || to) ? `${activeClass} text-${activeColor}` : undefined
-  );
+  const isActive = $derived(isRouteActive(href || to));
 
+  Q.classes("q-breadcrumbs__item", { classes: [props.class] });
   Q.classes("q-breadcrumbs__separator", {
-    classes: [`q-px-${separator.gutter}`, props.class],
+    classes: [`q-px-${separator.gutter}`],
   });
-  Q.classes("q-breadcrumbs__el", { classes: [classesIfActive] });
+  Q.classes("q-breadcrumbs__el", { classes: [isActive && activeClass] });
 </script>
 
 {#snippet fallback()}
@@ -42,31 +39,46 @@
     {#if typeof icon === "string"}
       <QIcon name={icon} size="1rem" />
     {:else}
-      {@render icon()}
+      <span class="q-icon">
+        {@render icon()}
+      </span>
     {/if}
   {/if}
 
-  {@render children()}
+  <span class="q-breadcrumbs__label">
+    {@render children()}
+  </span>
 {/snippet}
 
-<div {...props} class="q-breadcrumbs__separator" data-quaff>
-  {#if typeof separator.type === "string"}
-    {#if separator.type.startsWith("icon:")}
-      <QIcon name={separator.type.replace("icon:", "") as MaterialSymbol} size="1rem" />
+<li
+  {...props}
+  class="q-breadcrumbs__item"
+  style:--q-breadcrumbs-color={isActive ? "var(--q-active-color)" : undefined}
+>
+  <span class="q-breadcrumbs__separator" aria-hidden="true">
+    {#if typeof separator.type === "string"}
+      {#if separator.type.startsWith("icon:")}
+        <QIcon name={separator.type.slice(5) as MaterialSymbol} size="1rem" />
+      {:else}
+        {separator.type}
+      {/if}
     {:else}
-      {separator.type}
+      {@render separator.type?.()}
     {/if}
-  {:else}
-    {@render separator.type()}
-  {/if}
-</div>
+  </span>
 
-{#if href !== undefined || to !== undefined}
-  <a href={href || to} class="q-breadcrumbs__el">
-    {@render breadcrumbEl()}
-  </a>
-{:else}
-  <svelte:element this={tag} class="q-breadcrumbs__el">
-    {@render breadcrumbEl()}
-  </svelte:element>
-{/if}
+  {#if href || to}
+    <a
+      href={href || to}
+      class="q-breadcrumbs__el"
+      aria-current={isActive ? "page" : undefined}
+      data-quaff
+    >
+      {@render breadcrumbEl()}
+    </a>
+  {:else}
+    <svelte:element this={tag} class="q-breadcrumbs__el" data-quaff>
+      {@render breadcrumbEl()}
+    </svelte:element>
+  {/if}
+</li>
