@@ -36,15 +36,15 @@
       return displayValue;
     }
 
-    const fn = emitValue ? getOptionValue : getOptionLabel;
+    const getOptionPropFn = emitValue ? getOptionValue : getOptionLabel;
 
     if (!multiple) {
-      return fn(value as QSelectOption);
+      return getOptionPropFn(value as QSelectOption);
     }
 
     return (value as QSelectOption[])
       .map((val) => {
-        return fn(val);
+        return getOptionPropFn(val);
       })
       .join(", ");
   });
