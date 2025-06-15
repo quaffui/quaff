@@ -3,7 +3,7 @@
   import { browser } from "$app/environment";
   import { QIcon } from "$lib";
   import type { QEvent } from "$utils";
-  import type { QSelectMultipleValue, QSelectOption, QSelectProps } from "./props";
+  import type { QSelectOption, QSelectProps } from "./props";
 
   type QSelectEvent<T> = QEvent<T, HTMLDivElement>;
 
@@ -20,6 +20,7 @@
     outlined = false,
     rounded = false,
     displayValue,
+    emitValue = false,
     before = undefined,
     prepend = undefined,
     append = undefined,
@@ -35,11 +36,17 @@
       return displayValue;
     }
 
+    const fn = emitValue ? getOptionValue : getOptionLabel;
+
     if (!multiple) {
-      return value;
+      return fn(value as QSelectOption);
     }
 
-    return (value as QSelectMultipleValue).join(", ");
+    return (value as QSelectOption[])
+      .map((val) => {
+        return fn(val);
+      })
+      .join(", ");
   });
 
   const active = $derived(currentDisplayValue || focus);
@@ -79,30 +86,46 @@
 
   let snippetPrependWidth = $state(0);
 
+  function getOptionValue(option: QSelectOption): string {
+    return typeof option === "string" ? option : option.value;
+  }
+
+  function getOptionLabel(option: QSelectOption): string {
+    if (typeof option !== "string") {
+      return option.label;
+    }
+
+    return options.includes(option)
+      ? option
+      : (options.find((opt) => getOptionValue(opt) === option) as { label: string })?.label || "";
+  }
+
   function isSelected(option: QSelectOption) {
-    const optionValue = typeof option === "string" ? option : option.value;
-    return multiple ? (value as QSelectMultipleValue).includes(optionValue) : value === optionValue;
+    const optionValue = getOptionValue(option);
+    return multiple
+      ? (value as QSelectOption[]).some((opt) => getOptionValue(opt) === optionValue)
+      : getOptionValue(value as QSelectOption) === optionValue;
   }
 
   function select(evt: MouseEvent, option: QSelectOption) {
     evt.preventDefault();
-    const optionValue = typeof option === "string" ? option : option.value;
+    const optionValue = getOptionValue(option);
 
     if (multiple) {
-      const hasItem = (value as QSelectMultipleValue).some((entry) => entry === optionValue);
+      const hasItem = (value as QSelectOption[]).some((entry) => entry === optionValue);
 
       if (hasItem) {
-        (value as QSelectMultipleValue) = (value as QSelectMultipleValue).filter(
+        (value as QSelectOption[]) = (value as QSelectOption[]).filter(
           (val) => val !== optionValue
         );
       } else {
-        (value as QSelectMultipleValue) = [...(value as QSelectMultipleValue), optionValue];
+        (value as QSelectOption[]) = [...(value as QSelectOption[]), optionValue];
       }
 
       return;
     }
 
-    value = optionValue;
+    value = emitValue ? optionValue : option;
     isMenuOpen = false;
   }
 
@@ -197,7 +220,7 @@
           href={multiple ? "javascript:void(0)" : undefined}
           class="q-select__option {selectedOptions[idx] ? 'q-select__option--selected' : ''}"
           onmousedown={() => (preventClose = true)}
-          onclick={(e) => select(e, option)}>{typeof option === "string" ? option : option.value}</a
+          onclick={(e) => select(e, option)}>{getOptionLabel(option)}</a
         >
       {/each}
     </div>

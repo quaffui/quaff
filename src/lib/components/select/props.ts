@@ -4,11 +4,7 @@ import type { HTMLAttributes } from "svelte/elements";
 
 export type QSelectOption = string | { label: string; value: string };
 
-export type QSelectValue = QSelectSingleValue | QSelectMultipleValue;
-
-export type QSelectSingleValue = string | number;
-
-export type QSelectMultipleValue = QSelectSingleValue[];
+export type QSelectValue = QSelectOption | QSelectOption[];
 
 export interface QSelectProps extends NativeProps, HTMLAttributes<HTMLDivElement> {
   /**
@@ -100,6 +96,13 @@ export interface QSelectProps extends NativeProps, HTMLAttributes<HTMLDivElement
    * @default undefined
    */
   displayValue?: string;
+
+  /**
+   * Indicates whether to emit the value rather than the entire option object when a value is selected.
+   *
+   * @default false
+   */
+  emitValue?: boolean;
 
   /**
    * Content to be placed before the select wrapper element, usually an icon.
