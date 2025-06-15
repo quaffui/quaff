@@ -4,7 +4,7 @@ import type { HTMLAttributes } from "svelte/elements";
 
 export type QBreadcrumbsGutterOptions = Exclude<Q.Size, "xs" | "xl">;
 
-export interface QBreadcrumbsProps extends HTMLAttributes<HTMLDivElement> {
+export interface QBreadcrumbsProps extends HTMLAttributes<HTMLElement> {
   /**
    * Color to use for the active breadcrumb element. See <link to colors docs> to see what colors can be used.
    * @default "primary"
@@ -19,7 +19,7 @@ export interface QBreadcrumbsProps extends HTMLAttributes<HTMLDivElement> {
    * Separator to use between the breadcrumb elements. To use an icon, prefix with "icon:" followed by the name of the icon.
    * @default "/"
    */
-  separator?: string | `icon:${MaterialSymbol}` | Snippet;
+  separator?: Q.StringWithSuggestions<`icon:${MaterialSymbol}`> | Snippet;
   /**
    * Color to use for the separators. See <link to colors docs> to see what colors can be used.
    * @default "outline"
@@ -27,7 +27,7 @@ export interface QBreadcrumbsProps extends HTMLAttributes<HTMLDivElement> {
   separatorColor?: string;
 }
 
-export interface QBreadcrumbsElProps extends HTMLAttributes<HTMLElement> {
+export interface QBreadcrumbsElProps extends HTMLAttributes<HTMLLIElement> {
   /**
    * Class to apply to the breadcrumb element when the route is active.
    * @default "active"
@@ -50,7 +50,7 @@ export interface QBreadcrumbsElProps extends HTMLAttributes<HTMLElement> {
   href?: string;
   /**
    * Tag to use for the breadcrumb element.
-   * @default "div"
+   * @default "span"
    */
   tag?: string;
   /**

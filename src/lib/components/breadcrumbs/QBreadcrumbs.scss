@@ -1,10 +1,14 @@
 .q-breadcrumbs {
-  display: flex;
-  align-items: center;
-  justify-content: center;
   width: fit-content;
 
-  & > .q-breadcrumbs__separator:first-child {
-    display: none;
+  &__list {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin: 0;
+    padding: 0;
+
+    list-style: none;
   }
 }
