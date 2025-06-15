@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { setContext, untrack } from "svelte";
+  import { onMount, setContext } from "svelte";
   import { QBreadcrumbsCtxName } from "$utils";
   import type { QBreadcrumbsProps } from "./props";
 
@@ -12,18 +12,26 @@
     ...props
   }: QBreadcrumbsProps = $props();
 
-  let breadrumbElement: HTMLDivElement;
+  let breadrumbList: HTMLOListElement;
 
-  $effect(() => {
-    untrack(() => breadrumbElement.firstChild?.remove());
+  onMount(() => {
+    breadrumbList.querySelector(".q-breadcrumbs__separator:first-child")?.remove();
   });
 
-  setContext(QBreadcrumbsCtxName.activeColor, activeColor);
-  setContext(QBreadcrumbsCtxName.separator, { type: separator, color: separatorColor, gutter });
+  setContext(QBreadcrumbsCtxName.separator, { type: separator, gutter });
 
   Q.classes("q-breadcrumbs", { classes: [props.class] });
 </script>
 
-<div bind:this={breadrumbElement} {...props} class="q-breadcrumbs" data-quaff>
-  {@render children?.()}
-</div>
+<nav
+  {...props}
+  class="q-breadcrumbs"
+  aria-label="Breadcrumbs"
+  data-quaff
+  style:--q-separator-color="var(--{separatorColor}, {separatorColor})"
+  style:--q-active-color="var(--{activeColor}, {activeColor})"
+>
+  <ol bind:this={breadrumbList} class="q-breadcrumbs__list">
+    {@render children?.()}
+  </ol>
+</nav>

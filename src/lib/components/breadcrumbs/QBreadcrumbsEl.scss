@@ -1,10 +1,29 @@
 @use "$css/mixins";
 
-.q-breadcrumbs__el {
+.q-breadcrumbs__item {
   display: flex;
   align-items: center;
 
-  & > .q-icon {
-    @include mixins.margin("r-sm");
+  color: var(--q-breadcrumbs-color, currentColor);
+
+  &:has(> a):hover .q-breadcrumbs__label {
+    text-decoration: underline;
+    text-decoration-color: currentColor;
+
+    &__item:first-child > .q-breadcrumbs__separator {
+      display: none;
+    }
+  }
+
+  .q-breadcrumbs__separator {
+    color: var(--q-separator-color, currentColor);
+  }
+
+  .q-breadcrumbs__el {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    color: inherit;
   }
 }
