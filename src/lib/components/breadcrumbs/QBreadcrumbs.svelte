@@ -12,10 +12,10 @@
     ...props
   }: QBreadcrumbsProps = $props();
 
-  let breadrumbList: HTMLOListElement;
+  let breadcrumbList: HTMLOListElement;
 
   onMount(() => {
-    breadrumbList.querySelector(".q-breadcrumbs__separator:first-child")?.remove();
+    breadcrumbList.querySelector(".q-breadcrumbs__separator:first-child")?.remove();
   });
 
   setContext(QBreadcrumbsCtxName.separator, { type: separator, gutter });
@@ -31,7 +31,7 @@
   style:--q-separator-color="var(--{separatorColor}, {separatorColor})"
   style:--q-active-color="var(--{activeColor}, {activeColor})"
 >
-  <ol bind:this={breadrumbList} class="q-breadcrumbs__list">
+  <ol bind:this={breadcrumbList} class="q-breadcrumbs__list">
     {@render children?.()}
   </ol>
 </nav>
