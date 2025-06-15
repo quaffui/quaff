@@ -2,7 +2,7 @@ import type { NativeProps } from "$utils";
 import type { Snippet } from "svelte";
 import type { HTMLAttributes } from "svelte/elements";
 
-export type QSelectOption = string | { label: string; value: string };
+export type QSelectOption = string | number | { label: string | number; value: string | number };
 
 export type QSelectValue = QSelectOption | QSelectOption[];
 

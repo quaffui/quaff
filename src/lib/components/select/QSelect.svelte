@@ -86,25 +86,29 @@
 
   let snippetPrependWidth = $state(0);
 
-  function getOptionValue(option: QSelectOption): string {
-    return typeof option === "string" ? option : option.value;
+  function compareValues<T extends QSelectOption>(a: T, b: T) {
+    return getOptionValue(a) === getOptionValue(b);
   }
 
-  function getOptionLabel(option: QSelectOption): string {
-    if (typeof option !== "string") {
+  function getOptionValue(option: QSelectOption) {
+    return typeof option === "object" ? option.value : option;
+  }
+
+  function getOptionLabel(option: QSelectOption) {
+    if (typeof option !== "string" && typeof option !== "number") {
       return option.label;
     }
 
     return options.includes(option)
       ? option
-      : (options.find((opt) => getOptionValue(opt) === option) as { label: string })?.label || "";
+      : (options.find((opt) => compareValues(opt, option)) as { label: string | number })?.label ||
+          "";
   }
 
   function isSelected(option: QSelectOption) {
-    const optionValue = getOptionValue(option);
     return multiple
-      ? (value as QSelectOption[]).some((opt) => getOptionValue(opt) === optionValue)
-      : getOptionValue(value as QSelectOption) === optionValue;
+      ? (value as QSelectOption[]).some((opt) => compareValues(opt, option))
+      : compareValues(value as QSelectOption, option);
   }
 
   function select(evt: MouseEvent, option: QSelectOption) {
@@ -112,14 +116,14 @@
     const optionValue = getOptionValue(option);
 
     if (multiple) {
-      const hasItem = (value as QSelectOption[]).some((entry) => entry === optionValue);
+      const index = (value as QSelectOption[]).findIndex((entry) =>
+        compareValues(entry, optionValue)
+      );
 
-      if (hasItem) {
-        (value as QSelectOption[]) = (value as QSelectOption[]).filter(
-          (val) => val !== optionValue
-        );
+      if (index !== -1) {
+        (value as QSelectOption[]).splice(index, 1);
       } else {
-        (value as QSelectOption[]) = [...(value as QSelectOption[]), optionValue];
+        (value as QSelectOption[]).push(optionValue);
       }
 
       return;
