@@ -123,7 +123,7 @@
       if (index !== -1) {
         (value as QSelectOption[]).splice(index, 1);
       } else {
-        (value as QSelectOption[]).push(optionValue);
+        (value as QSelectOption[]).push(emitValue ? optionValue : option);
       }
 
       return;
