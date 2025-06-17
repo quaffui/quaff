@@ -3,6 +3,7 @@
   import { pageTitle } from "$helpers/pageTitle";
   import { QBtn, QCard, QCardActions, QCardSection, QIcon, QItem, QList, QSelect } from "$lib";
   import { QDocs, QDocsSection } from "$private";
+  import type { QSelectOption } from "$components/select/props";
   import snippets from "./docs.snippets";
 
   let selectDisabled = $state(true);
@@ -30,7 +31,8 @@
 
   let value = $state("");
   let select = $state("");
-  let colorSelect = $state("");
+  let colorSelect = $state<QSelectOption>("");
+  let colorSelectValue = $state("");
   let selectMultiple: string[] = $state([]);
 
   const displayValue = $derived.by(() => {
@@ -79,18 +81,50 @@
           value.
         {/snippet}
 
-        <div class="flex q-gap-md">
-          <div class="q-ma-sm" style="max-width: 300px;">
+        <div class="flex column q-gap-md">
+          <div class="q-ma-sm">
             <h6 class="q-mb-sm">String options</h6>
-            <QSelect bind:value={select} {options} label="Choose an animal" />
-            <div class="q-mt-sm">Selected: {select}</div>
+            <QSelect
+              bind:value={select}
+              {options}
+              label="Choose an animal"
+              style="max-width: 300px;"
+            />
+            <div class="q-mt-sm">Selected: {select || "None"}</div>
           </div>
 
-          <div class="q-ma-sm" style="max-width: 300px;">
+          <div class="q-ma-sm">
             <h6 class="q-mb-sm">Object options</h6>
-            <QSelect bind:value={colorSelect} options={objectOptions} label="Choose a color" />
+            <QSelect
+              bind:value={colorSelect}
+              options={objectOptions}
+              label="Choose a color"
+              style="max-width: 300px;"
+            />
             <div class="q-mt-sm">
-              Selected value: {colorSelect || "None"}
+              Selected value:
+              {(typeof colorSelect === "string"
+                ? colorSelect
+                : JSON.stringify(colorSelect, null, 1).replaceAll("\n", " ")) || "None"}
+            </div>
+          </div>
+
+          <div class="q-ma-sm">
+            <h6 class="q-mb-sm">Emit value</h6>
+            <p>
+              When using object options, use the <code>emitValue</code> prop to return the
+              <code>value</code> property instead of the entire object.
+            </p>
+            <QSelect
+              bind:value={colorSelectValue}
+              options={objectOptions}
+              label="Choose a color"
+              emitValue
+              style="max-width: 300px;"
+            />
+            <div class="q-mt-sm">
+              Selected value:
+              {colorSelectValue || "None"}
             </div>
           </div>
         </div>
@@ -196,9 +230,9 @@
 
       <QDocsSection title="Validation and Hints">
         {#snippet sectionDescription()}
-          QSelect provides built-in support for validation states and helper text. Use the <code
-            >error</code
-          >
+          QSelect provides built-in support for validation states and helper text. Use the <code>
+            error
+          </code>
           prop to indicate validation errors and <code>hint</code> to provide additional guidance to
           users.
         {/snippet}

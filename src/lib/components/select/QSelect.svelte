@@ -3,7 +3,7 @@
   import { browser } from "$app/environment";
   import { QIcon } from "$lib";
   import type { QEvent } from "$utils";
-  import type { QSelectMultipleValue, QSelectOption, QSelectProps } from "./props";
+  import type { QSelectOption, QSelectProps } from "./props";
 
   type QSelectEvent<T> = QEvent<T, HTMLDivElement>;
 
@@ -20,6 +20,7 @@
     outlined = false,
     rounded = false,
     displayValue,
+    emitValue = false,
     before = undefined,
     prepend = undefined,
     append = undefined,
@@ -35,11 +36,13 @@
       return displayValue;
     }
 
+    const getOptionPropFn = emitValue ? getOptionValue : getOptionLabel;
+
     if (!multiple) {
-      return value;
+      return getOptionPropFn(value as QSelectOption);
     }
 
-    return (value as QSelectMultipleValue).join(", ");
+    return (value as QSelectOption[]).map(getOptionPropFn).join(", ");
   });
 
   const active = $derived(currentDisplayValue || focus);
@@ -79,30 +82,50 @@
 
   let snippetPrependWidth = $state(0);
 
+  function compareValues<T extends QSelectOption>(a: T, b: T) {
+    return getOptionValue(a) === getOptionValue(b);
+  }
+
+  function getOptionValue(option: QSelectOption) {
+    return typeof option === "object" ? option.value : option;
+  }
+
+  function getOptionLabel(option: QSelectOption) {
+    if (typeof option !== "string" && typeof option !== "number") {
+      return option.label;
+    }
+
+    return options.includes(option)
+      ? option
+      : (options.find((opt) => compareValues(opt, option)) as { label: string | number })?.label ||
+          "";
+  }
+
   function isSelected(option: QSelectOption) {
-    const optionValue = typeof option === "string" ? option : option.value;
-    return multiple ? (value as QSelectMultipleValue).includes(optionValue) : value === optionValue;
+    return multiple
+      ? (value as QSelectOption[]).some((opt) => compareValues(opt, option))
+      : compareValues(value as QSelectOption, option);
   }
 
   function select(evt: MouseEvent, option: QSelectOption) {
     evt.preventDefault();
-    const optionValue = typeof option === "string" ? option : option.value;
+    const optionValue = getOptionValue(option);
 
     if (multiple) {
-      const hasItem = (value as QSelectMultipleValue).some((entry) => entry === optionValue);
+      const index = (value as QSelectOption[]).findIndex((entry) =>
+        compareValues(entry, optionValue)
+      );
 
-      if (hasItem) {
-        (value as QSelectMultipleValue) = (value as QSelectMultipleValue).filter(
-          (val) => val !== optionValue
-        );
+      if (index !== -1) {
+        (value as QSelectOption[]).splice(index, 1);
       } else {
-        (value as QSelectMultipleValue) = [...(value as QSelectMultipleValue), optionValue];
+        (value as QSelectOption[]).push(emitValue ? optionValue : option);
       }
 
       return;
     }
 
-    value = optionValue;
+    value = emitValue ? optionValue : option;
     isMenuOpen = false;
   }
 
@@ -197,7 +220,7 @@
           href={multiple ? "javascript:void(0)" : undefined}
           class="q-select__option {selectedOptions[idx] ? 'q-select__option--selected' : ''}"
           onmousedown={() => (preventClose = true)}
-          onclick={(e) => select(e, option)}>{typeof option === "string" ? option : option.value}</a
+          onclick={(e) => select(e, option)}>{getOptionLabel(option)}</a
         >
       {/each}
     </div>
