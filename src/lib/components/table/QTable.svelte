@@ -18,13 +18,14 @@
 
   let page = $state(1);
   let rowsPerPage = $state(5);
-  let rowsPerPageOptions = $state(
-    [5, 10, 25, 50].map((e) => ({
-      label: e.toString(),
-      value: e.toString(),
-    }))
-  );
+
   let sort: QTableSort = $state(null);
+
+  const rowsPerPageOptions = $derived(
+    [5, 10, 25, 50].filter((option) => {
+      return rows.length >= option || option === 5;
+    })
+  );
 
   const numberFrom: number = $derived(rowsPerPage * page - rowsPerPage + 1);
   const numberTo: number = $derived(
@@ -157,6 +158,7 @@
       outlined
       options={rowsPerPageOptions}
       bind:value={rowsPerPage}
+      disable={rowsPerPageOptions.length <= 1}
     />
     {numberFrom}-{numberTo}&nbsp;of&nbsp;{numberOf}
     <QBtn

@@ -9,7 +9,7 @@
     QItem,
     QItemSection,
     QList,
-    QRadio,
+    QSelect,
   } from "$lib";
   import { QDocs, QDocsSection } from "$private";
   import type { QDialogPositionOptions } from "$components/dialog/props";
@@ -27,6 +27,13 @@
   let dialogRef = $state<QDialog>();
   let positionDialogRef = $state<QDialog>();
 
+  const options = [
+    { label: "Default (Center)", value: "default" },
+    { label: "Top", value: "top" },
+    { label: "Right", value: "right" },
+    { label: "Bottom", value: "bottom" },
+    { label: "Left", value: "left" },
+  ];
   let selectedPosition: QDialogPositionOptions = $state("default");
 </script>
 
@@ -126,17 +133,15 @@
           issues as the dialog doesn't have time to reposition before being visible.
         {/snippet}
 
-        <div class="q-ma-sm row">
-          <div class="col-3 flex column q-gap-md">
-            <QRadio bind:selected={selectedPosition} label="Default (Center)" value="default" />
-            <QRadio bind:selected={selectedPosition} label="Top" value="top" />
-            <QRadio bind:selected={selectedPosition} label="Right" value="right" />
-            <QRadio bind:selected={selectedPosition} label="Bottom" value="bottom" />
-            <QRadio bind:selected={selectedPosition} label="Left" value="left" />
-          </div>
-          <div class="col-9 flex items-center">
-            <QBtn label="Open Position Dialog" onclick={positionDialogRef?.toggle} />
-          </div>
+        <div class="q-ma-sm flex q-gap-md">
+          <QSelect
+            bind:value={selectedPosition}
+            {options}
+            label="Select Dialog Position"
+            outlined
+          />
+
+          <QBtn label="Open Position Dialog" onclick={positionDialogRef?.toggle} />
         </div>
 
         <QDialog bind:this={positionDialogRef} position={selectedPosition}>
