@@ -42,11 +42,7 @@
       return getOptionPropFn(value as QSelectOption);
     }
 
-    return (value as QSelectOption[])
-      .map((val) => {
-        return getOptionPropFn(val);
-      })
-      .join(", ");
+    return (value as QSelectOption[]).map((val) => getOptionPropFn(val)).join(", ");
   });
 
   const active = $derived(currentDisplayValue || focus);
