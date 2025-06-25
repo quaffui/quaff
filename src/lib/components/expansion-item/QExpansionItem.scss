@@ -1,0 +1,40 @@
+@use "$css/mixins";
+@use "$css/variables";
+
+.q-expansion-item {
+  width: 100%;
+  padding: 0;
+
+  & summary::marker,
+  & summary::-webkit-details-marker {
+    display: none;
+    content: "";
+  }
+
+  &::details-content {
+    transition: content-visibility var(--duration) allow-discrete;
+  }
+
+  &__toggle-icon {
+    margin: 0;
+    z-index: 1;
+
+    &:is(.q-btn) {
+      margin-right: -0.5rem;
+    }
+
+    &:not(.q-btn),
+    &.q-btn .q-icon {
+      transition: rotate var(--duration);
+    }
+
+    &--rotate:not(.q-btn),
+    &--rotate.q-btn .q-icon {
+      rotate: 180deg;
+    }
+  }
+
+  &__content {
+    @include mixins.padding("x-md", "y-sm");
+  }
+}
