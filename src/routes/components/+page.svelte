@@ -12,6 +12,7 @@
     QChip,
     QCircularProgress,
     QDrawer,
+    QExpansionItem,
     QFooter,
     QHeader,
     QIcon,
@@ -103,7 +104,7 @@
       name: "QExpansionItem",
       description: "Create expandable sections for lists or cards to show more content.",
       href: "/components/expansion-item",
-      snippet: list,
+      snippet: expansionItem,
     },
     {
       name: "QFooter",
@@ -398,6 +399,21 @@
       </QDrawer>
     {/snippet}
   </QLayout>
+{/snippet}
+
+{#snippet expansionItem()}
+  <QList separator class="surface">
+    <QExpansionItem icon="person" label="How to create an account?" />
+    <QExpansionItem
+      icon="lock"
+      label="Can I reset my password?"
+      caption="Click for more info"
+      defaultOpened
+    >
+      Yes you can! To reset your password, go to the login page and click on "Forgot password".
+    </QExpansionItem>
+    <QExpansionItem icon="help" label="What is this app?" />
+  </QList>
 {/snippet}
 
 {#snippet footer()}
