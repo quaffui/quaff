@@ -13,8 +13,12 @@ export interface QBtnProps extends HTMLAttributes<HTMLButtonElement> {
   disabled?: boolean;
 
   /**
+   * Sets the color of the button. If a color is specified, it overwrites all other color variants defined with boolean attributes.
+   */
+  color?: string;
+
+  /**
    * Choose the variant for the button. If a variant is specified, it overwrites all other variants defined with boolean attributes. If no variant is specified using this prop or boolean props, the `elevated` variant will be used.
-   * @default undefined
    */
   variant?: QBtnVariantOptions;
 
@@ -109,8 +113,13 @@ export interface QBtnProps extends HTMLAttributes<HTMLButtonElement> {
   target?: HTMLAnchorAttributes["target"];
 
   /**
+   * The tag to use for the button. If not specified, a button element will be used or, if `to` is specified, an anchor tag will be used.
+   */
+  tag?: keyof HTMLElementTagNameMap;
+
+  /**
    * This event is emitted when the button is clicked.
    * @default undefined
    */
-  onclick?: MouseEventHandler<HTMLButtonElement | HTMLAnchorElement>;
+  onclick?: MouseEventHandler<HTMLElement>;
 }

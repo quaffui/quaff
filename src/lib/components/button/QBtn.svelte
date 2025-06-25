@@ -10,6 +10,7 @@
   let {
     disabled = false,
     variant,
+    color,
     filled = false,
     tonal = false,
     outlined = false,
@@ -25,17 +26,18 @@
     unelevated = false,
     size = "md",
     target,
+    tag,
     onclick,
     children,
     ...props
   }: QBtnProps = $props();
 
-  let qBtn: HTMLButtonElement | HTMLAnchorElement;
+  let qBtn: HTMLElement;
   let qBtnLabel: HTMLSpanElement;
 
   type QBtnMouseEvent = QEvent<MouseEvent, typeof qBtn>;
 
-  const tag = $derived(to ? "a" : "button");
+  const computedTag = $derived(to ? "a" : tag || "button");
   const qSize = $derived(useSize(size, "q-btn"));
 
   const src = $derived(extractImgSrc(icon));
@@ -53,9 +55,13 @@
 
   const finalVariant = $derived<QBtnVariantOptions>(variant || boolVariant || "elevated");
 
-  const color = $derived.by(() => {
+  const computedColor = $derived.by(() => {
     if (disabled) {
       return undefined;
+    }
+
+    if (color) {
+      return color;
     }
 
     if (finalVariant === "filled") {
@@ -69,7 +75,7 @@
     return "primary";
   });
 
-  const colorVar = $derived(color && `var(--${color})`);
+  const colorVar = $derived(computedColor && `var(--${computedColor})`);
 
   const rippleColorVar = $derived(rippleColor ? `var(--${rippleColor}, ${rippleColor})` : colorVar);
 
@@ -120,7 +126,7 @@
 </script>
 
 <svelte:element
-  this={tag}
+  this={computedTag}
   bind:this={qBtn}
   use:ripple={{
     disabled: noRipple || disabled,
@@ -132,9 +138,9 @@
   style:--ripple-color={colorVar}
   {target}
   href={to}
-  role={tag === "a" ? "button" : undefined}
+  role={computedTag === "a" ? "button" : undefined}
   aria-disabled={disabled || undefined}
-  tabindex={disabled ? -1 : 0}
+  tabindex={disabled ? -1 : props.tabindex || 0}
   {onkeydown}
   onclick={stopIfDisabled}
   data-quaff
