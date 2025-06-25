@@ -11,6 +11,7 @@ import QCircularProgress from "./progress/QCircularProgress.svelte";
 import QCodeBlock from "./codeBlock/QCodeBlock.svelte";
 import QDialog from "./dialog/QDialog.svelte";
 import QDrawer from "./drawer/QDrawer.svelte";
+import QExpansionItem from "./expansion-item/QExpansionItem.svelte";
 import QFooter from "./footer/QFooter.svelte";
 import QHeader from "./header/QHeader.svelte";
 import QIcon from "./icon/QIcon.svelte";
@@ -46,6 +47,7 @@ export {
   QCodeBlock,
   QDialog,
   QDrawer,
+  QExpansionItem,
   QFooter,
   QHeader,
   QIcon,

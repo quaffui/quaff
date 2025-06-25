@@ -100,6 +100,12 @@
       snippet: drawer,
     },
     {
+      name: "QExpansionItem",
+      description: "Create expandable sections for lists or cards to show more content.",
+      href: "/components/expansion-item",
+      snippet: list,
+    },
+    {
       name: "QFooter",
       description: "Display consistent information at the bottom of your pages.",
       href: "/components/footer",

@@ -92,6 +92,10 @@
       to: "/components/drawer",
     },
     {
+      name: "Expansion Item",
+      to: "/components/expansion-item",
+    },
+    {
       name: "Footer",
       to: "/components/footer",
     },
