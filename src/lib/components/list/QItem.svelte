@@ -82,6 +82,7 @@
 {:else}
   <svelte:element
     this={tag}
+    use:ripple={{ disabled: !isClickable || noRipple }}
     {...props}
     class="q-item"
     tabindex={isClickable ? tabindex || 0 : undefined}

@@ -5,6 +5,10 @@
   width: 100%;
   padding: 0;
 
+  &[aria-disabled] :is(.q-item__section, .q-item__section *) {
+    color: unset;
+  }
+
   & summary::marker,
   & summary::-webkit-details-marker {
     display: none;
@@ -36,5 +40,7 @@
 
   &__content {
     @include mixins.padding("x-md", "y-sm");
+    width: 100%;
+    overflow: hidden;
   }
 }

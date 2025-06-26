@@ -81,7 +81,7 @@ export interface QExpansionItemProps extends HTMLDetailsAttributes {
 
   /**
    * Makes the toggle icon the trigger for the expansion item instead of the whole header.
-   * This is useful when using the expansion item as links, so the icon allows to expand/collapse the item
+   * This is useful when using the expansion item as link, so the icon allows to expand/collapse the item
    * while the header changes the route.
    *
    * @default false
@@ -101,6 +101,29 @@ export interface QExpansionItemProps extends HTMLDetailsAttributes {
    * If both `href` and `to` are provided, the `to` prop will take precedence.
    */
   href?: string;
+
+  /**
+   * Prevents the rotation of the expand icon when the item is expanded.
+   * This is useful when using a custom icon that does not need to be rotated.
+   *
+   * @default false
+   */
+  noRotateExpandIcon?: boolean;
+
+  /**
+   * Whether the expansion item is disabled.
+   *
+   * @default false
+   */
+  disabled?: boolean;
+
+  /**
+   * Disables the ripple effect on the expansion item.
+   * This is useful when the item is used as a link and you want to prevent the ripple effect.
+   *
+   * @default false
+   */
+  noRipple?: boolean;
 
   /**
    * The summary snippet, to override the default header.

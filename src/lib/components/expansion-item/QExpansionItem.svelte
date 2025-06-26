@@ -21,11 +21,40 @@
     to,
     href,
     name,
+    noRotateExpandIcon = false,
+    disabled = false,
+    noRipple = false,
     summary,
     children,
     onExpandIconClick,
     ...props
   }: QExpansionItemProps = $props();
+
+  const id = $props.id();
+  const contentId = `q-expansion-item__content-${id}`;
+  const summaryId = `q-expansion-item__summary-${id}`;
+
+  const supportDetailsContent = CSS.supports("selector(details::details-content)");
+
+  const summaryAttributes = $derived(
+    !supportDetailsContent
+      ? {
+          id: summaryId,
+          "aria-expanded": value,
+          "aria-controls": contentId,
+        }
+      : {}
+  );
+
+  const contentAttributes = $derived(
+    !supportDetailsContent
+      ? {
+          id: contentId,
+          role: "region",
+          "aria-labelledby": summaryId,
+        }
+      : {}
+  );
 
   let detailsEl = $state<HTMLDetailsElement>();
 
@@ -39,6 +68,27 @@
     if (defaultOpened) {
       show();
     }
+  });
+
+  $effect(() => {
+    if (supportDetailsContent || !name || !value) {
+      return;
+    }
+
+    // If the browser does not support details content, we need to manually
+    // handle the group open state of the details elements
+    const parent = detailsEl?.parentElement;
+
+    if (!parent) {
+      return;
+    }
+
+    const group = parent.querySelectorAll("details[open]");
+    group.forEach((item) => {
+      if (item !== detailsEl) {
+        item.removeAttribute("open");
+      }
+    });
   });
 
   export function toggle() {
@@ -61,17 +111,28 @@
 
   Q.classes("q-expansion-item__toggle-icon", {
     bemClasses: {
-      rotate: value && !expandedIcon,
+      rotate: value && !expandedIcon && !noRotateExpandIcon,
     },
   });
 
   function onclick(e: QEvent<MouseEvent, HTMLElement>) {
+    console.log("QExpansionItem: onclick", e);
+    if (disabled) {
+      e.preventDefault();
+      e.stopPropagation();
+      return;
+    }
+
     props.onclick?.(e);
   }
 
   function onIconClick(e: QEvent<MouseEvent, HTMLElement>) {
+    if (disabled) {
+      e.preventDefault();
+      return;
+    }
+
     e.stopPropagation();
-    e.stopImmediatePropagation();
     e.preventDefault();
 
     toggle();
@@ -79,6 +140,11 @@
   }
 
   function onkeydown(e: KeyboardEvent) {
+    if (disabled) {
+      e.preventDefault();
+      return;
+    }
+
     if (e.key === "Escape") {
       detailsEl?.blur();
       return;
@@ -105,6 +171,11 @@
   }
 
   function onIconKeydown(e: KeyboardEvent) {
+    if (disabled) {
+      e.preventDefault();
+      return;
+    }
+
     if (e.key === "Escape") {
       (e.target as HTMLElement)?.blur();
       return;
@@ -132,21 +203,48 @@
   {caption}
 {/snippet}
 
+{#snippet content()}
+  {#if value}
+    <div class="q-expansion-item__content" {...contentAttributes} transition:slide={{ duration }}>
+      {@render children?.()}
+    </div>
+  {/if}
+{/snippet}
+
 <details
   bind:this={detailsEl}
   bind:open={value}
   {...props}
   {name}
+  aria-disabled={disabled}
   class="q-expansion-item"
   style:--duration="{duration}ms"
 >
-  <summary tabindex="-1">
+  <summary tabindex="-1" {...summaryAttributes}>
     {#if summary}
-      <QItem {dense} {to} {href} clickable={!expandIconToggle} {onclick} {onkeydown}>
+      <QItem
+        {dense}
+        {to}
+        {href}
+        {disabled}
+        noRipple={expandIconToggle || noRipple}
+        clickable={!expandIconToggle}
+        {onclick}
+        {onkeydown}
+      >
         {@render summary({ expanded: value, show, hide, toggle })}
       </QItem>
     {:else}
-      <QItem {dense} {to} {href} clickable={!expandIconToggle} {onclick} {onkeydown}>
+      <QItem
+        {dense}
+        {to}
+        {href}
+        {disabled}
+        noRipple={expandIconToggle || noRipple}
+        clickable={!expandIconToggle}
+        {onclick}
+        {onkeydown}
+      >
         {#if icon}
           <QItemSection type="icon">
             <QIcon name={icon} />
@@ -166,6 +264,7 @@
               <QBtn
                 class="q-expansion-item__toggle-icon"
                 {...iconAttributes}
+                {disabled}
                 color="on-surface"
                 tag="div"
                 tabindex={0}
@@ -181,9 +280,11 @@
     {/if}
   </summary>
 
-  {#if value}
-    <div class="q-expansion-item__content" transition:slide={{ duration }}>
-      {@render children?.()}
-    </div>
+  {#if supportDetailsContent}
+    {@render content()}
   {/if}
 </details>
+
+{#if !supportDetailsContent}
+  {@render content()}
+{/if}

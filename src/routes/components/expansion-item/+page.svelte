@@ -14,13 +14,21 @@
 </svelte:head>
 
 <QDocs {snippets} componentDocs={QExpansionItemDocs}>
+  {#snippet display()}
+    <QList bordered class="surface" style="max-width: 75%">
+      <QExpansionItem label="Click me" icon="waving_hand">
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia aliquid facere,
+      </QExpansionItem>
+    </QList>
+  {/snippet}
+
   {#snippet usage()}
     <div>
       <QDocsSection title="Basic">
         {#snippet sectionDescription()}
-          QExpansionItem is a collapsible component that displays content within an expandable
-          container. It's perfect for organizing information into collapsible sections like FAQs,
-          settings panels, or nested navigation.
+          <code>QExpansionItem</code> is a collapsible component that displays content within an expandable
+          container. It's perfect for organizing information into collapsible sections like FAQs, settings
+          panels, or nested navigation.
         {/snippet}
 
         <QList bordered separator>
@@ -41,6 +49,15 @@
               velit magni similique porro laborum temporibus excepturi, nobis, alias numquam
               molestiae eaque, unde qui accusantium ullam reiciendis facilis!
             </p>
+          </QExpansionItem>
+          <QExpansionItem label="No ripple effect" icon="ripples" noRipple>
+            <p>
+              This item's ripple effect has been disabled with the <code>noRipple</code> prop, making
+              it suitable for static content or when you want to avoid visual feedback.
+            </p>
+          </QExpansionItem>
+          <QExpansionItem label="Disabled expansion item" icon="lock" disabled>
+            <p>This item is disabled and cannot be interacted with.</p>
           </QExpansionItem>
         </QList>
       </QDocsSection>
@@ -79,7 +96,8 @@
         {#snippet sectionDescription()}
           Customize the expand/collapse icons using <code>expandIcon</code> and
           <code>expandedIcon</code>
-          props. If only <code>expandIcon</code> is provided, it will rotate when expanded.
+          props. If only <code>expandIcon</code> is provided, it will rotate when expanded. You can
+          disable this rotation with the <code>noRotateExpandIcon</code> prop.
         {/snippet}
 
         <QList bordered separator>
@@ -94,7 +112,18 @@
           >
             <p>This item uses different icons for expanded and collapsed states.</p>
           </QExpansionItem>
-          <QExpansionItem label="No expand icon" icon="lock" hideExpandIcon>
+          <QExpansionItem
+            label="Custom icon with no rotation"
+            icon="rotate_left"
+            noRotateExpandIcon
+            expandIcon="lock"
+          >
+            <p>
+              This item uses a custom icon that does not rotate when expanded, thanks to the
+              <code>noRotateExpandIcon</code> prop.
+            </p>
+          </QExpansionItem>
+          <QExpansionItem label="No expand icon" icon="visibility_off" hideExpandIcon>
             <p>This item has no expand icon - click anywhere on the header to toggle.</p>
           </QExpansionItem>
         </QList>
@@ -138,8 +167,8 @@
         {/snippet}
 
         <div class="flex q-gap-md">
+          <div class="body-large">Regular size:</div>
           <QList bordered separator class="flex-1">
-            <div class="q-pa-sm body-small text-on-surface-variant">Regular size:</div>
             <QExpansionItem label="Regular item" icon="folder">
               <p>This is a regular-sized expansion item.</p>
             </QExpansionItem>
@@ -148,8 +177,8 @@
             </QExpansionItem>
           </QList>
 
+          <div class="body-large">Dense:</div>
           <QList bordered separator class="flex-1">
-            <div class="q-pa-sm body-small text-on-surface-variant">Dense:</div>
             <QExpansionItem label="Dense item" icon="folder" dense>
               <p>This is a dense expansion item - more compact.</p>
             </QExpansionItem>
@@ -349,8 +378,8 @@
             toggleAriaLabel="Show answer to: How do I get started?"
           >
             <p>
-              Getting started is easy! Install the package, import the components you need, and
-              start building. Check our documentation for detailed examples and API references.
+              Getting started is easy! Install the package and start building, the components are
+              auto-imported. Check our documentation for detailed examples and API references.
             </p>
           </QExpansionItem>
         </QList>
@@ -396,6 +425,7 @@
             name="settings-group"
             dense
             expandIcon="tune"
+            noRotateExpandIcon
           >
             <div class="q-pa-md">
               <div class="body-large q-mb-sm">Notification Types</div>
