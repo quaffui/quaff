@@ -115,11 +115,14 @@
     },
   });
 
+  function preventAndStop<T extends Event>(e: T) {
+    e.preventDefault();
+    e.stopPropagation();
+  }
+
   function onclick(e: QEvent<MouseEvent, HTMLElement>) {
-    console.log("QExpansionItem: onclick", e);
     if (disabled) {
-      e.preventDefault();
-      e.stopPropagation();
+      preventAndStop(e);
       return;
     }
 
@@ -128,7 +131,7 @@
 
   function onIconClick(e: QEvent<MouseEvent, HTMLElement>) {
     if (disabled) {
-      e.preventDefault();
+      preventAndStop(e);
       return;
     }
 
@@ -141,7 +144,7 @@
 
   function onkeydown(e: KeyboardEvent) {
     if (disabled) {
-      e.preventDefault();
+      preventAndStop(e);
       return;
     }
 
@@ -155,7 +158,7 @@
     }
 
     if (to || href) {
-      e.preventDefault();
+      preventAndStop(e);
       goto((to || href) as string);
       return;
     }
@@ -172,7 +175,7 @@
 
   function onIconKeydown(e: KeyboardEvent) {
     if (disabled) {
-      e.preventDefault();
+      preventAndStop(e);
       return;
     }
 
@@ -185,8 +188,7 @@
       return;
     }
 
-    e.preventDefault();
-    e.stopPropagation();
+    preventAndStop(e);
 
     const clickEvent = new MouseEvent("click", {
       relatedTarget: e.target as HTMLElement,
@@ -216,11 +218,11 @@
   bind:open={value}
   {...props}
   {name}
-  aria-disabled={disabled}
+  aria-disabled={disabled || undefined}
   class="q-expansion-item"
   style:--duration="{duration}ms"
 >
-  <summary tabindex="-1" {...summaryAttributes}>
+  <summary tabindex={-1} {...summaryAttributes} onmousedown={disabled ? preventAndStop : undefined}>
     {#if summary}
       <QItem
         {dense}
