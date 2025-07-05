@@ -18,7 +18,7 @@ body {
 }
 
 body,
-body > div:not(.q-tooltip) {
+body > div:not(.q-tooltip, .q-menu) {
   background-color: var(--surface-container-lowest);
   overflow-x: hidden;
   height: 100vh;

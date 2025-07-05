@@ -31,7 +31,7 @@
       dense,
       rounded: roundedBorders,
     },
-    classes: [padding && "q-py-sm", "flex", "flex-center", props.class],
+    classes: [padding && "q-py-sm", props.class],
   });
 </script>
 

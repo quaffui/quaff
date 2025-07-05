@@ -19,6 +19,7 @@
   } from "$lib";
   import { isRouteActive } from "$utils";
   import type { MaterialSymbol } from "material-symbols";
+  import QMenu from "$components/menu/QMenu.svelte";
 
   type Item = {
     name: string;
@@ -305,6 +306,19 @@
 
   {#snippet content()}
     <div bind:this={contentEl} style="position: relative; min-height: 100%;">
+      <div class="q-mx-auto q-my-lg flex flex-center">
+        <QBtn label="Hello">
+          <QMenu
+            items={[
+              "Hey",
+              { label: "Hello", icon: "edit", trailingIcon: "check" },
+              "separator",
+              { label: "World" },
+            ]}
+          />
+        </QBtn>
+      </div>
+
       {@render children?.()}
 
       {#if Quaff.breakpoints.isLessThan("md") && (nextItem || previousItem)}
