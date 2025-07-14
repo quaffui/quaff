@@ -1,7 +1,7 @@
 <script lang="ts">
   import { getContext } from "svelte";
   import { QIcon } from "$lib";
-  import { isRouteActive, QBreadcrumbsCtxName } from "$utils";
+  import { isRouteActive, QBreadcrumbsCtxName, setupTooltipContext } from "$utils";
   import type { MaterialSymbol } from "material-symbols";
   import type { QBreadcrumbsElProps, QBreadcrumbsProps } from "./props";
 
@@ -16,6 +16,11 @@
     ...props
   }: QBreadcrumbsElProps = $props();
 
+  const uid = $props.id();
+  const componentId = `q-breadcrumbs__el--${uid}`;
+
+  setupTooltipContext(componentId);
+
   const separator = getContext<{
     type: QBreadcrumbsProps["separator"];
     gutter: QBreadcrumbsProps["gutter"];
@@ -27,7 +32,10 @@
   Q.classes("q-breadcrumbs__separator", {
     classes: [`q-px-${separator.gutter}`],
   });
-  Q.classes("q-breadcrumbs__el", { classes: [isActive && activeClass] });
+  Q.classes("q-breadcrumbs__el", {
+    bemClasses: { [componentId]: true },
+    classes: [isActive && activeClass],
+  });
 </script>
 
 {#snippet fallback()}

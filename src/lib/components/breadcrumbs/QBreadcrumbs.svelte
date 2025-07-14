@@ -27,7 +27,6 @@
   {...props}
   class="q-breadcrumbs"
   aria-label="Breadcrumbs"
-  data-quaff
   style:--q-separator-color="var(--{separatorColor}, {separatorColor})"
   style:--q-active-color="var(--{activeColor}, {activeColor})"
 >

@@ -110,7 +110,7 @@
   });
 </script>
 
-<div {...props} class="q-table" data-quaff>
+<div {...props} class="q-table">
   <table class="q-table__table">
     <thead>
       <tr>

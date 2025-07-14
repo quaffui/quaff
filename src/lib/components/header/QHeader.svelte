@@ -74,12 +74,6 @@
   });
 </script>
 
-<header
-  bind:this={headerEl}
-  {...props}
-  class="q-header"
-  style:--header-height="{height}px"
-  data-quaff
->
+<header bind:this={headerEl} {...props} class="q-header" style:--header-height="{height}px">
   {@render children?.()}
 </header>

@@ -2,7 +2,7 @@
   import { slide } from "svelte/transition";
   import { goto } from "$app/navigation";
   import { QBtn, QIcon, QItem, QItemSection } from "$components";
-  import { isActivationKey, type QEvent } from "$utils";
+  import { isActivationKey, setupTooltipContext, type QEvent } from "$utils";
   import type { QExpansionItemProps } from "./props";
 
   let {
@@ -31,8 +31,11 @@
   }: QExpansionItemProps = $props();
 
   const id = $props.id();
+  const componentId = `q-expansion-item--${id}`;
   const contentId = `q-expansion-item__content-${id}`;
   const summaryId = `q-expansion-item__summary-${id}`;
+
+  setupTooltipContext(componentId);
 
   const supportDetailsContent = CSS.supports("selector(details::details-content)");
 
@@ -106,6 +109,7 @@
   Q.classes("q-expansion-item", {
     bemClasses: {
       expanded: value,
+      [componentId]: true,
     },
   });
 

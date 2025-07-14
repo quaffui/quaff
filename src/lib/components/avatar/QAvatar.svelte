@@ -1,5 +1,6 @@
 <script lang="ts">
   import { useSize } from "$composables";
+  import { setupTooltipContext } from "$utils";
   import type { QAvatarProps } from "./props";
 
   let {
@@ -14,15 +15,21 @@
     ...props
   }: QAvatarProps = $props();
 
+  const uid = $props.id();
+  setupTooltipContext(`.q-avatar--${uid}`);
+
   const qSize = $derived(useSize(size, "q-avatar"));
-  const qShape = $derived(`q-avatar--${shape}`);
 
   Q.classes("q-avatar", {
-    classes: [qShape, qSize.class, props.class],
+    bemClasses: {
+      [shape]: true,
+      [uid]: true,
+    },
+    classes: [qSize.class, props.class],
   });
 </script>
 
-<div {...props} class="q-avatar" style:--size={qSize.style} data-quaff>
+<div {...props} class="q-avatar" style:--size={qSize.style}>
   {#if video}
     <video autoplay loop muted playsinline>
       {#if sources && sources.length > 0}

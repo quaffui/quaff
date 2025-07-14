@@ -1,5 +1,6 @@
 <script lang="ts">
   import { useSize } from "$composables";
+  import { setupTooltipContext } from "$utils";
   import type { QLinearProgressProps } from "./props";
 
   function width(val: number, reverse: boolean) {
@@ -20,6 +21,11 @@
     ...props
   }: QLinearProgressProps = $props();
 
+  const uid = $props.id();
+  const componentId = `q-linear-progress--${uid}`;
+
+  setupTooltipContext(componentId);
+
   const normalized = $derived(value > 1 ? value / 100 : value);
   const normalizedBuffer = $derived(buffer && buffer > 1 ? buffer / 100 : buffer);
 
@@ -39,6 +45,9 @@
   const indicatorTransform = $derived(width(+indeterminate || normalized, reverse));
 
   Q.classes("q-linear-progress", {
+    bemClasses: {
+      [componentId]: true,
+    },
     classes: [props.class],
   });
 
@@ -56,7 +65,6 @@
   aria-valuemin="0"
   aria-valuemax="100"
   aria-valuenow={indeterminate ? undefined : normalized}
-  data-quaff
 >
   <div
     class="q-linear-progress__track absolute-full"

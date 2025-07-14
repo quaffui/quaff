@@ -1,3 +1,5 @@
+import { setContext } from "svelte";
+
 export const QBreadcrumbsCtxName = {
   activeColor: Symbol("activeColor"),
   separator: Symbol("separator"),
@@ -36,3 +38,11 @@ export const QTabsCtxName = {
   value: Symbol("value"),
   variant: Symbol("variant"),
 };
+
+export const QTooltipCtxName = {
+  target: Symbol("target"),
+};
+
+export function setupTooltipContext(id: string) {
+  setContext(QTooltipCtxName.target, id);
+}

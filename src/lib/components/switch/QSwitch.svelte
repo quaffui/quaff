@@ -1,7 +1,7 @@
 <script lang="ts">
   import { ripple } from "$helpers";
   import { QIconSnippet } from "$private";
-  import { isActivationKey, type QEvent } from "$utils";
+  import { isActivationKey, setupTooltipContext, type QEvent } from "$utils";
   import type { QSwitchProps } from "./props";
 
   type QSwitchEvent<T> = QEvent<T, HTMLDivElement>;
@@ -17,6 +17,11 @@
     uncheckedIcon,
     ...props
   }: QSwitchProps = $props();
+
+  const uid = $props.id();
+  const componentId = `q-switch--${uid}`;
+
+  setupTooltipContext(componentId);
 
   let qSwitch: HTMLDivElement;
   let qSwitchInput: HTMLInputElement;
@@ -58,6 +63,7 @@
     bemClasses: {
       disabled,
       reversed: labelPosition === "left",
+      [componentId]: true,
     },
     classes: [props.class],
   });
@@ -78,7 +84,6 @@
   aria-disabled={disabled || undefined}
   role="switch"
   aria-checked={value || undefined}
-  data-quaff
 >
   <label class="q-switch__inner">
     <input

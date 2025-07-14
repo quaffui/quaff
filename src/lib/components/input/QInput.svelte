@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { QEvent } from "$utils";
+  import { setupTooltipContext, type QEvent } from "$utils";
 
   type QInputFocusEvent = QEvent<FocusEvent, HTMLDivElement>;
 
@@ -26,6 +26,11 @@
     value = $bindable(),
     ...props
   }: QInputProps = $props();
+
+  const uid = $props.id();
+  const componentId = `q-input--${uid}`;
+
+  setupTooltipContext(componentId);
 
   const active = $derived(value || focus);
 
@@ -55,6 +60,7 @@
       "snippet-prepend": !!prepend,
       disable,
       error,
+      [componentId]: true,
     },
     classes: [props.class, "q-input"],
   });
@@ -65,7 +71,6 @@
   class="q-field"
   style:--snippet-prepend-width="{snippetPrependWidth}px"
   aria-disabled={disable || undefined}
-  data-quaff
 >
   {#if before}
     <div class="q-field__snippet-before">

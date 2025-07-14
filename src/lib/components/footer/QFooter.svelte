@@ -76,13 +76,7 @@
 </script>
 
 {#if value}
-  <footer
-    bind:this={footerEl}
-    {...props}
-    class="q-footer"
-    style:--footer-height="{height}px"
-    data-quaff
-  >
+  <footer bind:this={footerEl} {...props} class="q-footer" style:--footer-height="{height}px">
     {@render children?.()}
   </footer>
 {/if}

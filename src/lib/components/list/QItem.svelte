@@ -2,7 +2,13 @@
   import { getContext, setContext } from "svelte";
   import { ripple } from "$helpers";
   import { QContext } from "$lib/classes/QContext.svelte";
-  import { getRouterInfo, isRouteActive, QItemCtxName, QListCtxName } from "$utils";
+  import {
+    getRouterInfo,
+    isRouteActive,
+    QItemCtxName,
+    QListCtxName,
+    setupTooltipContext,
+  } from "$utils";
   import QSeparator from "../separator/QSeparator.svelte";
   import type { QItemProps, QListProps } from "./props";
 
@@ -21,6 +27,11 @@
     children,
     ...props
   }: QItemProps = $props();
+
+  const uid = $props.id();
+  const componentId = `q-item--${uid}`;
+
+  setupTooltipContext(componentId);
 
   const routerInfo = $derived(
     getRouterInfo({
@@ -57,6 +68,7 @@
       dense,
       active: isActive,
       clickable,
+      [componentId]: true,
     },
     classes: [routerInfo.linkClasses, isActive && activeClassToUse, props.class],
   });

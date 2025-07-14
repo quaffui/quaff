@@ -305,7 +305,7 @@
   }
 </script>
 
-<div bind:this={drawerEl} {...props} class="q-drawer" {style} data-quaff>
+<div bind:this={drawerEl} {...props} class="q-drawer" {style}>
   {@render children?.()}
 </div>
 

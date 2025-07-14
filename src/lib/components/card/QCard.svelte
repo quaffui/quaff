@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { setupTooltipContext } from "$utils";
   import type { QCardProps } from "./props";
 
   let {
@@ -9,6 +10,11 @@
     children,
     ...props
   }: QCardProps = $props();
+
+  const uid = $props.id();
+  const componentId = `q-card--${uid}`;
+
+  setupTooltipContext(componentId);
 
   type ColorOptions = "primary" | "secondary" | "tertiary";
 
@@ -31,11 +37,12 @@
       rounded,
       fill,
       [color]: fill && color !== "surface",
+      [componentId]: true,
     },
     classes: [props.class],
   });
 </script>
 
-<article {...props} class="q-card" data-quaff>
+<article {...props} class="q-card">
   {@render children?.()}
 </article>

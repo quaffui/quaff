@@ -3,7 +3,7 @@
   import { QCircularProgress, QIcon } from "$lib";
   import { useSize } from "$composables";
   import { ripple } from "$helpers";
-  import { isActivationKey, extractImgSrc, type QEvent } from "$utils";
+  import { isActivationKey, extractImgSrc, type QEvent, setupTooltipContext } from "$utils";
   import type { MaterialSymbol } from "material-symbols";
   import type { QBtnProps, QBtnVariantOptions } from "./props";
 
@@ -31,6 +31,9 @@
     children,
     ...props
   }: QBtnProps = $props();
+
+  const uid = $props.id();
+  setupTooltipContext(`.q-btn--${uid}`);
 
   let qBtn: HTMLElement;
   let qBtnLabel: HTMLSpanElement;
@@ -120,6 +123,7 @@
       unelevated,
       rectangle,
       round: round || (!children && !label),
+      [uid]: true,
     },
     classes: [qSize.class, props.class],
   });

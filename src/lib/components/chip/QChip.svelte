@@ -1,7 +1,7 @@
 <script lang="ts">
   import { QAvatar, QIcon } from "$lib";
   import { ripple } from "$helpers";
-  import { extractImgSrc, isActivationKey, type QEvent } from "$utils";
+  import { extractImgSrc, isActivationKey, setupTooltipContext, type QEvent } from "$utils";
   import type { MaterialSymbol } from "material-symbols";
   import type { QChipProps } from "./props";
 
@@ -21,6 +21,11 @@
     children,
     ...props
   }: QChipProps = $props();
+
+  const uid = $props.id();
+  const componentId = `q-chip--${uid}`;
+
+  setupTooltipContext(componentId);
 
   let qChip: HTMLDivElement;
 
@@ -87,6 +92,7 @@
       selected,
       elevated,
       outlined: !elevated,
+      [componentId]: true,
     },
     classes: [props.class],
   });

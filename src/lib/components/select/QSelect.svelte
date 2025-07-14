@@ -2,7 +2,7 @@
   import { onDestroy, onMount } from "svelte";
   import { browser } from "$app/environment";
   import { QIcon } from "$lib";
-  import type { QEvent } from "$utils";
+  import { setupTooltipContext, type QEvent } from "$utils";
   import type { QSelectOption, QSelectProps } from "./props";
 
   type QSelectEvent<T> = QEvent<T, HTMLDivElement>;
@@ -28,6 +28,11 @@
     value = $bindable(),
     ...props
   }: QSelectProps = $props();
+
+  const uid = $props.id();
+  const componentId = `q-select--${uid}`;
+
+  setupTooltipContext(componentId);
 
   let focus = $state(false);
 
@@ -164,6 +169,7 @@
       disable,
       error,
       "bottom-space": hint || (error && errorMessage),
+      [componentId]: true,
     },
     classes: [props.class, "q-select"],
   });
@@ -174,7 +180,6 @@
   {...props}
   class="q-field"
   style:--snippet-prepend-width="{snippetPrependWidth}px"
-  data-quaff
 >
   {#if before}
     <div class="q-field__snippet-before">

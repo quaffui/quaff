@@ -1,6 +1,6 @@
 <script lang="ts">
   import { QBtn, Quaff } from "$lib";
-  import { copy } from "$utils";
+  import { copy, setupTooltipContext } from "$utils";
   import type { QCodeBlockProps } from "./props";
 
   let {
@@ -12,6 +12,11 @@
     copiable,
     ...props
   }: QCodeBlockProps = $props();
+
+  const uid = $props.id();
+  const componentId = `q-code-block--${uid}`;
+
+  setupTooltipContext(componentId);
 
   let btnContent = $state("Copy");
   let btnColor = $state("primary");
@@ -70,7 +75,7 @@
   }
 </script>
 
-<div {...props} class="q-code-block" data-quaff>
+<div {...props} class="q-code-block {componentId}">
   {#if copiable}
     <div
       class="q-code-block__title-section justify-between {title

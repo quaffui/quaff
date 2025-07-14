@@ -97,7 +97,6 @@
   oncancel={tryCancel}
   {onkeydown}
   aria-hidden={!value || undefined}
-  data-quaff
 >
   {@render children?.()}
 </dialog>

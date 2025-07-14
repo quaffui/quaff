@@ -12,6 +12,7 @@
     isRouteActive,
     isTabKey,
     QTabsCtxName,
+    setupTooltipContext,
     type Direction,
     type QEvent,
   } from "$utils";
@@ -22,6 +23,11 @@
   type QTabEvent<T> = QEvent<T, QTabEl>;
 
   let { name, to, icon, children, ...props }: QTabProps = $props();
+
+  const uid = $props.id();
+  const componentId = `q-tab--${uid}`;
+
+  setupTooltipContext(componentId);
 
   let qTab: QTabEl;
 
@@ -81,6 +87,7 @@
   Q.classes("q-tab", {
     bemClasses: {
       active: isActive,
+      [componentId]: true,
     },
     classes: [props.class],
   });
@@ -98,7 +105,6 @@
   aria-label={name}
   {onclick}
   {onkeydown}
-  data-quaff
 >
   <div class="q-tab__content">
     {#if typeof icon === "string"}

@@ -1,6 +1,6 @@
 <script lang="ts" generics="T extends HTMLElement | string">
-  import { mount, onMount, unmount, untrack } from "svelte";
-  import { addEventListener } from "$utils";
+  import { getContext, mount, onMount, unmount, untrack } from "svelte";
+  import { addEventListener, QTooltipCtxName } from "$utils";
   import QTooltipBase from "./QTooltipBase.svelte";
   import type { QTooltipProps } from "./props";
 
@@ -15,7 +15,9 @@
     ...props
   }: QTooltipProps<T> = $props();
 
-  let tooltipHelperEl = $state<HTMLDivElement>();
+  const id = $props.id();
+  const componentId = `q-tooltip--${id}`;
+
   let tooltipEl = $state<HTMLDivElement>();
 
   let realTarget = $state<HTMLElement>();
@@ -31,8 +33,6 @@
   let tooltipMouseLeaveListener: ReturnType<typeof addEventListener> | null = null;
   let windowWheelListener: ReturnType<typeof addEventListener> | null = null;
 
-  const id = $props.id();
-
   $effect(() => {
     value ? untrack(show) : untrack(hide);
   });
@@ -44,16 +44,15 @@
           ? document.querySelector<HTMLElement>(target) || undefined
           : target;
     } else {
-      let parent = tooltipHelperEl?.parentElement || null;
+      const ctxTarget = getContext<string>(QTooltipCtxName.target);
+      const quaffParent = document.querySelector<HTMLElement>(ctxTarget);
 
-      while (parent) {
-        if (parent.attributes.getNamedItem("data-quaff")) {
-          realTarget = parent;
-          break;
-        } else {
-          parent = parent.parentElement;
-        }
+      if (!quaffParent) {
+        console.warn(`${componentId}: No target element found for tooltip.`);
+        return;
       }
+
+      realTarget = quaffParent as HTMLElement;
     }
 
     targetMouseEnterListener = addEventListener(realTarget, "mouseenter", show);
@@ -177,13 +176,9 @@
         position,
         offset,
         children,
-        id: `q-tooltip-${id}`,
+        id: componentId,
         ...props,
       },
     });
   }
 </script>
-
-{#if !target}
-  <div bind:this={tooltipHelperEl} class="q-tooltip__helper"></div>
-{/if}

@@ -11,6 +11,6 @@
   });
 </script>
 
-<div {...props} class="q-toolbar-title" data-quaff>
+<div {...props} class="q-toolbar-title">
   {@render children?.()}
 </div>

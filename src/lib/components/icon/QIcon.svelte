@@ -1,5 +1,6 @@
 <script lang="ts">
   import { useSize } from "$composables";
+  import { setupTooltipContext } from "$utils";
   import type { QIconProps } from "./props";
 
   let {
@@ -15,6 +16,11 @@
     ...props
   }: QIconProps = $props();
 
+  const uid = $props.id();
+  const componentId = `q-icon--${uid}`;
+
+  setupTooltipContext(componentId);
+
   const qSize = $derived(useSize(size, "q-icon"));
 
   const parsedColor = $derived(color && `var(--${color.replace("#", "")}, ${color})`);
@@ -29,12 +35,13 @@
   Q.classes("q-icon", {
     bemClasses: {
       filled,
+      [componentId]: true,
     },
     classes: [typeClass, qSize.class, props.class],
   });
 </script>
 
-<i {...props} class="q-icon" style:--size={qSize.style} style:color={parsedColor} data-quaff>
+<i {...props} class="q-icon" style:--size={qSize.style} style:color={parsedColor}>
   {#if name !== undefined}
     {name}
   {:else if img !== undefined}

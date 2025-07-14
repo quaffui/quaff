@@ -31,7 +31,7 @@
   });
 </script>
 
-<div {...props} class="q-separator__wrapper" data-quaff>
+<div {...props} class="q-separator__wrapper">
   {#if text}
     {#if (vertical && textAlign !== "top") || (!vertical && textAlign !== "left")}
       {@render hr()}

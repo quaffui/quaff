@@ -55,7 +55,7 @@
     const classes = [typeStyle && "prop-type", isClickable && "clickable"].filter(Boolean);
     const classString = classes.length ? ` class="${classes.join(" ")}"` : "";
 
-    const dataAttrs = isClickable ? ` data-quaff data-type-name="${escape(typeName)}"` : "";
+    const dataAttrs = isClickable ? ` data-type-name="${escape(typeName)}"` : "";
 
     return `<span${classString}${dataAttrs}>${spanContent}</span>`;
   }
@@ -178,6 +178,7 @@
         props: {
           class: "q-pa-none transparent",
           children: snip,
+          target: el as HTMLElement,
         },
       });
     });

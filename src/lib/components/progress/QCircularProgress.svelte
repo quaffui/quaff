@@ -1,6 +1,6 @@
 <script lang="ts">
   import { useSize } from "$composables";
-  import { between } from "$utils";
+  import { between, setupTooltipContext } from "$utils";
   import type { QCircularProgressProps } from "./props";
 
   type CircleParams = {
@@ -33,6 +33,11 @@
     children = fallback,
     ...props
   }: QCircularProgressProps = $props();
+
+  const uid = $props.id();
+  const componentId = `q-circular-progress--${uid}`;
+
+  setupTooltipContext(componentId);
 
   const qSize = $derived(useSize(size, "q-circular-progress"));
 
@@ -68,6 +73,7 @@
   Q.classes("q-circular-progress", {
     bemClasses: {
       indeterminate,
+      [componentId]: true,
     },
     classes: [props.class],
   });
@@ -81,7 +87,6 @@
   aria-valuemin={min}
   aria-valuemax={max}
   aria-valuenow={indeterminate ? undefined : normalized}
-  data-quaff
 >
   <svg
     class="q-circular-progress__svg"
