@@ -1,3 +1,4 @@
+import { LayoutParams, RouteId } from "$app/types";
 import { createClasses } from "$utils";
 import type { Page } from "@sveltejs/kit";
 
@@ -18,7 +19,7 @@ export const UseRouterLinkPropsDefaults: UseRouterLinkProps = {
 };
 
 export function isRouteActive(
-  router: Page<Record<string, string>, string | null>,
+  router: Page<LayoutParams<"/">, RouteId | null>,
   to: string | undefined
 ) {
   return to === "/"
