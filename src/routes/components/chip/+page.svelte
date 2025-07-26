@@ -53,7 +53,7 @@
         {/snippet}
 
         <div class="flex flex-wrap q-gap-lg items-center q-ma-sm">
-          <QChip label="Small (default)" size="sm" icon="smartphone" />
+          <QChip label="Small (default)" size="sm" icon="mobile" />
           <QChip label="Medium" size="md" icon="tablet" />
           <QChip label="Large" size="lg" icon="computer" />
         </div>
