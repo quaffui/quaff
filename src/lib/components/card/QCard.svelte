@@ -1,6 +1,7 @@
 <script lang="ts">
-  import type { QCardProps } from "./props";
+  import type { QCardProps, QCardFillColors } from "./props";
 
+  // #region:    --- Props
   let {
     fill = false,
     flat = false,
@@ -9,20 +10,23 @@
     children,
     ...props
   }: QCardProps = $props();
+  // #endregion: --- Props
 
-  type ColorOptions = "primary" | "secondary" | "tertiary";
+  // #region:    --- Non-reactive variables
+  const colorOptions: QCardFillColors[] = ["primary", "secondary", "tertiary"] as const;
+  // #endregion: --- Non-reactive variables
 
-  const colorOptions: ColorOptions[] = ["primary", "secondary", "tertiary"] as const;
-
+  // #region:    --- Derived values
   const color = $derived.by(() => {
     if (fill) {
-      return fill === true || !colorOptions.includes(fill as ColorOptions)
+      return fill === true || !colorOptions.includes(fill as QCardFillColors)
         ? "surface-variant"
         : fill;
     }
 
     return "surface";
   });
+  // #endregion: --- Derived values
 
   Q.classes("q-card", {
     bemClasses: {

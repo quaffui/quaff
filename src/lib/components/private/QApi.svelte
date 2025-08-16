@@ -17,10 +17,24 @@
   import type { QComponentDocs, QComponentEvent, QComponentMethod } from "$utils";
   import type { ParsedProp, ParsedSnippet } from "$docgen/props/parseInterface";
 
+  // #region:    --- Props
   let { componentDocs }: { componentDocs: QComponentDocs[] } = $props();
+  // #endregion: --- Props
 
+  // #region:    --- Reactive variables
   let api: (keyof QComponentDocs["docs"])[] = $state(componentDocs.map(() => "props"));
+  // #endregion: --- Reactive variables
 
+  // #region:    --- Effects
+  $effect(() => {
+    // Doesn't rerun if we don't use JSON.stringify
+    JSON.stringify(api);
+
+    attachTooltips();
+  });
+  // #endregion: --- Effects
+
+  // #region:    --- Functions
   function getType(type: string) {
     type = type.replace("[]", "");
     let found = type in Types ? Types[type as keyof typeof Types] : undefined;
@@ -182,13 +196,7 @@
       });
     });
   }
-
-  $effect(() => {
-    // Doesn't rerun if we don't use JSON.stringify
-    JSON.stringify(api);
-
-    attachTooltips();
-  });
+  // #endregion: --- Functions
 </script>
 
 {#each componentDocs as QDocument, index (index)}

@@ -1,12 +1,20 @@
 <script lang="ts">
-  import { getContext, onMount, untrack } from "svelte";
+  import { onMount, untrack } from "svelte";
   import { QScrollObserver } from "$lib";
-  import { QContext } from "$lib/classes/QContext.svelte";
-  import { QLayoutCtxName } from "$utils";
-  import type { AppbarContext } from "$components/layout/QLayout.svelte";
-  import type { QLayoutProps } from "$components/layout/props";
+  import { headerCtx } from "../layout/QLayout.svelte";
   import type { QHeaderProps } from "./props";
 
+  // #region:    --- Non-reactive variables
+  const uid = $props.id();
+  // #endregion: --- Non-reactive variables
+
+  // #region:    --- Reactive variables
+  let headerEl = $state<HTMLElement>();
+
+  const headerContext = headerCtx.assertGet("QHeader should be used inside QLayout");
+  // #endregion: --- Reactive variables
+
+  // #region:    --- Props
   let {
     elevated = false,
     inset = false,
@@ -17,31 +25,34 @@
     children,
     ...props
   }: QHeaderProps = $props();
+  // #endregion: --- Props
 
-  const uid = $props.id();
-
-  let headerEl = $state<HTMLElement>();
-
-  const headerContext = QContext.get<AppbarContext>(QLayoutCtxName.header);
-  const layoutView = getContext<{ value: NonNullable<QLayoutProps["view"]> }>(QLayoutCtxName.view);
-  if (!headerContext || !layoutView) {
-    throw new Error("QHeader should be used inside QLayout");
-  }
-
+  // #region:    --- Derived values
   const scroll = $derived(
     reveal ? new QScrollObserver(`.q-header--${uid} ~ .q-layout__content`) : undefined
   );
+
   const offset = $derived(scroll ? scroll.position - height : undefined);
+
   // Collapse the header `${reavealOffset}px` below the top of layout content when scrolling down
   const collapsed = $derived(reveal && scroll?.direction === "down" && offset! - revealOffset > 0);
 
-  const leftOffset = () => layoutView.value.charAt(0) === "l";
-  const rightOffset = () => layoutView.value.charAt(2) === "r";
+  const leftOffset = $derived(headerContext.view.charAt(0) === "l");
 
+  const rightOffset = $derived(headerContext.view.charAt(2) === "r");
+  // #endregion: --- Derived values
+
+  // #region:    --- Effects
   $effect.pre(() => {
-    untrack(() => headerContext).updateEntries({ height, collapsed, ready: true });
+    headerCtx.updateEntries({
+      height,
+      collapsed,
+      ready: true,
+    });
   });
+  // #endregion: --- Effects
 
+  // #region:    --- Lifecycle
   onMount(() => {
     if (headerContext) {
       setTimeout(() => {
@@ -52,12 +63,18 @@
     }
 
     return () => {
-      if (headerContext && headerEl) {
+      if (headerEl) {
         headerEl.style.transition = "none";
-        headerContext.updateEntries({ height: 0, collapsed: false, ready: false });
       }
+
+      headerCtx.updateEntries({
+        height: 0,
+        collapsed: false,
+        ready: false,
+      });
     };
   });
+  // #endregion: --- Lifecycle
 
   Q.classes("q-header", {
     bemClasses: {
@@ -65,8 +82,8 @@
       elevated,
       bordered,
       collapsed,
-      "offset-left": leftOffset(),
-      "offset-right": rightOffset(),
+      "offset-left": leftOffset,
+      "offset-right": rightOffset,
       inset,
     },
     classes: [props.class],

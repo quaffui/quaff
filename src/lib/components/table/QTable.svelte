@@ -2,6 +2,7 @@
   import { QIcon, QSelect, QBtn } from "$lib";
   import type { QTableProps, QTableColumn, QTableRow, QTableSort } from "./props";
 
+  // #region:    --- Props
   let {
     columns = [],
     rows = [],
@@ -11,16 +12,16 @@
     bodyCell,
     ...props
   }: QTableProps = $props();
+  // #endregion: --- Props
 
-  function getField(fieldRaw: QTableColumn["field"], row: QTableRow): string | number {
-    return typeof fieldRaw === "function" ? fieldRaw(row) : row[fieldRaw];
-  }
-
+  // #region:    --- Reactive variables
   let page = $state(1);
   let rowsPerPage = $state(5);
 
   let sort: QTableSort = $state(null);
+  // #endregion: --- Reactive variables
 
+  // #region:    --- Derived values
   const rowsPerPageOptions = $derived(
     [5, 10, 25, 50].filter((option) => {
       return rows.length >= option || option === 5;
@@ -32,12 +33,6 @@
     rowsPerPage * page > rows.length ? rows.length : rowsPerPage * page
   );
   const numberOf: number = $derived(rows.length);
-
-  $effect(() => {
-    if (rowsPerPage * (page - 1) >= rows.length) {
-      page = 1;
-    }
-  });
 
   const rowsSorted: QTableRow[] = $derived.by(() => {
     if (sort) {
@@ -63,6 +58,20 @@
   });
 
   const rowsPaginated: QTableRow[] = $derived(rowsSorted.slice(numberFrom - 1, numberTo));
+  // #endregion: --- Derived values
+
+  // #region:    --- Effects
+  $effect(() => {
+    if (rowsPerPage * (page - 1) >= rows.length) {
+      page = 1;
+    }
+  });
+  // #endregion: --- Effects
+
+  // #region:    --- Functions
+  function getField(fieldRaw: QTableColumn["field"], row: QTableRow): string | number {
+    return typeof fieldRaw === "function" ? fieldRaw(row) : row[fieldRaw];
+  }
 
   function getThStyle(column: QTableColumn) {
     let style = allowsSort(column) ? "cursor: pointer; " : "";
@@ -99,6 +108,7 @@
       type: !sort?.type || sort?.type === "desc" ? "asc" : "desc",
     };
   }
+  // #endregion: --- Functions
 
   Q.classes("q-table__table", {
     bemClasses: {

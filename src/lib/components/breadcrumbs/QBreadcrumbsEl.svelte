@@ -1,10 +1,11 @@
 <script lang="ts">
-  import { getContext } from "svelte";
   import { QIcon } from "$lib";
-  import { isRouteActive, QBreadcrumbsCtxName } from "$utils";
+  import { isRouteActive } from "$utils";
+  import { breadcrumbsCtx } from "./QBreadcrumbs.svelte";
   import type { MaterialSymbol } from "material-symbols";
-  import type { QBreadcrumbsElProps, QBreadcrumbsProps } from "./props";
+  import type { QBreadcrumbsElProps } from "./props";
 
+  // #region:    --- Props
   let {
     activeClass = "active",
     href,
@@ -15,17 +16,19 @@
     children = fallback,
     ...props
   }: QBreadcrumbsElProps = $props();
+  // #endregion: --- Props
 
-  const separator = getContext<{
-    type: QBreadcrumbsProps["separator"];
-    gutter: QBreadcrumbsProps["gutter"];
-  }>(QBreadcrumbsCtxName.separator);
-
+  // #region:    --- Derived values
   const isActive = $derived(isRouteActive(href || to));
+  // #endregion: --- Derived values
+
+  // #region:    --- Context
+  const ctx = breadcrumbsCtx.assertGet();
+  // #endregion: --- Context
 
   Q.classes("q-breadcrumbs__item", { classes: [props.class] });
   Q.classes("q-breadcrumbs__separator", {
-    classes: [`q-px-${separator.gutter}`],
+    classes: [`q-px-${ctx?.gutter}`],
   });
   Q.classes("q-breadcrumbs__el", { classes: [isActive && activeClass] });
 </script>
@@ -56,14 +59,14 @@
   style:--q-breadcrumbs-color={isActive ? "var(--q-active-color)" : undefined}
 >
   <span class="q-breadcrumbs__separator" aria-hidden="true">
-    {#if typeof separator.type === "string"}
-      {#if separator.type.startsWith("icon:")}
-        <QIcon name={separator.type.slice(5) as MaterialSymbol} size="1rem" />
+    {#if typeof ctx.separator === "string"}
+      {#if ctx.separator.startsWith("icon:")}
+        <QIcon name={ctx.separator.slice(5) as MaterialSymbol} size="1rem" />
       {:else}
-        {separator.type}
+        {ctx.separator}
       {/if}
     {:else}
-      {@render separator.type?.()}
+      {@render ctx.separator?.()}
     {/if}
   </span>
 

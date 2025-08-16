@@ -3,6 +3,7 @@
   import { scale } from "svelte/transition";
   import type { QTooltipProps } from "./props";
 
+  // #region:    --- Props
   let {
     // At this point, target should be guaranteed to be a DOM element
     target,
@@ -11,17 +12,13 @@
     children,
     ...props
   }: QTooltipProps<HTMLElement> = $props();
+  // #endregion: --- Props
 
+  // #region:    --- Reactive variables
   let tooltipEl = $state<HTMLDivElement>();
+  // #endregion: --- Reactive variables
 
-  onMount(() => {
-    setTimeout(() => {
-      if (tooltipEl) {
-        tooltipEl.style.opacity = "1";
-      }
-    }, 50);
-  });
-
+  // #region:    --- Derived values
   const tooltipPosition: Record<"top" | "left", number> | undefined = $derived.by(() => {
     if (!target || !tooltipEl) {
       return;
@@ -36,7 +33,19 @@
   const styles = $derived(
     tooltipPosition && { top: `${tooltipPosition.top}px`, left: `${tooltipPosition.left}px` }
   );
+  // #endregion: --- Derived values
 
+  // #region:    --- Lifecycle
+  onMount(() => {
+    setTimeout(() => {
+      if (tooltipEl) {
+        tooltipEl.style.opacity = "1";
+      }
+    }, 50);
+  });
+  // #endregion: --- Lifecycle
+
+  // #region:    --- Functions
   function calculatePosition(anchor: HTMLElement, tooltip: HTMLElement, axis: "x" | "y") {
     const anchorRect = anchor.getBoundingClientRect();
 
@@ -63,6 +72,7 @@
           tooltip[tooltipDimension] / 2 +
           (offsetToUse || 0);
   }
+  // #endregion: --- Functions
 
   Q.classes("q-tooltip", {
     classes: [props.class],

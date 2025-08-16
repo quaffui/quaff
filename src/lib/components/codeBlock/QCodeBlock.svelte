@@ -3,6 +3,7 @@
   import { copy } from "$utils";
   import type { QCodeBlockProps } from "./props";
 
+  // #region:    --- Props
   let {
     language,
     lightTheme = "github-light-default",
@@ -12,12 +13,16 @@
     copiable,
     ...props
   }: QCodeBlockProps = $props();
+  // #endregion: --- Props
 
+  // #region:    --- Reactive variables
   let btnContent = $state("Copy");
   let btnColor = $state("primary");
 
   let html = $state("");
+  // #endregion: --- Reactive variables
 
+  // #region:    --- Effects
   $effect(() => {
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     Quaff.darkMode.isActive;
@@ -25,7 +30,9 @@
     // This is required to have the html updated when the code changes
     getHtml(code);
   });
+  // #endregion: --- Effects
 
+  // #region:    --- Functions
   function setBtn(type: "base" | "error" | "success") {
     switch (type) {
       case "error":
@@ -68,6 +75,7 @@
       html = `<pre>${code}</pre>`;
     }
   }
+  // #endregion: --- Functions
 </script>
 
 <div {...props} class="q-code-block" data-quaff>

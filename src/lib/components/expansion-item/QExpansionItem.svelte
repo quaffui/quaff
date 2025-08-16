@@ -5,6 +5,7 @@
   import { isActivationKey, type QEvent } from "$utils";
   import type { QExpansionItemProps } from "./props";
 
+  // #region:    --- Props
   let {
     value = $bindable(false),
     label,
@@ -29,13 +30,21 @@
     onExpandIconClick,
     ...props
   }: QExpansionItemProps = $props();
+  // #endregion: --- Props
 
+  // #region:    --- Non-reactive variables
   const id = $props.id();
   const contentId = `q-expansion-item__content-${id}`;
   const summaryId = `q-expansion-item__summary-${id}`;
 
   const supportDetailsContent = CSS.supports("selector(details::details-content)");
+  // #endregion: --- Non-reactive variables
 
+  // #region:    --- Reactive variables
+  let detailsEl = $state<HTMLDetailsElement>();
+  // #endregion: --- Reactive variables
+
+  // #region:    --- Derived values
   const summaryAttributes = $derived(
     !supportDetailsContent
       ? {
@@ -56,14 +65,14 @@
       : {}
   );
 
-  let detailsEl = $state<HTMLDetailsElement>();
-
   const iconAttributes = $derived({
     [expandIconToggle ? "icon" : "name"]: expandedIcon && value ? expandedIcon : expandIcon,
     flat: expandIconToggle || undefined,
     "aria-label": toggleAriaLabel,
   });
+  // #endregion: --- Derived values
 
+  // #region:    --- Effects
   $effect.pre(() => {
     if (defaultOpened) {
       show();
@@ -90,7 +99,9 @@
       }
     });
   });
+  // #endregion: --- Effects
 
+  // #region:    --- Methods
   export function toggle() {
     value = !value;
   }
@@ -102,19 +113,9 @@
   export function hide() {
     value = false;
   }
+  // #endregion: --- Methods
 
-  Q.classes("q-expansion-item", {
-    bemClasses: {
-      expanded: value,
-    },
-  });
-
-  Q.classes("q-expansion-item__toggle-icon", {
-    bemClasses: {
-      rotate: value && !expandedIcon && !noRotateExpandIcon,
-    },
-  });
-
+  // #region:    --- Functions
   function preventAndStop<T extends Event>(e: T) {
     e.preventDefault();
     e.stopPropagation();
@@ -195,6 +196,19 @@
     }) as QEvent<MouseEvent, HTMLElement>;
     onIconClick(clickEvent);
   }
+  // #endregion: --- Functions
+
+  Q.classes("q-expansion-item", {
+    bemClasses: {
+      expanded: value,
+    },
+  });
+
+  Q.classes("q-expansion-item__toggle-icon", {
+    bemClasses: {
+      rotate: value && !expandedIcon && !noRotateExpandIcon,
+    },
+  });
 </script>
 
 {#snippet labelSnippet()}

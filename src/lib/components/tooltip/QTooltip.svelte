@@ -4,6 +4,7 @@
   import QTooltipBase from "./QTooltipBase.svelte";
   import type { QTooltipProps } from "./props";
 
+  // #region:    --- Props
   let {
     target,
     value = $bindable(false),
@@ -14,15 +15,9 @@
     children,
     ...props
   }: QTooltipProps<T> = $props();
+  // #endregion: --- Props
 
-  let tooltipHelperEl = $state<HTMLDivElement>();
-  let tooltipEl = $state<HTMLDivElement>();
-
-  let realTarget = $state<HTMLElement>();
-
-  let timerShow = $state<ReturnType<typeof setTimeout> | null>(null);
-  let timerHide = $state<ReturnType<typeof setTimeout> | null>(null);
-
+  // #region:    --- Non-reactive variables
   let mountedTooltip: ReturnType<typeof mountTooltip> | null = null;
 
   let targetMouseEnterListener: ReturnType<typeof addEventListener> | null = null;
@@ -32,11 +27,25 @@
   let windowWheelListener: ReturnType<typeof addEventListener> | null = null;
 
   const id = $props.id();
+  // #endregion: --- Non-reactive variables
 
+  // #region:    --- Reactive variables
+  let tooltipHelperEl = $state<HTMLDivElement>();
+  let tooltipEl = $state<HTMLDivElement>();
+
+  let realTarget = $state<HTMLElement>();
+
+  let timerShow = $state<ReturnType<typeof setTimeout> | null>(null);
+  let timerHide = $state<ReturnType<typeof setTimeout> | null>(null);
+  // #endregion: --- Reactive variables
+
+  // #region:    --- Effects
   $effect(() => {
     value ? untrack(show) : untrack(hide);
   });
+  // #endregion: --- Effects
 
+  // #region:    --- Lifecycle
   onMount(() => {
     if (target) {
       realTarget =
@@ -81,7 +90,9 @@
       }
     };
   });
+  // #endregion: --- Lifecycle
 
+  // #region:    --- Methods
   export function show() {
     if (timerHide) {
       clearTimeout(timerHide);
@@ -156,7 +167,9 @@
   export function toggle() {
     value = !value;
   }
+  // #endregion: --- Methods
 
+  // #region:    --- Functions
   function abortHide() {
     if (timerHide) {
       clearTimeout(timerHide);
@@ -182,6 +195,7 @@
       },
     });
   }
+  // #endregion: --- Functions
 </script>
 
 {#if !target}

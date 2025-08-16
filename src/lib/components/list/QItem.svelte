@@ -1,11 +1,22 @@
-<script lang="ts">
-  import { getContext, setContext } from "svelte";
-  import { ripple } from "$helpers";
-  import { QContext } from "$lib/classes/QContext.svelte";
-  import { getRouterInfo, isRouteActive, QItemCtxName, QListCtxName } from "$utils";
-  import QSeparator from "../separator/QSeparator.svelte";
-  import type { QItemProps, QListProps } from "./props";
+<script lang="ts" module>
+  import { QContext } from "$lib/utils";
 
+  interface QItemContext {
+    readonly activeClass: string | false;
+    multiline: boolean;
+  }
+
+  export const itemCtx = QContext<QItemContext>("QItem");
+</script>
+
+<script lang="ts">
+  import { ripple } from "$helpers";
+  import { getRouterInfo, isRouteActive } from "$utils";
+  import QSeparator from "../separator/QSeparator.svelte";
+  import { listCtx } from "./QList.svelte";
+  import type { QItemProps } from "./props";
+
+  // #region:    --- Props
   let {
     tag = "div",
     active = false,
@@ -21,7 +32,15 @@
     children,
     ...props
   }: QItemProps = $props();
+  // #endregion: --- Props
 
+  // #region:    --- Reactive variables
+  let multiline = $state(false);
+
+  const ctx = listCtx.assertGet("QItem should be used inside QList");
+  // #endregion: --- Reactive variables
+
+  // #region:    --- Derived values
   const routerInfo = $derived(
     getRouterInfo({
       href,
@@ -32,28 +51,26 @@
     })
   );
 
-  const listActiveClass = getContext<() => string>(QListCtxName.activeClass);
-
   const activeClassToUse = $derived(
-    activeClass === "active" ? listActiveClass() || activeClass : activeClass
-  );
-
-  setContext(QItemCtxName.activeClass, () => active && activeClassToUse);
-
-  const multiline = new QContext(QItemCtxName.multiline, false);
-
-  const separatorOptions = getContext<QListProps["separatorOptions"] | undefined>(
-    QListCtxName.separator
+    activeClass === "active" ? ctx.activeClass || activeClass : activeClass
   );
 
   const isActionable = $derived(clickable || routerInfo.hasLink || tag === "label");
   const isClickable = $derived(isActionable && !disabled);
 
   const isActive = $derived(isRouteActive(to || href) || active);
+  // #endregion: --- Derived values
+
+  // #region:    --- Context
+  itemCtx.set({
+    multiline,
+    activeClass: active && activeClassToUse,
+  });
+  // #endregion: --- Context
 
   Q.classes("q-item", {
     bemClasses: {
-      multiline: multiline.value,
+      multiline,
       dense,
       active: isActive,
       clickable,
@@ -62,8 +79,8 @@
   });
 </script>
 
-{#if separatorOptions}
-  <QSeparator {...separatorOptions} />
+{#if ctx.separatorOptions}
+  <QSeparator {...ctx.separatorOptions} />
 {/if}
 
 {#if routerInfo.linkAttributes.href}

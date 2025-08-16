@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { QDialogProps } from "./props";
 
+  // #region:    --- Props
   let {
     value = $bindable(false),
     position = "default",
@@ -10,11 +11,17 @@
     children,
     ...props
   }: QDialogProps = $props();
+  // #endregion: --- Props
 
+  // #region:    --- Reactive variables
   let dialogEl = $state<HTMLDialogElement>();
+  // #endregion: --- Reactive variables
 
+  // #region:    --- Derived values
   const canHide = $derived(value && !persistent);
+  // #endregion: --- Derived values
 
+  // #region:    --- Effects
   $effect(() => {
     if (value) {
       dialogEl?.[modal ? "showModal" : "show"]();
@@ -28,7 +35,9 @@
       window.removeEventListener("click", tryCancel);
     }
   });
+  // #endregion: --- Effects
 
+  // #region:    --- Methods
   export function hide() {
     if (dialogEl?.open) {
       value = false;
@@ -48,7 +57,9 @@
       show();
     }
   }
+  // #endregion: --- Methods
 
+  // #region:    --- Functions
   function addAnimation() {
     if (persistent && value) {
       dialogEl?.classList.add("q-dialog--animating");
@@ -77,6 +88,7 @@
       e.preventDefault();
     }
   }
+  // #endregion: --- Functions
 
   Q.classes("q-dialog", {
     bemClasses: {

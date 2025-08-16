@@ -1,7 +1,9 @@
 <script lang="ts">
   import type { QCheckboxProps } from "./props";
 
+  // #region:    --- Props
   let { value = $bindable(), label = "", disable = false, ...props }: QCheckboxProps = $props();
+  // #endregion: --- Props
 
   Q.classes("q-checkbox", {
     bemClasses: {
