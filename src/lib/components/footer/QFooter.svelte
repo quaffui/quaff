@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount, untrack } from "svelte";
+  import { onMount } from "svelte";
   import { QScrollObserver } from "$lib";
   import { footerCtx } from "../layout/QLayout.svelte";
   import type { QFooterProps } from "./props";

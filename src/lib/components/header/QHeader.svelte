@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount, untrack } from "svelte";
+  import { onMount } from "svelte";
   import { QScrollObserver } from "$lib";
   import { headerCtx } from "../layout/QLayout.svelte";
   import type { QHeaderProps } from "./props";

@@ -100,10 +100,6 @@ export function preprocessContext() {
         filepath: filename,
       });
 
-      if (filename?.endsWith("QTabs.svelte")) {
-        console.log(code);
-      }
-
       return {
         code,
         map: source.generateMap(),
