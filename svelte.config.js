@@ -1,6 +1,6 @@
 import adapter from "@sveltejs/adapter-static";
 import { vitePreprocess } from "@sveltejs/vite-plugin-svelte";
-import { preprocessClasses, preprocessContext } from "./plugins/index.js";
+import { preprocessClasses, preprocessContext } from "./plugins/dist/index.js";
 
 const NAMESPACE = "Q";
 

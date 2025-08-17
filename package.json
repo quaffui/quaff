@@ -18,7 +18,8 @@
     "docgen-props": "bun scripts/docgenProps.ts",
     "colorgen": "bun scripts/colorgen.ts",
     "docgen-snippets": "bun scripts/docgenSnippets.ts",
-    "write-version": "bun scripts/writeVersion.ts"
+    "write-version": "bun scripts/writeVersion.ts",
+    "gen:plugins": "tsc --outDir plugins/dist plugins/index.ts --declaration --target esnext --module esnext --moduleResolution bundler"
   },
   "exports": {
     ".": {

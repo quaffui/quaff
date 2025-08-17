@@ -1,13 +1,14 @@
+import type { Fragment, ComponentName, ClassesUsage } from "./types.js";
+
 /**
  * Prepares the positions to be able to modify the markup
- *
- * @export
- * @param {import("./types").Fragment} fragment
- * @param {import("./types").ComponentName} component
- * @param {import("./types").ClassesUsage[]} uses
- * @param {string} namespace
  */
-export function prepareMarkup(fragment, component, uses, namespace) {
+export function prepareMarkup(
+  fragment: Fragment,
+  component: ComponentName,
+  uses: ClassesUsage[],
+  namespace: string
+) {
   for (const node of fragment.nodes) {
     if (node.type === "IfBlock") {
       prepareMarkup(node.consequent, component, uses, namespace);
@@ -18,7 +19,7 @@ export function prepareMarkup(fragment, component, uses, namespace) {
 
       continue;
     } else if (node.type === "AwaitBlock") {
-      for (const awaitKey of /** @type {const} */ (["pending", "then", "catch"])) {
+      for (const awaitKey of ["pending", "then", "catch"] as const) {
         let frag = node[awaitKey];
         if (frag) {
           prepareMarkup(frag, component, uses, namespace);
@@ -42,10 +43,9 @@ export function prepareMarkup(fragment, component, uses, namespace) {
       continue;
     }
 
-    const classAttribute =
-      /** @type {((typeof node.attributes[0]) & { type: "Attribute" }) | undefined} */ (
-        node.attributes.find((attr) => attr.type === "Attribute" && attr.name === "class")
-      );
+    const classAttribute = node.attributes.find(
+      (attr) => attr.type === "Attribute" && attr.name === "class"
+    ) as ((typeof node.attributes)[0] & { type: "Attribute" }) | undefined;
 
     if (
       !classAttribute ||
