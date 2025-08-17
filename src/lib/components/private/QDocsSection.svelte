@@ -21,7 +21,7 @@
   // #endregion: --- Reactive variables
 
   // #region:    --- Derived values
-  const code = $derived(ctx?.snippets && ctx.snippets[title]);
+  const code = $derived(ctx?.snippets?.[title]);
 
   // Create a kebab-case id from the title to be able to link to this section
   const id = $derived(title.toLowerCase().replaceAll(" ", "-"));

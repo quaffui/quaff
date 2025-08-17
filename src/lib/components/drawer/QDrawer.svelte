@@ -39,11 +39,12 @@
   let isSwiping = $state(false);
   let startX = $state(0);
   let dragOffset = $state(0);
-
-  const drawerContext = (side === "left" ? leftDrawerCtx : rightDrawerCtx).get();
   // #endregion: --- Reactive variables
 
   // #region:    --- Derived values
+  const drawerCtxToUse = $derived(side === "left" ? leftDrawerCtx : rightDrawerCtx);
+  const drawerContext = $derived(drawerCtxToUse.get());
+
   const canHideOnClickOutside = $derived((value && !persistent) || overlay);
 
   const hideOnRouteChange = $derived(!persistent || overlay);
@@ -84,11 +85,11 @@
         resetBodyStyles();
       }
 
-      if (drawerContext) {
-        drawerContext.width = 0;
-        drawerContext.takesSpace = false;
-        drawerContext.ready = false;
-      }
+      drawerCtxToUse.updateEntries({
+        takesSpace: false,
+        width: 0,
+        ready: false,
+      });
     };
   });
   // #endregion: --- Lifecycle
@@ -127,11 +128,11 @@
     [value, overlay, width];
 
     untrack(() => {
-      if (drawerContext) {
-        drawerContext.takesSpace = !!value && !overlay;
-        drawerContext.width = width;
-        drawerContext.ready = true;
-      }
+      drawerCtxToUse.updateEntries({
+        takesSpace: !!value && !overlay,
+        width,
+        ready: true,
+      });
     });
   });
   // #endregion: --- Effects

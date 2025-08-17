@@ -32,10 +32,13 @@
   // #endregion: --- Props
 
   // #region:    --- Non-reactive variables
-  const radius = 50,
-    diameter = 2 * radius,
-    circumference = diameter * Math.PI,
-    strokeDashArray = Math.round(circumference * 1000) / 1000;
+  const radius = 50;
+
+  const diameter = 2 * radius;
+
+  const circumference = diameter * Math.PI;
+
+  const strokeDashArray = Math.round(circumference * 1000) / 1000;
   // #endregion: --- Non-reactive variables
 
   // #region:    --- Derived values

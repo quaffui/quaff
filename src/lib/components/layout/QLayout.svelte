@@ -94,20 +94,12 @@
   );
 
   const isReady = $derived(
-    (!header || headerInfo.ready || (layoutEl && !layoutEl.querySelector(".q-header"))) &&
-      (!footer || footerInfo.ready || (layoutEl && !layoutEl.querySelector(".q-footer"))) &&
-      (!railbarLeft ||
-        leftRailbarInfo.ready ||
-        (layoutEl && !layoutEl.querySelector(":scope > .q-railbar--left"))) &&
-      (!railbarRight ||
-        rightRailbarInfo.ready ||
-        (layoutEl && !layoutEl.querySelector(":scope > .q-railbar--right"))) &&
-      (!drawerLeft ||
-        leftDrawerInfo.ready ||
-        (layoutEl && !layoutEl.querySelector(":scope > .q-drawer--left"))) &&
-      (!drawerRight ||
-        rightDrawerInfo.ready ||
-        (layoutEl && !layoutEl.querySelector(":scope > .q-drawer--right")))
+    appBarReady("header") &&
+      appBarReady("footer") &&
+      sideBarReady("railbar", "left") &&
+      sideBarReady("railbar", "right") &&
+      sideBarReady("drawer", "left") &&
+      sideBarReady("drawer", "right")
   );
   // #endregion: --- Derived values
 
@@ -165,6 +157,29 @@
   // #region:    --- Functions
   function handleDrawerCtx(info: Omit<DrawerContext, "view">) {
     return info.takesSpace ? info.width : 0;
+  }
+
+  function appBarReady(barType: "header" | "footer") {
+    const barReady = !header || headerInfo.ready;
+
+    return barReady || (layoutEl && !layoutEl.querySelector(`.q-${barType}`));
+  }
+
+  function sideBarReady(barType: "railbar" | "drawer", side: "left" | "right") {
+    const barReady =
+      side === "left"
+        ? {
+            railbar: !railbarLeft || leftRailbarInfo.ready,
+            drawer: !drawerLeft || leftDrawerInfo.ready,
+          }
+        : {
+            railbar: !railbarRight || rightRailbarInfo.ready,
+            drawer: !drawerRight || rightDrawerInfo.ready,
+          };
+
+    return (
+      barReady[barType] || (layoutEl && !layoutEl.querySelector(`:scope > .q-${barType}--${side}`))
+    );
   }
   // #endregion: --- Functions
 

@@ -45,9 +45,11 @@
 
   // #region:    --- Effects
   $effect.pre(() => {
-    footerContext.height = height;
-    footerContext.collapsed = collapsed;
-    footerContext.ready = true;
+    footerCtx.updateEntries({
+      height,
+      collapsed,
+      ready: true,
+    });
   });
   // #endregion: --- Effects
 
@@ -65,9 +67,11 @@
     }, 100);
 
     return () => {
-      footerContext.height = 0;
-      footerContext.collapsed = false;
-      footerContext.ready = false;
+      footerCtx.updateEntries({
+        height: 0,
+        collapsed: false,
+        ready: false,
+      });
     };
   });
   // #endregion: --- Lifecycle
