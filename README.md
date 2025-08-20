@@ -11,6 +11,7 @@ This is an independent project and is not endorsed by or affiliated with Materia
 
 Key features:
 
+- Beautiful [documentation](https://quaff.dev/)
 - Built for [Svelte 5](https://svelte.dev/) and [SvelteKit](https://kit.svelte.dev/) with full runes support
 - Follows Material Design 3 guidelines
 - Type-safe components with TypeScript
@@ -62,6 +63,7 @@ You can preview the production build with `bun run preview`.
 - `/src/lib/css` - Styling and theming utilities
 - `/src/routes` - Documentation and examples
 - `/docgen` - Documentation generation tools
+- `/plugins` - Preprocessors used by Quaff (in development, don't forget to run `bun gen:plugins` before `bun dev`)
 
 ## Acknowledgements
 

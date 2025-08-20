@@ -1,9 +1,7 @@
-/**
- *
- * @param {import("magic-string").default} source
- * @param {import("./types").Result} result
- */
-export function changeSource(source, result) {
+import type MagicString from "magic-string";
+import type { Result } from "./types.js";
+
+export function changeSource(source: MagicString, result: Result) {
   // Remove the classes definition
   source.remove(result.def.start, result.def.end);
 

@@ -1,14 +1,16 @@
 <script lang="ts">
   import type { QEvent } from "$utils";
+  import type { QInputProps } from "./props";
 
   type QInputFocusEvent = QEvent<FocusEvent, HTMLDivElement>;
 
+  // #region:    --- Reactive variables
   let focus = $state(false);
 
   let snippetPrependWidth = $state(0);
+  // #endregion: --- Reactive variables
 
-  import type { QInputProps } from "../input/props";
-
+  // #region:    --- Props
   let {
     dense = false,
     disable = false,
@@ -26,9 +28,13 @@
     value = $bindable(),
     ...props
   }: QInputProps = $props();
+  // #endregion: --- Props
 
+  // #region:    --- Derived values
   const active = $derived(value || focus);
+  // #endregion: --- Derived values
 
+  // #region:    --- Functions
   function onFocus(e: QInputFocusEvent) {
     focus = true;
     props.onfocus?.(e);
@@ -38,6 +44,7 @@
     focus = false;
     props.onblur?.(e);
   }
+  // #endregion: --- Functions
 
   // q-field here, q-input in classes
   Q.classes("q-field", {

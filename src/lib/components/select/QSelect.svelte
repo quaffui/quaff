@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onDestroy, onMount } from "svelte";
+  import { onMount } from "svelte";
   import { browser } from "$app/environment";
   import { QIcon } from "$lib";
   import type { QEvent } from "$utils";
@@ -7,6 +7,7 @@
 
   type QSelectEvent<T> = QEvent<T, HTMLDivElement>;
 
+  // #region:    --- Props
   let {
     options,
     multiple = false,
@@ -28,9 +29,19 @@
     value = $bindable(),
     ...props
   }: QSelectProps = $props();
+  // #endregion: --- Props
 
+  // #region:    --- Reactive variables
   let focus = $state(false);
 
+  let wrapper: HTMLDivElement | null = $state(null);
+  let isMenuOpen = $state(false);
+  let wasClicked = $state(false);
+  let preventClose = $state(false);
+  let snippetPrependWidth = $state(0);
+  // #endregion: --- Reactive variables
+
+  // #region:    --- Derived values
   const currentDisplayValue = $derived.by(() => {
     if (displayValue !== undefined) {
       return displayValue;
@@ -47,11 +58,24 @@
 
   const active = $derived(currentDisplayValue || focus);
 
-  let wrapper: HTMLDivElement | null = $state(null);
-  let isMenuOpen = $state(false);
-  let wasClicked = $state(false);
-  let preventClose = $state(false);
+  const selectedOptions: boolean[] = $derived(options.map((option) => isSelected(option), value));
+  // #endregion: --- Derived values
 
+  // #region:    --- Lifecycle
+  onMount(() => {
+    if (browser) {
+      window.document.addEventListener("click", handleClickOutside);
+    }
+
+    return () => {
+      if (browser) {
+        document.removeEventListener("click", handleClickOutside);
+      }
+    };
+  });
+  // #endregion: --- Lifecycle
+
+  // #region:    --- Functions
   function handleMousedown(e: QSelectEvent<MouseEvent>) {
     isMenuOpen = !isMenuOpen;
     wasClicked = true;
@@ -77,10 +101,6 @@
     preventClose = false;
     props.onblur?.(e);
   }
-
-  const selectedOptions: boolean[] = $derived(options.map((option) => isSelected(option), value));
-
-  let snippetPrependWidth = $state(0);
 
   function compareValues<T extends QSelectOption>(a: T, b: T) {
     return getOptionValue(a) === getOptionValue(b);
@@ -134,18 +154,7 @@
       isMenuOpen = false;
     }
   }
-
-  onMount(() => {
-    if (browser) {
-      window.document.addEventListener("click", handleClickOutside);
-    }
-  });
-
-  onDestroy(() => {
-    if (browser) {
-      document.removeEventListener("click", handleClickOutside);
-    }
-  });
+  // #endregion: --- Functions
 
   // q-field here, q-select in classes
   Q.classes("q-field", {

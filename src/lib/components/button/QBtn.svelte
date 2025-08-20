@@ -7,6 +7,9 @@
   import type { MaterialSymbol } from "material-symbols";
   import type { QBtnProps, QBtnVariantOptions } from "./props";
 
+  type QBtnMouseEvent = QEvent<MouseEvent, typeof qBtn>;
+
+  // #region:    --- Props
   let {
     disabled = false,
     variant,
@@ -31,12 +34,14 @@
     children,
     ...props
   }: QBtnProps = $props();
+  // #endregion: --- Props
 
+  // #region:    --- Non-reactive variables
   let qBtn: HTMLElement;
   let qBtnLabel: HTMLSpanElement;
+  // #endregion: --- Non-reactive variables
 
-  type QBtnMouseEvent = QEvent<MouseEvent, typeof qBtn>;
-
+  // #region:    --- Derived values
   const computedTag = $derived(to ? "a" : tag || "button");
   const qSize = $derived(useSize(size, "q-btn"));
 
@@ -78,7 +83,20 @@
   const colorVar = $derived(computedColor && `var(--${computedColor})`);
 
   const rippleColorVar = $derived(rippleColor ? `var(--${rippleColor}, ${rippleColor})` : colorVar);
+  // #endregion: --- Derived values
 
+  // #region:    --- Lifecycle
+  onMount(() => {
+    const { width, height } = qBtnLabel.getBoundingClientRect();
+
+    // This is required for buttons with no label and with a tooltip to be round
+    if (width === 0 && height === 0) {
+      qBtn.classList.add("q-btn--round");
+    }
+  });
+  // #endregion: --- Lifecycle
+
+  // #region:    --- Functions
   function stopIfDisabled(e: QBtnMouseEvent) {
     if (disabled) {
       e.preventDefault();
@@ -104,15 +122,7 @@
     const click = new MouseEvent("click", { relatedTarget: qBtn }) as QBtnMouseEvent;
     stopIfDisabled(click);
   }
-
-  onMount(() => {
-    const { width, height } = qBtnLabel.getBoundingClientRect();
-
-    // This is required for buttons with no label and with a tooltip to be round
-    if (width === 0 && height === 0) {
-      qBtn.classList.add("q-btn--round");
-    }
-  });
+  // #endregion: --- Functions
 
   Q.classes("q-btn", {
     bemClasses: {

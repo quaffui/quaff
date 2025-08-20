@@ -2,6 +2,7 @@
   import { useSize } from "$composables";
   import type { QSeparatorProps } from "./props";
 
+  // #region:    --- Props
   let {
     spacing = "none",
     inset = false,
@@ -12,9 +13,12 @@
     textAlign = vertical ? "middle" : "center",
     ...props
   }: QSeparatorProps = $props();
+  // #endregion: --- Props
 
+  // #region:    --- Derived values
   const orientation = $derived(vertical ? "vertical" : "horizontal");
   const qSize = $derived(useSize(spacing, "q-separator__spacing"));
+  // #endregion: --- Derived values
 
   Q.classes("q-separator", {
     bemClasses: {

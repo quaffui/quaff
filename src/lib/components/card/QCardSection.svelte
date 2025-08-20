@@ -1,7 +1,9 @@
 <script lang="ts">
   import type { QCardSectionProps } from "./props";
 
+  // #region:    --- Props
   let { horizontal = false, children, ...props }: QCardSectionProps = $props();
+  // #endregion: --- Props
 
   Q.classes("q-card__section", {
     bemClasses: {

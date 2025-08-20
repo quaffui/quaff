@@ -11,10 +11,10 @@
     "skipLibCheck": true,
     "sourceMap": true,
     "strict": true,
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "preserveValueImports": false,
     "verbatimModuleSyntax": false
   },
-  "exclude": ["./dist/**/*"],
+  "exclude": ["./dist/**/*", "./plugins/dist/**/*"],
   "include": ["./docgen/**/*", "./scripts/**/*", "./src/**/*", "./plugins/**/*"]
 }

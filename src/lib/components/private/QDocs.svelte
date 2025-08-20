@@ -1,19 +1,7 @@
-<script lang="ts">
-  import { setContext, type Snippet } from "svelte";
-  import { QCard, QCardSection, QTheme, Quaff } from "$lib";
-  import { QColors, QDocsCtxName, type QComponentDocs } from "$utils";
-  import QApi from "./QApi.svelte";
+<script lang="ts" module>
+  import { QContext } from "$lib/utils";
 
-  let {
-    children,
-    display,
-    pre,
-    usage,
-    snippets,
-    componentDocs,
-    docName,
-    docDescription,
-  }: {
+  interface Props {
     children?: Snippet;
     display?: Snippet;
     pre?: Snippet;
@@ -22,8 +10,27 @@
     componentDocs?: QComponentDocs | QComponentDocs[];
     docName?: string;
     docDescription?: string;
-  } = $props();
+  }
 
+  export const docsCtx = QContext<{ readonly snippets: Props["snippets"] }>("QDocs");
+</script>
+
+<script lang="ts">
+  import { QCard, QCardSection, QTheme, Quaff } from "$lib";
+  import { QColors, type QComponentDocs } from "$utils";
+  import QApi from "./QApi.svelte";
+  import type { Snippet } from "svelte";
+
+  // #region:    --- Props
+  let { children, display, pre, usage, snippets, componentDocs, docName, docDescription }: Props =
+    $props();
+  // #endregion: --- Props
+
+  // #region:    --- Non-reactive variables
+  let principalDocument = Array.isArray(componentDocs) ? componentDocs[0] : componentDocs;
+  // #endregion: --- Non-reactive variables
+
+  // #region:    --- Derived values
   const isDark = $derived(Quaff.darkMode.isActive);
 
   const hueRotate = $derived(
@@ -33,13 +40,12 @@
     )
   );
 
-  if (snippets) {
-    setContext(QDocsCtxName.snippets, () => snippets);
-  }
-
-  let principalDocument = Array.isArray(componentDocs) ? componentDocs[0] : componentDocs;
-
   const brightness = $derived(Quaff.darkMode.isActive ? 0.7 : 1.2);
+  // #endregion: --- Derived values
+
+  // #region:    --- Context
+  docsCtx.set({ snippets });
+  // #endregion: --- Context
 </script>
 
 <div

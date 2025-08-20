@@ -1,7 +1,9 @@
 <script lang="ts">
   import type { QToolbarTitleProps } from "./props";
 
+  // #region:    --- Props
   let { shrink = false, children, ...props }: QToolbarTitleProps = $props();
+  // #endregion: --- Props
 
   Q.classes("q-toolbar-title", {
     bemClasses: {

@@ -7,23 +7,39 @@
 
   type QChipMouseEvent = QEvent<MouseEvent, HTMLElement>;
 
+  // #region:    --- Props
   let {
     kind = "assist",
+    selected = $bindable(kind === "filter" ? false : undefined),
     label,
     icon,
     trailingIcon,
     disabled = false,
     elevated,
     noRipple = false,
-    selected = $bindable(kind === "filter" ? false : undefined),
     size = "sm",
     onTrailingIconClick,
     children,
     ...props
   }: QChipProps = $props();
+  // #endregion: --- Props
 
+  // #region:    --- Non-reactive variables
   let qChip: HTMLDivElement;
+  // #endregion: --- Non-reactive variables
 
+  // #region:    --- Derived values
+  const trailing = $derived(
+    (kind === "assist" || kind === "suggestion") && trailingIcon ? undefined : trailingIcon
+  );
+
+  const tabindex = disabled ? -1 : props.tabindex || 0;
+  const role = $derived(["assist", "filter"].includes(kind) ? "button" : undefined);
+
+  const avatar = $derived(extractImgSrc(icon));
+  // #endregion: --- Derived values
+
+  // #region:    --- Effects
   $effect.pre(() => {
     if (selected !== undefined && kind !== "filter") {
       throw new Error('Only QChips of kind "filter" can use the "selected" prop.');
@@ -35,16 +51,9 @@
       );
     }
   });
+  // #endregion: --- Effects
 
-  const trailing = $derived(
-    (kind === "assist" || kind === "suggestion") && trailingIcon ? undefined : trailingIcon
-  );
-
-  const tabindex = disabled ? -1 : props.tabindex || 0;
-  const role = $derived(["assist", "filter"].includes(kind) ? "button" : undefined);
-
-  const avatar = $derived(extractImgSrc(icon));
-
+  // #region:    --- Functions
   function stopIfDisabled(e: QChipMouseEvent, iconClick = false) {
     if (disabled) {
       e.preventDefault();
@@ -79,6 +88,7 @@
     const click = new MouseEvent("click", { relatedTarget: qChip }) as QChipMouseEvent;
     stopIfDisabled(click);
   }
+  // #endregion: --- Functions
 
   Q.classes("q-chip", {
     bemClasses: {

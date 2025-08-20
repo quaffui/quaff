@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { getContext, type Snippet } from "svelte";
   import { QBtn, QCodeBlock, QDialog } from "$lib";
-  import { QDocsCtxName } from "$utils";
+  import { docsCtx } from "./QDocs.svelte";
+  import type { Snippet } from "svelte";
 
   type QDocsSectionProps = {
     title: string;
@@ -10,16 +10,22 @@
     noCode?: boolean;
   };
 
+  // #region:    --- Props
   let { title, noCode = false, sectionDescription, children }: QDocsSectionProps = $props();
+  // #endregion: --- Props
 
-  const snippets = getContext<undefined | (() => Record<string, string>)>(QDocsCtxName.snippets);
-
-  const code = $derived(snippets && snippets()[title]);
-
+  // #region:    --- Reactive variables
   let dialog = $state(false);
+
+  const ctx = docsCtx.get();
+  // #endregion: --- Reactive variables
+
+  // #region:    --- Derived values
+  const code = $derived(ctx?.snippets?.[title]);
 
   // Create a kebab-case id from the title to be able to link to this section
   const id = $derived(title.toLowerCase().replaceAll(" ", "-"));
+  // #endregion: --- Derived values
 </script>
 
 <div {id} style="margin-bottom:48px">

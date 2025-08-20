@@ -2,6 +2,7 @@
   import { useSize } from "$composables";
   import type { QIconProps } from "./props";
 
+  // #region:    --- Props
   let {
     size = "md",
     name,
@@ -14,7 +15,9 @@
     children,
     ...props
   }: QIconProps = $props();
+  // #endregion: --- Props
 
+  // #region:    --- Derived values
   const qSize = $derived(useSize(size, "q-icon"));
 
   const parsedColor = $derived(color && `var(--${color.replace("#", "")}, ${color})`);
@@ -25,6 +28,7 @@
   });
 
   const typeClass = $derived(`q-icon--${type}`);
+  // #endregion: --- Derived values
 
   Q.classes("q-icon", {
     bemClasses: {

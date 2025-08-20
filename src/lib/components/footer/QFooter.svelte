@@ -1,14 +1,10 @@
 <script lang="ts">
-  import { getContext, onMount, untrack } from "svelte";
+  import { onMount } from "svelte";
   import { QScrollObserver } from "$lib";
-  import { QContext } from "$lib/classes/QContext.svelte";
-  import { QLayoutCtxName } from "$utils";
-  import type { QLayoutProps } from "$components/layout/props";
-  import type { AppbarContext } from "../layout/QLayout.svelte";
+  import { footerCtx } from "../layout/QLayout.svelte";
   import type { QFooterProps } from "./props";
 
-  let footerEl = $state<HTMLElement>();
-
+  // #region:    --- Props
   let {
     value = $bindable(true),
     bordered = false,
@@ -18,34 +14,46 @@
     children,
     ...props
   }: QFooterProps = $props();
+  // #endregion: --- Props
 
+  // #region:    --- Non-reactive variables
   const uid = $props.id();
+  // #endregion: --- Non-reactive variables
 
-  const footerContext = QContext.get<AppbarContext>(QLayoutCtxName.footer);
-  const layoutView = getContext<{ value: NonNullable<QLayoutProps["view"]> }>(QLayoutCtxName.view);
+  // #region:    --- Reactive variables
+  let footerEl = $state<HTMLElement>();
+  let contentScrollHeight = $state(0);
 
-  if (!footerContext || !layoutView) {
-    throw new Error("QFooter should be used inside QLayout");
-  }
+  const footerContext = footerCtx.assertGet("QFooter should be used inside QLayout");
+  // #endregion: --- Reactive variables
 
+  // #region:    --- Derived values
   const scroll = $derived(
     reveal ? new QScrollObserver(`.q-footer--${uid} ~ .q-layout__content`) : undefined
   );
-  let contentScrollHeight = $state(0);
 
   const offset = $derived(scroll ? scroll.position + height : undefined);
-  // Collapse the footer `${reavealOffset}px` above the bottom of layout content when scrolling up
+
+  // Collapse the footer `${revealOffset}px` above the bottom of layout content when scrolling up
   const collapsed = $derived(
     reveal && scroll?.direction === "up" && offset! + revealOffset < contentScrollHeight
   );
 
-  const leftOffset = () => layoutView.value.charAt(8) === "l";
-  const rightOffset = () => layoutView.value.charAt(10) === "r";
+  const leftOffset = $derived(footerContext.view.charAt(8) === "l");
+  const rightOffset = $derived(footerContext.view.charAt(10) === "r");
+  // #endregion: --- Derived values
 
+  // #region:    --- Effects
   $effect.pre(() => {
-    untrack(() => footerContext).updateEntries({ height, collapsed, ready: true });
+    footerCtx.updateEntries({
+      height,
+      collapsed,
+      ready: true,
+    });
   });
+  // #endregion: --- Effects
 
+  // #region:    --- Lifecycle
   onMount(() => {
     // Calculating the layout content's height
     const content = document.querySelector(`.q-footer--${uid} ~ .q-layout__content`);
@@ -59,17 +67,22 @@
     }, 100);
 
     return () => {
-      footerContext.updateEntries({ height: 0, collapsed: false, ready: false });
+      footerCtx.updateEntries({
+        height: 0,
+        collapsed: false,
+        ready: false,
+      });
     };
   });
+  // #endregion: --- Lifecycle
 
   Q.classes("q-footer", {
     bemClasses: {
       [uid]: true,
       collapsed,
       bordered,
-      "offset-left": leftOffset(),
-      "offset-right": rightOffset(),
+      "offset-left": leftOffset,
+      "offset-right": rightOffset,
     },
     classes: [props.class],
   });

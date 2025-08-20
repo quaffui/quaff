@@ -1,22 +1,16 @@
-/**
- * @template {string | undefined} [T=undefined]
- * @typedef {import("./types").Node<T>} Node
- */
+import type { Node as ESNode } from "estree-walker";
+import type { Node, Script, ClassesDefinition, ComponentName } from "./types.js";
+
+type Property = Node<"Property"> & { value: Node & Node<"Property">["value"] };
 
 /**
  * Grabs, if needed, the classes definitions in the script.
  *
  * Each definition is identified by its ID, which corresponds to the main class
  * of the element which will get those classes.
- *
- * @param {import("./types").Script} instance
- * @param {string} source
- * @param {string} namespace
- * @returns
  */
-export function prepareScript(instance, source, namespace) {
-  /** @type {Record<`q-${string}`, import("./types").ClassesDefinition>} */
-  const scriptDefs = {};
+export function prepareScript(instance: Script, source: string, namespace: string) {
+  const scriptDefs: Record<string, ClassesDefinition> = {};
 
   for (const node of instance.content.body) {
     if (node.type !== "ExpressionStatement") {
@@ -38,7 +32,7 @@ export function prepareScript(instance, source, namespace) {
 
     // We found an instance definition
     // We grab the start and end of the expression so we can remove it from the script
-    const { start, end } = /** @type {Node<"SimpleCallExpression">} */ (expression);
+    const { start, end } = expression as Node<"SimpleCallExpression">;
 
     if (expression.arguments.length !== 2) {
       throw new Error("The ${namespace}.classes function takes exactly 2 arguments");
@@ -62,26 +56,18 @@ export function prepareScript(instance, source, namespace) {
       );
     }
 
-    /**
-     * @typedef {Node<"Property"> & { value: Node & Node<"Property">["value"] }} Property
-     */
-
-    const bemClasses = /** @type {Property | undefined} */ (
-      options.properties.find(
-        (prop) =>
-          prop.type !== "SpreadElement" &&
-          prop.key.type === "Identifier" &&
-          prop.key.name === "bemClasses"
-      )
-    );
-    const classes = /** @type {Property | undefined} */ (
-      options.properties.find(
-        (prop) =>
-          prop.type !== "SpreadElement" &&
-          prop.key.type === "Identifier" &&
-          prop.key.name === "classes"
-      )
-    );
+    const bemClasses = options.properties.find(
+      (prop) =>
+        prop.type !== "SpreadElement" &&
+        prop.key.type === "Identifier" &&
+        prop.key.name === "bemClasses"
+    ) as Property | undefined;
+    const classes = options.properties.find(
+      (prop) =>
+        prop.type !== "SpreadElement" &&
+        prop.key.type === "Identifier" &&
+        prop.key.name === "classes"
+    ) as Property | undefined;
 
     const componentName = handleComponentName(component);
 
@@ -98,12 +84,7 @@ export function prepareScript(instance, source, namespace) {
   return scriptDefs;
 }
 
-/**
- *
- * @param {import("estree-walker").Node} component
- * @returns
- */
-function handleComponentName(component) {
+function handleComponentName(component: ESNode) {
   if (component.type !== "Literal") {
     throw new Error("The component name should be a literal.");
   }
@@ -117,16 +98,10 @@ function handleComponentName(component) {
     throw new Error('The component name should start with "q-"');
   }
 
-  return /** @type {import("./types").ComponentName} */ (componentName);
+  return componentName as ComponentName;
 }
 
-/**
- *
- * @param {Node | undefined} staticClasses
- * @param {string[]} classes
- * @param {string} source
- */
-function handleClasses(staticClasses, classes, source) {
+function handleClasses(staticClasses: Node | undefined, classes: string[], source: string) {
   if (!staticClasses) {
     return;
   }
@@ -135,9 +110,9 @@ function handleClasses(staticClasses, classes, source) {
     throw new Error("The static classes should be an array of values");
   }
 
-  for (const cls of /** @type {(Node & typeof staticClasses.elements[0])[]} */ (
-    staticClasses.elements
-  )) {
+  type StaticClass = Node & (typeof staticClasses.elements)[0];
+
+  for (const cls of staticClasses.elements as Node & StaticClass[]) {
     if (cls?.type === "Literal") {
       if (typeof cls.value !== "string") {
         throw new Error("The static class literals should be strings.");
@@ -180,8 +155,8 @@ function handleClasses(staticClasses, classes, source) {
     } else if (cls?.type === "LogicalExpression") {
       // Class like var1 || var2, var1 && "static-class", etc.
       // we push it as it is
-      const left = /** @type {Node<"Expression">} */ (cls.left);
-      const right = /** @type {Node<"Expression">} */ (cls.right);
+      const left = cls.left as Node<"Expression">;
+      const right = cls.right as Node<"Expression">;
 
       const expr = source.slice(left.start, right.end);
       classes.push(expr);
@@ -189,14 +164,12 @@ function handleClasses(staticClasses, classes, source) {
   }
 }
 
-/**
- *
- * @param {Node | undefined} dynamicClasses
- * @param {string[]} classes
- * @param {import("./types").ComponentName} componentName
- * @param {string} source
- */
-function handleBemClasses(dynamicClasses, classes, componentName, source) {
+function handleBemClasses(
+  dynamicClasses: Node | undefined,
+  classes: string[],
+  componentName: ComponentName,
+  source: string
+) {
   if (!dynamicClasses) {
     return;
   }
@@ -210,20 +183,20 @@ function handleBemClasses(dynamicClasses, classes, componentName, source) {
       throw new Error("The dynamic classes can't be spread.");
     }
 
-    const { key, value } =
-      /** @type {Node<"Property"> & { key: Node & Node<"Property">["key"] } & { value: Node & Node<"Property">["value"] }} */ (
-        prop
-      );
+    const { key, value } = prop as Node<"Property"> & {
+      key: Node & Node<"Property">["key"];
+      value: Node & Node<"Property">["value"];
+    };
     const val = source.slice(value.start, value.end);
 
     /**
      * Prefixes the class with the component name
      *
-     * @param {string} suffix the class name
-     * @param {boolean} [computed = false] wether the property is computed or not
-     * @returns {string} the class name prefixed with the component name
+     * @param suffix the class name
+     * @param computed wether the property is computed or not
+     * @returns the class name prefixed with the component name
      */
-    const bem = (suffix, computed) =>
+    const bem = (suffix: string, computed = false) =>
       computed ? `\`${componentName}--$\{${suffix}}\`` : `"${componentName}--${suffix}"`;
 
     if (key.type === "Identifier") {
@@ -241,12 +214,7 @@ function handleBemClasses(dynamicClasses, classes, componentName, source) {
   }
 }
 
-/**
- *
- * @param {import("estree-walker").Node & { type: "MemberExpression" }} node
- * @returns {string}
- */
-function handleMemberExpression(node) {
+function handleMemberExpression(node: ESNode & { type: "MemberExpression" }): string {
   const { object, property } = node;
 
   if (property.type !== "Identifier") {
