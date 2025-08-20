@@ -20,7 +20,7 @@ export function prepareMarkup(
       continue;
     } else if (node.type === "AwaitBlock") {
       for (const awaitKey of ["pending", "then", "catch"] as const) {
-        let frag = node[awaitKey];
+        const frag = node[awaitKey];
         if (frag) {
           prepareMarkup(frag, component, uses, namespace);
         }

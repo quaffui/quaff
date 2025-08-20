@@ -8,7 +8,7 @@ const NAMESPACE = "Q";
 const config = {
   // Consult https://kit.svelte.dev/docs/integrations#preprocessors
   // for more information about preprocessors
-  preprocess: [preprocessContext(NAMESPACE), vitePreprocess(), preprocessClasses(NAMESPACE)],
+  preprocess: [preprocessContext(), vitePreprocess(), preprocessClasses(NAMESPACE)],
 
   experimental: {
     useVitePreprocess: true,

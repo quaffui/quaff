@@ -9,11 +9,7 @@ type Property = Node<"Property"> & { value: Node & Node<"Property">["value"] };
  * Each definition is identified by its ID, which corresponds to the main class
  * of the element which will get those classes.
  */
-export function prepareScript<T extends string | undefined = undefined>(
-  instance: Script,
-  source: string,
-  namespace: string
-) {
+export function prepareScript(instance: Script, source: string, namespace: string) {
   const scriptDefs: Record<string, ClassesDefinition> = {};
 
   for (const node of instance.content.body) {

@@ -35,6 +35,7 @@ export default [
       "yarn.lock",
       ".DS_Store",
       "vite.config.ts*",
+      "plugins/**/dist/*",
     ],
   },
   // configs to extend

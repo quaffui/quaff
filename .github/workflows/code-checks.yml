@@ -18,6 +18,9 @@ jobs:
       - name: Prep
         run: bun install --frozen-lockfile && bun run write-version && bun run docgen-props && bun run docgen-snippets
 
+      - name: Run plugins generation
+        run: bun run gen:plugins
+
       - name: Run Type Check
         run: bun run check
 
