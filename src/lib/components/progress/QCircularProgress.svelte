@@ -10,11 +10,7 @@
     rounded?: boolean;
   };
 
-  const radius = 50,
-    diameter = 2 * radius,
-    circumference = diameter * Math.PI,
-    strokeDashArray = Math.round(circumference * 1000) / 1000;
-
+  // #region:    --- Props
   let {
     value = $bindable(0),
     indeterminate = false,
@@ -33,7 +29,19 @@
     children = fallback,
     ...props
   }: QCircularProgressProps = $props();
+  // #endregion: --- Props
 
+  // #region:    --- Non-reactive variables
+  const radius = 50;
+
+  const diameter = 2 * radius;
+
+  const circumference = diameter * Math.PI;
+
+  const strokeDashArray = Math.round(circumference * 1000) / 1000;
+  // #endregion: --- Non-reactive variables
+
+  // #region:    --- Derived values
   const qSize = $derived(useSize(size, "q-circular-progress"));
 
   const parsedColor = $derived(color.includes("#") ? color : `var(--${color}, ${color})`);
@@ -64,6 +72,7 @@
 
     return circumference * dashRatio + dashGap;
   });
+  // #endregion: --- Derived values
 
   Q.classes("q-circular-progress", {
     bemClasses: {

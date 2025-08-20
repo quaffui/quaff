@@ -1,17 +1,21 @@
 <script module lang="ts">
-  export type QTabEl = HTMLAnchorElement | HTMLButtonElement;
-  export type QTabsElementsContext = {
-    previous: QTabEl | null;
-    active: QTabEl | null;
-  };
+  import { QContext } from "$lib/utils";
+  import type { QTabsProps } from "./props";
+
+  interface QTabsContext {
+    readonly variant: QTabsProps["variant"];
+    value: QTabsProps["value"];
+    request: string | null;
+  }
+
+  export const tabsCtx = QContext<QTabsContext>("QTabs");
 </script>
 
 <script lang="ts">
-  import { setContext, untrack } from "svelte";
-  import { QContext } from "$lib/classes/QContext.svelte";
-  import { QTabsCtxName, shouldReduceMotion } from "$utils";
-  import type { QTabsProps } from "./props";
+  import { untrack } from "svelte";
+  import { shouldReduceMotion } from "$utils";
 
+  // #region:    --- Props
   let {
     value = $bindable(),
     variant = "primary",
@@ -19,22 +23,27 @@
     children,
     ...props
   }: QTabsProps = $props();
+  // #endregion: --- Props
 
+  // #region:    --- Non-reactive variables
   let qTabs: HTMLElement;
   let tabList: HTMLElement[];
+  // #endregion: --- Non-reactive variables
 
-  const valueContext = new QContext<string | undefined | null>(QTabsCtxName.value, value);
-  const requestContext = new QContext<string | null>(QTabsCtxName.request, null);
+  // #region:    --- Reactive variables
+  let request = $state<string | null>(null);
+  // #endregion: --- Reactive variables
 
-  // Set the variant context
-  setContext(QTabsCtxName.variant, variant);
+  // #region:    --- Context
+  tabsCtx.set({ value, variant, request });
+  // #endregion: --- Context
 
+  // #region:    --- Effects
   $effect(() => {
     tabList = Array.from(qTabs.querySelectorAll(".q-tab"));
   });
 
-  // Update the context when "value" changes
-  $effect(() => {
+  $effect.pre(() => {
     if (!value) {
       return;
     }
@@ -42,15 +51,11 @@
     untrack(() => {
       const newTab = getResquetingTab(value!);
       animateIndicator(newTab);
-
-      valueContext.update(value);
     });
   });
 
   // Try to update "value" when context changes from a QTab
   $effect(() => {
-    const request = requestContext.value;
-
     if (!request) {
       return;
     }
@@ -59,6 +64,7 @@
       new Event("change", { bubbles: true, cancelable: true })
     );
     const requester = getResquetingTab(request);
+
     if (defaultPrevented || !requester) {
       return;
     }
@@ -67,13 +73,15 @@
       value = request;
     });
   });
+  // #endregion: --- Effects
 
+  // #region:    --- Functions
   function getResquetingTab(requestingTabName: string) {
-    return tabList.find((tab) => tab.getAttribute("aria-label") === requestingTabName) ?? null;
+    return tabList?.find((tab) => tab.getAttribute("aria-label") === requestingTabName) ?? null;
   }
 
   function getActiveTab() {
-    return tabList.find((tab) => tab.getAttribute("aria-current") === "true") ?? null;
+    return tabList?.find((tab) => tab.getAttribute("aria-current") === "true") ?? null;
   }
 
   function animateIndicator(newTab: HTMLElement | null) {
@@ -132,6 +140,7 @@
     // that can hide the animation.
     return [keyframe, { transform: "none" }];
   }
+  // #endregion: --- Functions
 
   Q.classes("q-tabs", {
     bemClasses: {

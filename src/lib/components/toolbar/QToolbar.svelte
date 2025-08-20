@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { QToolbarProps } from "./props";
 
+  // #region:    --- Props
   let {
     inset = false,
     border = false,
@@ -9,6 +10,7 @@
     children,
     ...props
   }: QToolbarProps = $props();
+  // #endregion: --- Props
 
   Q.classes("q-toolbar", {
     bemClasses: {

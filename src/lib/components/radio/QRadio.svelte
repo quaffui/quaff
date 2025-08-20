@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { QRadioProps } from "./props";
 
+  // #region:    --- Props
   let {
     value = "",
     label = "",
@@ -8,6 +9,7 @@
     disable = false,
     ...props
   }: QRadioProps = $props();
+  // #endregion: --- Props
 
   Q.classes("q-radio", {
     bemClasses: {

@@ -1,14 +1,11 @@
 <script lang="ts">
-  import { getContext, onMount, untrack } from "svelte";
+  import { onMount, untrack } from "svelte";
   import { on } from "svelte/events";
   import { navigating } from "$app/state";
   import { useSize } from "$composables";
-  import { QContext } from "$lib/classes/QContext.svelte";
-  import { QLayoutCtxName } from "$utils";
-  import type { QLayoutProps } from "$components/layout/props";
-  import type { DrawerContext } from "../layout/QLayout.svelte";
-  import type { QDrawerProps } from "./props";
+  import { leftDrawerCtx, rightDrawerCtx } from "../layout/QLayout.svelte";
 
+  // #region:    --- Props
   let {
     value = $bindable(false),
     side = "left",
@@ -21,7 +18,10 @@
     children,
     ...props
   }: QDrawerProps = $props();
+  // #endregion: --- Props
+  import type { QDrawerProps } from "./props";
 
+  // #region:    --- Non-reactive variables
   const PEEK_THRESHOLD = 30; // How far the drawer peeks out when cursor is near the edge
   const TRANSITION = "top 0.3s, bottom 0.3s, transform 0.3s";
 
@@ -30,16 +30,20 @@
   let unlistenPointermove: () => void;
   let unlistenPointerup: () => void;
   let unlistenPointercancel: () => void;
+  // #endregion: --- Non-reactive variables
 
+  // #region:    --- Reactive variables
   let drawerEl = $state<HTMLDivElement>();
   let swipeAreaEl = $state<HTMLDivElement>();
 
   let isSwiping = $state(false);
   let startX = $state(0);
   let dragOffset = $state(0);
+  // #endregion: --- Reactive variables
 
-  const drawerContext = QContext.get<DrawerContext>(QLayoutCtxName.drawer[side]);
-  const layoutView = getContext<{ value: NonNullable<QLayoutProps["view"]> }>(QLayoutCtxName.view);
+  // #region:    --- Derived values
+  const drawerCtxToUse = $derived(side === "left" ? leftDrawerCtx : rightDrawerCtx);
+  const drawerContext = $derived(drawerCtxToUse.get());
 
   const canHideOnClickOutside = $derived((value && !persistent) || overlay);
 
@@ -47,31 +51,23 @@
 
   const offsetTop = $derived.by(() => {
     const charPos = side === "left" ? 0 : 2;
-    return layoutView?.value.charAt(charPos) === "h";
+    return drawerContext?.view.charAt(charPos) === "h";
   });
   const offsetBottom = $derived.by(() => {
     const charPos = side === "left" ? 8 : 10;
-    return layoutView?.value.charAt(charPos) === "f";
+    return drawerContext?.view.charAt(charPos) === "f";
   });
 
-  export const show = (e?: MouseEvent) => {
-    if (!value) {
-      value = true;
-      e?.stopPropagation();
-    }
-  };
+  const widthStyle = $derived(!drawerContext ? useSize(width).style : null);
 
-  export const hide = () => {
-    if (value) {
-      value = false;
-    }
-  };
+  const drawerWidthStyle = $derived(
+    widthStyle === null ? "" : `--${side}-drawer-width: ${widthStyle};`
+  );
 
-  export const toggle = (e?: MouseEvent) => {
-    value = !value;
-    e?.stopPropagation();
-  };
+  const style = $derived(`${drawerWidthStyle}${props.style ?? ""}`);
+  // #endregion: --- Derived values
 
+  // #region:    --- Lifecycle
   onMount(() => {
     setTimeout(() => {
       drawerEl?.style.setProperty("transition", TRANSITION);
@@ -89,14 +85,16 @@
         resetBodyStyles();
       }
 
-      drawerContext?.updateEntries({
-        width: 0,
+      drawerCtxToUse.updateEntries({
         takesSpace: false,
+        width: 0,
         ready: false,
       });
     };
   });
+  // #endregion: --- Lifecycle
 
+  // #region:    --- Effects
   $effect(() => {
     if (navigating.type && hideOnRouteChange) {
       hide();
@@ -129,35 +127,37 @@
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     [value, overlay, width];
 
-    untrack(() =>
-      drawerContext?.updateEntries({
+    untrack(() => {
+      drawerCtxToUse.updateEntries({
         takesSpace: !!value && !overlay,
         width,
         ready: true,
-      })
-    );
+      });
+    });
   });
+  // #endregion: --- Effects
 
-  Q.classes("q-drawer", {
-    bemClasses: {
-      [side]: true,
-      active: value,
-      overlay,
-      bordered,
-      "offset-top": offsetTop,
-      "offset-bottom": offsetBottom,
-    },
-    classes: [props.class],
-  });
+  // #region:    --- Methods
+  export const show = (e?: MouseEvent) => {
+    if (!value) {
+      value = true;
+      e?.stopPropagation();
+    }
+  };
 
-  const widthStyle = $derived(!drawerContext ? useSize(width).style : null);
+  export const hide = () => {
+    if (value) {
+      value = false;
+    }
+  };
 
-  const drawerWidthStyle = $derived(
-    widthStyle === null ? "" : `--${side}-drawer-width: ${widthStyle};`
-  );
+  export const toggle = (e?: MouseEvent) => {
+    value = !value;
+    e?.stopPropagation();
+  };
+  // #endregion: --- Methods
 
-  const style = $derived(`${drawerWidthStyle}${props.style ?? ""}`);
-
+  // #region:    --- Functions
   function tryClose(e: MouseEvent) {
     const isTargetDrawer = e.target === drawerEl;
     const isTargetInsideDrawer = drawerEl?.contains(e.target as Node);
@@ -303,6 +303,19 @@
     document.body.style.removeProperty("cursor");
     document.body.style.removeProperty("user-select");
   }
+  // #endregion: --- Functions
+
+  Q.classes("q-drawer", {
+    bemClasses: {
+      [side]: true,
+      active: value,
+      overlay,
+      bordered,
+      "offset-top": offsetTop,
+      "offset-bottom": offsetBottom,
+    },
+    classes: [props.class],
+  });
 </script>
 
 <div bind:this={drawerEl} {...props} class="q-drawer" {style} data-quaff>

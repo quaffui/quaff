@@ -4,6 +4,8 @@ import { format } from "prettier";
 import { prepareScript } from "./script.js";
 import { prepareMarkup } from "./markup.js";
 import { changeSource } from "./source.js";
+import type { PreprocessorGroup } from "svelte/compiler";
+import type { ComponentName, ClassesUsage } from "./types.js";
 
 /**
  * Preprocessor to ease the writing of classes following the BEM principle.
@@ -18,11 +20,10 @@ import { changeSource } from "./source.js";
  * }, ["static-class", staticClassButFromVar, () => avoidSvelteWarningForDerivedVars])
  * ```
  *
- * @param { string } namespace The global namespace to recognise the function `${namespace}.classes()`
+ * @param namespace The global namespace to recognise the function `${namespace}.classes()`
  *
- * @returns { import("svelte/types/compiler/preprocess").PreprocessorGroup }
  */
-export function preprocessClasses(namespace) {
+export function preprocessClasses(namespace: string): PreprocessorGroup {
   return {
     name: "quaff-classes-preprocessor",
     async markup({ content, filename }) {
@@ -42,13 +43,10 @@ export function preprocessClasses(namespace) {
 
       const scriptDefs = prepareScript(instance, content, namespace);
 
-      /** @type {import("./types").ComponentName} */
-      let component;
-      for (component in scriptDefs) {
+      for (const component in scriptDefs) {
         const def = scriptDefs[component];
-        /** @type {import("./types").ClassesUsage[]} */
-        const uses = [];
-        prepareMarkup(fragment, component, uses, namespace);
+        const uses: ClassesUsage[] = [];
+        prepareMarkup(fragment, component as ComponentName, uses, namespace);
 
         const result = { def, uses };
 

@@ -1,12 +1,14 @@
 import adapter from "@sveltejs/adapter-static";
 import { vitePreprocess } from "@sveltejs/vite-plugin-svelte";
-import { preprocessClasses } from "./plugins/class-preprocessor/index.js";
+import { preprocessClasses, preprocessContext } from "./plugins/dist/index.js";
+
+const NAMESPACE = "Q";
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
   // Consult https://kit.svelte.dev/docs/integrations#preprocessors
   // for more information about preprocessors
-  preprocess: [vitePreprocess(), preprocessClasses("Q")],
+  preprocess: [preprocessContext(), vitePreprocess(), preprocessClasses(NAMESPACE)],
 
   experimental: {
     useVitePreprocess: true,

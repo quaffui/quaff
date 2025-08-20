@@ -6,6 +6,7 @@
 
   type QSwitchEvent<T> = QEvent<T, HTMLDivElement>;
 
+  // #region:    --- Props
   let {
     value = $bindable(),
     label = undefined,
@@ -17,10 +18,14 @@
     uncheckedIcon,
     ...props
   }: QSwitchProps = $props();
+  // #endregion: --- Props
 
+  // #region:    --- Non-reactive variables
   let qSwitch: HTMLDivElement;
   let qSwitchInput: HTMLInputElement;
+  // #endregion: --- Non-reactive variables
 
+  // #region:    --- Functions
   function toggle() {
     value = !value;
 
@@ -53,6 +58,7 @@
     event.preventDefault();
     qSwitch.click();
   }
+  // #endregion: --- Functions
 
   Q.classes("q-switch", {
     bemClasses: {

@@ -1,7 +1,5 @@
 <script lang="ts">
-  import { getContext, hasContext } from "svelte";
   import { QIcon } from "$lib";
-  import { QContext } from "$lib/classes/QContext.svelte";
   import { ripple } from "$helpers";
   import {
     getClosestFocusableBlock,
@@ -11,32 +9,34 @@
     isArrowKey,
     isRouteActive,
     isTabKey,
-    QTabsCtxName,
     type Direction,
     type QEvent,
   } from "$utils";
+  import { tabsCtx } from "./QTabs.svelte";
+  import type { QTabProps } from "./props";
 
-  import type { QTabEl } from "./QTabs.svelte";
-  import type { QTabProps, QTabsVariants } from "./props";
-
+  type QTabEl = HTMLAnchorElement | HTMLButtonElement;
   type QTabEvent<T> = QEvent<T, QTabEl>;
 
+  // #region:    --- Props
   let { name, to, icon, children, ...props }: QTabProps = $props();
+  // #endregion: --- Props
 
+  // #region:    --- Non-reactive variables
   let qTab: QTabEl;
+  // #endregion: --- Non-reactive variables
 
+  // #region:    --- Reactive variables
+  const ctx = tabsCtx.assertGet("QTab should be use inside QTabs.");
+  // #endregion: --- Reactive variables
+
+  // #region:    --- Derived values
   const tag = $derived(to ? "a" : "button");
 
-  if (!hasContext(QTabsCtxName.value)) {
-    console.warn("QTab should be use inside QTabs.");
-  }
+  const isActive = $derived(to ? isRouteActive(to) : name === ctx.value);
+  // #endregion: --- Derived values
 
-  const qTabsRequestCtx = QContext.get<string | null>(QTabsCtxName.request)!;
-
-  const qTabsValueCtx = QContext.get<string | undefined | null>(QTabsCtxName.value)!;
-  const variant = getContext<QTabsVariants>(QTabsCtxName.variant);
-  const isActive = $derived(to ? isRouteActive(to) : name === qTabsValueCtx.value);
-
+  // #region:    --- Functions
   function onclick(e: QTabEvent<MouseEvent>) {
     props.onclick?.(e);
 
@@ -44,7 +44,7 @@
       return;
     }
 
-    qTabsRequestCtx.update(name);
+    ctx.request = name;
   }
 
   function onkeydown(e: QTabEvent<KeyboardEvent>) {
@@ -77,6 +77,7 @@
       targetBlock?.focus();
     }
   }
+  // #endregion: --- Functions
 
   Q.classes("q-tab", {
     bemClasses: {
@@ -111,12 +112,12 @@
       <span>{@render children?.()}</span>
     {/if}
 
-    {#if variant === "primary"}
+    {#if ctx.variant === "primary"}
       <div class="q-tab__indicator"></div>
     {/if}
   </div>
 
-  {#if variant !== "primary"}
+  {#if ctx.variant !== "primary"}
     <div class="q-tab__indicator"></div>
   {/if}
 </svelte:element>

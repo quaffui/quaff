@@ -2,6 +2,7 @@
   import { useSize } from "$composables";
   import type { QAvatarProps } from "./props";
 
+  // #region:    --- Props
   let {
     alt,
     shape = "circle",
@@ -13,9 +14,12 @@
     videoAccessibility,
     ...props
   }: QAvatarProps = $props();
+  // #endregion: --- Props
 
+  // #region:    --- Derived values
   const qSize = $derived(useSize(size, "q-avatar"));
   const qShape = $derived(`q-avatar--${shape}`);
+  // #endregion: --- Derived values
 
   Q.classes("q-avatar", {
     classes: [qShape, qSize.class, props.class],

@@ -1,6 +1,5 @@
 <script lang="ts">
-  import { QContext } from "$lib/classes/QContext.svelte";
-  import type { Snippet } from "svelte";
+  import { setContext, type Snippet } from "svelte";
 
   let {
     keys,
@@ -11,7 +10,7 @@
   } = $props();
 
   const keysArr = Array.isArray(keys) ? keys : [keys];
-  keysArr.forEach((key) => QContext.reset(key));
+  keysArr.forEach((key) => setContext(key, undefined));
 </script>
 
 {@render children?.()}

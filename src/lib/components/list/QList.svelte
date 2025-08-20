@@ -1,8 +1,17 @@
-<script lang="ts">
-  import { setContext } from "svelte";
-  import { QListCtxName } from "$utils";
+<script lang="ts" module>
+  import { QContext } from "$lib/utils";
   import type { QListProps } from "./props";
 
+  interface QListContext {
+    readonly activeClass: string | undefined;
+    readonly separatorOptions: QListProps["separatorOptions"];
+  }
+
+  export const listCtx = QContext<QListContext>("QList");
+</script>
+
+<script lang="ts">
+  // #region:    --- Props
   let {
     bordered = false,
     roundedBorders = false,
@@ -15,15 +24,24 @@
     children,
     ...props
   }: QListProps = $props();
+  // #endregion: --- Props
 
-  setContext(QListCtxName.activeClass, () => activeClass);
-  setContext(QListCtxName.separator, separator ? separatorOptions : undefined);
-
+  // #region:    --- Non-reactive variables
   let listEl: HTMLElement;
+  // #endregion: --- Non-reactive variables
 
+  // #region:    --- Context
+  listCtx.set({
+    activeClass,
+    separatorOptions: separator ? separatorOptions : undefined,
+  });
+  // #endregion: --- Context
+
+  // #region:    --- Effects
   $effect(() => {
     listEl.querySelector(".q-separator__wrapper:first-child")?.remove();
   });
+  // #endregion: --- Effects
 
   Q.classes("q-list", {
     bemClasses: {

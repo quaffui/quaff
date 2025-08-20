@@ -2,10 +2,7 @@
   import { useSize } from "$composables";
   import type { QLinearProgressProps } from "./props";
 
-  function width(val: number, reverse: boolean) {
-    return reverse ? `translateX(100%) scale3d(-${val}, 1, 1)` : `scale3d(${val}, 1, 1)`;
-  }
-
+  // #region:    --- Props
   let {
     value = $bindable(0),
     buffer,
@@ -19,7 +16,9 @@
     indeterminate = false,
     ...props
   }: QLinearProgressProps = $props();
+  // #endregion: --- Props
 
+  // #region:    --- Derived values
   const normalized = $derived(value > 1 ? value / 100 : value);
   const normalizedBuffer = $derived(buffer && buffer > 1 ? buffer / 100 : buffer);
 
@@ -37,6 +36,13 @@
   );
   const trackTransform = $derived(width(normalizedBuffer ?? 1, reverse));
   const indicatorTransform = $derived(width(+indeterminate || normalized, reverse));
+  // #endregion: --- Derived values
+
+  // #region:    --- Functions
+  function width(val: number, reverse: boolean) {
+    return reverse ? `translateX(100%) scale3d(-${val}, 1, 1)` : `scale3d(${val}, 1, 1)`;
+  }
+  // #endregion: --- Functions
 
   Q.classes("q-linear-progress", {
     classes: [props.class],
