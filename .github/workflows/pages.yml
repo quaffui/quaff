@@ -19,6 +19,9 @@ jobs:
       - name: Install Dependencies
         run: bun install --frozen-lockfile
 
+      - name: Generate Plugins
+        run: bun run gen:plugins
+
       - name: Build SvelteKit docs
         run: bun run build:docs
         env:
