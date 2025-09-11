@@ -60,22 +60,22 @@
     ready: false,
   });
   const leftRailbarInfo = $state({
-    width: 88,
+    width: 0,
     takesSpace: false,
     ready: false,
   });
   const rightRailbarInfo = $state({
-    width: 88,
+    width: 0,
     takesSpace: false,
     ready: false,
   });
   const leftDrawerInfo = $state({
-    width: 300,
+    width: 0,
     takesSpace: false,
     ready: false,
   });
   const rightDrawerInfo = $state({
-    width: 300,
+    width: 0,
     takesSpace: false,
     ready: false,
   });
