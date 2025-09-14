@@ -25,4 +25,5 @@ jobs:
         run: |
           echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > .npmrc
           bun install --frozen-lockfile
+          bun gen:plugins
           bun publish --access public
