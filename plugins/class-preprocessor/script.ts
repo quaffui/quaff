@@ -1,3 +1,4 @@
+import { MemberExpression } from "estree";
 import type { Node as ESNode } from "estree-walker";
 import type { Node, Script, ClassesDefinition, ComponentName } from "./types.js";
 
@@ -214,7 +215,7 @@ function handleBemClasses(
   }
 }
 
-function handleMemberExpression(node: ESNode & { type: "MemberExpression" }): string {
+function handleMemberExpression(node: MemberExpression): string {
   const { object, property } = node;
 
   if (property.type !== "Identifier") {
