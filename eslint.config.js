@@ -105,6 +105,7 @@ export default [
       "svelte/html-self-closing": ["error", "default"],
       "svelte/valid-compile": ["error", { ignoreWarnings: true }],
       "svelte/no-at-html-tags": ["warn"],
+      "svelte/no-navigation-without-resolve": ["warn"],
       "@typescript-eslint/no-unused-expressions": [
         "error",
         {
