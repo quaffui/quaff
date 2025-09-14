@@ -9,12 +9,12 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Install Bun
         uses: oven-sh/setup-bun@v2
         with:
-          bun-version: 1.2.19
+          bun-version: 1.2.22
 
       - name: Install Dependencies
         run: bun install --frozen-lockfile
@@ -28,7 +28,7 @@ jobs:
           BUILD_DOCS: "true"
 
       - name: Upload Artifacts
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         with:
           path: "build/"
 
