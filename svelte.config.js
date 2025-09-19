@@ -10,10 +10,6 @@ const config = {
   // for more information about preprocessors
   preprocess: [preprocessContext(), vitePreprocess(), preprocessClasses(NAMESPACE)],
 
-  experimental: {
-    useVitePreprocess: true,
-  },
-
   kit: {
     adapter: adapter({
       pages: "build",
