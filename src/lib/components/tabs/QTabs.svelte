@@ -60,24 +60,28 @@
       return;
     }
 
-    tick().then(() => {
-      const defaultPrevented = !dispatchEvent(
-        new Event("change", { bubbles: true, cancelable: true })
-      );
-      const requester = getResquetingTab(request);
-
-      if (defaultPrevented || !requester) {
-        return;
-      }
-
-      untrack(() => {
-        value = request;
-      });
-    });
+    updateValue(request);
   });
   // #endregion: --- Effects
 
   // #region:    --- Functions
+  async function updateValue(req: string) {
+    await tick();
+
+    const defaultPrevented = !dispatchEvent(
+      new Event("change", { bubbles: true, cancelable: true })
+    );
+    const requester = getResquetingTab(req);
+
+    if (defaultPrevented || !requester) {
+      return;
+    }
+
+    untrack(() => {
+      value = req;
+    });
+  }
+
   function getResquetingTab(requestingTabName: string) {
     return tabList?.find((tab) => tab.getAttribute("aria-label") === requestingTabName) ?? null;
   }
