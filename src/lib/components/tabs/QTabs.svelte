@@ -12,7 +12,7 @@
 </script>
 
 <script lang="ts">
-  import { untrack } from "svelte";
+  import { tick, untrack } from "svelte";
   import { shouldReduceMotion } from "$utils";
 
   // #region:    --- Props
@@ -60,17 +60,19 @@
       return;
     }
 
-    const defaultPrevented = !dispatchEvent(
-      new Event("change", { bubbles: true, cancelable: true })
-    );
-    const requester = getResquetingTab(request);
+    tick().then(() => {
+      const defaultPrevented = !dispatchEvent(
+        new Event("change", { bubbles: true, cancelable: true })
+      );
+      const requester = getResquetingTab(request);
 
-    if (defaultPrevented || !requester) {
-      return;
-    }
+      if (defaultPrevented || !requester) {
+        return;
+      }
 
-    untrack(() => {
-      value = request;
+      untrack(() => {
+        value = request;
+      });
     });
   });
   // #endregion: --- Effects
@@ -130,6 +132,7 @@
 
     if (!reduceMotion && fromPos !== undefined && toPos !== undefined && !isNaN(scale)) {
       const translateAnimation = (fromPos - toPos).toFixed(4);
+
       const scaleAnimation = scale.toFixed(4);
       keyframe.transform = `translate${axis}(${translateAnimation}px) scale${axis}(${scaleAnimation})`;
     } else {
