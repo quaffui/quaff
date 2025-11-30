@@ -21,6 +21,7 @@
     label = undefined,
     outlined = false,
     rounded = false,
+    type= undefined,
     before = undefined,
     prepend = undefined,
     append = undefined,
@@ -91,6 +92,7 @@
         class="q-field__input"
         bind:value
         placeholder=""
+        type={type}
         onfocus={onFocus}
         onblur={onBlur}
         disabled={disable}
