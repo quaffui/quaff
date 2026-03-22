@@ -19,6 +19,8 @@
     cursor: pointer;
     user-select: none;
 
+    isolation: isolate;
+
     @include mixins.typography(label-large);
 
     &::before {

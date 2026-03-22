@@ -46,6 +46,8 @@ $check-map: (
 
     outline: none;
 
+    isolation: isolate;
+
     &--reversed {
       flex-direction: row-reverse;
     }
