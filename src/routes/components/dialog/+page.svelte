@@ -128,8 +128,8 @@
       <QDocsSection title="Dialog Positioning">
         {#snippet sectionDescription()}
           Dialogs can be positioned at different locations on the screen using the
-          <code>position</code> prop. Available positions are: default (center), top, right, bottom,
-          and left. Avoid repositioning the dialog at the same time as opening it. This will cause animation
+          <code>position</code> prop. Available positions are: default (center), top, right, bottom, and
+          left. Avoid repositioning the dialog at the same time as opening it. This will cause animation
           issues as the dialog doesn't have time to reposition before being visible.
         {/snippet}
 

@@ -187,7 +187,7 @@
       return;
     }
 
-    let swipeAllowed = false;
+    let swipeAllowed;
     startX = e.clientX;
 
     if (!value) {

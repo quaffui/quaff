@@ -136,8 +136,8 @@
           </li>
         </ul>
         <p>
-          The observer also has a <code>destroy</code> method that can be used to stop observing the
-          target element and clean up the observer.
+          The observer also has a <code>destroy</code> method that can be used to stop observing the target
+          element and clean up the observer.
         </p>
       {/snippet}
     </QDocsSection>
