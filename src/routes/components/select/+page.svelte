@@ -77,8 +77,7 @@
         {#snippet sectionDescription()}
           QSelect accepts options as an array of strings or as objects with <code>label</code> and
           <code>value</code>
-          properties. Using objects allows you to display a friendly label while storing a different
-          value.
+          properties. Using objects allows you to display a friendly label while storing a different value.
         {/snippet}
 
         <div class="flex column q-gap-md">
@@ -132,8 +131,8 @@
 
       <QDocsSection title="Multiple Selection">
         {#snippet sectionDescription()}
-          Enable multiple selection with the <code>multiple</code> prop. This allows users to select
-          more than one option from the dropdown menu.
+          Enable multiple selection with the <code>multiple</code> prop. This allows users to select more
+          than one option from the dropdown menu.
         {/snippet}
 
         <div class="q-ma-sm" style="max-width: 300px;">
@@ -192,8 +191,8 @@
 
       <QDocsSection title="Dense Layout">
         {#snippet sectionDescription()}
-          The <code>dense</code> prop makes the select component more compact, useful for forms with
-          space constraints or for when you need to display multiple selects in a limited space.
+          The <code>dense</code> prop makes the select component more compact, useful for forms with space
+          constraints or for when you need to display multiple selects in a limited space.
         {/snippet}
 
         <div class="row q-gap-md">
@@ -233,8 +232,7 @@
           QSelect provides built-in support for validation states and helper text. Use the <code>
             error
           </code>
-          prop to indicate validation errors and <code>hint</code> to provide additional guidance to
-          users.
+          prop to indicate validation errors and <code>hint</code> to provide additional guidance to users.
         {/snippet}
 
         <div class="flex flex-wrap q-gap-md">

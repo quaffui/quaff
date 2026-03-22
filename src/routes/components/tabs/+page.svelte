@@ -87,8 +87,8 @@
 
       <QDocsSection title="Tabs with Icons">
         {#snippet sectionDescription()}
-          QTab components can include icons using the <code>icon</code> prop. Icons can be displayed
-          along with text content or alone.
+          QTab components can include icons using the <code>icon</code> prop. Icons can be displayed along
+          with text content or alone.
         {/snippet}
 
         <div class="q-ma-sm">
@@ -118,9 +118,8 @@
 
       <QDocsSection title="Tabs with Router Links">
         {#snippet sectionDescription()}
-          Tabs can function as navigation links by adding the <code>to</code> prop. This renders the
-          tab as an anchor element instead of a button, enabling seamless integration with your routing
-          system.
+          Tabs can function as navigation links by adding the <code>to</code> prop. This renders the tab
+          as an anchor element instead of a button, enabling seamless integration with your routing system.
         {/snippet}
 
         <div class="q-ma-sm">

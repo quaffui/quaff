@@ -213,8 +213,8 @@
 
       <QDocsSection title="Circular Progress Colors">
         {#snippet sectionDescription()}
-          Customize colors using the <code>color</code> and <code>trackColor</code> props. Use theme
-          colors or custom values.
+          Customize colors using the <code>color</code> and <code>trackColor</code> props. Use theme colors
+          or custom values.
         {/snippet}
 
         <div class="q-my-md flex q-gap-lg flex-wrap">
@@ -228,8 +228,8 @@
 
       <QDocsSection title="Circular Progress with Value Display">
         {#snippet sectionDescription()}
-          Enable the <code>showValue</code> prop to display the current progress value in the center
-          of the circle. You can also customize the displayed content using the default slot.
+          Enable the <code>showValue</code> prop to display the current progress value in the center of
+          the circle. You can also customize the displayed content using the default slot.
         {/snippet}
 
         <div class="q-my-md flex q-gap-lg flex-wrap">
@@ -330,8 +330,8 @@
 
       <QDocsSection title="Circular Progress Shape Customization">
         {#snippet sectionDescription()}
-          Control the appearance of the progress indicator with the <code>noRound</code> prop, which
-          determines whether the ends of the progress arc are rounded.
+          Control the appearance of the progress indicator with the <code>noRound</code> prop, which determines
+          whether the ends of the progress arc are rounded.
         {/snippet}
 
         <div class="q-my-md flex q-gap-lg flex-wrap">

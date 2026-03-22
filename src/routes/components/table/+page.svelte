@@ -198,8 +198,8 @@
       <QDocsSection title="Sorting">
         {#snippet sectionDescription()}
           When a column has the <code>sortable</code> property set to true, users can click on the column
-          header to sort the data. Click once for ascending order, twice for descending order, and a
-          third time to clear the sort.
+          header to sort the data. Click once for ascending order, twice for descending order, and a third
+          time to clear the sort.
         {/snippet}
 
         <QTable {columns} rows={rows.slice(0, 10)} />

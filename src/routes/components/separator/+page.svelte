@@ -49,8 +49,8 @@
 
       <QDocsSection title="Separator with Text">
         {#snippet sectionDescription()}
-          Add text to a separator using the <code>text</code> prop. This creates a visual break with
-          a label, which can be useful for section headings or to provide context.
+          Add text to a separator using the <code>text</code> prop. This creates a visual break with a
+          label, which can be useful for section headings or to provide context.
         {/snippet}
 
         <div class="q-my-md text-center">
@@ -83,8 +83,8 @@
 
       <QDocsSection title="Spacing">
         {#snippet sectionDescription()}
-          Adjust the margin around the separator with the <code>spacing</code> prop. Options include
-          "none" (default), "xs", "sm", "md", "lg", and "xl".
+          Adjust the margin around the separator with the <code>spacing</code> prop. Options include "none"
+          (default), "xs", "sm", "md", "lg", and "xl".
         {/snippet}
 
         <div class="q-my-md">
