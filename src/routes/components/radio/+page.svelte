@@ -44,9 +44,9 @@
 
       <QDocsSection title="Radio Groups">
         {#snippet sectionDescription()}
-          Radio buttons with the same <code>selected</code> binding form a group, ensuring that only
-          one option can be selected at a time. When a new option is selected, the previously selected
-          option is automatically deselected.
+          Radio buttons with the same <code>selected</code> binding form a group, ensuring that only one
+          option can be selected at a time. When a new option is selected, the previously selected option
+          is automatically deselected.
         {/snippet}
 
         <QCard class="q-ma-md" style="max-width: 400px;">

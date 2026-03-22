@@ -100,8 +100,8 @@
 
       <QDocsSection title="Two-way Binding">
         {#snippet sectionDescription()}
-          QSwitch supports Svelte's two-way binding with the <code>bind:value</code> directive. This
-          makes it easy to sync the switch's state with your component's variables.
+          QSwitch supports Svelte's two-way binding with the <code>bind:value</code> directive. This makes
+          it easy to sync the switch's state with your component's variables.
         {/snippet}
 
         <QCard class="q-ma-sm" style="max-width: 400px;">

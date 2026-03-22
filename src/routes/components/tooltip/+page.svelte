@@ -43,8 +43,8 @@
 
       <QDocsSection title="Tooltip Positioning">
         {#snippet sectionDescription()}
-          QTooltip can be positioned around its target element using the <code>position</code> prop.
-          Available positions are top, right, bottom (default), left, and their corner combinations.
+          QTooltip can be positioned around its target element using the <code>position</code> prop. Available
+          positions are top, right, bottom (default), left, and their corner combinations.
         {/snippet}
 
         <div class="row q-gutter-md q-ma-sm" style="max-width: 600px;">
@@ -187,8 +187,8 @@
 
       <QDocsSection title="Programmatically Controlled">
         {#snippet sectionDescription()}
-          Control tooltip visibility programmatically using the <code>value</code> prop with two-way
-          binding. This overrides the default hover behavior.
+          Control tooltip visibility programmatically using the <code>value</code> prop with two-way binding.
+          This overrides the default hover behavior.
         {/snippet}
 
         <div class="flex flex-col q-gap-md q-ma-sm">

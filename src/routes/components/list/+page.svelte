@@ -103,8 +103,8 @@
       <QDocsSection title="Clickable Items">
         {#snippet sectionDescription()}
           Use the <code>clickable</code> prop on QItem to make items interactive. Clickable items
-          include a ripple effect when clicked and can have the <code>active</code> prop to indicate
-          the selected item.
+          include a ripple effect when clicked and can have the <code>active</code> prop to indicate the
+          selected item.
         {/snippet}
 
         <QList bordered class="q-my-md" activeClass="primary">
