@@ -34,7 +34,7 @@
     &.q-drawer--#{$side} {
       #{$side}: 0;
       width: var(--#{$side}-drawer-width);
-      transform: translate(if($side == "left", -100%, 100%));
+      transform: translate(if(sass($side == "left"): -100%; else: 100%));
     }
 
     &:not(.q-drawer--#{$side}).q-drawer--bordered {

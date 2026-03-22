@@ -17,14 +17,16 @@ $check-map: (
 
 @function getColor($el, $checked: false, $hovered: null) {
   @if $el == "track" {
-    @return if($checked, var(--primary), var(--surface-container-highest));
+    @return if(sass($checked): var(--primary) ; else: var(--surface-container-highest));
   } @else if $el == "icon" {
-    @return if($checked, var(--on-primary-container), var(--surface-container-highest));
+    @return if(
+      sass($checked): var(--on-primary-container) ; else: var(--surface-container-highest)
+    );
   } @else if $el == "handle" {
     @if ($checked) {
-      @return if($hovered, var(--primary-container), var(--on-primary));
+      @return if(sass($hovered): var(--primary-container) ; else: var(--on-primary));
     } @else {
-      @return if($hovered, var(--on-surface-variant), var(--outline));
+      @return if(sass($hovered): var(--on-surface-variant) ; else: var(--outline));
     }
   }
 
