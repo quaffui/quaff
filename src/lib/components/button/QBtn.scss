@@ -34,6 +34,8 @@
       variables.$speed3 border-radius,
       variables.$speed3 padding;
 
+    isolation: isolate;
+
     @include mixins.btn-image;
 
     $sizeMap: (
