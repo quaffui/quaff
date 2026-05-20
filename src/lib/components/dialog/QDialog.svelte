@@ -23,17 +23,21 @@
 
   // #region:    --- Effects
   $effect(() => {
-    if (value) {
-      dialogEl?.[modal ? "showModal" : "show"]();
-
-      setTimeout(() => {
-        window.addEventListener("click", tryCancel);
-      }, 150);
-    } else {
+    if (!value) {
       dialogEl?.close();
-
-      window.removeEventListener("click", tryCancel);
+      return;
     }
+
+    dialogEl?.[modal ? "showModal" : "show"]();
+
+    const timeoutId = setTimeout(() => {
+      window.addEventListener("click", tryCancel);
+    }, 150);
+
+    return () => {
+      clearTimeout(timeoutId);
+      window.removeEventListener("click", tryCancel);
+    };
   });
   // #endregion: --- Effects
 
