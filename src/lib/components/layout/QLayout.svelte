@@ -160,7 +160,9 @@
   }
 
   function appBarReady(barType: "header" | "footer") {
-    const barReady = !header || headerInfo.ready;
+    const hasBar = barType === "header" ? header : footer;
+    const barInfo = barType === "header" ? headerInfo : footerInfo;
+    const barReady = !hasBar || barInfo.ready;
 
     return barReady || (layoutEl && !layoutEl.querySelector(`.q-${barType}`));
   }
