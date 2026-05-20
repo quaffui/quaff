@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { QScrollObserver } from "$lib";
+  import { useRevealScrollObserver } from "$composables";
   import { headerCtx } from "../layout/QLayout.svelte";
   import type { QHeaderProps } from "./props";
 
@@ -28,14 +28,15 @@
   // #endregion: --- Props
 
   // #region:    --- Derived values
-  const scroll = $derived(
-    reveal ? new QScrollObserver(`.q-header--${uid} ~ .q-layout__content`) : undefined
-  );
+  const revealObserver = useRevealScrollObserver("header", uid, () => reveal);
+  const revealScroll = $derived(revealObserver.scroll);
 
-  const offset = $derived(scroll ? scroll.position - height : undefined);
+  const offset = $derived(revealScroll ? revealScroll.position - height : undefined);
 
   // Collapse the header `${reavealOffset}px` below the top of layout content when scrolling down
-  const collapsed = $derived(reveal && scroll?.direction === "down" && offset! - revealOffset > 0);
+  const collapsed = $derived(
+    reveal && revealScroll?.direction === "down" && offset! - revealOffset > 0
+  );
 
   const leftOffset = $derived(headerContext.view.charAt(0) === "l");
 

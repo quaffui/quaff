@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { QScrollObserver } from "$lib";
+  import { useRevealScrollObserver } from "$composables";
   import { footerCtx } from "../layout/QLayout.svelte";
   import type { QFooterProps } from "./props";
 
@@ -28,15 +28,14 @@
   // #endregion: --- Reactive variables
 
   // #region:    --- Derived values
-  const scroll = $derived(
-    reveal ? new QScrollObserver(`.q-footer--${uid} ~ .q-layout__content`) : undefined
-  );
+  const revealObserver = useRevealScrollObserver("footer", uid, () => reveal);
+  const revealScroll = $derived(revealObserver.scroll);
 
-  const offset = $derived(scroll ? scroll.position + height : undefined);
+  const offset = $derived(revealScroll ? revealScroll.position + height : undefined);
 
   // Collapse the footer `${revealOffset}px` above the bottom of layout content when scrolling up
   const collapsed = $derived(
-    reveal && scroll?.direction === "up" && offset! + revealOffset < contentScrollHeight
+    reveal && revealScroll?.direction === "up" && offset! + revealOffset < contentScrollHeight
   );
 
   const leftOffset = $derived(footerContext.view.charAt(8) === "l");

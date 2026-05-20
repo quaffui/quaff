@@ -18,6 +18,8 @@ type ScrollObserverOptions = {
   horizontal?: boolean;
 };
 
+const SCROLL_LISTENER_OPTIONS = { capture: true } as const;
+
 /**
  * A scroll observer utility.
  * @example
@@ -57,7 +59,7 @@ export default class QScrollObserver {
   ) {
     this.horizontal = horizontal ?? false;
     this.debounce = debounce ?? 0;
-    this.handler = this.baseHandler.bind(this);
+    this.handler = (e: Event) => this.baseHandler(e);
 
     this.scrollType = horizontal
       ? { window: "scrollX", document: "scrollLeft" }
@@ -78,7 +80,7 @@ export default class QScrollObserver {
 
       this.target = parsedTarget;
 
-      parsedTarget.addEventListener("scroll", this.handler, { capture: true });
+      parsedTarget.addEventListener("scroll", this.handler, SCROLL_LISTENER_OPTIONS);
 
       return this.destroy.bind(this);
     });
@@ -93,21 +95,37 @@ export default class QScrollObserver {
     );
   }
 
-  protected baseHandler(e: Event) {
-    const eventTarget = e.target as HTMLElement | null;
+  protected isScrollEventForTarget(eventTarget: EventTarget | null): boolean {
+    if (!this.target || !eventTarget) {
+      return false;
+    }
 
-    if (!eventTarget || !this.target || eventTarget !== this.target) {
+    if (this.target === window) {
+      return (
+        eventTarget === document ||
+        eventTarget === document.documentElement ||
+        eventTarget === window
+      );
+    }
+
+    return eventTarget === this.target;
+  }
+
+  protected baseHandler(e: Event) {
+    if (!this.isScrollEventForTarget(e.target)) {
       return;
     }
 
+    const target = this.target as HTMLElement | typeof window;
+
     if (this.debounce) {
-      this.handleDebounce(this.target, this.debounce);
+      this.handleDebounce(target, this.debounce);
     } else {
-      this.updateDirection(this.target);
+      this.updateDirection(target);
     }
   }
 
-  protected updateDirection(target: HTMLElement) {
+  protected updateDirection(target: HTMLElement | typeof window) {
     this.clearTimer?.();
 
     const newScrollPosition = this.getScrollPosition(target);
@@ -128,12 +146,12 @@ export default class QScrollObserver {
     this.lastScroll = newScrollPosition <= 0 ? 0 : newScrollPosition;
   }
 
-  protected handleDebounce(target: HTMLElement, debounce: number) {
+  protected handleDebounce(target: HTMLElement | typeof window, debounce: number) {
     if (this.clearTimer) {
       return;
     }
 
-    const timer = setTimeout(this.updateDirection.bind(this, target), debounce);
+    const timer = setTimeout(() => this.updateDirection(target), debounce);
 
     this.clearTimer = () => {
       clearTimeout(timer);
@@ -145,7 +163,7 @@ export default class QScrollObserver {
     this.clearTimer?.();
     this.clearTimer = null;
 
-    this.target?.removeEventListener("scroll", this.handler);
+    this.target?.removeEventListener("scroll", this.handler, SCROLL_LISTENER_OPTIONS);
 
     this.target = null;
     this.direction = "down";
