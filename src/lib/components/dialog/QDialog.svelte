@@ -85,6 +85,11 @@
   }
 
   function tryCancel(e: Event) {
+    const target = e.target;
+    if (target instanceof Element && target.closest("[data-quaff-overlay]")) {
+      return;
+    }
+
     if (canHide) {
       hide();
     } else {
@@ -116,4 +121,5 @@
   data-quaff
 >
   {@render children?.()}
+  <div class="q-dialog__overlay-root" data-quaff-overlay-root></div>
 </dialog>

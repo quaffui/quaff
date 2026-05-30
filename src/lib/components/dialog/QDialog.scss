@@ -19,6 +19,11 @@
   max-height: 80%;
   overflow-x: hidden;
   overflow-y: auto;
+
+  &:has([data-quaff-overlay-root] > [data-quaff-overlay])[open] {
+    overflow: visible;
+  }
+
   transition:
     variables.$speed3 all,
     0s background-color;
@@ -156,6 +161,18 @@
 
   &--animating {
     animation: shake 0.15s;
+  }
+
+  &__overlay-root {
+    position: absolute;
+    inset: 0;
+    overflow: visible;
+    z-index: 10001;
+    pointer-events: none;
+
+    > * {
+      pointer-events: auto;
+    }
   }
 }
 

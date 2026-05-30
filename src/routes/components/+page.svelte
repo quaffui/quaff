@@ -143,6 +143,12 @@
       snippet: list,
     },
     {
+      name: "QMenu",
+      description: "Display anchored popup content with reliable overlay behavior.",
+      href: "/components/menu",
+      snippet: menu,
+    },
+    {
       name: "QProgress",
       description: "Indicate task completion or loading status with linear or cicular indicators.",
       href: "/components/progress",
@@ -555,6 +561,26 @@
   </QCard>
 {/snippet}
 
+{#snippet menu()}
+  <div class="q-component-card__menu-demo">
+    <QBtn label="Open menu" variant="filled" />
+
+    <div class="q-menu">
+      <QList dense>
+        <QItem clickable>
+          <QItemSection>Profile</QItemSection>
+        </QItem>
+        <QItem clickable>
+          <QItemSection>Settings</QItemSection>
+        </QItem>
+        <QItem clickable>
+          <QItemSection>Sign out</QItemSection>
+        </QItem>
+      </QList>
+    </div>
+  </div>
+{/snippet}
+
 {#snippet radio()}
   <QList class="surface q-pa-lg" style="width: 100%; min-width: min-content;" dense>
     <QItem class="headline-small">Language</QItem>
@@ -755,6 +781,12 @@
     opacity: 1;
     visibility: visible;
     transform: scale(1) translateY(100%);
+  }
+
+  .q-component-card__menu-demo {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
   }
 
   .row {

@@ -1,40 +1,29 @@
-@use "$css/mixins";
-@use "$css/variables";
 @use "$css/shared/q-field.scss";
 
 .q-select {
-  &__option--selected {
-    color: var(--primary);
-  }
-
   .q-field__wrapper,
   .q-field__input {
     cursor: pointer;
   }
 
-  &__menu {
-    @include mixins.menu;
-    opacity: 0;
-    visibility: hidden;
-    transform: scale(0.8) translateY(120%);
-    transition:
-      opacity variables.$speed2,
-      transform variables.$speed2,
-      visibility 0s variables.$speed2;
-
-    &--active {
-      opacity: 1;
-      visibility: visible;
-      transform: scale(1) translateY(100%);
-      transition:
-        opacity variables.$speed2,
-        transform variables.$speed2,
-        visibility 0s 0s;
-    }
+  .q-field__input {
+    caret-color: transparent;
   }
 
-  &.q-field--bottom-space &__menu {
-    bottom: 1.0625rem;
+  &__menu {
+    max-height: min(50vh, 20rem);
+  }
+
+  &__option {
+    width: 100%;
+
+    &--selected {
+      color: var(--primary);
+    }
+
+    &--focused {
+      background-color: color-mix(in srgb, var(--on-surface) 12%, transparent);
+    }
   }
 
   & &__arrow-toggle {

@@ -1,0 +1,33 @@
+.q-menu {
+  display: block;
+  inset: auto;
+  margin: 0;
+  border: none;
+  padding: 0;
+  width: max-content;
+  height: auto;
+  min-width: 8rem;
+  max-width: min(90vw, 28rem);
+  max-height: min(50vh, calc(100vh - 1rem));
+  overflow: auto;
+  border-radius: 0.25rem;
+  background: var(--surface-container);
+  color: var(--on-surface);
+  box-shadow: var(--elevate2);
+  z-index: 6000;
+
+  &:popover-open {
+    display: block;
+  }
+
+  > .q-list {
+    align-items: stretch;
+    justify-content: flex-start;
+    width: max-content;
+    min-width: 100%;
+  }
+}
+
+.q-menu__helper {
+  display: none;
+}
