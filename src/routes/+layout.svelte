@@ -120,6 +120,10 @@
       to: "/components/list",
     },
     {
+      name: "Menu",
+      to: "/components/menu",
+    },
+    {
       name: "Progress",
       to: "/components/progress",
     },

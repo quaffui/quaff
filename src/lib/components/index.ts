@@ -22,6 +22,7 @@ import QList from "./list/QList.svelte";
 import QItem from "./list/QItem.svelte";
 import QItemSection from "./list/QItemSection.svelte";
 import QLinearProgress from "./progress/QLinearProgress.svelte";
+import QMenu from "./menu/QMenu.svelte";
 import QRadio from "./radio/QRadio.svelte";
 import QRailbar from "./railbar/QRailbar.svelte";
 import QSeparator from "./separator/QSeparator.svelte";
@@ -58,6 +59,7 @@ export {
   QItem,
   QItemSection,
   QLinearProgress,
+  QMenu,
   QRadio,
   QRailbar,
   QSeparator,
