@@ -1,4 +1,49 @@
 import type { Direction } from "./events";
+import type { Action } from "svelte/action";
+
+export type PortalTarget = ParentNode | undefined;
+
+function resolvePortalTarget(target: PortalTarget): ParentNode {
+  return target ?? document.body;
+}
+
+export const usePortal: Action<HTMLElement, PortalTarget> = (node, target) => {
+  resolvePortalTarget(target).appendChild(node);
+
+  return {
+    update(newTarget) {
+      const parent = resolvePortalTarget(newTarget);
+      if (node.parentNode !== parent) {
+        node.remove();
+        parent.appendChild(node);
+      }
+    },
+    destroy() {
+      node.remove();
+    },
+  };
+};
+
+export function getDialogOverlayRoot(dialog: HTMLDialogElement): ParentNode {
+  return dialog.querySelector<HTMLElement>("[data-quaff-overlay-root]") ?? dialog;
+}
+
+export function doesOverlayUsePopover(from: HTMLElement | null | undefined): boolean {
+  return (
+    typeof HTMLElement !== "undefined" &&
+    "showPopover" in HTMLElement.prototype &&
+    !!from?.closest("dialog")?.open
+  );
+}
+
+export function getOverlayPortalTarget(from: HTMLElement | null | undefined): ParentNode {
+  const dialog = from?.closest("dialog");
+  if (dialog?.open) {
+    return getDialogOverlayRoot(dialog);
+  }
+
+  return document.body;
+}
 
 export function getParentElement(el: HTMLElement) {
   let parent = el.parentNode;

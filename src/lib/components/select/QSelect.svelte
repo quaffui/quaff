@@ -1,8 +1,7 @@
 <script lang="ts">
-  import { onMount } from "svelte";
-  import { browser } from "$app/environment";
-  import { QIcon } from "$lib";
-  import type { QEvent } from "$utils";
+  import { tick } from "svelte";
+  import { QIcon, QItem, QItemSection, QList, QMenu } from "$lib";
+  import { isActivationKey, type QEvent } from "$utils";
   import type { QSelectOption, QSelectProps } from "./props";
 
   type QSelectEvent<T> = QEvent<T, HTMLDivElement>;
@@ -31,13 +30,17 @@
   }: QSelectProps = $props();
   // #endregion: --- Props
 
-  // #region:    --- Reactive variables
-  let focus = $state(false);
+  // #region:    --- Non-reactive variables
+  const id = $props.id();
+  const listboxId = `q-select__listbox-${id}`;
+  // #endregion: --- Non-reactive variables
 
-  let wrapper: HTMLDivElement | null = $state(null);
+  // #region:    --- Reactive variables
+  let isFocused = $state(false);
+
+  let menuTarget = $state<HTMLLabelElement>();
   let isMenuOpen = $state(false);
-  let wasClicked = $state(false);
-  let preventClose = $state(false);
+  let focusedOptionIndex = $state(-1);
   let snippetPrependWidth = $state(0);
   // #endregion: --- Reactive variables
 
@@ -47,112 +50,225 @@
       return displayValue;
     }
 
-    const getOptionPropFn = emitValue ? getOptionValue : getOptionLabel;
-
-    if (!multiple) {
-      return getOptionPropFn(value as QSelectOption);
+    if (!multiple || !Array.isArray(value)) {
+      return getOptionLabel(value as QSelectOption);
     }
 
-    return (value as QSelectOption[]).map(getOptionPropFn).join(", ");
+    return value.map(getOptionLabel).join(", ");
   });
 
-  const active = $derived(currentDisplayValue || focus);
+  const hasDisplayValue = $derived(currentDisplayValue !== "" && currentDisplayValue !== undefined);
+  const isActive = $derived(hasDisplayValue || isFocused || isMenuOpen);
 
-  const selectedOptions: boolean[] = $derived(options.map((option) => isSelected(option), value));
+  const isOptionSelectedByIndex: boolean[] = $derived(options.map((option) => isSelected(option)));
+  const activeOptionId = $derived(
+    isMenuOpen && focusedOptionIndex >= 0 ? getOptionId(focusedOptionIndex) : undefined
+  );
   // #endregion: --- Derived values
 
-  // #region:    --- Lifecycle
-  onMount(() => {
-    if (browser) {
-      window.document.addEventListener("click", handleClickOutside);
+  // #region:    --- Effects
+  $effect(() => {
+    if (disable) {
+      isMenuOpen = false;
     }
-
-    return () => {
-      if (browser) {
-        document.removeEventListener("click", handleClickOutside);
-      }
-    };
   });
-  // #endregion: --- Lifecycle
+
+  $effect(() => {
+    if (!isMenuOpen) {
+      focusedOptionIndex = -1;
+    }
+  });
+  // #endregion: --- Effects
 
   // #region:    --- Functions
   function handleMousedown(e: QSelectEvent<MouseEvent>) {
-    isMenuOpen = !isMenuOpen;
-    wasClicked = true;
+    if (disable) {
+      return;
+    }
+
+    if (isMenuOpen) {
+      hideMenu();
+    } else {
+      void showMenu();
+    }
+
     props.onmousedown?.(e);
   }
 
   function handleFocus(e: QSelectEvent<FocusEvent>) {
-    focus = true;
-    if (!wasClicked) {
-      isMenuOpen = true;
-    }
-
-    wasClicked = false;
+    isFocused = true;
     props.onfocus?.(e);
   }
 
   function handleBlur(e: QSelectEvent<FocusEvent>) {
-    focus = false;
-
-    if (!multiple && !preventClose) {
-      isMenuOpen = false;
-    }
-    preventClose = false;
+    isFocused = false;
     props.onblur?.(e);
   }
 
-  function compareValues<T extends QSelectOption>(a: T, b: T) {
+  function handleKeydown(e: QSelectEvent<KeyboardEvent>) {
+    if (disable) {
+      return;
+    }
+
+    if (isActivationKey(e)) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      if (isMenuOpen && focusedOptionIndex !== -1) {
+        selectOption(options[focusedOptionIndex]);
+      } else if (isMenuOpen) {
+        hideMenu();
+      } else {
+        void showMenu();
+      }
+    } else if (e.code === "ArrowDown" || e.code === "ArrowUp") {
+      e.preventDefault();
+      e.stopPropagation();
+      moveFocusedOption(e.code === "ArrowDown" ? 1 : -1);
+    } else if (e.code === "Home" || e.code === "End") {
+      e.preventDefault();
+      e.stopPropagation();
+
+      if (!isMenuOpen) {
+        isMenuOpen = true;
+      }
+
+      void setFocusedOptionIndex(e.code === "Home" ? 0 : options.length - 1);
+    } else if (e.code === "Escape" && isMenuOpen) {
+      e.preventDefault();
+      e.stopPropagation();
+      hideMenu();
+    } else if (e.code === "Tab") {
+      hideMenu();
+    }
+
+    props.onkeydown?.(e);
+  }
+
+  async function showMenu(optionIndex = getInitialFocusedOptionIndex()) {
+    isMenuOpen = true;
+    await setFocusedOptionIndex(optionIndex);
+  }
+
+  function hideMenu() {
+    isMenuOpen = false;
+    focusedOptionIndex = -1;
+  }
+
+  function moveFocusedOption(offset: number) {
+    if (!options.length) {
+      return;
+    }
+
+    if (!isMenuOpen) {
+      void showMenu(getInitialFocusedOptionIndex(offset));
+      return;
+    }
+
+    const baseIndex =
+      focusedOptionIndex === -1 ? getInitialFocusedOptionIndex(offset) : focusedOptionIndex;
+
+    void setFocusedOptionIndex(baseIndex + offset);
+  }
+
+  function getInitialFocusedOptionIndex(direction = 1) {
+    if (!options.length) {
+      return -1;
+    }
+
+    const selectedIndex = options.findIndex((option) => isSelected(option));
+
+    if (selectedIndex !== -1) {
+      return selectedIndex;
+    }
+
+    return direction < 0 ? options.length - 1 : 0;
+  }
+
+  async function setFocusedOptionIndex(optionIndex: number) {
+    focusedOptionIndex = normalizeOptionIndex(optionIndex);
+
+    await tick();
+    scrollFocusedOptionIntoView();
+  }
+
+  function normalizeOptionIndex(optionIndex: number) {
+    if (!options.length || optionIndex < 0) {
+      return options.length ? options.length - 1 : -1;
+    }
+
+    return optionIndex % options.length;
+  }
+
+  function scrollFocusedOptionIntoView() {
+    if (focusedOptionIndex === -1) {
+      return;
+    }
+
+    document.getElementById(getOptionId(focusedOptionIndex))?.scrollIntoView({ block: "nearest" });
+  }
+
+  function getOptionId(optionIndex: number) {
+    return `${listboxId}__option-${optionIndex}`;
+  }
+
+  function doValuesMatch(a: QSelectOption | null | undefined, b: QSelectOption | null | undefined) {
     return getOptionValue(a) === getOptionValue(b);
   }
 
-  function getOptionValue(option: QSelectOption) {
-    return typeof option === "object" ? option.value : option;
+  function getOptionValue(option: QSelectOption): string | number;
+  function getOptionValue(
+    option: QSelectOption | null | undefined
+  ): string | number | null | undefined;
+  function getOptionValue(option: QSelectOption | null | undefined) {
+    return typeof option === "object" && option !== null ? option.value : option;
   }
 
-  function getOptionLabel(option: QSelectOption) {
+  function getOptionLabel(option: QSelectOption | null | undefined) {
+    if (option === undefined || option === null || option === "") {
+      return "";
+    }
+
     if (typeof option !== "string" && typeof option !== "number") {
       return option.label;
     }
 
     return options.includes(option)
       ? option
-      : (options.find((opt) => compareValues(opt, option)) as { label: string | number })?.label ||
+      : (options.find((opt) => doValuesMatch(opt, option)) as { label: string | number })?.label ||
           "";
   }
 
   function isSelected(option: QSelectOption) {
     return multiple
-      ? (value as QSelectOption[]).some((opt) => compareValues(opt, option))
-      : compareValues(value as QSelectOption, option);
+      ? Array.isArray(value) && value.some((opt) => doValuesMatch(opt, option))
+      : doValuesMatch(value as QSelectOption, option);
   }
 
-  function select(evt: MouseEvent, option: QSelectOption) {
+  function handleOptionClick(evt: MouseEvent, option: QSelectOption, optionIndex: number) {
     evt.preventDefault();
+    focusedOptionIndex = optionIndex;
+    selectOption(option);
+  }
+
+  function selectOption(option: QSelectOption) {
     const optionValue = getOptionValue(option);
 
     if (multiple) {
-      const index = (value as QSelectOption[]).findIndex((entry) =>
-        compareValues(entry, optionValue)
-      );
+      const currentValue = Array.isArray(value) ? value : [];
+      const index = currentValue.findIndex((entry) => doValuesMatch(entry, optionValue));
 
       if (index !== -1) {
-        (value as QSelectOption[]).splice(index, 1);
+        value = currentValue.filter((_, entryIndex) => entryIndex !== index);
       } else {
-        (value as QSelectOption[]).push(emitValue ? optionValue : option);
+        value = [...currentValue, emitValue ? optionValue : option];
       }
 
       return;
     }
 
     value = emitValue ? optionValue : option;
-    isMenuOpen = false;
-  }
-
-  function handleClickOutside(event: MouseEvent) {
-    if (wrapper && !wrapper.contains(event.target as Node)) {
-      isMenuOpen = false;
-    }
+    hideMenu();
   }
   // #endregion: --- Functions
 
@@ -165,8 +281,8 @@
       filled,
       "has-border": outlined || rounded,
       dense,
-      active,
-      focus,
+      active: isActive,
+      focus: isFocused,
       label,
       "snippet-append": !!append,
       "snippet-prepend": !!prepend,
@@ -178,13 +294,7 @@
   });
 </script>
 
-<div
-  bind:this={wrapper}
-  {...props}
-  class="q-field"
-  style:--snippet-prepend-width="{snippetPrependWidth}px"
-  data-quaff
->
+<div {...props} class="q-field" style:--snippet-prepend-width="{snippetPrependWidth}px" data-quaff>
   {#if before}
     <div class="q-field__snippet-before">
       {@render before()}
@@ -192,7 +302,7 @@
   {/if}
 
   <div class="q-field__inner">
-    <label class="q-field__wrapper">
+    <label bind:this={menuTarget} class="q-field__wrapper">
       {#if prepend}
         <div class="q-field__snippet-prepend" bind:clientWidth={snippetPrependWidth}>
           {@render prepend()}
@@ -203,9 +313,18 @@
         class="q-field__input"
         value={currentDisplayValue}
         placeholder=""
+        role="combobox"
+        aria-autocomplete="none"
+        aria-controls={listboxId}
+        aria-expanded={isMenuOpen}
+        aria-haspopup="listbox"
+        aria-label={label}
+        aria-activedescendant={activeOptionId}
+        aria-readonly="true"
         onfocus={handleFocus}
         onblur={handleBlur}
         onmousedown={handleMousedown}
+        onkeydown={handleKeydown}
         disabled={disable}
         tabindex={disable === true ? -1 : 0}
         readonly
@@ -223,16 +342,35 @@
       </div>
     </label>
 
-    <div class="q-select__menu {isMenuOpen ? 'q-select__menu--active' : ''}">
-      {#each options as option, idx (idx)}
-        <a
-          href={multiple ? "javascript:void(0)" : undefined}
-          class="q-select__option {selectedOptions[idx] ? 'q-select__option--selected' : ''}"
-          onmousedown={() => (preventClose = true)}
-          onclick={(e) => select(e, option)}>{getOptionLabel(option)}</a
-        >
-      {/each}
-    </div>
+    <QMenu
+      bind:value={isMenuOpen}
+      target={menuTarget}
+      fit
+      autoClose={!multiple}
+      class="q-select__menu"
+      id={listboxId}
+      role="listbox"
+      aria-multiselectable={multiple ? "true" : undefined}
+    >
+      <QList dense>
+        {#each options as option, idx (idx)}
+          <QItem
+            clickable
+            active={isOptionSelectedByIndex[idx]}
+            activeClass="q-select__option--selected"
+            class="q-select__option {focusedOptionIndex === idx ? 'q-select__option--focused' : ''}"
+            id={getOptionId(idx)}
+            role="option"
+            tabindex={-1}
+            aria-selected={isOptionSelectedByIndex[idx] ? "true" : "false"}
+            onmousemove={() => (focusedOptionIndex = idx)}
+            onclick={(e) => handleOptionClick(e, option, idx)}
+          >
+            <QItemSection>{getOptionLabel(option)}</QItemSection>
+          </QItem>
+        {/each}
+      </QList>
+    </QMenu>
 
     {#if error && errorMessage}
       <div class="q-field__error">{errorMessage}</div>

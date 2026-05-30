@@ -1,7 +1,7 @@
 <script lang="ts">
   import { QSelectDocs } from "$components/select/docs";
   import { pageTitle } from "$helpers/pageTitle";
-  import { QBtn, QCard, QCardActions, QCardSection, QIcon, QItem, QList, QSelect } from "$lib";
+  import { QBtn, QCard, QCardActions, QCardSection, QIcon, QSelect } from "$lib";
   import { QDocs, QDocsSection } from "$private";
   import type { QSelectOption } from "$components/select/props";
   import snippets from "./docs.snippets";
@@ -382,27 +382,32 @@
 
         <div class="q-ma-sm">
           <p>Keyboard navigation support:</p>
-          <QList dense>
-            <QItem><code>Tab</code>Moves focus to the select (not yet supported)</QItem>
-            <QItem><code>Enter/Space</code>Opens the dropdown when the select is focused</QItem>
-            <QItem>
-              <code>Arrow keys</code>Navigate through options when the dropdown is open (not yet
-              supported)
-            </QItem>
-            <QItem><code>Enter</code>Selects the focused option</QItem>
-            <QItem>
-              <code>Escape</code>Closes the dropdown without making a selection (not yet supported)
-            </QItem>
-          </QList>
+          <div class="row q-gutter-sm q-mb-md">
+            <div class="col-xs-12 col-sm-3"><code>Tab</code></div>
+            <div class="col-xs-12 col-sm-9">Moves focus to the select</div>
 
-          <QSelect
-            bind:value={select}
-            {options}
-            label="Try keyboard navigation"
-            hint="Use keyboard to interact with this select"
-            class="q-mt-sm"
-            style="max-width: 300px;"
-          />
+            <div class="col-xs-12 col-sm-3"><code>Enter/Space</code></div>
+            <div class="col-xs-12 col-sm-9">Opens the dropdown or selects the focused option</div>
+
+            <div class="col-xs-12 col-sm-3"><code>Arrow keys</code></div>
+            <div class="col-xs-12 col-sm-9">Navigate through options</div>
+
+            <div class="col-xs-12 col-sm-3"><code>Home/End</code></div>
+            <div class="col-xs-12 col-sm-9">Moves to the first or last option</div>
+
+            <div class="col-xs-12 col-sm-3"><code>Escape</code></div>
+            <div class="col-xs-12 col-sm-9">Closes the dropdown without selecting</div>
+          </div>
+
+          <div class="row q-gutter-md">
+            <QSelect
+              bind:value={select}
+              {options}
+              label="Try keyboard navigation"
+              hint="Use keyboard to interact with this select"
+              class="col-xs-12 col-sm-8 col-md-6"
+            />
+          </div>
         </div>
       </QDocsSection>
     </div>

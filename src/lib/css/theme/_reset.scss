@@ -18,7 +18,7 @@ body {
 }
 
 body,
-body > div:not(.q-tooltip) {
+body > div:not(.q-tooltip):not([data-quaff-overlay]) {
   background-color: var(--surface-container-lowest);
   overflow-x: hidden;
   height: 100vh;
