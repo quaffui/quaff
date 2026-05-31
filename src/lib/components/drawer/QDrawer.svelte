@@ -25,11 +25,12 @@
   const PEEK_THRESHOLD = 30; // How far the drawer peeks out when cursor is near the edge
   const TRANSITION = "top 0.3s, bottom 0.3s, transform 0.3s";
 
-  let unlistenClick: () => void;
-  let unlistenPointerdown: () => void;
-  let unlistenPointermove: () => void;
-  let unlistenPointerup: () => void;
-  let unlistenPointercancel: () => void;
+  let clickTimer: ReturnType<typeof setTimeout> | undefined;
+  let unlistenClick: (() => void) | undefined;
+  let unlistenPointerdown: (() => void) | undefined;
+  let unlistenPointermove: (() => void) | undefined;
+  let unlistenPointerup: (() => void) | undefined;
+  let unlistenPointercancel: (() => void) | undefined;
   // #endregion: --- Non-reactive variables
 
   // #region:    --- Reactive variables
@@ -74,8 +75,8 @@
     }, 100);
 
     return () => {
-      unlistenClick?.();
-      unlistenPointerdown?.();
+      removeClickListener();
+      removePointerdownListener();
 
       if (isSwiping) {
         unlistenPointermove?.();
@@ -102,25 +103,32 @@
   });
 
   $effect(() => {
+    removeClickListener();
+    removePointerdownListener();
+
     if (value) {
-      setTimeout(() => {
+      clickTimer = setTimeout(() => {
         unlistenClick = on(window, "click", tryClose);
+        clickTimer = undefined;
       }, 150);
 
       untrack(() => {
         if (!noSwipe && !persistent) {
-          unlistenPointerdown = on(drawerEl!, "pointerdown", handlePointerDown);
+          addPointerdownListener(drawerEl);
           swipeAreaEl?.style.setProperty("z-index", "-1");
         }
       });
     } else {
-      unlistenClick?.();
-
       if (!noSwipe) {
-        unlistenPointerdown = on(swipeAreaEl!, "pointerdown", handlePointerDown);
+        addPointerdownListener(swipeAreaEl);
         swipeAreaEl?.style.setProperty("z-index", "10");
       }
     }
+
+    return () => {
+      removeClickListener();
+      removePointerdownListener();
+    };
   });
 
   $effect(() => {
@@ -165,6 +173,27 @@
     if (canHideOnClickOutside && !isTargetDrawer && !isTargetInsideDrawer) {
       e.stopPropagation();
       hide();
+    }
+  }
+
+  function removeClickListener() {
+    if (clickTimer) {
+      clearTimeout(clickTimer);
+      clickTimer = undefined;
+    }
+
+    unlistenClick?.();
+    unlistenClick = undefined;
+  }
+
+  function removePointerdownListener() {
+    unlistenPointerdown?.();
+    unlistenPointerdown = undefined;
+  }
+
+  function addPointerdownListener(target?: HTMLElement) {
+    if (target) {
+      unlistenPointerdown = on(target, "pointerdown", handlePointerDown);
     }
   }
 
