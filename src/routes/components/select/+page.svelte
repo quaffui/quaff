@@ -80,26 +80,16 @@
           properties. Using objects allows you to display a friendly label while storing a different value.
         {/snippet}
 
-        <div class="flex column q-gap-md">
-          <div class="q-ma-sm">
+        <div class="row q-gutter-lg">
+          <div class="col-xs-12 col-lg-6 col-xl-4">
             <h6 class="q-mb-sm">String options</h6>
-            <QSelect
-              bind:value={select}
-              {options}
-              label="Choose an animal"
-              style="max-width: 300px;"
-            />
+            <QSelect bind:value={select} {options} label="Choose an animal" />
             <div class="q-mt-sm">Selected: {select || "None"}</div>
           </div>
 
-          <div class="q-ma-sm">
+          <div class="col-xs-12 col-lg-6 col-xl-4">
             <h6 class="q-mb-sm">Object options</h6>
-            <QSelect
-              bind:value={colorSelect}
-              options={objectOptions}
-              label="Choose a color"
-              style="max-width: 300px;"
-            />
+            <QSelect bind:value={colorSelect} options={objectOptions} label="Choose a color" />
             <div class="q-mt-sm">
               Selected value:
               {(typeof colorSelect === "string"
@@ -108,7 +98,7 @@
             </div>
           </div>
 
-          <div class="q-ma-sm">
+          <div class="col-xs-12 col-lg-6 col-xl-4">
             <h6 class="q-mb-sm">Emit value</h6>
             <p>
               When using object options, use the <code>emitValue</code> prop to return the
@@ -119,7 +109,6 @@
               options={objectOptions}
               label="Choose a color"
               emitValue
-              style="max-width: 300px;"
             />
             <div class="q-mt-sm">
               Selected value:
@@ -170,20 +159,20 @@
           the style that best fits your UI design.
         {/snippet}
 
-        <div class="row q-gap-md">
-          <div class="col-6">
+        <div class="row q-gutter-lg">
+          <div class="col-xs-12 col-md-6">
             <QSelect bind:value={select} {options} label="Default style" />
           </div>
 
-          <div class="col-6">
+          <div class="col-xs-12 col-md-6">
             <QSelect bind:value={select} {options} label="Outlined" outlined />
           </div>
 
-          <div class="col-6">
+          <div class="col-xs-12 col-md-6">
             <QSelect bind:value={select} {options} label="Filled" filled />
           </div>
 
-          <div class="col-6">
+          <div class="col-xs-12 col-md-6">
             <QSelect bind:value={select} {options} label="Rounded" rounded />
           </div>
         </div>
@@ -195,12 +184,12 @@
           constraints or for when you need to display multiple selects in a limited space.
         {/snippet}
 
-        <div class="row q-gap-md">
-          <div class="col-6">
+        <div class="row q-gutter-lg">
+          <div class="col-xs-12 col-md-6">
             <QSelect bind:value={select} {options} label="Standard height" outlined />
           </div>
 
-          <div class="col-6">
+          <div class="col-xs-12 col-md-6">
             <QSelect bind:value={select} {options} label="Dense height" outlined dense />
           </div>
         </div>
@@ -235,8 +224,8 @@
           prop to indicate validation errors and <code>hint</code> to provide additional guidance to users.
         {/snippet}
 
-        <div class="flex flex-wrap q-gap-md">
-          <div style="max-width: 250px;">
+        <div class="row q-gutter-lg">
+          <div class="col-xs-12 col-md-6">
             <QSelect
               bind:value={select}
               {options}
@@ -245,7 +234,7 @@
             />
           </div>
 
-          <div style="max-width: 250px;">
+          <div class="col-xs-12 col-md-6">
             <QSelect
               bind:value={select}
               {options}
@@ -264,22 +253,35 @@
           <code>after</code> slots. These allow you to add icons or other content around the select field.
         {/snippet}
 
-        <div class="row q-gap-md q-mb-md">
-          <QSelect bind:value={select} {options} label="With prepend icon" class="col-6">
+        <div class="row q-gutter-lg">
+          <QSelect
+            bind:value={select}
+            {options}
+            label="With prepend icon"
+            class="col-xs-12 col-md-6"
+          >
             {#snippet prepend()}
               <QIcon name="pets" />
             {/snippet}
           </QSelect>
 
-          <QSelect bind:value={select} {options} label="With append icon" class="col-6">
+          <QSelect
+            bind:value={select}
+            {options}
+            label="With append icon"
+            class="col-xs-12 col-md-6"
+          >
             {#snippet append()}
               <QIcon name="favorite" />
             {/snippet}
           </QSelect>
-        </div>
 
-        <div class="row q-gap-md q-mt-md">
-          <QSelect bind:value={select} {options} label="With before content" class="col-6">
+          <QSelect
+            bind:value={select}
+            {options}
+            label="With before content"
+            class="col-xs-12 col-md-6"
+          >
             {#snippet before()}
               <div class="q-mr-sm">
                 <QIcon name="info" />
@@ -287,7 +289,12 @@
             {/snippet}
           </QSelect>
 
-          <QSelect bind:value={select} {options} label="With after content" class="col-6">
+          <QSelect
+            bind:value={select}
+            {options}
+            label="With after content"
+            class="col-xs-12 col-md-6"
+          >
             {#snippet after()}
               <div class="q-ml-sm">
                 <QIcon name="help" />
@@ -303,8 +310,8 @@
           makes it easy to sync the select's state with your component's variables.
         {/snippet}
 
-        <div class="q-ma-sm">
-          <QCard class="q-pa-md" style="max-width: 500px;">
+        <div class="row q-gutter-md q-ma-sm">
+          <QCard class="q-pa-md col-xs-12 col-md-8">
             <QCardSection>
               <QSelect bind:value={select} {options} label="Select an animal" />
             </QCardSection>
@@ -326,8 +333,8 @@
           options that might change or are loaded from an external source.
         {/snippet}
 
-        <div class="q-ma-sm">
-          <QCard class="q-pa-md" style="max-width: 500px;">
+        <div class="row q-gutter-md q-ma-sm">
+          <QCard class="q-pa-md col-xs-12 col-md-8">
             <QCardSection>
               <QSelect
                 bind:value={dynamicSelect}
@@ -336,13 +343,8 @@
               />
             </QCardSection>
 
-            <QCardActions class="q-mt-md" align="right">
-              <QBtn
-                size="sm"
-                label="Load more countries"
-                onclick={loadMoreCountries}
-                class="q-mr-sm"
-              />
+            <QCardActions class="q-mt-md q-gap-sm flex" align="right">
+              <QBtn size="sm" label="Load more countries" onclick={loadMoreCountries} />
               <QBtn
                 size="sm"
                 label="Reset countries"
@@ -359,14 +361,14 @@
           layouts and grid systems.
         {/snippet}
 
-        <div class="row q-gutter-md q-ma-sm">
-          <div class="col-12 col-sm-6 col-md-4">
+        <div class="row q-gutter-lg q-ma-sm">
+          <div class="col-xs-12 col-lg-6 col-xl-4">
             <QSelect bind:value={select} {options} label="Full width on small screens" />
           </div>
-          <div class="col-12 col-sm-6 col-md-4">
+          <div class="col-xs-12 col-lg-6 col-xl-4">
             <QSelect bind:value={select} {options} label="Responsive width" />
           </div>
-          <div class="col-12 col-sm-6 col-md-4">
+          <div class="col-xs-12 col-lg-6 col-xl-4">
             <QSelect bind:value={select} {options} label="Adapts to container" />
           </div>
         </div>
