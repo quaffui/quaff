@@ -137,6 +137,7 @@
           <QSelect
             bind:value={selectedPosition}
             {options}
+            emitValue
             label="Select Dialog Position"
             outlined
           />
