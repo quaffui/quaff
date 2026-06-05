@@ -26,11 +26,11 @@
   const TRANSITION = "top 0.3s, bottom 0.3s, transform 0.3s";
 
   let clickTimer: ReturnType<typeof setTimeout> | undefined;
-  let unlistenClick: (() => void) | undefined;
-  let unlistenPointerdown: (() => void) | undefined;
-  let unlistenPointermove: (() => void) | undefined;
-  let unlistenPointerup: (() => void) | undefined;
-  let unlistenPointercancel: (() => void) | undefined;
+  let removeWindowClickListener: (() => void) | undefined;
+  let removePointerdownListener: (() => void) | undefined;
+  let removePointermoveListener: (() => void) | undefined;
+  let removePointerupListener: (() => void) | undefined;
+  let removePointercancelListener: (() => void) | undefined;
   // #endregion: --- Non-reactive variables
 
   // #region:    --- Reactive variables
@@ -75,13 +75,13 @@
     }, 100);
 
     return () => {
-      removeClickListener();
-      removePointerdownListener();
+      clearClickListener();
+      clearPointerdownListener();
 
       if (isSwiping) {
-        unlistenPointermove?.();
-        unlistenPointerup?.();
-        unlistenPointercancel?.();
+        removePointermoveListener?.();
+        removePointerupListener?.();
+        removePointercancelListener?.();
 
         resetBodyStyles();
       }
@@ -103,12 +103,12 @@
   });
 
   $effect(() => {
-    removeClickListener();
-    removePointerdownListener();
+    clearClickListener();
+    clearPointerdownListener();
 
     if (value) {
       clickTimer = setTimeout(() => {
-        unlistenClick = on(window, "click", tryClose);
+        removeWindowClickListener = on(window, "click", tryClose);
         clickTimer = undefined;
       }, 150);
 
@@ -126,8 +126,8 @@
     }
 
     return () => {
-      removeClickListener();
-      removePointerdownListener();
+      clearClickListener();
+      clearPointerdownListener();
     };
   });
 
@@ -176,24 +176,24 @@
     }
   }
 
-  function removeClickListener() {
+  function clearClickListener() {
     if (clickTimer) {
       clearTimeout(clickTimer);
       clickTimer = undefined;
     }
 
-    unlistenClick?.();
-    unlistenClick = undefined;
+    removeWindowClickListener?.();
+    removeWindowClickListener = undefined;
   }
 
-  function removePointerdownListener() {
-    unlistenPointerdown?.();
-    unlistenPointerdown = undefined;
+  function clearPointerdownListener() {
+    removePointerdownListener?.();
+    removePointerdownListener = undefined;
   }
 
   function addPointerdownListener(target?: HTMLElement) {
     if (target) {
-      unlistenPointerdown = on(target, "pointerdown", handlePointerDown);
+      removePointerdownListener = on(target, "pointerdown", handlePointerDown);
     }
   }
 
@@ -252,11 +252,11 @@
 
     swipeAreaEl?.style.setProperty("width", "100vw"); // Expand swipe area to full width
 
-    unlistenPointermove = on(e.target as HTMLElement, "pointermove", handlePointerMove);
-    unlistenPointerup = on(e.target as HTMLElement, "pointerup", handlePointerUp, {
+    removePointermoveListener = on(e.target as HTMLElement, "pointermove", handlePointerMove);
+    removePointerupListener = on(e.target as HTMLElement, "pointerup", handlePointerUp, {
       passive: true,
     });
-    unlistenPointercancel = on(e.target as HTMLElement, "pointercancel", handlePointerUp, {
+    removePointercancelListener = on(e.target as HTMLElement, "pointercancel", handlePointerUp, {
       passive: true,
     });
   }
@@ -323,9 +323,9 @@
 
     dragOffset = 0;
 
-    unlistenPointercancel?.();
-    unlistenPointermove?.();
-    unlistenPointerup?.();
+    removePointercancelListener?.();
+    removePointermoveListener?.();
+    removePointerupListener?.();
   }
 
   function resetBodyStyles() {
