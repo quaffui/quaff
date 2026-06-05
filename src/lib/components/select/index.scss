@@ -10,8 +10,20 @@
     caret-color: transparent;
   }
 
+  &.q-field--use-input {
+    .q-field__input {
+      caret-color: auto;
+      cursor: text;
+    }
+  }
+
   &__menu {
     max-height: min(50vh, 20rem);
+  }
+
+  &__no-option {
+    color: var(--on-surface-variant);
+    padding: 0.75rem 1rem;
   }
 
   &__option {

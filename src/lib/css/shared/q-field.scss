@@ -268,11 +268,6 @@
     padding-top: 0.9375rem;
   }
 
-  &--focus#{&}--default &__input,
-  &--focus#{&}--filled &__input {
-    padding-top: 1rem;
-  }
-
   &--rounded &__input {
     padding: 0 1.4375rem;
   }

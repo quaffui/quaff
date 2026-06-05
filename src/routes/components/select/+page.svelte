@@ -3,7 +3,7 @@
   import { pageTitle } from "$helpers/pageTitle";
   import { QBtn, QCard, QCardActions, QCardSection, QIcon, QSelect } from "$lib";
   import { QDocs, QDocsSection } from "$private";
-  import type { QSelectOption } from "$components/select/props";
+  import type { QSelectFilterUpdate, QSelectOption } from "$components/select/props";
   import snippets from "./docs.snippets";
 
   let selectDisabled = $state(true);
@@ -34,6 +34,30 @@
   let colorSelect = $state<QSelectOption>("");
   let colorSelectValue = $state("");
   let selectMultiple: string[] = $state([]);
+  let filteredSelect = $state("");
+  let citySelect = $state("");
+  let cityOptions = $state(["Berlin", "Buenos Aires", "Cairo", "Lisbon", "Tokyo"]);
+  const allCities = [
+    "Amsterdam",
+    "Athens",
+    "Berlin",
+    "Buenos Aires",
+    "Cairo",
+    "Lisbon",
+    "London",
+    "Paris",
+    "Tokyo",
+  ];
+
+  function filterCities(value: string, update: QSelectFilterUpdate) {
+    update(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 180));
+      const query = value.trim().toLowerCase();
+      cityOptions = query
+        ? allCities.filter((city) => city.toLowerCase().includes(query))
+        : allCities.slice(0, 5);
+    });
+  }
 
   const displayValue = $derived.by(() => {
     if (!selectMultiple.length) {
@@ -81,40 +105,82 @@
         {/snippet}
 
         <div class="row q-gutter-lg">
-          <div class="col-xs-12 col-lg-6 col-xl-4">
+          <div class="q-select-docs-option-card col-xs-12 col-lg-6 col-xl-4">
             <h6 class="q-mb-sm">String options</h6>
-            <QSelect bind:value={select} {options} label="Choose an animal" />
-            <div class="q-mt-sm">Selected: {select || "None"}</div>
-          </div>
-
-          <div class="col-xs-12 col-lg-6 col-xl-4">
-            <h6 class="q-mb-sm">Object options</h6>
-            <QSelect bind:value={colorSelect} options={objectOptions} label="Choose a color" />
-            <div class="q-mt-sm">
-              Selected value:
-              {(typeof colorSelect === "string"
-                ? colorSelect
-                : JSON.stringify(colorSelect, null, 1).replaceAll("\n", " ")) || "None"}
+            <div class="q-select-docs-option-control">
+              <QSelect bind:value={select} {options} label="Choose an animal" />
+              <div class="q-mt-sm">Selected: {select || "None"}</div>
             </div>
           </div>
 
-          <div class="col-xs-12 col-lg-6 col-xl-4">
+          <div class="q-select-docs-option-card col-xs-12 col-lg-6 col-xl-4">
+            <h6 class="q-mb-sm">Object options</h6>
+            <div class="q-select-docs-option-control">
+              <QSelect bind:value={colorSelect} options={objectOptions} label="Choose a color" />
+              <div class="q-mt-sm">
+                Selected value:
+                {(typeof colorSelect === "string"
+                  ? colorSelect
+                  : JSON.stringify(colorSelect, null, 1).replaceAll("\n", " ")) || "None"}
+              </div>
+            </div>
+          </div>
+
+          <div class="q-select-docs-option-card col-xs-12 col-lg-6 col-xl-4">
             <h6 class="q-mb-sm">Emit value</h6>
             <p>
               When using object options, use the <code>emitValue</code> prop to return the
               <code>value</code> property instead of the entire object.
             </p>
-            <QSelect
-              bind:value={colorSelectValue}
-              options={objectOptions}
-              label="Choose a color"
-              emitValue
-            />
-            <div class="q-mt-sm">
-              Selected value:
-              {colorSelectValue || "None"}
+            <div class="q-select-docs-option-control">
+              <QSelect
+                bind:value={colorSelectValue}
+                options={objectOptions}
+                label="Choose a color"
+                emitValue
+              />
+              <div class="q-mt-sm">
+                Selected value:
+                {colorSelectValue || "None"}
+              </div>
             </div>
           </div>
+        </div>
+      </QDocsSection>
+
+      <QDocsSection title="Input Filtering">
+        {#snippet sectionDescription()}
+          Use <code>useInput</code> with <code>filterable</code> to let users search through local options
+          by label.
+        {/snippet}
+
+        <div class="q-ma-sm" style="max-width: 300px;">
+          <QSelect
+            bind:value={filteredSelect}
+            {options}
+            label="Search animals"
+            useInput
+            filterable
+            noOptionText="No animals found"
+          />
+        </div>
+      </QDocsSection>
+
+      <QDocsSection title="External Filtering">
+        {#snippet sectionDescription()}
+          Use <code>onFilter</code> when the option list is filtered or loaded outside the component.
+        {/snippet}
+
+        <div class="q-ma-sm" style="max-width: 300px;">
+          <QSelect
+            bind:value={citySelect}
+            options={cityOptions}
+            label="Search cities"
+            useInput
+            inputDebounce={250}
+            onFilter={filterCities}
+            noOptionText="No cities found"
+          />
         </div>
       </QDocsSection>
 
@@ -413,3 +479,14 @@
     </div>
   {/snippet}
 </QDocs>
+
+<style>
+  .q-select-docs-option-card {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .q-select-docs-option-control {
+    margin-top: auto;
+  }
+</style>

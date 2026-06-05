@@ -6,6 +6,8 @@ export type QSelectOption = string | number | { label: string | number; value: s
 
 export type QSelectValue = QSelectOption | QSelectOption[];
 
+export type QSelectFilterUpdate = (callbackFn: () => void | Promise<void>) => void;
+
 export interface QSelectProps extends NativeProps, HTMLAttributes<HTMLDivElement> {
   /**
    * Current value of the select. Can be a single value or an array of values when multiple is true.
@@ -103,6 +105,43 @@ export interface QSelectProps extends NativeProps, HTMLAttributes<HTMLDivElement
    * @default false
    */
   emitValue?: boolean;
+
+  /**
+   * Allows typing into the select field.
+   *
+   * @default false
+   */
+  useInput?: boolean;
+
+  /**
+   * Filters options by their label while typing. Requires useInput.
+   *
+   * @default false
+   */
+  filterable?: boolean;
+
+  /**
+   * Delay in milliseconds before calling onFilter after input changes.
+   *
+   * @default 300
+   */
+  inputDebounce?: number;
+
+  /**
+   * Text shown when no options are available.
+   *
+   * @default "No options"
+   */
+  noOptionText?: string;
+
+  /**
+   * Called while typing so options can be filtered or loaded externally. Requires useInput.
+   */
+  onFilter?: (
+    value: string,
+    update: QSelectFilterUpdate,
+    abort: () => void
+  ) => void | Promise<void>;
 
   /**
    * Content to be placed before the select wrapper element, usually an icon.
