@@ -36,7 +36,8 @@
   const id = $props.id();
   const contentId = `q-expansion-item__content-${id}`;
   const summaryId = `q-expansion-item__summary-${id}`;
-  const supportDetailsContent = CSS?.supports("selector(details::details-content)");
+  const supportDetailsContent =
+    typeof CSS !== "undefined" && CSS.supports("selector(details::details-content)");
   // #endregion: --- Non-reactive variables
 
   // #region:    --- Reactive variables
