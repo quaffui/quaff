@@ -1,3 +1,5 @@
+import { on } from "svelte/events";
+
 interface RippleOptions {
   center?: boolean;
   color?: string; // CSS color
@@ -104,21 +106,21 @@ export function ripple(el: HTMLElement, options: RippleOptions = {}) {
         ripple.remove();
       }, options.duration || 1000);
 
-      cancelEvents.forEach((event) => el.removeEventListener(event, removeRipple));
+      removeCancelListeners.forEach((removeCancelListener) => removeCancelListener());
     }
 
-    cancelEvents.forEach((event) => el.addEventListener(event, removeRipple, { passive: true }));
+    const removeCancelListeners = cancelEvents.map((event) =>
+      on(el, event, removeRipple, { passive: true })
+    );
   }
 
-  triggerEvents.forEach((event) =>
-    el.addEventListener(event, createRipple, { passive: event === "touchstart" })
+  const removeTriggerListeners = triggerEvents.map((event) =>
+    on(el, event, createRipple, { passive: event === "touchstart" })
   );
 
   return {
     destroy() {
-      triggerEvents.forEach((event) => {
-        el.removeEventListener(event, createRipple);
-      });
+      removeTriggerListeners.forEach((removeTriggerListener) => removeTriggerListener());
     },
     update(newOptions: RippleOptions) {
       options = newOptions;
