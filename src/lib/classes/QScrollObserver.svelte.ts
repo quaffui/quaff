@@ -1,4 +1,5 @@
 import { onMount } from "svelte";
+import { on } from "svelte/events";
 import { elFromSelector } from "$utils";
 
 type Direction = "up" | "right" | "down" | "left";
@@ -43,6 +44,7 @@ export default class QScrollObserver {
   protected lastScroll: number;
   protected horizontal: boolean = false;
   protected clearTimer: (() => void) | null = null;
+  protected removeScrollListener: (() => void) | null = null;
   protected target: Exclude<Target, string> | null = null;
   protected debounce: number = 0;
   protected handler: (e: Event) => void;
@@ -80,7 +82,7 @@ export default class QScrollObserver {
 
       this.target = parsedTarget;
 
-      parsedTarget.addEventListener("scroll", this.handler, SCROLL_LISTENER_OPTIONS);
+      this.removeScrollListener = on(parsedTarget, "scroll", this.handler, SCROLL_LISTENER_OPTIONS);
 
       return this.destroy.bind(this);
     });
@@ -163,7 +165,8 @@ export default class QScrollObserver {
     this.clearTimer?.();
     this.clearTimer = null;
 
-    this.target?.removeEventListener("scroll", this.handler, SCROLL_LISTENER_OPTIONS);
+    this.removeScrollListener?.();
+    this.removeScrollListener = null;
 
     this.target = null;
     this.direction = "down";

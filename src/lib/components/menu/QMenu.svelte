@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount, tick, untrack } from "svelte";
+  import { on } from "svelte/events";
   import { browser } from "$app/environment";
   import { doesOverlayUsePopover, getOverlayPortalTarget, usePortal } from "$utils";
   import type { QMenuAnchor, QMenuProps } from "./props";
@@ -74,12 +75,12 @@
     }
 
     syncPosition();
-    window.addEventListener("scroll", syncPosition, true);
-    window.addEventListener("resize", syncPosition);
+    const removeWindowScrollListener = on(window, "scroll", syncPosition, { capture: true });
+    const removeWindowResizeListener = on(window, "resize", syncPosition);
 
     return () => {
-      window.removeEventListener("scroll", syncPosition, true);
-      window.removeEventListener("resize", syncPosition);
+      removeWindowScrollListener();
+      removeWindowResizeListener();
     };
   });
 
@@ -88,12 +89,21 @@
       return;
     }
 
-    document.addEventListener("pointerdown", handleDocumentPointerdown, true);
-    document.addEventListener("keydown", handleDocumentKeydown, true);
+    const removeDocumentPointerdownListener = on(
+      document,
+      "pointerdown",
+      handleDocumentPointerdown,
+      {
+        capture: true,
+      }
+    );
+    const removeDocumentKeydownListener = on(document, "keydown", handleDocumentKeydown, {
+      capture: true,
+    });
 
     return () => {
-      document.removeEventListener("pointerdown", handleDocumentPointerdown, true);
-      document.removeEventListener("keydown", handleDocumentKeydown, true);
+      removeDocumentPointerdownListener();
+      removeDocumentKeydownListener();
     };
   });
   // #endregion: --- Effects

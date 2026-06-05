@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { on } from "svelte/events";
   import type { QDialogProps } from "./props";
 
   // #region:    --- Props
@@ -30,13 +31,15 @@
 
     dialogEl?.[modal ? "showModal" : "show"]();
 
+    let removeClickListener: (() => void) | undefined;
+
     const timeoutId = setTimeout(() => {
-      window.addEventListener("click", tryCancel);
+      removeClickListener = on(window, "click", tryCancel);
     }, 150);
 
     return () => {
       clearTimeout(timeoutId);
-      window.removeEventListener("click", tryCancel);
+      removeClickListener?.();
     };
   });
   // #endregion: --- Effects

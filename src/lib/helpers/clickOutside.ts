@@ -1,3 +1,5 @@
+import { on } from "svelte/events";
+
 export function clickOutside(node: HTMLElement, onEventFunction: () => unknown) {
   const handleClick = (event: MouseEvent) => {
     const path = event.composedPath();
@@ -7,11 +9,11 @@ export function clickOutside(node: HTMLElement, onEventFunction: () => unknown) 
     }
   };
 
-  document.addEventListener("click", handleClick);
+  const removeClickListener = on(document, "click", handleClick);
 
   return {
     destroy() {
-      document.removeEventListener("click", handleClick);
+      removeClickListener();
     },
   };
 }
@@ -34,11 +36,11 @@ export function clickOutsideDialog(node: HTMLDialogElement, onEventFunction: () 
     }
   };
 
-  document.addEventListener("click", handleClick);
+  const removeClickListener = on(document, "click", handleClick);
 
   return {
     destroy() {
-      document.removeEventListener("click", handleClick);
+      removeClickListener();
     },
   };
 }
