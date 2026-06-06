@@ -265,13 +265,13 @@
     opacity: 0.75;
     width: 100%;
     letter-spacing: 0.5px;
+  }
 
-    &:global(.clickable) {
-      cursor: pointer;
+  :global(.prop-type.clickable) {
+    cursor: pointer;
 
-      &:hover {
-        opacity: 1;
-      }
+    &:hover {
+      opacity: 1;
     }
   }
 
