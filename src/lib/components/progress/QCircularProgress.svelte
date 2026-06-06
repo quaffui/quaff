@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { useSize } from "$composables";
+  import { useColor, useSize } from "$composables";
   import { between } from "$utils";
   import type { QCircularProgressProps } from "./props";
 
@@ -44,10 +44,8 @@
   // #region:    --- Derived values
   const qSize = $derived(useSize(size, "q-circular-progress"));
 
-  const parsedColor = $derived(color.includes("#") ? color : `var(--${color}, ${color})`);
-  const parsedTrackColor = $derived(
-    trackColor.includes("#") ? trackColor : `var(--${trackColor}, ${trackColor})`
-  );
+  const parsedColor = $derived(useColor(color));
+  const parsedTrackColor = $derived(useColor(trackColor));
 
   const svgStyle = $derived(`rotate3d(0, 0, 1, ${angle - 90}deg)`);
   const circleStyle = $derived(

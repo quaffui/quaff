@@ -131,7 +131,7 @@
           the separator. This is useful when you want to visually indent the separator.
         {/snippet}
 
-        <div class="q-my-md" style="border: 1px dashed var(--outline); padding: 1rem;">
+        <div class="q-my-md" style="border: 1px dashed var(--outline-variant); padding: 1rem;">
           <p>Container with border</p>
           <QSeparator text="Normal Separator" />
           <div class="q-my-md"></div>

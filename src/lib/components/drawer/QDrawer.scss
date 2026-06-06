@@ -38,7 +38,7 @@
     }
 
     &:not(.q-drawer--#{$side}).q-drawer--bordered {
-      @include mixins.border(var(--outline), $side);
+      @include mixins.border($position: $side);
     }
   }
 

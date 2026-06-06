@@ -30,7 +30,7 @@
   }
 
   &.q-header--bordered {
-    @include mixins.border(var(--outline), "bottom");
+    @include mixins.border($position: "bottom");
   }
 
   &.q-header--dense {
