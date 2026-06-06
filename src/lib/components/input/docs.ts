@@ -12,8 +12,8 @@ export const QInputDocs: QComponentDocs = {
     events: [
       {
         name: "input",
-        type: "(value: string) => void",
-        description: "Emitted when the user types in the input component.",
+        type: "InputEvent",
+        description: "Native input event from the inner input element.",
       },
     ],
   },

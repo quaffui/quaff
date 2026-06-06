@@ -18,6 +18,9 @@
   let beforeValue = $state("");
   let afterValue = $state("");
   let combinedValue = $state("");
+  let yearValue = $state(2026);
+  let handleValue = $state("");
+  let lastInputValue = $state("");
 </script>
 
 <svelte:head>
@@ -106,6 +109,35 @@
           errorMessage="Only the error message shows."
           filled
         />
+      </QDocsSection>
+
+      <QDocsSection title="Native Input Attributes">
+        {#snippet sectionDescription()}
+          Native input attributes are forwarded to the inner <code>input</code> element.
+        {/snippet}
+        <QInput
+          bind:value={yearValue}
+          type="number"
+          min={1900}
+          max={2100}
+          step={1}
+          label="Year"
+          class="q-mt-md"
+          outlined
+        />
+        <QInput
+          bind:value={handleValue}
+          maxlength={16}
+          autocomplete="username"
+          placeholder="Letters and numbers"
+          label="Handle"
+          class="q-mt-md"
+          outlined
+          oninput={(event) => {
+            lastInputValue = event.currentTarget.value;
+          }}
+        />
+        <p class="text-sm q-mt-sm">Last input event value: {lastInputValue || "None"}</p>
       </QDocsSection>
 
       <QDocsSection title="Using Slots for Icons and Content">
