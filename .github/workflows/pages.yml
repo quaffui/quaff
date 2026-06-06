@@ -2,6 +2,10 @@ name: Deploy Docs to GitHub Pages
 
 on:
   workflow_dispatch:
+    inputs:
+      version:
+        description: "version shown in docs (e.g. 1.2.3)"
+        required: true
 
 jobs:
   build-and-deploy:
@@ -9,18 +13,18 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Install Bun
         uses: oven-sh/setup-bun@v2
         with:
-          bun-version: 1.3.1
+          bun-version: 1.3.14
 
       - name: Install Dependencies
         run: bun install --frozen-lockfile
 
-      - name: Generate Plugins
-        run: bun run gen:plugins
+      - name: Set docs version
+        run: bun scripts/setPublishVersion.ts "${{ github.event.inputs.version }}"
 
       - name: Build SvelteKit docs
         run: bun run build:docs
@@ -28,7 +32,7 @@ jobs:
           BUILD_DOCS: "true"
 
       - name: Upload Artifacts
-        uses: actions/upload-pages-artifact@v4
+        uses: actions/upload-pages-artifact@v5
         with:
           path: "build/"
 
@@ -48,4 +52,4 @@ jobs:
     steps:
       - name: Deploy
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5

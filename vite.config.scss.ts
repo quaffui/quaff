@@ -17,7 +17,7 @@ export default {
   },
   build: {
     emptyOutDir: false,
-    rollupOptions: {
+    rolldownOptions: {
       input: "src/lib/css/index.scss",
       output: {
         dir: "dist/css",

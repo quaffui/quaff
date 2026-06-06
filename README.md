@@ -63,7 +63,7 @@ You can preview the production build with `bun run preview`.
 - `/src/lib/css` - Styling and theming utilities
 - `/src/routes` - Documentation and examples
 - `/docgen` - Documentation generation tools
-- `/plugins` - Preprocessors used by Quaff (in development, don't forget to run `bun gen:plugins` before `bun dev`)
+- `/plugins` - Preprocessors used by Quaff (compiled by the relevant package scripts)
 
 ## Acknowledgements
 

@@ -68,6 +68,10 @@ function docgenPlugin(): Plugin {
   return {
     name: "docgen-plugin",
     async configResolved(config) {
+      if (config.command !== "serve") {
+        return;
+      }
+
       const svelteKitPathResolved = resolvePath(SVELTE_KIT_PATH);
       const svelteKitTsconfigPathResolved = resolvePath(SVELTE_KIT_PATH, "tsconfig.json");
 
