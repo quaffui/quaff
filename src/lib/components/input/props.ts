@@ -1,8 +1,10 @@
 import type { NativeProps } from "$utils";
 import type { Snippet } from "svelte";
-import type { HTMLAttributes } from "svelte/elements";
+import type { HTMLAttributes, HTMLInputAttributes } from "svelte/elements";
 
-export interface QInputProps extends NativeProps, HTMLAttributes<HTMLDivElement> {
+type QInputNativeAttributes = Omit<HTMLInputAttributes, "class" | "style" | "value" | "disabled">;
+
+export interface QInputProps extends NativeProps, QInputNativeAttributes {
   /**
    * Makes the input component more compact.
    *
@@ -69,7 +71,21 @@ export interface QInputProps extends NativeProps, HTMLAttributes<HTMLDivElement>
   /**
    * Current value of the input field. This property is bindable.
    */
-  value: string;
+  value: string | number;
+
+  /**
+   * Classes applied to the field wrapper.
+   *
+   * @default undefined
+   */
+  class?: HTMLAttributes<HTMLDivElement>["class"];
+
+  /**
+   * Styles applied to the field wrapper.
+   *
+   * @default undefined
+   */
+  style?: HTMLAttributes<HTMLDivElement>["style"];
 
   /**
    * Content to be placed before the input wrapper element, usually an icon.
