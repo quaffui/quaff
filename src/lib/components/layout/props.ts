@@ -8,7 +8,7 @@ export type QLayoutViewOptions = `${"l"|"h"}${"h"|"H"}${"r"|"h"} ${"l"|"L"}${"p"
 export interface QLayoutProps extends NativeProps, HTMLAttributes<HTMLDivElement> {
   /**
    * The layout view configuration, which defines how layout components (header, railbars, drawers, footer) should be displayed on screen.
-   * See <a href="https://quasar.dev/layout/layout/#understanding-the-view-prop" target="_blank">Quasar's explanation on the view prop</a>.
+   * Controls how layout components (header, railbars, drawers, footer) are displayed on screen.
    * @default "hhh lpr fff"
    */
   view?: QLayoutViewOptions;
