@@ -48,7 +48,7 @@
     }
 
     &:not(.q-railbar--#{$side}).q-railbar--bordered {
-      @include mixins.border(var(--outline), $side);
+      @include mixins.border($position: $side);
     }
   }
 }

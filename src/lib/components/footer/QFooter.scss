@@ -22,7 +22,7 @@
   background-color: var(--surface);
 
   &.q-footer--bordered {
-    @include mixins.border(var(--outline), "top");
+    @include mixins.border($position: "top");
   }
 
   &.q-footer--collapsed {

@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import { QCircularProgress, QIcon } from "$lib";
-  import { useSize } from "$composables";
+  import { useColor, useSize } from "$composables";
   import { ripple } from "$helpers";
   import { isActivationKey, extractImgSrc, type QEvent } from "$utils";
   import type { MaterialSymbol } from "material-symbols";
@@ -47,12 +47,12 @@
 
   const src = $derived(extractImgSrc(icon));
 
-  const variants: Partial<Record<QBtnVariantOptions, boolean>> = {
+  const variants: Partial<Record<QBtnVariantOptions, boolean>> = $derived({
     filled,
     tonal,
     outlined,
     flat,
-  };
+  });
 
   const boolVariant = $derived(
     (Object.keys(variants) as QBtnVariantOptions[]).find((key) => variants[key])
@@ -82,7 +82,7 @@
 
   const colorVar = $derived(computedColor && `var(--${computedColor})`);
 
-  const rippleColorVar = $derived(rippleColor ? `var(--${rippleColor}, ${rippleColor})` : colorVar);
+  const rippleColorVar = $derived(rippleColor ? useColor(rippleColor) : colorVar);
   // #endregion: --- Derived values
 
   // #region:    --- Lifecycle

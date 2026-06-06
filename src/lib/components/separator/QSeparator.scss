@@ -25,6 +25,8 @@
 }
 
 .q-separator {
+  background-color: var(--q-separator-color, "outline-variant");
+
   border: none;
   flex: 1 1 auto;
 
