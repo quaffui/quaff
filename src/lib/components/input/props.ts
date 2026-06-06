@@ -1,6 +1,7 @@
 import type { NativeProps } from "$utils";
 import type { Snippet } from "svelte";
 import type { HTMLAttributes, HTMLInputAttributes } from "svelte/elements";
+import type { QInputFillMask } from "./mask";
 
 type QInputNativeAttributes = Omit<HTMLInputAttributes, "class" | "style" | "value" | "disabled">;
 
@@ -67,6 +68,27 @@ export interface QInputProps extends NativeProps, QInputNativeAttributes {
    * @default false
    */
   rounded?: boolean;
+
+  /**
+   * Applies a mask to text input. Supports tokens (#, S, N, A, a, X, x) and named masks: date, datetime, time, fulltime, phone, card.
+   *
+   * @default undefined
+   */
+  mask?: string;
+
+  /**
+   * Fills empty mask token positions with underscores, or with the first character of the provided string.
+   *
+   * @default undefined
+   */
+  fillMask?: QInputFillMask;
+
+  /**
+   * Stores only mask token characters in the bindable value.
+   *
+   * @default false
+   */
+  unmaskedValue?: boolean;
 
   /**
    * Current value of the input field. This property is bindable.

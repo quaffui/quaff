@@ -1,8 +1,11 @@
 <script lang="ts">
-  import type { QEvent } from "$utils";
+  import { type QEvent } from "$utils";
+  import { deleteMaskedToken, maskCaretPosition, maskValue, unmaskValue } from "./mask";
   import type { QInputProps } from "./props";
 
   type QInputFocusEvent = QEvent<FocusEvent, HTMLInputElement>;
+  type QInputInputEvent = QEvent<Event, HTMLInputElement>;
+  type QInputKeyboardEvent = QEvent<KeyboardEvent, HTMLInputElement>;
 
   // #region:    --- Reactive variables
   let focus = $state(false);
@@ -33,19 +36,99 @@
     placeholder = "",
     tabindex,
     type,
+    mask,
+    fillMask,
+    unmaskedValue = false,
+    oninput,
+    onkeydown,
     ...inputProps
   }: QInputProps = $props();
   // #endregion: --- Props
 
   // #region:    --- Derived values
+  const displayValue = $derived(
+    mask ? maskValue(String(value ?? ""), mask, fillMask) : (value ?? "")
+  );
   const hasValue = $derived(value !== "" && value !== undefined && value !== null);
   const hasNativePlaceholder = $derived(
     ["date", "datetime-local", "month", "time", "week"].includes(String(type))
   );
-  const active = $derived(hasValue || focus || !!placeholder || hasNativePlaceholder);
+  const active = $derived(
+    hasValue || focus || !!placeholder || hasNativePlaceholder || (!!mask && fillMask !== undefined)
+  );
+  const inputType = $derived(mask ? (type ?? "text") : type);
   // #endregion: --- Derived values
 
   // #region:    --- Functions
+  function setCaret(input: HTMLInputElement, position: number) {
+    try {
+      input.setSelectionRange(position, position);
+    } catch {
+      // Some native input types do not support text selection.
+    }
+  }
+
+  function onInput(e: QInputInputEvent) {
+    const input = e.currentTarget;
+
+    if (!mask) {
+      if (type === "number" || type === "range") {
+        value = Number.isNaN(input.valueAsNumber) ? "" : input.valueAsNumber;
+      } else {
+        value = input.value;
+      }
+      oninput?.(e);
+      return;
+    }
+
+    const cursor = input.selectionStart ?? input.value.length;
+    const previousDisplayLength = String(displayValue).length;
+    const masked = maskValue(input.value, mask, fillMask);
+    const unmasked = unmaskValue(masked, mask, fillMask);
+    const tokenCount =
+      fillMask !== undefined && fillMask !== false && cursor > previousDisplayLength
+        ? unmasked.length
+        : unmaskValue(input.value.slice(0, cursor), mask, fillMask).length;
+    const nextCaret = maskCaretPosition(tokenCount, mask, masked.length);
+
+    input.value = masked;
+    value = unmaskedValue ? unmasked : masked;
+    setCaret(input, nextCaret);
+    queueMicrotask(() => setCaret(input, nextCaret));
+    oninput?.(e);
+  }
+
+  function onKeydown(e: QInputKeyboardEvent) {
+    onkeydown?.(e);
+    if (e.defaultPrevented || !mask || (e.key !== "Backspace" && e.key !== "Delete")) {
+      return;
+    }
+
+    const input = e.currentTarget;
+    const start = input.selectionStart;
+    const end = input.selectionEnd;
+    if (start === null || end === null || start !== end) {
+      return;
+    }
+
+    const next = deleteMaskedToken(
+      input.value,
+      mask,
+      start,
+      e.key === "Backspace" ? "backward" : "forward",
+      fillMask
+    );
+    if (!next) {
+      return;
+    }
+
+    e.preventDefault();
+    input.value = next.masked;
+    value = next[unmaskedValue ? "unmasked" : "masked"];
+    setCaret(input, next.caret);
+    queueMicrotask(() => setCaret(input, next.caret));
+  }
+
   function onFocus(e: QInputFocusEvent) {
     focus = true;
     onfocus?.(e);
@@ -101,9 +184,11 @@
       <input
         {...inputProps}
         class="q-field__input"
-        bind:value
+        value={displayValue}
         {placeholder}
-        {type}
+        type={inputType}
+        oninput={onInput}
+        onkeydown={onKeydown}
         onfocus={onFocus}
         onblur={onBlur}
         disabled={disable}
