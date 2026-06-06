@@ -12,7 +12,6 @@ vite.config.ts.timestamp-*
 .vscode
 .vscode/*
 
-src/lib/helpers/version.ts
 src/lib/components/**/docs.props.ts
 src/routes/components/**/docs.snippets.ts
 !src/routes/components/layout/docs.snippets.ts
