@@ -57,7 +57,7 @@
           </p>
         {/snippet}
 
-        <QLayout style="border: 1px solid var(--outline)">
+        <QLayout style="border: 1px solid var(--outline-variant)">
           <div class="q-pa-md" style="max-height: 10rem">
             {lorem}
           </div>
@@ -77,7 +77,7 @@
           prop.
         {/snippet}
 
-        <QLayout style="border: 1px solid var(--outline); height: 15rem">
+        <QLayout style="border: 1px solid var(--outline-variant); height: 15rem">
           <div class="q-pa-md" style="max-height: 10rem">
             {lorem}
           </div>
@@ -96,7 +96,7 @@
           height can only be set in pixels (passing a number). The default height is 64px.
         {/snippet}
 
-        <QLayout style="border: 1px solid var(--outline)">
+        <QLayout style="border: 1px solid var(--outline-variant)">
           <div class="q-pa-md" style="max-height: 10rem">
             {lorem}
           </div>

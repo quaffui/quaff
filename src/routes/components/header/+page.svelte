@@ -108,7 +108,7 @@
         {/snippet}
         <div
           class="example-boundary"
-          style="height: 300px; overflow: hidden; border: 1px solid var(--outline, #ccc);"
+          style="height: 300px; overflow: hidden; border: 1px solid var(--outline-variant, #ccc);"
         >
           <QLayout view="hHh Lpr fFf" style="min-height: 300px;">
             {#snippet header()}
@@ -137,7 +137,7 @@
         {/snippet}
         <div
           class="example-boundary"
-          style="height: 300px; overflow: hidden; border: 1px solid var(--outline);"
+          style="height: 300px; overflow: hidden; border: 1px solid var(--outline-variant);"
         >
           <QLayout view="hHh Lpr fFf" style="min-height: 300px;">
             {#snippet header()}
@@ -154,7 +154,7 @@
 
         <div
           class="example-boundary q-mt-md"
-          style="height: 300px; overflow: hidden; border: 1px solid var(--outline);"
+          style="height: 300px; overflow: hidden; border: 1px solid var(--outline-variant);"
         >
           <QLayout view="hHh Lpr fFf" style="min-height: 300px;">
             {#snippet header()}
@@ -197,7 +197,7 @@
 
 <style>
   .example-boundary {
-    border: 1px dashed var(--outline, #1976d2); /* Corrected CSS variable */
+    border: 1px dashed var(--outline-variant, #1976d2); /* Corrected CSS variable */
     position: relative; /* For QLayout container behavior */
   }
 </style>

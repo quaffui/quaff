@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { useSize } from "$composables";
+  import { useColor, useSize } from "$composables";
   import type { QSeparatorProps } from "./props";
 
   // #region:    --- Props
@@ -7,7 +7,7 @@
     spacing = "none",
     inset = false,
     vertical = false,
-    color = "outline",
+    color = "outline-variant",
     size,
     text,
     textAlign = vertical ? "middle" : "center",
@@ -18,13 +18,14 @@
   // #region:    --- Derived values
   const orientation = $derived(vertical ? "vertical" : "horizontal");
   const qSize = $derived(useSize(spacing, "q-separator__spacing"));
+  const parsedColor = $derived(useColor(color));
   // #endregion: --- Derived values
 
   Q.classes("q-separator", {
     bemClasses: {
       vertical,
     },
-    classes: [`bg-${color}`, qSize.class],
+    classes: [qSize.class],
   });
   Q.classes("q-separator__wrapper", {
     bemClasses: {
@@ -35,7 +36,7 @@
   });
 </script>
 
-<div {...props} class="q-separator__wrapper" data-quaff>
+<div {...props} class="q-separator__wrapper" data-quaff style:--q-separator-color={parsedColor}>
   {#if text}
     {#if (vertical && textAlign !== "top") || (!vertical && textAlign !== "left")}
       {@render hr()}

@@ -98,7 +98,7 @@
     }
 
     &--outlined {
-      outline: solid 0.0625rem var(--outline);
+      outline: solid 0.0625rem var(--outline-variant);
 
       &:not([aria-disabled]):focus {
         outline-color: var(--primary);

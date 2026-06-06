@@ -73,7 +73,7 @@
           hover or focus.
         {/snippet}
 
-        <div style="height: 300px; border: 1px solid var(--outline);">
+        <div style="height: 300px; border: 1px solid var(--outline-variant);">
           <QLayout view="hHh LpR fFf">
             {#snippet railbarLeft()}
               <QRailbar>
@@ -123,7 +123,7 @@
           the content.
         {/snippet}
 
-        <div style="height: 300px; border: 1px solid var(--outline);">
+        <div style="height: 300px; border: 1px solid var(--outline-variant);">
           <QLayout view="hHh LpR fFf">
             {#snippet railbarLeft()}
               <QRailbar bordered>
@@ -173,7 +173,7 @@
           prop.
         {/snippet}
 
-        <div style="height: 300px; border: 1px solid var(--outline);">
+        <div style="height: 300px; border: 1px solid var(--outline-variant);">
           <QLayout view="hHh LpR fFf">
             {#snippet railbarRight()}
               <QRailbar side="right" bordered>
@@ -222,7 +222,7 @@
           Adjust the width of the railbar using the <code>width</code> prop. The default width is 88px.
         {/snippet}
 
-        <div style="height: 300px; border: 1px solid var(--outline);">
+        <div style="height: 300px; border: 1px solid var(--outline-variant);">
           <QLayout view="hHh LpR fFf">
             {#snippet railbarLeft()}
               <QRailbar width={120} bordered>
@@ -272,7 +272,7 @@
           QFooter, and QDrawers. Here's an example of a complete layout with a railbar.
         {/snippet}
 
-        <div style="height: 400px; border: 1px solid var(--outline);">
+        <div style="height: 400px; border: 1px solid var(--outline-variant);">
           <QLayout view="hHh LpR fFf">
             <!-- Header -->
             {#snippet header()}
@@ -429,7 +429,7 @@
           applications that need different types of navigation or tools on different sides.
         {/snippet}
 
-        <div style="height: 300px; border: 1px solid var(--outline);">
+        <div style="height: 300px; border: 1px solid var(--outline-variant);">
           <QLayout view="hHh LpR fFf">
             <!-- Left Railbar -->
             {#snippet railbarLeft()}
@@ -503,7 +503,7 @@
           of the layout or stops at the header/footer.
         {/snippet}
 
-        <div style="height: 350px; border: 1px solid var(--outline);">
+        <div style="height: 350px; border: 1px solid var(--outline-variant);">
           <QLayout view="hhh lpr fff">
             {#snippet header()}
               <QHeader>
@@ -568,7 +568,7 @@
           </QLayout>
         </div>
 
-        <div class="q-mt-lg" style="height: 350px; border: 1px solid var(--outline);">
+        <div class="q-mt-lg" style="height: 350px; border: 1px solid var(--outline-variant);">
           <QLayout view="lhh lpr lff">
             {#snippet header()}
               <QHeader>
@@ -635,7 +635,7 @@
           The railbar can be styled using standard class props. Here are some styling examples.
         {/snippet}
 
-        <div style="height: 300px; border: 1px solid var(--outline);">
+        <div style="height: 300px; border: 1px solid var(--outline-variant);">
           <QLayout view="hHh LpR fFf">
             {#snippet railbarLeft()}
               <QRailbar bordered class="surface-variant">

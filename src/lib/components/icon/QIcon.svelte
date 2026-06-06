@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { useSize } from "$composables";
+  import { useSize, useColor } from "$composables";
   import type { QIconProps } from "./props";
 
   // #region:    --- Props
@@ -20,7 +20,7 @@
   // #region:    --- Derived values
   const qSize = $derived(useSize(size, "q-icon"));
 
-  const parsedColor = $derived(color && `var(--${color.replace("#", "")}, ${color})`);
+  const parsedColor = $derived(color && useColor(color));
 
   const imgAttrs = $derived({
     alt: "Quaff Image Icon",

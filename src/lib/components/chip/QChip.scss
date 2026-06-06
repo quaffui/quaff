@@ -79,7 +79,7 @@
     }
 
     &.q-chip--outlined {
-      outline: 1px solid var(--outline);
+      outline: 1px solid var(--outline-variant);
 
       &:focus:not([aria-disabled]) {
         outline-color: var(--secondary);

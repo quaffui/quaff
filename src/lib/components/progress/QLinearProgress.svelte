@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { useSize } from "$composables";
+  import { useColor, useSize } from "$composables";
   import type { QLinearProgressProps } from "./props";
 
   // #region:    --- Props
@@ -22,10 +22,8 @@
   const normalized = $derived(value > 1 ? value / 100 : value);
   const normalizedBuffer = $derived(buffer && buffer > 1 ? buffer / 100 : buffer);
 
-  const parsedColor = $derived(color.includes("#") ? color : `var(--${color}, ${color})`);
-  const parsedTrackColor = $derived(
-    trackColor.includes("#") ? trackColor : `var(--${trackColor}, ${trackColor})`
-  );
+  const parsedColor = $derived(useColor(color));
+  const parsedTrackColor = $derived(useColor(trackColor));
 
   const qSize = $derived(useSize(size, "q-linear-progress"));
 
