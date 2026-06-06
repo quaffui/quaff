@@ -2,7 +2,7 @@
   import type { QEvent } from "$utils";
   import type { QInputProps } from "./props";
 
-  type QInputFocusEvent = QEvent<FocusEvent, HTMLDivElement>;
+  type QInputFocusEvent = QEvent<FocusEvent, HTMLInputElement>;
 
   // #region:    --- Reactive variables
   let focus = $state(false);
@@ -26,23 +26,34 @@
     append = undefined,
     after = undefined,
     value = $bindable(),
-    ...props
+    class: userClass,
+    style,
+    onfocus,
+    onblur,
+    placeholder = "",
+    tabindex,
+    type,
+    ...inputProps
   }: QInputProps = $props();
   // #endregion: --- Props
 
   // #region:    --- Derived values
-  const active = $derived(value || focus);
+  const hasValue = $derived(value !== "" && value !== undefined && value !== null);
+  const hasNativePlaceholder = $derived(
+    ["date", "datetime-local", "month", "time", "week"].includes(String(type))
+  );
+  const active = $derived(hasValue || focus || !!placeholder || hasNativePlaceholder);
   // #endregion: --- Derived values
 
   // #region:    --- Functions
   function onFocus(e: QInputFocusEvent) {
     focus = true;
-    props.onfocus?.(e);
+    onfocus?.(e);
   }
 
   function onBlur(e: QInputFocusEvent) {
     focus = false;
-    props.onblur?.(e);
+    onblur?.(e);
   }
   // #endregion: --- Functions
 
@@ -63,13 +74,13 @@
       disable,
       error,
     },
-    classes: [props.class, "q-input"],
+    classes: [userClass, "q-input"],
   });
 </script>
 
 <div
-  {...props}
   class="q-field"
+  {style}
   style:--snippet-prepend-width="{snippetPrependWidth}px"
   aria-disabled={disable || undefined}
   data-quaff
@@ -88,13 +99,15 @@
         </div>
       {/if}
       <input
+        {...inputProps}
         class="q-field__input"
         bind:value
-        placeholder=""
+        {placeholder}
+        {type}
         onfocus={onFocus}
         onblur={onBlur}
         disabled={disable}
-        tabindex={disable === true ? -1 : 0}
+        tabindex={disable === true ? -1 : (tabindex ?? 0)}
       />
       <span class="q-field__label">{label}</span>
 
