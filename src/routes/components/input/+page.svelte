@@ -21,6 +21,8 @@
   let yearValue = $state(2026);
   let handleValue = $state("");
   let lastInputValue = $state("");
+  let phoneValue = $state("");
+  let batchCodeValue = $state("");
 </script>
 
 <svelte:head>
@@ -138,6 +140,37 @@
           }}
         />
         <p class="text-sm q-mt-sm">Last input event value: {lastInputValue || "None"}</p>
+      </QDocsSection>
+
+      <QDocsSection title="Input Masks">
+        {#snippet sectionDescription()}
+          Use <code>mask</code> for formatted text input. Set <code>unmaskedValue</code> when the
+          bound value should only contain token characters, and <code>fillMask</code> when empty
+          token positions should remain visible. Tokens: <code>#</code> digit, <code>S</code>
+          letter,
+          <code>N</code> alphanumeric, <code>A</code> uppercase letter, <code>a</code> lowercase
+          letter, <code>X</code> uppercase alphanumeric, and <code>x</code> lowercase alphanumeric.
+        {/snippet}
+        <QInput
+          bind:value={phoneValue}
+          mask="phone"
+          hint="Mask: phone"
+          unmaskedValue
+          label="Phone"
+          class="q-mt-md"
+          outlined
+        />
+        <p class="text-sm q-mt-sm">Unmasked phone value: {phoneValue || "None"}</p>
+        <QInput
+          bind:value={batchCodeValue}
+          mask="AA-####"
+          hint="Mask: AA-####"
+          fillMask
+          label="Batch code"
+          class="q-mt-md"
+          outlined
+        />
+        <p class="text-sm q-mt-sm">Masked batch code: {batchCodeValue || "None"}</p>
       </QDocsSection>
 
       <QDocsSection title="Using Slots for Icons and Content">
