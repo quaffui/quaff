@@ -219,10 +219,10 @@
     <QCardSection style="max-height: 416px; overflow-y: auto">
       <QList separator bordered>
         {#each QDocument.docs[api[index]] as doc (doc)}
-          <QItem style="overflow-x: auto">
+          <QItem>
             <QItemSection type="content">
               {#snippet headline()}
-                <div class="q-my-sm flex-center" style="display: flex; flex: 1 1 0">
+                <div class="q-api__doc-heading q-my-sm">
                   <span
                     class="q-px-sm q-py-xs q-mr-xs"
                     style="background-color: var(--surface-container); border-radius: 0.5rem"
@@ -273,6 +273,19 @@
     &:hover {
       opacity: 1;
     }
+  }
+
+  .q-api__doc-heading {
+    display: flex;
+    align-items: center;
+    max-width: 100%;
+    min-width: 0;
+    overflow-x: auto;
+    border-radius: 0;
+  }
+
+  .q-api__doc-heading :global(pre) {
+    margin: 0;
   }
 
   :global(.q-drawer.api-drawer pre) {
