@@ -29,10 +29,12 @@
 </script>
 
 <div {id} style="margin-bottom:48px">
-  <div class="flex justify-between q-mb-sm">
+  <div class="q-docs-section__header q-mb-sm">
     <h5>{title}</h5>
     {#if code && !noCode}
-      <QBtn icon="code" variant="outlined" round onclick={() => (dialog = true)} />
+      <div class="q-docs-section__actions">
+        <QBtn icon="code" variant="outlined" round onclick={() => (dialog = true)} />
+      </div>
       <QDialog class="snippet-dialog" bind:value={dialog} modal style="max-width: 75vw">
         <QCodeBlock {code} language="svelte" {title} copiable />
       </QDialog>
@@ -49,3 +51,20 @@
     {@render children?.()}
   </div>
 </div>
+
+<style>
+  .q-docs-section__header {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .q-docs-section__header h5 {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .q-docs-section__actions {
+    flex: 0 0 auto;
+  }
+</style>
