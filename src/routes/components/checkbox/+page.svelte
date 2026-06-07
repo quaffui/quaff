@@ -1,4 +1,5 @@
 <script lang="ts">
+  import QCard from "$components/card/QCard.svelte";
   import { QCheckboxDocs } from "$components/checkbox/docs";
   import { pageTitle } from "$helpers/pageTitle";
   import { QBtn, QCheckbox, QIcon, QItem, QItemSection, QList } from "$lib";
@@ -17,7 +18,9 @@
 
 <QDocs {snippets} componentDocs={QCheckboxDocs}>
   {#snippet display()}
-    <QCheckbox label="I agree to the terms and conditions" bind:value={value1} />
+    <QCard>
+      <QCheckbox label="I agree to the terms and conditions" bind:value={value1} />
+    </QCard>
   {/snippet}
 
   {#snippet usage()}

@@ -22,8 +22,8 @@
   docDescription="QProgress provides visual feedback about the progress of a task or operation. It can be used to indicate the completion status of a process, such as file uploads, downloads, or any other time-consuming tasks."
 >
   {#snippet display()}
-    <div class="flex column q-gap-lg" style="width: 75%;">
-      <QLinearProgress value={75} color="primary" trackColor="secondary" />
+    <QCard class="flex column q-gap-lg" style="width: 75%">
+      <QLinearProgress value={75} color="primary" trackColor="secondary" size="0.5rem" />
       <QCircularProgress
         style="align-self: center;"
         value={75}
@@ -31,7 +31,7 @@
         size="4em"
         showValue
       />
-    </div>
+    </QCard>
   {/snippet}
 
   {#snippet usage()}

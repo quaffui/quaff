@@ -1,7 +1,7 @@
 <script lang="ts">
   import { QIconDocs } from "$components/icon/docs";
   import { pageTitle } from "$helpers/pageTitle";
-  import { QIcon } from "$lib";
+  import { QCard, QIcon } from "$lib";
   import { QDocs, QDocsSection } from "$private";
   import snippets from "./docs.snippets";
 </script>
@@ -12,7 +12,9 @@
 
 <QDocs {snippets} componentDocs={QIconDocs}>
   {#snippet display()}
-    <QIcon name="check" />
+    <QCard>
+      <QIcon name="waving_hand" />
+    </QCard>
   {/snippet}
 
   {#snippet usage()}

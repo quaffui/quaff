@@ -11,20 +11,18 @@
 </svelte:head>
 
 <QDocs {snippets} componentDocs={QHeaderDocs}>
-  {#snippet display()}
-    <div class="example-boundary" style="width: 50%;">
-      <QLayout view="hHh Lpr fFf" style="min-height: 200px;">
-        {#snippet header()}
-          <QHeader elevated>
-            <QToolbarTitle>My App Header</QToolbarTitle>
-          </QHeader>
-        {/snippet}
+  {#snippet display()}>
+    <QLayout class="surface" style="height: 100%; width: 75%; min-width: unset; min-height: unset">
+      {#snippet header()}
+        <QHeader elevated>
+          <QToolbarTitle>My App Header</QToolbarTitle>
+        </QHeader>
+      {/snippet}
 
-        {#snippet content()}
-          <div class="text-center q-py-lg">Page content goes here.</div>
-        {/snippet}
-      </QLayout>
-    </div>
+      {#snippet content()}
+        <div class="text-center q-py-lg">Page content goes here.</div>
+      {/snippet}
+    </QLayout>
   {/snippet}
 
   {#snippet usage()}

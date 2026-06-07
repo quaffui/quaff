@@ -115,7 +115,9 @@
 
 <QDocs {snippets} componentDocs={QTableDocs}>
   {#snippet display()}
-    <QTable {columns} rows={rows.slice(0, 3)} />
+    <QCard>
+      <QTable {columns} rows={rows.slice(0, 3)} bordered flat />
+    </QCard>
   {/snippet}
 
   {#snippet usage()}

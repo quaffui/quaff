@@ -31,7 +31,7 @@
 
 <QDocs {snippets} componentDocs={QInputDocs}>
   {#snippet display()}
-    <QInput bind:value={defaultValue} label="Standard Input" class="q-mt-md" />
+    <QInput bind:value={defaultValue} label="Standard Input" filled class="q-mt-md" />
   {/snippet}
 
   {#snippet usage()}

@@ -18,7 +18,9 @@
 
 <QDocs {snippets} componentDocs={QSwitchDocs}>
   {#snippet display()}
-    <QSwitch bind:value={toggle} label="Toggle me" icons />
+    <QCard>
+      <QSwitch bind:value={toggle} label="Toggle me" icons />
+    </QCard>
   {/snippet}
 
   {#snippet usage()}

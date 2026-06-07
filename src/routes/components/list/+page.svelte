@@ -16,7 +16,7 @@
 
 <QDocs {snippets} componentDocs={[QListDocs, QItemDocs, QItemSectionDocs]}>
   {#snippet display()}
-    <QList bordered>
+    <QList bordered class="surface">
       <QItem clickable>
         <QItemSection type="avatar">
           <QIcon name="inbox" />
@@ -330,7 +330,7 @@
       <QDocsSection title="List Styling Options">
         {#snippet sectionDescription()}
           QList offers several styling options through its props. <code>bordered</code> adds a
-          border around the list, <code>roundedBorders</code> makes those borders rounded, and
+          border around the list, <code>noRound</code> removes the rounded borders, and
           <code>padding</code> adds internal spacing.
         {/snippet}
 
@@ -353,12 +353,12 @@
             </QItem>
           </QList>
 
-          <QList bordered roundedBorders class="q-my-md">
+          <QList bordered noRound class="q-my-md">
             <QItem>
-              <QItemSection>Rounded</QItemSection>
+              <QItemSection>No Rounded Borders</QItemSection>
             </QItem>
             <QItem>
-              <QItemSection>Borders</QItemSection>
+              <QItemSection>List</QItemSection>
             </QItem>
           </QList>
 
@@ -490,7 +490,7 @@
           This reference shows all available types and their typical usage.
         {/snippet}
 
-        <QList bordered separator roundedBorders class="q-my-md">
+        <QList bordered separator class="q-my-md">
           <QItem>
             <QItemSection type="avatar">
               <QAvatar class="primary">

@@ -12,9 +12,11 @@
 
 <QDocs {snippets} componentDocs={[QSeparatorHorizontalDocs, QSeparatorVerticalDocs]}>
   {#snippet display()}
-    <div>Me</div>
-    <QSeparator text="My procrastination" spacing="lg" />
-    <div>My projects</div>
+    <QCard class="flex column flex-center surface" style="width: 75%; height: 50%">
+      <div>Me</div>
+      <QSeparator text="My procrastination" spacing="lg" />
+      <div>My projects</div>
+    </QCard>
   {/snippet}
 
   {#snippet usage()}

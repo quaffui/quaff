@@ -1,7 +1,7 @@
 <script lang="ts">
   import { QBreadcrumbsDocs } from "$components/breadcrumbs/docs";
   import { pageTitle } from "$helpers/pageTitle";
-  import { QBreadcrumbs, QBreadcrumbsEl } from "$lib";
+  import { QBreadcrumbs, QBreadcrumbsEl, QCard } from "$lib";
   import { QDocs, QDocsSection } from "$private";
   import snippets from "./docs.snippets";
 </script>
@@ -12,11 +12,13 @@
 
 <QDocs {snippets} componentDocs={QBreadcrumbsDocs}>
   {#snippet display()}
-    <QBreadcrumbs>
-      <QBreadcrumbsEl to="/" label="Home" />
-      <QBreadcrumbsEl to="/components" label="Components" />
-      <QBreadcrumbsEl label="Breadcrumbs" />
-    </QBreadcrumbs>
+    <QCard>
+      <QBreadcrumbs>
+        <QBreadcrumbsEl to="/" label="Home" />
+        <QBreadcrumbsEl to="/components" label="Components" />
+        <QBreadcrumbsEl label="Breadcrumbs" />
+      </QBreadcrumbs>
+    </QCard>
   {/snippet}
 
   {#snippet usage()}

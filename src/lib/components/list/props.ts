@@ -12,11 +12,11 @@ export interface QListProps extends HTMLAttributes<HTMLElement> {
   bordered?: boolean;
 
   /**
-   * Makes the borders of the list rounded when bordered is true.
+   * Removes the rounded borders when bordered is true.
    *
    * @default false
    */
-  roundedBorders?: boolean;
+  noRound?: boolean;
 
   /**
    * Makes all the items in the list more compact.
