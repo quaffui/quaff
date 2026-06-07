@@ -54,10 +54,12 @@
     min-width: 0;
     justify-content: center;
     align-items: flex-start;
+    white-space: normal;
+    overflow-wrap: break-word;
   }
 
   &--side {
-    flex: 0 0 auto;
+    flex: 0 1 auto;
     align-items: flex-start;
     justify-content: center;
     width: auto;
