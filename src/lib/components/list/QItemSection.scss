@@ -17,7 +17,6 @@
   }
 
   &--video {
-    margin-left: -1rem;
     padding-block: 0.25rem;
 
     & video {
@@ -32,6 +31,7 @@
     height: 2.5rem;
     width: 2.5rem;
   }
+
   &--icon {
     height: 1.5rem;
     width: 1.5rem;
@@ -46,12 +46,27 @@
 
   &--content {
     flex-direction: column;
-    flex: 10000 1 0;
+    flex: 1 1 auto;
+    min-width: 0;
     justify-content: center;
-    align-items: start;
+    align-items: flex-start;
+  }
+
+  &--side {
+    flex: 0 0 auto;
+    align-items: flex-start;
+    justify-content: center;
+    width: auto;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  &--content ~ &--side {
+    align-items: flex-end;
   }
 
   &--toggle {
+    flex: 0 0 auto;
     align-items: center;
     justify-content: center;
     height: 1.5rem;
