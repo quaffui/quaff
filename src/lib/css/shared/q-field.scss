@@ -7,11 +7,15 @@
   $wrapper-height-dense: 2.5rem;
 
   display: flex;
+  min-width: 0;
+  max-width: 100%;
 
   &__inner {
     display: flex;
     flex-direction: column;
     flex-grow: 1;
+    min-width: 0;
+    max-width: 100%;
   }
 
   &__wrapper {
@@ -19,6 +23,8 @@
     display: flex;
     position: relative;
     height: $wrapper-height;
+    min-width: 0;
+    max-width: 100%;
   }
 
   &--dense &__wrapper {

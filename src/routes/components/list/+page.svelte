@@ -1,13 +1,14 @@
 <script lang="ts">
   import { QItemDocs, QItemSectionDocs, QListDocs } from "$components/list/docs";
   import { pageTitle } from "$helpers/pageTitle";
-  import { QAvatar, QCheckbox, QIcon, QItem, QItemSection, QList, QSwitch } from "$lib";
+  import { QAvatar, QCheckbox, QIcon, QInput, QItem, QItemSection, QList, QSwitch } from "$lib";
   import { QDocs, QDocsSection } from "$private";
   import snippets from "./docs.snippets";
 
   let selectedItem = $state(0);
   let checkboxValue = $state(false);
   let switchValue = $state(false);
+  let itemInputValue = $state("8");
 </script>
 
 <svelte:head>
@@ -240,7 +241,7 @@
       <QDocsSection title="Multi-line Items">
         {#snippet sectionDescription()}
           QItemSection can display multiple lines of text using the <code>headline</code>,
-          <code>line1</code>, <code>line2</code>, and <code>line3</code> props. This creates a structured
+          <code>line1</code>, <code>line2</code>, and <code>line3</code> snippets. This creates a structured
           and hierarchical display of information.
         {/snippet}
 
@@ -296,8 +297,8 @@
 
       <QDocsSection title="Item with Controls">
         {#snippet sectionDescription()}
-          Lists can incorporate interactive controls like checkboxes and switchs. Use the
-          <code>type="toggle"</code> on QItemSection to properly position these controls.
+          Lists can incorporate interactive controls like checkboxes, inputs, and switches. Use
+          <code>type="side"</code> for trailing controls that should keep their natural width.
         {/snippet}
 
         <QList bordered class="q-my-md">
@@ -306,7 +307,7 @@
               <QIcon name="notifications" />
             </QItemSection>
             <QItemSection>Notifications</QItemSection>
-            <QItemSection type="toggle">
+            <QItemSection type="side">
               <QSwitch bind:value={switchValue} />
             </QItemSection>
           </QItem>
@@ -315,8 +316,28 @@
               <QIcon name="cloud_done" />
             </QItemSection>
             <QItemSection>Sync Data</QItemSection>
-            <QItemSection type="toggle">
+            <QItemSection type="side">
               <QCheckbox bind:value={checkboxValue} />
+            </QItemSection>
+          </QItem>
+          <QItem>
+            <QItemSection type="icon">
+              <QIcon name="tune" />
+            </QItemSection>
+            <QItemSection>
+              {#snippet headline()}
+                <span>Custom threshold</span>
+              {/snippet}
+
+              {#snippet line1()}
+                <span>Enabled when the switch is on</span>
+              {/snippet}
+            </QItemSection>
+            <QItemSection type="side">
+              <QInput bind:value={itemInputValue} type="number" label="Value" outlined dense />
+            </QItemSection>
+            <QItemSection type="side">
+              <QSwitch bind:value={switchValue} />
             </QItemSection>
           </QItem>
         </QList>

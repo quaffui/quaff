@@ -60,12 +60,11 @@
   &--multiline {
     padding-block: 0.75rem;
 
-    & > .q-item__section:is(.avatar, .icon, .thumbnail, .trailingIcon, .trailingText) {
+    & > .q-item__section:is(.q-item__section--thumbnail, .q-item__section--video) {
       align-self: start;
     }
 
-    > .q-item__section.video {
-      margin-left: -1rem !important;
+    > .q-item__section--video {
       padding-block: 0;
     }
   }
