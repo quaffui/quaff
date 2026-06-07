@@ -58,6 +58,7 @@
   }
 
   &--multiline {
+    white-space: normal;
     padding-block: 0.75rem;
 
     & > .q-item__section:is(.q-item__section--thumbnail, .q-item__section--video) {
