@@ -37,6 +37,10 @@
     width: 1.5rem;
   }
 
+  &--thumbnail {
+    border-radius: 0;
+  }
+
   &--thumbnail img {
     width: 3.5rem;
     height: 3.5rem;
