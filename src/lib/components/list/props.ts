@@ -116,6 +116,7 @@ export type QItemSectionTypes =
   | "thumbnail"
   | "video"
   | "avatar"
+  | "side"
   | "toggle"
   | "icon"
   | "trailingIcon"

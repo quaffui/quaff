@@ -27,12 +27,6 @@
   });
   // #endregion: --- Effects
 
-  // #region:    --- Functions
-  function getClass(snip: Snippet) {
-    return snip === headline ? "q-item__section--headline" : undefined;
-  }
-  // #endregion: --- Functions
-
   Q.classes("q-item__section", {
     bemClasses: {
       [type]: true,
@@ -44,10 +38,8 @@
 
 <div {...props} class="q-item__section" data-quaff>
   {#if type === "content"}
-    {#if !headline && !line1 && !line2 && !line3}
-      {@render children?.()}
-    {:else}
-      {@render line(headline)}
+    {#if headline || line1 || line2 || line3}
+      {@render line(headline, true)}
 
       {@render line(line1)}
 
@@ -59,6 +51,8 @@
     <div class={["label-small", ctx.activeClass]}>
       {@render children?.()}
     </div>
+  {:else if type === "side"}
+    {@render children?.()}
   {:else}
     <div class={ctx.activeClass || undefined}>
       {@render children?.()}
@@ -66,9 +60,9 @@
   {/if}
 </div>
 
-{#snippet line(snip: Snippet | undefined)}
+{#snippet line(snip: Snippet | undefined, isHeadline = false)}
   {#if snip}
-    <div class={[getClass(snip), ctx.activeClass]}>
+    <div class={[isHeadline && "q-item__section--headline", ctx.activeClass]}>
       {@render snip()}
     </div>
   {/if}
