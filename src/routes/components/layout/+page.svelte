@@ -22,7 +22,7 @@
   import { snippet } from "./docs.snippets";
 
   let displayLeftDrawerElement = $state<ReturnType<typeof QDrawer>>();
-  let displayLeftDrawer = $state(false);
+  let displayLeftDrawer = $state(true);
   let viewArr = $state([
     ["h", "h", "h"],
     ["l", "p", "r"],
@@ -62,7 +62,7 @@
 
 <QDocs {snippets} componentDocs={QLayoutDocs}>
   {#snippet display()}
-    <QLayout view="lhh lpr lfr" style="border-radius: 0">
+    <QLayout view="lhh lpr lfr">
       {#snippet header()}
         <QHeader elevated height={48}>
           <QBtn icon="menu" variant="flat" onclick={displayLeftDrawerElement?.toggle} />
@@ -71,11 +71,12 @@
       {/snippet}
       {#snippet drawerLeft()}
         <QDrawer
-          overlay
           bind:value={displayLeftDrawer}
           bordered
           class="no-round"
           bind:this={displayLeftDrawerElement}
+          width={150}
+          persistent
         >
           <QList dense>
             <QItem to="#">

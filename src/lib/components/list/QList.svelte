@@ -14,7 +14,7 @@
   // #region:    --- Props
   let {
     bordered = false,
-    roundedBorders = false,
+    noRound = false,
     dense = false,
     separator = false,
     separatorOptions = {},
@@ -47,7 +47,7 @@
     bemClasses: {
       bordered,
       dense,
-      rounded: roundedBorders,
+      "no-round": noRound,
     },
     classes: [padding && "q-py-sm", "flex", "flex-center", props.class],
   });

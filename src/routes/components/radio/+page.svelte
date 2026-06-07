@@ -20,10 +20,10 @@
 
 <QDocs {snippets} componentDocs={QRadioDocs}>
   {#snippet display()}
-    <div class="flex column q-gap-sm">
+    <QCard class="flex column q-gap-sm">
       <QRadio value="option1" bind:selected={displayValue} label="Option 1" />
       <QRadio value="option2" bind:selected={displayValue} label="Option 2" />
-    </div>
+    </QCard>
   {/snippet}
 
   {#snippet usage()}

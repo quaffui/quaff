@@ -80,7 +80,7 @@
 
 <QDocs {snippets} componentDocs={QSelectDocs}>
   {#snippet display()}
-    <QSelect label="Favorite animal" {options} bind:value />
+    <QSelect label="Favorite animal" {options} bind:value filled />
   {/snippet}
 
   {#snippet usage()}
