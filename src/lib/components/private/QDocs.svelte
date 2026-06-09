@@ -51,7 +51,7 @@
 <div
   class="q-docs"
   style="--q-hue-rotate: {hueRotate}deg; --q-brightness: {brightness}; max-width: {Quaff.breakpoints
-    .lg}px; margin: auto;"
+    .lg}px; width: 100%; margin-inline: auto;"
 >
   <div class="q-docs__hero row q-gutter-lg" style="min-height: 400px">
     <QCard
