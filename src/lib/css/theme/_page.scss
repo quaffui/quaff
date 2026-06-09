@@ -2,16 +2,18 @@
 @use "$css/variables";
 
 .q-page {
+  width: 100%;
   max-width: 75rem;
-  margin: 0 auto;
-  padding: 4rem 1.5rem;
+  margin-inline: auto;
+  padding-block: variables.$space-lg;
+  padding-inline: variables.$space-md;
   line-height: 1.5;
 
-  @media only screen and (max-width: #{map.get(variables.$breakpoints, md) - 1px}) {
-    padding: 3rem 1.25rem;
+  @media only screen and (min-width: #{map.get(variables.$breakpoints, sm)}) {
+    padding-inline: variables.$space-lg;
   }
 
-  @media only screen and (min-width: #{map.get(variables.$breakpoints, md)}) and (max-width: #{map.get(variables.$breakpoints, lg) - 1px}) {
-    padding: 3.5rem 1.5rem;
+  @media only screen and (min-width: #{map.get(variables.$breakpoints, lg)}) {
+    padding-block: 2rem;
   }
 }

@@ -50,10 +50,10 @@
 
 <div
   class="q-docs"
-  style="padding: 1rem; --q-hue-rotate: {hueRotate}deg; --q-brightness: {brightness}; max-width: {Quaff
-    .breakpoints.lg}px; margin: auto;"
+  style="--q-hue-rotate: {hueRotate}deg; --q-brightness: {brightness}; max-width: {Quaff.breakpoints
+    .lg}px; margin: auto;"
 >
-  <div class="row q-gutter-lg" style="min-height: 400px">
+  <div class="q-docs__hero row q-gutter-lg" style="min-height: 400px">
     <QCard
       class="col-sm-12 col-xs-12 col-lg-6"
       fill="primary"
@@ -102,7 +102,7 @@
     {@render pre?.()}
 
     {#if usage}
-      <div class="q-pa-md">
+      <div>
         <div class="heading-usage">
           <h4 class="q-my-xl">Usage</h4>
         </div>
@@ -117,6 +117,10 @@
 
 <style lang="scss">
   .q-docs {
+    &__hero {
+      padding: 1rem;
+    }
+
     :global(.q-pa-none) {
       padding: 0 !important;
     }
