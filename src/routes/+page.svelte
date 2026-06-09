@@ -37,7 +37,7 @@
     </li>
     <li>
       Check our <a href="/components">components</a> and familiarize yourself with our
-      <a href="/grid">grid</a>, <a href="/utils">utils</a> and the rest of our docs.
+      <a href="/layout/grid">grid</a>, <a href="/utils">utils</a> and the rest of our docs.
     </li>
     <li>
       Found an issue? <s>Rage</s> Comment on Quaff's
