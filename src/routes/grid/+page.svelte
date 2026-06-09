@@ -30,7 +30,8 @@
 
   <p>
     You can add space between your columns using the q-gutter-* classes, where * is either xs, sm,
-    md, lg, xl or none.
+    md, lg, xl or none. Use q-gutter-x-* or q-gutter-y-* when spacing should only apply in one axis.
+    The q-col-gutter-* names are supported as compatibility aliases for row grids.
   </p>
 
   {#each ["xs", "sm", "md", "lg", "xl", "none"] as size (size)}
@@ -48,6 +49,17 @@
       <div class="border text-center col-3 secondary">col-3</div>
     </div>
   {/each}
+
+  <h3 class="q-my-lg">Directional Gutter</h3>
+
+  <p>The following example uses q-col-gutter-x-md with q-col-gutter-y-sm:</p>
+
+  <div class="row q-col-gutter-x-md q-col-gutter-y-sm">
+    <div class="border text-center col-6 primary">col-6</div>
+    <div class="border text-center col-6 secondary">col-6</div>
+    <div class="border text-center col-6 primary">col-6</div>
+    <div class="border text-center col-6 secondary">col-6</div>
+  </div>
 
   <h2 class="q-my-lg">Breakpoints</h2>
 

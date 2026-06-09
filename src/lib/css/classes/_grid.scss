@@ -9,8 +9,19 @@
   // Gutter classes
   @each $spaceName, $spaceVal in variables.$spaces {
     @if $spaceName != "auto" {
-      &.q-gutter-#{$spaceName} {
+      &.q-gutter-#{$spaceName},
+      &.q-col-gutter-#{$spaceName} {
         gap: $spaceVal;
+      }
+
+      &.q-gutter-x-#{$spaceName},
+      &.q-col-gutter-x-#{$spaceName} {
+        column-gap: $spaceVal;
+      }
+
+      &.q-gutter-y-#{$spaceName},
+      &.q-col-gutter-y-#{$spaceName} {
+        row-gap: $spaceVal;
       }
     }
   }
