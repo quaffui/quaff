@@ -43,9 +43,9 @@
       to: "/components",
     },
     {
-      name: "Grid",
-      icon: "grid_on",
-      to: "/grid",
+      name: "Layout",
+      icon: "view_quilt",
+      to: "/layout/pages",
     },
     {
       name: "Colors",
@@ -180,6 +180,17 @@
     },
   ];
 
+  const layoutPages: Item[] = [
+    {
+      name: "Pages",
+      to: "/layout/pages",
+    },
+    {
+      name: "Grid",
+      to: "/layout/grid",
+    },
+  ];
+
   const colors = [
     "#0039b4",
     ...[
@@ -199,9 +210,7 @@
   let drawerLeftEl = $state<ReturnType<typeof QDrawer>>();
   let drawerRightEl = $state<ReturnType<typeof QDrawer>>();
 
-  const selectedRailbarItem = $derived(
-    isRouteActive("/components") ? "/components" : isRouteActive("/utils") ? "/utils" : null
-  );
+  const selectedRailbarItem = $derived(getSelectedRailbarItem());
 
   const previousItem = $derived(
     prepareItem(selectedRailbarItem, Quaff.router.url.pathname, "previous")
@@ -220,26 +229,16 @@
     }
   });
 
-  const drawerContent = $derived(
-    selectedRailbarItem === "/components"
-      ? components
-      : selectedRailbarItem === "/utils"
-        ? quaffUtils
-        : []
-  );
+  const drawerContent = $derived(getDrawerItems(selectedRailbarItem));
 
   const drawerLeft = $derived(Quaff.breakpoints.isLessThan("md") ? mobileDrawer : desktopDrawer);
 
   function prepareItem(selected: string | null, route: string, kind: "previous" | "next") {
-    if (
-      selected === null ||
-      Quaff.breakpoints.isMoreThan("md", true) ||
-      !["/components/", "/utils/"].some((r) => route.includes(r))
-    ) {
+    const path = getDrawerItems(selected);
+
+    if (!path.length || Quaff.breakpoints.isMoreThan("md", true)) {
       return null;
     }
-
-    const path = route.includes("/components/") ? components : quaffUtils;
 
     const currentIndex = path.findIndex((item) => item.to === route);
 
@@ -254,6 +253,36 @@
     }
 
     return null;
+  }
+
+  function getSelectedRailbarItem() {
+    if (isRouteActive("/components")) {
+      return "/components";
+    }
+
+    if (isRouteActive("/layout")) {
+      return "/layout";
+    }
+
+    if (isRouteActive("/utils")) {
+      return "/utils";
+    }
+
+    return null;
+  }
+
+  function getDrawerItems(selected: string | null) {
+    const map = {
+      "/components": components,
+      "/layout": layoutPages,
+      "/utils": quaffUtils,
+    };
+
+    if (map[selected as keyof typeof map]) {
+      return map[selected as keyof typeof map];
+    }
+
+    return [];
   }
 </script>
 
@@ -308,7 +337,7 @@
   {/snippet}
 
   {#snippet content()}
-    <div bind:this={contentEl} style="position: relative; min-height: 100%;">
+    <div bind:this={contentEl} class="q-docs-layout__content">
       {@render children?.()}
 
       {#if Quaff.breakpoints.isLessThan("md") && (nextItem || previousItem)}
@@ -385,13 +414,27 @@
     color: white;
   }
 
+  :global(.q-docs-code) {
+    display: inline-flex;
+    align-items: center;
+    max-width: 100%;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.5rem;
+    background-color: var(--surface-container);
+    color: inherit;
+    vertical-align: baseline;
+  }
+
+  .q-docs-layout__content {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+  }
+
   .privacy-policy {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    margin-top: auto;
     text-align: center;
-    padding: 1rem;
+    padding: 3rem 1rem 1rem;
     font-size: 0.8rem;
   }
 </style>

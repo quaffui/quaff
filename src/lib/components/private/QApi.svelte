@@ -223,10 +223,7 @@
             <QItemSection type="content">
               {#snippet headline()}
                 <div class="q-api__doc-heading q-my-sm">
-                  <span
-                    class="q-px-sm q-py-xs q-mr-xs"
-                    style="background-color: var(--surface-container); border-radius: 0.5rem"
-                  >
+                  <span class="q-docs-code q-mr-xs">
                     <b>{doc.name}</b>
                   </span>
                   {#if isProp(doc, index)}
