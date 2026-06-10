@@ -14,5 +14,5 @@ export interface QCheckboxProps extends HTMLAttributes<HTMLLabelElement> {
    * Puts the checkbox in a disabled state, making it unclickable.
    * @default false
    */
-  disable?: boolean;
+  disabled?: boolean;
 }

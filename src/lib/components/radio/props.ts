@@ -28,5 +28,5 @@ export interface QRadioProps extends HTMLAttributes<HTMLLabelElement> {
    *
    * @default false
    */
-  disable?: boolean;
+  disabled?: boolean;
 }

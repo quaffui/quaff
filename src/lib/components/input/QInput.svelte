@@ -16,7 +16,7 @@
   // #region:    --- Props
   let {
     dense = false,
-    disable = false,
+    disabled = false,
     error = false,
     errorMessage = undefined,
     filled = false,
@@ -154,7 +154,7 @@
       label,
       "snippet-append": !!append,
       "snippet-prepend": !!prepend,
-      disable,
+      disabled,
       error,
     },
     classes: [userClass, "q-input"],
@@ -165,7 +165,7 @@
   class="q-field"
   {style}
   style:--snippet-prepend-width="{snippetPrependWidth}px"
-  aria-disabled={disable || undefined}
+  aria-disabled={disabled || undefined}
   data-quaff
 >
   {#if before}
@@ -191,8 +191,8 @@
         onkeydown={onKeydown}
         onfocus={onFocus}
         onblur={onBlur}
-        disabled={disable}
-        tabindex={disable === true ? -1 : (tabindex ?? 0)}
+        {disabled}
+        tabindex={disabled === true ? -1 : (tabindex ?? 0)}
       />
       <span class="q-field__label">{label}</span>
 

@@ -20,7 +20,7 @@
     options,
     multiple = false,
     dense = false,
-    disable = false,
+    disabled = false,
     error = false,
     errorMessage = undefined,
     filled = false,
@@ -86,7 +86,7 @@
 
   // #region:    --- Effects
   $effect(() => {
-    if (disable) {
+    if (disabled) {
       isMenuOpen = false;
     }
   });
@@ -109,7 +109,7 @@
 
   // #region:    --- Functions
   function handleMousedown() {
-    if (disable) {
+    if (disabled) {
       return;
     }
 
@@ -133,7 +133,7 @@
   }
 
   function handleKeydown(e: QSelectEvent<KeyboardEvent>) {
-    if (disable) {
+    if (disabled) {
       return;
     }
 
@@ -308,7 +308,7 @@
       label,
       "snippet-append": !!append,
       "snippet-prepend": !!prepend,
-      disable,
+      disabled,
       error,
       "bottom-space": hint || (error && errorMessage),
       "use-input": useInput,
@@ -349,8 +349,8 @@
         oninput={handleInput}
         onmousedown={handleMousedown}
         onkeydown={handleKeydown}
-        disabled={disable}
-        tabindex={disable === true ? -1 : 0}
+        {disabled}
+        tabindex={disabled === true ? -1 : 0}
         readonly={!useInput}
       />
 

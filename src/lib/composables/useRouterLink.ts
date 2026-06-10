@@ -5,7 +5,7 @@ import type { Page } from "@sveltejs/kit";
 export interface UseRouterLinkProps {
   href?: string;
   to?: string;
-  disable?: boolean;
+  disabled?: boolean;
   activeClass?: string;
   replace?: boolean;
 }
@@ -13,7 +13,7 @@ export interface UseRouterLinkProps {
 export const UseRouterLinkPropsDefaults: UseRouterLinkProps = {
   href: undefined,
   to: undefined,
-  disable: false,
+  disabled: false,
   activeClass: undefined,
   replace: false,
 };
@@ -29,7 +29,7 @@ export function isRouteActive(
 
 export function useRouterLink<T extends UseRouterLinkProps>(props: T) {
   const hasLink = [props.to, props.href].some((entry) => typeof entry !== "undefined");
-  const linkClasses = createClasses([hasLink && "q-link", props.disable && "disable"]);
+  const linkClasses = createClasses([hasLink && "q-link", props.disabled && "disabled"]);
 
   const linkAttributes = {
     href: props.to || props.href,

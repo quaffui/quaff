@@ -18,7 +18,7 @@ export interface QInputProps extends NativeProps, QInputNativeAttributes {
    *
    * @default false
    */
-  disable?: boolean;
+  disabled?: boolean;
 
   /**
    * Indicates an error state for the input.

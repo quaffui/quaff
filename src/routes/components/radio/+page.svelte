@@ -75,19 +75,19 @@
 
       <QDocsSection title="Disabled State">
         {#snippet sectionDescription()}
-          Radio buttons can be disabled using the <code>disable</code> prop. Disabled radio buttons cannot
+          Radio buttons can be disabled using the <code>disabled</code> prop. Disabled radio buttons cannot
           be interacted with and display with a muted appearance to indicate they're unavailable.
         {/snippet}
 
         <div class="q-ma-sm">
           <QRadio class="q-ma-sm" value="enabled" label="Enabled radio button" />
-          <QRadio class="q-ma-sm" value="disabled" label="Disabled radio button" disable />
+          <QRadio class="q-ma-sm" value="disabled" label="Disabled radio button" disabled />
           <QRadio
             class="q-ma-sm"
             value="disabled-selected"
             selected="disabled-selected"
             label="Disabled and selected"
-            disable
+            disabled
           />
         </div>
       </QDocsSection>

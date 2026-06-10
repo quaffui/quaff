@@ -266,7 +266,7 @@
 
       <QDocsSection title="Disabled State">
         {#snippet sectionDescription()}
-          Use the <code>disable</code> prop to prevent user interaction with the select component. Disabled
+          Use the <code>disabled</code> prop to prevent user interaction with the select component. Disabled
           selects maintain their appearance but don't respond to user input.
         {/snippet}
 
@@ -276,7 +276,7 @@
             value={select}
             {options}
             label="Disabled select"
-            disable={selectDisabled}
+            disabled={selectDisabled}
           />
           <div class="">
             <QBtn size="sm" label="Enable" onclick={() => (selectDisabled = false)} />

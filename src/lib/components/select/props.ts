@@ -41,7 +41,7 @@ export interface QSelectProps extends NativeProps, HTMLAttributes<HTMLDivElement
    *
    * @default false
    */
-  disable?: boolean;
+  disabled?: boolean;
 
   /**
    * Indicates an error state for the select.

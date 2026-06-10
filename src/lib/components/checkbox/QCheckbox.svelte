@@ -2,18 +2,18 @@
   import type { QCheckboxProps } from "./props";
 
   // #region:    --- Props
-  let { value = $bindable(), label = "", disable = false, ...props }: QCheckboxProps = $props();
+  let { value = $bindable(), label = "", disabled = false, ...props }: QCheckboxProps = $props();
   // #endregion: --- Props
 
   Q.classes("q-checkbox", {
     bemClasses: {
-      disabled: disable,
+      disabled,
     },
     classes: [props.class],
   });
 </script>
 
-<label {...props} class="q-checkbox" aria-disabled={disable || undefined} data-quaff>
-  <input type="checkbox" bind:checked={value} disabled={disable} />
+<label {...props} class="q-checkbox" aria-disabled={disabled || undefined} data-quaff>
+  <input type="checkbox" bind:checked={value} {disabled} />
   <span>{label}</span>
 </label>
