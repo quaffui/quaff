@@ -1,16 +1,19 @@
 <script lang="ts">
+  import { docsCtx } from "$components/private/QDocs.svelte";
   import { QSeparatorHorizontalDocs, QSeparatorVerticalDocs } from "$components/separator/docs";
   import { pageTitle } from "$helpers/pageTitle";
   import { QCard, QCardSection, QSeparator } from "$lib";
   import { QDocs, QDocsSection } from "$private";
   import snippets from "./docs.snippets";
+
+  docsCtx.set({ snippets, componentDocs: [QSeparatorHorizontalDocs, QSeparatorVerticalDocs] });
 </script>
 
 <svelte:head>
   <title>{pageTitle("QSeparator")}</title>
 </svelte:head>
 
-<QDocs {snippets} componentDocs={[QSeparatorHorizontalDocs, QSeparatorVerticalDocs]}>
+<QDocs>
   {#snippet display()}
     <QCard class="flex column flex-center surface" style="width: 75%; height: 50%">
       <div>Me</div>

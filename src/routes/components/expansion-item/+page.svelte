@@ -2,8 +2,11 @@
   import { QExpansionItemDocs } from "$components/expansion-item/docs";
   import { QExpansionItem, QList, QItemSection, QIcon, QSwitch, QBtn } from "$components";
   import { QDocs, QDocsSection } from "$components/private";
+  import { docsCtx } from "$components/private/QDocs.svelte";
   import { pageTitle } from "$helpers/pageTitle";
   import snippets from "./docs.snippets";
+
+  docsCtx.set({ snippets, componentDocs: QExpansionItemDocs });
 
   let customExpandedValue = $state(false);
   let switchValue = $state(true);
@@ -13,7 +16,7 @@
   <title>{pageTitle("QExpansionItem")}</title>
 </svelte:head>
 
-<QDocs {snippets} componentDocs={QExpansionItemDocs}>
+<QDocs>
   {#snippet display()}
     <QList bordered class="surface" style="max-width: 75%">
       <QExpansionItem label="Click me" icon="waving_hand">

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { docsCtx } from "$components/private/QDocs.svelte";
   import { QRailbarDocs } from "$components/railbar/docs";
   import { pageTitle } from "$helpers/pageTitle";
   import {
@@ -16,6 +17,8 @@
   import { QDocs, QDocsSection } from "$private";
   import snippets from "./docs.snippets";
 
+  docsCtx.set({ snippets, componentDocs: QRailbarDocs });
+
   let selectedRoute = $state("home");
   let leftDrawerOpen = $state(false);
   let rightDrawerOpen = $state(false);
@@ -25,7 +28,7 @@
   <title>{pageTitle("QRailbar")}</title>
 </svelte:head>
 
-<QDocs {snippets} componentDocs={QRailbarDocs}>
+<QDocs>
   {#snippet display()}
     <QLayout view="hHh LpR fFf" style="height: 300px;">
       {#snippet railbarLeft()}

@@ -1,9 +1,12 @@
 <script lang="ts">
   import { QInputDocs } from "$components/input/docs";
+  import { docsCtx } from "$components/private/QDocs.svelte";
   import { pageTitle } from "$helpers/pageTitle";
   import { QBtn, QIcon, QInput } from "$lib";
   import { QDocs, QDocsSection } from "$private";
   import snippets from "./docs.snippets";
+
+  docsCtx.set({ snippets, componentDocs: QInputDocs });
 
   let defaultValue = $state("Initial Value");
   let outlinedValue = $state("");
@@ -29,7 +32,7 @@
   <title>{pageTitle("QInput")}</title>
 </svelte:head>
 
-<QDocs {snippets} componentDocs={QInputDocs}>
+<QDocs>
   {#snippet display()}
     <QInput bind:value={defaultValue} label="Standard Input" filled class="q-mt-md" />
   {/snippet}

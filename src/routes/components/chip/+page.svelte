@@ -1,10 +1,13 @@
 <script lang="ts">
   import { QChipDocs } from "$components/chip/docs";
+  import { docsCtx } from "$components/private/QDocs.svelte";
   import { pageTitle } from "$helpers/pageTitle";
   import { QChip } from "$lib";
   import { QDocs, QDocsSection } from "$private";
 
   import snippets from "./docs.snippets";
+
+  docsCtx.set({ snippets, componentDocs: QChipDocs });
 
   let selectedValue = false;
 </script>
@@ -13,7 +16,7 @@
   <title>{pageTitle("QChip")}</title>
 </svelte:head>
 
-<QDocs {snippets} componentDocs={QChipDocs}>
+<QDocs>
   {#snippet display()}
     <QChip elevated icon="img:/cocktail.jpg" label="Cocktail" />
   {/snippet}

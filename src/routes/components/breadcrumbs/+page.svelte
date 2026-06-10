@@ -1,16 +1,19 @@
 <script lang="ts">
   import { QBreadcrumbsDocs } from "$components/breadcrumbs/docs";
+  import { docsCtx } from "$components/private/QDocs.svelte";
   import { pageTitle } from "$helpers/pageTitle";
   import { QBreadcrumbs, QBreadcrumbsEl, QCard } from "$lib";
   import { QDocs, QDocsSection } from "$private";
   import snippets from "./docs.snippets";
+
+  docsCtx.set({ snippets, componentDocs: QBreadcrumbsDocs });
 </script>
 
 <svelte:head>
   <title>{pageTitle("QBreadcrumbs")}</title>
 </svelte:head>
 
-<QDocs {snippets} componentDocs={QBreadcrumbsDocs}>
+<QDocs>
   {#snippet display()}
     <QCard>
       <QBreadcrumbs>

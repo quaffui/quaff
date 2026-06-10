@@ -1,11 +1,14 @@
 <script lang="ts">
   import QCard from "$components/card/QCard.svelte";
   import { QCheckboxDocs } from "$components/checkbox/docs";
+  import { docsCtx } from "$components/private/QDocs.svelte";
   import { pageTitle } from "$helpers/pageTitle";
   import { QBtn, QCheckbox, QIcon, QItem, QItemSection, QList } from "$lib";
   import { QDocs, QDocsSection } from "$private";
 
   import snippets from "./docs.snippets";
+
+  docsCtx.set({ snippets, componentDocs: QCheckboxDocs });
 
   let value1 = false;
   let value2 = true;
@@ -16,7 +19,7 @@
   <title>{pageTitle("QCheckbox")}</title>
 </svelte:head>
 
-<QDocs {snippets} componentDocs={QCheckboxDocs}>
+<QDocs>
   {#snippet display()}
     <QCard>
       <QCheckbox label="I agree to the terms and conditions" bind:value={value1} />

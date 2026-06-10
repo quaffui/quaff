@@ -13,8 +13,11 @@
   } from "$lib";
   import { QDocs, QDocsSection } from "$private";
   import type { QDialogPositionOptions } from "$components/dialog/props";
+  import { docsCtx } from "$components/private/QDocs.svelte";
   import { pageTitle } from "$helpers/pageTitle";
   import snippets from "./docs.snippets";
+
+  docsCtx.set({ snippets, componentDocs: QDialogDocs });
 
   let displayDialogOpen = $state(false);
   let basicDialogOpen = $state(false);
@@ -41,7 +44,7 @@
   <title>{pageTitle("QDialog")}</title>
 </svelte:head>
 
-<QDocs {snippets} componentDocs={QDialogDocs}>
+<QDocs>
   {#snippet display()}
     <QBtn label="Open Dialog" onclick={() => (displayDialogOpen = true)} />
     <QDialog bind:value={displayDialogOpen}>

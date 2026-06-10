@@ -1,5 +1,6 @@
 <script lang="ts">
   import { QDrawerDocs } from "$components/drawer/docs";
+  import { docsCtx } from "$components/private/QDocs.svelte";
   import { pageTitle } from "$helpers/pageTitle";
   import {
     QBtn,
@@ -15,6 +16,8 @@
   import { QDocs, QDocsSection } from "$private";
 
   import snippets from "./docs.snippets";
+
+  docsCtx.set({ snippets, componentDocs: QDrawerDocs });
 
   let displayDrawerOpen = $state(false);
   let basicDrawerOpen = $state(false);
@@ -35,7 +38,7 @@
   <title>{pageTitle("QDrawer")}</title>
 </svelte:head>
 
-<QDocs {snippets} componentDocs={QDrawerDocs}>
+<QDocs>
   {#snippet display()}
     <QBtn label="Open drawer" onclick={() => (displayDrawerOpen = !displayDrawerOpen)} />
 

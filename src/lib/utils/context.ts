@@ -2,7 +2,7 @@ import { getContext, hasContext, setContext } from "svelte";
 
 /**
  * This function allows to manipulate contexts more easily.
- * It avoids having to pass a Svelte store down the components but rather use runes to keep the context reactive.
+ * Coupled with the class preprocessor, it avoids having to bother with reactivity as it automatically creates getters and setters from a typed interface.
  */
 export function QContext<T>(name: string) {
   const sym = Symbol(name);

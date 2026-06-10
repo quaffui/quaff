@@ -1,16 +1,19 @@
 <script lang="ts">
   import { QAvatarDocs } from "$components/avatar/docs";
+  import { docsCtx } from "$components/private/QDocs.svelte";
   import { pageTitle } from "$helpers/pageTitle";
   import { QAvatar } from "$lib";
   import { QDocs, QDocsSection } from "$private";
   import snippets from "./docs.snippets";
+
+  docsCtx.set({ snippets, componentDocs: QAvatarDocs });
 </script>
 
 <svelte:head>
   <title>{pageTitle("QAvatar")}</title>
 </svelte:head>
 
-<QDocs {snippets} componentDocs={QAvatarDocs}>
+<QDocs>
   {#snippet display()}
     <QAvatar src="/cocktail.jpg" size="5rem" />
   {/snippet}

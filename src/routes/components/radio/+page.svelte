@@ -1,9 +1,12 @@
 <script lang="ts">
+  import { docsCtx } from "$components/private/QDocs.svelte";
   import { QRadioDocs } from "$components/radio/docs";
   import { pageTitle } from "$helpers/pageTitle";
   import { QBtn, QCard, QCardSection, QIcon, QItem, QItemSection, QList, QRadio } from "$lib";
   import { QDocs, QDocsSection } from "$private";
   import snippets from "./docs.snippets";
+
+  docsCtx.set({ snippets, componentDocs: QRadioDocs });
 
   let displayValue = $state("option1");
   let selectedValue = $state("option1");
@@ -18,7 +21,7 @@
   <title>{pageTitle("QRadio")}</title>
 </svelte:head>
 
-<QDocs {snippets} componentDocs={QRadioDocs}>
+<QDocs>
   {#snippet display()}
     <QCard class="flex column q-gap-sm">
       <QRadio value="option1" bind:selected={displayValue} label="Option 1" />

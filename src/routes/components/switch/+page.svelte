@@ -1,9 +1,12 @@
 <script lang="ts">
+  import { docsCtx } from "$components/private/QDocs.svelte";
   import { QSwitchDocs } from "$components/switch/docs";
   import { pageTitle } from "$helpers/pageTitle";
   import { QBtn, QCard, QCardSection, QIcon, QItem, QItemSection, QList, QSwitch } from "$lib";
   import { QDocs, QDocsSection } from "$private";
   import snippets from "./docs.snippets";
+
+  docsCtx.set({ snippets, componentDocs: QSwitchDocs });
 
   let toggle = $state(false);
   let wifiEnabled = $state(true);
@@ -16,7 +19,7 @@
   <title>{pageTitle("QSwitch")}</title>
 </svelte:head>
 
-<QDocs {snippets} componentDocs={QSwitchDocs}>
+<QDocs>
   {#snippet display()}
     <QCard>
       <QSwitch bind:value={toggle} label="Toggle me" icons />

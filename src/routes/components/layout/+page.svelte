@@ -19,6 +19,7 @@
   import { QDocs, QDocsSection } from "$private";
   import type { QLayoutProps } from "$components/layout/props";
   import { pageTitle } from "$helpers/pageTitle";
+  import { docsCtx } from "$components/private/QDocs.svelte";
   import { snippet } from "./docs.snippets";
 
   let displayLeftDrawerElement = $state<ReturnType<typeof QDrawer>>();
@@ -37,9 +38,11 @@
   let rightRailbar = $state(false);
   let rightDrawer = $state(false);
 
-  const snippets = $derived(
-    snippet(view, [showHeader, showFooter, leftRailbar, leftDrawer, rightRailbar, rightDrawer])
-  );
+  docsCtx.set({
+    snippets: () =>
+      snippet(view, [showHeader, showFooter, leftRailbar, leftDrawer, rightRailbar, rightDrawer]),
+    componentDocs: QLayoutDocs,
+  });
 
   let leftDrawerElement = $state<ReturnType<typeof QDrawer>>();
   let leftDrawerShown = $state(true);
@@ -60,7 +63,7 @@
   <title>{pageTitle("QLayout")}</title>
 </svelte:head>
 
-<QDocs {snippets} componentDocs={QLayoutDocs}>
+<QDocs>
   {#snippet display()}
     <QLayout view="lhh lpr lfr">
       {#snippet header()}

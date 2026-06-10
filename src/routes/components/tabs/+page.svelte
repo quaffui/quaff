@@ -1,9 +1,12 @@
 <script lang="ts">
+  import { docsCtx } from "$components/private/QDocs.svelte";
   import { QTabDocs, QTabsDocs } from "$components/tabs/docs";
   import { pageTitle } from "$helpers/pageTitle";
   import { QCard, QCardSection, QIcon, QItem, QItemSection, QList, QTab, QTabs } from "$lib";
   import { QDocs, QDocsSection } from "$private";
   import snippets from "./docs.snippets";
+
+  docsCtx.set({ snippets, componentDocs: [QTabsDocs, QTabDocs] });
 
   let activeTab = $state("hello");
   let contentTab = $state("tab1");
@@ -14,7 +17,7 @@
   <title>{pageTitle("QTabs")}</title>
 </svelte:head>
 
-<QDocs {snippets} componentDocs={[QTabsDocs, QTabDocs]}>
+<QDocs>
   {#snippet display()}
     <QTabs bind:value={activeTab}>
       <QTab name="hello" icon="home">Home</QTab>

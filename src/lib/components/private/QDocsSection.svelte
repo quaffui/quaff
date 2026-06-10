@@ -10,18 +10,21 @@
     noCode?: boolean;
   };
 
+  // #region:    --- Context
+  const { snippets } = docsCtx.get() || { snippets: undefined };
+
+  // #endregion: --- Context
+
   // #region:    --- Props
   let { title, noCode = false, sectionDescription, children }: QDocsSectionProps = $props();
   // #endregion: --- Props
 
   // #region:    --- Reactive variables
   let dialog = $state(false);
-
-  const ctx = docsCtx.get();
   // #endregion: --- Reactive variables
 
   // #region:    --- Derived values
-  const code = $derived(ctx?.snippets?.[title]);
+  const code = $derived(typeof snippets === "function" ? snippets()[title] : snippets?.[title]);
 
   // Create a kebab-case id from the title to be able to link to this section
   const id = $derived(title.toLowerCase().replaceAll(" ", "-"));

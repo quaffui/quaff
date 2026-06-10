@@ -49,6 +49,43 @@ let context: Record<string, Context> = {};
  * The goal is to automatically handle:
  * * The use of symbols to make sure the context can only be used inside the lib
  * * Reactivity with mutable/readonly variables by defining getters and setters
+ *
+ * It looks for:
+ * * an interface with a name ending in "Context"
+ * * an assigned QContext call.
+ *
+ * If both conditions are met, it searches for the use of
+ * `myContext.set({ ... })` and statically replaces the content inside by getters and setters.
+ *
+ * If the interface uses `readonly` modifiers for some members, the corresponding
+ * setters will not be generated.
+ *
+ * If the conditions are not met, the file will be returned as is and `QContext` will work as a normal Svelte context.
+ *
+ * @example
+ * ```typescript
+ * // Before processing
+ * interface MyContext {
+ *   foo: string;
+ *   readonly bar: string;
+ * }
+ *
+ * export const myContext = QContext<MyContext>("myContext");
+ *
+ * let foo = $state("foo");
+ * let bar = $state("bar");
+ *
+ * myContext.set({ foo, bar });
+ *
+ * // After processing
+ * export const myContext = QContext<MyContext>("myContext");
+ *
+ * myContext.set({
+ *   get foo() { return foo; },
+ *   set foo(value) { foo = value; },
+ *   get bar() { return bar; }
+ * });
+ * ```
  */
 export function preprocessContext(): PreprocessorGroup {
   return {
@@ -103,7 +140,7 @@ function parseContent(content: string, filename: string | undefined): AST.Progra
  * Process all AST nodes
  */
 function processASTNodes(ast: AST.Program) {
-  const contextInterfaces = collectContextInterfaces(ast);
+  const contextInterfaces: AST.TSInterfaceDeclaration[] = [];
 
   ast.body.forEach((node) => {
     handleContextInterfaces(node, contextInterfaces);
@@ -113,19 +150,6 @@ function processASTNodes(ast: AST.Program) {
       handleContextSetting(node, variable);
     }
   });
-}
-
-/**
- * Collect all context interfaces from AST
- */
-function collectContextInterfaces(ast: AST.Program) {
-  const contextInterfaces: AST.TSInterfaceDeclaration[] = [];
-  ast.body.forEach((node) => {
-    if (isContextInterface(node)) {
-      contextInterfaces.push(node);
-    }
-  });
-  return contextInterfaces;
 }
 
 /**
@@ -185,11 +209,7 @@ function handleContextInterfaces(
   node: AST.ProgramStatement,
   contextInterfaces: AST.TSInterfaceDeclaration[]
 ) {
-  if (
-    node.type !== "TSInterfaceDeclaration" ||
-    node.id.type !== "Identifier" ||
-    !node.id.name.endsWith("Context")
-  ) {
+  if (!isContextInterface(node)) {
     return;
   }
 

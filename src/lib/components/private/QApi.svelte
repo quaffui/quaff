@@ -16,10 +16,12 @@
   import { capitalize, escape } from "$utils";
   import type { QComponentDocs, QComponentEvent, QComponentMethod } from "$utils";
   import type { ParsedProp, ParsedSnippet } from "$docgen/props/parseInterface";
+  import { docsCtx } from "./QDocs.svelte";
 
-  // #region:    --- Props
-  let { componentDocs }: { componentDocs: QComponentDocs[] } = $props();
-  // #endregion: --- Props
+  // #region:    --- Context
+  let { componentDocs: docOrDocs } = docsCtx.assertGet("QApi should be used inside QDocs");
+  const componentDocs = Array.isArray(docOrDocs) ? docOrDocs : [docOrDocs];
+  // #endregion: --- Context
 
   // #region:    --- Reactive variables
   let api: (keyof QComponentDocs["docs"])[] = $state(componentDocs.map(() => "props"));

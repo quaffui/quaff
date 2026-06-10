@@ -1,10 +1,13 @@
 <script lang="ts">
   import { QFooterDocs } from "$components/footer/docs";
+  import { docsCtx } from "$components/private/QDocs.svelte";
   import { pageTitle } from "$helpers/pageTitle";
   import { QFooter, QLayout } from "$lib";
   import { QDocs, QDocsSection } from "$private";
 
   import snippets from "./docs.snippets";
+
+  docsCtx.set({ snippets, componentDocs: QFooterDocs });
 
   const lorem = `Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolores tempora itaque nulla tenetur distinctio reiciendis quidem. Enim illum dolorum pariatur consequuntur, est aperiam atque quasi dolor quam ratione dicta nostrum.
             Minus tenetur quam doloremque vel tempore saepe veniam fuga animi nostrum error consequuntur suscipit amet culpa, blanditiis optio quasi. Sit, sint. At facilis fugiat cumque. Velit esse officia aspernatur qui?
@@ -32,7 +35,7 @@
   <title>{pageTitle("QFooter")}</title>
 </svelte:head>
 
-<QDocs {snippets} componentDocs={QFooterDocs}>
+<QDocs>
   {#snippet display()}
     <QLayout class="surface" style="height: 100%; width: 75%; min-width: unset; min-height: unset">
       {#snippet footer()}

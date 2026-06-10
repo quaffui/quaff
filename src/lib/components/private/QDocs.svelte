@@ -6,13 +6,17 @@
     display?: Snippet;
     pre?: Snippet;
     usage?: Snippet;
-    snippets?: Record<string, string>;
-    componentDocs?: QComponentDocs | QComponentDocs[];
     docName?: string;
     docDescription?: string;
   }
 
-  export const docsCtx = QContext<{ readonly snippets: Props["snippets"] }>("QDocs");
+  // Do not rename to end with `Context` or it will be incorrectly processed by the context preprocessor.
+  interface DocsCtx {
+    readonly componentDocs: QComponentDocs | QComponentDocs[];
+    readonly snippets: Record<string, string> | (() => Record<string, string>);
+  }
+
+  export const docsCtx = QContext<DocsCtx>("QDocs");
 </script>
 
 <script lang="ts">
@@ -22,9 +26,12 @@
   import type { Snippet } from "svelte";
 
   // #region:    --- Props
-  let { children, display, pre, usage, snippets, componentDocs, docName, docDescription }: Props =
-    $props();
+  let { children, display, pre, usage, docName, docDescription }: Props = $props();
   // #endregion: --- Props
+
+  // #region:    --- Context
+  const { componentDocs } = docsCtx.get() || { componentDocs: undefined };
+  // #endregion: --- Context
 
   // #region:    --- Non-reactive variables
   let principalDocument = Array.isArray(componentDocs) ? componentDocs[0] : componentDocs;
@@ -42,10 +49,6 @@
 
   const brightness = $derived(Quaff.darkMode.isActive ? 0.7 : 1.2);
   // #endregion: --- Derived values
-
-  // #region:    --- Context
-  docsCtx.set({ snippets });
-  // #endregion: --- Context
 </script>
 
 <div
@@ -96,7 +99,7 @@
 
   <div class="q-page">
     {#if componentDocs}
-      <QApi componentDocs={Array.isArray(componentDocs) ? componentDocs : [componentDocs]} />
+      <QApi />
     {/if}
 
     {@render pre?.()}
