@@ -11,7 +11,7 @@
 </svelte:head>
 
 <QDocs {snippets} componentDocs={QHeaderDocs}>
-  {#snippet display()}>
+  {#snippet display()}
     <QLayout class="surface" style="height: 100%; width: 75%; min-width: unset; min-height: unset">
       {#snippet header()}
         <QHeader elevated>
