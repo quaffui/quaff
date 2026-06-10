@@ -42,13 +42,13 @@
         {#snippet sectionDescription()}
           Checkboxes can be in different states: unchecked, checked, or disabled. The state is
           controlled by the <code>value</code> prop for checked/unchecked and the
-          <code>disable</code> prop for disabled state.
+          <code>disabled</code> prop for disabled state.
         {/snippet}
 
         <QCheckbox class="q-ma-sm" label="Unchecked by default" bind:value={value3} />
         <QCheckbox class="q-ma-sm" label="Checked by default" bind:value={value2} />
-        <QCheckbox class="q-ma-sm" label="Disabled unchecked" value={false} disable />
-        <QCheckbox class="q-ma-sm" label="Disabled checked" value={true} disable />
+        <QCheckbox class="q-ma-sm" label="Disabled unchecked" value={false} disabled />
+        <QCheckbox class="q-ma-sm" label="Disabled checked" value={true} disabled />
       </QDocsSection>
 
       <QDocsSection title="Two-way Binding">

@@ -6,20 +6,20 @@
     value = "",
     label = "",
     selected = $bindable(),
-    disable = false,
+    disabled = false,
     ...props
   }: QRadioProps = $props();
   // #endregion: --- Props
 
   Q.classes("q-radio", {
     bemClasses: {
-      disabled: disable,
+      disabled,
     },
     classes: [props.class],
   });
 </script>
 
-<label {...props} class="q-radio" aria-disabled={disable || undefined} data-quaff>
-  <input type="radio" bind:group={selected} {value} disabled={disable} />
+<label {...props} class="q-radio" aria-disabled={disabled || undefined} data-quaff>
+  <input type="radio" bind:group={selected} {value} {disabled} />
   <span>{label}</span>
 </label>
