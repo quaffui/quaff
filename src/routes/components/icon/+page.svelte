@@ -1,16 +1,19 @@
 <script lang="ts">
   import { QIconDocs } from "$components/icon/docs";
+  import { docsCtx } from "$components/private/QDocs.svelte";
   import { pageTitle } from "$helpers/pageTitle";
   import { QCard, QIcon } from "$lib";
   import { QDocs, QDocsSection } from "$private";
   import snippets from "./docs.snippets";
+
+  docsCtx.set({ snippets, componentDocs: QIconDocs });
 </script>
 
 <svelte:head>
   <title>{pageTitle("QIcon")}</title>
 </svelte:head>
 
-<QDocs {snippets} componentDocs={QIconDocs}>
+<QDocs>
   {#snippet display()}
     <QCard>
       <QIcon name="waving_hand" />

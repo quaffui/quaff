@@ -4,7 +4,10 @@
   import { QBtn, QCard, QCardActions, QCardSection, QIcon, QSelect } from "$lib";
   import { QDocs, QDocsSection } from "$private";
   import type { QSelectFilterUpdate, QSelectOption } from "$components/select/props";
+  import { docsCtx } from "$components/private/QDocs.svelte";
   import snippets from "./docs.snippets";
+
+  docsCtx.set({ snippets, componentDocs: QSelectDocs });
 
   let selectDisabled = $state(true);
   let dynamicSelect = $state("");
@@ -78,7 +81,7 @@
   <title>{pageTitle("QSelect")}</title>
 </svelte:head>
 
-<QDocs {snippets} componentDocs={QSelectDocs}>
+<QDocs>
   {#snippet display()}
     <QSelect label="Favorite animal" {options} bind:value filled />
   {/snippet}

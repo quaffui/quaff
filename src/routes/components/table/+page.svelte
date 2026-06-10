@@ -4,7 +4,10 @@
   import { QDocs, QDocsSection } from "$private";
   import type { QTableColumn, QTableRow } from "$components/table/props";
   import { pageTitle } from "$helpers/pageTitle";
+  import { docsCtx } from "$components/private/QDocs.svelte";
   import snippets from "./docs.snippets";
+
+  docsCtx.set({ snippets, componentDocs: QTableDocs });
 
   const columnsDefCode = `const columns = [
   {
@@ -113,7 +116,7 @@
   <title>{pageTitle("QTable")}</title>
 </svelte:head>
 
-<QDocs {snippets} componentDocs={QTableDocs}>
+<QDocs>
   {#snippet display()}
     <QCard>
       <QTable {columns} rows={rows.slice(0, 3)} bordered flat />
