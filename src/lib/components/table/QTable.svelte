@@ -168,7 +168,7 @@
       outlined
       options={rowsPerPageOptions}
       bind:value={rowsPerPage}
-      disable={rowsPerPageOptions.length <= 1}
+      disabled={rowsPerPageOptions.length <= 1}
     />
     {numberFrom}-{numberTo}&nbsp;of&nbsp;{numberOf}
     <QBtn

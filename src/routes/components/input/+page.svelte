@@ -71,18 +71,24 @@
 
       <QDocsSection title="Disabled State">
         {#snippet sectionDescription()}
-          The <code>disable</code> prop prevents user interaction and visually indicates the input is
+          The <code>disabled</code> prop prevents user interaction and visually indicates the input is
           inactive.
         {/snippet}
-        <QInput bind:value={disabledValue} label="Disabled Standard" class="q-mt-md" disable />
+        <QInput bind:value={disabledValue} label="Disabled Standard" class="q-mt-md" disabled />
         <QInput
           bind:value={disabledValue}
           label="Disabled Outlined"
           class="q-mt-md"
-          disable
+          disabled
           outlined
         />
-        <QInput bind:value={disabledValue} label="Disabled Filled" class="q-mt-md" disable filled />
+        <QInput
+          bind:value={disabledValue}
+          label="Disabled Filled"
+          class="q-mt-md"
+          disabled
+          filled
+        />
       </QDocsSection>
 
       <QDocsSection title="Validation and Hints">
