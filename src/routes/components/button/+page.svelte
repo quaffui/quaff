@@ -1,17 +1,20 @@
 <script lang="ts">
   import { QBtnDocs } from "$components/button/docs";
+  import { docsCtx } from "$components/private/QDocs.svelte";
   import { pageTitle } from "$helpers/pageTitle";
   import { QBtn } from "$lib";
   import { QDocs, QDocsSection } from "$private";
 
   import snippets from "./docs.snippets";
+
+  docsCtx.set({ snippets, componentDocs: QBtnDocs });
 </script>
 
 <svelte:head>
   <title>{pageTitle("QButton")}</title>
 </svelte:head>
 
-<QDocs {snippets} componentDocs={QBtnDocs}>
+<QDocs>
   {#snippet display()}
     <QBtn icon="star">Star me on Github</QBtn>
   {/snippet}

@@ -1,16 +1,19 @@
 <script lang="ts">
+  import { docsCtx } from "$components/private/QDocs.svelte";
   import { pageTitle } from "$helpers/pageTitle";
   import { QHeader, QToolbarTitle, QBtn, QLayout } from "$lib";
   import { QHeaderDocs } from "$lib/components/header/docs";
   import { QDocs, QDocsSection } from "$private";
   import snippets from "./docs.snippets";
+
+  docsCtx.set({ snippets, componentDocs: QHeaderDocs });
 </script>
 
 <svelte:head>
   <title>{pageTitle("QHeader")}</title>
 </svelte:head>
 
-<QDocs {snippets} componentDocs={QHeaderDocs}>
+<QDocs>
   {#snippet display()}
     <QLayout class="surface" style="height: 100%; width: 75%; min-width: unset; min-height: unset">
       {#snippet header()}

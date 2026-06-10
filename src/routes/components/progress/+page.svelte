@@ -1,10 +1,13 @@
 <script lang="ts">
+  import { docsCtx } from "$components/private/QDocs.svelte";
   import { QCircularProgressDocs, QLinearProgressDocs } from "$components/progress/docs";
   import { pageTitle } from "$helpers/pageTitle";
   import { QBtn, QCard, QCardSection, QCircularProgress, QLinearProgress } from "$lib";
   import { QDocs, QDocsSection } from "$private";
 
   import snippets from "./docs.snippets";
+
+  docsCtx.set({ snippets, componentDocs: [QLinearProgressDocs, QCircularProgressDocs] });
 
   let linearValue = 30;
   let circularValue = 25;
@@ -16,8 +19,6 @@
 </svelte:head>
 
 <QDocs
-  {snippets}
-  componentDocs={[QLinearProgressDocs, QCircularProgressDocs]}
   docName="QProgress"
   docDescription="QProgress provides visual feedback about the progress of a task or operation. It can be used to indicate the completion status of a process, such as file uploads, downloads, or any other time-consuming tasks."
 >

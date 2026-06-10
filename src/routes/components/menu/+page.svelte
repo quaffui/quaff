@@ -1,5 +1,6 @@
 <script lang="ts">
   import { QMenuDocs } from "$components/menu/docs";
+  import { docsCtx } from "$components/private/QDocs.svelte";
   import { pageTitle } from "$helpers/pageTitle";
   import {
     QBtn,
@@ -14,6 +15,8 @@
   } from "$lib";
   import { QDocs, QDocsSection } from "$private";
   import snippets from "./docs.snippets";
+
+  docsCtx.set({ snippets, componentDocs: QMenuDocs });
 
   let isDisplayMenuOpen = $state(false);
   let isBasicMenuOpen = $state(false);
@@ -30,7 +33,7 @@
   <title>{pageTitle("QMenu")}</title>
 </svelte:head>
 
-<QDocs {snippets} componentDocs={QMenuDocs}>
+<QDocs>
   {#snippet display()}
     <QBtn label="Open menu" onclick={() => (isDisplayMenuOpen = !isDisplayMenuOpen)}>
       <QMenu bind:value={isDisplayMenuOpen}>

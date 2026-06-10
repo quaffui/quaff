@@ -1,9 +1,12 @@
 <script lang="ts">
+  import { docsCtx } from "$components/private/QDocs.svelte";
   import { QTooltipDocs } from "$components/tooltip/docs";
   import { pageTitle } from "$helpers/pageTitle";
   import { QBtn, QCard, QCardActions, QCardSection, QIcon, QTooltip } from "$lib";
   import { QDocs, QDocsSection } from "$private";
   import snippets from "./docs.snippets";
+
+  docsCtx.set({ snippets, componentDocs: QTooltipDocs });
 
   let tooltipRef = $state<QTooltip<string>>();
   let showControlledTooltip = $state(false);
@@ -13,7 +16,7 @@
   <title>{pageTitle("QTooltip")}</title>
 </svelte:head>
 
-<QDocs {snippets} componentDocs={QTooltipDocs}>
+<QDocs>
   {#snippet display()}
     <QBtn>
       Hover me

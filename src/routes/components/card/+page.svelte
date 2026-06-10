@@ -1,16 +1,19 @@
 <script lang="ts">
   import { QCardActionsDocs, QCardDocs, QCardSectionDocs } from "$components/card/docs";
+  import { docsCtx } from "$components/private/QDocs.svelte";
   import { pageTitle } from "$helpers/pageTitle";
   import { QBtn, QCard, QCardActions, QCardSection } from "$lib";
   import { QDocs, QDocsSection } from "$private";
   import snippets from "./docs.snippets";
+
+  docsCtx.set({ snippets, componentDocs: [QCardDocs, QCardSectionDocs, QCardActionsDocs] });
 </script>
 
 <svelte:head>
   <title>{pageTitle("QCard")}</title>
 </svelte:head>
 
-<QDocs {snippets} componentDocs={[QCardDocs, QCardSectionDocs, QCardActionsDocs]}>
+<QDocs>
   {#snippet display()}
     <QCard title="Default Card">
       <QCardSection>This is a card with a default configuration.</QCardSection>

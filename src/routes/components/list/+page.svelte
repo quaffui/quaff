@@ -1,9 +1,12 @@
 <script lang="ts">
   import { QItemDocs, QItemSectionDocs, QListDocs } from "$components/list/docs";
+  import { docsCtx } from "$components/private/QDocs.svelte";
   import { pageTitle } from "$helpers/pageTitle";
   import { QAvatar, QCheckbox, QIcon, QInput, QItem, QItemSection, QList, QSwitch } from "$lib";
   import { QDocs, QDocsSection } from "$private";
   import snippets from "./docs.snippets";
+
+  docsCtx.set({ snippets, componentDocs: [QListDocs, QItemDocs, QItemSectionDocs] });
 
   let selectedItem = $state(0);
   let checkboxValue = $state(false);
@@ -15,7 +18,7 @@
   <title>{pageTitle("QList")}</title>
 </svelte:head>
 
-<QDocs {snippets} componentDocs={[QListDocs, QItemDocs, QItemSectionDocs]}>
+<QDocs>
   {#snippet display()}
     <QList bordered class="surface">
       <QItem clickable>
