@@ -78,7 +78,7 @@
   "types": "./dist/index.d.ts",
   "type": "module",
   "dependencies": {
-    "@material/material-color-utilities": "^0.4.0"
+    "@material/material-color-utilities": "^0.3.0"
   },
   "license": "MIT"
 }
