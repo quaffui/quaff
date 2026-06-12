@@ -9,7 +9,6 @@
     "build:docs": "tsc -p plugins/tsconfig.json && bun scripts/docgenProps.ts && bun scripts/docgenSnippets.ts && vite build --config vite.config.scss.ts && svelte-kit sync && vite build",
     "preview": "vite preview",
     "package": "tsc -p plugins/tsconfig.json && svelte-kit sync && svelte-package && publint",
-    "prepublishOnly": "tsc -p plugins/tsconfig.json && svelte-kit sync && svelte-package && publint && vite build --config vite.config.scss.ts",
     "check": "tsc -p plugins/tsconfig.json && svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "tsc -p plugins/tsconfig.json && svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
     "test:unit": "vitest",
