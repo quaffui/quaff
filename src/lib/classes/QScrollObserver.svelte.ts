@@ -1,14 +1,13 @@
 import { onMount } from "svelte";
 import { on } from "svelte/events";
+import { scrollX, scrollY } from "svelte/reactivity/window";
 import { elFromSelector } from "$utils";
 
 type Direction = "up" | "right" | "down" | "left";
 
-type WindowScrollType = "scrollX" | "scrollY";
 type DocumentScrollType = "scrollLeft" | "scrollTop";
 
 type ScrollType = {
-  window: WindowScrollType;
   document: DocumentScrollType;
 };
 
@@ -38,7 +37,6 @@ const SCROLL_LISTENER_OPTIONS = { capture: true } as const;
  */
 export default class QScrollObserver {
   protected scrollType: ScrollType = {
-    window: "scrollY",
     document: "scrollTop",
   };
   protected lastScroll: number;
@@ -63,9 +61,7 @@ export default class QScrollObserver {
     this.debounce = debounce ?? 0;
     this.handler = (e: Event) => this.baseHandler(e);
 
-    this.scrollType = horizontal
-      ? { window: "scrollX", document: "scrollLeft" }
-      : { window: "scrollY", document: "scrollTop" };
+    this.scrollType = horizontal ? { document: "scrollLeft" } : { document: "scrollTop" };
 
     this.lastScroll = 0;
     this.position = 0;
@@ -92,7 +88,7 @@ export default class QScrollObserver {
     return Math.max(
       0,
       target === window
-        ? target[this.scrollType.window]
+        ? ((this.horizontal ? scrollX.current : scrollY.current) ?? 0)
         : (target as HTMLElement)[this.scrollType.document]
     );
   }
