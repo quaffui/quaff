@@ -23,7 +23,10 @@ jobs:
       - name: Set package version
         run: bun scripts/setPublishVersion.ts "${{ github.event.inputs.version }}"
 
+      - name: Build package
+        run: bun run build
+
       - name: Publish to npm
         run: |
           echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > .npmrc
-          bun publish --access public
+          bun publish --access public --ignore-scripts
