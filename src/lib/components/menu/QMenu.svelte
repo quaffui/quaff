@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount, tick, untrack } from "svelte";
   import { on } from "svelte/events";
+  import { innerHeight, innerWidth } from "svelte/reactivity/window";
   import { browser } from "$app/environment";
   import { doesOverlayUsePopover, getOverlayPortalTarget, usePortal } from "$utils";
   import type { QMenuAnchor, QMenuProps } from "./props";
@@ -74,13 +75,15 @@
       return;
     }
 
-    syncPosition();
-    const removeWindowScrollListener = on(window, "scroll", syncPosition, { capture: true });
-    const removeWindowResizeListener = on(window, "resize", syncPosition);
+    const viewportWidth = innerWidth.current;
+    const viewportHeight = innerHeight.current;
+    const syncCurrentPosition = () => syncPosition(viewportWidth, viewportHeight);
+
+    syncCurrentPosition();
+    const removeWindowScrollListener = on(window, "scroll", syncCurrentPosition, { capture: true });
 
     return () => {
       removeWindowScrollListener();
-      removeWindowResizeListener();
     };
   });
 
@@ -166,7 +169,7 @@
     }
 
     syncPosition();
-    requestAnimationFrame(syncPosition);
+    requestAnimationFrame(() => syncPosition());
   }
 
   function closeMenu() {
@@ -185,8 +188,14 @@
     }
   }
 
-  function syncPosition() {
-    if (!browser || !anchorEl || !menuEl) {
+  function syncPosition(viewportWidth = innerWidth.current, viewportHeight = innerHeight.current) {
+    if (
+      !browser ||
+      !anchorEl ||
+      !menuEl ||
+      viewportWidth === undefined ||
+      viewportHeight === undefined
+    ) {
       return;
     }
 
@@ -195,7 +204,7 @@
     const shouldUsePopover = doesOverlayUsePopover(anchorEl);
     const dialogRect = dialog?.open && !shouldUsePopover ? dialog.getBoundingClientRect() : null;
     const margin = 8;
-    const maxViewportWidth = window.innerWidth - margin * 2;
+    const maxViewportWidth = viewportWidth - margin * 2;
     const baseTop = rect.top + rect.height * anchorY;
     const baseLeft = rect.left + rect.width * anchorX;
     const measured = menuEl.getBoundingClientRect();
@@ -215,8 +224,8 @@
     }
 
     menuPosition = "fixed";
-    menuTop = Math.max(margin, Math.min(top, window.innerHeight - measured.height - margin));
-    menuLeft = Math.max(margin, Math.min(left, window.innerWidth - measuredWidth - margin));
+    menuTop = Math.max(margin, Math.min(top, viewportHeight - measured.height - margin));
+    menuLeft = Math.max(margin, Math.min(left, viewportWidth - measuredWidth - margin));
   }
 
   function handleDocumentPointerdown(event: PointerEvent) {
