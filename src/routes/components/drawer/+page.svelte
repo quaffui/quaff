@@ -43,16 +43,16 @@
     <QBtn label="Open drawer" onclick={() => (displayDrawerOpen = !displayDrawerOpen)} />
 
     <QDrawer bind:value={displayDrawerOpen} overlay>
-      <div class="q-py-md">
-        <h5>Navigation</h5>
-        <QList dense>
-          <QItem>
+      <div class="q-pa-md">
+        <h6 class="q-ml-md q-mb-md">Navigation</h6>
+        <QList>
+          <QItem to="#">
             <QItemSection type="avatar">
               <QIcon name="home" />
             </QItemSection>
             <QItemSection>Home</QItemSection>
           </QItem>
-          <QItem>
+          <QItem to="#">
             <QItemSection type="avatar">
               <QIcon name="settings" />
             </QItemSection>
@@ -74,27 +74,27 @@
 
         <QLayout
           view="hHh LpR fFf"
-          style="height: 300px; width: 100%; border: 1px solid var(--outline);"
+          style="height: 350px; width: 100%; border: 1px solid var(--outline);"
         >
           {#snippet header()}
             <QHeader>
               <QBtn flat round icon="menu" onclick={() => (basicDrawerOpen = !basicDrawerOpen)} />
-              <h6 class="q-mx-md q-mb-none">App Title</h6>
+              <h6 class="q-ml-sm q-my-none">App Title</h6>
             </QHeader>
           {/snippet}
 
           {#snippet drawerLeft()}
             <QDrawer bind:value={basicDrawerOpen}>
               <div class="q-pa-md">
-                <h6>Navigation</h6>
-                <QList dense>
-                  <QItem>
+                <h6 class="q-ml-md q-mb-md">Navigation</h6>
+                <QList>
+                  <QItem to="#">
                     <QItemSection type="avatar">
                       <QIcon name="home" />
                     </QItemSection>
                     <QItemSection>Home</QItemSection>
                   </QItem>
-                  <QItem>
+                  <QItem to="#">
                     <QItemSection type="avatar">
                       <QIcon name="settings" />
                     </QItemSection>
@@ -109,7 +109,7 @@
           {/snippet}
 
           <div class="q-pa-md">
-            <p>Click the menu button to toggle the drawer:</p>
+            <p class="q-mb-md">Click the menu button to toggle the drawer:</p>
             <QBtn label="Toggle Drawer" onclick={() => (basicDrawerOpen = !basicDrawerOpen)} />
           </div>
         </QLayout>
@@ -128,7 +128,7 @@
           {#snippet header()}
             <QHeader class="justify-between">
               <QBtn flat round icon="menu" onclick={() => (leftDrawerOpen = !leftDrawerOpen)} />
-              <h6 class="q-mx-md q-mb-none">App Title</h6>
+              <h6 class="q-ml-sm q-my-none">App Title</h6>
               <QBtn
                 flat
                 round
@@ -141,8 +141,8 @@
           {#snippet drawerLeft()}
             <QDrawer bind:value={leftDrawerOpen} side="left">
               <div class="q-pa-md">
-                <h6>Left Drawer</h6>
-                <p>This drawer opens from the left side.</p>
+                <h6 class="q-mb-md">Left Drawer</h6>
+                <p class="q-mb-md">This drawer opens from the left side.</p>
                 <QBtn label="Close" onclick={() => (leftDrawerOpen = false)} />
               </div>
             </QDrawer>
@@ -151,15 +151,15 @@
           {#snippet drawerRight()}
             <QDrawer bind:value={rightDrawerOpen} side="right">
               <div class="q-pa-md">
-                <h6>Right Drawer</h6>
-                <p>This drawer opens from the right side.</p>
+                <h6 class="q-mb-md">Right Drawer</h6>
+                <p class="q-mb-md">This drawer opens from the right side.</p>
                 <QBtn label="Close" onclick={() => (rightDrawerOpen = false)} />
               </div>
             </QDrawer>
           {/snippet}
 
           <div class="q-pa-md flex column flex-center">
-            <p>Click the buttons to toggle the drawers:</p>
+            <p class="q-mb-md">Click the buttons to toggle the drawers:</p>
             <div class="flex q-gap-md">
               <QBtn label="Toggle Left Drawer" onclick={() => (leftDrawerOpen = !leftDrawerOpen)} />
               <QBtn
@@ -190,15 +190,17 @@
                 icon="menu"
                 onclick={() => (overlayDrawerOpen = !overlayDrawerOpen)}
               />
-              <h6 class="q-mx-md q-mb-none">Overlay Drawer</h6>
+              <h6 class="q-ml-sm q-my-none">Overlay Drawer</h6>
             </QHeader>
           {/snippet}
 
           {#snippet drawerLeft()}
             <QDrawer bind:value={overlayDrawerOpen} overlay>
               <div class="q-pa-md">
-                <h6>Overlay Drawer</h6>
-                <p>This drawer appears over the content instead of pushing it aside.</p>
+                <h6 class="q-mb-md">Overlay Drawer</h6>
+                <p class="q-mb-md">
+                  This drawer appears over the content instead of pushing it aside.
+                </p>
                 <QBtn label="Close" onclick={() => (overlayDrawerOpen = false)} />
               </div>
             </QDrawer>
@@ -233,16 +235,18 @@
                 icon="menu"
                 onclick={() => (persistentDrawerOpen = !persistentDrawerOpen)}
               />
-              <h6 class="q-mx-md q-mb-none">Persistent Drawer</h6>
+              <h6 class="q-ml-sm q-my-none">Persistent Drawer</h6>
             </QHeader>
           {/snippet}
 
           {#snippet drawerLeft()}
             <QDrawer bind:value={persistentDrawerOpen} persistent>
               <div class="q-pa-md">
-                <h6>Persistent Drawer</h6>
+                <h6 class="q-mb-md">Persistent Drawer</h6>
                 <p>This drawer won't close when clicking outside it. Try it!</p>
-                <p>You need to use the button below or in the header to close it.</p>
+                <p class="q-mb-md">
+                  You need to use the button below or in the header to close it.
+                </p>
                 <QBtn label="Close Drawer" onclick={() => (persistentDrawerOpen = false)} />
               </div>
             </QDrawer>
@@ -277,15 +281,15 @@
                 icon="menu"
                 onclick={() => (borderedDrawerOpen = !borderedDrawerOpen)}
               />
-              <h6 class="q-mx-md q-mb-none">Bordered Drawer</h6>
+              <h6 class="q-ml-sm q-my-none">Bordered Drawer</h6>
             </QHeader>
           {/snippet}
 
           {#snippet drawerLeft()}
             <QDrawer bind:value={borderedDrawerOpen} bordered>
               <div class="q-pa-md">
-                <h6>Bordered Drawer</h6>
-                <p>This drawer has a border on its edge.</p>
+                <h6 class="q-mb-md">Bordered Drawer</h6>
+                <p class="q-mb-md">This drawer has a border on its edge.</p>
                 <QBtn label="Close" onclick={() => (borderedDrawerOpen = false)} />
               </div>
             </QDrawer>
@@ -319,15 +323,17 @@
                 icon="menu"
                 onclick={() => (customWidthDrawerOpen = !customWidthDrawerOpen)}
               />
-              <h6 class="q-mx-md q-mb-none">Custom Width</h6>
+              <h6 class="q-ml-sm q-my-none">Custom Width</h6>
             </QHeader>
           {/snippet}
 
           {#snippet drawerLeft()}
             <QDrawer bind:value={customWidthDrawerOpen} width={400}>
               <div class="q-pa-md">
-                <h6>Wide Drawer (400px)</h6>
-                <p>This drawer has a custom width of 400px instead of the default 300px.</p>
+                <h6 class="q-mb-md">Wide Drawer (400px)</h6>
+                <p class="q-mb-md">
+                  This drawer has a custom width of 400px instead of the default 300px.
+                </p>
                 <QBtn label="Close" onclick={() => (customWidthDrawerOpen = false)} />
               </div>
             </QDrawer>
@@ -356,15 +362,15 @@
         >
           {#snippet header()}
             <QHeader>
-              <h6 class="q-mb-none">Programmatic Control</h6>
+              <h6 class="q-my-none">Programmatic Control</h6>
             </QHeader>
           {/snippet}
 
           {#snippet drawerLeft()}
             <QDrawer bind:this={drawerRef} bind:value={programmaticDrawerState}>
               <div class="q-pa-md">
-                <h6>Drawer Content</h6>
-                <p>This drawer is controlled programmatically.</p>
+                <h6 class="q-mb-md">Drawer Content</h6>
+                <p class="q-mb-md">This drawer is controlled programmatically.</p>
                 <QBtn label="Close with hide()" onclick={drawerRef?.hide} />
               </div>
             </QDrawer>
@@ -396,22 +402,22 @@
           {#snippet header()}
             <QHeader>
               <QBtn flat round icon="menu" onclick={() => (layoutDrawerOpen = !layoutDrawerOpen)} />
-              <h6 class="q-mx-md q-mb-none">App with Layout</h6>
+              <h6 class="q-ml-sm q-my-none">App with Layout</h6>
             </QHeader>
           {/snippet}
 
           {#snippet drawerLeft()}
             <QDrawer bind:value={layoutDrawerOpen} bordered>
               <div class="q-pa-md">
-                <h6>Navigation</h6>
-                <QList dense>
-                  <QItem>
+                <h6 class="q-ml-md q-mb-md">Navigation</h6>
+                <QList>
+                  <QItem to="#">
                     <QItemSection type="avatar">
                       <QIcon name="home" />
                     </QItemSection>
                     <QItemSection>Home</QItemSection>
                   </QItem>
-                  <QItem>
+                  <QItem to="#">
                     <QItemSection type="avatar">
                       <QIcon name="person" />
                     </QItemSection>
@@ -447,7 +453,8 @@
 </QDocs>
 
 <style>
-  h6 {
-    margin: 0;
+  /* This override is needed due to lack of a QLayout parent in the example */
+  :global(.q-docs .q-drawer .q-list > .q-item.q-link) {
+    border-radius: 2rem;
   }
 </style>
