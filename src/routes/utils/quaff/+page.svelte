@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { QDocs, QDocsSection } from "$private";
+  import { QDocs, QDocsSection } from "$docs";
   import { Quaff, QBtn, QChip, QCodeBlock } from "$lib";
   import { pageTitle } from "$helpers/pageTitle";
 </script>

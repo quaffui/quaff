@@ -11,9 +11,9 @@
     QList,
     QSelect,
   } from "$lib";
-  import { QDocs, QDocsSection } from "$private";
+  import { QDocs, QDocsSection } from "$docs";
   import type { QDialogPositionOptions } from "$components/dialog/props";
-  import { docsCtx } from "$components/private/QDocs.svelte";
+  import { docsCtx } from "$docs/QDocs.svelte";
   import { pageTitle } from "$helpers/pageTitle";
   import snippets from "./docs.snippets";
 

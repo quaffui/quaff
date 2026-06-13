@@ -16,10 +16,10 @@
     QSwitch,
     QToolbarTitle,
   } from "$lib";
-  import { QDocs, QDocsSection } from "$private";
+  import { QDocs, QDocsSection } from "$docs";
   import type { QLayoutProps } from "$components/layout/props";
   import { pageTitle } from "$helpers/pageTitle";
-  import { docsCtx } from "$components/private/QDocs.svelte";
+  import { docsCtx } from "$docs/QDocs.svelte";
   import { snippet } from "./docs.snippets";
 
   let displayLeftDrawerElement = $state<ReturnType<typeof QDrawer>>();

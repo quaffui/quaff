@@ -1,7 +1,7 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
   import { QCard, QCardSection } from "$components";
-  import QDocs from "$components/private/QDocs.svelte";
+  import QDocs from "$docs/QDocs.svelte";
   import { pageTitle } from "$helpers/pageTitle";
 
   const utils = [

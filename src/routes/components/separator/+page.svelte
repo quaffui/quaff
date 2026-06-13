@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { docsCtx } from "$components/private/QDocs.svelte";
+  import { docsCtx } from "$docs/QDocs.svelte";
   import { QSeparatorHorizontalDocs, QSeparatorVerticalDocs } from "$components/separator/docs";
   import { pageTitle } from "$helpers/pageTitle";
   import { QCard, QCardSection, QSeparator } from "$lib";
-  import { QDocs, QDocsSection } from "$private";
+  import { QDocs, QDocsSection } from "$docs";
   import snippets from "./docs.snippets";
 
   docsCtx.set({ snippets, componentDocs: [QSeparatorHorizontalDocs, QSeparatorVerticalDocs] });
