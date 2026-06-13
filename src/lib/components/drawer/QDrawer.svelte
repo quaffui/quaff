@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount, untrack } from "svelte";
   import { on } from "svelte/events";
+  import { innerWidth } from "svelte/reactivity/window";
   import { navigating } from "$app/state";
   import { useSize } from "$composables";
   import { leftDrawerCtx, rightDrawerCtx } from "../layout/QLayout.svelte";
@@ -10,6 +11,8 @@
     value = $bindable(false),
     side = "left",
     width = 300,
+    breakpoint = 1023,
+    behavior = "default",
     bordered = false,
     overlay = false,
     persistent = false,
@@ -49,6 +52,21 @@
   const canHideOnClickOutside = $derived((value && !persistent) || overlay);
 
   const hideOnRouteChange = $derived(!persistent || overlay);
+
+  const isBelowBreakpoint = $derived.by(() => {
+    if (behavior === "mobile") {
+      return true;
+    }
+
+    if (behavior === "desktop") {
+      return false;
+    }
+
+    const currentWidth = innerWidth.current;
+    return currentWidth ? currentWidth <= breakpoint : false;
+  });
+
+  const canSwipe = $derived(!noSwipe && isBelowBreakpoint);
 
   const offsetTop = $derived.by(() => {
     const charPos = side === "left" ? 0 : 2;
@@ -113,13 +131,13 @@
       }, 150);
 
       untrack(() => {
-        if (!noSwipe && !persistent) {
+        if (canSwipe && !persistent) {
           addPointerdownListener(drawerEl);
           swipeAreaEl?.style.setProperty("z-index", "-1");
         }
       });
     } else {
-      if (!noSwipe) {
+      if (canSwipe) {
         addPointerdownListener(swipeAreaEl);
         swipeAreaEl?.style.setProperty("z-index", "10");
       }
@@ -200,6 +218,7 @@
   function handlePointerDown(e: PointerEvent) {
     if (
       noSwipe ||
+      !isBelowBreakpoint ||
       !drawerEl ||
       !swipeAreaEl ||
       (e.pointerType === "mouse" && e.buttons !== 1) ||
@@ -351,7 +370,7 @@
   {@render children?.()}
 </div>
 
-{#if !noSwipe}
+{#if canSwipe}
   <div
     bind:this={swipeAreaEl}
     class="q-drawer__swipearea q-drawer__swipearea--{side}"

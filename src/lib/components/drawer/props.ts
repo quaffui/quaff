@@ -24,7 +24,7 @@ export interface QDrawerProps extends NativeProps, HTMLAttributes<HTMLDivElement
   width?: number;
 
   /**
-   * The breakpoint at which the drawer behavior changes. (not supported yet)
+   * The viewport width below which swipe gestures are enabled.
    * @default 1023
    */
   breakpoint?: number;
@@ -36,7 +36,7 @@ export interface QDrawerProps extends NativeProps, HTMLAttributes<HTMLDivElement
   showIfAbove?: boolean;
 
   /**
-   * The behavior of the drawer based on the viewport width. (not supported yet)
+   * Controls swipe behavior: "default" follows the breakpoint, "mobile" enables swiping and "desktop" disables it.
    * @default "default"
    */
   behavior?: QDrawerBehaviorOptions;
@@ -54,7 +54,7 @@ export interface QDrawerProps extends NativeProps, HTMLAttributes<HTMLDivElement
   elevated?: boolean;
 
   /**
-   * Determines whether the wrawer should behave like an overlay (opening above the content) or not (pushing the content while opening).
+   * Determines whether the drawer should behave like an overlay (opening above the content) or not (pushing the content while opening).
    * @default false
    */
   overlay?: boolean;
