@@ -2,9 +2,9 @@
   import { QSelectDocs } from "$components/select/docs";
   import { pageTitle } from "$helpers/pageTitle";
   import { QBtn, QCard, QCardActions, QCardSection, QIcon, QSelect } from "$lib";
-  import { QDocs, QDocsSection } from "$private";
+  import { QDocs, QDocsSection } from "$docs";
   import type { QSelectFilterUpdate, QSelectOption } from "$components/select/props";
-  import { docsCtx } from "$components/private/QDocs.svelte";
+  import { docsCtx } from "$docs/QDocs.svelte";
   import snippets from "./docs.snippets";
 
   docsCtx.set({ snippets, componentDocs: QSelectDocs });

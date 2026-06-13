@@ -1,9 +1,9 @@
 <script lang="ts">
   import { QItemDocs, QItemSectionDocs, QListDocs } from "$components/list/docs";
-  import { docsCtx } from "$components/private/QDocs.svelte";
+  import { docsCtx } from "$docs/QDocs.svelte";
   import { pageTitle } from "$helpers/pageTitle";
   import { QAvatar, QCheckbox, QIcon, QInput, QItem, QItemSection, QList, QSwitch } from "$lib";
-  import { QDocs, QDocsSection } from "$private";
+  import { QDocs, QDocsSection } from "$docs";
   import snippets from "./docs.snippets";
 
   docsCtx.set({ snippets, componentDocs: [QListDocs, QItemDocs, QItemSectionDocs] });

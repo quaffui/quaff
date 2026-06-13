@@ -1,9 +1,9 @@
 <script lang="ts">
   import { QBreadcrumbsDocs } from "$components/breadcrumbs/docs";
-  import { docsCtx } from "$components/private/QDocs.svelte";
+  import { docsCtx } from "$docs/QDocs.svelte";
   import { pageTitle } from "$helpers/pageTitle";
   import { QBreadcrumbs, QBreadcrumbsEl, QCard } from "$lib";
-  import { QDocs, QDocsSection } from "$private";
+  import { QDocs, QDocsSection } from "$docs";
   import snippets from "./docs.snippets";
 
   docsCtx.set({ snippets, componentDocs: QBreadcrumbsDocs });
