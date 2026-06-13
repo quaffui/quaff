@@ -15,6 +15,6 @@ vite.config.ts.timestamp-*
 src/lib/components/**/docs.props.ts
 src/routes/components/**/docs.snippets.ts
 !src/routes/components/layout/docs.snippets.ts
-src/lib/utils/types.json
+src/docs/types.json
 parseInterface.d.ts
 /plugins/dist/

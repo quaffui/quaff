@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onDestroy } from "svelte";
-  import { QDocs, QDocsSection } from "$private";
+  import { QDocs, QDocsSection } from "$docs";
   import { QBtn, QCodeBlock, QTheme, Quaff } from "$lib";
   import type { HexValue } from "$utils";
   import { pageTitle } from "$helpers/pageTitle";

@@ -1,10 +1,10 @@
 <script lang="ts">
   import QCard from "$components/card/QCard.svelte";
   import { QCheckboxDocs } from "$components/checkbox/docs";
-  import { docsCtx } from "$components/private/QDocs.svelte";
+  import { docsCtx } from "$docs/QDocs.svelte";
   import { pageTitle } from "$helpers/pageTitle";
   import { QBtn, QCheckbox, QIcon, QItem, QItemSection, QList } from "$lib";
-  import { QDocs, QDocsSection } from "$private";
+  import { QDocs, QDocsSection } from "$docs";
 
   import snippets from "./docs.snippets";
 

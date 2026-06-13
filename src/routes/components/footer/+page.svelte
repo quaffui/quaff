@@ -1,9 +1,9 @@
 <script lang="ts">
   import { QFooterDocs } from "$components/footer/docs";
-  import { docsCtx } from "$components/private/QDocs.svelte";
+  import { docsCtx } from "$docs/QDocs.svelte";
   import { pageTitle } from "$helpers/pageTitle";
   import { QFooter, QLayout } from "$lib";
-  import { QDocs, QDocsSection } from "$private";
+  import { QDocs, QDocsSection } from "$docs";
 
   import snippets from "./docs.snippets";
 

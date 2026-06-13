@@ -1,6 +1,5 @@
 <script lang="ts">
   import { createRawSnippet, mount, tick } from "svelte";
-  import Types from "$utils/types.json";
   import {
     QCard,
     QCardSection,
@@ -16,6 +15,7 @@
   import { capitalize, escape } from "$utils";
   import type { QComponentDocs, QComponentEvent, QComponentMethod } from "$utils";
   import type { ParsedProp, ParsedSnippet } from "$docgen/props/parseInterface";
+  import Types from "./types.json";
   import { docsCtx } from "./QDocs.svelte";
 
   // #region:    --- Context

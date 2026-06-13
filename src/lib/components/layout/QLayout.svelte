@@ -1,7 +1,7 @@
 <script module lang="ts">
   import { onMount } from "svelte";
   import { QContext } from "$lib/utils";
-  import { ContextReseter } from "$private";
+  import ContextResetter from "$internal/ContextResetter.svelte";
   import type { QLayoutProps } from "./props";
 
   interface AppbarContext {
@@ -215,7 +215,7 @@
   {@render header?.()}
   {@render footer?.()}
 
-  <ContextReseter
+  <ContextResetter
     keys={[
       headerCtx.symbol,
       footerCtx.symbol,
@@ -232,5 +232,5 @@
         {@render children?.()}
       {/if}
     </div>
-  </ContextReseter>
+  </ContextResetter>
 </div>

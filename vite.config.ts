@@ -25,7 +25,8 @@ export default defineConfig({
       $stores: path.resolve(__dirname, "./src/lib/stores"),
       $helpers: path.resolve(__dirname, "./src/lib/helpers"),
       $docgen: path.resolve(__dirname, "./docgen"),
-      $private: path.resolve(__dirname, "./src/lib/components/private"),
+      $internal: path.resolve(__dirname, "./src/lib/internal"),
+      $docs: path.resolve(__dirname, "./src/docs"),
     },
   },
 });

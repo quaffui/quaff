@@ -32,7 +32,7 @@
     QTabs,
     QToolbar,
   } from "$components";
-  import QDocs from "$components/private/QDocs.svelte";
+  import QDocs from "$docs/QDocs.svelte";
   import { pageTitle } from "$helpers/pageTitle";
   import { Quaff } from "$lib";
   import type { Snippet } from "svelte";

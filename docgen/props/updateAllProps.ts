@@ -9,7 +9,7 @@ import type { WorkerTask } from "./WorkerManager.js";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.resolve(dirname, "../../src/lib/components");
-const docTypesPath = path.resolve(dirname, "../../src/lib/utils/types.json");
+const docTypesPath = path.resolve(dirname, "../../src/docs/types.json");
 
 let didUpdateAllFiles = true;
 

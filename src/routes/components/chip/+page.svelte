@@ -1,9 +1,9 @@
 <script lang="ts">
   import { QChipDocs } from "$components/chip/docs";
-  import { docsCtx } from "$components/private/QDocs.svelte";
+  import { docsCtx } from "$docs/QDocs.svelte";
   import { pageTitle } from "$helpers/pageTitle";
   import { QChip } from "$lib";
-  import { QDocs, QDocsSection } from "$private";
+  import { QDocs, QDocsSection } from "$docs";
 
   import snippets from "./docs.snippets";
 

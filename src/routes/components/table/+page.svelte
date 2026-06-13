@@ -1,10 +1,10 @@
 <script lang="ts">
   import { QTableDocs } from "$components/table/docs";
   import { QBtn, QCard, QCardSection, QCodeBlock, QIcon, QTable } from "$lib";
-  import { QDocs, QDocsSection } from "$private";
+  import { QDocs, QDocsSection } from "$docs";
   import type { QTableColumn, QTableRow } from "$components/table/props";
   import { pageTitle } from "$helpers/pageTitle";
-  import { docsCtx } from "$components/private/QDocs.svelte";
+  import { docsCtx } from "$docs/QDocs.svelte";
   import snippets from "./docs.snippets";
 
   docsCtx.set({ snippets, componentDocs: QTableDocs });

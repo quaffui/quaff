@@ -1,9 +1,9 @@
 <script lang="ts">
   import { QCardActionsDocs, QCardDocs, QCardSectionDocs } from "$components/card/docs";
-  import { docsCtx } from "$components/private/QDocs.svelte";
+  import { docsCtx } from "$docs/QDocs.svelte";
   import { pageTitle } from "$helpers/pageTitle";
   import { QBtn, QCard, QCardActions, QCardSection } from "$lib";
-  import { QDocs, QDocsSection } from "$private";
+  import { QDocs, QDocsSection } from "$docs";
   import snippets from "./docs.snippets";
 
   docsCtx.set({ snippets, componentDocs: [QCardDocs, QCardSectionDocs, QCardActionsDocs] });

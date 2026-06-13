@@ -1,6 +1,6 @@
 <script lang="ts">
   import { ripple } from "$helpers";
-  import { QIconSnippet } from "$private";
+  import QIconSnippet from "$internal/QIconSnippet.svelte";
   import { isActivationKey, type QEvent } from "$utils";
   import type { QSwitchProps } from "./props";
 

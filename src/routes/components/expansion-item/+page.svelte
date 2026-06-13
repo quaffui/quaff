@@ -1,8 +1,8 @@
 <script lang="ts">
   import { QExpansionItemDocs } from "$components/expansion-item/docs";
   import { QExpansionItem, QList, QItemSection, QIcon, QSwitch, QBtn } from "$components";
-  import { QDocs, QDocsSection } from "$components/private";
-  import { docsCtx } from "$components/private/QDocs.svelte";
+  import { QDocs, QDocsSection } from "$docs";
+  import { docsCtx } from "$docs/QDocs.svelte";
   import { pageTitle } from "$helpers/pageTitle";
   import snippets from "./docs.snippets";
 
