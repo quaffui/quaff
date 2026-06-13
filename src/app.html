@@ -8,21 +8,19 @@
   </head>
   <body data-sveltekit-preload-data="hover" class="">
     <script type="module">
-      // Set dark mode based on system preference
-      const cachedScheme = localStorage.getItem("current_mode");
+      // prevents a white flash on load for dark mode users
+      const savedDisplayMode = localStorage.getItem("displayMode");
+      let currentDisplayMode;
 
-      if (cachedScheme) {
-        document.body.classList.add(`body--${cachedScheme}`);
+      if (savedDisplayMode === "dark" || savedDisplayMode === "light") {
+        currentDisplayMode = savedDisplayMode;
+      } else if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+        currentDisplayMode = "dark";
       } else {
-        const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)");
-
-        if (prefersDarkScheme.matches) {
-          document.body.classList.add("body--dark");
-          localStorage.setItem("current_mode", "dark");
-        } else {
-          localStorage.setItem("current_mode", "light");
-        }
+        currentDisplayMode = "light";
       }
+
+      document.body.classList.add(`body--${currentDisplayMode}`);
     </script>
 
     <div>%sveltekit.body%</div>

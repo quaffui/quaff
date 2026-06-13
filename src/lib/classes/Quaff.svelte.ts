@@ -3,7 +3,9 @@ import { innerWidth } from "svelte/reactivity/window";
 import { version } from "$helpers";
 import { page } from "$app/state";
 
-type Mode = "light" | "dark";
+type DisplayMode = "light" | "dark";
+
+const DISPLAY_MODE_STORAGE_KEY = "displayMode";
 
 class Quaff {
   public version = version;
@@ -62,33 +64,39 @@ class Quaff {
 
   public init() {
     onMount(() => {
-      const currentMode: Mode =
-        (localStorage.getItem("current_mode") as Mode) ||
-        (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
-
-      if (currentMode === "dark") {
-        this.dark = true;
-      } else {
-        this.dark = false;
-      }
+      this.applyDisplayMode(this.getCurrentDisplayMode(), false);
     });
   }
 
+  protected getCurrentDisplayMode(): DisplayMode {
+    const savedDisplayMode = localStorage.getItem(DISPLAY_MODE_STORAGE_KEY);
+
+    if (savedDisplayMode === "dark" || savedDisplayMode === "light") {
+      return savedDisplayMode;
+    }
+
+    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  }
+
+  protected applyDisplayMode(displayMode: DisplayMode, persist = true) {
+    this.dark = displayMode === "dark";
+
+    if (typeof document !== "undefined") {
+      document.body.classList.remove("body--light", "body--dark");
+      document.body.classList.add(`body--${displayMode}`);
+    }
+
+    if (persist && typeof localStorage !== "undefined") {
+      localStorage.setItem(DISPLAY_MODE_STORAGE_KEY, displayMode);
+    }
+  }
+
   protected toggleDarkMode() {
-    this.dark = !this.dark;
-
-    const mode: { from: Mode; to: Mode } = {
-      from: this.dark ? "light" : "dark",
-      to: this.dark ? "dark" : "light",
-    };
-
-    const body = document.querySelector("body");
-    body?.classList.replace(`body--${mode.from}`, `body--${mode.to}`);
-    localStorage.setItem("current_mode", mode.to);
+    this.applyDisplayMode(this.dark ? "light" : "dark");
   }
 
   protected setDarkMode(newVal: boolean) {
-    this.dark = newVal;
+    this.applyDisplayMode(newVal ? "dark" : "light");
   }
 
   public get darkMode() {

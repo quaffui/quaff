@@ -45,8 +45,8 @@
           <code>toggle</code> method toggles dark mode.
 
           <p>
-            Dark mode is also persistent accross page reloads and sessions as it uses a cookie to
-            store the current state.
+            Dark mode is also persistent across page reloads and sessions as it stores the current
+            display mode in local storage.
           </p>
         {/snippet}
 
