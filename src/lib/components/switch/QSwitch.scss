@@ -121,7 +121,8 @@ $check-map: (
       border-width: 0.125rem;
     }
 
-    &[aria-disabled] #{$track}:is(::before, ::after) {
+    &[aria-disabled] #{$track}::before,
+    &[aria-disabled] #{$track}::after {
       transition: none;
       opacity: 38%;
     }
@@ -302,7 +303,8 @@ $check-map: (
       }
     }
 
-    & :is(#{$handle}, #{$handle}::before) {
+    & #{$handle},
+    & #{$handle}::before {
       transition: none;
     }
   }
