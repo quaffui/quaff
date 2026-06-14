@@ -93,7 +93,7 @@ export interface QInputProps extends NativeProps, QInputNativeAttributes {
   /**
    * Current value of the input field. This property is bindable.
    */
-  value: string | number;
+  value: string | number | null;
 
   /**
    * Classes applied to the field wrapper.

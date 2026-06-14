@@ -46,8 +46,9 @@
   // #endregion: --- Props
 
   // #region:    --- Derived values
+  const nativeValue = $derived(value ?? "");
   const displayValue = $derived(
-    mask ? maskValue(String(value ?? ""), mask, fillMask) : (value ?? "")
+    mask ? maskValue(String(nativeValue), mask, fillMask) : nativeValue
   );
   const hasValue = $derived(value !== "" && value !== undefined && value !== null);
   const hasNativePlaceholder = $derived(
