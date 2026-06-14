@@ -11,7 +11,7 @@
     getOptionLabel,
     normalizeOptionIndex,
   } from "./option";
-  import type { QSelectOption, QSelectProps } from "./props";
+  import type { QSelectOption, QSelectProps, QSelectValue } from "./props";
 
   type QSelectEvent<T> = QEvent<T, HTMLDivElement>;
 
@@ -253,9 +253,10 @@
   }
 
   function isSelected(option: QSelectOption) {
+    const isArray = (val: QSelectValue): val is QSelectOption[] => Array.isArray(val);
     return multiple
-      ? Array.isArray(value) && value.some((opt) => doValuesMatch(opt, option))
-      : doValuesMatch(value as QSelectOption, option);
+      ? isArray(value) && value.some((opt) => doValuesMatch(opt, option))
+      : !isArray(value) && doValuesMatch(value, option);
   }
 
   function handleOptionMousedown(evt: MouseEvent) {
