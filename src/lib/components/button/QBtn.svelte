@@ -138,6 +138,7 @@
   {...props}
   class="q-btn"
   style:--q-btn-size={qSize.style}
+  style:--ripple-color={computedColor && `var(--${computedColor})`}
   {target}
   href={to}
   role={computedTag === "a" ? "button" : undefined}
