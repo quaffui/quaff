@@ -33,7 +33,7 @@
     (kind === "assist" || kind === "suggestion") && trailingIcon ? undefined : trailingIcon
   );
 
-  const tabindex = disabled ? -1 : props.tabindex || 0;
+  const tabindex = $derived(disabled ? -1 : props.tabindex || 0);
   const role = $derived(["assist", "filter"].includes(kind) ? "button" : undefined);
 
   const avatar = $derived(extractImgSrc(icon));
@@ -104,10 +104,10 @@
 
 <div
   bind:this={qChip}
-  use:ripple={{
+  {@attach ripple({
     disabled: noRipple || disabled,
-    color: elevated ? "var(--on-surface-variant)" : undefined,
-  }}
+    color: elevated ? "on-surface-variant" : undefined,
+  })}
   {...props}
   class="q-chip"
   aria-disabled={disabled || undefined}

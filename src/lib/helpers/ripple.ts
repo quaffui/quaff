@@ -1,70 +1,95 @@
+import { Attachment } from "svelte/attachments";
 import { on } from "svelte/events";
+import { isActivationKey } from "$utils";
 
 interface RippleOptions {
+  /**
+   * Whether the ripple should be centered on the element.
+   */
   center?: boolean;
-  color?: string; // CSS color
-  duration?: number; // In ms
-  disabled?: boolean; // Should the ripple be disabled
+  /**
+   * The color of the ripple. This should be in a format that can be used in CSS, such as hex, rgb, hsl, or named colors.
+   *
+   * For variables, no need to wrap in `var(--xx)` e.g. pass `primary` not `var(--primary)`.
+   */
+  color?: string;
+  /**
+   * The duration of the ripple in milliseconds.
+   */
+  duration?: number;
+  /**
+   * Whether the ripple should be disabled.
+   */
+  disabled?: boolean;
 }
 
-const triggerEvents = ["pointerdown", "touchstart", "keydown"] as const;
-const cancelEvents = ["mouseleave", "dragleave", "touchmove", "touchcancel", "pointerup", "keyup"];
+const TRIGGER_EVENTS = ["pointerdown", "touchstart", "keydown"] as const;
+const CANCEL_EVENTS = ["mouseleave", "dragleave", "touchmove", "touchcancel", "pointerup", "keyup"];
 
-export function ripple(el: HTMLElement, options: RippleOptions = {}) {
+const RIPPLE_CLASS = "q-ripple";
+const CENTER_CLASS = `${RIPPLE_CLASS}--center`;
+const EFFECT_CLASS = `${RIPPLE_CLASS}__effect`;
+
+const COLOR_PROPERTY = "--ripple-color";
+const DURATION_PROPERTY = "--ripple-duration";
+
+export function ripple(options: RippleOptions = {}): Attachment<HTMLElement> {
   const rippleContainer = document.createElement("div");
-  addClasses();
 
-  setOptions(options);
+  function isDisabled(el: HTMLElement, opts: RippleOptions) {
+    return opts.disabled || el.hasAttribute("aria-disabled");
+  }
 
-  function addClasses(center?: boolean) {
+  function addClasses(center = false) {
     const shouldBeCentered = center || options.center;
 
-    if (!rippleContainer.classList.contains("q-ripple--effect")) {
-      rippleContainer.classList.add("q-ripple--effect");
-    }
-
-    if (!shouldBeCentered && rippleContainer.classList.contains("q-ripple--center")) {
-      rippleContainer.classList.remove("q-ripple--center");
-    }
+    rippleContainer.classList.add(EFFECT_CLASS);
 
     if (shouldBeCentered) {
-      rippleContainer.classList.add("q-ripple--center");
-    }
-  }
-
-  function setOptions(options: RippleOptions) {
-    if (options.disabled || el.hasAttribute("aria-disabled")) {
-      rippleContainer.remove();
+      rippleContainer.classList.add(CENTER_CLASS);
     } else {
-      el.appendChild(rippleContainer);
-    }
-
-    if (options.duration && options.duration < 0) {
-      options.duration = undefined;
-    }
-
-    if (options.color) {
-      rippleContainer.style.setProperty("--ripple-color", options.color);
-    }
-
-    if (options.duration) {
-      rippleContainer.style.setProperty("--ripple-duration", `${options.duration}ms`);
+      rippleContainer.classList.remove(CENTER_CLASS);
     }
   }
 
-  function createRipple(e: PointerEvent | KeyboardEvent | TouchEvent, center?: boolean) {
-    if (options.disabled || el.hasAttribute("aria-disabled")) {
+  function setOptions(el: HTMLElement, opts: RippleOptions) {
+    if (isDisabled(el, opts)) {
+      rippleContainer.remove();
       return;
     }
 
-    if (e instanceof KeyboardEvent) {
-      if (!["Enter", "Space"].includes(e.code) || e.repeat) {
+    el.appendChild(rippleContainer);
+
+    if (opts.duration && opts.duration < 0) {
+      opts.duration = undefined;
+    }
+
+    if (opts.duration) {
+      rippleContainer.style.setProperty(DURATION_PROPERTY, `${opts.duration}ms`);
+    }
+
+    if (opts.color) {
+      rippleContainer.style.setProperty(COLOR_PROPERTY, `var(--${opts.color}, ${opts.color})`);
+    }
+  }
+
+  function createRipple(
+    el: HTMLElement,
+    event: PointerEvent | KeyboardEvent | TouchEvent,
+    center = false
+  ) {
+    if (isDisabled(el, options)) {
+      return;
+    }
+
+    if (event instanceof KeyboardEvent) {
+      if (!isActivationKey(event)) {
         return;
       }
 
-      e.preventDefault();
+      event.preventDefault();
       const click = new PointerEvent("pointerdown");
-      createRipple(click, true);
+      createRipple(el, click, true);
 
       return;
     }
@@ -73,27 +98,25 @@ export function ripple(el: HTMLElement, options: RippleOptions = {}) {
 
     const rect = el.getBoundingClientRect();
 
-    const clientX =
-      window.TouchEvent && e instanceof TouchEvent
-        ? e.touches[0].clientX
-        : (e as PointerEvent).clientX;
-    const clientY =
-      window.TouchEvent && e instanceof TouchEvent
-        ? e.touches[0].clientY
-        : (e as PointerEvent).clientY;
+    const { clientX, clientY } =
+      window.TouchEvent && event instanceof TouchEvent ? event.touches[0] : (event as PointerEvent);
 
     const x = clientX - rect.left > el.offsetWidth / 2 ? 0 : el.offsetWidth;
     const y = clientY - rect.top > el.offsetHeight / 2 ? 0 : el.offsetHeight;
     const radius = Math.hypot(x - (clientX - rect.left), y - (clientY - rect.top));
 
     const ripple = document.createElement("div");
-    ripple.classList.add("q-ripple");
+    ripple.classList.add(RIPPLE_CLASS);
 
     ripple.style.left = `${clientX - rect.left - radius}px`;
     ripple.style.top = `${clientY - rect.top - radius}px`;
     ripple.style.width = ripple.style.height = `${radius * 2}px`;
 
     rippleContainer.appendChild(ripple);
+
+    const removeCancelListeners = CANCEL_EVENTS.map((event) =>
+      on(el, event, removeRipple, { passive: true })
+    );
 
     function removeRipple() {
       if (ripple === null) {
@@ -108,24 +131,19 @@ export function ripple(el: HTMLElement, options: RippleOptions = {}) {
 
       removeCancelListeners.forEach((removeCancelListener) => removeCancelListener());
     }
-
-    const removeCancelListeners = cancelEvents.map((event) =>
-      on(el, event, removeRipple, { passive: true })
-    );
   }
 
-  const removeTriggerListeners = triggerEvents.map((event) =>
-    on(el, event, createRipple, { passive: event === "touchstart" })
-  );
+  return (element: HTMLElement) => {
+    addClasses();
+    setOptions(element, options);
 
-  return {
-    destroy() {
-      removeTriggerListeners.forEach((removeTriggerListener) => removeTriggerListener());
-    },
-    update(newOptions: RippleOptions) {
-      options = newOptions;
+    const removeTriggerListeners = TRIGGER_EVENTS.map((event) =>
+      on(element, event, (e) => createRipple(element, e), { passive: event === "touchstart" })
+    );
 
-      setOptions(newOptions);
-    },
+    return () => {
+      rippleContainer.remove();
+      removeTriggerListeners.forEach((unlisten) => unlisten());
+    };
   };
 }
