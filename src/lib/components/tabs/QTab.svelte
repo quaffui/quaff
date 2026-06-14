@@ -90,7 +90,7 @@
 <svelte:element
   this={tag}
   bind:this={qTab}
-  use:ripple
+  {@attach ripple()}
   {...props}
   class="q-tab"
   href={to}
