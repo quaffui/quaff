@@ -1,12 +1,14 @@
 import type { HTMLAttributes } from "svelte/elements";
 
+export type QRadioValue = string | number | boolean | null;
+
 export interface QRadioProps extends HTMLAttributes<HTMLLabelElement> {
   /**
    * Value associated with this radio button. Used when comparing against the selected value.
    *
    * @default ""
    */
-  value: string;
+  value: QRadioValue;
 
   /**
    * Text label displayed next to the radio button.
@@ -21,7 +23,7 @@ export interface QRadioProps extends HTMLAttributes<HTMLLabelElement> {
    *
    * @default undefined
    */
-  selected?: unknown;
+  selected?: QRadioValue;
 
   /**
    * When true, prevents user interaction with the radio button.
