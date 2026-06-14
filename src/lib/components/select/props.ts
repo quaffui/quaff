@@ -4,7 +4,7 @@ import type { HTMLAttributes } from "svelte/elements";
 
 export type QSelectOption = string | number | { label: string | number; value: string | number };
 
-export type QSelectValue = QSelectOption | QSelectOption[];
+export type QSelectValue = QSelectOption | QSelectOption[] | null;
 
 export type QSelectFilterUpdate = (callbackFn: () => void | Promise<void>) => void;
 
