@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import { QCircularProgress, QIcon } from "$lib";
-  import { useColor, useSize } from "$composables";
+  import { useSize } from "$composables";
   import { ripple } from "$helpers";
   import { isActivationKey, extractImgSrc, type QEvent } from "$utils";
   import type { MaterialSymbol } from "material-symbols";
@@ -79,10 +79,6 @@
 
     return "primary";
   });
-
-  const colorVar = $derived(computedColor && `var(--${computedColor})`);
-
-  const rippleColorVar = $derived(rippleColor ? useColor(rippleColor) : colorVar);
   // #endregion: --- Derived values
 
   // #region:    --- Lifecycle
@@ -138,14 +134,10 @@
 <svelte:element
   this={computedTag}
   bind:this={qBtn}
-  use:ripple={{
-    disabled: noRipple || disabled,
-    color: rippleColorVar,
-  }}
+  {@attach ripple({ disabled: noRipple || disabled, color: rippleColor ?? computedColor })}
   {...props}
   class="q-btn"
   style:--q-btn-size={qSize.style}
-  style:--ripple-color={colorVar}
   {target}
   href={to}
   role={computedTag === "a" ? "button" : undefined}

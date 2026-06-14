@@ -604,7 +604,7 @@
             </QItemSection>
           </QItem>
 
-          <QItem>
+          <QItem tag="label" clickable>
             <QItemSection type="avatar">
               <QIcon name="notifications" />
             </QItemSection>

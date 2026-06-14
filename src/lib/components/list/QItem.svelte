@@ -86,7 +86,7 @@
 {#if routerInfo.linkAttributes.href}
   <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
   <a
-    use:ripple={{ disabled: !isClickable || noRipple }}
+    {@attach ripple({ disabled: !isClickable || noRipple })}
     {...props}
     class="q-item"
     tabindex={isClickable ? tabindex || 0 : undefined}
@@ -99,7 +99,7 @@
 {:else}
   <svelte:element
     this={tag}
-    use:ripple={{ disabled: !isClickable || noRipple }}
+    {@attach ripple({ disabled: !isClickable || noRipple })}
     {...props}
     class="q-item"
     tabindex={isClickable ? tabindex || 0 : undefined}

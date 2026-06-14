@@ -95,7 +95,7 @@
     />
     <span class="q-switch__track">
       <span class="q-switch__touch"></span>
-      <span class="q-switch__handle-container" use:ripple={{ disabled }}>
+      <span class="q-switch__handle-container" {@attach ripple({ disabled })}>
         <span class="q-switch__handle">
           {#if (uncheckedIcon || icons) && !showOnlyCheckedIcon}
             {@render icon("unchecked")}
