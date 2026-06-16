@@ -4,13 +4,6 @@ import { defineConfig } from "vitest/config";
 import docgenPlugin from "./src/dev/docgenPlugin";
 
 export default defineConfig({
-  css: {
-    preprocessorOptions: {
-      scss: {
-        api: "modern-compiler",
-      },
-    },
-  },
   plugins: [docgenPlugin(), sveltekit()],
   test: {
     include: ["src/**/*.{test,spec}.{js,ts}"],
