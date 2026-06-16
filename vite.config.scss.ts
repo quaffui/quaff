@@ -1,13 +1,7 @@
 import { resolve } from "path";
+import { defineConfig } from "vite";
 
-export default {
-  css: {
-    preprocessorOptions: {
-      scss: {
-        api: "modern-compiler",
-      },
-    },
-  },
+export default defineConfig({
   resolve: {
     alias: {
       $lib: resolve(__dirname, "src/lib"),
@@ -25,4 +19,4 @@ export default {
       },
     },
   },
-};
+});
