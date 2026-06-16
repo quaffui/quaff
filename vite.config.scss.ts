@@ -11,6 +11,7 @@ export default defineConfig({
   },
   build: {
     emptyOutDir: false,
+    cssMinify: "esbuild",
     rolldownOptions: {
       input: "src/lib/css/index.scss",
       output: {
