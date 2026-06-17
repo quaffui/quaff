@@ -1,7 +1,11 @@
 <script lang="ts">
   import { onDestroy, tick } from "svelte";
-  import { QIcon, QItem, QItemSection, QList, QMenu } from "$lib";
   import { isActivationKey, type QEvent } from "$utils";
+  import QIcon from "$components/icon/QIcon.svelte";
+  import QItem from "$components/list/QItem.svelte";
+  import QItemSection from "$components/list/QItemSection.svelte";
+  import QList from "$components/list/QList.svelte";
+  import QMenu from "$components/menu/QMenu.svelte";
   import { createFilterRunner, getFilteredOptions, getInputValue } from "./filter";
   import {
     doValuesMatch,

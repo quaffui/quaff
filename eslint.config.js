@@ -125,4 +125,21 @@ export default [
       },
     },
   },
+  {
+    files: ["src/lib/**/*.{svelte,ts}"],
+    rules: {
+      "no-restricted-imports": [
+        "error",
+        {
+          patterns: [
+            {
+              group: ["$lib", "$lib/*"],
+              message:
+                "Library internals must not import through the public $lib barrel. Use a specific alias such as $components, $classes, $utils, or $helpers.",
+            },
+          ],
+        },
+      ],
+    },
+  },
 ];

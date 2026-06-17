@@ -1,7 +1,7 @@
 <script module lang="ts">
   import { onMount } from "svelte";
-  import { QContext } from "$lib/utils";
   import ContextResetter from "$internal/ContextResetter.svelte";
+  import { QContext } from "$utils/context";
   import type { QLayoutProps } from "./props";
 
   interface AppbarContext {

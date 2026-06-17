@@ -1,4 +1,5 @@
 <script lang="ts" module>
+  import { QContext } from "$utils/context";
   import type { QBreadcrumbsProps } from "./props";
 
   export const breadcrumbsCtx = QContext<{
@@ -9,7 +10,6 @@
 
 <script lang="ts">
   import { onMount } from "svelte";
-  import { QContext } from "$lib/utils";
   import { useColor } from "$composables";
 
   // #region:    --- Props

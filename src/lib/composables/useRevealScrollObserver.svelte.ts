@@ -1,4 +1,4 @@
-import QScrollObserver from "$lib/classes/QScrollObserver.svelte";
+import QScrollObserver from "$classes/QScrollObserver.svelte";
 
 export type RevealScrollBar = "header" | "footer";
 
