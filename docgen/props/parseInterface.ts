@@ -152,17 +152,23 @@ function evaluateTypeNode(node: ts.TypeNode): PropType | (PropType | SnippetType
       return [];
     }
 
-    return node.members.map((member: ts.PropertySignature | ts.IndexSignatureDeclaration) => ({
-      propName: ts.isPropertySignature(member)
+    return node.members.map((member: ts.PropertySignature | ts.IndexSignatureDeclaration) => {
+      const propName = ts.isPropertySignature(member)
         ? member.name.getText()
-        : `[${member.parameters.map((param) => param.getText()).join(", ")}]`,
-      isClickable:
+        : `[${member.parameters.map((param) => param.getText()).join(", ")}]`;
+
+      const isClickable =
         !!member.type &&
-        ts.isTypeReferenceNode(member.type) &&
-        !member.type?.getText().startsWith("Attachment"),
-      optional: !!member.questionToken,
-      name: member.type!.getText().trim(),
-    }));
+        !member.type.getText().startsWith("Attachment") &&
+        ts.isTypeReferenceNode(member.type);
+
+      return {
+        propName,
+        isClickable,
+        optional: !!member.questionToken,
+        name: member.type!.getText().trim(),
+      };
+    });
   }
 
   const name = node.getText().trim();
