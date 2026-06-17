@@ -1,3 +1,5 @@
+import { Snippet } from "svelte";
+import { Attachment } from "svelte/attachments";
 import type { HTMLAttributes } from "svelte/elements";
 
 export type QTooltipPosition =
@@ -39,13 +41,20 @@ export interface QTooltipProps<T extends Element | string> extends HTMLAttribute
 
   /**
    * Delay in milliseconds before the tooltip appears.
-   * @default 0
+   * @default 250
    */
   delay?: number;
 
   /**
    * Delay in milliseconds before the tooltip is hidden.
-   * @default 0
+   * @default 250
    */
   hideDelay?: number;
+
+  /**
+   * Snippet holding the trigger element/component. Its scope contains a Svelte attachment that should be spread on the trigger element.
+   *
+   * @default undefined
+   */
+  trigger?: Snippet<[{ [k: symbol]: Attachment<HTMLElement> }]>;
 }
