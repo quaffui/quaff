@@ -1,5 +1,5 @@
 <script lang="ts" module>
-  import { QContext } from "$lib/utils";
+  import { QContext } from "$utils/context";
 
   interface QItemContext {
     readonly activeClass: string | false;

@@ -2,10 +2,8 @@
 
 @layer theme, ripple, components, classes, disabled;
 
-@include meta.load-css("base");
-
 @layer Quaff {
   @layer components {
-    @include meta.load-css("components");
+    @include meta.load-css("../../components/switch/QSwitch.scss");
   }
 }

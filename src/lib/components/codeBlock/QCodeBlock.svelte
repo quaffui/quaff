@@ -1,5 +1,6 @@
 <script lang="ts">
-  import { QBtn, Quaff } from "$lib";
+  import Quaff from "$classes/Quaff.svelte";
+  import QBtn from "$components/button/QBtn.svelte";
   import { copy } from "$utils";
   import type { QCodeBlockProps } from "./props";
 

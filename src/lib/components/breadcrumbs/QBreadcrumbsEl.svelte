@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { QIcon } from "$lib";
   import { isRouteActive } from "$utils";
+  import QIcon from "$components/icon/QIcon.svelte";
   import { breadcrumbsCtx } from "./QBreadcrumbs.svelte";
   import type { MaterialSymbol } from "material-symbols";
   import type { QBreadcrumbsElProps } from "./props";

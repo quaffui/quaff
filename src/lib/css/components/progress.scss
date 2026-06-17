@@ -1,0 +1,10 @@
+@use "sass:meta";
+
+@layer theme, ripple, components, classes, disabled;
+
+@layer Quaff {
+  @layer components {
+    @include meta.load-css("../../components/progress/QCircularProgress.scss");
+    @include meta.load-css("../../components/progress/QLinearProgress.scss");
+  }
+}

@@ -1,8 +1,9 @@
 <script lang="ts">
-  import { QCircularProgress, QIcon } from "$lib";
   import { useSize } from "$composables";
   import { ripple } from "$helpers";
   import { isActivationKey, extractImgSrc, type QEvent } from "$utils";
+  import QIcon from "$components/icon/QIcon.svelte";
+  import QCircularProgress from "$components/progress/QCircularProgress.svelte";
   import type { MaterialSymbol } from "material-symbols";
   import type { QBtnProps, QBtnVariantOptions } from "./props";
 

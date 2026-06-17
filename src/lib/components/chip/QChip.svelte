@@ -1,5 +1,6 @@
 <script lang="ts">
-  import { QAvatar, QIcon } from "$lib";
+  import QAvatar from "$components/avatar/QAvatar.svelte";
+  import QIcon from "$components/icon/QIcon.svelte";
   import { ripple } from "$helpers";
   import { extractImgSrc, isActivationKey, type QEvent } from "$utils";
   import type { MaterialSymbol } from "material-symbols";

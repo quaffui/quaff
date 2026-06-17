@@ -1,5 +1,7 @@
 <script lang="ts">
-  import { QIcon, QSelect, QBtn } from "$lib";
+  import QBtn from "$components/button/QBtn.svelte";
+  import QIcon from "$components/icon/QIcon.svelte";
+  import QSelect from "$components/select/QSelect.svelte";
   import type { QTableProps, QTableColumn, QTableRow, QTableSort } from "./props";
 
   // #region:    --- Props
