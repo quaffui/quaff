@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { onMount } from "svelte";
   import { QCircularProgress, QIcon } from "$lib";
   import { useSize } from "$composables";
   import { ripple } from "$helpers";
@@ -80,17 +79,6 @@
     return "primary";
   });
   // #endregion: --- Derived values
-
-  // #region:    --- Lifecycle
-  onMount(() => {
-    const { width, height } = qBtnLabel.getBoundingClientRect();
-
-    // This is required for buttons with no label and with a tooltip to be round
-    if (width === 0 && height === 0) {
-      qBtn.classList.add("q-btn--round");
-    }
-  });
-  // #endregion: --- Lifecycle
 
   // #region:    --- Functions
   function stopIfDisabled(e: QBtnMouseEvent) {

@@ -1,6 +1,7 @@
 <script lang="ts" generics="T extends HTMLElement | string">
   import { mount, onMount, unmount, untrack } from "svelte";
   import { on } from "svelte/events";
+  import { type Attachment, createAttachmentKey } from "svelte/attachments";
   import QTooltipBase from "./QTooltipBase.svelte";
   import type { QTooltipProps } from "./props";
 
@@ -10,9 +11,10 @@
     value = $bindable(false),
     position = "bottom",
     offset = { x: 0, y: 0 },
-    delay = 50,
-    hideDelay = 50,
+    delay = 250,
+    hideDelay = 250,
     children,
+    trigger,
     ...props
   }: QTooltipProps<T> = $props();
   // #endregion: --- Props
@@ -30,7 +32,6 @@
   // #endregion: --- Non-reactive variables
 
   // #region:    --- Reactive variables
-  let tooltipHelperEl = $state<HTMLDivElement>();
   let tooltipEl = $state<HTMLDivElement>();
 
   let realTarget = $state<HTMLElement>();
@@ -47,50 +48,19 @@
 
   // #region:    --- Lifecycle
   onMount(() => {
-    if (target) {
-      realTarget =
-        typeof target === "string"
-          ? document.querySelector<HTMLElement>(target) || undefined
-          : target;
-    } else {
-      let parent = tooltipHelperEl?.parentElement || null;
+    if (!target) {
+      return;
+    }
+    realTarget =
+      typeof target === "string"
+        ? document.querySelector<HTMLElement>(target) || undefined
+        : target;
 
-      while (parent) {
-        if (parent.attributes.getNamedItem("data-quaff")) {
-          realTarget = parent;
-          break;
-        } else {
-          parent = parent.parentElement;
-        }
-      }
+    if (!realTarget) {
+      return;
     }
 
-    if (realTarget) {
-      removeTargetMouseEnterListener = on(realTarget, "mouseenter", show);
-      removeTargetMouseLeaveListener = on(realTarget, "mouseleave", hide);
-    }
-
-    return () => {
-      removeTargetMouseEnterListener?.();
-      removeTargetMouseLeaveListener?.();
-
-      removeTooltipMouseEnterListener?.();
-      removeTooltipMouseLeaveListener?.();
-
-      removeWindowWheelListener?.();
-
-      if (mountedTooltip) {
-        unmount(mountedTooltip);
-      }
-
-      if (timerShow) {
-        clearTimeout(timerShow);
-      }
-
-      if (timerHide) {
-        clearTimeout(timerHide);
-      }
-    };
+    return attachTooltip(realTarget);
   });
   // #endregion: --- Lifecycle
 
@@ -174,6 +144,34 @@
   // #endregion: --- Methods
 
   // #region:    --- Functions
+  const attachTooltip: Attachment<HTMLElement> = (element) => {
+    realTarget = element;
+    removeTargetMouseEnterListener = on(element, "mouseenter", show);
+    removeTargetMouseLeaveListener = on(element, "mouseleave", hide);
+
+    return () => {
+      removeTargetMouseEnterListener?.();
+      removeTargetMouseLeaveListener?.();
+
+      removeTooltipMouseEnterListener?.();
+      removeTooltipMouseLeaveListener?.();
+
+      removeWindowWheelListener?.();
+
+      if (mountedTooltip) {
+        unmount(mountedTooltip);
+      }
+
+      if (timerShow) {
+        clearTimeout(timerShow);
+      }
+
+      if (timerHide) {
+        clearTimeout(timerHide);
+      }
+    };
+  };
+
   function abortHide() {
     if (timerHide) {
       clearTimeout(timerHide);
@@ -202,6 +200,6 @@
   // #endregion: --- Functions
 </script>
 
-{#if !target}
-  <div bind:this={tooltipHelperEl} class="q-tooltip__helper"></div>
+{#if !target && trigger}
+  {@render trigger({ [createAttachmentKey()]: attachTooltip })}
 {/if}

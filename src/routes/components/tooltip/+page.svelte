@@ -18,10 +18,13 @@
 
 <QDocs>
   {#snippet display()}
-    <QBtn>
-      Hover me
-      <QTooltip>Simple tooltip</QTooltip>
-    </QBtn>
+    <QTooltip>
+      {#snippet trigger(props)}
+        <QBtn {...props}>Hover me</QBtn>
+      {/snippet}
+
+      Simple tooltip
+    </QTooltip>
   {/snippet}
 
   {#snippet usage()}
@@ -33,14 +36,21 @@
         {/snippet}
 
         <div class="flex q-gap-md q-ma-sm">
-          <QBtn>
-            Hover me
-            <QTooltip>Simple tooltip</QTooltip>
-          </QBtn>
+          <QTooltip>
+            {#snippet trigger(props)}
+              <QBtn {...props}>Hover me</QBtn>
+            {/snippet}
 
-          <QBtn icon="help">
-            <QTooltip>Help information</QTooltip>
-          </QBtn>
+            Simple tooltip
+          </QTooltip>
+
+          <QTooltip>
+            {#snippet trigger(props)}
+              <QBtn icon="help" {...props} />
+            {/snippet}
+
+            Help information
+          </QTooltip>
         </div>
       </QDocsSection>
 
@@ -51,48 +61,77 @@
         {/snippet}
 
         <div class="row q-gutter-md q-ma-sm" style="max-width: 600px;">
-          <QBtn class="col-4">
-            Top Left
-            <QTooltip position="top-left">top-left</QTooltip>
-          </QBtn>
+          <QTooltip position="top-left">
+            {#snippet trigger(props)}
+              <QBtn class="col-4" {...props}>Top Left</QBtn>
+            {/snippet}
 
-          <QBtn class="col-4">
-            Top
-            <QTooltip position="top">top</QTooltip>
-          </QBtn>
+            top-left
+          </QTooltip>
 
-          <QBtn class="col-4">
-            Top Right
-            <QTooltip position="top-right">top-right</QTooltip>
-          </QBtn>
-          <QBtn class="col-4">
-            Left
-            <QTooltip position="left">left</QTooltip>
-          </QBtn>
+          <QTooltip position="top">
+            {#snippet trigger(props)}
+              <QBtn class="col-4" {...props}>Top</QBtn>
+            {/snippet}
 
-          <QBtn class="col-4">
-            Default
-            <QTooltip>default (bottom)</QTooltip>
-          </QBtn>
+            top
+          </QTooltip>
 
-          <QBtn class="col-4">
-            Right
-            <QTooltip position="right">right</QTooltip>
-          </QBtn>
-          <QBtn class="col-4">
-            Bottom Left
-            <QTooltip position="bottom-left">bottom-left</QTooltip>
-          </QBtn>
+          <QTooltip position="top-right">
+            {#snippet trigger(props)}
+              <QBtn class="col-4" {...props}>Top Right</QBtn>
+            {/snippet}
 
-          <QBtn class="col-4">
-            Bottom
-            <QTooltip position="bottom">bottom</QTooltip>
-          </QBtn>
+            top-right
+          </QTooltip>
 
-          <QBtn class="col-4">
-            Bottom Right
-            <QTooltip position="bottom-right">bottom-right</QTooltip>
-          </QBtn>
+          <QTooltip position="left">
+            {#snippet trigger(props)}
+              <QBtn class="col-4" {...props}>Left</QBtn>
+            {/snippet}
+
+            left
+          </QTooltip>
+
+          <QTooltip>
+            {#snippet trigger(props)}
+              <QBtn class="col-4" {...props}>Default</QBtn>
+            {/snippet}
+
+            default (bottom)
+          </QTooltip>
+
+          <QTooltip position="right">
+            {#snippet trigger(props)}
+              <QBtn class="col-4" {...props}>Right</QBtn>
+            {/snippet}
+
+            right
+          </QTooltip>
+
+          <QTooltip position="bottom-left">
+            {#snippet trigger(props)}
+              <QBtn class="col-4" {...props}>Bottom Left</QBtn>
+            {/snippet}
+
+            bottom-left
+          </QTooltip>
+
+          <QTooltip position="bottom">
+            {#snippet trigger(props)}
+              <QBtn class="col-4" {...props}>Bottom</QBtn>
+            {/snippet}
+
+            bottom
+          </QTooltip>
+
+          <QTooltip position="bottom-right">
+            {#snippet trigger(props)}
+              <QBtn class="col-4" {...props}>Bottom Right</QBtn>
+            {/snippet}
+
+            bottom-right
+          </QTooltip>
         </div>
       </QDocsSection>
 
@@ -104,17 +143,21 @@
         {/snippet}
 
         <div class="flex q-gap-md q-ma-sm">
-          <QBtn>
-            No offset
-            <QTooltip>Default position</QTooltip>
-          </QBtn>
+          <QTooltip>
+            {#snippet trigger(props)}
+              <QBtn {...props}>No offset</QBtn>
+            {/snippet}
 
-          <QBtn>
-            With offset
-            <QTooltip offset={{ x: 50, y: 10 }}>
-              Offset by 50px horizontally and 10px vertically
-            </QTooltip>
-          </QBtn>
+            Default position
+          </QTooltip>
+
+          <QTooltip offset={{ x: 50, y: 10 }}>
+            {#snippet trigger(props)}
+              <QBtn {...props}>With offset</QBtn>
+            {/snippet}
+
+            Offset by 50px horizontally and 10px vertically
+          </QTooltip>
         </div>
       </QDocsSection>
 
@@ -125,17 +168,21 @@
         {/snippet}
 
         <div class="flex q-gap-md q-ma-sm">
-          <QBtn>
-            Quick tooltip
-            <QTooltip delay={0} hideDelay={0}>Appears and disappears immediately</QTooltip>
-          </QBtn>
+          <QTooltip delay={0} hideDelay={0}>
+            {#snippet trigger(props)}
+              <QBtn {...props}>Quick tooltip</QBtn>
+            {/snippet}
 
-          <QBtn>
-            Delayed tooltip
-            <QTooltip delay={500} hideDelay={1000}
-              >Takes 0.5s to appear and 1s to disappear</QTooltip
-            >
-          </QBtn>
+            Appears and disappears immediately
+          </QTooltip>
+
+          <QTooltip delay={500} hideDelay={1000}>
+            {#snippet trigger(props)}
+              <QBtn {...props}>Delayed tooltip</QBtn>
+            {/snippet}
+
+            Takes 0.5s to appear and 1s to disappear
+          </QTooltip>
         </div>
       </QDocsSection>
 
@@ -163,28 +210,31 @@
         {/snippet}
 
         <div class="flex q-gap-md q-ma-sm">
-          <QBtn icon="info">
-            <QTooltip class="error">
-              <div class="flex items-center">
-                <QIcon name="warning" class="q-mr-sm" />
-                <span>Important information</span>
-              </div>
-            </QTooltip>
-          </QBtn>
+          <QTooltip class="error">
+            {#snippet trigger(props)}
+              <QBtn icon="info" {...props} />
+            {/snippet}
 
-          <QBtn>
-            Rich tooltip
-            <QTooltip>
-              <QCard>
-                <QCardSection>
-                  <h6 class="q-mt-none q-mb-sm">Tooltip Title</h6>
-                  <p class="q-mb-none">
-                    This tooltip contains formatted content with multiple elements.
-                  </p>
-                </QCardSection>
-              </QCard>
-            </QTooltip>
-          </QBtn>
+            <div class="flex items-center">
+              <QIcon name="warning" class="q-mr-sm" />
+              <span>Important information</span>
+            </div>
+          </QTooltip>
+
+          <QTooltip>
+            {#snippet trigger(props)}
+              <QBtn {...props}>Rich tooltip</QBtn>
+            {/snippet}
+
+            <QCard>
+              <QCardSection>
+                <h6 class="q-mt-none q-mb-sm">Tooltip Title</h6>
+                <p class="q-mb-none">
+                  This tooltip contains formatted content with multiple elements.
+                </p>
+              </QCardSection>
+            </QCard>
+          </QTooltip>
         </div>
       </QDocsSection>
 
@@ -196,12 +246,14 @@
 
         <div class="flex flex-col q-gap-md q-ma-sm">
           <div class="flex items-center q-gap-md">
-            <QBtn>
-              My button
-              <QTooltip bind:value={showControlledTooltip}>
-                This tooltip is controlled programmatically
-              </QTooltip>
-            </QBtn>
+            <QTooltip bind:value={showControlledTooltip}>
+              {#snippet trigger(props)}
+                <QBtn {...props}>My button</QBtn>
+              {/snippet}
+
+              This tooltip is controlled programmatically
+            </QTooltip>
+
             <QBtn onclick={() => (showControlledTooltip = !showControlledTooltip)}>
               Toggle tooltip
             </QBtn>
@@ -243,39 +295,49 @@
         {/snippet}
 
         <div class="flex q-gap-md q-ma-sm">
-          <QBtn>
-            Default style
-            <QTooltip>Default tooltip style</QTooltip>
-          </QBtn>
+          <QTooltip>
+            {#snippet trigger(props)}
+              <QBtn {...props}>Default style</QBtn>
+            {/snippet}
 
-          <QBtn>
-            Custom style
-            <QTooltip class="primary">Custom colored tooltip</QTooltip>
-          </QBtn>
+            Default tooltip style
+          </QTooltip>
 
-          <QBtn>
-            Larger tooltip
-            <QTooltip class="q-pa-md">Tooltip with more padding</QTooltip>
-          </QBtn>
+          <QTooltip class="primary">
+            {#snippet trigger(props)}
+              <QBtn {...props}>Custom style</QBtn>
+            {/snippet}
 
-          <QBtn>
-            Rich tooltip
-            <QTooltip position="top">
-              <QCard>
-                <QCardSection>
-                  <h6 class="q-mt-none q-mb-sm">Tooltip Title</h6>
-                  <div>This tooltip contains formatted content with multiple elements.</div>
-                  <div>
-                    It is typically use with <code>QCard</code> to display rich content.
-                  </div>
-                </QCardSection>
-                <QCardActions align="right">
-                  <QBtn flat label="Action 1" />
-                  <QBtn flat label="Action 2" />
-                </QCardActions>
-              </QCard>
-            </QTooltip>
-          </QBtn>
+            Custom colored tooltip
+          </QTooltip>
+
+          <QTooltip class="q-pa-md">
+            {#snippet trigger(props)}
+              <QBtn {...props}>Larger tooltip</QBtn>
+            {/snippet}
+
+            Tooltip with more padding
+          </QTooltip>
+
+          <QTooltip>
+            {#snippet trigger(props)}
+              <QBtn {...props}>Rich tooltip</QBtn>
+            {/snippet}
+
+            <QCard>
+              <QCardSection>
+                <h6 class="q-mt-none q-mb-sm">Tooltip Title</h6>
+                <div>This tooltip contains formatted content with multiple elements.</div>
+                <div>
+                  It is typically use with <code>QCard</code> to display rich content.
+                </div>
+              </QCardSection>
+              <QCardActions align="right">
+                <QBtn flat label="Action 1" />
+                <QBtn flat label="Action 2" />
+              </QCardActions>
+            </QCard>
+          </QTooltip>
         </div>
       </QDocsSection>
     </div>
