@@ -23,6 +23,7 @@ const config = {
     alias: {
       $docgen: "./docgen",
       $components: "./src/lib/components",
+      $classes: "./src/lib/classes",
       $composables: "./src/lib/composables",
       $utils: "./src/lib/utils",
       $css: "./src/lib/css",

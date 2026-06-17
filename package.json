@@ -24,7 +24,15 @@
       "types": "./dist/index.d.ts",
       "svelte": "./dist/index.js"
     },
-    "./css/*": "./dist/css/*"
+    "./components/*": {
+      "types": "./dist/components/*.d.ts",
+      "svelte": "./dist/components/*"
+    },
+    "./css/*": "./dist/css/*",
+    "./plugins/css": {
+      "types": "./dist/plugins/css.d.ts",
+      "default": "./dist/plugins/css.js"
+    }
   },
   "sideEffects": [
     "**/*.css"

@@ -1,5 +1,5 @@
 <script module lang="ts">
-  import { QContext } from "$lib/utils";
+  import { QContext } from "$utils/context";
   import type { QTabsProps } from "./props";
 
   interface QTabsContext {

@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { QIcon } from "$lib";
   import { ripple } from "$helpers";
   import {
     getClosestFocusableBlock,
@@ -12,6 +11,7 @@
     type Direction,
     type QEvent,
   } from "$utils";
+  import QIcon from "$components/icon/QIcon.svelte";
   import { tabsCtx } from "./QTabs.svelte";
   import type { QTabProps } from "./props";
 

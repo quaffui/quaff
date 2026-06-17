@@ -1,7 +1,10 @@
 <script lang="ts">
   import { slide } from "svelte/transition";
   import { goto } from "$app/navigation";
-  import { QBtn, QIcon, QItem, QItemSection } from "$components";
+  import QBtn from "$components/button/QBtn.svelte";
+  import QIcon from "$components/icon/QIcon.svelte";
+  import QItem from "$components/list/QItem.svelte";
+  import QItemSection from "$components/list/QItemSection.svelte";
   import { isActivationKey, type QEvent } from "$utils";
   import type { QExpansionItemProps } from "./props";
 
