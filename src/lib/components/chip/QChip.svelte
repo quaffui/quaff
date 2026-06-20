@@ -34,8 +34,8 @@
     (kind === "assist" || kind === "suggestion") && trailingIcon ? undefined : trailingIcon
   );
 
-  const tabindex = $derived(disabled ? -1 : props.tabindex || 0);
   const role = $derived(["assist", "filter"].includes(kind) ? "button" : undefined);
+  const tabindex = $derived(!role ? undefined : disabled ? -1 : (props.tabindex ?? 0));
 
   const avatar = $derived(extractImgSrc(icon));
   // #endregion: --- Derived values
@@ -103,6 +103,12 @@
   });
 </script>
 
+<!-- 
+  We can ignore a11y_no_noninteractive_tabindex because the tabindex
+  is set programmatically so svelte doesn't know the final value
+  at compile time and thus throws the warning.
+-->
+<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 <div
   bind:this={qChip}
   {@attach ripple({

@@ -373,6 +373,7 @@
 {#if canSwipe}
   <div
     bind:this={swipeAreaEl}
+    role="navigation"
     class="q-drawer__swipearea q-drawer__swipearea--{side}"
     onpointerdown={handlePointerDown}
   ></div>
