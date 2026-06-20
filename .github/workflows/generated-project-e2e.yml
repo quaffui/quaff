@@ -1,0 +1,13 @@
+name: Quaff Generated Project E2E
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  generated-project-e2e-with-local-quaff:
+    uses: quaffui/quaff-shared/.github/workflows/generated-project-e2e.yml@main
+    with:
+      package-under-test: quaff
+      source-repository: ${{ github.event.pull_request.head.repo.full_name }}
+      source-ref: ${{ github.event.pull_request.head.sha }}
