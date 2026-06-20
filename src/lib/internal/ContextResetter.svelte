@@ -9,8 +9,10 @@
     children?: Snippet;
   } = $props();
 
-  const keysArr = Array.isArray(keys) ? keys : [keys];
-  keysArr.forEach((key) => setContext(key, undefined));
+  $effect(() => {
+    const keysArr = Array.isArray(keys) ? keys : [keys];
+    keysArr.forEach((key) => setContext(key, undefined));
+  });
 </script>
 
 {@render children?.()}
