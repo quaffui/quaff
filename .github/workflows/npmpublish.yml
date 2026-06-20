@@ -30,3 +30,9 @@ jobs:
         run: |
           echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > .npmrc
           bun publish --access public --ignore-scripts
+
+  generated-project-e2e:
+    needs: publish
+    uses: quaffui/quaff-shared/.github/workflows/generated-project-e2e.yml@main
+    with:
+      package-under-test: published
