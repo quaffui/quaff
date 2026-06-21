@@ -1,4 +1,4 @@
-import { ParsedProp, ParsedSnippet } from "../../../docgen/props/parseInterface";
+import { MaybeParsed, ParsedGeneric, ParsedProperty } from "$docgen/props/parsePropsInterface/defs";
 
 export interface NativeProps {
   userClasses?: string | null;
@@ -20,8 +20,10 @@ export interface QComponentDocs {
   name: string;
   description: string;
   docs: {
-    props: ParsedProp[];
-    snippets: ParsedSnippet[];
+    generics: ParsedGeneric[];
+    domAttributesConstraint: MaybeParsed | undefined;
+    props: ParsedProperty[];
+    snippets: ParsedProperty[];
     methods: QComponentMethod[];
     events: QComponentEvent[];
   };
