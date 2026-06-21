@@ -48,13 +48,11 @@ export interface QBtnProps extends HTMLAttributes<HTMLButtonElement> {
 
   /**
    * Name of the leading icon to use for the button.
-   * @default undefined
    */
   icon?: MaterialSymbol | `img:${string}`;
 
   /**
    * Text to use for the button.
-   * @default undefined
    */
   label?: string;
 
@@ -78,7 +76,6 @@ export interface QBtnProps extends HTMLAttributes<HTMLButtonElement> {
 
   /**
    * Sets the ripple effect's color for the button.
-   * @default undefined
    */
   rippleColor?: string;
 
@@ -108,7 +105,6 @@ export interface QBtnProps extends HTMLAttributes<HTMLButtonElement> {
 
   /**
    * For "a" (anchor) tag only, apply the target attribute.
-   * @default undefined
    */
   target?: HTMLAnchorAttributes["target"];
 
@@ -119,7 +115,6 @@ export interface QBtnProps extends HTMLAttributes<HTMLButtonElement> {
 
   /**
    * This event is emitted when the button is clicked.
-   * @default undefined
    */
   onclick?: MouseEventHandler<HTMLElement>;
 }

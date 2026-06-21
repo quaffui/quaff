@@ -7,6 +7,7 @@ export interface QDialogProps extends NativeProps, HTMLAttributes<HTMLDialogElem
   /**
    * The value indicating whether the dialog is visible or hidden.
    * @default true
+   * @bindable
    */
   value?: boolean;
 

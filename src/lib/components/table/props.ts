@@ -55,7 +55,6 @@ export interface QTableProps extends NativeProps, HTMLAttributes<HTMLDivElement>
 
   /**
    * Optionally pass a snippet to render each table cell.
-   * @default undefined
    */
   bodyCell?: Snippet<[{ column: QTableColumn; row: QTableRow; style: string }]>;
 }

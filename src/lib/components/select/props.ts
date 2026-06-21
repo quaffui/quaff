@@ -11,7 +11,7 @@ export type QSelectFilterUpdate = (callbackFn: () => void | Promise<void>) => vo
 export interface QSelectProps extends NativeProps, HTMLAttributes<HTMLDivElement> {
   /**
    * Current value of the select. Can be a single value or an array of values when multiple is true.
-   * This property is bindable.
+   * @bindable
    */
   value: QSelectValue;
 
@@ -53,7 +53,6 @@ export interface QSelectProps extends NativeProps, HTMLAttributes<HTMLDivElement
   /**
    * Message to display when the select is in an error state.
    *
-   * @default undefined
    */
   errorMessage?: string;
 
@@ -67,14 +66,12 @@ export interface QSelectProps extends NativeProps, HTMLAttributes<HTMLDivElement
   /**
    * Helper text displayed below the select.
    *
-   * @default undefined
    */
   hint?: string;
 
   /**
    * Label text for the select field.
    *
-   * @default undefined
    */
   label?: string;
 
@@ -95,7 +92,6 @@ export interface QSelectProps extends NativeProps, HTMLAttributes<HTMLDivElement
   /**
    * Custom text to display in the select instead of the selected value.
    *
-   * @default undefined
    */
   displayValue?: string;
 
@@ -146,28 +142,24 @@ export interface QSelectProps extends NativeProps, HTMLAttributes<HTMLDivElement
   /**
    * Content to be placed before the select wrapper element, usually an icon.
    *
-   * @default undefined
    */
   before?: Snippet;
 
   /**
    * Content to be placed at the start of the select field, usually an icon.
    *
-   * @default undefined
    */
   prepend?: Snippet;
 
   /**
    * Content to be placed at the end of the select field, before the dropdown arrow, usually an icon.
    *
-   * @default undefined
    */
   append?: Snippet;
 
   /**
    * Content to be placed after the select wrapper element, usually an icon.
    *
-   * @default undefined
    */
   after?: Snippet;
 }

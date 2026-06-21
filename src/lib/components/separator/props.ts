@@ -18,7 +18,6 @@ export interface QSeparatorVerticalProps {
   /**
    * Sets the separator orientation to vertical.
    *
-   * @default undefined
    */
   vertical?: true;
 
@@ -32,14 +31,12 @@ export interface QSeparatorVerticalProps {
   /**
    * Custom size (thickness) of the separator line.
    *
-   * @default undefined
    */
   size?: string;
 
   /**
    * Text to display. Its position on the separator is determined by the textAlign prop.
    *
-   * @default undefined
    */
   text?: string;
 
@@ -69,7 +66,6 @@ export interface QSeparatorHorizontalProps {
   /**
    * Sets the separator orientation to horizontal.
    *
-   * @default undefined
    */
   vertical?: false;
 
@@ -83,14 +79,12 @@ export interface QSeparatorHorizontalProps {
   /**
    * Custom size (thickness) of the separator line.
    *
-   * @default undefined
    */
   size?: string;
 
   /**
    * Text to display. Its position on the separator is determined by the textAlign prop.
    *
-   * @default undefined
    */
   text?: string;
 

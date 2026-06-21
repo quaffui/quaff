@@ -20,7 +20,6 @@ export interface QIconProps extends HTMLAttributes<HTMLElement> {
 
   /**
    * The name of the Material Symbols icon.
-   * @default undefined
    */
   name?: MaterialSymbol | `img:${string}`;
 
@@ -32,13 +31,11 @@ export interface QIconProps extends HTMLAttributes<HTMLElement> {
 
   /**
    * The SVG content for the icon.
-   * @default undefined
    */
   svg?: string;
 
   /**
    * The image source for the icon.
-   * @default undefined
    */
   img?: string;
 
@@ -50,7 +47,6 @@ export interface QIconProps extends HTMLAttributes<HTMLElement> {
 
   /**
    * The color of the icon.
-   * @default undefined
    */
   color?: string;
 }

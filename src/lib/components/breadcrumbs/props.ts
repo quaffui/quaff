@@ -35,7 +35,6 @@ export interface QBreadcrumbsElProps extends HTMLAttributes<HTMLLIElement> {
   activeClass?: string;
   /**
    * Name of the leading icon for the breadcrumb element. The icon prop overwrites to icon slot.
-   * @default undefined
    */
   icon?: MaterialSymbol | Snippet;
   /**
@@ -45,7 +44,6 @@ export interface QBreadcrumbsElProps extends HTMLAttributes<HTMLLIElement> {
   label?: string;
   /**
    * Also makes the breadcrumb element navigational. Can be used with the router (e.g to="/home") or as a normal href attribute (e.g to="#section-id")
-   * @default undefined
    */
   href?: string;
   /**
@@ -55,7 +53,6 @@ export interface QBreadcrumbsElProps extends HTMLAttributes<HTMLLIElement> {
   tag?: string;
   /**
    * Makes the breadcrumb element navigational. Can be used with the router (e.g to="/home") or as a normal href attribute (e.g to="#section-id")
-   * @default undefined
    */
   to?: string;
 }

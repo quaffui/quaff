@@ -8,6 +8,7 @@ export interface QDrawerProps extends NativeProps, HTMLAttributes<HTMLDivElement
   /**
    * The value indicating whether the drawer is visible or hidden.
    * @default true
+   * @bindable
    */
   value?: boolean;
 

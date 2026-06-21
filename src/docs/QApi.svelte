@@ -333,7 +333,17 @@
     }
 
     if (prop.default) {
-      content += inSpan(` = ${prop.default}`);
+      content += inSpan(` = `);
+
+      if (hasFlag(prop, "bindable")) {
+        content += inSpan("$bindable(");
+      }
+
+      content += inSpan(escape(prop.default), { typeStyle: true });
+    }
+
+    if (hasFlag(prop, "bindable")) {
+      content += inSpan(")");
     }
 
     content += "</pre>";

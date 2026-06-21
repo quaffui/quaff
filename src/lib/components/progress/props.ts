@@ -2,16 +2,15 @@ import type { HTMLAttributes } from "svelte/elements";
 
 export interface QLinearProgressProps extends HTMLAttributes<HTMLDivElement> {
   /**
-   * Current progress value as a percentage. This prop is bindable.
-   *
+   * Current progress value as a percentage.
    * @default 0
+   * @bindable
    */
   value?: number;
 
   /**
    * Secondary progress value, shown as a lighter track behind the main progress.
    *
-   * @default undefined
    */
   buffer?: number;
 

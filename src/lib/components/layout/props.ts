@@ -16,43 +16,36 @@ export interface QLayoutProps extends NativeProps, HTMLAttributes<HTMLDivElement
   /**
    * Main area of the layout where the content will be displayed, meaning everything besides the layout components (header, railbars, drawers, footer).
    * It overrides the default children snippet.
-   * @default undefined
    */
   content?: Snippet;
 
   /**
    * The railbar on the left side of the layout.
-   * @default undefined
    */
   railbarLeft?: Snippet;
 
   /**
    * The railbar on the right side of the layout.
-   * @default undefined
    */
   railbarRight?: Snippet;
 
   /**
    * The drawer on the left side of the layout.
-   * @default undefined
    */
   drawerLeft?: Snippet;
 
   /**
    * The drawer on the right side of the layout.
-   * @default undefined
    */
   drawerRight?: Snippet;
 
   /**
    * The header of the layout.
-   * @default undefined
    */
   header?: Snippet;
 
   /**
    * The footer of the layout.
-   * @default undefined
    */
   footer?: Snippet;
 }

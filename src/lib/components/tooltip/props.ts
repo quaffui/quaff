@@ -17,13 +17,13 @@ export type QTooltipOffset = { x?: number; y?: number };
 export interface QTooltipProps<T extends Element | string> extends HTMLAttributes<HTMLDivElement> {
   /**
    * The target element the tooltip should be attached to. Can be an HTML element or a CSS selector. If not specified, the tooltip will be attached to the nearest Quaff component in the parent tree.
-   * @default undefined
    */
   target?: T;
 
   /**
    * Defines the show/hide state of the tooltip. By default, the tooltip will be be shown on mouseenter and hidden on mouseleave.
    * @default false
+   * @bindable
    */
   value?: boolean;
 
@@ -54,7 +54,6 @@ export interface QTooltipProps<T extends Element | string> extends HTMLAttribute
   /**
    * Snippet holding the trigger element/component. Its scope contains a Svelte attachment that should be spread on the trigger element.
    *
-   * @default undefined
    */
   trigger?: Snippet<[{ [k: symbol]: Attachment<HTMLElement> }]>;
 }

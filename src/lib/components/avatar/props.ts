@@ -54,7 +54,6 @@ export interface QAvatarProps extends HTMLAttributes<HTMLElement> {
    *
    * If the "video" prop is set to true, this will be used as an MP4 video source. If you want to use a different video format, use the "sources" prop.
    *
-   * @default undefined
    */
   src?: string;
   /**
@@ -62,7 +61,6 @@ export interface QAvatarProps extends HTMLAttributes<HTMLElement> {
    *
    * If used while the "video" prop is set to false, this prop has no effect.
    *
-   * @default undefined
    */
   sources?: QAvatarVideoSrcOptions[];
   /**
@@ -75,7 +73,6 @@ export interface QAvatarProps extends HTMLAttributes<HTMLElement> {
   /**
    * alt property for the image.
    *
-   * @default undefined
    */
   alt?: string;
   /**
@@ -85,7 +82,6 @@ export interface QAvatarProps extends HTMLAttributes<HTMLElement> {
    *
    * This snippet will be added inside the <video> tag.
    *
-   * @default undefined
    */
   videoAccessibility?: Snippet;
 }
