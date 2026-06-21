@@ -32,6 +32,7 @@ export function quaffCss(options: QuaffCssOptions = {}): Plugin {
   return {
     name: "quaff:css",
     enforce: "pre",
+    config: cssMinifierConfig,
     configResolved(resolvedConfig) {
       config = resolvedConfig;
     },
@@ -76,6 +77,18 @@ export function quaffCss(options: QuaffCssOptions = {}): Plugin {
     },
   };
 }
+
+export function quaffCssMinifier(): Plugin {
+  return {
+    name: "quaff:css-minifier",
+    config: cssMinifierConfig,
+  };
+}
+
+const cssMinifierConfig: Plugin["config"] = {
+  order: "post",
+  handler: () => ({ build: { cssMinify: "esbuild" } }),
+};
 
 async function createCssModule(root: string, options: QuaffCssOptions) {
   const css = await collectUsedCss(root, options);
