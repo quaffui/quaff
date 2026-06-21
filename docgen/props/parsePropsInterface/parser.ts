@@ -1,4 +1,5 @@
 import { InterfaceDeclaration, type Node, type Symbol as MorphSymbol } from "ts-morph";
+import { format } from "prettier";
 import {
   MaybeParsed,
   ParsedInterface,
@@ -12,6 +13,7 @@ import {
   extractDomConstraint,
   extractExtendedInternalProperties,
   extractGenerics,
+  extractTypeDefintion,
   extractTypeSrc,
 } from "./extractor";
 import { isPropertyBindable, isPropertyOptional } from "./checker";
@@ -21,10 +23,12 @@ import { resolvePropertyType } from "./resolver";
  * Parses a full interface declaration into a `ParsedInterface`.
  * Collects direct properties and properties from extended internal interfaces.
  */
-export function parseInterface(interfaceDecl: InterfaceDeclaration): [string, ParsedInterface] {
+export async function parseInterface(
+  interfaceDecl: InterfaceDeclaration
+): Promise<[string, ParsedInterface]> {
   const name = interfaceDecl.getName();
-  const generics = extractGenerics(interfaceDecl);
-  const domAttributesConstraint = extractDomConstraint(interfaceDecl);
+  const generics = await extractGenerics(interfaceDecl);
+  const domAttributesConstraint = await extractDomConstraint(interfaceDecl);
 
   const genericNames = new Set(generics.map((generic) => generic.name));
 
@@ -33,7 +37,7 @@ export function parseInterface(interfaceDecl: InterfaceDeclaration): [string, Pa
   // 1. Collect properties from extended internal interfaces
   const extendedProps = extractExtendedInternalProperties(interfaceDecl);
   for (const prop of extendedProps) {
-    properties.push(parseProperty(prop, interfaceDecl, genericNames));
+    properties.push(await parseProperty(prop, interfaceDecl, genericNames));
   }
 
   // 2. Collect the interface's own directly declared properties
@@ -42,7 +46,7 @@ export function parseInterface(interfaceDecl: InterfaceDeclaration): [string, Pa
     const proSymbol = prop.getSymbol();
 
     if (proSymbol) {
-      properties.push(parseProperty(proSymbol, interfaceDecl, genericNames));
+      properties.push(await parseProperty(proSymbol, interfaceDecl, genericNames));
     }
   }
 
@@ -61,13 +65,13 @@ export function parseInterface(interfaceDecl: InterfaceDeclaration): [string, Pa
 }
 
 /** Parses a given type, creating a `ParsedType` object from a string. */
-export function parseType(
+export async function parseType(
   typeText: string,
   computedTypes: Record<string, MaybeParsed | MaybeParsed[]> = {}
-): MaybeParsed {
+): Promise<MaybeParsed> {
   const typeSrc = extractTypeSrc(typeText);
 
-  const result: ParsedType = { text: typeText };
+  const result: ParsedType = { text: typeText, typeDefinition: typeText };
 
   const maybeComputedTypes = Object.keys(computedTypes).length ? computedTypes : undefined;
 
@@ -83,11 +87,18 @@ export function parseType(
     result.computedTypes = maybeComputedTypes;
   }
 
+  const extractedDefinition = extractTypeDefintion(result, typeText);
+
+  if (extractedDefinition) {
+    const formatted = await format(extractedDefinition, { parser: "typescript" });
+    result.typeDefinition = formatted;
+  }
+
   return result;
 }
 
 /** Parses a single property symbol into a `ParsedProperty`. */
-function parseProperty(prop: MorphSymbol, contextNode: Node, genericNames: Set<string>) {
+async function parseProperty(prop: MorphSymbol, contextNode: Node, genericNames: Set<string>) {
   const name = prop.getName();
 
   let description = "";
@@ -110,7 +121,7 @@ function parseProperty(prop: MorphSymbol, contextNode: Node, genericNames: Set<s
     }
   }
 
-  const { type, flags } = resolvePropertyType(prop, decl, contextNode, genericNames);
+  const { type, flags } = await resolvePropertyType(prop, decl, contextNode, genericNames);
 
   const result: ParsedProperty = {
     name,

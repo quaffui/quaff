@@ -2,12 +2,18 @@ export type MaybeParsed = ParsedType | string;
 
 /** Represents a resolved type with an optional source URL for external types. */
 export interface ParsedType {
-  /** Text representation of the type (e.g. `"boolean"`, `"MaterialSymbol"`, `"\`img:${string}\`"`). */
+  /** Text representation of a single type (e.g. `"boolean"`, `"MaterialSymbol"`, `"\`img:${string}\`"`). */
   text: string;
   /** The computed types for all internal type references contained in this type */
   computedTypes?: Record<string, MaybeParsed | MaybeParsed[]>;
   /** URL pointing to external documentation for this type (e.g. Material Icons page). Only present for types listed in `TypeSrcMap`. */
   typeSrc?: string;
+  /**
+   * A string of TypeScript definitions of the complex types in this type, formatted with prettier.
+   *
+   * This allows the frontend to show hover popups of types in components' props.
+   */
+  typeDefinition?: string;
 }
 
 /** Represents a generic type parameter of an interface (e.g. `<T extends string>`). */
@@ -85,7 +91,7 @@ export const TypeSrcMap = {
   BundledTheme: "https://shiki.style/themes#bundled-themes",
   HTMLElementTagNameMap:
     "https://typhonjs-typedoc.github.io/ts-lib-docs/2024/dom/interfaces/HTMLElementTagNameMap.html",
-  "^HTMLAttributes<HTMLElement>$":
+  "HTMLAttributes<HTMLElement>[^\\[]":
     "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes#list_of_global_attributes",
   'HTML(?<element>.+)Attributes\\["(?<prop>\\w+)"\\]': (element: string, prop?: string) =>
     `https://developer.mozilla.org/en-us/docs/Web/API/HTML${element}Element/${prop}`,

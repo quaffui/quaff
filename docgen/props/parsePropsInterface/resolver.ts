@@ -21,7 +21,7 @@ import { computeAllReferences, splitUnionParts, tryPreserveAnnotation } from "./
  * - Show generic parameter names as-is
  * - For large unions (>10 members), show the alias name
  */
-export function resolvePropertyType(
+export async function resolvePropertyType(
   prop: MorphSymbol,
   decl: Node | undefined,
   contextNode: Node,
@@ -50,7 +50,7 @@ export function resolvePropertyType(
     }
 
     if (elementRawAnnotation) {
-      const preserved = tryPreserveAnnotation(elementRawAnnotation, contextNode);
+      const preserved = await tryPreserveAnnotation(elementRawAnnotation, contextNode);
 
       if (preserved) {
         return {
@@ -62,7 +62,7 @@ export function resolvePropertyType(
 
     const elementAliasSymbol = elementType.getAliasSymbol();
     if (elementAliasSymbol) {
-      const res = resolveAliasedType(
+      const res = await resolveAliasedType(
         elementType,
         elementAliasSymbol,
         contextNode,
@@ -75,7 +75,12 @@ export function resolvePropertyType(
     }
 
     if (elementType.isUnion()) {
-      const res = resolveUnionType(elementType, contextNode, genericNames, elementRawAnnotation);
+      const res = await resolveUnionType(
+        elementType,
+        contextNode,
+        genericNames,
+        elementRawAnnotation
+      );
       return {
         type: res,
         flags: ParsedPropertyFlags.ARRAY,
@@ -84,7 +89,7 @@ export function resolvePropertyType(
 
     const elementText = extractTypeText(elementType, contextNode);
     return {
-      type: parseType(elementRawAnnotation ?? elementText),
+      type: await parseType(elementRawAnnotation ?? elementText),
       flags: ParsedPropertyFlags.ARRAY,
     };
   }
@@ -93,7 +98,7 @@ export function resolvePropertyType(
   if (rawAnnotation && rawAnnotation.startsWith("Snippet")) {
     const params = resolveSnippetParams(rawAnnotation);
     return {
-      type: parseType(params ?? "void"),
+      type: await parseType(params ?? "void"),
       flags: ParsedPropertyFlags.SNIPPET,
     };
   }
@@ -109,7 +114,7 @@ export function resolvePropertyType(
     const params = resolveSnippetParams(fullText);
 
     return {
-      type: parseType(params ?? "void"),
+      type: await parseType(params ?? "void"),
       flags: ParsedPropertyFlags.SNIPPET,
     };
   }
@@ -119,7 +124,7 @@ export function resolvePropertyType(
   // resolving to a 1000+ member union, or HTMLAnchorAttributes["target"] resolving
   // to "_self" | "_blank" | "_parent" | "_top" | (string & {}))
   if (rawAnnotation) {
-    const preserved = tryPreserveAnnotation(rawAnnotation, contextNode);
+    const preserved = await tryPreserveAnnotation(rawAnnotation, contextNode);
     if (preserved) {
       return {
         type: preserved,
@@ -144,7 +149,7 @@ export function resolvePropertyType(
   // Handle union types
   if (nonNullType.isUnion()) {
     return {
-      type: resolveUnionType(nonNullType, contextNode, genericNames, rawAnnotation),
+      type: await resolveUnionType(nonNullType, contextNode, genericNames, rawAnnotation),
       flags: ParsedPropertyFlags.NONE,
     };
   }
@@ -152,7 +157,7 @@ export function resolvePropertyType(
   // Handle `keyof X` types and types that use a generic parameter
   if (rawAnnotation && (rawAnnotation.startsWith("keyof ") || genericNames.has(rawAnnotation))) {
     return {
-      type: parseType(rawAnnotation),
+      type: await parseType(rawAnnotation),
       flags: ParsedPropertyFlags.NONE,
     };
   }
@@ -160,14 +165,14 @@ export function resolvePropertyType(
   // Handle aliased types
   if (aliasSymbol) {
     return {
-      type: resolveAliasedType(nonNullType, aliasSymbol, contextNode, rawAnnotation),
+      type: await resolveAliasedType(nonNullType, aliasSymbol, contextNode, rawAnnotation),
       flags: ParsedPropertyFlags.NONE,
     };
   }
 
   // Default: use the resolved type text
   return {
-    type: parseType(resolvedText),
+    type: await parseType(resolvedText),
     flags: ParsedPropertyFlags.NONE,
   };
 }
@@ -176,7 +181,7 @@ export function resolvePropertyType(
  * Resolves a type that has an alias symbol. Determines whether to show
  * the alias name or its computed value based on external/internal status.
  */
-function resolveAliasedType(
+async function resolveAliasedType(
   type: Type,
   aliasSymbol: MorphSymbol,
   contextNode: Node,
@@ -198,8 +203,8 @@ function resolveAliasedType(
   // Internal alias: resolve to the computed value
   const resolvedText = extractTypeText(type, contextNode);
   const computedTypes = {
-    [aliasName]: parseType(resolvedText),
-    ...computeAllReferences(resolvedText, contextNode, new Set([aliasName])),
+    [aliasName]: await parseType(resolvedText),
+    ...(await computeAllReferences(resolvedText, contextNode, new Set([aliasName]))),
   };
   return parseType(rawAnnotation ?? aliasName, computedTypes);
 }
@@ -208,7 +213,7 @@ function resolveAliasedType(
  * Resolves a union type into either a single `ParsedType` (if the alias should be preserved)
  * or an array of `ParsedType` (for each union member).
  */
-function resolveUnionType(
+async function resolveUnionType(
   type: Type,
   contextNode: Node,
   genericNames: Set<string>,
@@ -220,7 +225,7 @@ function resolveUnionType(
   const aliasSymbol = type.getAliasSymbol();
 
   if (!aliasSymbol && rawAnnotation && isTypeAlias(rawAnnotation, contextNode)) {
-    const resolved = resolveTypeAliasMembers(rawAnnotation, contextNode);
+    const resolved = await resolveTypeAliasMembers(rawAnnotation, contextNode);
     if (resolved) {
       return resolved;
     }
@@ -252,10 +257,10 @@ function resolveUnionType(
       if (Node.isTemplateLiteralTypeNode(typeNode)) {
         const resolvedText = typeNode.getText();
         const computedTypes = {
-          [aliasName]: parseType(resolvedText),
+          [aliasName]: await parseType(resolvedText),
         };
 
-        typeNode.forEachDescendant((node) => {
+        typeNode.forEachDescendant(async (node) => {
           if (Node.isTypeReference(node)) {
             const subRef = node.getText();
             Object.assign(
@@ -274,7 +279,7 @@ function resolveUnionType(
         rawMembersText = unionTypes.map((unionType) => extractTypeText(unionType, contextNode));
       }
 
-      const unionMembers = rawMembersText.map((text) => parseType(text));
+      const unionMembers = await Promise.all(rawMembersText.map((text) => parseType(text)));
       const computedTypes = {
         [aliasName]: unionMembers,
       };
@@ -283,7 +288,7 @@ function resolveUnionType(
 
       for (const member of unionMembers) {
         const text = typeof member === "string" ? member : member.text;
-        Object.assign(computedTypes, computeAllReferences(text, contextNode, visited));
+        Object.assign(computedTypes, await computeAllReferences(text, contextNode, visited));
       }
 
       return parseType(aliasName, computedTypes);
@@ -292,7 +297,9 @@ function resolveUnionType(
     // Large unions (external): show the alias name
     if (unionTypes.length > LARGE_UNION_THRESHOLD) {
       return parseType(aliasName, {
-        [aliasName]: unionTypes.map((union) => parseType(extractTypeText(union, contextNode))),
+        [aliasName]: await Promise.all(
+          unionTypes.map((union) => parseType(extractTypeText(union, contextNode)))
+        ),
       });
     }
   }
@@ -305,7 +312,7 @@ function resolveUnionType(
 
   // Simple union: map each member
   if (unionTypes.length <= LARGE_UNION_THRESHOLD) {
-    return unionTypes.map((union) => parseType(extractTypeText(union, contextNode)));
+    return Promise.all(unionTypes.map((union) => parseType(extractTypeText(union, contextNode))));
   }
 
   // Fallback for large unions without alias
@@ -316,7 +323,7 @@ function resolveUnionType(
  * Resolves a type alias name to its union members as `ParsedType[]`.
  * Returns `undefined` if the alias doesn't resolve to a union.
  */
-export function resolveTypeAliasMembers(typeName: string, contextNode: Node) {
+export async function resolveTypeAliasMembers(typeName: string, contextNode: Node) {
   const sourceFile = contextNode.getSourceFile();
   const localAlias = sourceFile.getTypeAlias(typeName);
 
@@ -328,7 +335,7 @@ export function resolveTypeAliasMembers(typeName: string, contextNode: Node) {
       if (Node.isTemplateLiteralTypeNode(typeNode)) {
         const resolvedText = typeNode.getText();
         const computedTypes = {
-          [typeName]: parseType(resolvedText),
+          [typeName]: await parseType(resolvedText),
         };
 
         typeNode.forEachDescendant((node) => {
@@ -353,7 +360,7 @@ export function resolveTypeAliasMembers(typeName: string, contextNode: Node) {
           .map((union) => extractTypeText(union, contextNode));
       }
 
-      const unionMembers = rawMembersText.map((text) => parseType(text));
+      const unionMembers = await Promise.all(rawMembersText.map((text) => parseType(text)));
       const computedTypes = {
         [typeName]: unionMembers,
       };
@@ -370,8 +377,8 @@ export function resolveTypeAliasMembers(typeName: string, contextNode: Node) {
     // Not a union, return the resolved text
     const resolvedText = extractTypeText(aliasType, contextNode);
     const computedTypes = {
-      [typeName]: parseType(resolvedText),
-      ...computeAllReferences(resolvedText, contextNode, new Set([typeName])),
+      [typeName]: await parseType(resolvedText),
+      ...(await computeAllReferences(resolvedText, contextNode, new Set([typeName]))),
     };
 
     return parseType(resolvedText, computedTypes);
@@ -382,7 +389,7 @@ export function resolveTypeAliasMembers(typeName: string, contextNode: Node) {
  * Parses a raw union annotation like `MaterialSymbol | \`img:${string}\``
  * into individual ParsedType entries, preserving external type names.
  */
-function resolveRawUnionAnnotation(
+async function resolveRawUnionAnnotation(
   rawAnnotation: string,
   contextNode: Node,
   genericNames: Set<string>
@@ -401,13 +408,13 @@ function resolveRawUnionAnnotation(
     // (like HTMLAnchorAttributes["target"])
 
     if (PRESERVE_TYPE_NAMES.has(part) || genericNames.has(part) || part in TypeSrcMap) {
-      parsedTypes.push(parseType(part));
+      parsedTypes.push(await parseType(part));
       continue;
     }
 
     // Check if it references an internal type alias that should be resolved
     if (isTypeAlias(part, contextNode)) {
-      const resolvedAlias = resolveTypeAliasMembers(part, contextNode);
+      const resolvedAlias = await resolveTypeAliasMembers(part, contextNode);
 
       if (resolvedAlias) {
         parsedTypes.push(resolvedAlias);
@@ -416,7 +423,7 @@ function resolveRawUnionAnnotation(
     }
 
     // Keep as-is (literals, template literals, primitives)
-    parsedTypes.push(parseType(part));
+    parsedTypes.push(await parseType(part));
   }
 
   return parsedTypes.length === 1 ? parsedTypes[0] : parsedTypes;

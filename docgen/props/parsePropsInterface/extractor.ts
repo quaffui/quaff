@@ -1,6 +1,7 @@
 import { Node, TypeFormatFlags } from "ts-morph";
-import { ParsedGeneric, TypeSrcMap } from "./defs";
+import { MaybeParsed, type ParsedGeneric, type ParsedType, TypeSrcMap } from "./defs";
 import { parseType } from "./parser";
+import { sortComputedTypes } from "./utils";
 import type { Project, InterfaceDeclaration, Type } from "ts-morph";
 
 /**
@@ -16,18 +17,20 @@ export function extractInterfaces(project: Project, filePath: string) {
 }
 
 /** Parses generic type parameters from an interface declaration into `ParsedGeneric[]`. */
-export function extractGenerics(interfaceDecl: InterfaceDeclaration) {
-  return interfaceDecl.getTypeParameters().map((param) => {
-    const result: ParsedGeneric = { name: param.getName() };
-    const constraint = param.getConstraint();
+export async function extractGenerics(interfaceDecl: InterfaceDeclaration) {
+  return Promise.all(
+    interfaceDecl.getTypeParameters().map(async (param) => {
+      const result: ParsedGeneric = { name: param.getName() };
+      const constraint = param.getConstraint();
 
-    if (constraint) {
-      const constraintText = constraint.getText();
-      result.constraint = parseType(constraintText);
-    }
+      if (constraint) {
+        const constraintText = constraint.getText();
+        result.constraint = await parseType(constraintText);
+      }
 
-    return result;
-  });
+      return result;
+    })
+  );
 }
 
 /** Looks up a type name in `TypeSrcMap` and returns the URL if found. */
@@ -234,4 +237,72 @@ export function extractInternalTypeReferenceSymbol(typeName: string, contextNode
  */
 export function extractTypeText(type: Type, contextNode: Node) {
   return type.getText(contextNode, TypeFormatFlags.NoTruncation | TypeFormatFlags.InTypeAlias);
+}
+
+/**
+ * Stringifies the MaybeParsed type to a TypeScript type definition (or a set of defintions).
+ */
+export function extractTypeDefintion(maybeParsed: ParsedType, referenceType: string) {
+  if (
+    maybeParsed.text !== referenceType ||
+    !maybeParsed.computedTypes ||
+    !Object.keys(maybeParsed.computedTypes).includes(referenceType)
+  ) {
+    // We ignore types that:
+    // - are not the referenceType
+    // - have no computed types (can happen when `srcType` is set instead)
+    // - don't reference the referenceType
+    return;
+  }
+
+  const sortedEntries = sortComputedTypes(maybeParsed.computedTypes, referenceType);
+
+  if (!sortedEntries.length) {
+    return;
+  }
+
+  const toTypeDef = (
+    typeName: string,
+    computed: MaybeParsed | MaybeParsed[],
+    isNamespaced = false
+  ) => {
+    let toUse;
+
+    if (Array.isArray(computed)) {
+      // It's a union of types that don't reference anything (e.g. primitives)
+      toUse = computed.map((item) => (typeof item === "string" ? item : item.text)).join(" | ");
+    } else {
+      toUse = typeof computed === "string" ? computed : computed.text;
+    }
+
+    return isNamespaced
+      ? `\texport type ${typeName.slice(2)} = ${toUse};`
+      : `type ${typeName} = ${toUse};`;
+  };
+
+  const namespacedQ = [];
+  const global = [];
+
+  for (const index in sortedEntries) {
+    const [typeName, computed] = sortedEntries[index];
+
+    if (typeName.startsWith("Q.")) {
+      namespacedQ.push(toTypeDef(typeName, computed, true));
+
+      continue;
+    }
+
+    if (+index === sortedEntries.length - 1) {
+      global.push("");
+    }
+
+    global.push(toTypeDef(typeName, computed));
+  }
+
+  if (namespacedQ.length) {
+    namespacedQ.unshift("declare namespace Q {");
+    namespacedQ.push("}");
+  }
+
+  return [...namespacedQ, ...global].join("\n");
 }
