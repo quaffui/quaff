@@ -49,7 +49,6 @@ export function parseInterface(interfaceDecl: InterfaceDeclaration): [string, Pa
   properties.sort((a, b) => a.name.localeCompare(b.name));
 
   const result: ParsedInterface = {
-    name,
     generics,
     properties,
   };

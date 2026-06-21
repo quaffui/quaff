@@ -1,11 +1,22 @@
 import type { QComponentDocs } from "$utils";
-import { QTabDocsProps, QTabDocsSnippets, QTabsDocsProps, QTabsDocsSnippets } from "./docs.props";
+import {
+  QTabDocsProps,
+  QTabDocsSnippets,
+  QTabDocsDomAttributesConstraint,
+  QTabDocsGenerics,
+  QTabsDocsProps,
+  QTabsDocsSnippets,
+  QTabsDocsDomAttributesConstraint,
+  QTabsDocsGenerics,
+} from "./docs.props";
 
 export const QTabsDocs: QComponentDocs = {
   name: "QTabs",
   description:
     "Tabs allow creating navigational tabs, enabling users to switch between different views or functional aspects.",
   docs: {
+    generics: QTabsDocsGenerics,
+    domAttributesConstraint: QTabsDocsDomAttributesConstraint,
     props: QTabsDocsProps,
     snippets: QTabsDocsSnippets,
     methods: [],
@@ -18,6 +29,8 @@ export const QTabDocs: QComponentDocs = {
   description:
     "Tabs allow creating navigational tabs, enabling users to switch between different views or functional aspects.",
   docs: {
+    generics: QTabDocsGenerics,
+    domAttributesConstraint: QTabDocsDomAttributesConstraint,
     props: QTabDocsProps,
     snippets: QTabDocsSnippets,
     methods: [],

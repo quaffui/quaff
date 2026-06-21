@@ -1,11 +1,18 @@
 import type { QComponentDocs } from "$utils";
-import { QSwitchDocsProps, QSwitchDocsSnippets } from "./docs.props";
+import {
+  QSwitchDocsProps,
+  QSwitchDocsSnippets,
+  QSwitchDocsDomAttributesConstraint,
+  QSwitchDocsGenerics,
+} from "./docs.props";
 
 export const QSwitchDocs: QComponentDocs = {
   name: "QSwitch",
   description:
     "QSwitch is a switch-like checkbox which offers binary choices. It supports labels, icons and different positioning of the labels.",
   docs: {
+    generics: QSwitchDocsGenerics,
+    domAttributesConstraint: QSwitchDocsDomAttributesConstraint,
     props: QSwitchDocsProps,
     snippets: QSwitchDocsSnippets,
     methods: [],

@@ -1,11 +1,18 @@
 import type { QComponentDocs } from "$utils";
-import { QBtnDocsProps, QBtnDocsSnippets } from "./docs.props";
+import {
+  QBtnDocsDomAttributesConstraint,
+  QBtnDocsGenerics,
+  QBtnDocsProps,
+  QBtnDocsSnippets,
+} from "./docs.props";
 
 export const QBtnDocs: QComponentDocs = {
   name: "QBtn",
   description:
     "Buttons help users take action, such as sending an email, sharing a document, or liking a comment.",
   docs: {
+    generics: QBtnDocsGenerics,
+    domAttributesConstraint: QBtnDocsDomAttributesConstraint,
     props: QBtnDocsProps,
     snippets: QBtnDocsSnippets,
     methods: [],

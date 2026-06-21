@@ -2,10 +2,16 @@ import type { QComponentDocs } from "$utils";
 import {
   QItemDocsProps,
   QItemDocsSnippets,
+  QItemDocsDomAttributesConstraint,
+  QItemDocsGenerics,
   QItemSectionDocsProps,
   QItemSectionDocsSnippets,
+  QItemSectionDocsDomAttributesConstraint,
+  QItemSectionDocsGenerics,
   QListDocsProps,
   QListDocsSnippets,
+  QListDocsDomAttributesConstraint,
+  QListDocsGenerics,
 } from "./docs.props";
 
 export const QListDocs: QComponentDocs = {
@@ -13,6 +19,8 @@ export const QListDocs: QComponentDocs = {
   description:
     "The QList component is used to display a list of items with options for adding text, icons and actions.",
   docs: {
+    generics: QListDocsGenerics,
+    domAttributesConstraint: QListDocsDomAttributesConstraint,
     props: QListDocsProps,
     snippets: QListDocsSnippets,
     methods: [],
@@ -25,6 +33,8 @@ export const QItemDocs: QComponentDocs = {
   description:
     "The QItem component is generally used inside lists to display related pieces of information.",
   docs: {
+    generics: QItemDocsGenerics,
+    domAttributesConstraint: QItemDocsDomAttributesConstraint,
     props: QItemDocsProps,
     snippets: QItemDocsSnippets,
     methods: [],
@@ -37,6 +47,8 @@ export const QItemSectionDocs: QComponentDocs = {
   description:
     "The QItemSection component is used inside QItem to separate different types of information.",
   docs: {
+    generics: QItemSectionDocsGenerics,
+    domAttributesConstraint: QItemSectionDocsDomAttributesConstraint,
     props: QItemSectionDocsProps,
     snippets: QItemSectionDocsSnippets,
     methods: [],

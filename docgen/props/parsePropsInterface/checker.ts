@@ -66,7 +66,7 @@ export function isTypeOriginatingFrom(type: Type, kind: "internal" | "external")
 
   const filePath = declarations[0].getSourceFile().getFilePath();
   return kind === "external"
-    ? EXTERNAL_PACKAGE_PREFIXES.some(filePath.includes)
+    ? EXTERNAL_PACKAGE_PREFIXES.some((prefix) => filePath.includes(prefix))
     : !filePath.includes("node_modules");
 }
 

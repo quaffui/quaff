@@ -1,11 +1,18 @@
 import type { QComponentDocs } from "$utils";
-import { QChipDocsProps, QChipDocsSnippets } from "./docs.props";
+import {
+  QChipDocsProps,
+  QChipDocsSnippets,
+  QChipDocsDomAttributesConstraint,
+  QChipDocsGenerics,
+} from "./docs.props";
 
 export const QChipDocs: QComponentDocs = {
   name: "QChip",
   description:
     "Chips help people enter information, make selections, filter content, or trigger actions. They represent options in a specific context, unlike buttons, which are persistent.",
   docs: {
+    generics: QChipDocsGenerics,
+    domAttributesConstraint: QChipDocsDomAttributesConstraint,
     props: QChipDocsProps,
     snippets: QChipDocsSnippets,
     methods: [],

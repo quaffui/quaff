@@ -40,8 +40,6 @@ export interface ParsedProperty {
 
 /** Represents a fully parsed TypeScript interface. */
 export interface ParsedInterface {
-  /** The interface's name (e.g. `"QBtnProps"`). */
-  name: string;
   /** The full text of the DOM attributes extension clause, if the interface extends `HTMLAttributes<...>` or similar. */
   domAttributesConstraint?: string | ParsedType;
   /** The interface's generic type parameters. */
@@ -54,7 +52,7 @@ export interface ParsedInterface {
 export const PRESERVE_TYPE_NAMES = new Set(["Snippet", "MaterialSymbol"]);
 
 /** Package path prefixes that identify "external" types (Svelte, Material, DOM). */
-export const EXTERNAL_PACKAGE_PREFIXES = ["svelte/", "material-symbols"];
+export const EXTERNAL_PACKAGE_PREFIXES = ["svelte/", "material-symbols", "shiki"];
 
 /** Union size threshold above which a type alias name is shown instead of the expanded union. */
 export const LARGE_UNION_THRESHOLD = 10;
@@ -82,6 +80,9 @@ export const enum ParsedPropertyFlags {
 /** Maps external type names to their documentation URLs. */
 export const TypeSrcMap = {
   MaterialSymbol: "https://fonts.google.com/icons",
+  BundledLanguage: "https://shiki.style/languages#bundled-languages",
+  SpecialLanguage: "https://shiki.style/languages#special-languages",
+  BundledTheme: "https://shiki.style/themes#bundled-themes",
   HTMLElementTagNameMap:
     "https://typhonjs-typedoc.github.io/ts-lib-docs/2024/dom/interfaces/HTMLElementTagNameMap.html",
   "^HTMLAttributes<HTMLElement>$":
