@@ -16,7 +16,7 @@
   import type { QTabProps } from "./props";
 
   type QTabEl = HTMLAnchorElement | HTMLButtonElement;
-  type QTabEvent<T extends Event> = QEvent<T, QTabEl>;
+  type QTabEvent<T> = QEvent<T, QTabEl>;
 
   // #region:    --- Props
   let { name, to, icon, children, ...props }: QTabProps = $props();

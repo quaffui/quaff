@@ -1,4 +1,3 @@
-import type { QSize } from "$utils";
 import type { HTMLAttributes } from "svelte/elements";
 
 export interface QSeparatorVerticalProps {
@@ -7,7 +6,7 @@ export interface QSeparatorVerticalProps {
    *
    * @default "none"
    */
-  spacing?: QSize;
+  spacing?: Q.Size;
 
   /**
    * Adds horizontal padding to the separator container, adding space around the separator.
@@ -55,7 +54,7 @@ export interface QSeparatorHorizontalProps {
    *
    * @default "none"
    */
-  spacing?: QSize;
+  spacing?: Q.Size;
 
   /**
    * Adds vertical padding to the separator container, adding space around the separator.

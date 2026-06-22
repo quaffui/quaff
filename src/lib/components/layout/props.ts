@@ -1,10 +1,11 @@
+import type { NativeProps } from "$utils";
 import type { Snippet } from "svelte";
 import type { HTMLAttributes } from "svelte/elements";
 
 //prettier-ignore
 export type QLayoutViewOptions = `${"l"|"h"}${"h"|"H"}${"r"|"h"} ${"l"|"L"}${"p"}${"r"|"R"} ${"l"|"f"}${"f"|"F"}${"r"|"f"}`
 
-export interface QLayoutProps extends HTMLAttributes<HTMLDivElement> {
+export interface QLayoutProps extends NativeProps, HTMLAttributes<HTMLDivElement> {
   /**
    * The layout view configuration, which defines how layout components (header, railbars, drawers, footer) should be displayed on screen.
    * Controls how layout components (header, railbars, drawers, footer) are displayed on screen.

@@ -1,4 +1,3 @@
-import { CssValue } from "$utils";
 import type { HTMLAttributes } from "svelte/elements";
 
 export interface QLinearProgressProps extends HTMLAttributes<HTMLDivElement> {
@@ -20,7 +19,7 @@ export interface QLinearProgressProps extends HTMLAttributes<HTMLDivElement> {
    *
    * @default "0.375em"
    */
-  size?: CssValue | number;
+  size?: Q.CssValue | number;
 
   /**
    * Reverses the progress bar direction from right-to-left.
@@ -99,7 +98,7 @@ export interface QCircularProgressProps extends HTMLAttributes<HTMLDivElement> {
    *
    * @default "2em"
    */
-  size?: CssValue | number;
+  size?: Q.CssValue | number;
 
   /**
    * Color of the progress arc.
@@ -169,5 +168,5 @@ export interface QCircularProgressProps extends HTMLAttributes<HTMLDivElement> {
    *
    * @default "0.25em"
    */
-  fontSize?: CssValue | number;
+  fontSize?: Q.CssValue | number;
 }

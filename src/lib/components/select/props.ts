@@ -1,3 +1,4 @@
+import type { NativeProps } from "$utils";
 import type { Snippet } from "svelte";
 import type { HTMLAttributes } from "svelte/elements";
 
@@ -7,7 +8,7 @@ export type QSelectValue = QSelectOption | QSelectOption[] | null;
 
 export type QSelectFilterUpdate = (callbackFn: () => void | Promise<void>) => void;
 
-export interface QSelectProps extends HTMLAttributes<HTMLDivElement> {
+export interface QSelectProps extends NativeProps, HTMLAttributes<HTMLDivElement> {
   /**
    * Current value of the select. Can be a single value or an array of values when multiple is true.
    * @bindable

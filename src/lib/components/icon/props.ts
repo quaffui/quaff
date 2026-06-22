@@ -1,8 +1,7 @@
-import type { CssValue, QSize } from "$utils";
 import type { HTMLAttributes, HTMLImgAttributes } from "svelte/elements";
 import type { MaterialSymbol } from "material-symbols";
 
-export type QIconSizeOptions = QSize | CssValue | number;
+export type QIconSizeOptions = Q.Size | Q.CssValue | number;
 
 export type QIconTypeOptions = "outlined" | "sharp" | "rounded";
 

@@ -1,4 +1,3 @@
-import type { QSize } from "$utils";
 import type { MaterialSymbol } from "material-symbols";
 import type { HTMLAttributes, MouseEventHandler } from "svelte/elements";
 
@@ -11,7 +10,7 @@ export type QChipFillOptions =
   | "neutral-variant"
   | "error";
 
-export type QChipSizeOptions = Exclude<QSize, "xs" | "xl" | "none">;
+export type QChipSizeOptions = Exclude<Q.Size, "xs" | "xl" | "none">;
 
 export interface QChipProps extends HTMLAttributes<HTMLDivElement> {
   /**

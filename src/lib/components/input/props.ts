@@ -1,8 +1,11 @@
+import type { NativeProps } from "$utils";
 import type { Snippet } from "svelte";
 import type { HTMLAttributes, HTMLInputAttributes } from "svelte/elements";
 import type { QInputFillMask } from "./mask";
 
-export interface QInputProps extends HTMLInputAttributes {
+type QInputNativeAttributes = Omit<HTMLInputAttributes, "class" | "style" | "value" | "disabled">;
+
+export interface QInputProps extends NativeProps, QInputNativeAttributes {
   /**
    * Makes the input component more compact.
    *
