@@ -1,6 +1,5 @@
 import { writeFile } from "fs/promises";
 import { MessagePort, parentPort } from "worker_threads";
-import parseTypes from "../types/parseTypes.js";
 import formatCodeAndAddHash from "../helpers/formatCodeAndAddHash.js";
 
 import { parseInterfaces } from "./parsePropsInterface";
@@ -20,7 +19,6 @@ parentPort.on("message", async (workerData) => {
   console.log("processing", propsFilePath);
   try {
     const parsedInterface = await parseInterfaces(propsFilePath);
-    const types = await parseTypes(propsFilePath);
 
     let contents =
       'import { MaybeParsed, ParsedGeneric, ParsedProperty } from "$docgen/props/parsePropsInterface/defs"\n\n';
@@ -72,7 +70,7 @@ parentPort.on("message", async (workerData) => {
 
     assertHasParentPort(parentPort);
 
-    parentPort.postMessage({ event: "finished", types });
+    parentPort.postMessage({ event: "finished" });
   } catch (err) {
     console.error("error processing", propsFilePath, err);
     throw err;

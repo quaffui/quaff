@@ -18,7 +18,6 @@ export default class WorkerManager extends EventEmitter {
   private maxWorkers: number;
   private workers: ExtendedWorker[];
   private tasks: WorkerTask[];
-  private types: Record<string, string>;
 
   constructor(workerPath: string, tasks: WorkerTask[]) {
     super();
@@ -27,7 +26,6 @@ export default class WorkerManager extends EventEmitter {
     this.maxWorkers = availableWorkers >= 6 ? availableWorkers - 2 : availableWorkers - 1;
     this.tasks = tasks;
     this.workers = this.initializeWorkers();
-    this.types = {};
   }
 
   get hasActiveTasks() {
@@ -47,7 +45,6 @@ export default class WorkerManager extends EventEmitter {
 
       worker.on("message", (message) => {
         if (message.event === "finished") {
-          this.addToTypes(message.types);
           extWorker.isFree = true;
 
           this.assignNextTask(extWorker);
@@ -65,13 +62,8 @@ export default class WorkerManager extends EventEmitter {
 
   private checkIfFinished() {
     if (!this.hasActiveTasks) {
-      this.emit("finished", this.types);
       this.workers.forEach((worker) => worker.worker.terminate());
     }
-  }
-
-  private addToTypes(newTypes: Record<string, string>) {
-    Object.assign(this.types, newTypes);
   }
 
   private assignTaskToWorker(worker: ExtendedWorker, task: WorkerTask) {
