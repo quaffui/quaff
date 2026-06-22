@@ -1,4 +1,4 @@
-import type { QComponentDocs } from "$utils";
+import type { QComponentDocs } from "$docs";
 import {
   QItemDocsProps,
   QItemDocsSnippets,
