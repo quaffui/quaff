@@ -1,3 +1,4 @@
+import type { CssValue, QSize } from "$utils";
 import type { Snippet } from "svelte";
 import type { HTMLAttributes } from "svelte/elements";
 
@@ -13,7 +14,7 @@ export type QAvatarShapeOptions =
   | "bottom-left-round"
   | "bottom-right-round";
 
-export type QAvatarSizeOptions = Q.Size | Q.CssValue | number;
+export type QAvatarSizeOptions = QSize | CssValue | number;
 
 export type VideoTypes =
   | "video/mp4"
