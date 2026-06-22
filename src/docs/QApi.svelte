@@ -14,7 +14,7 @@
     Quaff,
   } from "$lib";
   import { capitalize, escape } from "$utils";
-  import type { QComponentDocs, QComponentEvent, QComponentMethod } from "$utils";
+  import type { QComponentDocs, QComponentEvent, QComponentMethod } from "$docs";
   import {
     type MaybeParsed,
     type ParsedProperty,
