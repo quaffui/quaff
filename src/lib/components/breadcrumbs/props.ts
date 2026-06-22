@@ -1,8 +1,9 @@
+import type { QSize, StringWithSuggestions } from "$utils";
 import type { MaterialSymbol } from "material-symbols";
 import type { Snippet } from "svelte";
 import type { HTMLAttributes } from "svelte/elements";
 
-export type QBreadcrumbsGutterOptions = Exclude<Q.Size, "xs" | "xl">;
+export type QBreadcrumbsGutterOptions = Exclude<QSize, "xs" | "xl">;
 
 export interface QBreadcrumbsProps extends HTMLAttributes<HTMLElement> {
   /**
@@ -19,7 +20,7 @@ export interface QBreadcrumbsProps extends HTMLAttributes<HTMLElement> {
    * Separator to use between the breadcrumb elements. To use an icon, prefix with "icon:" followed by the name of the icon.
    * @default "/"
    */
-  separator?: Q.StringWithSuggestions<`icon:${MaterialSymbol}`> | Snippet;
+  separator?: StringWithSuggestions<`icon:${MaterialSymbol}`> | Snippet;
   /**
    * Color to use for the separators. See <link to colors docs> to see what colors can be used.
    * @default "outline"

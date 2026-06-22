@@ -1,7 +1,8 @@
+import type { QSize } from "$utils";
 import type { MaterialSymbol } from "material-symbols";
 import type { HTMLAttributes, HTMLAnchorAttributes, MouseEventHandler } from "svelte/elements";
 
-export type QBtnSizeOptions = Exclude<Q.Size, "xs">;
+export type QBtnSizeOptions = Exclude<QSize, "xs">;
 
 export type QBtnVariantOptions = "elevated" | "filled" | "tonal" | "outlined" | "flat";
 
