@@ -1,11 +1,18 @@
-import type { QComponentDocs } from "$utils";
-import { QSelectDocsProps, QSelectDocsSnippets } from "./docs.props";
+import type { QComponentDocs } from "$docs";
+import {
+  QSelectDocsProps,
+  QSelectDocsSnippets,
+  QSelectDocsDomAttributesConstraint,
+  QSelectDocsGenerics,
+} from "./docs.props";
 
 export const QSelectDocs: QComponentDocs = {
   name: "QSelect",
   description:
     "QSelect is a form component that allows users to choose from multiple options in a dropdown list. It supports single and multiple selection, as well as different visual styles such as filled, outlined, and rounded.",
   docs: {
+    generics: QSelectDocsGenerics,
+    domAttributesConstraint: QSelectDocsDomAttributesConstraint,
     props: QSelectDocsProps,
     snippets: QSelectDocsSnippets,
     methods: [],

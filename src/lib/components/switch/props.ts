@@ -4,16 +4,15 @@ import type { HTMLAttributes } from "svelte/elements";
 
 export interface QSwitchProps extends HTMLAttributes<HTMLDivElement> {
   /**
-   * Current on/off state of the switch. This property is bindable.
+   * Current on/off state of the switch.
    *
-   * @default undefined
+   * @bindable
    */
   value?: boolean;
 
   /**
    * Text label to display next to the switch.
    *
-   * @default undefined
    */
   label?: string;
 

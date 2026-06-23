@@ -1,3 +1,4 @@
+import type { CssValue, QSize } from "$utils";
 import type { Snippet } from "svelte";
 import type { HTMLAttributes } from "svelte/elements";
 
@@ -13,7 +14,7 @@ export type QAvatarShapeOptions =
   | "bottom-left-round"
   | "bottom-right-round";
 
-export type QAvatarSizeOptions = Q.Size | Q.CssValue | number;
+export type QAvatarSizeOptions = QSize | CssValue | number;
 
 export type VideoTypes =
   | "video/mp4"
@@ -54,7 +55,6 @@ export interface QAvatarProps extends HTMLAttributes<HTMLElement> {
    *
    * If the "video" prop is set to true, this will be used as an MP4 video source. If you want to use a different video format, use the "sources" prop.
    *
-   * @default undefined
    */
   src?: string;
   /**
@@ -62,7 +62,6 @@ export interface QAvatarProps extends HTMLAttributes<HTMLElement> {
    *
    * If used while the "video" prop is set to false, this prop has no effect.
    *
-   * @default undefined
    */
   sources?: QAvatarVideoSrcOptions[];
   /**
@@ -75,7 +74,6 @@ export interface QAvatarProps extends HTMLAttributes<HTMLElement> {
   /**
    * alt property for the image.
    *
-   * @default undefined
    */
   alt?: string;
   /**
@@ -85,7 +83,6 @@ export interface QAvatarProps extends HTMLAttributes<HTMLElement> {
    *
    * This snippet will be added inside the <video> tag.
    *
-   * @default undefined
    */
   videoAccessibility?: Snippet;
 }

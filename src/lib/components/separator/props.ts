@@ -1,3 +1,4 @@
+import type { QSize } from "$utils";
 import type { HTMLAttributes } from "svelte/elements";
 
 export interface QSeparatorVerticalProps {
@@ -6,7 +7,7 @@ export interface QSeparatorVerticalProps {
    *
    * @default "none"
    */
-  spacing?: Q.Size;
+  spacing?: QSize;
 
   /**
    * Adds horizontal padding to the separator container, adding space around the separator.
@@ -18,7 +19,6 @@ export interface QSeparatorVerticalProps {
   /**
    * Sets the separator orientation to vertical.
    *
-   * @default undefined
    */
   vertical?: true;
 
@@ -32,14 +32,12 @@ export interface QSeparatorVerticalProps {
   /**
    * Custom size (thickness) of the separator line.
    *
-   * @default undefined
    */
   size?: string;
 
   /**
    * Text to display. Its position on the separator is determined by the textAlign prop.
    *
-   * @default undefined
    */
   text?: string;
 
@@ -57,7 +55,7 @@ export interface QSeparatorHorizontalProps {
    *
    * @default "none"
    */
-  spacing?: Q.Size;
+  spacing?: QSize;
 
   /**
    * Adds vertical padding to the separator container, adding space around the separator.
@@ -69,7 +67,6 @@ export interface QSeparatorHorizontalProps {
   /**
    * Sets the separator orientation to horizontal.
    *
-   * @default undefined
    */
   vertical?: false;
 
@@ -83,14 +80,12 @@ export interface QSeparatorHorizontalProps {
   /**
    * Custom size (thickness) of the separator line.
    *
-   * @default undefined
    */
   size?: string;
 
   /**
    * Text to display. Its position on the separator is determined by the textAlign prop.
    *
-   * @default undefined
    */
   text?: string;
 

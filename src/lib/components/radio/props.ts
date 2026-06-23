@@ -7,6 +7,7 @@ export interface QRadioProps extends HTMLAttributes<HTMLLabelElement> {
    * Value associated with this radio button. Used when comparing against the selected value.
    *
    * @default ""
+   * @bindable
    */
   value: QRadioValue;
 
@@ -21,7 +22,6 @@ export interface QRadioProps extends HTMLAttributes<HTMLLabelElement> {
    * Bound value that determines if this radio button is selected. This prop is bindable.
    * When using a group of radio buttons, this should be the same variable for all of them.
    *
-   * @default undefined
    */
   selected?: QRadioValue;
 

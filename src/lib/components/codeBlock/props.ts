@@ -24,7 +24,6 @@ export interface QCodeBlockProps extends HTMLAttributes<HTMLDivElement> {
 
   /**
    * Title to display above the code.
-   * @default undefined
    */
   title?: string;
 

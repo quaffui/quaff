@@ -35,7 +35,6 @@ export interface QListProps extends HTMLAttributes<HTMLElement> {
   /**
    * Options for the separators. These will be applied to all separators in the list.
    *
-   * @default undefined
    */
   separatorOptions?: Omit<QSeparatorHorizontalProps, "vertical">;
 
@@ -56,7 +55,6 @@ export interface QListProps extends HTMLAttributes<HTMLElement> {
   /**
    * The class to apply to items that are active. For more granular control, you can also use the `activeClass` prop on each QItem.
    *
-   * @default undefined
    */
   activeClass?: string;
 }
@@ -107,7 +105,6 @@ export interface QItemProps extends RouterProps, HTMLAttributes<HTMLElement> {
   /**
    * Target attribute for anchor tags when using router links.
    *
-   * @default undefined
    */
   target?: HTMLAnchorAttributes["target"];
 }
@@ -141,21 +138,18 @@ export interface QItemSectionProps extends HTMLAttributes<HTMLDivElement> {
   /**
    * First line of supporting text.
    *
-   * @default undefined
    */
   line1?: Snippet;
 
   /**
    * Second line of supporting text.
    *
-   * @default undefined
    */
   line2?: Snippet;
 
   /**
    * Third line of supporting text.
    *
-   * @default undefined
    */
   line3?: Snippet;
 }

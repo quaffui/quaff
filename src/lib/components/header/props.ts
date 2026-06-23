@@ -1,6 +1,18 @@
-import type { QToolbarProps } from "../toolbar/props";
+import { HTMLAttributes } from "svelte/elements";
 
-export interface QHeaderProps extends QToolbarProps {
+export interface QHeaderProps extends HTMLAttributes<HTMLElement> {
+  /**
+   * Adds horizontal padding to the toolbar content.
+   *
+   * @default false
+   */
+  inset?: boolean;
+  /**
+   * Adds a border to the toolbar to separate it from the main content.
+   *
+   * @default false
+   */
+  border?: boolean;
   /**
    * @default false
    */

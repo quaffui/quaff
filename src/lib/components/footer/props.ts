@@ -1,7 +1,6 @@
-import type { NativeProps } from "$utils";
 import type { HTMLAttributes } from "svelte/elements";
 
-export interface QFooterProps extends NativeProps, HTMLAttributes<HTMLElement> {
+export interface QFooterProps extends HTMLAttributes<HTMLElement> {
   /**
    * The value indicating whether the footer is visible or hidden.
    * @default true
@@ -28,7 +27,6 @@ export interface QFooterProps extends NativeProps, HTMLAttributes<HTMLElement> {
 
   /**
    * The height of the footer. Can be specified with a CSS unit. If not specified, "px" will be used. (specified CSS units are not supported yet)
-   * @default undefined
    */
   height?: number;
 }

@@ -1,4 +1,3 @@
-import type { NativeProps } from "$utils";
 import type { Snippet } from "svelte";
 import type { HTMLAttributes } from "svelte/elements";
 
@@ -22,7 +21,7 @@ export type QTableSort = {
   type: "asc" | "desc";
 } | null;
 
-export interface QTableProps extends NativeProps, HTMLAttributes<HTMLDivElement> {
+export interface QTableProps extends HTMLAttributes<HTMLDivElement> {
   /**
    * Column definitions of the table.
    * @default []
@@ -55,7 +54,6 @@ export interface QTableProps extends NativeProps, HTMLAttributes<HTMLDivElement>
 
   /**
    * Optionally pass a snippet to render each table cell.
-   * @default undefined
    */
   bodyCell?: Snippet<[{ column: QTableColumn; row: QTableRow; style: string }]>;
 }
