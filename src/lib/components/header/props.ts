@@ -1,6 +1,6 @@
 import { HTMLAttributes } from "svelte/elements";
 
-export interface QHeaderProps extends HTMLAttributes<HTMLHeadElement> {
+export interface QHeaderProps extends HTMLAttributes<HTMLElement> {
   /**
    * Adds horizontal padding to the toolbar content.
    *
