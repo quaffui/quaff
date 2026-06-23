@@ -1,6 +1,6 @@
 <script lang="ts">
   /* eslint-disable svelte/no-at-html-tags */
-  import { createRawSnippet, mount, tick } from "svelte";
+  import { createRawSnippet, mount, tick, unmount } from "svelte";
   import {
     QCard,
     QCardSection,
@@ -37,6 +37,8 @@
     keyof QComponentDocs["docs"],
     "generics" | "domAttributesConstraint"
   >[] = $state(componentDocs.map(() => "props"));
+  let tooltipGeneration = 0;
+  let tooltipTeardowns: (() => unknown)[] = [];
   // #endregion: --- Reactive variables
 
   // #region:    --- Effects
@@ -44,7 +46,11 @@
     // Doesn't rerun if we don't use JSON.stringify
     JSON.stringify(activeApiTabs);
 
-    attachTooltips();
+    const generation = ++tooltipGeneration;
+    cleanupTooltips();
+    attachTooltips(generation);
+
+    return cleanupTooltips;
   });
   // #endregion: --- Effects
 
@@ -189,14 +195,14 @@
       content += inSpan("<", { typeStyle: true });
 
       const generics = docs.generics.map((generic) => {
-        content += inSpan(generic.name, { typeStyle: true });
+        let genericContent = inSpan(generic.name, { typeStyle: true });
 
         if (generic.constraint) {
           const { constraint } = generic;
           const isObject = typeof constraint !== "string";
           const text = isObject ? constraint.text : constraint;
 
-          return inSpan(" extends ", { typeStyle: true }).concat(
+          genericContent += inSpan(" extends ", { typeStyle: true }).concat(
             inSpan(escape(text), {
               typeStyle: true,
               isClickable: isObject,
@@ -205,6 +211,8 @@
             })
           );
         }
+
+        return genericContent;
       });
 
       content += generics.join(", ");
@@ -351,8 +359,20 @@
     return content;
   }
 
-  async function attachTooltips() {
+  function cleanupTooltips() {
+    for (const teardown of tooltipTeardowns) {
+      teardown();
+    }
+
+    tooltipTeardowns = [];
+  }
+
+  async function attachTooltips(generation: number) {
     await tick();
+
+    if (generation !== tooltipGeneration) {
+      return;
+    }
 
     document.querySelectorAll("a.prop-type.link").forEach((el) => {
       const typeSrc = el.getAttribute("href");
@@ -381,13 +401,15 @@
         },
       }));
 
-      mount(QTooltip, {
+      const tooltip = mount(QTooltip, {
         target: el.parentElement,
         props: {
           target: el,
           children: tooltipContent,
         },
       });
+
+      tooltipTeardowns.push(() => unmount(tooltip));
     });
 
     document.querySelectorAll("span.prop-type.clickable").forEach(async (el) => {
@@ -413,11 +435,15 @@
         ],
       });
 
+      if (generation !== tooltipGeneration) {
+        return;
+      }
+
       const snip = createRawSnippet(() => ({
         render: () => html,
       }));
 
-      mount(QTooltip, {
+      const tooltip = mount(QTooltip, {
         target: el.parentElement,
         props: {
           target: el,
@@ -425,6 +451,8 @@
           children: snip,
         },
       });
+
+      tooltipTeardowns.push(() => unmount(tooltip));
     });
   }
   // #endregion: --- Functions
