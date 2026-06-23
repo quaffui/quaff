@@ -4,7 +4,7 @@
   import { isActivationKey, type QEvent } from "$utils";
   import type { QSwitchProps } from "./props";
 
-  type QSwitchEvent<T> = QEvent<T, HTMLDivElement>;
+  type QSwitchEvent<T extends Event> = QEvent<T, HTMLDivElement>;
 
   // #region:    --- Props
   let {

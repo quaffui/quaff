@@ -21,7 +21,8 @@
 
 <script lang="ts">
   import { QCard, QCardSection, QTheme, Quaff } from "$lib";
-  import { QColors, type QComponentDocs } from "$utils";
+  import { QColors } from "$utils";
+  import type { QComponentDocs } from "$docs";
   import QApi from "./QApi.svelte";
   import type { Snippet } from "svelte";
 

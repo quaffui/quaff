@@ -1,8 +1,9 @@
+import type { QSize, StringWithSuggestions } from "$utils";
 import type { MaterialSymbol } from "material-symbols";
 import type { Snippet } from "svelte";
 import type { HTMLAttributes } from "svelte/elements";
 
-export type QBreadcrumbsGutterOptions = Exclude<Q.Size, "xs" | "xl">;
+export type QBreadcrumbsGutterOptions = Exclude<QSize, "xs" | "xl">;
 
 export interface QBreadcrumbsProps extends HTMLAttributes<HTMLElement> {
   /**
@@ -19,7 +20,7 @@ export interface QBreadcrumbsProps extends HTMLAttributes<HTMLElement> {
    * Separator to use between the breadcrumb elements. To use an icon, prefix with "icon:" followed by the name of the icon.
    * @default "/"
    */
-  separator?: Q.StringWithSuggestions<`icon:${MaterialSymbol}`> | Snippet;
+  separator?: StringWithSuggestions<`icon:${MaterialSymbol}`> | Snippet;
   /**
    * Color to use for the separators. See <link to colors docs> to see what colors can be used.
    * @default "outline"
@@ -35,7 +36,6 @@ export interface QBreadcrumbsElProps extends HTMLAttributes<HTMLLIElement> {
   activeClass?: string;
   /**
    * Name of the leading icon for the breadcrumb element. The icon prop overwrites to icon slot.
-   * @default undefined
    */
   icon?: MaterialSymbol | Snippet;
   /**
@@ -45,7 +45,6 @@ export interface QBreadcrumbsElProps extends HTMLAttributes<HTMLLIElement> {
   label?: string;
   /**
    * Also makes the breadcrumb element navigational. Can be used with the router (e.g to="/home") or as a normal href attribute (e.g to="#section-id")
-   * @default undefined
    */
   href?: string;
   /**
@@ -55,7 +54,6 @@ export interface QBreadcrumbsElProps extends HTMLAttributes<HTMLLIElement> {
   tag?: string;
   /**
    * Makes the breadcrumb element navigational. Can be used with the router (e.g to="/home") or as a normal href attribute (e.g to="#section-id")
-   * @default undefined
    */
   to?: string;
 }

@@ -17,13 +17,13 @@ export interface QMenuProps extends HTMLAttributes<HTMLDivElement> {
    * Bound open state.
    *
    * @default false
+   * @bindable
    */
   value?: boolean;
 
   /**
    * Element to anchor the menu to. When omitted, QMenu anchors to the nearest parent Quaff component.
    *
-   * @default undefined
    */
   target?: HTMLElement;
 

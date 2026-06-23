@@ -1,17 +1,17 @@
+import { CssValue } from "$utils";
 import type { HTMLAttributes } from "svelte/elements";
 
 export interface QLinearProgressProps extends HTMLAttributes<HTMLDivElement> {
   /**
-   * Current progress value as a percentage. This prop is bindable.
-   *
+   * Current progress value as a percentage.
    * @default 0
+   * @bindable
    */
   value?: number;
 
   /**
    * Secondary progress value, shown as a lighter track behind the main progress.
    *
-   * @default undefined
    */
   buffer?: number;
 
@@ -20,7 +20,7 @@ export interface QLinearProgressProps extends HTMLAttributes<HTMLDivElement> {
    *
    * @default "0.375em"
    */
-  size?: Q.CssValue | number;
+  size?: CssValue | number;
 
   /**
    * Reverses the progress bar direction from right-to-left.
@@ -99,7 +99,7 @@ export interface QCircularProgressProps extends HTMLAttributes<HTMLDivElement> {
    *
    * @default "2em"
    */
-  size?: Q.CssValue | number;
+  size?: CssValue | number;
 
   /**
    * Color of the progress arc.
@@ -169,5 +169,5 @@ export interface QCircularProgressProps extends HTMLAttributes<HTMLDivElement> {
    *
    * @default "0.25em"
    */
-  fontSize?: Q.CssValue | number;
+  fontSize?: CssValue | number;
 }

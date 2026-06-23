@@ -1,7 +1,6 @@
-import type { NativeProps } from "$utils";
 import type { HTMLAttributes } from "svelte/elements";
 
-export interface QRailbarProps extends NativeProps, HTMLAttributes<HTMLElement> {
+export interface QRailbarProps extends HTMLAttributes<HTMLElement> {
   /**
    * Width of the railbar in pixels.
    *

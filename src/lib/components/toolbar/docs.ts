@@ -1,9 +1,13 @@
-import type { QComponentDocs } from "$utils";
+import type { QComponentDocs } from "$docs";
 import {
   QToolbarDocsProps,
   QToolbarDocsSnippets,
+  QToolbarDocsDomAttributesConstraint,
+  QToolbarDocsGenerics,
   QToolbarTitleDocsProps,
   QToolbarTitleDocsSnippets,
+  QToolbarTitleDocsDomAttributesConstraint,
+  QToolbarTitleDocsGenerics,
 } from "./docs.props";
 
 export const QToolbarDocs: QComponentDocs = {
@@ -11,6 +15,8 @@ export const QToolbarDocs: QComponentDocs = {
   description:
     "The Toolbar component is used to hold common actions and controls, often located at the top of an application or view.",
   docs: {
+    generics: QToolbarDocsGenerics,
+    domAttributesConstraint: QToolbarDocsDomAttributesConstraint,
     props: QToolbarDocsProps,
     snippets: QToolbarDocsSnippets,
     methods: [],
@@ -23,6 +29,8 @@ export const QToolbarTitleDocs: QComponentDocs = {
   description:
     "The Toolbar component is used to hold common actions and controls, often located at the top of an application or view.",
   docs: {
+    generics: QToolbarTitleDocsGenerics,
+    domAttributesConstraint: QToolbarTitleDocsDomAttributesConstraint,
     props: QToolbarTitleDocsProps,
     snippets: QToolbarTitleDocsSnippets,
     methods: [],

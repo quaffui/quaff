@@ -5,6 +5,7 @@ import { HTMLDetailsAttributes, MouseEventHandler } from "svelte/elements";
 export interface QExpansionItemProps extends HTMLDetailsAttributes {
   /**
    * The value of the expansion item, used to define the expansion state of the item.
+   * @bindable
    */
   value?: boolean;
 

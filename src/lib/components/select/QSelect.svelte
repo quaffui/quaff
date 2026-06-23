@@ -17,7 +17,7 @@
   } from "./option";
   import type { QSelectOption, QSelectProps, QSelectValue } from "./props";
 
-  type QSelectEvent<T> = QEvent<T, HTMLDivElement>;
+  type QSelectEvent<T extends Event> = QEvent<T, HTMLDivElement>;
 
   // #region:    --- Props
   let {

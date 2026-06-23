@@ -1,11 +1,18 @@
-import type { QComponentDocs } from "$utils";
-import { QMenuDocsProps, QMenuDocsSnippets } from "./docs.props";
+import type { QComponentDocs } from "$docs";
+import {
+  QMenuDocsProps,
+  QMenuDocsSnippets,
+  QMenuDocsDomAttributesConstraint,
+  QMenuDocsGenerics,
+} from "./docs.props";
 
 export const QMenuDocs: QComponentDocs = {
   name: "QMenu",
   description:
     "QMenu displays anchored popup content. It handles positioning, outside-click dismissal, Escape dismissal, and native dialog layering.",
   docs: {
+    generics: QMenuDocsGenerics,
+    domAttributesConstraint: QMenuDocsDomAttributesConstraint,
     props: QMenuDocsProps,
     snippets: QMenuDocsSnippets,
     methods: [
