@@ -1,6 +1,6 @@
 import { Node } from "ts-morph";
 import { isImportedFromExternal } from "./checker";
-import { type ParsedType, PRESERVE_TYPE_NAMES } from "./defs";
+import { BUILTIN_TYPES, MaybeParsed, type ParsedType, PRESERVE_TYPE_NAMES } from "./defs";
 import { extractInternalTypeReferenceSymbol, extractTypeText } from "./extractor";
 import { parseType } from "./parser";
 
@@ -111,6 +111,7 @@ export async function computeAllReferences(
     if (
       visited.has(ref) ||
       PRESERVE_TYPE_NAMES.has(ref) ||
+      BUILTIN_TYPES.has(ref) ||
       isImportedFromExternal(ref, contextNode)
     ) {
       continue;
@@ -145,14 +146,18 @@ export async function computeAllReferences(
         const text = typeNode.getText();
         result[ref] = await parseType(text);
 
+        const subRefs: string[] = [];
         typeNode.forEachDescendant((node) => {
           if (Node.isTypeReference(node)) {
-            const subRef = node.getType().getText();
-            if (!visited.has(subRef)) {
-              Object.assign(result, computeAllReferences(subRef, contextNode, visited));
-            }
+            subRefs.push(node.getText());
           }
         });
+
+        for (const subRef of subRefs) {
+          if (!visited.has(subRef)) {
+            Object.assign(result, await computeAllReferences(subRef, decl, visited));
+          }
+        }
 
         continue;
       }
@@ -169,13 +174,13 @@ export async function computeAllReferences(
       result[ref] = unionMembers;
 
       for (const member of unionMembers) {
-        const text = typeof member === "string" ? member : member.text;
-        Object.assign(result, computeAllReferences(text, contextNode, visited));
+        const text = getText(member);
+        Object.assign(result, await computeAllReferences(text, decl, visited));
       }
     } else {
       const refText = extractTypeText(refType, contextNode);
       result[ref] = await parseType(refText);
-      Object.assign(result, computeAllReferences(refText, contextNode, visited));
+      Object.assign(result, await computeAllReferences(refText, decl, visited));
     }
   }
 
@@ -205,15 +210,22 @@ export function sortComputedTypes(
     }
 
     if (Array.isArray(computedTypeB)) {
-      const textsB = computedTypeB.map((t) => (typeof t === "string" ? t : t.text));
+      const textsB = computedTypeB.map(getText);
 
       // If the type is included in the other type, it should come first
       return textsB.some((textB) => textB.includes(typeNameA)) ? -1 : 1;
     } else {
-      const textB = typeof computedTypeB === "string" ? computedTypeB : computedTypeB.text;
+      const textB = getText(computedTypeB);
 
       // Idem here
       return textB.includes(typeNameA) ? -1 : 1;
     }
   });
+}
+
+/**
+ * Gets the text from a parsed type or a string.
+ */
+export function getText(type: MaybeParsed) {
+  return typeof type === "string" ? type : type.text;
 }

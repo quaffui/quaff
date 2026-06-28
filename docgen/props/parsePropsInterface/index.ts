@@ -6,10 +6,19 @@ import { parseInterface } from "./parser";
 
 const tsConfigFilePath = path.join(__dirname, "../../../tsconfig.json");
 
-export async function parseInterfaces(filePath: string) {
-  const project = new Project({ tsConfigFilePath });
+// Avoids creating a new Project instance for every file, which is very
+// slow and unnecessary since all files use the same tsconfig.
+let cachedProject: Project | null = null;
 
-  const interfaces = extractInterfaces(project, filePath);
+export async function parseInterfaces(filePath: string) {
+  if (!cachedProject) {
+    cachedProject = new Project({ tsConfigFilePath });
+  } else {
+    // Force a file refresh to ensure we are parsing the latest changes in memory
+    cachedProject.getSourceFile(filePath)?.refreshFromFileSystemSync();
+  }
+
+  const interfaces = extractInterfaces(cachedProject, filePath);
 
   const parsed = await Promise.all(interfaces.map(parseInterface));
 

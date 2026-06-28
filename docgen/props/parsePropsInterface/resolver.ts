@@ -7,9 +7,13 @@ import {
   PRESERVE_TYPE_NAMES,
   TypeSrcMap,
 } from "./defs";
-import { extractRawTypeAnnotation, extractTypeText } from "./extractor";
+import {
+  extractInternalTypeReferenceSymbol,
+  extractRawTypeAnnotation,
+  extractTypeText,
+} from "./extractor";
 import { parseType } from "./parser";
-import { computeAllReferences, splitUnionParts, tryPreserveAnnotation } from "./utils";
+import { computeAllReferences, getText, splitUnionParts, tryPreserveAnnotation } from "./utils";
 
 /**
  * Core type resolution logic. Determines how to represent a property's type
@@ -245,9 +249,10 @@ async function resolveUnionType(
       let typeNode;
 
       const declarations = aliasSymbol.getDeclarations();
+      let decl: Node | undefined;
 
       if (declarations.length) {
-        const decl = declarations[0];
+        decl = declarations[0];
 
         if (Node.isTypeAliasDeclaration(decl) || Node.isPropertySignature(decl)) {
           typeNode = decl.getTypeNode();
@@ -260,15 +265,19 @@ async function resolveUnionType(
           [aliasName]: await parseType(resolvedText),
         };
 
-        typeNode.forEachDescendant(async (node) => {
+        const subRefs: string[] = [];
+        typeNode.forEachDescendant((node) => {
           if (Node.isTypeReference(node)) {
-            const subRef = node.getText();
-            Object.assign(
-              computedTypes,
-              computeAllReferences(subRef, contextNode, new Set([aliasName]))
-            );
+            subRefs.push(node.getText());
           }
         });
+
+        for (const subRef of subRefs) {
+          Object.assign(
+            computedTypes,
+            await computeAllReferences(subRef, decl ?? contextNode, new Set([aliasName]))
+          );
+        }
 
         return parseType(aliasName, computedTypes);
       }
@@ -287,8 +296,11 @@ async function resolveUnionType(
       const visited = new Set([aliasName]);
 
       for (const member of unionMembers) {
-        const text = typeof member === "string" ? member : member.text;
-        Object.assign(computedTypes, await computeAllReferences(text, contextNode, visited));
+        const text = getText(member);
+        Object.assign(
+          computedTypes,
+          await computeAllReferences(text, decl ?? contextNode, visited)
+        );
       }
 
       return parseType(aliasName, computedTypes);
@@ -323,30 +335,44 @@ async function resolveUnionType(
  * Resolves a type alias name to its union members as `ParsedType[]`.
  * Returns `undefined` if the alias doesn't resolve to a union.
  */
-export async function resolveTypeAliasMembers(typeName: string, contextNode: Node) {
-  const sourceFile = contextNode.getSourceFile();
-  const localAlias = sourceFile.getTypeAlias(typeName);
+async function resolveTypeAliasMembers(typeName: string, contextNode: Node) {
+  const symbol = extractInternalTypeReferenceSymbol(typeName, contextNode);
+  if (!symbol) {
+    return;
+  }
+  const declarations = symbol.getDeclarations();
+  if (!declarations.length) {
+    return;
+  }
+  const decl = declarations[0];
+  if (Node.isTypeAliasDeclaration(decl)) {
+    const aliasType = decl.getType();
+    const typeNode = decl.getTypeNode();
 
-  if (localAlias) {
-    const aliasType = localAlias.getType();
+    if (!typeNode) {
+      return;
+    }
+
     if (aliasType.isUnion()) {
-      const typeNode = localAlias.getTypeNode();
-
       if (Node.isTemplateLiteralTypeNode(typeNode)) {
         const resolvedText = typeNode.getText();
         const computedTypes = {
           [typeName]: await parseType(resolvedText),
         };
 
+        const subRefs: string[] = [];
         typeNode.forEachDescendant((node) => {
           if (Node.isTypeReference(node)) {
-            const subRef = node.getType().getText();
-            Object.assign(
-              computedTypes,
-              computeAllReferences(subRef, contextNode, new Set([typeName]))
-            );
+            subRefs.push(node.getText());
           }
         });
+
+        for (const subRef of subRefs) {
+          Object.assign(
+            computedTypes,
+            await computeAllReferences(subRef, decl, new Set([typeName]))
+          );
+        }
 
         return parseType(typeName, computedTypes);
       }
@@ -367,8 +393,8 @@ export async function resolveTypeAliasMembers(typeName: string, contextNode: Nod
 
       const visited = new Set([typeName]);
       for (const member of unionMembers) {
-        const text = typeof member === "string" ? member : member.text;
-        Object.assign(computedTypes, computeAllReferences(text, contextNode, visited));
+        const text = getText(member);
+        Object.assign(computedTypes, await computeAllReferences(text, decl, visited));
       }
 
       return parseType(typeName, computedTypes);
@@ -378,7 +404,7 @@ export async function resolveTypeAliasMembers(typeName: string, contextNode: Nod
     const resolvedText = extractTypeText(aliasType, contextNode);
     const computedTypes = {
       [typeName]: await parseType(resolvedText),
-      ...(await computeAllReferences(resolvedText, contextNode, new Set([typeName]))),
+      ...(await computeAllReferences(resolvedText, decl, new Set([typeName]))),
     };
 
     return parseType(resolvedText, computedTypes);

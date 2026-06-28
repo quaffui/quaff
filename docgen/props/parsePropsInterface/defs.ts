@@ -83,24 +83,86 @@ export const enum ParsedPropertyFlags {
   BINDABLE = 8,
 }
 
-/** Maps external type names to their documentation URLs. */
-export const TypeSrcMap = {
-  MaterialSymbol: "https://fonts.google.com/icons",
-  BundledLanguage: "https://shiki.style/languages#bundled-languages",
-  SpecialLanguage: "https://shiki.style/languages#special-languages",
-  BundledTheme: "https://shiki.style/themes#bundled-themes",
-  HTMLElementTagNameMap:
+/**
+ * Maps external type names to their documentation URLs.
+ * Not using an object to avoid creating regexp objects repeatedly inside loops.
+ */
+export const TypeSrcMap = [
+  ["MaterialSymbol", "https://fonts.google.com/icons"],
+  ["BundledLanguage", "https://shiki.style/languages#bundled-languages"],
+  ["SpecialLanguage", "https://shiki.style/languages#special-languages"],
+  ["BundledTheme", "https://shiki.style/themes#bundled-themes"],
+  [
+    "HTMLElementTagNameMap",
     "https://typhonjs-typedoc.github.io/ts-lib-docs/2024/dom/interfaces/HTMLElementTagNameMap.html",
-  "HTMLAttributes<HTMLElement>[^\\[]":
+  ],
+  [
+    /HTMLAttributes<HTMLElement>(?![[])/,
     "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes#list_of_global_attributes",
-  'HTML(?<element>.+)Attributes\\["(?<prop>\\w+)"\\]': (element: string, prop?: string) =>
-    `https://developer.mozilla.org/en-us/docs/Web/API/HTML${element}Element/${prop}`,
-  'HTMLAttributes<HTMLElement>\\["(?<prop>\\w+)"\\]': (prop: string) =>
-    `https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/${prop}`,
-  'HTMLAttributes<HTML(?<element>.+)Element>\\["(?<prop>\\w+)"\\]': (
-    element: string,
-    prop?: string
-  ) => `https://developer.mozilla.org/en-us/docs/Web/API/HTML${element}Element/${prop}`,
-  "^HTML(?<element>.+)Attributes$|HTMLAttributes<HTML(?<element>.+)Element>": (element: string) =>
-    `https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/${element.toLowerCase()}#attributes`,
-};
+  ],
+  [
+    /HTML(?<element>.+)Attributes\\["(?<prop>\\w+)"\\]/,
+    (element: string, prop?: string) =>
+      `https://developer.mozilla.org/en-us/docs/Web/API/HTML${element}Element/${prop}`,
+  ],
+  [
+    /HTMLAttributes<HTMLElement>\\["(?<prop>\\w+)"\\]/,
+    (prop: string) =>
+      `https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/${prop}`,
+  ],
+  [
+    /HTMLAttributes<HTML(?<element>.+)Element>\\["(?<prop>\\w+)"\\]/,
+    (element: string, prop?: string) =>
+      `https://developer.mozilla.org/en-us/docs/Web/API/HTML${element}Element/${prop}`,
+  ],
+  [
+    /^HTML(?<element>.+)Attributes$|HTMLAttributes<HTML(?<element>.+)Element>/,
+    (element: string) =>
+      `https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/${element.toLowerCase()}#attributes`,
+  ],
+] as const;
+
+/**List of TypeScript builtin types that should never be inlined.
+ * Avoids creating deep type trees for simple types.
+ */
+export const BUILTIN_TYPES = new Set([
+  "Record",
+  "Omit",
+  "Pick",
+  "Exclude",
+  "Extract",
+  "Partial",
+  "Required",
+  "Readonly",
+  "ReturnType",
+  "Parameters",
+  "HTMLElement",
+  "Element",
+  "Event",
+  "MouseEvent",
+  "KeyboardEvent",
+  "FocusEvent",
+  "ClipboardEvent",
+  "DragEvent",
+  "PointerEvent",
+  "TouchEvent",
+  "WheelEvent",
+  "AnimationEvent",
+  "TransitionEvent",
+  "Window",
+  "Document",
+  "Promise",
+  "Map",
+  "Set",
+  "WeakMap",
+  "WeakSet",
+  "Array",
+  "Object",
+  "Function",
+  "String",
+  "Number",
+  "Boolean",
+  "Date",
+  "RegExp",
+  "Symbol",
+]);

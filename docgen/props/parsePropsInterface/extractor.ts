@@ -1,7 +1,7 @@
 import { Node, TypeFormatFlags } from "ts-morph";
 import { MaybeParsed, type ParsedGeneric, type ParsedType, TypeSrcMap } from "./defs";
 import { parseType } from "./parser";
-import { sortComputedTypes } from "./utils";
+import { getText, sortComputedTypes } from "./utils";
 import type { Project, InterfaceDeclaration, Type } from "ts-morph";
 
 /**
@@ -35,9 +35,9 @@ export async function extractGenerics(interfaceDecl: InterfaceDeclaration) {
 
 /** Looks up a type name in `TypeSrcMap` and returns the URL if found. */
 export function extractTypeSrc(typeText: string) {
-  for (const [typeName, url] of Object.entries(TypeSrcMap)) {
+  for (const [typeName, url] of TypeSrcMap) {
     if (typeof url === "function") {
-      const match = typeText.match(new RegExp(typeName));
+      const match = typeText.match(typeName);
 
       if (!match) {
         continue;
@@ -56,7 +56,12 @@ export function extractTypeSrc(typeText: string) {
       return url(element, prop);
     }
 
-    if (typeText === typeName || typeText.includes(typeName)) {
+    const isMatch =
+      typeof typeName === "string"
+        ? typeText === typeName || typeText.includes(typeName)
+        : typeName.test(typeText);
+
+    if (isMatch) {
       return url;
     }
   }
@@ -242,7 +247,7 @@ export function extractTypeText(type: Type, contextNode: Node) {
 /**
  * Stringifies the MaybeParsed type to a TypeScript type definition (or a set of defintions).
  */
-export function extractTypeDefintion(maybeParsed: ParsedType, referenceType: string) {
+export function extractTypeDefinition(maybeParsed: ParsedType, referenceType: string) {
   if (
     maybeParsed.text !== referenceType ||
     !maybeParsed.computedTypes ||
@@ -270,9 +275,9 @@ export function extractTypeDefintion(maybeParsed: ParsedType, referenceType: str
 
     if (Array.isArray(computed)) {
       // It's a union of types that don't reference anything (e.g. primitives)
-      toUse = computed.map((item) => (typeof item === "string" ? item : item.text)).join(" | ");
+      toUse = computed.map(getText).join(" | ");
     } else {
-      toUse = typeof computed === "string" ? computed : computed.text;
+      toUse = getText(computed);
     }
 
     return isNamespaced
