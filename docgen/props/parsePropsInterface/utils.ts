@@ -196,31 +196,63 @@ export function sortComputedTypes(
   computedTypes: NonNullable<ParsedType["computedTypes"]>,
   referenceType: string
 ) {
-  return Object.entries(computedTypes).toSorted(([typeNameA], [typeNameB, computedTypeB]) => {
-    typeNameA = typeNameA.replace("Q.", "");
-    typeNameB = typeNameB.replace("Q.", "");
+  const sorted: [string, MaybeParsed | MaybeParsed[]][] = [];
+  const visited = new Set<string>();
+  const visiting = new Set<string>();
 
-    if (typeNameA === referenceType) {
-      // We want the specific type to come last
-      // so we can resolve nested types first
-      return 1;
-    } else if (typeNameB === referenceType) {
-      // Idem here
-      return -1;
+  const isReferenceType = (key: string) => {
+    return key === referenceType || key.replace(/^Q\./, "") === referenceType;
+  };
+
+  const references = (value: MaybeParsed | MaybeParsed[], targetKey: string) => {
+    const texts = Array.isArray(value) ? value.map(getText) : [getText(value)];
+    const escaped = targetKey.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const regex = new RegExp(`\\b${escaped}\\b`);
+    return texts.some((text) => regex.test(text));
+  };
+
+  const visit = (key: string) => {
+    if (visited.has(key)) {
+      return;
+    }
+    if (visiting.has(key)) {
+      // Cycle detected, break recursion
+      return;
     }
 
-    if (Array.isArray(computedTypeB)) {
-      const textsB = computedTypeB.map(getText);
+    visiting.add(key);
 
-      // If the type is included in the other type, it should come first
-      return textsB.some((textB) => textB.includes(typeNameA)) ? -1 : 1;
-    } else {
-      const textB = getText(computedTypeB);
+    const value = computedTypes[key];
+    for (const otherKey of Object.keys(computedTypes)) {
+      if (otherKey === key || isReferenceType(otherKey)) {
+        continue;
+      }
 
-      // Idem here
-      return textB.includes(typeNameA) ? -1 : 1;
+      if (references(value, otherKey)) {
+        visit(otherKey);
+      }
     }
-  });
+
+    visiting.delete(key);
+    visited.add(key);
+    sorted.push([key, value]);
+  };
+
+  // 1. Visit all non-reference types first (standalone and their dependencies)
+  for (const key of Object.keys(computedTypes)) {
+    if (!isReferenceType(key)) {
+      visit(key);
+    }
+  }
+
+  // 2. Finally, visit the reference type itself
+  for (const key of Object.keys(computedTypes)) {
+    if (isReferenceType(key)) {
+      visit(key);
+    }
+  }
+
+  return sorted;
 }
 
 /**
