@@ -54,6 +54,14 @@ export async function resolvePropertyType(
     }
 
     if (elementRawAnnotation) {
+      const utilityType = await tryResolveUtilityTypes(elementRawAnnotation, contextNode);
+      if (utilityType) {
+        return {
+          type: utilityType.type,
+          flags: ParsedPropertyFlags.ARRAY | utilityType.flag,
+        };
+      }
+
       const preserved = await tryPreserveAnnotation(elementRawAnnotation, contextNode);
 
       if (preserved) {
@@ -128,6 +136,14 @@ export async function resolvePropertyType(
   // resolving to a 1000+ member union, or HTMLAnchorAttributes["target"] resolving
   // to "_self" | "_blank" | "_parent" | "_top" | (string & {}))
   if (rawAnnotation) {
+    const utilityType = await tryResolveUtilityTypes(rawAnnotation, contextNode);
+    if (utilityType) {
+      return {
+        type: utilityType.type,
+        flags: utilityType.flag,
+      };
+    }
+
     const preserved = await tryPreserveAnnotation(rawAnnotation, contextNode);
     if (preserved) {
       return {
@@ -260,7 +276,7 @@ async function resolveUnionType(
       }
 
       if (Node.isTemplateLiteralTypeNode(typeNode)) {
-        const resolvedText = typeNode.getText();
+        const resolvedText = typeNode.getText({ includeJsDocComments: false });
         const computedTypes = {
           [aliasName]: await parseType(resolvedText),
         };
@@ -268,7 +284,7 @@ async function resolveUnionType(
         const subRefs: string[] = [];
         typeNode.forEachDescendant((node) => {
           if (Node.isTypeReference(node)) {
-            subRefs.push(node.getText());
+            subRefs.push(node.getText({ includeJsDocComments: false }));
           }
         });
 
@@ -283,7 +299,9 @@ async function resolveUnionType(
       }
 
       if (Node.isUnionTypeNode(typeNode)) {
-        rawMembersText = typeNode.getTypeNodes().map((node) => node.getText());
+        rawMembersText = typeNode
+          .getTypeNodes()
+          .map((node) => node.getText({ includeJsDocComments: false }));
       } else {
         rawMembersText = unionTypes.map((unionType) => extractTypeText(unionType, contextNode));
       }
@@ -355,7 +373,7 @@ async function resolveTypeAliasMembers(typeName: string, contextNode: Node) {
 
     if (aliasType.isUnion()) {
       if (Node.isTemplateLiteralTypeNode(typeNode)) {
-        const resolvedText = typeNode.getText();
+        const resolvedText = typeNode.getText({ includeJsDocComments: false });
         const computedTypes = {
           [typeName]: await parseType(resolvedText),
         };
@@ -363,7 +381,7 @@ async function resolveTypeAliasMembers(typeName: string, contextNode: Node) {
         const subRefs: string[] = [];
         typeNode.forEachDescendant((node) => {
           if (Node.isTypeReference(node)) {
-            subRefs.push(node.getText());
+            subRefs.push(node.getText({ includeJsDocComments: false }));
           }
         });
 
@@ -379,7 +397,9 @@ async function resolveTypeAliasMembers(typeName: string, contextNode: Node) {
 
       let rawMembersText: string[];
       if (Node.isUnionTypeNode(typeNode)) {
-        rawMembersText = typeNode.getTypeNodes().map((node) => node.getText());
+        rawMembersText = typeNode
+          .getTypeNodes()
+          .map((node) => node.getText({ includeJsDocComments: false }));
       } else {
         rawMembersText = aliasType
           .getUnionTypes()
@@ -472,4 +492,85 @@ function resolveSnippetParams(typeText: string) {
   }
 
   return match[1].trim();
+}
+
+/**
+ * Resolves typescript utility types (Omit, Exclude, Pick, Extract)
+ * by parsing their inner target and parameters separately.
+ */
+async function tryResolveUtilityTypes(
+  rawAnnotation: string | undefined,
+  contextNode: Node
+): Promise<{ type: [MaybeParsed, MaybeParsed]; flag: ParsedPropertyFlags } | undefined> {
+  if (!rawAnnotation) {
+    return undefined;
+  }
+
+  const omitMatch = rawAnnotation.match(/^Omit\s*<\s*(.+?)\s*,\s*(.+?)\s*>$/s);
+  if (omitMatch) {
+    const targetType = omitMatch[1].trim();
+    const keys = omitMatch[2].trim();
+    const parsedTarget = await parseType(
+      targetType,
+      await computeAllReferences(targetType, contextNode)
+    );
+    const parsedKeys = await parseType(keys, await computeAllReferences(keys, contextNode));
+    return {
+      type: [parsedTarget, parsedKeys],
+      flag: ParsedPropertyFlags.OMIT,
+    };
+  }
+
+  const excludeMatch = rawAnnotation.match(/^Exclude\s*<\s*(.+?)\s*,\s*(.+?)\s*>$/s);
+  if (excludeMatch) {
+    const targetType = excludeMatch[1].trim();
+    const excluded = excludeMatch[2].trim();
+    const parsedTarget = await parseType(
+      targetType,
+      await computeAllReferences(targetType, contextNode)
+    );
+    const parsedExcluded = await parseType(
+      excluded,
+      await computeAllReferences(excluded, contextNode)
+    );
+    return {
+      type: [parsedTarget, parsedExcluded],
+      flag: ParsedPropertyFlags.EXCLUDE,
+    };
+  }
+
+  const pickMatch = rawAnnotation.match(/^Pick\s*<\s*(.+?)\s*,\s*(.+?)\s*>$/s);
+  if (pickMatch) {
+    const targetType = pickMatch[1].trim();
+    const keys = pickMatch[2].trim();
+    const parsedTarget = await parseType(
+      targetType,
+      await computeAllReferences(targetType, contextNode)
+    );
+    const parsedKeys = await parseType(keys, await computeAllReferences(keys, contextNode));
+    return {
+      type: [parsedTarget, parsedKeys],
+      flag: ParsedPropertyFlags.PICK,
+    };
+  }
+
+  const extractMatch = rawAnnotation.match(/^Extract\s*<\s*(.+?)\s*,\s*(.+?)\s*>$/s);
+  if (extractMatch) {
+    const targetType = extractMatch[1].trim();
+    const extracted = extractMatch[2].trim();
+    const parsedTarget = await parseType(
+      targetType,
+      await computeAllReferences(targetType, contextNode)
+    );
+    const parsedExtracted = await parseType(
+      extracted,
+      await computeAllReferences(extracted, contextNode)
+    );
+    return {
+      type: [parsedTarget, parsedExtracted],
+      flag: ParsedPropertyFlags.EXTRACT,
+    };
+  }
+
+  return undefined;
 }

@@ -81,6 +81,22 @@ export const enum ParsedPropertyFlags {
    * Whether the property is bindable (e.g. `v-model` on the component)
    */
   BINDABLE = 8,
+  /**
+   * Whether the property is an `Omit<T, K>` utility type
+   */
+  OMIT = 16,
+  /**
+   * Whether the property is an `Exclude<T, U>` utility type
+   */
+  EXCLUDE = 32,
+  /**
+   * Whether the property is a `Pick<T, K>` utility type
+   */
+  PICK = 64,
+  /**
+   * Whether the property is an `Extract<T, U>` utility type
+   */
+  EXTRACT = 128,
 }
 
 /**

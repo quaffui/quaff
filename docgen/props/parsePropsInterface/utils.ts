@@ -1,4 +1,4 @@
-import { Node } from "ts-morph";
+import { Node, SyntaxKind } from "ts-morph";
 import { isImportedFromExternal } from "./checker";
 import { BUILTIN_TYPES, MaybeParsed, type ParsedType, PRESERVE_TYPE_NAMES } from "./defs";
 import { extractInternalTypeReferenceSymbol, extractTypeText } from "./extractor";
@@ -143,13 +143,13 @@ export async function computeAllReferences(
       }
 
       if (Node.isTemplateLiteralTypeNode(typeNode)) {
-        const text = typeNode.getText();
+        const text = typeNode.getText({ includeJsDocComments: false });
         result[ref] = await parseType(text);
 
         const subRefs: string[] = [];
         typeNode.forEachDescendant((node) => {
           if (Node.isTypeReference(node)) {
-            subRefs.push(node.getText());
+            subRefs.push(node.getText({ includeJsDocComments: false }));
           }
         });
 
@@ -163,7 +163,9 @@ export async function computeAllReferences(
       }
 
       if (Node.isUnionTypeNode(typeNode)) {
-        rawMembersText = typeNode.getTypeNodes().map((node) => node.getText());
+        rawMembersText = typeNode
+          .getTypeNodes()
+          .map((node) => node.getText({ includeJsDocComments: false }));
       } else {
         rawMembersText = refType
           .getUnionTypes()
@@ -177,6 +179,25 @@ export async function computeAllReferences(
         const text = getText(member);
         Object.assign(result, await computeAllReferences(text, decl, visited));
       }
+    } else if (
+      Node.isInterfaceDeclaration(decl) ||
+      Node.isTypeAliasDeclaration(decl) ||
+      Node.isEnumDeclaration(decl) ||
+      Node.isClassDeclaration(decl)
+    ) {
+      const name = decl.getName() ?? ref;
+
+      removeChildrenComments(decl);
+
+      const parsed: ParsedType = {
+        text: name,
+        typeDefinition: decl.getText({ includeJsDocComments: false }).replaceAll("\n\n", "\n"),
+      };
+      result[ref] = parsed;
+      Object.assign(
+        result,
+        await computeAllReferences(decl.getText({ includeJsDocComments: false }), decl, visited)
+      );
     } else {
       const refText = extractTypeText(refType, contextNode);
       result[ref] = await parseType(refText);
@@ -259,5 +280,19 @@ export function sortComputedTypes(
  * Gets the text from a parsed type or a string.
  */
 export function getText(type: MaybeParsed) {
-  return typeof type === "string" ? type : type.text;
+  return typeof type === "string"
+    ? type
+    : type.text.endsWith("Props")
+      ? type.typeDefinition || type.text
+      : type.text;
+}
+
+function removeChildrenComments(node: Node) {
+  node.forEachChild((child) => {
+    const comments = child.getChildrenOfKind(SyntaxKind.JSDoc);
+
+    if (comments.length) {
+      comments.forEach((comment) => comment.remove());
+    }
+  });
 }

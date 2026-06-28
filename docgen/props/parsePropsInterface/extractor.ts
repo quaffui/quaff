@@ -169,7 +169,7 @@ export function extractRawTypeAnnotation(decl: Node | undefined): string | undef
     return undefined;
   }
 
-  return typeNode.getText();
+  return typeNode.getText({ includeJsDocComments: false });
 }
 
 /** Looks up an internal type reference (alias, interface, enum, namespace dot-path) by name and returns its Symbol. */
@@ -282,7 +282,9 @@ export function extractTypeDefinition(maybeParsed: ParsedType, referenceType: st
 
     return isNamespaced
       ? `\texport type ${typeName.slice(2)} = ${toUse};`
-      : `type ${typeName} = ${toUse};`;
+      : toUse.startsWith("export")
+        ? toUse.slice(7) // remove the `export ` prefix
+        : `type ${typeName} = ${toUse};`;
   };
 
   const namespacedQ = [];
