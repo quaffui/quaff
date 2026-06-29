@@ -1,6 +1,6 @@
-import { Node } from "ts-morph";
+import { Node, SyntaxKind } from "ts-morph";
 import { isImportedFromExternal } from "./checker";
-import { type ParsedType, PRESERVE_TYPE_NAMES } from "./defs";
+import { BUILTIN_TYPES, MaybeParsed, type ParsedType, PRESERVE_TYPE_NAMES } from "./defs";
 import { extractInternalTypeReferenceSymbol, extractTypeText } from "./extractor";
 import { parseType } from "./parser";
 
@@ -111,6 +111,7 @@ export async function computeAllReferences(
     if (
       visited.has(ref) ||
       PRESERVE_TYPE_NAMES.has(ref) ||
+      BUILTIN_TYPES.has(ref) ||
       isImportedFromExternal(ref, contextNode)
     ) {
       continue;
@@ -142,23 +143,29 @@ export async function computeAllReferences(
       }
 
       if (Node.isTemplateLiteralTypeNode(typeNode)) {
-        const text = typeNode.getText();
+        const text = typeNode.getText({ includeJsDocComments: false });
         result[ref] = await parseType(text);
 
+        const subRefs: string[] = [];
         typeNode.forEachDescendant((node) => {
           if (Node.isTypeReference(node)) {
-            const subRef = node.getType().getText();
-            if (!visited.has(subRef)) {
-              Object.assign(result, computeAllReferences(subRef, contextNode, visited));
-            }
+            subRefs.push(node.getText({ includeJsDocComments: false }));
           }
         });
+
+        for (const subRef of subRefs) {
+          if (!visited.has(subRef)) {
+            Object.assign(result, await computeAllReferences(subRef, decl, visited));
+          }
+        }
 
         continue;
       }
 
       if (Node.isUnionTypeNode(typeNode)) {
-        rawMembersText = typeNode.getTypeNodes().map((node) => node.getText());
+        rawMembersText = typeNode
+          .getTypeNodes()
+          .map((node) => node.getText({ includeJsDocComments: false }));
       } else {
         rawMembersText = refType
           .getUnionTypes()
@@ -169,13 +176,32 @@ export async function computeAllReferences(
       result[ref] = unionMembers;
 
       for (const member of unionMembers) {
-        const text = typeof member === "string" ? member : member.text;
-        Object.assign(result, computeAllReferences(text, contextNode, visited));
+        const text = getText(member);
+        Object.assign(result, await computeAllReferences(text, decl, visited));
       }
+    } else if (
+      Node.isInterfaceDeclaration(decl) ||
+      Node.isTypeAliasDeclaration(decl) ||
+      Node.isEnumDeclaration(decl) ||
+      Node.isClassDeclaration(decl)
+    ) {
+      const name = decl.getName() ?? ref;
+
+      removeChildrenComments(decl);
+
+      const parsed: ParsedType = {
+        text: name,
+        typeDefinition: decl.getText({ includeJsDocComments: false }).replaceAll("\n\n", "\n"),
+      };
+      result[ref] = parsed;
+      Object.assign(
+        result,
+        await computeAllReferences(decl.getText({ includeJsDocComments: false }), decl, visited)
+      );
     } else {
       const refText = extractTypeText(refType, contextNode);
       result[ref] = await parseType(refText);
-      Object.assign(result, computeAllReferences(refText, contextNode, visited));
+      Object.assign(result, await computeAllReferences(refText, decl, visited));
     }
   }
 
@@ -191,29 +217,82 @@ export function sortComputedTypes(
   computedTypes: NonNullable<ParsedType["computedTypes"]>,
   referenceType: string
 ) {
-  return Object.entries(computedTypes).toSorted(([typeNameA], [typeNameB, computedTypeB]) => {
-    typeNameA = typeNameA.replace("Q.", "");
-    typeNameB = typeNameB.replace("Q.", "");
+  const sorted: [string, MaybeParsed | MaybeParsed[]][] = [];
+  const visited = new Set<string>();
+  const visiting = new Set<string>();
 
-    if (typeNameA === referenceType) {
-      // We want the specific type to come last
-      // so we can resolve nested types first
-      return 1;
-    } else if (typeNameB === referenceType) {
-      // Idem here
-      return -1;
+  const isReferenceType = (key: string) => {
+    return key === referenceType || key.replace(/^Q\./, "") === referenceType;
+  };
+
+  const references = (value: MaybeParsed | MaybeParsed[], targetKey: string) => {
+    const texts = Array.isArray(value) ? value.map(getText) : [getText(value)];
+    const escaped = targetKey.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const regex = new RegExp(`\\b${escaped}\\b`);
+    return texts.some((text) => regex.test(text));
+  };
+
+  const visit = (key: string) => {
+    if (visited.has(key)) {
+      return;
+    }
+    if (visiting.has(key)) {
+      // Cycle detected, break recursion
+      return;
     }
 
-    if (Array.isArray(computedTypeB)) {
-      const textsB = computedTypeB.map((t) => (typeof t === "string" ? t : t.text));
+    visiting.add(key);
 
-      // If the type is included in the other type, it should come first
-      return textsB.some((textB) => textB.includes(typeNameA)) ? -1 : 1;
-    } else {
-      const textB = typeof computedTypeB === "string" ? computedTypeB : computedTypeB.text;
+    const value = computedTypes[key];
+    for (const otherKey of Object.keys(computedTypes)) {
+      if (otherKey === key || isReferenceType(otherKey)) {
+        continue;
+      }
 
-      // Idem here
-      return textB.includes(typeNameA) ? -1 : 1;
+      if (references(value, otherKey)) {
+        visit(otherKey);
+      }
+    }
+
+    visiting.delete(key);
+    visited.add(key);
+    sorted.push([key, value]);
+  };
+
+  // 1. Visit all non-reference types first (standalone and their dependencies)
+  for (const key of Object.keys(computedTypes)) {
+    if (!isReferenceType(key)) {
+      visit(key);
+    }
+  }
+
+  // 2. Finally, visit the reference type itself
+  for (const key of Object.keys(computedTypes)) {
+    if (isReferenceType(key)) {
+      visit(key);
+    }
+  }
+
+  return sorted;
+}
+
+/**
+ * Gets the text from a parsed type or a string.
+ */
+export function getText(type: MaybeParsed) {
+  return typeof type === "string"
+    ? type
+    : type.text.endsWith("Props")
+      ? type.typeDefinition || type.text
+      : type.text;
+}
+
+function removeChildrenComments(node: Node) {
+  node.forEachChild((child) => {
+    const comments = child.getChildrenOfKind(SyntaxKind.JSDoc);
+
+    if (comments.length) {
+      comments.forEach((comment) => comment.remove());
     }
   });
 }

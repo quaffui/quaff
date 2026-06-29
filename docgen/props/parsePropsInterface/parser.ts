@@ -13,7 +13,7 @@ import {
   extractDomConstraint,
   extractExtendedInternalProperties,
   extractGenerics,
-  extractTypeDefintion,
+  extractTypeDefinition,
   extractTypeSrc,
 } from "./extractor";
 import { isPropertyBindable, isPropertyOptional } from "./checker";
@@ -32,12 +32,15 @@ export async function parseInterface(
 
   const genericNames = new Set(generics.map((generic) => generic.name));
 
-  const properties: ParsedProperty[] = [];
+  // Using a Map to automatically handle duplicate property names
+  // (later declarations override earlier ones, matching TS behavior).
+  const propertyMap = new Map<string, ParsedProperty>();
 
   // 1. Collect properties from extended internal interfaces
   const extendedProps = extractExtendedInternalProperties(interfaceDecl);
   for (const prop of extendedProps) {
-    properties.push(await parseProperty(prop, interfaceDecl, genericNames));
+    const parsed = await parseProperty(prop, interfaceDecl, genericNames);
+    propertyMap.set(parsed.name, parsed);
   }
 
   // 2. Collect the interface's own directly declared properties
@@ -46,9 +49,12 @@ export async function parseInterface(
     const proSymbol = prop.getSymbol();
 
     if (proSymbol) {
-      properties.push(await parseProperty(proSymbol, interfaceDecl, genericNames));
+      const parsed = await parseProperty(proSymbol, interfaceDecl, genericNames);
+      propertyMap.set(parsed.name, parsed);
     }
   }
+
+  const properties = Array.from(propertyMap.values());
 
   properties.sort((a, b) => a.name.localeCompare(b.name));
 
@@ -87,7 +93,7 @@ export async function parseType(
     result.computedTypes = maybeComputedTypes;
   }
 
-  const extractedDefinition = extractTypeDefintion(result, typeText);
+  const extractedDefinition = extractTypeDefinition(result, typeText);
 
   if (extractedDefinition) {
     const formatted = await format(extractedDefinition, { parser: "typescript" });

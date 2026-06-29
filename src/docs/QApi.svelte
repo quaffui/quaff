@@ -292,6 +292,22 @@
     return content;
   }
 
+  function getUtilityName(flags: number): string | null {
+    if (flags & ParsedPropertyFlags.OMIT) {
+      return "Omit";
+    }
+    if (flags & ParsedPropertyFlags.EXCLUDE) {
+      return "Exclude";
+    }
+    if (flags & ParsedPropertyFlags.PICK) {
+      return "Pick";
+    }
+    if (flags & ParsedPropertyFlags.EXTRACT) {
+      return "Extract";
+    }
+    return null;
+  }
+
   function prepareHeaderForProp(prop: ParsedProperty) {
     let content = "<pre>";
 
@@ -301,11 +317,41 @@
 
     content += inSpan(": ", { typeStyle: true });
 
-    if (hasFlag(prop, "array") && Array.isArray(prop.type)) {
+    const utilityName = getUtilityName(prop.flags);
+    const isUnion = Array.isArray(prop.type) && !utilityName;
+
+    if (hasFlag(prop, "array") && isUnion) {
       content += inSpan("(", { typeStyle: true });
     }
 
-    if (Array.isArray(prop.type)) {
+    if (utilityName && Array.isArray(prop.type) && prop.type.length === 2) {
+      const [target, param] = prop.type;
+
+      content += inSpan(utilityName, { typeStyle: true });
+      content += inSpan("<", { typeStyle: true });
+
+      const targetIsObject = typeof target !== "string";
+      const targetText = targetIsObject ? target.text : target;
+      content += inSpan(escape(targetText), {
+        typeStyle: true,
+        isClickable: targetIsObject,
+        typeSrc: targetIsObject ? target.typeSrc : "",
+        typeName: targetText,
+      });
+
+      content += inSpan(", ", { typeStyle: true });
+
+      const paramIsObject = typeof param !== "string";
+      const paramText = paramIsObject ? param.text : param;
+      content += inSpan(escape(paramText), {
+        typeStyle: true,
+        isClickable: paramIsObject,
+        typeSrc: paramIsObject ? param.typeSrc : "",
+        typeName: paramText,
+      });
+
+      content += inSpan(">", { typeStyle: true });
+    } else if (Array.isArray(prop.type)) {
       content += prop.type
         .map((type) => {
           const isObject = typeof type !== "string";
@@ -333,7 +379,7 @@
     }
 
     if (hasFlag(prop, "array")) {
-      if (Array.isArray(prop.type)) {
+      if (isUnion) {
         content += inSpan(")", { typeStyle: true });
       }
 
