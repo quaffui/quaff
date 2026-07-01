@@ -4,6 +4,7 @@ import {
   QLayoutDocsSnippets,
   QLayoutDocsDomAttributesConstraint,
   QLayoutDocsGenerics,
+  QLayoutDocsTypeDependencies,
 } from "./docs.props";
 
 export const QLayoutDocs: QComponentDocs = {
@@ -17,5 +18,6 @@ export const QLayoutDocs: QComponentDocs = {
     snippets: QLayoutDocsSnippets,
     methods: [],
     events: [],
+    typeDependencies: QLayoutDocsTypeDependencies,
   },
 };

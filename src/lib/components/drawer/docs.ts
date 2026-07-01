@@ -4,6 +4,7 @@ import {
   QDrawerDocsSnippets,
   QDrawerDocsDomAttributesConstraint,
   QDrawerDocsGenerics,
+  QDrawerDocsTypeDependencies,
 } from "./docs.props";
 
 export const QDrawerDocs: QComponentDocs = {
@@ -16,5 +17,6 @@ export const QDrawerDocs: QComponentDocs = {
     snippets: QDrawerDocsSnippets,
     methods: [],
     events: [],
+    typeDependencies: QDrawerDocsTypeDependencies,
   },
 };

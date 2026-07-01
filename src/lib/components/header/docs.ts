@@ -4,6 +4,7 @@ import {
   QHeaderDocsSnippets,
   QHeaderDocsDomAttributesConstraint,
   QHeaderDocsGenerics,
+  QHeaderDocsTypeDependencies,
 } from "./docs.props";
 
 export const QHeaderDocs: QComponentDocs = {
@@ -17,5 +18,6 @@ export const QHeaderDocs: QComponentDocs = {
     snippets: QHeaderDocsSnippets,
     methods: [],
     events: [],
+    typeDependencies: QHeaderDocsTypeDependencies,
   },
 };

@@ -4,6 +4,7 @@ import {
   QSelectDocsSnippets,
   QSelectDocsDomAttributesConstraint,
   QSelectDocsGenerics,
+  QSelectDocsTypeDependencies,
 } from "./docs.props";
 
 export const QSelectDocs: QComponentDocs = {
@@ -23,5 +24,6 @@ export const QSelectDocs: QComponentDocs = {
         description: "Emitted when the value of the select component changes.",
       },
     ],
+    typeDependencies: QSelectDocsTypeDependencies,
   },
 };

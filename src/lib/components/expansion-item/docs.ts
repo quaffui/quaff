@@ -4,6 +4,7 @@ import {
   QExpansionItemDocsSnippets,
   QExpansionItemDocsDomAttributesConstraint,
   QExpansionItemDocsGenerics,
+  QExpansionItemDocsTypeDependencies,
 } from "./docs.props";
 
 export const QExpansionItemDocs: QComponentDocs = {
@@ -23,5 +24,6 @@ export const QExpansionItemDocs: QComponentDocs = {
         description: "Emitted when the user clicks on the expansion item.",
       },
     ],
+    typeDependencies: QExpansionItemDocsTypeDependencies,
   },
 };

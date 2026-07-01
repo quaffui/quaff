@@ -12,6 +12,9 @@ import {
   QListDocsSnippets,
   QListDocsDomAttributesConstraint,
   QListDocsGenerics,
+  QItemDocsTypeDependencies,
+  QItemSectionDocsTypeDependencies,
+  QListDocsTypeDependencies,
 } from "./docs.props";
 
 export const QListDocs: QComponentDocs = {
@@ -25,6 +28,7 @@ export const QListDocs: QComponentDocs = {
     snippets: QListDocsSnippets,
     methods: [],
     events: [],
+    typeDependencies: QListDocsTypeDependencies,
   },
 };
 
@@ -39,6 +43,7 @@ export const QItemDocs: QComponentDocs = {
     snippets: QItemDocsSnippets,
     methods: [],
     events: [],
+    typeDependencies: QItemDocsTypeDependencies,
   },
 };
 
@@ -53,5 +58,6 @@ export const QItemSectionDocs: QComponentDocs = {
     snippets: QItemSectionDocsSnippets,
     methods: [],
     events: [],
+    typeDependencies: QItemSectionDocsTypeDependencies,
   },
 };

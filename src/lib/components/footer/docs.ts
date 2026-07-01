@@ -4,6 +4,7 @@ import {
   QFooterDocsSnippets,
   QFooterDocsDomAttributesConstraint,
   QFooterDocsGenerics,
+  QFooterDocsTypeDependencies,
 } from "./docs.props";
 
 export const QFooterDocs: QComponentDocs = {
@@ -17,5 +18,6 @@ export const QFooterDocs: QComponentDocs = {
     snippets: QFooterDocsSnippets,
     methods: [],
     events: [],
+    typeDependencies: QFooterDocsTypeDependencies,
   },
 };

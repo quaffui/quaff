@@ -12,6 +12,9 @@ import {
   QCardSectionDocsSnippets,
   QCardSectionDocsGenerics,
   QCardSectionDocsDomAttributesConstraint,
+  QCardActionsDocsTypeDependencies,
+  QCardDocsTypeDependencies,
+  QCardSectionDocsTypeDependencies,
 } from "./docs.props";
 
 export const QCardDocs: QComponentDocs = {
@@ -25,6 +28,7 @@ export const QCardDocs: QComponentDocs = {
     snippets: QCardDocsSnippets,
     methods: [],
     events: [],
+    typeDependencies: QCardActionsDocsTypeDependencies,
   },
 };
 
@@ -38,6 +42,7 @@ export const QCardSectionDocs: QComponentDocs = {
     snippets: QCardSectionDocsSnippets,
     methods: [],
     events: [],
+    typeDependencies: QCardDocsTypeDependencies,
   },
 };
 
@@ -51,5 +56,6 @@ export const QCardActionsDocs: QComponentDocs = {
     snippets: QCardActionsDocsSnippets,
     methods: [],
     events: [],
+    typeDependencies: QCardActionsDocsTypeDependencies,
   },
 };

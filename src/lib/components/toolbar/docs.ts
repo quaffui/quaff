@@ -8,6 +8,8 @@ import {
   QToolbarTitleDocsSnippets,
   QToolbarTitleDocsDomAttributesConstraint,
   QToolbarTitleDocsGenerics,
+  QToolbarDocsTypeDependencies,
+  QToolbarTitleDocsTypeDependencies,
 } from "./docs.props";
 
 export const QToolbarDocs: QComponentDocs = {
@@ -21,6 +23,7 @@ export const QToolbarDocs: QComponentDocs = {
     snippets: QToolbarDocsSnippets,
     methods: [],
     events: [],
+    typeDependencies: QToolbarDocsTypeDependencies,
   },
 };
 
@@ -35,5 +38,6 @@ export const QToolbarTitleDocs: QComponentDocs = {
     snippets: QToolbarTitleDocsSnippets,
     methods: [],
     events: [],
+    typeDependencies: QToolbarTitleDocsTypeDependencies,
   },
 };
