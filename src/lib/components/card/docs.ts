@@ -28,7 +28,7 @@ export const QCardDocs: QComponentDocs = {
     snippets: QCardDocsSnippets,
     methods: [],
     events: [],
-    typeDependencies: QCardActionsDocsTypeDependencies,
+    typeDependencies: QCardDocsTypeDependencies,
   },
 };
 
@@ -42,7 +42,7 @@ export const QCardSectionDocs: QComponentDocs = {
     snippets: QCardSectionDocsSnippets,
     methods: [],
     events: [],
-    typeDependencies: QCardDocsTypeDependencies,
+    typeDependencies: QCardSectionDocsTypeDependencies,
   },
 };
 
