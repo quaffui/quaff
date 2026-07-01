@@ -4,6 +4,7 @@ import {
   QBtnDocsGenerics,
   QBtnDocsProps,
   QBtnDocsSnippets,
+  QBtnDocsTypeDependencies,
 } from "./docs.props";
 
 export const QBtnDocs: QComponentDocs = {
@@ -23,5 +24,6 @@ export const QBtnDocs: QComponentDocs = {
         description: "Emitted when the user clicks on the button.",
       },
     ],
+    typeDependencies: QBtnDocsTypeDependencies,
   },
 };

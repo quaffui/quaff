@@ -4,6 +4,7 @@ import {
   QRailbarDocsSnippets,
   QRailbarDocsDomAttributesConstraint,
   QRailbarDocsGenerics,
+  QRailbarDocsTypeDependencies,
 } from "./docs.props";
 
 export const QRailbarDocs: QComponentDocs = {
@@ -17,5 +18,6 @@ export const QRailbarDocs: QComponentDocs = {
     snippets: QRailbarDocsSnippets,
     methods: [],
     events: [],
+    typeDependencies: QRailbarDocsTypeDependencies,
   },
 };

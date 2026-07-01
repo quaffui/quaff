@@ -4,6 +4,7 @@ import {
   QCheckboxDocsSnippets,
   QCheckboxDocsDomAttributesConstraint,
   QCheckboxDocsGenerics,
+  QCheckboxDocsTypeDependencies,
 } from "./docs.props";
 
 export const QCheckboxDocs: QComponentDocs = {
@@ -22,5 +23,6 @@ export const QCheckboxDocs: QComponentDocs = {
         description: "Emitted when the checkbox is checked or unchecked.",
       },
     ],
+    typeDependencies: QCheckboxDocsTypeDependencies,
   },
 };

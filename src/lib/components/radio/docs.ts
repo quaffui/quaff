@@ -4,6 +4,7 @@ import {
   QRadioDocsSnippets,
   QRadioDocsDomAttributesConstraint,
   QRadioDocsGenerics,
+  QRadioDocsTypeDependencies,
 } from "./docs.props";
 
 export const QRadioDocs: QComponentDocs = {
@@ -22,5 +23,6 @@ export const QRadioDocs: QComponentDocs = {
         description: "Emitted when the radio button is selected.",
       },
     ],
+    typeDependencies: QRadioDocsTypeDependencies,
   },
 };

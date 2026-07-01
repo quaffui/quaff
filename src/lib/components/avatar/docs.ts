@@ -4,6 +4,7 @@ import {
   QAvatarDocsSnippets,
   QAvatarDocsDomAttributesConstraint,
   QAvatarDocsGenerics,
+  QAvatarDocsTypeDependencies,
 } from "./docs.props";
 
 export const QAvatarDocs: QComponentDocs = {
@@ -23,5 +24,6 @@ export const QAvatarDocs: QComponentDocs = {
         description: "Emitted when the user clicks on the avatar.",
       },
     ],
+    typeDependencies: QAvatarDocsTypeDependencies,
   },
 };

@@ -8,6 +8,8 @@ import {
   QSeparatorHorizontalDocsSnippets,
   QSeparatorHorizontalDocsDomAttributesConstraint,
   QSeparatorHorizontalDocsGenerics,
+  QSeparatorVerticalDocsTypeDependencies,
+  QSeparatorHorizontalDocsTypeDependencies,
 } from "./docs.props";
 
 export const QSeparatorVerticalDocs: QComponentDocs = {
@@ -21,6 +23,7 @@ export const QSeparatorVerticalDocs: QComponentDocs = {
     snippets: QSeparatorVerticalDocsSnippets,
     methods: [],
     events: [],
+    typeDependencies: QSeparatorVerticalDocsTypeDependencies,
   },
 };
 
@@ -35,5 +38,6 @@ export const QSeparatorHorizontalDocs: QComponentDocs = {
     snippets: QSeparatorHorizontalDocsSnippets,
     methods: [],
     events: [],
+    typeDependencies: QSeparatorHorizontalDocsTypeDependencies,
   },
 };

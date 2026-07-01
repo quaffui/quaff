@@ -4,6 +4,7 @@ import {
   QTooltipDocsSnippets,
   QTooltipDocsDomAttributesConstraint,
   QTooltipDocsGenerics,
+  QTooltipDocsTypeDependencies,
 } from "./docs.props";
 
 export const QTooltipDocs: QComponentDocs = {
@@ -17,5 +18,6 @@ export const QTooltipDocs: QComponentDocs = {
     snippets: QTooltipDocsSnippets,
     methods: [],
     events: [],
+    typeDependencies: QTooltipDocsTypeDependencies,
   },
 };

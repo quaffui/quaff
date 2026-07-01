@@ -4,6 +4,7 @@ import {
   QMenuDocsSnippets,
   QMenuDocsDomAttributesConstraint,
   QMenuDocsGenerics,
+  QMenuDocsTypeDependencies,
 } from "./docs.props";
 
 export const QMenuDocs: QComponentDocs = {
@@ -33,5 +34,6 @@ export const QMenuDocs: QComponentDocs = {
       },
     ],
     events: [],
+    typeDependencies: QMenuDocsTypeDependencies,
   },
 };

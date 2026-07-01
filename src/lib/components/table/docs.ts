@@ -4,6 +4,7 @@ import {
   QTableDocsSnippets,
   QTableDocsDomAttributesConstraint,
   QTableDocsGenerics,
+  QTableDocsTypeDependencies,
 } from "./docs.props";
 
 export const QTableDocs: QComponentDocs = {
@@ -16,5 +17,6 @@ export const QTableDocs: QComponentDocs = {
     snippets: QTableDocsSnippets,
     methods: [],
     events: [],
+    typeDependencies: QTableDocsTypeDependencies,
   },
 };

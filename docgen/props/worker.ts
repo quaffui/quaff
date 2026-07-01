@@ -21,7 +21,7 @@ parentPort.on("message", async (workerData) => {
     const parsedInterface = await parseInterfaces(propsFilePath);
 
     let contents =
-      'import { MaybeParsed, ParsedGeneric, ParsedProperty } from "$docgen/props/parsePropsInterface/defs"\n\n';
+      'import { ParsedGeneric, ParsedProperty, ParsedType } from "$docgen/props/parsePropsInterface/defs"\n\n';
 
     Object.keys(parsedInterface).forEach((interfaceName) => {
       const parsedData = parsedInterface[interfaceName];
@@ -39,7 +39,7 @@ parentPort.on("message", async (workerData) => {
 
       const name = interfaceName.replace(/Props$/, "Docs");
 
-      contents += `export const ${name}DomAttributesConstraint: MaybeParsed | undefined = ${JSON.stringify(
+      contents += `export const ${name}DomAttributesConstraint: ParsedType | undefined = ${JSON.stringify(
         parsedData.domAttributesConstraint,
         null,
         2
@@ -59,6 +59,12 @@ parentPort.on("message", async (workerData) => {
 
       contents += `export const ${name}Snippets: ParsedProperty[] = ${JSON.stringify(
         snippets,
+        null,
+        2
+      )};\n\n`;
+
+      contents += `export const ${name}TypeDependencies: Record<string, ParsedType | ParsedType[]> = ${JSON.stringify(
+        parsedData.typeDependencies,
         null,
         2
       )};\n\n`;

@@ -1,15 +1,16 @@
-import { MaybeParsed, ParsedGeneric, ParsedProperty } from "$docgen/props/parsePropsInterface/defs";
+import { ParsedGeneric, ParsedProperty, ParsedType } from "$docgen/props/parsePropsInterface/defs";
 
 export interface QComponentDocs {
   name: string;
   description: string;
   docs: {
     generics: ParsedGeneric[];
-    domAttributesConstraint: MaybeParsed | undefined;
+    domAttributesConstraint: ParsedType | undefined;
     props: ParsedProperty[];
     snippets: ParsedProperty[];
     methods: QComponentMethod[];
     events: QComponentEvent[];
+    typeDependencies: Record<string, ParsedType | ParsedType[]>;
   };
 }
 

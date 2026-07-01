@@ -1,11 +1,12 @@
-import { InterfaceDeclaration, type Node, type Symbol as MorphSymbol } from "ts-morph";
+import { InterfaceDeclaration, Node, type Symbol as MorphSymbol } from "ts-morph";
 import { format } from "prettier";
 import {
-  MaybeParsed,
+  BUILTIN_TYPES,
   ParsedInterface,
   ParsedProperty,
   ParsedPropertyFlags,
   ParsedType,
+  PRESERVE_TYPE_NAMES,
 } from "./defs";
 import {
   extractDefaultValue,
@@ -13,11 +14,17 @@ import {
   extractDomConstraint,
   extractExtendedInternalProperties,
   extractGenerics,
-  extractTypeDefinition,
+  extractInternalTypeReferenceSymbol,
   extractTypeSrc,
 } from "./extractor";
-import { isPropertyBindable, isPropertyOptional } from "./checker";
+import {
+  isImportedFromExternal,
+  isPropertyBindable,
+  isPropertyOptional,
+  isTypeAlias,
+} from "./checker";
 import { resolvePropertyType } from "./resolver";
+import { removeChildrenComments, splitUnionParts } from "./utils";
 
 /**
  * Parses a full interface declaration into a `ParsedInterface`.
@@ -27,8 +34,10 @@ export async function parseInterface(
   interfaceDecl: InterfaceDeclaration
 ): Promise<[string, ParsedInterface]> {
   const name = interfaceDecl.getName();
-  const generics = await extractGenerics(interfaceDecl);
-  const domAttributesConstraint = await extractDomConstraint(interfaceDecl);
+  const typeDependencies: Record<string, ParsedType | ParsedType[]> = {};
+
+  const generics = await extractGenerics(interfaceDecl, typeDependencies);
+  const domAttributesConstraint = await extractDomConstraint(interfaceDecl, typeDependencies);
 
   const genericNames = new Set(generics.map((generic) => generic.name));
 
@@ -39,7 +48,7 @@ export async function parseInterface(
   // 1. Collect properties from extended internal interfaces
   const extendedProps = extractExtendedInternalProperties(interfaceDecl);
   for (const prop of extendedProps) {
-    const parsed = await parseProperty(prop, interfaceDecl, genericNames);
+    const parsed = await parseProperty(prop, interfaceDecl, genericNames, typeDependencies);
     propertyMap.set(parsed.name, parsed);
   }
 
@@ -49,7 +58,7 @@ export async function parseInterface(
     const proSymbol = prop.getSymbol();
 
     if (proSymbol) {
-      const parsed = await parseProperty(proSymbol, interfaceDecl, genericNames);
+      const parsed = await parseProperty(proSymbol, interfaceDecl, genericNames, typeDependencies);
       propertyMap.set(parsed.name, parsed);
     }
   }
@@ -61,6 +70,7 @@ export async function parseInterface(
   const result: ParsedInterface = {
     generics,
     properties,
+    typeDependencies,
   };
 
   if (domAttributesConstraint) {
@@ -73,38 +83,160 @@ export async function parseInterface(
 /** Parses a given type, creating a `ParsedType` object from a string. */
 export async function parseType(
   typeText: string,
-  computedTypes: Record<string, MaybeParsed | MaybeParsed[]> = {}
-): Promise<MaybeParsed> {
+  typeDependencies: Record<string, ParsedType | ParsedType[]>,
+  contextNode: Node,
+  visited: Set<string> = new Set(),
+  resolvedSymbol?: MorphSymbol
+): Promise<ParsedType | ParsedType[]> {
+  const parts = splitUnionParts(typeText);
+
+  if (parts.length > 1) {
+    const resolvedParts = await Promise.all(
+      parts.map((part) => parseType(part, typeDependencies, contextNode, visited))
+    );
+    return resolvedParts.flat();
+  }
+
   const typeSrc = extractTypeSrc(typeText);
 
-  const result: ParsedType = { text: typeText, typeDefinition: typeText };
-
-  const maybeComputedTypes = Object.keys(computedTypes).length ? computedTypes : undefined;
-
-  if (!typeSrc && !maybeComputedTypes) {
-    return typeText;
-  }
-
   if (typeSrc) {
-    result.typeSrc = typeSrc;
+    const name = typeText;
+    const parsed: ParsedType = { name, typeSrc };
+    typeDependencies[name] = parsed;
+    return parsed;
   }
 
-  if (maybeComputedTypes) {
-    result.computedTypes = maybeComputedTypes;
+  if (PRESERVE_TYPE_NAMES.has(typeText) || BUILTIN_TYPES.has(typeText)) {
+    return { definition: typeText };
   }
 
-  const extractedDefinition = extractTypeDefinition(result, typeText);
-
-  if (extractedDefinition) {
-    const formatted = await format(extractedDefinition, { parser: "typescript" });
-    result.typeDefinition = formatted;
+  // Handle arrays explicitly
+  let baseTypeText = typeText;
+  let isArray = false;
+  if (typeText.endsWith("[]")) {
+    baseTypeText = typeText.slice(0, -2);
+    isArray = true;
+  } else {
+    const arrayMatch = typeText.match(/^Array<(.*)>$/);
+    if (arrayMatch) {
+      baseTypeText = arrayMatch[1].trim();
+      isArray = true;
+    }
   }
 
-  return result;
+  if (isArray) {
+    const baseSymbol = extractInternalTypeReferenceSymbol(baseTypeText, contextNode);
+    if (baseSymbol) {
+      await parseType(baseTypeText, typeDependencies, contextNode, visited, baseSymbol);
+      const parsed: ParsedType = {
+        name: typeText,
+        definition: `type ${typeText} = ${baseTypeText}[];`,
+        dependencies: [baseTypeText],
+      };
+      typeDependencies[typeText] = parsed;
+      return parsed;
+    }
+
+    const baseSrc = extractTypeSrc(baseTypeText);
+
+    if (baseSrc) {
+      await parseType(baseTypeText, typeDependencies, contextNode);
+      const parsed: ParsedType = {
+        name: typeText,
+        definition: `type ${typeText} = ${baseTypeText}[];`,
+        dependencies: [baseTypeText],
+      };
+      typeDependencies[typeText] = parsed;
+      return parsed;
+    }
+  }
+
+  const symbol =
+    resolvedSymbol ??
+    (isTypeAlias(typeText, contextNode) || extractInternalTypeReferenceSymbol(typeText, contextNode)
+      ? extractInternalTypeReferenceSymbol(typeText, contextNode)
+      : undefined);
+
+  if (symbol) {
+    const decls = symbol.getDeclarations();
+
+    decls.forEach((decl) => {
+      decl.replaceWithText(decl.getText().replace(/export\s+/, ""));
+    });
+
+    if (decls.length > 0) {
+      const decl = decls[0];
+      const filePath = decl.getSourceFile().getFilePath();
+      if (filePath.includes("node_modules")) {
+        return { definition: typeText };
+      }
+
+      if (typeDependencies[typeText]) {
+        return typeDependencies[typeText];
+      }
+      if (visited.has(typeText)) {
+        return { name: typeText, definition: `type ${typeText} = any;`, dependencies: [] };
+      }
+
+      visited.add(typeText);
+      removeChildrenComments(decl);
+
+      let definition: string;
+      if (
+        Node.isInterfaceDeclaration(decl) ||
+        Node.isTypeAliasDeclaration(decl) ||
+        Node.isEnumDeclaration(decl) ||
+        Node.isClassDeclaration(decl)
+      ) {
+        definition = decl.getText({ includeJsDocComments: false }).replaceAll("\n\n", "\n");
+      } else {
+        definition = `type ${typeText} = ${typeText};`;
+      }
+
+      const dependenciesSet = new Set<string>();
+      const references = Array.from(new Set(definition.match(/\b([A-Z]\w*(?:\.\w+)*)\b/g) || []));
+
+      for (const ref of references) {
+        if (
+          ref === typeText ||
+          visited.has(ref) ||
+          PRESERVE_TYPE_NAMES.has(ref) ||
+          BUILTIN_TYPES.has(ref) ||
+          isImportedFromExternal(ref, decl)
+        ) {
+          continue;
+        }
+
+        const refSymbol = extractInternalTypeReferenceSymbol(ref, decl);
+        if (refSymbol) {
+          dependenciesSet.add(ref);
+          await parseType(ref, typeDependencies, decl, visited, refSymbol);
+        }
+      }
+
+      const formatted = await format(definition, { parser: "typescript" });
+
+      const parsed: ParsedType = {
+        name: typeText,
+        definition: formatted,
+        dependencies: Array.from(dependenciesSet),
+      };
+      typeDependencies[typeText] = parsed;
+      visited.delete(typeText);
+      return parsed;
+    }
+  }
+
+  return { definition: typeText };
 }
 
 /** Parses a single property symbol into a `ParsedProperty`. */
-async function parseProperty(prop: MorphSymbol, contextNode: Node, genericNames: Set<string>) {
+async function parseProperty(
+  prop: MorphSymbol,
+  contextNode: Node,
+  genericNames: Set<string>,
+  typeDependencies: Record<string, ParsedType | ParsedType[]>
+) {
   const name = prop.getName();
 
   let description = "";
@@ -127,7 +259,13 @@ async function parseProperty(prop: MorphSymbol, contextNode: Node, genericNames:
     }
   }
 
-  const { type, flags } = await resolvePropertyType(prop, decl, contextNode, genericNames);
+  const { type, flags } = await resolvePropertyType(
+    prop,
+    decl,
+    contextNode,
+    genericNames,
+    typeDependencies
+  );
 
   const result: ParsedProperty = {
     name,

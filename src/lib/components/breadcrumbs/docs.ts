@@ -4,6 +4,7 @@ import {
   QBreadcrumbsDocsSnippets,
   QBreadcrumbsDocsGenerics,
   QBreadcrumbsDocsDomAttributesConstraint,
+  QBreadcrumbsDocsTypeDependencies,
 } from "./docs.props";
 
 export const QBreadcrumbsDocs: QComponentDocs = {
@@ -17,5 +18,6 @@ export const QBreadcrumbsDocs: QComponentDocs = {
     snippets: QBreadcrumbsDocsSnippets,
     methods: [],
     events: [],
+    typeDependencies: QBreadcrumbsDocsTypeDependencies,
   },
 };

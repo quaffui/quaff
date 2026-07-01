@@ -1,7 +1,6 @@
 import { Node, TypeFormatFlags } from "ts-morph";
-import { MaybeParsed, type ParsedGeneric, type ParsedType, TypeSrcMap } from "./defs";
+import { type ParsedGeneric, type ParsedType, TypeSrcMap } from "./defs";
 import { parseType } from "./parser";
-import { getText, sortComputedTypes } from "./utils";
 import type { Project, InterfaceDeclaration, Type } from "ts-morph";
 
 /**
@@ -17,7 +16,10 @@ export function extractInterfaces(project: Project, filePath: string) {
 }
 
 /** Parses generic type parameters from an interface declaration into `ParsedGeneric[]`. */
-export async function extractGenerics(interfaceDecl: InterfaceDeclaration) {
+export async function extractGenerics(
+  interfaceDecl: InterfaceDeclaration,
+  typeDependencies: Record<string, ParsedType | ParsedType[]>
+) {
   return Promise.all(
     interfaceDecl.getTypeParameters().map(async (param) => {
       const result: ParsedGeneric = { name: param.getName() };
@@ -25,7 +27,8 @@ export async function extractGenerics(interfaceDecl: InterfaceDeclaration) {
 
       if (constraint) {
         const constraintText = constraint.getText();
-        result.constraint = await parseType(constraintText);
+        const parsed = await parseType(constraintText, typeDependencies, constraint);
+        result.constraint = Array.isArray(parsed) ? parsed[0] : parsed;
       }
 
       return result;
@@ -43,14 +46,14 @@ export function extractTypeSrc(typeText: string) {
         continue;
       }
 
-      const { element, prop } = match.groups || {};
+      const { element, prop, event } = match.groups || {};
 
-      if (!element && !prop) {
-        throw new Error(`Missing element or prop match for ${typeName} in ${typeText}`);
+      if (!element && !prop && !event) {
+        throw new Error(`Missing element, prop or event match for ${typeName} in ${typeText}`);
       }
 
-      if (prop && !element) {
-        return url(prop);
+      if ((prop || event) && !element) {
+        return url(prop ?? event);
       }
 
       return url(element, prop);
@@ -71,14 +74,18 @@ export function extractTypeSrc(typeText: string) {
  * Finds the `HTMLAttributes<...>` or similar DOM extends clause from an interface.
  * Returns the full text (e.g. `HTMLAttributes<HTMLButtonElement>`) or `undefined`.
  */
-export function extractDomConstraint(interfaceDecl: InterfaceDeclaration) {
+export async function extractDomConstraint(
+  interfaceDecl: InterfaceDeclaration,
+  typeDependencies: Record<string, ParsedType | ParsedType[]>
+) {
   const extendsClauses = interfaceDecl.getExtends();
 
   for (const clause of extendsClauses) {
     const text = clause.getText();
     // Match patterns like HTMLAttributes<...>, HTMLDetailsAttributes, etc.
     if (text.includes("HTML") && text.includes("Attributes")) {
-      return parseType(text);
+      const parsed = await parseType(text, typeDependencies, clause);
+      return Array.isArray(parsed) ? parsed[0] : parsed;
     }
   }
 }
@@ -242,74 +249,4 @@ export function extractInternalTypeReferenceSymbol(typeName: string, contextNode
  */
 export function extractTypeText(type: Type, contextNode: Node) {
   return type.getText(contextNode, TypeFormatFlags.NoTruncation | TypeFormatFlags.InTypeAlias);
-}
-
-/**
- * Stringifies the MaybeParsed type to a TypeScript type definition (or a set of defintions).
- */
-export function extractTypeDefinition(maybeParsed: ParsedType, referenceType: string) {
-  if (
-    maybeParsed.text !== referenceType ||
-    !maybeParsed.computedTypes ||
-    !Object.keys(maybeParsed.computedTypes).includes(referenceType)
-  ) {
-    // We ignore types that:
-    // - are not the referenceType
-    // - have no computed types (can happen when `srcType` is set instead)
-    // - don't reference the referenceType
-    return;
-  }
-
-  const sortedEntries = sortComputedTypes(maybeParsed.computedTypes, referenceType);
-
-  if (!sortedEntries.length) {
-    return;
-  }
-
-  const toTypeDef = (
-    typeName: string,
-    computed: MaybeParsed | MaybeParsed[],
-    isNamespaced = false
-  ) => {
-    let toUse;
-
-    if (Array.isArray(computed)) {
-      // It's a union of types that don't reference anything (e.g. primitives)
-      toUse = computed.map(getText).join(" | ");
-    } else {
-      toUse = getText(computed);
-    }
-
-    return isNamespaced
-      ? `\texport type ${typeName.slice(2)} = ${toUse};`
-      : toUse.startsWith("export")
-        ? toUse.slice(7) // remove the `export ` prefix
-        : `type ${typeName} = ${toUse};`;
-  };
-
-  const namespacedQ = [];
-  const global = [];
-
-  for (const index in sortedEntries) {
-    const [typeName, computed] = sortedEntries[index];
-
-    if (typeName.startsWith("Q.")) {
-      namespacedQ.push(toTypeDef(typeName, computed, true));
-
-      continue;
-    }
-
-    if (+index === sortedEntries.length - 1) {
-      global.push("");
-    }
-
-    global.push(toTypeDef(typeName, computed));
-  }
-
-  if (namespacedQ.length) {
-    namespacedQ.unshift("declare namespace Q {");
-    namespacedQ.push("}");
-  }
-
-  return [...namespacedQ, ...global].join("\n");
 }

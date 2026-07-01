@@ -4,6 +4,7 @@ import {
   QIconDocsSnippets,
   QIconDocsDomAttributesConstraint,
   QIconDocsGenerics,
+  QIconDocsTypeDependencies,
 } from "./docs.props";
 
 export const QIconDocs: QComponentDocs = {
@@ -17,5 +18,6 @@ export const QIconDocs: QComponentDocs = {
     snippets: QIconDocsSnippets,
     methods: [],
     events: [],
+    typeDependencies: QIconDocsTypeDependencies,
   },
 };

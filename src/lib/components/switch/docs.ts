@@ -4,6 +4,7 @@ import {
   QSwitchDocsSnippets,
   QSwitchDocsDomAttributesConstraint,
   QSwitchDocsGenerics,
+  QSwitchDocsTypeDependencies,
 } from "./docs.props";
 
 export const QSwitchDocs: QComponentDocs = {
@@ -23,5 +24,6 @@ export const QSwitchDocs: QComponentDocs = {
         description: "Emitted when the user changes the value of the toggle.",
       },
     ],
+    typeDependencies: QSwitchDocsTypeDependencies,
   },
 };

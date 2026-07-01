@@ -2,34 +2,23 @@ import { type Symbol as MorphSymbol, Node, type Type, TypeFormatFlags } from "ts
 import { isTypeAlias, isTypeOriginatingFrom } from "./checker";
 import {
   LARGE_UNION_THRESHOLD,
-  MaybeParsed,
   ParsedPropertyFlags,
   PRESERVE_TYPE_NAMES,
-  TypeSrcMap,
+  ParsedType,
 } from "./defs";
-import {
-  extractInternalTypeReferenceSymbol,
-  extractRawTypeAnnotation,
-  extractTypeText,
-} from "./extractor";
+import { extractRawTypeAnnotation, extractTypeText } from "./extractor";
 import { parseType } from "./parser";
-import { computeAllReferences, getText, splitUnionParts, tryPreserveAnnotation } from "./utils";
+import { tryPreserveAnnotation, splitUnionParts } from "./utils";
 
 /**
- * Core type resolution logic. Determines how to represent a property's type
- * based on the rules:
- * - Preserve external types (MaterialSymbol, Snippet, etc.) as-is
- * - Resolve internal type aliases (like QBtnVariantOptions) to their values
- * - Show computed types for Omit/Exclude
- * - Preserve template literal syntax
- * - Show generic parameter names as-is
- * - For large unions (>10 members), show the alias name
+ * Core type resolution logic. Determines how to represent a property's type.
  */
 export async function resolvePropertyType(
   prop: MorphSymbol,
   decl: Node | undefined,
   contextNode: Node,
-  genericNames: Set<string>
+  genericNames: Set<string>,
+  typeDependencies: Record<string, ParsedType | ParsedType[]>
 ) {
   const propType = prop.getTypeAtLocation(contextNode);
   const nonNullType = propType.getNonNullableType();
@@ -54,7 +43,11 @@ export async function resolvePropertyType(
     }
 
     if (elementRawAnnotation) {
-      const utilityType = await tryResolveUtilityTypes(elementRawAnnotation, contextNode);
+      const utilityType = await tryResolveUtilityTypes(
+        elementRawAnnotation,
+        contextNode,
+        typeDependencies
+      );
       if (utilityType) {
         return {
           type: utilityType.type,
@@ -62,7 +55,11 @@ export async function resolvePropertyType(
         };
       }
 
-      const preserved = await tryPreserveAnnotation(elementRawAnnotation, contextNode);
+      const preserved = await tryPreserveAnnotation(
+        elementRawAnnotation,
+        contextNode,
+        typeDependencies
+      );
 
       if (preserved) {
         return {
@@ -78,7 +75,9 @@ export async function resolvePropertyType(
         elementType,
         elementAliasSymbol,
         contextNode,
-        elementRawAnnotation
+        elementRawAnnotation,
+        typeDependencies,
+        decl
       );
       return {
         type: res,
@@ -91,7 +90,9 @@ export async function resolvePropertyType(
         elementType,
         contextNode,
         genericNames,
-        elementRawAnnotation
+        elementRawAnnotation,
+        typeDependencies,
+        decl
       );
       return {
         type: res,
@@ -101,7 +102,7 @@ export async function resolvePropertyType(
 
     const elementText = extractTypeText(elementType, contextNode);
     return {
-      type: await parseType(elementRawAnnotation ?? elementText),
+      type: await parseType(elementRawAnnotation ?? elementText, typeDependencies, contextNode),
       flags: ParsedPropertyFlags.ARRAY,
     };
   }
@@ -110,7 +111,7 @@ export async function resolvePropertyType(
   if (rawAnnotation && rawAnnotation.startsWith("Snippet")) {
     const params = resolveSnippetParams(rawAnnotation);
     return {
-      type: await parseType(params ?? "void"),
+      type: await parseType(params ?? "void", typeDependencies, contextNode),
       flags: ParsedPropertyFlags.SNIPPET,
     };
   }
@@ -126,17 +127,15 @@ export async function resolvePropertyType(
     const params = resolveSnippetParams(fullText);
 
     return {
-      type: await parseType(params ?? "void"),
+      type: await parseType(params ?? "void", typeDependencies, contextNode),
       flags: ParsedPropertyFlags.SNIPPET,
     };
   }
 
   // Check if the raw annotation references a preserved or external type
-  // (catches cases where alias info is lost during resolution, e.g. MaterialSymbol
-  // resolving to a 1000+ member union, or HTMLAnchorAttributes["target"] resolving
-  // to "_self" | "_blank" | "_parent" | "_top" | (string & {}))
   if (rawAnnotation) {
-    const utilityType = await tryResolveUtilityTypes(rawAnnotation, contextNode);
+    const utilityType = await tryResolveUtilityTypes(rawAnnotation, contextNode, typeDependencies);
+
     if (utilityType) {
       return {
         type: utilityType.type,
@@ -144,7 +143,8 @@ export async function resolvePropertyType(
       };
     }
 
-    const preserved = await tryPreserveAnnotation(rawAnnotation, contextNode);
+    const preserved = await tryPreserveAnnotation(rawAnnotation, contextNode, typeDependencies);
+
     if (preserved) {
       return {
         type: preserved,
@@ -153,7 +153,7 @@ export async function resolvePropertyType(
     }
   }
 
-  // Handle boolean types (Typescript resolves `boolean` as a `true` | `false` union)
+  // Handle boolean types
   if (
     nonNullType.isBoolean() ||
     nonNullType.isBooleanLiteral() ||
@@ -161,7 +161,7 @@ export async function resolvePropertyType(
       nonNullType.getUnionTypes().every((union) => union.isBooleanLiteral()))
   ) {
     return {
-      type: "boolean",
+      type: await parseType("boolean", typeDependencies, contextNode),
       flags: ParsedPropertyFlags.NONE,
     };
   }
@@ -169,7 +169,14 @@ export async function resolvePropertyType(
   // Handle union types
   if (nonNullType.isUnion()) {
     return {
-      type: await resolveUnionType(nonNullType, contextNode, genericNames, rawAnnotation),
+      type: await resolveUnionType(
+        nonNullType,
+        contextNode,
+        genericNames,
+        rawAnnotation,
+        typeDependencies,
+        decl
+      ),
       flags: ParsedPropertyFlags.NONE,
     };
   }
@@ -177,7 +184,7 @@ export async function resolvePropertyType(
   // Handle `keyof X` types and types that use a generic parameter
   if (rawAnnotation && (rawAnnotation.startsWith("keyof ") || genericNames.has(rawAnnotation))) {
     return {
-      type: await parseType(rawAnnotation),
+      type: await parseType(rawAnnotation, typeDependencies, contextNode),
       flags: ParsedPropertyFlags.NONE,
     };
   }
@@ -185,48 +192,52 @@ export async function resolvePropertyType(
   // Handle aliased types
   if (aliasSymbol) {
     return {
-      type: await resolveAliasedType(nonNullType, aliasSymbol, contextNode, rawAnnotation),
+      type: await resolveAliasedType(
+        nonNullType,
+        aliasSymbol,
+        contextNode,
+        rawAnnotation,
+        typeDependencies,
+        decl
+      ),
       flags: ParsedPropertyFlags.NONE,
     };
   }
 
   // Default: use the resolved type text
   return {
-    type: await parseType(resolvedText),
+    type: await parseType(resolvedText, typeDependencies, contextNode),
     flags: ParsedPropertyFlags.NONE,
   };
 }
 
 /**
- * Resolves a type that has an alias symbol. Determines whether to show
- * the alias name or its computed value based on external/internal status.
+ * Resolves a type that has an alias symbol.
  */
 async function resolveAliasedType(
   type: Type,
   aliasSymbol: MorphSymbol,
   contextNode: Node,
-  rawAnnotation: string | undefined
+  rawAnnotation: string | undefined,
+  typeDependencies: Record<string, ParsedType | ParsedType[]>,
+  decl: Node | undefined
 ) {
   const aliasName = aliasSymbol.getName();
+  const checkNode = decl ?? contextNode;
 
   // Preserve well-known external types
   if (PRESERVE_TYPE_NAMES.has(aliasName)) {
-    return parseType(aliasName);
+    return parseType(aliasName, typeDependencies, checkNode);
   }
 
   // External types: keep as-is
   if (isTypeOriginatingFrom(type, "external")) {
-    const fullText = type.getText(contextNode, TypeFormatFlags.NoTruncation);
-    return parseType(fullText);
+    const fullText = type.getText(checkNode, TypeFormatFlags.NoTruncation);
+    return parseType(fullText, typeDependencies, checkNode);
   }
 
-  // Internal alias: resolve to the computed value
-  const resolvedText = extractTypeText(type, contextNode);
-  const computedTypes = {
-    [aliasName]: await parseType(resolvedText),
-    ...(await computeAllReferences(resolvedText, contextNode, new Set([aliasName]))),
-  };
-  return parseType(rawAnnotation ?? aliasName, computedTypes);
+  // Internal alias: resolve via parseType
+  return parseType(rawAnnotation ?? aliasName, typeDependencies, checkNode, new Set(), aliasSymbol);
 }
 
 /**
@@ -237,18 +248,16 @@ async function resolveUnionType(
   type: Type,
   contextNode: Node,
   genericNames: Set<string>,
-  rawAnnotation: string | undefined
-) {
+  rawAnnotation: string | undefined,
+  typeDependencies: Record<string, ParsedType | ParsedType[]>,
+  decl: Node | undefined
+): Promise<ParsedType | ParsedType[]> {
+  const checkNode = decl ?? contextNode;
   const unionTypes = type.getUnionTypes();
-
-  // If the union is from a type alias, check if we should preserve the alias name
   const aliasSymbol = type.getAliasSymbol();
 
-  if (!aliasSymbol && rawAnnotation && isTypeAlias(rawAnnotation, contextNode)) {
-    const resolved = await resolveTypeAliasMembers(rawAnnotation, contextNode);
-    if (resolved) {
-      return resolved;
-    }
+  if (!aliasSymbol && rawAnnotation && isTypeAlias(rawAnnotation, checkNode)) {
+    return parseType(rawAnnotation, typeDependencies, checkNode);
   }
 
   if (aliasSymbol) {
@@ -256,252 +265,84 @@ async function resolveUnionType(
 
     // Preserve external types like MaterialSymbol or Snippet
     if (PRESERVE_TYPE_NAMES.has(aliasName)) {
-      return parseType(aliasName);
+      return parseType(aliasName, typeDependencies, checkNode);
     }
 
-    // Internal type alias: resolve to computed values using AST nodes to preserve references
+    // Internal type alias: resolve to the aliasName
     if (isTypeOriginatingFrom(type, "internal")) {
-      let rawMembersText: string[];
-      let typeNode;
-
-      const declarations = aliasSymbol.getDeclarations();
-      let decl: Node | undefined;
-
-      if (declarations.length) {
-        decl = declarations[0];
-
-        if (Node.isTypeAliasDeclaration(decl) || Node.isPropertySignature(decl)) {
-          typeNode = decl.getTypeNode();
-        }
-      }
-
-      if (Node.isTemplateLiteralTypeNode(typeNode)) {
-        const resolvedText = typeNode.getText({ includeJsDocComments: false });
-        const computedTypes = {
-          [aliasName]: await parseType(resolvedText),
-        };
-
-        const subRefs: string[] = [];
-        typeNode.forEachDescendant((node) => {
-          if (Node.isTypeReference(node)) {
-            subRefs.push(node.getText({ includeJsDocComments: false }));
-          }
-        });
-
-        for (const subRef of subRefs) {
-          Object.assign(
-            computedTypes,
-            await computeAllReferences(subRef, decl ?? contextNode, new Set([aliasName]))
-          );
-        }
-
-        return parseType(aliasName, computedTypes);
-      }
-
-      if (Node.isUnionTypeNode(typeNode)) {
-        rawMembersText = typeNode
-          .getTypeNodes()
-          .map((node) => node.getText({ includeJsDocComments: false }));
-      } else {
-        rawMembersText = unionTypes.map((unionType) => extractTypeText(unionType, contextNode));
-      }
-
-      const unionMembers = await Promise.all(rawMembersText.map((text) => parseType(text)));
-      const computedTypes = {
-        [aliasName]: unionMembers,
-      };
-
-      const visited = new Set([aliasName]);
-
-      for (const member of unionMembers) {
-        const text = getText(member);
-        Object.assign(
-          computedTypes,
-          await computeAllReferences(text, decl ?? contextNode, visited)
-        );
-      }
-
-      return parseType(aliasName, computedTypes);
+      return parseType(aliasName, typeDependencies, checkNode);
     }
 
     // Large unions (external): show the alias name
     if (unionTypes.length > LARGE_UNION_THRESHOLD) {
-      return parseType(aliasName, {
-        [aliasName]: await Promise.all(
-          unionTypes.map((union) => parseType(extractTypeText(union, contextNode)))
-        ),
-      });
+      return parseType(aliasName, typeDependencies, checkNode);
     }
   }
 
-  // If the raw annotation contains a union with diverse types (e.g. MaterialSymbol | `img:${string}`)
-  // parse each member individually
+  // If the raw annotation contains a union with diverse types
   if (rawAnnotation?.includes("|")) {
-    return resolveRawUnionAnnotation(rawAnnotation, contextNode, genericNames);
+    return resolveRawUnionAnnotation(rawAnnotation, checkNode, genericNames, typeDependencies);
   }
 
   // Simple union: map each member
   if (unionTypes.length <= LARGE_UNION_THRESHOLD) {
-    return Promise.all(unionTypes.map((union) => parseType(extractTypeText(union, contextNode))));
+    const resolvedParts = await Promise.all(
+      unionTypes.map((union) =>
+        parseType(extractTypeText(union, checkNode), typeDependencies, checkNode)
+      )
+    );
+    return resolvedParts.flat();
   }
 
   // Fallback for large unions without alias
-  return parseType(extractTypeText(type, contextNode));
+  return parseType(extractTypeText(type, checkNode), typeDependencies, checkNode);
 }
 
 /**
- * Resolves a type alias name to its union members as `ParsedType[]`.
- * Returns `undefined` if the alias doesn't resolve to a union.
- */
-async function resolveTypeAliasMembers(typeName: string, contextNode: Node) {
-  const symbol = extractInternalTypeReferenceSymbol(typeName, contextNode);
-  if (!symbol) {
-    return;
-  }
-  const declarations = symbol.getDeclarations();
-  if (!declarations.length) {
-    return;
-  }
-  const decl = declarations[0];
-  if (Node.isTypeAliasDeclaration(decl)) {
-    const aliasType = decl.getType();
-    const typeNode = decl.getTypeNode();
-
-    if (!typeNode) {
-      return;
-    }
-
-    if (aliasType.isUnion()) {
-      if (Node.isTemplateLiteralTypeNode(typeNode)) {
-        const resolvedText = typeNode.getText({ includeJsDocComments: false });
-        const computedTypes = {
-          [typeName]: await parseType(resolvedText),
-        };
-
-        const subRefs: string[] = [];
-        typeNode.forEachDescendant((node) => {
-          if (Node.isTypeReference(node)) {
-            subRefs.push(node.getText({ includeJsDocComments: false }));
-          }
-        });
-
-        for (const subRef of subRefs) {
-          Object.assign(
-            computedTypes,
-            await computeAllReferences(subRef, decl, new Set([typeName]))
-          );
-        }
-
-        return parseType(typeName, computedTypes);
-      }
-
-      let rawMembersText: string[];
-      if (Node.isUnionTypeNode(typeNode)) {
-        rawMembersText = typeNode
-          .getTypeNodes()
-          .map((node) => node.getText({ includeJsDocComments: false }));
-      } else {
-        rawMembersText = aliasType
-          .getUnionTypes()
-          .map((union) => extractTypeText(union, contextNode));
-      }
-
-      const unionMembers = await Promise.all(rawMembersText.map((text) => parseType(text)));
-      const computedTypes = {
-        [typeName]: unionMembers,
-      };
-
-      const visited = new Set([typeName]);
-      for (const member of unionMembers) {
-        const text = getText(member);
-        Object.assign(computedTypes, await computeAllReferences(text, decl, visited));
-      }
-
-      return parseType(typeName, computedTypes);
-    }
-
-    // Not a union, return the resolved text
-    const resolvedText = extractTypeText(aliasType, contextNode);
-    const computedTypes = {
-      [typeName]: await parseType(resolvedText),
-      ...(await computeAllReferences(resolvedText, decl, new Set([typeName]))),
-    };
-
-    return parseType(resolvedText, computedTypes);
-  }
-}
-
-/**
- * Parses a raw union annotation like `MaterialSymbol | \`img:${string}\``
- * into individual ParsedType entries, preserving external type names.
+ * Parses a raw union annotation into individual ParsedType entries.
  */
 async function resolveRawUnionAnnotation(
   rawAnnotation: string,
   contextNode: Node,
-  genericNames: Set<string>
-) {
+  genericNames: Set<string>,
+  typeDependencies: Record<string, ParsedType | ParsedType[]>
+): Promise<ParsedType | ParsedType[]> {
   const parts = splitUnionParts(rawAnnotation);
 
   if (parts.length <= 1) {
-    return parseType(rawAnnotation);
+    return parseType(rawAnnotation, typeDependencies, contextNode);
   }
 
-  const parsedTypes: MaybeParsed[] = [];
+  const parsedTypes: (ParsedType | ParsedType[])[] = [];
 
   for (const part of parts) {
-    // Check if this part is a preservec external type
-    // or a generic or if it's a known external type reference
-    // (like HTMLAnchorAttributes["target"])
-
-    if (PRESERVE_TYPE_NAMES.has(part) || genericNames.has(part) || part in TypeSrcMap) {
-      parsedTypes.push(await parseType(part));
-      continue;
-    }
-
-    // Check if it references an internal type alias that should be resolved
-    if (isTypeAlias(part, contextNode)) {
-      const resolvedAlias = await resolveTypeAliasMembers(part, contextNode);
-
-      if (resolvedAlias) {
-        parsedTypes.push(resolvedAlias);
-        continue;
-      }
-    }
-
-    // Keep as-is (literals, template literals, primitives)
-    parsedTypes.push(await parseType(part));
+    parsedTypes.push(await parseType(part, typeDependencies, contextNode));
   }
 
-  return parsedTypes.length === 1 ? parsedTypes[0] : parsedTypes;
+  const flattened = parsedTypes.flat();
+  return flattened.length === 1 ? flattened[0] : flattened;
 }
 
 /**
- * Extracts the Snippet parameter type text from a full Snippet type string.
- * E.g. `Snippet<[{ expanded: boolean }]>` → `{ expanded: boolean }`.
- * Returns `undefined` for `Snippet` with no parameters.
- * Handles multiline Snippet annotations by normalizing whitespace.
+ * Extracts the Snippet parameter type text from a Snippet type string.
  */
 function resolveSnippetParams(typeText: string) {
-  // Normalize whitespace (multiline Snippet annotations)
   const normalized = typeText.replace(/\s+/g, " ").trim();
-
-  // Match Snippet<[...]> with possible whitespace
   const match = normalized.match(/^Snippet\s*<\s*\[\s*(.+?)\s*\]\s*>$/s);
   if (!match) {
     return;
   }
-
   return match[1].trim();
 }
 
 /**
  * Resolves typescript utility types (Omit, Exclude, Pick, Extract)
- * by parsing their inner target and parameters separately.
  */
 async function tryResolveUtilityTypes(
   rawAnnotation: string | undefined,
-  contextNode: Node
-): Promise<{ type: [MaybeParsed, MaybeParsed]; flag: ParsedPropertyFlags } | undefined> {
+  contextNode: Node,
+  typeDependencies: Record<string, ParsedType | ParsedType[]>
+): Promise<{ type: [ParsedType, ParsedType]; flag: ParsedPropertyFlags } | undefined> {
   if (!rawAnnotation) {
     return undefined;
   }
@@ -510,13 +351,10 @@ async function tryResolveUtilityTypes(
   if (omitMatch) {
     const targetType = omitMatch[1].trim();
     const keys = omitMatch[2].trim();
-    const parsedTarget = await parseType(
-      targetType,
-      await computeAllReferences(targetType, contextNode)
-    );
-    const parsedKeys = await parseType(keys, await computeAllReferences(keys, contextNode));
+    const parsedTarget = await parseType(targetType, typeDependencies, contextNode);
+    const parsedKeys = await parseType(keys, typeDependencies, contextNode);
     return {
-      type: [parsedTarget, parsedKeys],
+      type: [parsedTarget as ParsedType, parsedKeys as ParsedType],
       flag: ParsedPropertyFlags.OMIT,
     };
   }
@@ -525,16 +363,10 @@ async function tryResolveUtilityTypes(
   if (excludeMatch) {
     const targetType = excludeMatch[1].trim();
     const excluded = excludeMatch[2].trim();
-    const parsedTarget = await parseType(
-      targetType,
-      await computeAllReferences(targetType, contextNode)
-    );
-    const parsedExcluded = await parseType(
-      excluded,
-      await computeAllReferences(excluded, contextNode)
-    );
+    const parsedTarget = await parseType(targetType, typeDependencies, contextNode);
+    const parsedExcluded = await parseType(excluded, typeDependencies, contextNode);
     return {
-      type: [parsedTarget, parsedExcluded],
+      type: [parsedTarget as ParsedType, parsedExcluded as ParsedType],
       flag: ParsedPropertyFlags.EXCLUDE,
     };
   }
@@ -543,13 +375,10 @@ async function tryResolveUtilityTypes(
   if (pickMatch) {
     const targetType = pickMatch[1].trim();
     const keys = pickMatch[2].trim();
-    const parsedTarget = await parseType(
-      targetType,
-      await computeAllReferences(targetType, contextNode)
-    );
-    const parsedKeys = await parseType(keys, await computeAllReferences(keys, contextNode));
+    const parsedTarget = await parseType(targetType, typeDependencies, contextNode);
+    const parsedKeys = await parseType(keys, typeDependencies, contextNode);
     return {
-      type: [parsedTarget, parsedKeys],
+      type: [parsedTarget as ParsedType, parsedKeys as ParsedType],
       flag: ParsedPropertyFlags.PICK,
     };
   }
@@ -558,16 +387,10 @@ async function tryResolveUtilityTypes(
   if (extractMatch) {
     const targetType = extractMatch[1].trim();
     const extracted = extractMatch[2].trim();
-    const parsedTarget = await parseType(
-      targetType,
-      await computeAllReferences(targetType, contextNode)
-    );
-    const parsedExtracted = await parseType(
-      extracted,
-      await computeAllReferences(extracted, contextNode)
-    );
+    const parsedTarget = await parseType(targetType, typeDependencies, contextNode);
+    const parsedExtracted = await parseType(extracted, typeDependencies, contextNode);
     return {
-      type: [parsedTarget, parsedExtracted],
+      type: [parsedTarget as ParsedType, parsedExtracted as ParsedType],
       flag: ParsedPropertyFlags.EXTRACT,
     };
   }

@@ -4,6 +4,7 @@ import {
   QInputDocsSnippets,
   QInputDocsDomAttributesConstraint,
   QInputDocsGenerics,
+  QInputDocsTypeDependencies,
 } from "./docs.props";
 
 export const QInputDocs: QComponentDocs = {
@@ -23,5 +24,6 @@ export const QInputDocs: QComponentDocs = {
         description: "Native input event from the inner input element.",
       },
     ],
+    typeDependencies: QInputDocsTypeDependencies,
   },
 };
