@@ -8,6 +8,8 @@ import {
   QCircularProgressDocsSnippets,
   QCircularProgressDocsDomAttributesConstraint,
   QCircularProgressDocsGenerics,
+  QLinearProgressDocsTypeDependencies,
+  QCircularProgressDocsTypeDependencies,
 } from "./docs.props";
 
 export const QLinearProgressDocs: QComponentDocs = {
@@ -21,6 +23,7 @@ export const QLinearProgressDocs: QComponentDocs = {
     snippets: QLinearProgressDocsSnippets,
     methods: [],
     events: [],
+    typeDependencies: QLinearProgressDocsTypeDependencies,
   },
 };
 
@@ -35,5 +38,6 @@ export const QCircularProgressDocs: QComponentDocs = {
     snippets: QCircularProgressDocsSnippets,
     methods: [],
     events: [],
+    typeDependencies: QCircularProgressDocsTypeDependencies,
   },
 };

@@ -4,6 +4,7 @@ import {
   QChipDocsSnippets,
   QChipDocsDomAttributesConstraint,
   QChipDocsGenerics,
+  QChipDocsTypeDependencies,
 } from "./docs.props";
 
 export const QChipDocs: QComponentDocs = {
@@ -23,5 +24,6 @@ export const QChipDocs: QComponentDocs = {
         description: "Emitted when the user clicks on the chip.",
       },
     ],
+    typeDependencies: QChipDocsTypeDependencies,
   },
 };

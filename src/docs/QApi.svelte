@@ -16,15 +16,15 @@
   import { capitalize, escape } from "$utils";
   import type { QComponentDocs, QComponentEvent, QComponentMethod } from "$docs";
   import {
-    type MaybeParsed,
     type ParsedProperty,
     ParsedPropertyFlags,
+    type ParsedType,
   } from "$docgen/props/parsePropsInterface/defs";
   import { docsCtx } from "./QDocs.svelte";
 
   type TabableDocsKey = Exclude<
     keyof QComponentDocs["docs"],
-    "generics" | "domAttributesConstraint"
+    "generics" | "domAttributesConstraint" | "typeDependencies"
   >;
 
   // #region:    --- Context
@@ -33,10 +33,7 @@
   // #endregion: --- Context
 
   // #region:    --- Reactive variables
-  let activeApiTabs: Exclude<
-    keyof QComponentDocs["docs"],
-    "generics" | "domAttributesConstraint"
-  >[] = $state(componentDocs.map(() => "props"));
+  let activeApiTabs: TabableDocsKey[] = $state(componentDocs.map(() => "props"));
   let tooltipGeneration = 0;
   let tooltipTeardowns: (() => unknown)[] = [];
   // #endregion: --- Reactive variables
@@ -68,71 +65,58 @@
     }
   }
 
-  function getType(type: string) {
-    const getDef = (item: MaybeParsed) => {
-      if (typeof item === "string") {
-        return undefined;
+  function getFullTypeDefinition(typeName: string, docs: QComponentDocs["docs"]): string {
+    // This is not a reactive variable so we can safely ignore this svelte lint rule
+    // eslint-disable-next-line svelte/prefer-svelte-reactivity
+    const visited = new Set<string>();
+    const definitions: string[] = [];
+
+    function collect(name: string) {
+      if (visited.has(name)) {
+        return;
+      }
+      visited.add(name);
+
+      const dep = docs.typeDependencies?.[name];
+      if (!dep) {
+        return;
       }
 
-      return item.text === type ? item.typeDefinition : undefined;
-    };
+      if (Array.isArray(dep)) {
+        for (const item of dep) {
+          if ("name" in item) {
+            collect(item.name);
+          }
+        }
+      } else {
+        if ("dependencies" in dep && dep.dependencies) {
+          for (const child of dep.dependencies) {
+            collect(child);
+          }
+        }
+        if ("definition" in dep) {
+          definitions.push(dep.definition);
+        }
+      }
+    }
 
+    collect(typeName);
+
+    const trimmedDefs = definitions.map((def) => def.trim());
+    const mainDef = trimmedDefs.pop();
+    if (!mainDef) {
+      return "";
+    }
+    if (trimmedDefs.length === 0) {
+      return mainDef;
+    }
+    return `${trimmedDefs.join("\n")}\n\n${mainDef}`;
+  }
+
+  function getType(type: string) {
     for (const QDocument of componentDocs) {
-      const { docs } = QDocument;
-
-      for (const [_name, doc] of Object.entries(docs)) {
-        if (!doc) {
-          continue;
-        }
-
-        if (!Array.isArray(doc)) {
-          // This is a DOM Attribute constraint definition
-          const res = getDef(doc);
-
-          if (res) {
-            return res;
-          }
-
-          continue;
-        }
-
-        for (const item of doc) {
-          if ("constraint" in item && item.constraint) {
-            const { constraint } = item;
-
-            const res = getDef(constraint);
-
-            if (res) {
-              return res;
-            }
-
-            continue;
-          }
-
-          if ("flags" in item) {
-            const { type: itemType } = item;
-
-            if (Array.isArray(itemType)) {
-              for (const typeOfItem of itemType) {
-                const res = getDef(typeOfItem);
-
-                if (res) {
-                  return res;
-                }
-              }
-
-              continue;
-            }
-
-            const res = getDef(itemType);
-
-            if (res) {
-              return res;
-            }
-
-            continue;
-          }
-        }
+      if (QDocument.docs.typeDependencies && type in QDocument.docs.typeDependencies) {
+        return getFullTypeDefinition(type, QDocument.docs);
       }
     }
 
@@ -141,7 +125,8 @@
 
   function getTabableEntries(QDocument: QComponentDocs) {
     return Object.entries(QDocument.docs).filter(
-      ([name]) => name !== "generics" && name !== "domAttributesConstraint"
+      ([name]) =>
+        name !== "generics" && name !== "domAttributesConstraint" && name !== "typeDependencies"
     ) as [TabableDocsKey, QComponentDocs["docs"][TabableDocsKey]][];
   }
 
@@ -186,6 +171,19 @@
     return `<${tag}${classString}${dataAttrs}${linkAttrs}>${spanContent}</${tag}>`;
   }
 
+  function renderType(t: ParsedType) {
+    const isNamed = "name" in t;
+    const text = isNamed ? t.name : t.definition;
+    const typeSrc = "typeSrc" in t && t.typeSrc ? t.typeSrc : "";
+
+    return inSpan(escape(text), {
+      typeStyle: true,
+      isClickable: isNamed,
+      typeSrc,
+      typeName: isNamed ? t.name : "",
+    });
+  }
+
   function prepareHeaderForGenericsAndConstraints(name: string, docs: QComponentDocs["docs"]) {
     let content = `<pre>`;
 
@@ -198,17 +196,8 @@
         let genericContent = inSpan(generic.name, { typeStyle: true });
 
         if (generic.constraint) {
-          const { constraint } = generic;
-          const isObject = typeof constraint !== "string";
-          const text = isObject ? constraint.text : constraint;
-
           genericContent += inSpan(" extends ", { typeStyle: true }).concat(
-            inSpan(escape(text), {
-              typeStyle: true,
-              isClickable: isObject,
-              typeSrc: isObject ? constraint.typeSrc : "",
-              typeName: text,
-            })
+            renderType(generic.constraint)
           );
         }
 
@@ -222,17 +211,7 @@
 
     if (docs.domAttributesConstraint) {
       content += inSpan(" extends ", { typeStyle: true });
-
-      const constraint = docs.domAttributesConstraint;
-      const isObject = typeof constraint !== "string";
-      const text = isObject ? constraint.text : constraint;
-
-      content += inSpan(escape(text), {
-        typeStyle: true,
-        isClickable: isObject,
-        typeSrc: isObject ? constraint.typeSrc : "",
-        typeName: text,
-      });
+      content += renderType(docs.domAttributesConstraint);
     }
 
     content += `</pre>`;
@@ -250,38 +229,12 @@
     content += inSpan("(", { typeStyle: true });
 
     if (Array.isArray(snippet.type)) {
-      content += inSpan("{ ", { typeStyle: true });
-
-      content += snippet.type
-        .map((arg) => {
-          const isObject = typeof arg !== "string";
-          const text = isObject ? arg.text : arg;
-
-          return inSpan(escape(text)).concat(
-            inSpan(": "),
-            inSpan(escape(text), {
-              typeStyle: true,
-              isClickable: isObject,
-              typeSrc: isObject ? arg.typeSrc : "",
-              typeName: text,
-            })
-          );
-        })
-        .join(", ");
-
-      content += inSpan(" }", { typeStyle: true });
+      content += snippet.type.map(renderType).join(" | ");
     } else {
       const { type } = snippet;
-      const isObject = typeof type !== "string";
-      const text = isObject ? type.text : type;
-
+      const text = "name" in type ? type.name : type.definition;
       if (text !== "void") {
-        content += inSpan(escape(text), {
-          typeStyle: true,
-          isClickable: isObject,
-          typeSrc: isObject ? type.typeSrc : "",
-          typeName: text,
-        });
+        content += renderType(type);
       }
     }
 
@@ -329,53 +282,14 @@
 
       content += inSpan(utilityName, { typeStyle: true });
       content += inSpan("<", { typeStyle: true });
-
-      const targetIsObject = typeof target !== "string";
-      const targetText = targetIsObject ? target.text : target;
-      content += inSpan(escape(targetText), {
-        typeStyle: true,
-        isClickable: targetIsObject,
-        typeSrc: targetIsObject ? target.typeSrc : "",
-        typeName: targetText,
-      });
-
+      content += renderType(target);
       content += inSpan(", ", { typeStyle: true });
-
-      const paramIsObject = typeof param !== "string";
-      const paramText = paramIsObject ? param.text : param;
-      content += inSpan(escape(paramText), {
-        typeStyle: true,
-        isClickable: paramIsObject,
-        typeSrc: paramIsObject ? param.typeSrc : "",
-        typeName: paramText,
-      });
-
+      content += renderType(param);
       content += inSpan(">", { typeStyle: true });
     } else if (Array.isArray(prop.type)) {
-      content += prop.type
-        .map((type) => {
-          const isObject = typeof type !== "string";
-          const text = isObject ? type.text : type;
-
-          return inSpan(escape(text), {
-            typeStyle: true,
-            isClickable: isObject,
-            typeSrc: isObject ? type.typeSrc : "",
-            typeName: text,
-          });
-        })
-        .join(" | ");
+      content += prop.type.map(renderType).join(" | ");
     } else {
-      const { type } = prop;
-      const isObject = typeof type !== "string";
-      const text = isObject ? type.text : type;
-
-      content += inSpan(escape(text), {
-        typeStyle: true,
-        isClickable: isObject,
-        typeSrc: isObject ? type.typeSrc : "",
-        typeName: text,
-      });
+      content += renderType(prop.type);
     }
 
     if (hasFlag(prop, "array")) {

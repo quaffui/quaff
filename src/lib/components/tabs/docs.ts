@@ -8,6 +8,8 @@ import {
   QTabsDocsSnippets,
   QTabsDocsDomAttributesConstraint,
   QTabsDocsGenerics,
+  QTabDocsTypeDependencies,
+  QTabsDocsTypeDependencies,
 } from "./docs.props";
 
 export const QTabsDocs: QComponentDocs = {
@@ -21,6 +23,7 @@ export const QTabsDocs: QComponentDocs = {
     snippets: QTabsDocsSnippets,
     methods: [],
     events: [],
+    typeDependencies: QTabsDocsTypeDependencies,
   },
 };
 
@@ -35,5 +38,6 @@ export const QTabDocs: QComponentDocs = {
     snippets: QTabDocsSnippets,
     methods: [],
     events: [],
+    typeDependencies: QTabDocsTypeDependencies,
   },
 };

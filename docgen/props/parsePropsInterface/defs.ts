@@ -1,27 +1,62 @@
-export type MaybeParsed = ParsedType | string;
-
-/** Represents a resolved type with an optional source URL for external types. */
-export interface ParsedType {
-  /** Text representation of a single type (e.g. `"boolean"`, `"MaterialSymbol"`, `"\`img:${string}\`"`). */
-  text: string;
-  /** The computed types for all internal type references contained in this type */
-  computedTypes?: Record<string, MaybeParsed | MaybeParsed[]>;
-  /** URL pointing to external documentation for this type (e.g. Material Icons page). Only present for types listed in `TypeSrcMap`. */
-  typeSrc?: string;
+/**
+ * Corresponds to a type definition from an external package (including built-in DOM types).
+ * Those types link to external documentation sources like MDN, google fonts or svelte's docs.
+ *
+ * For example, `MaterialSymbol` will link to `fonts.google.com/icons`.
+ */
+export interface ExternalType {
   /**
-   * A string of TypeScript definitions of the complex types in this type, formatted with prettier.
-   *
-   * This allows the frontend to show hover popups of types in components' props.
+   * The name of the type as it appears in the source code (e.g. `MaterialSymbol`)
    */
-  typeDefinition?: string;
+  name: string;
+  /**
+   * The URL to the external documentation source
+   */
+  typeSrc: string;
 }
+
+/**
+ * Type used for primitive types or types that couldn't be resolved to an external type.
+ *
+ * For example, `string`, `number`, `boolean`, etc.
+ */
+export interface StandardType {
+  /**
+   * The full text of the type definition
+   */
+  definition: string;
+}
+
+/**
+ * Type used for complex types, such as `interface`s or `type` aliases.
+ *
+ * These types can (but are not bound to) depend on other "complex" types.
+ * In this case, the name of those other types will be accessible through the `dependencies` property.
+ *
+ * For example, `QSize` or `CssValue`.
+ */
+export interface ComplexType extends StandardType {
+  /**
+   * The name of the type as it appears in the source code (e.g. `QSize`)
+   */
+  name: string;
+  /**
+   * The names of other "complex" types that this type depends on (e.g. `["CssUnit"]` which `CssValue` depends on)
+   */
+  dependencies: string[];
+}
+
+/**
+ * A parsed type. Can be external, standard or complex.
+ */
+export type ParsedType = ExternalType | StandardType | ComplexType;
 
 /** Represents a generic type parameter of an interface (e.g. `<T extends string>`). */
 export interface ParsedGeneric {
   /** Name of the generic type parameter (e.g. `"T"`). */
   name: string;
   /** Constraint text if the generic extends a type (e.g. `"string"`). */
-  constraint?: MaybeParsed;
+  constraint?: ParsedType;
 }
 
 /** Represents a single parsed property from an interface. */
@@ -39,7 +74,7 @@ export interface ParsedProperty {
    */
   flags: number;
   /** The computed type(s) for this property. A single `ParsedType` for simple types, or an array of `ParsedType` for union types. */
-  type: MaybeParsed | MaybeParsed[];
+  type: ParsedType | ParsedType[];
   /** The default value from the `@default` JSDoc tag, if present. */
   default?: string;
 }
@@ -47,11 +82,13 @@ export interface ParsedProperty {
 /** Represents a fully parsed TypeScript interface. */
 export interface ParsedInterface {
   /** The full text of the DOM attributes extension clause, if the interface extends `HTMLAttributes<...>` or similar. */
-  domAttributesConstraint?: string | ParsedType;
+  domAttributesConstraint?: ParsedType;
   /** The interface's generic type parameters. */
   generics: ParsedGeneric[];
   /** All parsed properties, including those inherited from extended internal interfaces. */
   properties: ParsedProperty[];
+  /** The resolved type dependencies for the interface. */
+  typeDependencies: Record<string, ParsedType | ParsedType[]>;
 }
 
 /** Type names whose resolved union values should never be inlined. */
@@ -108,13 +145,22 @@ export const TypeSrcMap = [
   ["BundledLanguage", "https://shiki.style/languages#bundled-languages"],
   ["SpecialLanguage", "https://shiki.style/languages#special-languages"],
   ["BundledTheme", "https://shiki.style/themes#bundled-themes"],
+  ["Snippet", "https://svelte.dev/docs/svelte/snippet#Typing-snippets"],
   [
     "HTMLElementTagNameMap",
     "https://typhonjs-typedoc.github.io/ts-lib-docs/2024/dom/interfaces/HTMLElementTagNameMap.html",
   ],
   [
+    /^(?<event>[A-Z][a-z]+Event)Handler<.*>$/,
+    (event: string) => "https://developer.mozilla.org/en-US/docs/Web/API/" + event,
+  ],
+  [
     /HTMLAttributes<HTMLElement>(?![[])/,
     "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes#list_of_global_attributes",
+  ],
+  [
+    /^(?<element>HTML(?:.+)?Element)$/,
+    (element: string) => `https://developer.mozilla.org/en-us/docs/Web/API/${element}`,
   ],
   [
     /HTML(?<element>.+)Attributes\\["(?<prop>\\w+)"\\]/,
@@ -132,7 +178,12 @@ export const TypeSrcMap = [
       `https://developer.mozilla.org/en-us/docs/Web/API/HTML${element}Element/${prop}`,
   ],
   [
-    /^HTML(?<element>.+)Attributes$|HTMLAttributes<HTML(?<element>.+)Element>/,
+    /HTML(?<element>.+)Attributes/,
+    (element: string) =>
+      `https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/${element.toLowerCase()}#attributes`,
+  ],
+  [
+    /HTMLAttributes<HTML(?<element>.+)Element>/,
     (element: string) =>
       `https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/${element.toLowerCase()}#attributes`,
   ],
