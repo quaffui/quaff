@@ -10,24 +10,6 @@ export function isPropertyOptional(decl: Node) {
   return false;
 }
 
-/** Extracts whether the property is bindable from JSDoc, with the `@bindable` tag. */
-export function isPropertyBindable(decl: Node): boolean {
-  if (!Node.isJSDocable(decl)) {
-    return false;
-  }
-
-  const jsDocs = decl.getJsDocs();
-  if (jsDocs.length === 0) {
-    return false;
-  }
-
-  const doc = jsDocs[0];
-  const tags = doc.getTags();
-  const bindableTag = tags.find((tag) => tag.getTagName() === "bindable");
-
-  return !!bindableTag;
-}
-
 /**
  * Checks if a type name is imported from an external package
  * (Svelte, Material Symbols) by inspecting the source file's imports.
