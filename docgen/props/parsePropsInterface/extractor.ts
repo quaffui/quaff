@@ -1,7 +1,13 @@
 import { Node, TypeFormatFlags } from "ts-morph";
 import { type ParsedGeneric, type ParsedType, TypeSrcMap } from "./defs";
 import { parseType } from "./parser";
-import type { Project, InterfaceDeclaration, Type } from "ts-morph";
+import type { Project, InterfaceDeclaration, Type, Symbol as MorphSymbol } from "ts-morph";
+
+export interface ExtendedProperty {
+  symbol: MorphSymbol;
+  decl?: Node;
+  rawAnnotation?: string;
+}
 
 /**
  * Finds all exported interface declarations that end with `Props` in a source file.
@@ -91,11 +97,12 @@ export async function extractDomConstraint(
 }
 
 /**
- * Collects property symbols from all extended internal (non-DOM, non-external)
- * interfaces, recursively. This "flattens" the modular interface hierarchy.
+ * Collects property symbols and their declaration details from all extended internal
+ * (non-DOM, non-external) interfaces, recursively. This "flattens" the modular interface hierarchy
+ * and substitutes generic parameter types with their actual type arguments.
  */
-export function extractExtendedInternalProperties(interfaceDecl: InterfaceDeclaration) {
-  const properties = [];
+export function extractExtendedInternalProperties(interfaceDecl: InterfaceDeclaration): ExtendedProperty[] {
+  const properties: ExtendedProperty[] = [];
   const extendsClauses = interfaceDecl.getExtends();
 
   for (const clause of extendsClauses) {
@@ -108,9 +115,53 @@ export function extractExtendedInternalProperties(interfaceDecl: InterfaceDeclar
 
     // Resolve the type of this extends clause
     const exprType = clause.getType();
+    const symbol = exprType.getSymbol();
+    
+    const paramMap = new Map<string, string>();
+    if (symbol) {
+      const decl = symbol.getDeclarations()[0];
+      if (decl && Node.isInterfaceDeclaration(decl)) {
+        const typeParams = decl.getTypeParameters();
+        const typeArgs = clause.getTypeArguments();
+        for (let i = 0; i < typeParams.length; i++) {
+          const param = typeParams[i];
+          const arg = typeArgs[i];
+          const paramName = param.getName();
+          if (arg) {
+            paramMap.set(paramName, arg.getText());
+          } else {
+            const defaultType = param.getDefault();
+            if (defaultType) {
+              paramMap.set(paramName, defaultType.getText());
+            }
+          }
+        }
+      }
+    }
 
     for (const prop of exprType.getProperties()) {
-      properties.push(prop);
+      const decls = prop.getDeclarations();
+      const propDecl = decls[0];
+      let rawAnnotation: string | undefined;
+
+      if (propDecl && Node.isPropertySignature(propDecl)) {
+        const typeNode = propDecl.getTypeNode();
+        if (typeNode) {
+          rawAnnotation = typeNode.getText({ includeJsDocComments: false });
+          if (paramMap.size > 0) {
+            for (const [paramName, argText] of paramMap.entries()) {
+              const regex = new RegExp(`\\b${paramName}\\b`, "g");
+              rawAnnotation = rawAnnotation.replace(regex, argText);
+            }
+          }
+        }
+      }
+
+      properties.push({
+        symbol: prop,
+        decl: propDecl,
+        rawAnnotation,
+      });
     }
   }
 
