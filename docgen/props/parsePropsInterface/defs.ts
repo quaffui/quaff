@@ -91,6 +91,19 @@ export interface ParsedInterface {
   typeDependencies: Record<string, ParsedType | ParsedType[]>;
 }
 
+/**
+ * Information about a property's default value and bindable status.
+ *
+ * This info is derived from the component's Svelte file directly, and used to enrich the `ParsedProperty` type.
+ */
+export type ParsedDefaults = Map<
+  string,
+  {
+    default?: string;
+    bindable?: boolean;
+  }
+>;
+
 /** Type names whose resolved union values should never be inlined. */
 export const PRESERVE_TYPE_NAMES = new Set(["Snippet", "MaterialSymbol"]);
 

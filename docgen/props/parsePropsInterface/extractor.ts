@@ -101,7 +101,9 @@ export async function extractDomConstraint(
  * (non-DOM, non-external) interfaces, recursively. This "flattens" the modular interface hierarchy
  * and substitutes generic parameter types with their actual type arguments.
  */
-export function extractExtendedInternalProperties(interfaceDecl: InterfaceDeclaration): ExtendedProperty[] {
+export function extractExtendedInternalProperties(
+  interfaceDecl: InterfaceDeclaration
+): ExtendedProperty[] {
   const properties: ExtendedProperty[] = [];
   const extendsClauses = interfaceDecl.getExtends();
 
@@ -116,7 +118,7 @@ export function extractExtendedInternalProperties(interfaceDecl: InterfaceDeclar
     // Resolve the type of this extends clause
     const exprType = clause.getType();
     const symbol = exprType.getSymbol();
-    
+
     const paramMap = new Map<string, string>();
     if (symbol) {
       const decl = symbol.getDeclarations()[0];
@@ -187,29 +189,6 @@ export function extractDescription(decl: Node) {
     .map((line) => line.trim())
     .filter(Boolean)
     .join("\n");
-}
-
-/** Extracts the `@default` tag value from a property's JSDoc, if present. */
-export function extractDefaultValue(decl: Node) {
-  if (!Node.isJSDocable(decl)) {
-    return;
-  }
-
-  const jsDocs = decl.getJsDocs();
-  if (jsDocs.length === 0) {
-    return;
-  }
-
-  const doc = jsDocs[0];
-  const tags = doc.getTags();
-  const defaultTag = tags.find((tag) => tag.getTagName() === "default");
-
-  if (!defaultTag) {
-    return;
-  }
-
-  const commentText = defaultTag.getCommentText();
-  return commentText?.trim();
 }
 
 /**
