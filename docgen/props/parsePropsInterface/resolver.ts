@@ -18,11 +18,13 @@ export async function resolvePropertyType(
   decl: Node | undefined,
   contextNode: Node,
   genericNames: Set<string>,
-  typeDependencies: Record<string, ParsedType | ParsedType[]>
+  typeDependencies: Record<string, ParsedType | ParsedType[]>,
+  customRawAnnotation?: string
 ) {
   const propType = prop.getTypeAtLocation(contextNode);
   const nonNullType = propType.getNonNullableType();
-  const rawAnnotation = extractRawTypeAnnotation(decl);
+  const rawAnnotation = customRawAnnotation ?? extractRawTypeAnnotation(decl);
+  const checkNode = decl ?? contextNode;
 
   if (nonNullType.isArray()) {
     const elementType = nonNullType.getArrayElementTypeOrThrow();
@@ -45,7 +47,7 @@ export async function resolvePropertyType(
     if (elementRawAnnotation) {
       const utilityType = await tryResolveUtilityTypes(
         elementRawAnnotation,
-        contextNode,
+        checkNode,
         typeDependencies
       );
       if (utilityType) {
@@ -57,7 +59,7 @@ export async function resolvePropertyType(
 
       const preserved = await tryPreserveAnnotation(
         elementRawAnnotation,
-        contextNode,
+        checkNode,
         typeDependencies
       );
 
@@ -74,7 +76,7 @@ export async function resolvePropertyType(
       const res = await resolveAliasedType(
         elementType,
         elementAliasSymbol,
-        contextNode,
+        checkNode,
         elementRawAnnotation,
         typeDependencies,
         decl
@@ -88,7 +90,7 @@ export async function resolvePropertyType(
     if (elementType.isUnion()) {
       const res = await resolveUnionType(
         elementType,
-        contextNode,
+        checkNode,
         genericNames,
         elementRawAnnotation,
         typeDependencies,
@@ -100,9 +102,9 @@ export async function resolvePropertyType(
       };
     }
 
-    const elementText = extractTypeText(elementType, contextNode);
+    const elementText = extractTypeText(elementType, checkNode);
     return {
-      type: await parseType(elementRawAnnotation ?? elementText, typeDependencies, contextNode),
+      type: await parseType(elementRawAnnotation ?? elementText, typeDependencies, checkNode),
       flags: ParsedPropertyFlags.ARRAY,
     };
   }
@@ -111,30 +113,30 @@ export async function resolvePropertyType(
   if (rawAnnotation && rawAnnotation.startsWith("Snippet")) {
     const params = resolveSnippetParams(rawAnnotation);
     return {
-      type: await parseType(params ?? "void", typeDependencies, contextNode),
+      type: await parseType(params ?? "void", typeDependencies, checkNode),
       flags: ParsedPropertyFlags.SNIPPET,
     };
   }
 
   // Check if it's a Snippet from a resolved type (e.g. when inherited)
   const aliasSymbol = propType.getAliasSymbol();
-  const resolvedText = extractTypeText(nonNullType, contextNode);
+  const resolvedText = extractTypeText(nonNullType, checkNode);
 
   if (aliasSymbol?.getName() === "Snippet" || resolvedText.startsWith("Snippet")) {
     const fullText = aliasSymbol
-      ? nonNullType.getText(contextNode, TypeFormatFlags.NoTruncation)
+      ? nonNullType.getText(checkNode, TypeFormatFlags.NoTruncation)
       : resolvedText;
     const params = resolveSnippetParams(fullText);
 
     return {
-      type: await parseType(params ?? "void", typeDependencies, contextNode),
+      type: await parseType(params ?? "void", typeDependencies, checkNode),
       flags: ParsedPropertyFlags.SNIPPET,
     };
   }
 
   // Check if the raw annotation references a preserved or external type
   if (rawAnnotation) {
-    const utilityType = await tryResolveUtilityTypes(rawAnnotation, contextNode, typeDependencies);
+    const utilityType = await tryResolveUtilityTypes(rawAnnotation, checkNode, typeDependencies);
 
     if (utilityType) {
       return {
@@ -143,7 +145,7 @@ export async function resolvePropertyType(
       };
     }
 
-    const preserved = await tryPreserveAnnotation(rawAnnotation, contextNode, typeDependencies);
+    const preserved = await tryPreserveAnnotation(rawAnnotation, checkNode, typeDependencies);
 
     if (preserved) {
       return {
@@ -161,7 +163,7 @@ export async function resolvePropertyType(
       nonNullType.getUnionTypes().every((union) => union.isBooleanLiteral()))
   ) {
     return {
-      type: await parseType("boolean", typeDependencies, contextNode),
+      type: await parseType("boolean", typeDependencies, checkNode),
       flags: ParsedPropertyFlags.NONE,
     };
   }
@@ -171,7 +173,7 @@ export async function resolvePropertyType(
     return {
       type: await resolveUnionType(
         nonNullType,
-        contextNode,
+        checkNode,
         genericNames,
         rawAnnotation,
         typeDependencies,
@@ -184,7 +186,7 @@ export async function resolvePropertyType(
   // Handle `keyof X` types and types that use a generic parameter
   if (rawAnnotation && (rawAnnotation.startsWith("keyof ") || genericNames.has(rawAnnotation))) {
     return {
-      type: await parseType(rawAnnotation, typeDependencies, contextNode),
+      type: await parseType(rawAnnotation, typeDependencies, checkNode),
       flags: ParsedPropertyFlags.NONE,
     };
   }
@@ -195,7 +197,7 @@ export async function resolvePropertyType(
       type: await resolveAliasedType(
         nonNullType,
         aliasSymbol,
-        contextNode,
+        checkNode,
         rawAnnotation,
         typeDependencies,
         decl
@@ -206,7 +208,7 @@ export async function resolvePropertyType(
 
   // Default: use the resolved type text
   return {
-    type: await parseType(resolvedText, typeDependencies, contextNode),
+    type: await parseType(resolvedText, typeDependencies, checkNode),
     flags: ParsedPropertyFlags.NONE,
   };
 }
@@ -347,14 +349,24 @@ async function tryResolveUtilityTypes(
     return undefined;
   }
 
+  const collapse = (parsed: ParsedType | ParsedType[]): ParsedType => {
+    if (!Array.isArray(parsed)) {
+      return parsed;
+    }
+    const parts = parsed.map((p) => ("name" in p ? p.name : p.definition));
+    return {
+      definition: parts.join(" | "),
+    };
+  };
+
   const omitMatch = rawAnnotation.match(/^Omit\s*<\s*(.+?)\s*,\s*(.+?)\s*>$/s);
   if (omitMatch) {
     const targetType = omitMatch[1].trim();
     const keys = omitMatch[2].trim();
-    const parsedTarget = await parseType(targetType, typeDependencies, contextNode);
-    const parsedKeys = await parseType(keys, typeDependencies, contextNode);
+    const parsedTarget = collapse(await parseType(targetType, typeDependencies, contextNode));
+    const parsedKeys = collapse(await parseType(keys, typeDependencies, contextNode));
     return {
-      type: [parsedTarget as ParsedType, parsedKeys as ParsedType],
+      type: [parsedTarget, parsedKeys],
       flag: ParsedPropertyFlags.OMIT,
     };
   }
@@ -363,10 +375,10 @@ async function tryResolveUtilityTypes(
   if (excludeMatch) {
     const targetType = excludeMatch[1].trim();
     const excluded = excludeMatch[2].trim();
-    const parsedTarget = await parseType(targetType, typeDependencies, contextNode);
-    const parsedExcluded = await parseType(excluded, typeDependencies, contextNode);
+    const parsedTarget = collapse(await parseType(targetType, typeDependencies, contextNode));
+    const parsedExcluded = collapse(await parseType(excluded, typeDependencies, contextNode));
     return {
-      type: [parsedTarget as ParsedType, parsedExcluded as ParsedType],
+      type: [parsedTarget, parsedExcluded],
       flag: ParsedPropertyFlags.EXCLUDE,
     };
   }
@@ -375,10 +387,10 @@ async function tryResolveUtilityTypes(
   if (pickMatch) {
     const targetType = pickMatch[1].trim();
     const keys = pickMatch[2].trim();
-    const parsedTarget = await parseType(targetType, typeDependencies, contextNode);
-    const parsedKeys = await parseType(keys, typeDependencies, contextNode);
+    const parsedTarget = collapse(await parseType(targetType, typeDependencies, contextNode));
+    const parsedKeys = collapse(await parseType(keys, typeDependencies, contextNode));
     return {
-      type: [parsedTarget as ParsedType, parsedKeys as ParsedType],
+      type: [parsedTarget, parsedKeys],
       flag: ParsedPropertyFlags.PICK,
     };
   }
@@ -387,10 +399,10 @@ async function tryResolveUtilityTypes(
   if (extractMatch) {
     const targetType = extractMatch[1].trim();
     const extracted = extractMatch[2].trim();
-    const parsedTarget = await parseType(targetType, typeDependencies, contextNode);
-    const parsedExtracted = await parseType(extracted, typeDependencies, contextNode);
+    const parsedTarget = collapse(await parseType(targetType, typeDependencies, contextNode));
+    const parsedExtracted = collapse(await parseType(extracted, typeDependencies, contextNode));
     return {
-      type: [parsedTarget as ParsedType, parsedExtracted as ParsedType],
+      type: [parsedTarget, parsedExtracted],
       flag: ParsedPropertyFlags.EXTRACT,
     };
   }

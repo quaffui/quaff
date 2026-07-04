@@ -47,8 +47,15 @@ export async function parseInterface(
 
   // 1. Collect properties from extended internal interfaces
   const extendedProps = extractExtendedInternalProperties(interfaceDecl);
-  for (const prop of extendedProps) {
-    const parsed = await parseProperty(prop, interfaceDecl, genericNames, typeDependencies);
+  for (const extProp of extendedProps) {
+    const parsed = await parseProperty(
+      extProp.symbol,
+      interfaceDecl,
+      genericNames,
+      typeDependencies,
+      extProp.decl,
+      extProp.rawAnnotation
+    );
     propertyMap.set(parsed.name, parsed);
   }
 
@@ -235,7 +242,9 @@ async function parseProperty(
   prop: MorphSymbol,
   contextNode: Node,
   genericNames: Set<string>,
-  typeDependencies: Record<string, ParsedType | ParsedType[]>
+  typeDependencies: Record<string, ParsedType | ParsedType[]>,
+  customDecl?: Node,
+  customRawAnnotation?: string
 ) {
   const name = prop.getName();
 
@@ -245,7 +254,7 @@ async function parseProperty(
   let bindableFlag = ParsedPropertyFlags.NONE;
 
   const declarations = prop.getDeclarations();
-  const decl = declarations.at(0);
+  const decl = customDecl ?? declarations.at(0);
 
   if (decl) {
     description = extractDescription(decl);
@@ -264,7 +273,8 @@ async function parseProperty(
     decl,
     contextNode,
     genericNames,
-    typeDependencies
+    typeDependencies,
+    customRawAnnotation
   );
 
   const result: ParsedProperty = {
