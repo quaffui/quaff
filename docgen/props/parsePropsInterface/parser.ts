@@ -9,7 +9,6 @@ import {
   PRESERVE_TYPE_NAMES,
 } from "./defs";
 import {
-  extractDefaultValue,
   extractDescription,
   extractDomConstraint,
   extractExtendedInternalProperties,
@@ -17,12 +16,7 @@ import {
   extractInternalTypeReferenceSymbol,
   extractTypeSrc,
 } from "./extractor";
-import {
-  isImportedFromExternal,
-  isPropertyBindable,
-  isPropertyOptional,
-  isTypeAlias,
-} from "./checker";
+import { isImportedFromExternal, isPropertyOptional, isTypeAlias } from "./checker";
 import { resolvePropertyType } from "./resolver";
 import { removeChildrenComments, splitUnionParts } from "./utils";
 
@@ -250,21 +244,15 @@ async function parseProperty(
 
   let description = "";
   let optionalFlag = ParsedPropertyFlags.NONE;
-  let defaultValue;
-  let bindableFlag = ParsedPropertyFlags.NONE;
 
   const declarations = prop.getDeclarations();
   const decl = customDecl ?? declarations.at(0);
 
   if (decl) {
     description = extractDescription(decl);
-    defaultValue = extractDefaultValue(decl);
 
     if (isPropertyOptional(decl)) {
       optionalFlag = ParsedPropertyFlags.OPTIONAL;
-    }
-    if (isPropertyBindable(decl)) {
-      bindableFlag = ParsedPropertyFlags.BINDABLE;
     }
   }
 
@@ -280,11 +268,12 @@ async function parseProperty(
   const result: ParsedProperty = {
     name,
     description,
-    flags: flags | optionalFlag | bindableFlag,
+    flags: flags | optionalFlag, // Bindable flag is handled later by the parseDefaults function
     type,
   };
 
-  result.default = defaultValue ?? "undefined";
+  // Default values are handled later by the parseDefaults function
+  result.default = "undefined";
 
   return result;
 }
