@@ -8,7 +8,6 @@ export interface QLayoutProps extends HTMLAttributes<HTMLDivElement> {
   /**
    * The layout view configuration, which defines how layout components (header, railbars, drawers, footer) should be displayed on screen.
    * Controls how layout components (header, railbars, drawers, footer) are displayed on screen.
-   * @default "hhh lpr fff"
    */
   view?: QLayoutViewOptions;
 

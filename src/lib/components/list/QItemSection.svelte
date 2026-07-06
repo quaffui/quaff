@@ -54,7 +54,7 @@
   {:else if type === "side"}
     {@render children?.()}
   {:else}
-    <div class={ctx.activeClass || undefined}>
+    <div class={ctx.activeClass}>
       {@render children?.()}
     </div>
   {/if}

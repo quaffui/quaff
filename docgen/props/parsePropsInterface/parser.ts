@@ -18,7 +18,7 @@ import {
 } from "./extractor";
 import { isImportedFromExternal, isPropertyOptional, isTypeAlias } from "./checker";
 import { resolvePropertyType } from "./resolver";
-import { removeChildrenComments, splitUnionParts } from "./utils";
+import { removeChildrenComments, simplifyExcludeUndefined, splitUnionParts } from "./utils";
 
 /**
  * Parses a full interface declaration into a `ParsedInterface`.
@@ -41,6 +41,7 @@ export async function parseInterface(
 
   // 1. Collect properties from extended internal interfaces
   const extendedProps = extractExtendedInternalProperties(interfaceDecl);
+
   for (const extProp of extendedProps) {
     const parsed = await parseProperty(
       extProp.symbol,
@@ -50,6 +51,8 @@ export async function parseInterface(
       extProp.decl,
       extProp.rawAnnotation
     );
+
+    parsed.default = extProp.defaultValue;
     propertyMap.set(parsed.name, parsed);
   }
 
@@ -89,6 +92,7 @@ export async function parseType(
   visited: Set<string> = new Set(),
   resolvedSymbol?: MorphSymbol
 ): Promise<ParsedType | ParsedType[]> {
+  typeText = simplifyExcludeUndefined(typeText);
   const parts = splitUnionParts(typeText);
 
   if (parts.length > 1) {
@@ -271,9 +275,6 @@ async function parseProperty(
     flags: flags | optionalFlag, // Bindable flag is handled later by the parseDefaults function
     type,
   };
-
-  // Default values are handled later by the parseDefaults function
-  result.default = "undefined";
 
   return result;
 }

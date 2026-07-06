@@ -4,9 +4,9 @@
     getClosestFocusableBlock,
     getClosestFocusableSibling,
     getDirection,
+    getRouterInfo,
     isActivationKey,
     isArrowKey,
-    isRouteActive,
     isTabKey,
     type Direction,
     type QEvent,
@@ -19,7 +19,7 @@
   type QTabEvent<T extends Event> = QEvent<T, QTabEl>;
 
   // #region:    --- Props
-  let { name, to, icon, children, ...props }: QTabProps = $props();
+  let { name, icon, children, ...props }: QTabProps = $props();
   // #endregion: --- Props
 
   // #region:    --- Non-reactive variables
@@ -31,9 +31,12 @@
   // #endregion: --- Reactive variables
 
   // #region:    --- Derived values
-  const tag = $derived(to ? "a" : "button");
+  const routerInfo = $derived(getRouterInfo(props));
+  const tag = $derived(routerInfo.hasLink ? "a" : "button");
 
-  const isActive = $derived(to ? isRouteActive(to) : name === ctx.value);
+  const isActive = $derived(routerInfo.isActive ?? name === ctx.value);
+
+  const activeClass = $derived(isActive && (props.activeClass ?? ctx.activeClass));
   // #endregion: --- Derived values
 
   // #region:    --- Functions
@@ -83,7 +86,7 @@
     bemClasses: {
       active: isActive,
     },
-    classes: [props.class],
+    classes: [routerInfo.linkClass, activeClass, props.class],
   });
 </script>
 
@@ -92,8 +95,8 @@
   bind:this={qTab}
   {@attach ripple()}
   {...props}
+  {...routerInfo.linkAttributes}
   class="q-tab"
-  href={to}
   role={tag === "a" ? "button" : undefined}
   aria-current={isActive || undefined}
   aria-label={name}

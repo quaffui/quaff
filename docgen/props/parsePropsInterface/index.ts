@@ -33,7 +33,7 @@ export async function parseInterfaces(filePath: string) {
       const p = parsedDefaults.get(prop.name);
 
       if (!p) {
-        prop.default = "undefined";
+        prop.default = prop.default ?? "undefined";
         continue;
       }
 

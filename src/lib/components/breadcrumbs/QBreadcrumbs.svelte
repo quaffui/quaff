@@ -5,6 +5,8 @@
   export const breadcrumbsCtx = QContext<{
     readonly separator: QBreadcrumbsProps["separator"];
     readonly gutter: QBreadcrumbsProps["gutter"];
+    readonly activeClass: QBreadcrumbsProps["activeClass"];
+    readonly activeStyle: QBreadcrumbsProps["activeStyle"];
   }>("QBreadcrumbs");
 </script>
 
@@ -33,7 +35,12 @@
   // #endregion: --- Non-reactive variables
 
   // #region:    --- Context
-  breadcrumbsCtx.set({ separator, gutter });
+  breadcrumbsCtx.set({
+    separator,
+    gutter,
+    activeClass: props.activeClass,
+    activeStyle: props.activeStyle,
+  });
   // #endregion: --- Context
 
   // #region:    --- Lifecycle

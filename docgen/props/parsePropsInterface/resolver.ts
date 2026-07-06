@@ -8,7 +8,7 @@ import {
 } from "./defs";
 import { extractRawTypeAnnotation, extractTypeText } from "./extractor";
 import { parseType } from "./parser";
-import { tryPreserveAnnotation, splitUnionParts } from "./utils";
+import { tryPreserveAnnotation, simplifyExcludeUndefined, splitUnionParts } from "./utils";
 
 /**
  * Core type resolution logic. Determines how to represent a property's type.
@@ -23,7 +23,10 @@ export async function resolvePropertyType(
 ) {
   const propType = prop.getTypeAtLocation(contextNode);
   const nonNullType = propType.getNonNullableType();
-  const rawAnnotation = customRawAnnotation ?? extractRawTypeAnnotation(decl);
+  let rawAnnotation = customRawAnnotation ?? extractRawTypeAnnotation(decl);
+  if (rawAnnotation) {
+    rawAnnotation = simplifyExcludeUndefined(rawAnnotation);
+  }
   const checkNode = decl ?? contextNode;
 
   if (nonNullType.isArray()) {

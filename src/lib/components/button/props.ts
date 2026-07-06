@@ -1,18 +1,18 @@
-import type { QSize } from "$utils";
+import type { Disableable, Linkable, QSize, QSizeable, Labelable } from "$utils";
 import type { MaterialSymbol } from "material-symbols";
-import type { HTMLAttributes, HTMLAnchorAttributes, MouseEventHandler } from "svelte/elements";
+import type { HTMLAttributes, MouseEventHandler } from "svelte/elements";
 
 export type QBtnSizeOptions = Exclude<QSize, "xs">;
 
 export type QBtnVariantOptions = "elevated" | "filled" | "tonal" | "outlined" | "flat";
 
-export interface QBtnProps extends HTMLAttributes<HTMLButtonElement> {
-  /**
-   * Puts the button in a disabled state, making it unclickable.
-   * @default false
-   */
-  disabled?: boolean;
-
+export interface QBtnProps
+  extends
+    Labelable,
+    Disableable,
+    Linkable,
+    QSizeable<"none" | "xs">,
+    HTMLAttributes<HTMLButtonElement> {
   /**
    * Sets the color of the button. If a color is specified, it overwrites all other color variants defined with boolean attributes.
    */
@@ -53,11 +53,6 @@ export interface QBtnProps extends HTMLAttributes<HTMLButtonElement> {
   icon?: MaterialSymbol | `img:${string}`;
 
   /**
-   * Text to use for the button.
-   */
-  label?: string;
-
-  /**
    * Puts the button in a loading state, adding a loader as the leading icon.
    * @default false
    */
@@ -87,27 +82,10 @@ export interface QBtnProps extends HTMLAttributes<HTMLButtonElement> {
   round?: boolean;
 
   /**
-   * Makes the button navigational. Can be used with the router (e.g to="/home") or as a normal href attribute (e.g to="#section-id").
-   *  @default undefined
-   */
-  to?: string;
-
-  /**
    * Removes the button's elevation.
    * @default false
    */
   unelevated?: boolean;
-
-  /**
-   * Size of the button.
-   * @default "md"
-   */
-  size?: QBtnSizeOptions;
-
-  /**
-   * For "a" (anchor) tag only, apply the target attribute.
-   */
-  target?: HTMLAnchorAttributes["target"];
 
   /**
    * The tag to use for the button. If not specified, a button element will be used or, if `to` is specified, an anchor tag will be used.
