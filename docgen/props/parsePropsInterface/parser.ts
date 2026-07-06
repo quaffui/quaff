@@ -41,6 +41,7 @@ export async function parseInterface(
 
   // 1. Collect properties from extended internal interfaces
   const extendedProps = extractExtendedInternalProperties(interfaceDecl);
+
   for (const extProp of extendedProps) {
     const parsed = await parseProperty(
       extProp.symbol,
@@ -50,6 +51,8 @@ export async function parseInterface(
       extProp.decl,
       extProp.rawAnnotation
     );
+
+    parsed.default = extProp.defaultValue;
     propertyMap.set(parsed.name, parsed);
   }
 
@@ -271,9 +274,6 @@ async function parseProperty(
     flags: flags | optionalFlag, // Bindable flag is handled later by the parseDefaults function
     type,
   };
-
-  // Default values are handled later by the parseDefaults function
-  result.default = "undefined";
 
   return result;
 }

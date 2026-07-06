@@ -4,6 +4,7 @@
 
   interface QListContext {
     readonly activeClass: string | undefined;
+    readonly activeStyle: string | undefined;
     readonly separatorOptions: QListProps["separatorOptions"];
   }
 
@@ -21,6 +22,7 @@
     padding = false,
     tag = "div",
     activeClass,
+    activeStyle,
     children,
     ...props
   }: QListProps = $props();
@@ -33,6 +35,7 @@
   // #region:    --- Context
   listCtx.set({
     activeClass,
+    activeStyle,
     separatorOptions: separator ? separatorOptions : undefined,
   });
   // #endregion: --- Context

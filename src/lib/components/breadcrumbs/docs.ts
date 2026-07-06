@@ -5,6 +5,11 @@ import {
   QBreadcrumbsDocsGenerics,
   QBreadcrumbsDocsDomAttributesConstraint,
   QBreadcrumbsDocsTypeDependencies,
+  QBreadcrumbsElDocsProps,
+  QBreadcrumbsElDocsSnippets,
+  QBreadcrumbsElDocsGenerics,
+  QBreadcrumbsElDocsDomAttributesConstraint,
+  QBreadcrumbsElDocsTypeDependencies,
 } from "./docs.props";
 
 export const QBreadcrumbsDocs: QComponentDocs = {
@@ -19,5 +24,19 @@ export const QBreadcrumbsDocs: QComponentDocs = {
     methods: [],
     events: [],
     typeDependencies: QBreadcrumbsDocsTypeDependencies,
+  },
+};
+
+export const QBreadcrumbsElDocs: QComponentDocs = {
+  name: "QBreadcrumbsEl",
+  description: "A single breadcrumb element to be used within a QBreadcrumbs container.",
+  docs: {
+    generics: QBreadcrumbsElDocsGenerics,
+    domAttributesConstraint: QBreadcrumbsElDocsDomAttributesConstraint,
+    props: QBreadcrumbsElDocsProps,
+    snippets: QBreadcrumbsElDocsSnippets,
+    methods: [],
+    events: [],
+    typeDependencies: QBreadcrumbsElDocsTypeDependencies,
   },
 };

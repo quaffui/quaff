@@ -1,3 +1,4 @@
+import { Borderable } from "$utils";
 import type { Snippet } from "svelte";
 import type { HTMLAttributes } from "svelte/elements";
 
@@ -21,34 +22,24 @@ export type QTableSort = {
   type: "asc" | "desc";
 } | null;
 
-export interface QTableProps extends HTMLAttributes<HTMLDivElement> {
+export interface QTableProps extends Borderable, HTMLAttributes<HTMLDivElement> {
   /**
    * Column definitions of the table.
-   * @default []
    */
   columns: QTableColumn[];
 
   /**
    * Rows of the table.
-   * @default []
    */
   rows: QTableRow[];
 
   /**
    * Uses flat design, removing the box-shadow around the table.
-   * @default false
    */
   flat?: boolean;
 
   /**
-   * Adds a border around the table.
-   * @default false
-   */
-  bordered?: boolean;
-
-  /**
    * Shows the Table in dense mode (takes up less space).
-   * @default false
    */
   dense?: boolean;
 

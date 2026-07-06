@@ -1,12 +1,12 @@
 <script lang="ts">
-  import { QBreadcrumbsDocs } from "$components/breadcrumbs/docs";
+  import { QBreadcrumbsDocs, QBreadcrumbsElDocs } from "$components/breadcrumbs/docs";
   import { docsCtx } from "$docs/QDocs.svelte";
   import { pageTitle } from "$helpers/pageTitle";
   import { QBreadcrumbs, QBreadcrumbsEl, QCard } from "$lib";
   import { QDocs, QDocsSection } from "$docs";
   import snippets from "./docs.snippets";
 
-  docsCtx.set({ snippets, componentDocs: QBreadcrumbsDocs });
+  docsCtx.set({ snippets, componentDocs: [QBreadcrumbsDocs, QBreadcrumbsElDocs] });
 </script>
 
 <svelte:head>
@@ -77,7 +77,7 @@
         <div class="q-mb-md">
           <QBreadcrumbs>
             {#snippet separator()}
-              <span class="text-red">•••</span>
+              <span class="text-green">•••</span>
             {/snippet}
 
             <QBreadcrumbsEl to="/" label="Home" />
@@ -87,18 +87,29 @@
         </div>
       </QDocsSection>
 
-      <QDocsSection title="Custom Colors">
+      <QDocsSection title="Active Colors, Classes, and Styles">
         {#snippet sectionDescription()}
           <p>
             Customize the active item color and separator color using the <code>activeColor</code>
             and
             <code>separatorColor</code> props. These accept any color from your theme.
           </p>
+          <p>
+            You can also use the <code>activeClass</code> and <code>activeStyle</code> props to customize
+            the active item's appearance using Quaff utility classes and inline styles.
+          </p>
         {/snippet}
         <div class="q-mb-md">
+          <QBreadcrumbs activeColor="error" separatorColor="primary" separator="icon:chevron_right">
+            <QBreadcrumbsEl to="/" label="Home" />
+            <QBreadcrumbsEl to="/components" label="Components" />
+            <QBreadcrumbsEl label="Breadcrumbs" />
+          </QBreadcrumbs>
+        </div>
+        <div class="q-mb-md">
           <QBreadcrumbs
-            activeColor="error-container"
-            separatorColor="green"
+            activeClass="primary q-px-sm"
+            activeStyle="border-radius: 0.25rem"
             separator="icon:chevron_right"
           >
             <QBreadcrumbsEl to="/" label="Home" />
@@ -149,7 +160,8 @@
         {#snippet sectionDescription()}
           <p>
             Adjust the spacing around separators using the <code>gutter</code> prop. Available
-            options are <code>sm</code> (default), <code>md</code>, and <code>lg</code>.
+            options are <code>none</code>, <code>sm</code> (default), <code>md</code>, and
+            <code>lg</code>.
           </p>
         {/snippet}
         <div class="q-mb-md">

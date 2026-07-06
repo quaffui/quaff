@@ -15,7 +15,7 @@
 
 <QDocs>
   {#snippet display()}
-    <QToolbar border>
+    <QToolbar bordered>
       <QBtn flat icon="menu" />
       <QToolbarTitle>My Application</QToolbarTitle>
       <QBtn flat icon="search" />
@@ -31,7 +31,7 @@
           headers and footers, it contains navigation icons, titles, and action buttons.
         {/snippet}
 
-        <QToolbar border class="q-mb-md">
+        <QToolbar bordered class="q-mb-md">
           <QBtn flat icon="menu" />
           <QToolbarTitle>Basic Toolbar</QToolbarTitle>
           <QBtn flat icon="search" />
@@ -45,12 +45,12 @@
           shrink when needed to accommodate other toolbar elements.
         {/snippet}
 
-        <QToolbar border class="q-mb-md">
+        <QToolbar bordered class="q-mb-md">
           <QBtn flat icon="arrow_back" />
           <QToolbarTitle>Page Title</QToolbarTitle>
         </QToolbar>
 
-        <QToolbar border class="q-mb-md">
+        <QToolbar bordered class="q-mb-md">
           <QBtn flat icon="menu" />
           <QToolbarTitle shrink>Shrinkable Title</QToolbarTitle>
           <QBtn flat label="Action 1" />
@@ -60,7 +60,7 @@
 
       <QDocsSection title="Appearance Options">
         {#snippet sectionDescription()}
-          Customize the toolbar appearance with props like <code>border</code>,
+          Customize the toolbar appearance with props like <code>bordered</code>,
           <code>elevate</code>, and <code>inset</code>. These control the visual styling and spacing
           of the toolbar.
         {/snippet}
@@ -74,8 +74,8 @@
         </div>
 
         <div class="q-mb-md">
-          <p class="text-caption q-mb-xs">With Border</p>
-          <QToolbar border>
+          <p class="text-caption q-mb-xs">With bordered</p>
+          <QToolbar bordered>
             <QBtn flat icon="menu" />
             <QToolbarTitle>Bordered</QToolbarTitle>
           </QToolbar>
@@ -114,7 +114,7 @@
 
         <div class="q-mb-md">
           <p class="text-caption q-mb-xs">Default Height (64px)</p>
-          <QToolbar border>
+          <QToolbar bordered>
             <QBtn flat icon="menu" />
             <QToolbarTitle>Default Height</QToolbarTitle>
           </QToolbar>
@@ -122,7 +122,7 @@
 
         <div class="q-mb-md">
           <p class="text-caption q-mb-xs">Compact Height (48px)</p>
-          <QToolbar border height={48}>
+          <QToolbar bordered height={48}>
             <QBtn flat icon="menu" />
             <QToolbarTitle>Compact</QToolbarTitle>
           </QToolbar>
@@ -130,7 +130,7 @@
 
         <div class="q-mb-md">
           <p class="text-caption q-mb-xs">Tall Height (80px)</p>
-          <QToolbar border height={80}>
+          <QToolbar bordered height={80}>
             <QBtn flat icon="menu" />
             <QToolbarTitle>Tall</QToolbarTitle>
           </QToolbar>
@@ -144,7 +144,7 @@
 
         <div class="q-mb-md">
           <p class="text-caption q-mb-xs">Navigation Drawer Menu</p>
-          <QToolbar border>
+          <QToolbar bordered>
             <QBtn flat icon="menu" />
             <QToolbarTitle>My App</QToolbarTitle>
           </QToolbar>
@@ -152,7 +152,7 @@
 
         <div class="q-mb-md">
           <p class="text-caption q-mb-xs">Back Navigation</p>
-          <QToolbar border>
+          <QToolbar bordered>
             <QBtn flat icon="arrow_back" />
             <QToolbarTitle>Page Details</QToolbarTitle>
           </QToolbar>
@@ -160,7 +160,7 @@
 
         <div class="q-mb-md">
           <p class="text-caption q-mb-xs">Search Bar</p>
-          <QToolbar border>
+          <QToolbar bordered>
             <QBtn flat icon="arrow_back" />
             <QToolbarTitle>
               <QInput value="how to center a div" dense rounded style="width: 33%;">
@@ -174,7 +174,7 @@
 
         <div class="q-mb-md">
           <p class="text-caption q-mb-xs">Action Buttons</p>
-          <QToolbar border inset>
+          <QToolbar bordered inset>
             <QToolbarTitle class="justify-start">Edit Document</QToolbarTitle>
             <QBtn flat label="Save" />
             <QBtn flat label="Cancel" />

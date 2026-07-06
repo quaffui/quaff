@@ -9,13 +9,11 @@ export type QIconTypeOptions = "outlined" | "sharp" | "rounded";
 export interface QIconProps extends HTMLAttributes<HTMLElement> {
   /**
    * The size of the icon. Can be specified with CSS units. If no unit is specified, "px" will be used.
-   * @default md
    */
   size?: QIconSizeOptions;
 
   /**
    * The type of the icon.
-   * @default outlined
    */
   type?: QIconTypeOptions;
 
@@ -26,7 +24,6 @@ export interface QIconProps extends HTMLAttributes<HTMLElement> {
 
   /**
    * Determines whether the icon should be filled.
-   * @default false
    */
   filled?: boolean;
 
@@ -42,7 +39,6 @@ export interface QIconProps extends HTMLAttributes<HTMLElement> {
 
   /**
    * Additional attributes for the image element when using the `img` prop, as for example the "alt" attribute.
-   * @default {}
    */
   imgAttributes?: HTMLImgAttributes;
 
