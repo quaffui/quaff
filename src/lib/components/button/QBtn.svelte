@@ -1,7 +1,7 @@
 <script lang="ts">
   import { useSize } from "$composables";
   import { ripple } from "$helpers";
-  import { isActivationKey, extractImgSrc, type QEvent } from "$utils";
+  import { isActivationKey, extractImgSrc, type QEvent, getRouterInfo } from "$utils";
   import QIcon from "$components/icon/QIcon.svelte";
   import QCircularProgress from "$components/progress/QCircularProgress.svelte";
   import type { MaterialSymbol } from "material-symbols";
@@ -25,7 +25,6 @@
     noRipple = false,
     rippleColor,
     round = false,
-    to,
     unelevated = false,
     size = "md",
     target,
@@ -42,7 +41,9 @@
   // #endregion: --- Non-reactive variables
 
   // #region:    --- Derived values
-  const computedTag = $derived(to ? "a" : tag || "button");
+  const routerInfo = $derived(getRouterInfo(props));
+
+  const computedTag = $derived(routerInfo.hasLink ? "a" : tag || "button");
   const qSize = $derived(useSize(size, "q-btn"));
 
   const src = $derived(extractImgSrc(icon));
@@ -116,7 +117,7 @@
       rectangle,
       round: round || (!children && !label),
     },
-    classes: [qSize.class, props.class],
+    classes: [qSize.class, routerInfo.linkClass, props.class],
   });
 </script>
 
@@ -129,7 +130,7 @@
   style:--q-btn-size={qSize.style}
   style:--ripple-color={computedColor && `var(--${computedColor})`}
   {target}
-  href={to}
+  {...routerInfo.linkAttributes}
   role={computedTag === "a" ? "button" : undefined}
   aria-disabled={disabled || undefined}
   tabindex={disabled ? -1 : props.tabindex || 0}

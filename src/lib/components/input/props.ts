@@ -1,26 +1,21 @@
+import { Disableable, Labelable, OptionalModel } from "$utils";
 import type { Snippet } from "svelte";
 import type { HTMLAttributes, HTMLInputAttributes } from "svelte/elements";
 import type { QInputFillMask } from "./mask";
 
-export interface QInputProps extends HTMLInputAttributes {
+export interface QInputProps
+  extends
+    OptionalModel<string | number | null>,
+    Labelable,
+    Disableable,
+    Omit<HTMLInputAttributes, "value" | "disabled"> {
   /**
    * Makes the input component more compact.
-   *
-   * @default false
    */
   dense?: boolean;
 
   /**
-   * Disables the input, preventing user interaction.
-   *
-   * @default false
-   */
-  disabled?: boolean;
-
-  /**
    * Indicates an error state for the input.
-   *
-   * @default false
    */
   error?: boolean;
 
@@ -32,8 +27,6 @@ export interface QInputProps extends HTMLInputAttributes {
 
   /**
    * Applies a filled background style to the input.
-   *
-   * @default false
    */
   filled?: boolean;
 
@@ -44,22 +37,12 @@ export interface QInputProps extends HTMLInputAttributes {
   hint?: string;
 
   /**
-   * Label text for the input field.
-   *
-   */
-  label?: string;
-
-  /**
    * Applies an outlined style to the input.
-   *
-   * @default false
    */
   outlined?: boolean;
 
   /**
    * Makes the sides of the input round.
-   *
-   * @default false
    */
   rounded?: boolean;
 
@@ -77,16 +60,8 @@ export interface QInputProps extends HTMLInputAttributes {
 
   /**
    * Stores only mask token characters in the bindable value.
-   *
-   * @default false
    */
   unmaskedValue?: boolean;
-
-  /**
-   * Current value of the input field.
-   * @bindable
-   */
-  value: string | number | null;
 
   /**
    * Classes applied to the field wrapper.

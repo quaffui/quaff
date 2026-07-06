@@ -58,22 +58,31 @@ export async function parseDefaults(svelteFile: string) {
       }
 
       if (value.type === "AssignmentPattern") {
-        // Case: const { name = "default" } = $props(); => The prop has a default value
+        // Case: const { name = ... } = $props(); => The prop has a default value
         const { right } = value;
 
         if (right.type === "Literal") {
+          // Case: const { name = "default" } = $props();
           result.set(name, { default: right.raw });
         } else if (
           right.type === "CallExpression" &&
           right.callee.type === "Identifier" &&
           right.callee.name === "$bindable"
         ) {
+          // Case: const { name = $bindable(...) } = $props();
           const [arg] = right.arguments;
 
           // @ts-expect-error Svelte parser doesn't add start/end to types for some reason
           const txt = arg ? content.slice(arg.start, arg.end) || "unknown" : "undefined";
 
           result.set(name, { bindable: true, default: txt });
+        } else {
+          // Case: const { name = ... } = $props(); where ... is neither a Literal nor a "$bindable" CallExpression
+
+          // @ts-expect-error Svelte parser doesn't add start/end to types for some reason
+          const txt = content.slice(right.start, right.end) || "unknown";
+
+          result.set(name, { default: txt });
         }
       }
     }

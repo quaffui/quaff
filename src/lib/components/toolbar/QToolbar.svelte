@@ -4,7 +4,7 @@
   // #region:    --- Props
   let {
     inset = false,
-    border = false,
+    bordered = false,
     elevate = false,
     height = 64,
     children,
@@ -16,7 +16,7 @@
     bemClasses: {
       inset,
       elevated: elevate,
-      bordered: border,
+      bordered,
     },
     classes: [props.class],
   });

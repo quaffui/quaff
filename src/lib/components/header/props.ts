@@ -1,36 +1,29 @@
 import { HTMLAttributes } from "svelte/elements";
+import { Borderable } from "$utils";
 
-export interface QHeaderProps extends HTMLAttributes<HTMLElement> {
+export interface QHeaderProps extends Borderable, HTMLAttributes<HTMLElement> {
   /**
    * Adds horizontal padding to the toolbar content.
-   *
-   * @default false
    */
   inset?: boolean;
+
   /**
-   * Adds a border to the toolbar to separate it from the main content.
-   *
-   * @default false
-   */
-  border?: boolean;
-  /**
-   * @default false
+   * Adds a drop shadow to the toolbar.
    */
   elevated?: boolean;
+
   /**
-   * @default false
-   */
-  bordered?: boolean;
-  /**
-   * @default 64
+   * Height in pixels of the toolbar.
    */
   height?: number;
+
   /**
-   * @default false
+   * Hides the toolbar when the user scrolls down the page and shows the toolbar when the user scrolls up the page.
    */
   reveal?: boolean;
+
   /**
-   * @default 250
+   * The offset in pixels to trigger the reveal effect. The toolbar will be hidden when the scroll position is greater than this value.
    */
   revealOffset?: number;
 }

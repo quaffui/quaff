@@ -7,6 +7,7 @@ export interface ExtendedProperty {
   symbol: MorphSymbol;
   decl?: Node;
   rawAnnotation?: string;
+  defaultValue?: string;
 }
 
 /**
@@ -129,6 +130,7 @@ export function extractExtendedInternalProperties(
           const param = typeParams[i];
           const arg = typeArgs[i];
           const paramName = param.getName();
+
           if (arg) {
             paramMap.set(paramName, arg.getText());
           } else {
@@ -142,11 +144,15 @@ export function extractExtendedInternalProperties(
     }
 
     for (const prop of exprType.getProperties()) {
+      let defaultValue: string | undefined;
       const decls = prop.getDeclarations();
       const propDecl = decls[0];
+
       let rawAnnotation: string | undefined;
 
       if (propDecl && Node.isPropertySignature(propDecl)) {
+        defaultValue = extractDefaultValue(propDecl);
+
         const typeNode = propDecl.getTypeNode();
         if (typeNode) {
           rawAnnotation = typeNode.getText({ includeJsDocComments: false });
@@ -160,6 +166,7 @@ export function extractExtendedInternalProperties(
       }
 
       properties.push({
+        defaultValue,
         symbol: prop,
         decl: propDecl,
         rawAnnotation,
@@ -189,6 +196,29 @@ export function extractDescription(decl: Node) {
     .map((line) => line.trim())
     .filter(Boolean)
     .join("\n");
+}
+
+/** Extracts the `@default` tag value from a property's JSDoc, if present. */
+export function extractDefaultValue(decl: Node) {
+  if (!Node.isJSDocable(decl)) {
+    return;
+  }
+
+  const jsDocs = decl.getJsDocs();
+  if (jsDocs.length === 0) {
+    return;
+  }
+
+  const doc = jsDocs[0];
+  const tags = doc.getTags();
+  const defaultTag = tags.find((tag) => tag.getTagName() === "default");
+
+  if (!defaultTag) {
+    return;
+  }
+
+  const commentText = defaultTag.getCommentText();
+  return commentText?.trim();
 }
 
 /**

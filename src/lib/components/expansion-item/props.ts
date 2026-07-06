@@ -1,19 +1,10 @@
 import { MaterialSymbol } from "material-symbols";
 import { Snippet } from "svelte";
 import { HTMLDetailsAttributes, MouseEventHandler } from "svelte/elements";
+import { Disableable, Labelable, Linkable, OptionalModel } from "$utils";
 
-export interface QExpansionItemProps extends HTMLDetailsAttributes {
-  /**
-   * The value of the expansion item, used to define the expansion state of the item.
-   * @bindable
-   */
-  value?: boolean;
-
-  /**
-   * The label of the expansion item, displayed in the header.
-   */
-  label?: string;
-
+export interface QExpansionItemProps
+  extends OptionalModel<boolean>, Labelable, Linkable, Disableable, HTMLDetailsAttributes {
   /**
    * The icon to display in the header of the expansion item.
    */
@@ -27,8 +18,6 @@ export interface QExpansionItemProps extends HTMLDetailsAttributes {
   /**
    * The icon to use as the toggle icon for the expansion item.
    * If not provided, a chevron icon will be used.
-   *
-   * @default "chevron_down"
    */
   expandIcon?: MaterialSymbol;
 
@@ -40,29 +29,21 @@ export interface QExpansionItemProps extends HTMLDetailsAttributes {
 
   /**
    * Whether the expansion item is initially expanded.
-   *
-   * @default false
    */
   defaultOpened?: boolean;
 
   /**
    * Use the dense style for the expansion item, reducing its height.
-   *
-   * @default false
    */
   dense?: boolean;
 
   /**
    * Duration for the expansion animation in milliseconds.
-   *
-   * @default 300
    */
   duration?: number;
 
   /**
    * Whether to hide the expand icon.
-   *
-   * @default false
    */
   hideExpandIcon?: boolean;
 
@@ -75,8 +56,6 @@ export interface QExpansionItemProps extends HTMLDetailsAttributes {
 
   /**
    * The aria-label for the toggle button of the expansion item for accessibility.
-   *
-   * @default "Open details"
    */
   toggleAriaLabel?: string;
 
@@ -84,39 +63,14 @@ export interface QExpansionItemProps extends HTMLDetailsAttributes {
    * Makes the toggle icon the trigger for the expansion item instead of the whole header.
    * This is useful when using the expansion item as link, so the icon allows to expand/collapse the item
    * while the header changes the route.
-   *
-   * @default false
    */
   expandIconToggle?: boolean;
 
   /**
-   * Make the expansion item navigational, allowing it to be used as a link.
-   * It can be used interchangeably with the `href` prop.
-   * If both `href` and `to` are provided, the `to` prop will take precedence.
-   */
-  to?: string;
-
-  /**
-   * The URL to navigate to when the expansion item is clicked.
-   * It can be used interchangeably with the `to` prop.
-   * If both `href` and `to` are provided, the `to` prop will take precedence.
-   */
-  href?: string;
-
-  /**
    * Prevents the rotation of the expand icon when the item is expanded.
    * This is useful when using a custom icon that does not need to be rotated.
-   *
-   * @default false
    */
   noRotateExpandIcon?: boolean;
-
-  /**
-   * Whether the expansion item is disabled.
-   *
-   * @default false
-   */
-  disabled?: boolean;
 
   /**
    * Disables the ripple effect on the expansion item.

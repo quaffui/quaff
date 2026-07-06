@@ -113,3 +113,58 @@ export function removeChildrenComments(node: Node) {
     }
   });
 }
+
+/**
+ * Simplifies occurrences of `Exclude<T, undefined>` inside type text to `T`.
+ */
+export function simplifyExcludeUndefined(text: string): string {
+  let result = "";
+  let i = 0;
+
+  while (i < text.length) {
+    const isWordStart = i === 0 || !/[a-zA-Z0-9_$]/.test(text[i - 1]);
+    if (isWordStart && text.startsWith("Exclude<", i)) {
+      let depth = 0;
+      let commaIdx = -1;
+      let endIdx = -1;
+      const startIdx = i + "Exclude<".length;
+
+      for (let j = startIdx; j < text.length; j++) {
+        const char = text[j];
+        if (char === "<") {
+          depth++;
+        } else if (char === ">") {
+          if (depth === 0) {
+            endIdx = j;
+            break;
+          }
+          depth--;
+        } else if (char === "," && depth === 0) {
+          commaIdx = j;
+        }
+      }
+
+      if (commaIdx !== -1 && endIdx !== -1) {
+        // Exclude<T, U> where tVal is T and uVal is U
+        const tVal = text.substring(startIdx, commaIdx).trim();
+        const uVal = text.substring(commaIdx + 1, endIdx).trim();
+
+        const simplifiedT = simplifyExcludeUndefined(tVal);
+        const simplifiedU = simplifyExcludeUndefined(uVal);
+
+        if (simplifiedU === "undefined") {
+          result += simplifiedT;
+        } else {
+          result += `Exclude<${simplifiedT}, ${simplifiedU}>`;
+        }
+        i = endIdx + 1;
+        continue;
+      }
+    }
+
+    result += text[i];
+    i++;
+  }
+
+  return result;
+}

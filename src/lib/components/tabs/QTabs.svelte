@@ -4,6 +4,8 @@
 
   interface QTabsContext {
     readonly variant: QTabsProps["variant"];
+    readonly activeClass: QTabsProps["activeClass"];
+    readonly activeStyle: QTabsProps["activeStyle"];
     value: QTabsProps["value"];
     request: string | null;
   }
@@ -20,6 +22,8 @@
     value = $bindable(),
     variant = "primary",
     noSeparator = false,
+    activeClass,
+    activeStyle,
     children,
     ...props
   }: QTabsProps = $props();
@@ -35,7 +39,7 @@
   // #endregion: --- Reactive variables
 
   // #region:    --- Context
-  tabsCtx.set({ value, variant, request });
+  tabsCtx.set({ value, activeClass, activeStyle, variant, request });
   // #endregion: --- Context
 
   // #region:    --- Effects

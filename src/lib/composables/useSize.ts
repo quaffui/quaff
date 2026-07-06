@@ -26,7 +26,11 @@ export function useSize(size: number | string, component?: `q-${string}`) {
   };
 
   return {
-    class: sizeClass,
-    style: sizeStyle(),
+    get class() {
+      return sizeClass;
+    },
+    get style() {
+      return sizeStyle();
+    },
   };
 }

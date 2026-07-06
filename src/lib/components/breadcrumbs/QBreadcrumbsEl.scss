@@ -15,6 +15,10 @@
     }
   }
 
+  &:first-child > .q-breadcrumbs__separator {
+    display: none;
+  }
+
   .q-breadcrumbs__separator {
     color: var(--q-separator-color, currentColor);
   }
