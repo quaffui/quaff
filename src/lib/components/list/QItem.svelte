@@ -22,6 +22,7 @@
     active = false,
     clickable = false,
     dense = false,
+    tabindex = 0,
     disabled = false,
     activeStyle,
     noRipple = false,
@@ -73,10 +74,13 @@
 {/if}
 
 {#if routerInfo.hasLink}
+  <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
   <a
     {@attach ripple({ disabled: !isClickable || noRipple })}
     {...props}
     class="q-item"
+    tabindex={isClickable ? tabindex || 0 : undefined}
+    aria-disabled={isActionable && disabled ? true : undefined}
     {...routerInfo.linkAttributes}
     data-quaff
     {style}
@@ -89,6 +93,8 @@
     {@attach ripple({ disabled: !isClickable || noRipple })}
     {...props}
     class="q-item"
+    tabindex={isClickable ? tabindex || 0 : undefined}
+    aria-disabled={isActionable && disabled ? true : undefined}
     {...routerInfo.linkAttributes}
     data-quaff
     {style}
