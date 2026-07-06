@@ -1,4 +1,4 @@
-import type { CssValue, QSize } from "$utils";
+import type { CssValue, QSize, Sizeable } from "$utils";
 import type { HTMLAttributes, HTMLImgAttributes } from "svelte/elements";
 import type { MaterialSymbol } from "material-symbols";
 
@@ -6,12 +6,7 @@ export type QIconSizeOptions = QSize | CssValue | number;
 
 export type QIconTypeOptions = "outlined" | "sharp" | "rounded";
 
-export interface QIconProps extends HTMLAttributes<HTMLElement> {
-  /**
-   * The size of the icon. Can be specified with CSS units. If no unit is specified, "px" will be used.
-   */
-  size?: QIconSizeOptions;
-
+export interface QIconProps extends Sizeable, HTMLAttributes<HTMLElement> {
   /**
    * The type of the icon.
    */

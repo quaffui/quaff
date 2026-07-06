@@ -18,7 +18,7 @@ import {
 } from "./extractor";
 import { isImportedFromExternal, isPropertyOptional, isTypeAlias } from "./checker";
 import { resolvePropertyType } from "./resolver";
-import { removeChildrenComments, splitUnionParts } from "./utils";
+import { removeChildrenComments, simplifyExcludeUndefined, splitUnionParts } from "./utils";
 
 /**
  * Parses a full interface declaration into a `ParsedInterface`.
@@ -92,6 +92,7 @@ export async function parseType(
   visited: Set<string> = new Set(),
   resolvedSymbol?: MorphSymbol
 ): Promise<ParsedType | ParsedType[]> {
+  typeText = simplifyExcludeUndefined(typeText);
   const parts = splitUnionParts(typeText);
 
   if (parts.length > 1) {
