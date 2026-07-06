@@ -33,7 +33,7 @@ export function getRouterInfo<T extends RouterProps>(props: T) {
       return linkAttributes;
     },
     get linkClass() {
-      return (hasLink && "q-link") || undefined;
+      return hasLink ? "q-link" : undefined;
     },
     get isActive() {
       return isActive;
