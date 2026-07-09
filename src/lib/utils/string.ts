@@ -93,9 +93,9 @@ export function extractImgSrc(prop?: string) {
 
 export function escape(str: string) {
   return str
-    .replace("&", "&amp;")
-    .replace('"', "&quot;")
-    .replace("'", "&#39;")
-    .replace("<", "&lt;")
-    .replace(">", "&gt;");
+    .replaceAll("&", "&amp;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;");
 }
