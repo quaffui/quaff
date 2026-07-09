@@ -20,6 +20,7 @@
 
   // #region:    --- Derived values
   const normalized = $derived(value > 1 ? value / 100 : value);
+  const percentage = $derived(normalized * 100);
   const normalizedBuffer = $derived(buffer && buffer > 1 ? buffer / 100 : buffer);
 
   const parsedColor = $derived(useColor(color));
@@ -59,7 +60,7 @@
   role="progressbar"
   aria-valuemin="0"
   aria-valuemax="100"
-  aria-valuenow={indeterminate ? undefined : normalized}
+  aria-valuenow={indeterminate ? undefined : percentage}
   data-quaff
 >
   <div
