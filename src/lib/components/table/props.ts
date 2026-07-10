@@ -4,7 +4,6 @@ import type { HTMLAttributes } from "svelte/elements";
 
 export type QTableColumn = {
   name: string;
-  required?: boolean;
   label: string;
   align?: "left" | "center" | "right";
   field: string | ((row: QTableRow) => string);
