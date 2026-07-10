@@ -1,7 +1,7 @@
 <script lang="ts">
   import Quaff from "$classes/Quaff.svelte";
   import QBtn from "$components/button/QBtn.svelte";
-  import { copy } from "$utils";
+  import { copy, escape } from "$utils";
   import type { QCodeBlockProps } from "./props";
 
   // #region:    --- Props
@@ -16,64 +16,55 @@
   }: QCodeBlockProps = $props();
   // #endregion: --- Props
 
-  // #region:    --- Reactive variables
-  let btnContent = $state("Copy");
-  let btnColor = $state("primary");
+  const copyButtonStates = {
+    base: { content: "Copy", color: "primary" },
+    error: { content: "Error while copying...", color: "error" },
+    success: { content: "Copied!", color: "green" },
+  } as const;
 
+  // #region:    --- Reactive variables
+  let copyStatus = $state<keyof typeof copyButtonStates>("base");
   let html = $state("");
+
+  const copyButton = $derived(copyButtonStates[copyStatus]);
   // #endregion: --- Reactive variables
 
   // #region:    --- Effects
   $effect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    Quaff.darkMode.isActive;
-
-    // This is required to have the html updated when the code changes
-    getHtml(code);
+    const theme = Quaff.darkMode.isActive ? darkTheme : lightTheme;
+    void updateHtml(code, language, theme);
   });
   // #endregion: --- Effects
 
   // #region:    --- Functions
-  function setBtn(type: "base" | "error" | "success") {
-    switch (type) {
-      case "error":
-        btnContent = "Error while copying...";
-        btnColor = "error";
-        break;
-      case "success":
-        btnContent = "Copied!";
-        btnColor = "green";
-        break;
-      default:
-        btnContent = "Copy";
-        btnColor = "primary";
-        break;
-    }
-  }
-
   async function copyCode() {
-    await copy(code).catch(() => {
-      setBtn("error");
-      setTimeout(() => setBtn("base"), 3000);
-    });
+    try {
+      await copy(code);
+      copyStatus = "success";
+    } catch {
+      copyStatus = "error";
+    }
 
-    setBtn("success");
     setTimeout(() => {
-      setBtn("base");
+      copyStatus = "base";
     }, 3000);
   }
 
-  async function getHtml(code: string) {
+  async function updateHtml(
+    source: string,
+    language: QCodeBlockProps["language"],
+    theme: typeof lightTheme
+  ) {
     try {
       const { codeToHtml } = await import("shiki");
 
-      html = await codeToHtml(code, {
+      html = await codeToHtml(source, {
         lang: language,
-        theme: Quaff.darkMode.isActive ? darkTheme : lightTheme,
+        theme,
       });
-    } catch {
-      console.error("Error while loading shiki, make sure it is installed");
-      html = `<pre>${code}</pre>`;
+    } catch (error) {
+      console.error("Error while highlighting code with Shiki", error);
+      html = `<pre>${escape(source)}</pre>`;
     }
   }
   // #endregion: --- Functions
@@ -82,34 +73,29 @@
 <div {...props} class="q-code-block" data-quaff>
   {#if copiable}
     <div
-      class="q-code-block__title-section justify-between {title
-        ? 'items-center'
-        : 'justify-end'} q-pb-sm"
+      class="q-code-block__title-section q-pb-sm"
+      class:items-center={title}
+      class:justify-between={title}
+      class:justify-end={!title}
     >
       {#if title}
         <h4 class="q-ma-none">{title}</h4>
       {/if}
       <QBtn
-        class="border-{btnColor} text-{btnColor}"
+        class="border-{copyButton.color} text-{copyButton.color}"
         size="sm"
         icon="content_copy"
         variant="outlined"
         onclick={copyCode}
       >
-        {btnContent}
+        {copyButton.content}
       </QBtn>
     </div>
   {:else if title}
     <h4>{title}</h4>
   {/if}
-  {#await html}
-    <!-- waiting -->
-  {:then htmlContent}
-    {@html htmlContent}
-  {:catch error}
-    <pre>An error occurred: {error}</pre>
-    <!-- error -->
-  {/await}
+  <!-- eslint-disable-next-line svelte/no-at-html-tags -- Shiki output; fallback source is escaped. -->
+  {@html html}
 </div>
 
 <style lang="scss">
