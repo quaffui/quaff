@@ -8,6 +8,7 @@
 
   docsCtx.set({ snippets, componentDocs: QSwitchDocs });
 
+  let switchRef = $state<QSwitch>();
   let toggle = $state(false);
   let wifiEnabled = $state(true);
   let bluetoothEnabled = $state(false);
@@ -35,10 +36,10 @@
         {/snippet}
 
         <div class="q-ma-sm">
-          <QSwitch bind:value={toggle} />
+          <QSwitch bind:this={switchRef} bind:value={toggle} />
           <div class="q-mt-sm">Current value: {toggle ? "On" : "Off"}</div>
           <div class="q-mt-sm">
-            <QBtn size="sm" label="Toggle programmatically" onclick={() => (toggle = !toggle)} />
+            <QBtn size="sm" label="Toggle programmatically" onclick={switchRef?.toggle} />
           </div>
         </div>
       </QDocsSection>

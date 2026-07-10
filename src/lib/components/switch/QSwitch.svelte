@@ -9,7 +9,7 @@
   // #region:    --- Props
   let {
     value = $bindable(),
-    label = undefined,
+    label,
     labelPosition = "right",
     disabled = false,
     icons = false,
@@ -25,16 +25,17 @@
   let qSwitchInput: HTMLInputElement;
   // #endregion: --- Non-reactive variables
 
-  // #region:    --- Functions
-  function toggle() {
+  // #region:    --- Methods
+  export function toggle() {
     value = !value;
-
     qSwitch.dispatchEvent(new Event("change", { bubbles: true }));
   }
+  // #endregion: --- Methods
 
+  // #region:    --- Functions
   function onclick(event: QSwitchEvent<MouseEvent>) {
     event.preventDefault();
-    if (!qSwitchInput || disabled) {
+    if (disabled) {
       return;
     }
 
@@ -45,7 +46,7 @@
   }
 
   function onkeydown(event: QSwitchEvent<KeyboardEvent>) {
-    if (!qSwitch || disabled || !isActivationKey(event)) {
+    if (disabled || !isActivationKey(event)) {
       return;
     }
 
@@ -56,7 +57,7 @@
     }
 
     event.preventDefault();
-    qSwitch.click();
+    event.currentTarget.click();
   }
   // #endregion: --- Functions
 
@@ -70,7 +71,7 @@
 
   Q.classes("q-switch__handle", {
     bemClasses: {
-      "with-icon": showOnlyCheckedIcon ? !!value : icons || uncheckedIcon,
+      "with-icon": !showOnlyCheckedIcon && (icons || uncheckedIcon),
     },
   });
 </script>
@@ -83,16 +84,11 @@
   {onkeydown}
   aria-disabled={disabled || undefined}
   role="switch"
-  aria-checked={value || undefined}
+  aria-checked={!!value}
   data-quaff
 >
   <label class="q-switch__inner">
-    <input
-      bind:checked={value}
-      bind:this={qSwitchInput}
-      type="checkbox"
-      disabled={disabled || undefined}
-    />
+    <input bind:checked={value} bind:this={qSwitchInput} type="checkbox" {disabled} />
     <span class="q-switch__track">
       <span class="q-switch__touch"></span>
       <span class="q-switch__handle-container" {@attach ripple({ disabled })}>
