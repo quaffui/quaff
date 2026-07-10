@@ -644,7 +644,6 @@
   {@const columns = [
     {
       name: "id",
-      required: true,
       label: "Book ID",
       align: "left" as const,
       field: "id",
@@ -652,7 +651,6 @@
     },
     {
       name: "title",
-      required: true,
       label: "Book Title",
       align: "left" as const,
       field: "title",
@@ -660,7 +658,6 @@
     },
     {
       name: "author",
-      required: true,
       label: "Author",
       align: "left" as const,
       field: "author",

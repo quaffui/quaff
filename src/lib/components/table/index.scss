@@ -30,6 +30,16 @@
       }
     }
 
+    .q-table__sort-button {
+      all: unset;
+      cursor: pointer;
+
+      &:focus-visible {
+        outline: 2px solid var(--primary);
+        outline-offset: 0.25rem;
+      }
+    }
+
     tr:last-child td {
       border-bottom: none;
     }
@@ -66,14 +76,11 @@
     align-items: center;
 
     &-records-per-page-select {
+      width: 80px;
+      display: inline-block;
       margin-bottom: 0 !important;
       margin-left: 1em;
       margin-right: 1em;
-    }
-
-    &-records-per-page-select {
-      width: 80px;
-      display: inline-block;
     }
   }
 }
