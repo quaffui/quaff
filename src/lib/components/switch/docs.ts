@@ -16,7 +16,13 @@ export const QSwitchDocs: QComponentDocs = {
     domAttributesConstraint: QSwitchDocsDomAttributesConstraint,
     props: QSwitchDocsProps,
     snippets: QSwitchDocsSnippets,
-    methods: [],
+    methods: [
+      {
+        name: "toggle",
+        type: "() => void",
+        description: "Toggles the switch value.",
+      },
+    ],
     events: [
       {
         name: "input",
