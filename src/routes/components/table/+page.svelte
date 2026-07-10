@@ -12,7 +12,6 @@
   const columnsDefCode = `const columns = [
   {
     name: "id",        // Unique identifier for the column
-    required: true,    // Column will always be displayed
     label: "Book ID",  // Display label in table header
     align: "left",     // Text alignment (left, center, right)
     field: "id",       // Row property to display
@@ -25,7 +24,6 @@
   const columns: QTableColumn[] = [
     {
       name: "id",
-      required: true,
       label: "Book ID",
       align: "left",
       field: "id",
@@ -33,7 +31,6 @@
     },
     {
       name: "title",
-      required: true,
       label: "Book Title",
       align: "left",
       field: "title",
@@ -41,7 +38,6 @@
     },
     {
       name: "author",
-      required: true,
       label: "Author",
       align: "right",
       field: "author",
@@ -143,8 +139,8 @@
 
       <QDocsSection title="Column Configuration" noCode>
         {#snippet sectionDescription()}
-          Each column can be configured with various properties. Required columns will always be
-          displayed, and the <code>align</code> property controls text alignment. The
+          Each column can be configured with various properties. The <code>align</code> property
+          controls text alignment, the
           <code>field</code>
           property determines what data from each row is displayed, and <code>sortable</code> enables
           sorting.
@@ -208,6 +204,28 @@
         {/snippet}
 
         <QTable {columns} rows={rows.slice(0, 10)} />
+      </QDocsSection>
+
+      <QDocsSection title="Formatting and Custom Sorting">
+        {#snippet sectionDescription()}
+          Use <code>format</code> to change a displayed value and <code>sort</code> to provide an ascending
+          comparator for that column.
+        {/snippet}
+
+        <QTable
+          columns={[
+            {
+              name: "title",
+              label: "Title",
+              align: "left",
+              field: "title",
+              format: (value) => `${value} (${value.length} characters)`,
+              sortable: true,
+              sort: (a, b) => a.length - b.length,
+            },
+          ]}
+          rows={rows.slice(0, 10)}
+        />
       </QDocsSection>
 
       <QDocsSection title="Function Fields">

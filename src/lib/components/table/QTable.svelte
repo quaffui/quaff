@@ -25,59 +25,59 @@
 
   // #region:    --- Derived values
   const rowsPerPageOptions = $derived(
-    [5, 10, 25, 50].filter((option) => {
-      return rows.length >= option || option === 5;
-    })
+    [5, 10, 25, 50].filter((option) => rows.length >= option || option === 5)
   );
 
-  const numberFrom: number = $derived(rowsPerPage * page - rowsPerPage + 1);
-  const numberTo: number = $derived(
-    rowsPerPage * page > rows.length ? rows.length : rowsPerPage * page
-  );
-  const numberOf: number = $derived(rows.length);
+  const lastPage = $derived(Math.max(1, Math.ceil(rows.length / rowsPerPage)));
+  const pageStart = $derived(rowsPerPage * (page - 1));
+  const numberFrom = $derived(rows.length ? pageStart + 1 : 0);
+  const numberTo = $derived(Math.min(pageStart + rowsPerPage, rows.length));
 
-  const rowsSorted: QTableRow[] = $derived.by(() => {
-    if (sort) {
-      return structuredClone(rows).sort((a: QTableRow, b: QTableRow) => {
-        const valA = getField(sort!.columnField, a);
-        const valB = getField(sort!.columnField, b);
-
-        if (typeof valA === "string" && typeof valB === "string") {
-          return sort?.type === "desc" ? valB.localeCompare(valA) : valA.localeCompare(valB);
-        }
-
-        return sort?.type === "desc"
-          ? parseFloat(valA.toString()) > parseFloat(valB.toString())
-            ? -1
-            : 1
-          : parseFloat(valB.toString()) > parseFloat(valA.toString())
-            ? -1
-            : 1;
-      });
+  const rowsSorted = $derived.by(() => {
+    if (!sort) {
+      return rows;
     }
 
-    return rows;
+    const currentSort = sort;
+    const sortColumn = columns.find((column) => column.field === currentSort.columnField);
+    const direction = currentSort.type === "desc" ? -1 : 1;
+
+    return [...rows].sort((rowA, rowB) => {
+      const valueA = getField(currentSort.columnField, rowA);
+      const valueB = getField(currentSort.columnField, rowB);
+      const comparison = sortColumn?.sort
+        ? sortColumn.sort(String(valueA), String(valueB))
+        : compareValues(valueA, valueB);
+
+      return comparison * direction;
+    });
   });
 
-  const rowsPaginated: QTableRow[] = $derived(rowsSorted.slice(numberFrom - 1, numberTo));
+  const rowsPaginated = $derived(rowsSorted.slice(pageStart, numberTo));
   // #endregion: --- Derived values
 
   // #region:    --- Effects
   $effect(() => {
-    if (rowsPerPage * (page - 1) >= rows.length) {
-      page = 1;
+    if (page > lastPage) {
+      page = lastPage;
     }
   });
   // #endregion: --- Effects
 
   // #region:    --- Functions
-  function getField(fieldRaw: QTableColumn["field"], row: QTableRow): string | number {
-    return typeof fieldRaw === "function" ? fieldRaw(row) : row[fieldRaw];
+  function getField(field: QTableColumn["field"], row: QTableRow) {
+    return typeof field === "function" ? field(row) : row[field];
   }
 
-  function getThStyle(column: QTableColumn) {
-    let style = allowsSort(column) ? "cursor: pointer; " : "";
-    return style + getCellStyle(column);
+  function getCellValue(column: QTableColumn, row: QTableRow) {
+    const value = getField(column.field, row);
+    return column.format ? column.format(String(value)) : value;
+  }
+
+  function compareValues(valueA: string | number, valueB: string | number) {
+    return typeof valueA === "number" && typeof valueB === "number"
+      ? valueA - valueB
+      : String(valueA).localeCompare(String(valueB));
   }
 
   function getCellStyle(column: QTableColumn) {
@@ -90,25 +90,33 @@
     return "";
   }
 
-  function allowsSort(column: QTableColumn) {
-    return columns.find((col) => col.name === column.name)?.sortable;
+  function isLeftAligned(column: QTableColumn) {
+    return !column.align || column.align === "left";
   }
 
-  function hasSort(column: QTableColumn, sort: QTableSort) {
+  function hasSort(column: QTableColumn) {
     return sort?.columnField === column.field;
   }
 
+  function getSortIcon(column: QTableColumn) {
+    return hasSort(column) && sort?.type === "desc" ? "keyboard_arrow_down" : "keyboard_arrow_up";
+  }
+
+  function getAriaSort(column: QTableColumn) {
+    if (!hasSort(column)) {
+      return undefined;
+    }
+
+    return sort?.type === "desc" ? "descending" : "ascending";
+  }
+
   function setSort(column: QTableColumn) {
-    const shouldRemove = hasSort(column, sort) && sort?.type === "desc";
-    if (shouldRemove) {
-      sort = null;
+    if (sort?.columnField !== column.field) {
+      sort = { columnField: column.field, type: "asc" };
       return;
     }
 
-    sort = {
-      columnField: column.field,
-      type: !sort?.type || sort?.type === "desc" ? "asc" : "desc",
-    };
+    sort = sort.type === "asc" ? { ...sort, type: "desc" } : null;
   }
   // #endregion: --- Functions
 
@@ -127,19 +135,24 @@
     <thead>
       <tr>
         {#each columns as column (column)}
-          <th style={getThStyle(column)} onclick={() => setSort(column)}>
-            {#if column.align === "left"}
-              {column.label}
-            {/if}
+          <th style={getCellStyle(column)} aria-sort={getAriaSort(column)}>
+            {#if column.sortable}
+              <button class="q-table__sort-button" type="button" onclick={() => setSort(column)}>
+                {#if isLeftAligned(column)}
+                  {column.label}
+                {/if}
 
-            {#if allowsSort(column)}
-              <QIcon
-                name={sort?.type !== "desc" ? "keyboard_arrow_up" : "keyboard_arrow_down"}
-                class="q-icon {hasSort(column, sort) ? 'q-icon--sort' : ''}"
-              />
-            {/if}
+                <QIcon
+                  name={getSortIcon(column)}
+                  class="q-icon {hasSort(column) ? 'q-icon--sort' : ''}"
+                  aria-hidden="true"
+                />
 
-            {#if column.align !== "left"}
+                {#if !isLeftAligned(column)}
+                  {column.label}
+                {/if}
+              </button>
+            {:else}
               {column.label}
             {/if}
           </th>
@@ -154,7 +167,7 @@
               {@render bodyCell({ column, row, style: getCellStyle(column) })}
             {:else}
               <td class="q-table__body-cell" style={getCellStyle(column)}
-                >{getField(column.field, row)}</td
+                >{getCellValue(column, row)}</td
               >
             {/if}
           {/each}
@@ -172,20 +185,22 @@
       bind:value={rowsPerPage}
       disabled={rowsPerPageOptions.length <= 1}
     />
-    {numberFrom}-{numberTo}&nbsp;of&nbsp;{numberOf}
-    <QBtn
-      icon="chevron_left"
-      size="sm"
-      variant="flat"
-      disabled={page === 1}
-      onclick={() => page--}
-    />
-    <QBtn
-      icon="chevron_right"
-      size="sm"
-      variant="flat"
-      disabled={page * rowsPerPage >= rows.length}
-      onclick={() => page++}
-    />
+    {numberFrom}-{numberTo}&nbsp;of&nbsp;{rows.length}
+    {#if lastPage > 1}
+      <QBtn
+        icon="chevron_left"
+        size="sm"
+        variant="flat"
+        disabled={page === 1}
+        onclick={() => page--}
+      />
+      <QBtn
+        icon="chevron_right"
+        size="sm"
+        variant="flat"
+        disabled={page === lastPage}
+        onclick={() => page++}
+      />
+    {/if}
   </div>
 </div>
