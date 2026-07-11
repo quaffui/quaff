@@ -1,150 +1,74 @@
-.display-large {
-  font-family: var(--typescale-display-large-font-family-name);
-  font-style: var(--typescale-display-large-font-family-style);
-  font-weight: var(--typescale-display-large-font-weight);
-  font-size: var(--typescale-display-large-font-size);
-  letter-spacing: var(--typescale-display-large-tracking);
-  line-height: var(--typescale-display-large-height);
-  text-transform: var(--typescale-display-large-text-transform);
-  text-decoration: var(--typescale-display-large-text-decoration);
+@use "typography-scale";
+
+@each $role, $typeface, $weight, $size, $line-height,
+  $letter-spacing in typography-scale.$type-scale
+{
+  .#{$role} {
+    @include typography-scale.typography($role);
+  }
 }
-.display-medium {
-  font-family: var(--typescale-display-medium-font-family-name);
-  font-style: var(--typescale-display-medium-font-family-style);
-  font-weight: var(--typescale-display-medium-font-weight);
-  font-size: var(--typescale-display-medium-font-size);
-  letter-spacing: var(--typescale-display-medium-tracking);
-  line-height: var(--typescale-display-medium-height);
-  text-transform: var(--typescale-display-medium-text-transform);
-  text-decoration: var(--typescale-display-medium-text-decoration);
+
+@each $alias, $role in typography-scale.$type-aliases {
+  .text-#{$alias} {
+    @extend .#{$role};
+  }
 }
-.display-small {
-  font-family: var(--typescale-display-small-font-family-name);
-  font-style: var(--typescale-display-small-font-family-style);
-  font-weight: var(--typescale-display-small-font-weight);
-  font-size: var(--typescale-display-small-font-size);
-  letter-spacing: var(--typescale-display-small-tracking);
-  line-height: var(--typescale-display-small-height);
-  text-transform: var(--typescale-display-small-text-transform);
-  text-decoration: var(--typescale-display-small-text-decoration);
+
+.text-overline {
+  text-transform: uppercase;
 }
-.headline-large {
-  font-family: var(--typescale-headline-large-font-family-name);
-  font-style: var(--typescale-headline-large-font-family-style);
-  font-weight: var(--typescale-headline-large-font-weight);
-  font-size: var(--typescale-headline-large-font-size);
-  letter-spacing: var(--typescale-headline-large-tracking);
-  line-height: var(--typescale-headline-large-height);
-  text-transform: var(--typescale-headline-large-text-transform);
-  text-decoration: var(--typescale-headline-large-text-decoration);
+
+$font-weights: (
+  thin: 100,
+  light: 300,
+  regular: 400,
+  medium: 500,
+  bold: 700,
+  bolder: 900,
+);
+
+@each $name, $weight in $font-weights {
+  .text-weight-#{$name} {
+    font-weight: $weight;
+  }
 }
-.headline-medium {
-  font-family: var(--typescale-headline-medium-font-family-name);
-  font-style: var(--typescale-headline-medium-font-family-style);
-  font-weight: var(--typescale-headline-medium-font-weight);
-  font-size: var(--typescale-headline-medium-font-size);
-  letter-spacing: var(--typescale-headline-medium-tracking);
-  line-height: var(--typescale-headline-medium-height);
-  text-transform: var(--typescale-headline-medium-text-transform);
-  text-decoration: var(--typescale-headline-medium-text-decoration);
+
+$text-alignments: right, left, center, justify;
+
+@each $alignment in $text-alignments {
+  .text-#{$alignment} {
+    text-align: $alignment;
+  }
 }
-.headline-small {
-  font-family: var(--typescale-headline-small-font-family-name);
-  font-style: var(--typescale-headline-small-font-family-style);
-  font-weight: var(--typescale-headline-small-font-weight);
-  font-size: var(--typescale-headline-small-font-size);
-  letter-spacing: var(--typescale-headline-small-tracking);
-  line-height: var(--typescale-headline-small-height);
-  text-transform: var(--typescale-headline-small-text-transform);
-  text-decoration: var(--typescale-headline-small-text-decoration);
+
+.text-justify {
+  hyphens: auto;
 }
-.body-large {
-  font-family: var(--typescale-body-large-font-family-name);
-  font-style: var(--typescale-body-large-font-family-style);
-  font-weight: var(--typescale-body-large-font-weight);
-  font-size: var(--typescale-body-large-font-size);
-  letter-spacing: var(--typescale-body-large-tracking);
-  line-height: var(--typescale-body-large-height);
-  text-transform: var(--typescale-body-large-text-transform);
-  text-decoration: var(--typescale-body-large-text-decoration);
+
+.text-bold {
+  font-weight: bold;
 }
-.body-medium {
-  font-family: var(--typescale-body-medium-font-family-name);
-  font-style: var(--typescale-body-medium-font-family-style);
-  font-weight: var(--typescale-body-medium-font-weight);
-  font-size: var(--typescale-body-medium-font-size);
-  letter-spacing: var(--typescale-body-medium-tracking);
-  line-height: var(--typescale-body-medium-height);
-  text-transform: var(--typescale-body-medium-text-transform);
-  text-decoration: var(--typescale-body-medium-text-decoration);
+
+.text-italic {
+  font-style: italic;
 }
-.body-small {
-  font-family: var(--typescale-body-small-font-family-name);
-  font-style: var(--typescale-body-small-font-family-style);
-  font-weight: var(--typescale-body-small-font-weight);
-  font-size: var(--typescale-body-small-font-size);
-  letter-spacing: var(--typescale-body-small-tracking);
-  line-height: var(--typescale-body-small-height);
-  text-transform: var(--typescale-body-small-text-transform);
-  text-decoration: var(--typescale-body-small-text-decoration);
+
+.text-no-wrap {
+  white-space: nowrap;
 }
-.label-large {
-  font-family: var(--typescale-label-large-font-family-name);
-  font-style: var(--typescale-label-large-font-family-style);
-  font-weight: var(--typescale-label-large-font-weight);
-  font-size: var(--typescale-label-large-font-size);
-  letter-spacing: var(--typescale-label-large-tracking);
-  line-height: var(--typescale-label-large-height);
-  text-transform: var(--typescale-label-large-text-transform);
-  text-decoration: var(--typescale-label-large-text-decoration);
+
+.text-strike {
+  text-decoration: line-through;
 }
-.label-medium {
-  font-family: var(--typescale-label-medium-font-family-name);
-  font-style: var(--typescale-label-medium-font-family-style);
-  font-weight: var(--typescale-label-medium-font-weight);
-  font-size: var(--typescale-label-medium-font-size);
-  letter-spacing: var(--typescale-label-medium-tracking);
-  line-height: var(--typescale-label-medium-height);
-  text-transform: var(--typescale-label-medium-text-transform);
-  text-decoration: var(--typescale-label-medium-text-decoration);
+
+.text-uppercase {
+  text-transform: uppercase;
 }
-.label-small {
-  font-family: var(--typescale-label-small-font-family-name);
-  font-style: var(--typescale-label-small-font-family-style);
-  font-weight: var(--typescale-label-small-font-weight);
-  font-size: var(--typescale-label-small-font-size);
-  letter-spacing: var(--typescale-label-small-tracking);
-  line-height: var(--typescale-label-small-height);
-  text-transform: var(--typescale-label-small-text-transform);
-  text-decoration: var(--typescale-label-small-text-decoration);
+
+.text-lowercase {
+  text-transform: lowercase;
 }
-.title-large {
-  font-family: var(--typescale-title-large-font-family-name);
-  font-style: var(--typescale-title-large-font-family-style);
-  font-weight: var(--typescale-title-large-font-weight);
-  font-size: var(--typescale-title-large-font-size);
-  letter-spacing: var(--typescale-title-large-tracking);
-  line-height: var(--typescale-title-large-height);
-  text-transform: var(--typescale-title-large-text-transform);
-  text-decoration: var(--typescale-title-large-text-decoration);
-}
-.title-medium {
-  font-family: var(--typescale-title-medium-font-family-name);
-  font-style: var(--typescale-title-medium-font-family-style);
-  font-weight: var(--typescale-title-medium-font-weight);
-  font-size: var(--typescale-title-medium-font-size);
-  letter-spacing: var(--typescale-title-medium-tracking);
-  line-height: var(--typescale-title-medium-height);
-  text-transform: var(--typescale-title-medium-text-transform);
-  text-decoration: var(--typescale-title-medium-text-decoration);
-}
-.title-small {
-  font-family: var(--typescale-title-small-font-family-name);
-  font-style: var(--typescale-title-small-font-family-style);
-  font-weight: var(--typescale-title-small-font-weight);
-  font-size: var(--typescale-title-small-font-size);
-  letter-spacing: var(--typescale-title-small-tracking);
-  line-height: var(--typescale-title-small-height);
-  text-transform: var(--typescale-title-small-text-transform);
-  text-decoration: var(--typescale-title-small-text-decoration);
+
+.text-capitalize {
+  text-transform: capitalize;
 }
