@@ -28,17 +28,13 @@
   let removeTooltipMouseLeaveListener: (() => void) | undefined;
   let removeWindowWheelListener: (() => void) | undefined;
 
+  let tooltipEl: HTMLDivElement | undefined;
+  let realTarget: HTMLElement | undefined;
+  let timerShow: ReturnType<typeof setTimeout> | null = null;
+  let timerHide: ReturnType<typeof setTimeout> | null = null;
+
   const id = $props.id();
   // #endregion: --- Non-reactive variables
-
-  // #region:    --- Reactive variables
-  let tooltipEl = $state<HTMLDivElement>();
-
-  let realTarget = $state<HTMLElement>();
-
-  let timerShow = $state<ReturnType<typeof setTimeout> | null>(null);
-  let timerHide = $state<ReturnType<typeof setTimeout> | null>(null);
-  // #endregion: --- Reactive variables
 
   // #region:    --- Effects
   $effect(() => {
