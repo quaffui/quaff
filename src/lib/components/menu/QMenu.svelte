@@ -31,6 +31,7 @@
   let menuMaxWidth = $state<string | undefined>();
   let menuPosition = $state<"fixed" | "absolute">("fixed");
   let wasMenuOpen = false;
+  let positionFrame: number | undefined;
   // #endregion: --- Reactive variables
 
   // #region:    --- Derived values
@@ -77,13 +78,14 @@
 
     const viewportWidth = innerWidth.current;
     const viewportHeight = innerHeight.current;
-    const syncCurrentPosition = () => syncPosition(viewportWidth, viewportHeight);
+    const syncCurrentPosition = () => schedulePositionSync(viewportWidth, viewportHeight);
 
-    syncCurrentPosition();
+    syncPosition(viewportWidth, viewportHeight);
     const removeWindowScrollListener = on(window, "scroll", syncCurrentPosition, { capture: true });
 
     return () => {
       removeWindowScrollListener();
+      cancelPositionSync();
     };
   });
 
@@ -169,7 +171,7 @@
     }
 
     syncPosition();
-    requestAnimationFrame(() => syncPosition());
+    schedulePositionSync();
   }
 
   function closeMenu() {
@@ -226,6 +228,29 @@
     menuPosition = "fixed";
     menuTop = Math.max(margin, Math.min(top, viewportHeight - measured.height - margin));
     menuLeft = Math.max(margin, Math.min(left, viewportWidth - measuredWidth - margin));
+  }
+
+  function schedulePositionSync(
+    viewportWidth = innerWidth.current,
+    viewportHeight = innerHeight.current
+  ) {
+    if (positionFrame !== undefined) {
+      return;
+    }
+
+    positionFrame = requestAnimationFrame(() => {
+      positionFrame = undefined;
+      syncPosition(viewportWidth, viewportHeight);
+    });
+  }
+
+  function cancelPositionSync() {
+    if (positionFrame === undefined) {
+      return;
+    }
+
+    cancelAnimationFrame(positionFrame);
+    positionFrame = undefined;
   }
 
   function handleDocumentPointerdown(event: PointerEvent) {
