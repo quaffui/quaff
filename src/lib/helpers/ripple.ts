@@ -34,43 +34,45 @@ const COLOR_PROPERTY = "--ripple-color";
 const DURATION_PROPERTY = "--ripple-duration";
 
 export function ripple(options: RippleOptions = {}): Attachment<HTMLElement> {
-  const rippleContainer = document.createElement("div");
+  let rippleContainer: HTMLDivElement | undefined;
+  const duration = options.duration && options.duration > 0 ? options.duration : undefined;
 
   function isDisabled(el: HTMLElement, opts: RippleOptions) {
     return opts.disabled || el.hasAttribute("aria-disabled");
   }
 
-  function addClasses(center = false) {
+  function addClasses(container: HTMLDivElement, center = false) {
     const shouldBeCentered = center || options.center;
 
-    rippleContainer.classList.add(EFFECT_CLASS);
+    container.classList.add(EFFECT_CLASS);
 
     if (shouldBeCentered) {
-      rippleContainer.classList.add(CENTER_CLASS);
+      container.classList.add(CENTER_CLASS);
     } else {
-      rippleContainer.classList.remove(CENTER_CLASS);
+      container.classList.remove(CENTER_CLASS);
     }
   }
 
-  function setOptions(el: HTMLElement, opts: RippleOptions) {
-    if (isDisabled(el, opts)) {
-      rippleContainer.remove();
-      return;
+  function getRippleContainer(el: HTMLElement) {
+    if (rippleContainer) {
+      return rippleContainer;
     }
 
+    rippleContainer = document.createElement("div");
     el.appendChild(rippleContainer);
 
-    if (opts.duration && opts.duration < 0) {
-      opts.duration = undefined;
+    if (duration) {
+      rippleContainer.style.setProperty(DURATION_PROPERTY, `${duration}ms`);
     }
 
-    if (opts.duration) {
-      rippleContainer.style.setProperty(DURATION_PROPERTY, `${opts.duration}ms`);
+    if (options.color) {
+      rippleContainer.style.setProperty(
+        COLOR_PROPERTY,
+        `var(--${options.color}, ${options.color})`
+      );
     }
 
-    if (opts.color) {
-      rippleContainer.style.setProperty(COLOR_PROPERTY, `var(--${opts.color}, ${opts.color})`);
-    }
+    return rippleContainer;
   }
 
   function createRipple(
@@ -94,7 +96,8 @@ export function ripple(options: RippleOptions = {}): Attachment<HTMLElement> {
       return;
     }
 
-    addClasses(center);
+    const rippleContainer = getRippleContainer(el);
+    addClasses(rippleContainer, center);
 
     const rect = el.getBoundingClientRect();
 
@@ -127,22 +130,23 @@ export function ripple(options: RippleOptions = {}): Attachment<HTMLElement> {
 
       setTimeout(() => {
         ripple.remove();
-      }, options.duration || 1000);
+      }, duration || 1000);
 
       removeCancelListeners.forEach((removeCancelListener) => removeCancelListener());
     }
   }
 
   return (element: HTMLElement) => {
-    addClasses();
-    setOptions(element, options);
+    if (options.disabled) {
+      return;
+    }
 
     const removeTriggerListeners = TRIGGER_EVENTS.map((event) =>
       on(element, event, (e) => createRipple(element, e), { passive: event === "touchstart" })
     );
 
     return () => {
-      rippleContainer.remove();
+      rippleContainer?.remove();
       removeTriggerListeners.forEach((unlisten) => unlisten());
     };
   };
