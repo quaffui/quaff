@@ -34,15 +34,15 @@
   let removePointermoveListener: (() => void) | undefined;
   let removePointerupListener: (() => void) | undefined;
   let removePointercancelListener: (() => void) | undefined;
+
+  let isSwiping = false;
+  let startX = 0;
+  let dragOffset = 0;
   // #endregion: --- Non-reactive variables
 
   // #region:    --- Reactive variables
   let drawerEl = $state<HTMLDivElement>();
   let swipeAreaEl = $state<HTMLDivElement>();
-
-  let isSwiping = $state(false);
-  let startX = $state(0);
-  let dragOffset = $state(0);
   // #endregion: --- Reactive variables
 
   // #region:    --- Derived values
