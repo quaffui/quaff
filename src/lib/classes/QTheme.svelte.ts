@@ -39,21 +39,24 @@ class QTheme {
     this.themeColors = prepareThemeColors(this.srcColor);
   }
 
-  private apply() {
+  private apply(colors: Partial<ThemeColors> = this.themeColors) {
     const root = document.documentElement;
     if (root === null) {
       return;
     }
 
     let colorName: keyof ThemeColors;
-    for (colorName in this.themeColors) {
-      root.style.setProperty(`--${colorName}`, this.themeColors[colorName]);
+    for (colorName in colors) {
+      const color = colors[colorName];
+      if (color) {
+        root.style.setProperty(`--${colorName}`, color);
+      }
     }
   }
 
   updateThemeColor(color: keyof ThemeColors, newVal: HexValue) {
     this.themeColors[color] = newVal;
-    this.apply();
+    this.apply({ [color]: newVal });
   }
 
   updateThemeColors(colors: Partial<ThemeColors>) {
@@ -66,7 +69,7 @@ class QTheme {
       }
     }
 
-    this.apply();
+    this.apply(colors);
   }
 
   setTheme(from: string) {
