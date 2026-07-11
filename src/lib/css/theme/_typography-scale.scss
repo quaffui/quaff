@@ -1,0 +1,52 @@
+@use "sass:map";
+
+// name, typeface, weight, size, line height, letter spacing
+$type-scale: (
+  (display-large, brand, 400, 3.5625rem, 4rem, -0.015625rem),
+  (display-medium, brand, 400, 2.8125rem, 3.25rem, 0),
+  (display-small, brand, 400, 2.25rem, 2.75rem, 0),
+  (headline-large, brand, 400, 2rem, 2.5rem, 0),
+  (headline-medium, brand, 400, 1.75rem, 2.25rem, 0),
+  (headline-small, brand, 400, 1.5rem, 2rem, 0),
+  (body-large, plain, 400, 1rem, 1.5rem, 0.03125rem),
+  (body-medium, plain, 400, 0.875rem, 1.25rem, 0.015625rem),
+  (body-small, plain, 400, 0.75rem, 1rem, 0.025rem),
+  (label-large, plain, 500, 0.875rem, 1.25rem, 0.00625rem),
+  (label-medium, plain, 500, 0.75rem, 1rem, 0.03125rem),
+  (label-small, plain, 500, 0.6875rem, 1rem, 0.03125rem),
+  (title-large, brand, 400, 1.375rem, 1.75rem, 0),
+  (title-medium, plain, 500, 1rem, 1.5rem, 0.009375rem),
+  (title-small, plain, 500, 0.875rem, 1.25rem, 0.00625rem)
+);
+
+$prominent-label-roles: label-large, label-medium;
+
+$heading-scale: (
+  h1: display-large,
+  h2: display-medium,
+  h3: display-small,
+  h4: headline-large,
+  h5: headline-medium,
+  h6: headline-small,
+);
+
+$type-aliases: map.merge(
+  $heading-scale,
+  (
+    subtitle1: title-medium,
+    subtitle2: title-small,
+    body1: body-large,
+    body2: body-medium,
+    caption: body-small,
+    overline: label-medium,
+  )
+);
+
+@mixin typography($role) {
+  font-family: var(--typescale-#{$role}-font-family-name);
+  font-style: var(--typescale-#{$role}-font-family-style);
+  font-weight: var(--typescale-#{$role}-font-weight);
+  font-size: var(--typescale-#{$role}-font-size);
+  line-height: var(--typescale-#{$role}-line-height);
+  letter-spacing: var(--typescale-#{$role}-letter-spacing);
+}
