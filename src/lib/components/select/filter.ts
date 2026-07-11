@@ -1,4 +1,3 @@
-import { getOptionLabel } from "./option";
 import type { QSelectOption, QSelectProps } from "./props";
 
 type QSelectOnFilter = QSelectProps["onFilter"];
@@ -25,9 +24,10 @@ export function getFilteredOptions(
     return options;
   }
 
-  return options.filter((option) =>
-    String(getOptionLabel(option, options)).toLowerCase().includes(query)
-  );
+  return options.filter((option) => {
+    const label = typeof option === "object" && option !== null ? option.label : option;
+    return String(label).toLowerCase().includes(query);
+  });
 }
 
 export function getInputValue(
