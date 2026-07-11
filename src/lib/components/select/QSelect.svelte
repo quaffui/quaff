@@ -13,9 +13,10 @@
     getInitialOptionIndex,
     getNextValue,
     getOptionLabel,
+    getOptionValue,
     normalizeOptionIndex,
   } from "./option";
-  import type { QSelectOption, QSelectProps, QSelectValue } from "./props";
+  import type { QSelectOption, QSelectProps } from "./props";
 
   type QSelectEvent<T extends Event> = QEvent<T, HTMLDivElement>;
 
@@ -82,6 +83,13 @@
     getInputValue(currentDisplayValue, searchValue, useInput, isSearching)
   );
 
+  const selectedOptionValues = $derived.by(() => {
+    if (!multiple || !Array.isArray(value)) {
+      return null;
+    }
+
+    return new Set(value.map(getOptionValue).filter((optionValue) => !Number.isNaN(optionValue)));
+  });
   const isOptionSelectedByIndex = $derived(visibleOptions.map(isSelected));
   const activeOptionId = $derived(
     isMenuOpen && focusedOptionIndex >= 0 ? getOptionId(focusedOptionIndex) : undefined
@@ -257,10 +265,11 @@
   }
 
   function isSelected(option: QSelectOption) {
-    const isArray = (val: QSelectValue): val is QSelectOption[] => Array.isArray(val);
-    return multiple
-      ? isArray(value) && value.some((opt) => doValuesMatch(opt, option))
-      : !isArray(value) && doValuesMatch(value, option);
+    if (multiple) {
+      return selectedOptionValues?.has(getOptionValue(option)) ?? false;
+    }
+
+    return !Array.isArray(value) && doValuesMatch(value, option);
   }
 
   function handleOptionMousedown(evt: MouseEvent) {
