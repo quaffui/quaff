@@ -2,6 +2,7 @@
 
 .q-card__actions {
   display: flex;
+  @include mixins.gap("sm");
   @include mixins.margin("t-sm");
 
   &--vertical {
