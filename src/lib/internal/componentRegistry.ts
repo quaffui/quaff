@@ -15,6 +15,7 @@ export const Components = {
   QExpansionItem: "QExpansionItem",
   QFooter: "QFooter",
   QHeader: "QHeader",
+  QHeaderTitle: "QHeaderTitle",
   QIcon: "QIcon",
   QInput: "QInput",
   QSelect: "QSelect",
@@ -31,8 +32,6 @@ export const Components = {
   QTab: "QTab",
   QTable: "QTable",
   QSwitch: "QSwitch",
-  QToolbar: "QToolbar",
-  QToolbarTitle: "QToolbarTitle",
   QTooltip: "QTooltip",
 } as const;
 
@@ -62,7 +61,6 @@ export const ComponentPaths = {
   Switch: "switch",
   Table: "table",
   Tabs: "tabs",
-  Toolbar: "toolbar",
   Tooltip: "tooltip",
 } as const;
 
@@ -92,7 +90,6 @@ export const ComponentCss = {
   Switch: "components/switch",
   Table: "components/table",
   Tabs: "components/tabs",
-  Toolbar: "components/toolbar",
   Tooltip: "components/tooltip",
 } as const;
 
@@ -136,6 +133,7 @@ export const ComponentCssDependencies = {
   [Components.QExpansionItem]: expansionItemCss,
   [Components.QFooter]: [ComponentCss.Footer],
   [Components.QHeader]: [ComponentCss.Header],
+  [Components.QHeaderTitle]: [ComponentCss.Header],
   [Components.QIcon]: [ComponentCss.Icon],
   [Components.QInput]: fieldCss,
   [Components.QSelect]: selectCss,
@@ -152,8 +150,6 @@ export const ComponentCssDependencies = {
   [Components.QTab]: tabsCss,
   [Components.QTable]: tableCss,
   [Components.QSwitch]: switchCss,
-  [Components.QToolbar]: [ComponentCss.Toolbar],
-  [Components.QToolbarTitle]: [ComponentCss.Toolbar],
   [Components.QTooltip]: [ComponentCss.Tooltip],
 } satisfies Record<(typeof Components)[keyof typeof Components], readonly ComponentCssName[]>;
 
@@ -183,7 +179,6 @@ export const ComponentPathCssDependencies = {
   [ComponentPaths.Switch]: switchCss,
   [ComponentPaths.Table]: tableCss,
   [ComponentPaths.Tabs]: tabsCss,
-  [ComponentPaths.Toolbar]: [ComponentCss.Toolbar],
   [ComponentPaths.Tooltip]: [ComponentCss.Tooltip],
 } satisfies Record<
   (typeof ComponentPaths)[keyof typeof ComponentPaths],

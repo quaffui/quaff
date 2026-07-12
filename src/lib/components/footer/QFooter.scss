@@ -9,7 +9,7 @@
   bottom: 0;
   left: 0;
 
-  @include mixins.toolbarDisplay;
+  @include mixins.layoutBarDisplay;
 
   @include mixins.padding("x-md");
 

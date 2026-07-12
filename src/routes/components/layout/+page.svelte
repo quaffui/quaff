@@ -6,6 +6,7 @@
     QDrawer,
     QFooter,
     QHeader,
+    QHeaderTitle,
     QIcon,
     QItem,
     QItemSection,
@@ -14,7 +15,6 @@
     QRadio,
     QRailbar,
     QSwitch,
-    QToolbarTitle,
   } from "$lib";
   import { QDocs, QDocsSection } from "$docs";
   import type { QLayoutProps } from "$components/layout/props";
@@ -69,7 +69,7 @@
       {#snippet header()}
         <QHeader elevated height={48}>
           <QBtn icon="menu" variant="flat" onclick={displayLeftDrawerElement?.toggle} />
-          <QToolbarTitle>Header</QToolbarTitle>
+          <QHeaderTitle>Header</QHeaderTitle>
         </QHeader>
       {/snippet}
       {#snippet drawerLeft()}

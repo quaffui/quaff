@@ -3,23 +3,36 @@
 
 .q-header {
   z-index: 4;
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: auto;
-  left: 0;
+  position: relative;
 
-  @include mixins.toolbarDisplay;
+  @include mixins.layoutBarDisplay;
 
   min-height: unset;
   height: var(--header-height);
-  width: auto;
+  width: 100%;
 
-  @include mixins.padding("x-md");
+  padding-inline: 0.25rem;
 
   border-radius: 0;
 
   background-color: var(--surface);
+  transition: all variables.$speed3;
+
+  > .q-btn--round {
+    width: 3rem;
+    min-width: 3rem;
+    height: 3rem;
+  }
+
+  &--layout {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: auto;
+    left: 0;
+    width: auto;
+    transition: none;
+  }
 
   &--inset {
     padding-left: 3.625rem;
@@ -49,5 +62,19 @@
     &.q-header--offset-#{$side} {
       #{$side}: var(--offset-#{$side}, 0);
     }
+  }
+}
+
+.q-header-title {
+  display: flex;
+  flex: 1 1 auto;
+  min-width: 0;
+  padding-inline: 0.5rem;
+  justify-content: center;
+
+  @include mixins.typography("title-large");
+
+  &--shrink {
+    flex: 0 1 auto;
   }
 }
