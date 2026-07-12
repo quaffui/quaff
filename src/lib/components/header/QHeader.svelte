@@ -11,7 +11,7 @@
   // #region:    --- Reactive variables
   let headerEl = $state<HTMLElement>();
 
-  const headerContext = headerCtx.assertGet("QHeader should be used inside QLayout");
+  const headerContext = headerCtx.get();
   // #endregion: --- Reactive variables
 
   // #region:    --- Props
@@ -21,14 +21,14 @@
     reveal = false,
     revealOffset = 250,
     height = 64,
-    bordered = false, // Added bordered here for explicitness, though it's in props
+    bordered = false,
     children,
     ...props
   }: QHeaderProps = $props();
   // #endregion: --- Props
 
   // #region:    --- Derived values
-  const revealObserver = useRevealScrollObserver("header", uid, () => reveal);
+  const revealObserver = useRevealScrollObserver("header", uid, () => reveal && !!headerContext);
   const revealScroll = $derived(revealObserver.scroll);
 
   const offset = $derived(revealScroll ? revealScroll.position - height : undefined);
@@ -38,13 +38,17 @@
     reveal && revealScroll?.direction === "down" && offset! - revealOffset > 0
   );
 
-  const leftOffset = $derived(headerContext.view.charAt(0) === "l");
+  const leftOffset = $derived(headerContext?.view.charAt(0) === "l");
 
-  const rightOffset = $derived(headerContext.view.charAt(2) === "r");
+  const rightOffset = $derived(headerContext?.view.charAt(2) === "r");
   // #endregion: --- Derived values
 
   // #region:    --- Effects
   $effect.pre(() => {
+    if (!headerContext) {
+      return;
+    }
+
     headerCtx.updateEntries({
       height,
       collapsed,
@@ -86,6 +90,7 @@
       "offset-left": leftOffset,
       "offset-right": rightOffset,
       inset,
+      layout: !!headerContext,
     },
     classes: [props.class],
     isCustomComponent: true,
