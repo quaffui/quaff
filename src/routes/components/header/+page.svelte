@@ -1,12 +1,12 @@
 <script lang="ts">
   import { docsCtx } from "$docs/QDocs.svelte";
   import { pageTitle } from "$helpers/pageTitle";
-  import { QHeader, QToolbarTitle, QBtn, QLayout } from "$lib";
-  import { QHeaderDocs } from "$lib/components/header/docs";
+  import { QBtn, QHeader, QHeaderTitle, QIcon, QInput, QLayout } from "$lib";
+  import { QHeaderDocs, QHeaderTitleDocs } from "$lib/components/header/docs";
   import { QDocs, QDocsSection } from "$docs";
   import snippets from "./docs.snippets";
 
-  docsCtx.set({ snippets, componentDocs: QHeaderDocs });
+  docsCtx.set({ snippets, componentDocs: [QHeaderDocs, QHeaderTitleDocs] });
 </script>
 
 <svelte:head>
@@ -18,7 +18,7 @@
     <QLayout class="surface" style="height: 100%; width: 75%; min-width: unset; min-height: unset">
       {#snippet header()}
         <QHeader elevated>
-          <QToolbarTitle>My App Header</QToolbarTitle>
+          <QHeaderTitle>My App Header</QHeaderTitle>
         </QHeader>
       {/snippet}
 
@@ -32,22 +32,14 @@
     <div>
       <QDocsSection title="Basic Usage">
         {#snippet sectionDescription()}
-          QHeader is designed to be used within a QLayout component. It typically contains titles
-          and buttons. It requires QLayout as a parent to function correctly. If you want to use it
-          outside of QLayout, prefer using <code>QToolbar</code> instead.
+          QHeader is a top app bar for navigation, titles, and actions. It works on its own and also
+          integrates with QLayout when rendered through the layout's header snippet.
         {/snippet}
-        <div class="example-boundary" style="height: 200px;">
-          <QLayout view="hHh Lpr fFf" style="min-height: 200px;">
-            {#snippet header()}
-              <QHeader>
-                <QToolbarTitle>Basic Header</QToolbarTitle>
-              </QHeader>
-            {/snippet}
-            {#snippet content()}
-              <div class="text-center q-py-lg">Content</div>
-            {/snippet}
-          </QLayout>
-        </div>
+        <QHeader bordered>
+          <QBtn flat icon="menu" aria-label="Menu" />
+          <QHeaderTitle>Basic Header</QHeaderTitle>
+          <QBtn flat icon="more_vert" aria-label="More options" />
+        </QHeader>
       </QDocsSection>
 
       <QDocsSection title="Elevated and Bordered">
@@ -60,7 +52,7 @@
             <QLayout view="hHh Lpr fFf" style="min-height: 200px;">
               {#snippet header()}
                 <QHeader elevated>
-                  <QToolbarTitle>Elevated Header</QToolbarTitle>
+                  <QHeaderTitle>Elevated Header</QHeaderTitle>
                 </QHeader>
               {/snippet}
               {#snippet content()}
@@ -73,7 +65,7 @@
             <QLayout view="hHh Lpr fFf" style="min-height: 200px;">
               {#snippet header()}
                 <QHeader bordered>
-                  <QToolbarTitle>Bordered Header</QToolbarTitle>
+                  <QHeaderTitle>Bordered Header</QHeaderTitle>
                 </QHeader>
               {/snippet}
               {#snippet content()}
@@ -92,7 +84,7 @@
           <QLayout view="hHh Lpr fFf" style="min-height: 250px;">
             {#snippet header()}
               <QHeader height={100}>
-                <QToolbarTitle>Tall Header (100px)</QToolbarTitle>
+                <QHeaderTitle>Tall Header (100px)</QHeaderTitle>
               </QHeader>
             {/snippet}
             {#snippet content()}
@@ -114,7 +106,7 @@
           <QLayout view="hHh Lpr fFf" style="min-height: 300px;">
             {#snippet header()}
               <QHeader reveal revealOffset={50}>
-                <QToolbarTitle>Reveal Header</QToolbarTitle>
+                <QHeaderTitle>Reveal Header</QHeaderTitle>
               </QHeader>
             {/snippet}
             {#snippet content()}
@@ -132,9 +124,8 @@
         {#snippet sectionDescription()}
           The <code>inset</code> prop adds a left padding to the header's content, making it appear
           inset from the left edge of the layout. This is useful for layouts with a left drawer or
-          railbar. Note that by default, <code>QToolbarTitle</code> grows horizontally so the inset
-          effect may not be visually apparent. You can use the <code>shrink</code> prop on QToolbarTitle
-          to prevent it from growing.
+          railbar. By default, <code>QHeaderTitle</code> grows horizontally. Use its
+          <code>shrink</code> prop when the title should keep its natural width.
         {/snippet}
         <div
           class="example-boundary"
@@ -143,7 +134,7 @@
           <QLayout view="hHh Lpr fFf" style="min-height: 300px;">
             {#snippet header()}
               <QHeader inset class="justify-start">
-                <QToolbarTitle shrink>Inset Header</QToolbarTitle>
+                <QHeaderTitle shrink>Inset Header</QHeaderTitle>
               </QHeader>
             {/snippet}
 
@@ -160,7 +151,7 @@
           <QLayout view="hHh Lpr fFf" style="min-height: 300px;">
             {#snippet header()}
               <QHeader class="justify-start">
-                <QToolbarTitle shrink>Not Inset Header</QToolbarTitle>
+                <QHeaderTitle shrink>Not Inset Header</QHeaderTitle>
               </QHeader>
             {/snippet}
 
@@ -171,7 +162,7 @@
         </div>
       </QDocsSection>
 
-      <QDocsSection title="With Toolbar Content">
+      <QDocsSection title="Navigation and Actions">
         {#snippet sectionDescription()}
           QHeader typically contains various elements like titles, buttons, and spacers.
         {/snippet}
@@ -180,7 +171,7 @@
             {#snippet header()}
               <QHeader elevated>
                 <QBtn flat round icon="menu" aria-label="Menu" />
-                <QToolbarTitle>App Title</QToolbarTitle>
+                <QHeaderTitle>App Title</QHeaderTitle>
                 <div style="flex-grow: 1;"></div>
                 <QBtn flat round icon="search" aria-label="Search" />
                 <QBtn flat round icon="more_vert" aria-label="More options" />
@@ -191,6 +182,24 @@
             {/snippet}
           </QLayout>
         </div>
+      </QDocsSection>
+
+      <QDocsSection title="Search">
+        {#snippet sectionDescription()}
+          QHeaderTitle gives central content 8dp of inline space, matching the app bar search
+          layout.
+        {/snippet}
+        <QHeader bordered>
+          <QBtn flat icon="arrow_back" aria-label="Back" />
+          <QHeaderTitle class="q-mx-auto" style="max-width: 45rem;">
+            <QInput value="Search" dense rounded style="width: 100%;">
+              {#snippet prepend()}
+                <QIcon name="search" />
+              {/snippet}
+            </QInput>
+          </QHeaderTitle>
+          <QBtn flat icon="account_circle" aria-label="Account" />
+        </QHeader>
       </QDocsSection>
     </div>
   {/snippet}

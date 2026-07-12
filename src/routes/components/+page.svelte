@@ -15,6 +15,7 @@
     QExpansionItem,
     QFooter,
     QHeader,
+    QHeaderTitle,
     QIcon,
     QInput,
     QItem,
@@ -30,7 +31,6 @@
     QTab,
     QTable,
     QTabs,
-    QToolbar,
   } from "$components";
   import QDocs from "$docs/QDocs.svelte";
   import { pageTitle } from "$helpers/pageTitle";
@@ -183,12 +183,6 @@
       description: "Organize content into switchable sections with tabbed navigation.",
       href: "/components/tabs",
       snippet: tabs,
-    },
-    {
-      name: "QToolbar",
-      description: "Group actions and navigation elements within a toolbar.",
-      href: "/components/toolbar",
-      snippet: toolbar,
     },
     {
       name: "QTooltip",
@@ -441,14 +435,10 @@
 {/snippet}
 
 {#snippet header()}
-  <QLayout style="width: 50vw; position: absolute; left: 1rem; top: 1rem;">
-    {#snippet header()}
-      <QHeader>
-        <QBtn icon="menu" flat />
-        <span class="display-small">Quaff</span>
-      </QHeader>
-    {/snippet}
-  </QLayout>
+  <QHeader style="position: absolute; left: 1rem; top: 1rem; width: 50vw;">
+    <QBtn icon="menu" flat aria-label="Menu" />
+    <QHeaderTitle>Quaff</QHeaderTitle>
+  </QHeader>
 {/snippet}
 
 {#snippet icons()}
@@ -703,16 +693,6 @@
       </QTabs>
     {/snippet}
   </QLayout>
-{/snippet}
-
-{#snippet toolbar()}
-  <QToolbar class="flex justify-between items-center">
-    <div class="flex flex-center q-gap-md">
-      <QIcon name="arrow_back" />
-      <span class="headline-small">Settings</span>
-    </div>
-    <QIcon name="more_vert" />
-  </QToolbar>
 {/snippet}
 
 {#snippet tooltip()}

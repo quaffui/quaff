@@ -14,6 +14,7 @@ import QDrawer from "./drawer/QDrawer.svelte";
 import QExpansionItem from "./expansion-item/QExpansionItem.svelte";
 import QFooter from "./footer/QFooter.svelte";
 import QHeader from "./header/QHeader.svelte";
+import QHeaderTitle from "./header/QHeaderTitle.svelte";
 import QIcon from "./icon/QIcon.svelte";
 import QInput from "./input/QInput.svelte";
 import QSelect from "./select/QSelect.svelte";
@@ -30,8 +31,6 @@ import QTabs from "./tabs/QTabs.svelte";
 import QTab from "./tabs/QTab.svelte";
 import QTable from "./table/QTable.svelte";
 import QSwitch from "./switch/QSwitch.svelte";
-import QToolbar from "./toolbar/QToolbar.svelte";
-import QToolbarTitle from "./toolbar/QToolbarTitle.svelte";
 import QTooltip from "./tooltip/QTooltip.svelte";
 
 export {
@@ -51,6 +50,7 @@ export {
   QExpansionItem,
   QFooter,
   QHeader,
+  QHeaderTitle,
   QIcon,
   QInput,
   QSelect,
@@ -67,7 +67,5 @@ export {
   QTab,
   QTable,
   QSwitch,
-  QToolbar,
-  QToolbarTitle,
   QTooltip,
 };

@@ -7,13 +7,13 @@
     QBtn,
     QDrawer,
     QHeader,
+    QHeaderTitle,
     QIcon,
     QItem,
     QItemSection,
     QLayout,
     QList,
     QRailbar,
-    QToolbarTitle,
     QTheme,
     Quaff,
   } from "$lib";
@@ -156,10 +156,6 @@
       to: "/components/tabs",
     },
     {
-      name: "Toolbar",
-      to: "/components/toolbar",
-    },
-    {
       name: "Tooltip",
       to: "/components/tooltip",
     },
@@ -290,10 +286,10 @@
   {#snippet header()}
     <QHeader class="elevate-2">
       {#if Quaff.breakpoints.isLessThan("md")}
-        <QBtn icon="menu" variant="flat" round onclick={drawerLeftEl?.toggle} class="q-mr-sm" />
+        <QBtn icon="menu" variant="flat" round onclick={drawerLeftEl?.toggle} />
       {/if}
 
-      <QToolbarTitle>Quaff</QToolbarTitle>
+      <QHeaderTitle>Quaff</QHeaderTitle>
       <QBtn
         icon={Quaff.darkMode.isActive ? "light_mode" : "dark_mode"}
         variant="flat"
