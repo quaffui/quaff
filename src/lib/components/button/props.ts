@@ -37,7 +37,7 @@ interface QBtnVariantProps {
 
 interface QBtnCommonProps extends Clickable, Linkable, QBtnVariantProps {
   /**
-   * Uses the Material 3 Expressive button sizes, shapes, and motion.
+   * Uses the Material 3 Expressive button sizes, shapes, and motion for this button. Expressive mode can also be enabled globally through `Quaff.init()`.
    *
    * @default false
    */
