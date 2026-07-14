@@ -1,6 +1,7 @@
 <script lang="ts">
   import { useColor, useSize } from "$composables";
   import { ripple } from "$helpers";
+  import { quaffConfig } from "$internal/quaffConfig";
   import { extractImgSrc, getRouterInfo, isActivationKey, type QEvent } from "$utils";
   import QCircularProgress from "$components/progress/QCircularProgress.svelte";
   import QIconSnippet from "$internal/QIconSnippet.svelte";
@@ -42,7 +43,8 @@
 
   const routerInfo = $derived(getRouterInfo({ href, to, replace }));
   const computedTag = $derived(routerInfo.hasLink ? "a" : tag || "button");
-  const resolvedSize = $derived(size ?? (expressive ? "sm" : "md"));
+  const isExpressive = $derived(expressive || quaffConfig.expressive);
+  const resolvedSize = $derived(size ?? (isExpressive ? "sm" : "md"));
   const qSize = $derived(useSize(resolvedSize, "q-btn"));
   const src = $derived(typeof icon === "string" ? extractImgSrc(icon) : undefined);
   const hasLabel = $derived(label !== undefined || children !== undefined);
@@ -74,7 +76,7 @@
       xl: "2.5rem",
     } as const;
 
-    return (expressive ? expressiveSizes : standardSizes)[resolvedSize];
+    return (isExpressive ? expressiveSizes : standardSizes)[resolvedSize];
   });
 
   const computedColor = $derived.by(() => {
@@ -124,10 +126,10 @@
     bemClasses: {
       [finalVariant]: true,
       unelevated,
-      expressive,
-      squared: expressive && shape === "squared",
-      rectangle: !expressive && rectangle,
-      round: !expressive && (round || !hasLabel),
+      expressive: isExpressive,
+      squared: isExpressive && shape === "squared",
+      rectangle: !isExpressive && rectangle,
+      round: !isExpressive && (round || !hasLabel),
     },
     classes: [qSize.class, routerInfo.linkClass, noFocusRing && "no-focus-ring", props.class],
   });

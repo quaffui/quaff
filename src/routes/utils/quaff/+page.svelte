@@ -18,6 +18,20 @@
     {/snippet}
 
     {#snippet usage()}
+      <QDocsSection title="Configuration">
+        {#snippet sectionDescription()}
+          Configure framework-wide defaults when initializing Quaff. Vite apps can map an
+          environment variable at this boundary without coupling Quaff to Vite.
+        {/snippet}
+
+        <QCodeBlock
+          language="ts"
+          code={`Quaff.init({
+  expressive: import.meta.env.VITE_QUAFF_EXPRESSIVE === "true",
+});`}
+        />
+      </QDocsSection>
+
       <QDocsSection title="Framework version">
         {#snippet sectionDescription()}
           You can easily check the current version of the Quaff framework using the <code>
