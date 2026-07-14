@@ -1,6 +1,7 @@
 import { onMount } from "svelte";
 import { innerWidth } from "svelte/reactivity/window";
 import { version } from "$helpers";
+import { quaffConfig, type QuaffConfig } from "$internal/quaffConfig";
 import { page } from "$app/state";
 
 type DisplayMode = "light" | "dark";
@@ -62,7 +63,9 @@ class Quaff {
 
   protected dark = $state(false);
 
-  public init() {
+  public init(config: Partial<QuaffConfig> = {}) {
+    quaffConfig.expressive = config.expressive ?? false;
+
     onMount(() => {
       this.applyDisplayMode(this.getCurrentDisplayMode(), false);
     });

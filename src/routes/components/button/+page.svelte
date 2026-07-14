@@ -118,8 +118,10 @@
 
       <QDocsSection title="Expressive Buttons">
         {#snippet sectionDescription()}
-          Enable <code>expressive</code> for the Material 3 Expressive size scale, shape morphing, and
-          motion. Expressive buttons default to the sm size.
+          Enable <code>expressive</code> for one button, or pass
+          <code>{`{ expressive: true }`}</code>
+          to <code>Quaff.init()</code> to use the Material 3 Expressive styles globally. Expressive buttons
+          default to the sm size.
         {/snippet}
 
         <QBtn class="q-ma-sm" expressive size="xs" label="Extra Small" filled />

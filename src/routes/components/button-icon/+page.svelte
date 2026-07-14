@@ -108,8 +108,9 @@
 
       <QDocsSection title="Expressive Icon Buttons">
         {#snippet sectionDescription()}
-          Enable <code>expressive</code> for the Material 3 Expressive size scale, widths, shape morphing,
-          and motion.
+          Enable <code>expressive</code> for one button, or pass
+          <code>{`{ expressive: true }`}</code>
+          to <code>Quaff.init()</code> to use the Material 3 Expressive styles globally.
         {/snippet}
 
         <QIconBtn class="q-ma-sm" expressive icon="star" size="xs" filled />
