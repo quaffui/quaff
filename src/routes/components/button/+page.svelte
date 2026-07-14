@@ -35,6 +35,16 @@
         </QBtn>
       </QDocsSection>
 
+      <QDocsSection title="Icon Buttons">
+        {#snippet sectionDescription()}
+          QBtn remains usable as an icon-only button. Use QIconBtn when you want the dedicated icon
+          button API.
+        {/snippet}
+
+        <QBtn class="q-ma-sm" icon="favorite" aria-label="Favorite" />
+        <QBtn class="q-ma-sm" icon="share" flat aria-label="Share" />
+      </QDocsSection>
+
       <QDocsSection title="Loading State Buttons">
         {#snippet sectionDescription()}
           Buttons can display a loading indicator, useful for operations that take time to complete.
@@ -97,14 +107,25 @@
 
       <QDocsSection title="Size">
         {#snippet sectionDescription()}
-          QBtn supports different sizes to fit various layouts. Available options are sm, md
-          (default), lg, and xl.
+          Standard buttons support sm, md (default), lg, and xl sizes.
         {/snippet}
 
         <QBtn class="q-ma-sm" size="sm" label="Small" unelevated />
         <QBtn class="q-ma-sm" label="Medium" unelevated />
         <QBtn class="q-ma-sm" size="lg" label="Large" unelevated />
         <QBtn class="q-ma-sm" size="xl" label="Extra Large" unelevated />
+      </QDocsSection>
+
+      <QDocsSection title="Expressive Buttons">
+        {#snippet sectionDescription()}
+          Enable <code>expressive</code> for the Material 3 Expressive size scale, shape morphing, and
+          motion. Expressive buttons default to the sm size.
+        {/snippet}
+
+        <QBtn class="q-ma-sm" expressive size="xs" label="Extra Small" filled />
+        <QBtn class="q-ma-sm" expressive label="Small" filled />
+        <QBtn class="q-ma-sm" expressive size="md" label="Medium" filled />
+        <QBtn class="q-ma-sm" expressive size="md" shape="squared" label="Squared" tonal />
       </QDocsSection>
 
       <QDocsSection title="Button with Router Link">
@@ -129,15 +150,12 @@
 
       <QDocsSection title="Shape Variations">
         {#snippet sectionDescription()}
-          QBtn can be displayed in different shapes using the <code>round</code> or
-          <code>rectangle</code> props.
+          Standard buttons support the <code>round</code> and <code>rectangle</code> props.
         {/snippet}
 
         <QBtn class="q-ma-sm" label="Default" />
-        <QBtn class="q-ma-sm" icon="add" round />
         <QBtn class="q-ma-sm" label="Rectangle" rectangle />
-        <QBtn class="q-ma-sm" icon="add" label="Icon and Rectangle" rectangle />
-        <QBtn class="q-ma-sm" loading rectangle />
+        <QBtn class="q-ma-sm" icon="add" round aria-label="Add" />
       </QDocsSection>
 
       <QDocsSection title="Ripple Effect">

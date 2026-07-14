@@ -5,6 +5,7 @@
   import {
     QAvatar,
     QBtn,
+    QIconBtn,
     QDrawer,
     QHeader,
     QHeaderTitle,
@@ -70,6 +71,10 @@
     {
       name: "Button",
       to: "/components/button",
+    },
+    {
+      name: "Icon Button",
+      to: "/components/button-icon",
     },
     {
       name: "Card",
@@ -286,17 +291,16 @@
   {#snippet header()}
     <QHeader class="elevate-2">
       {#if Quaff.breakpoints.isLessThan("md")}
-        <QBtn icon="menu" variant="flat" round onclick={drawerLeftEl?.toggle} />
+        <QIconBtn icon="menu" variant="flat" onclick={drawerLeftEl?.toggle} />
       {/if}
 
       <QHeaderTitle>Quaff</QHeaderTitle>
-      <QBtn
+      <QIconBtn
         icon={Quaff.darkMode.isActive ? "light_mode" : "dark_mode"}
         variant="flat"
-        round
         onclick={Quaff.darkMode.toggle}
       />
-      <QBtn icon="palette" variant="flat" onclick={drawerRightEl?.toggle} />
+      <QIconBtn icon="palette" variant="flat" onclick={drawerRightEl?.toggle} />
     </QHeader>
   {/snippet}
 
@@ -312,8 +316,7 @@
         <h6 class="q-mb-lg">Want a different color theme?</h6>
         <div class="flex q-gap-md">
           {#each colors as color, index (index)}
-            <QBtn
-              round
+            <QIconBtn
               onclick={() => {
                 chosenColor = index;
                 QTheme.setTheme(color);
@@ -325,7 +328,7 @@
                 size="2.5rem"
                 style="background-color:{color}; border: solid 0.0625rem var(--outline)"
               />
-            </QBtn>
+            </QIconBtn>
           {/each}
         </div>
       </div>

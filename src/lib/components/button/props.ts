@@ -1,23 +1,14 @@
-import type { Disableable, Linkable, QSize, QSizeable, Labelable } from "$utils";
+import type { Clickable, Labelable, Linkable, QSize } from "$utils";
 import type { MaterialSymbol } from "material-symbols";
-import type { HTMLAttributes, MouseEventHandler } from "svelte/elements";
+import type { Snippet } from "svelte";
+import type { HTMLAttributes } from "svelte/elements";
 
-export type QBtnSizeOptions = Exclude<QSize, "xs">;
+export type QBtnSizeOptions = Exclude<QSize, "none">;
+export type QBtnIcon = MaterialSymbol | Snippet | `img:${string}`;
 
 export type QBtnVariantOptions = "elevated" | "filled" | "tonal" | "outlined" | "flat";
 
-export interface QBtnProps
-  extends
-    Labelable,
-    Disableable,
-    Linkable,
-    QSizeable<"none" | "xs">,
-    HTMLAttributes<HTMLButtonElement> {
-  /**
-   * Sets the color of the button. If a color is specified, it overwrites all other color variants defined with boolean attributes.
-   */
-  color?: string;
-
+interface QBtnVariantProps {
   /**
    * Choose the variant for the button. If a variant is specified, it overwrites all other variants defined with boolean attributes. If no variant is specified using this prop or boolean props, the `elevated` variant will be used.
    */
@@ -25,75 +16,100 @@ export interface QBtnProps
 
   /**
    * Equivalent to `variant="filled"`. Overwritten by `variant` but overwrites `tonal`, `outlined` and `flat`.
-   * @default false
    */
   filled?: boolean;
 
   /**
    * Equivalent to `variant="tonal"`. Overwritten by `variant` and `filled` but overwrites `outlined` and `flat`.
-   * @default false
    */
   tonal?: boolean;
 
   /**
    * Equivalent to `variant="outlined"`. Overwritten by `variant`, `filled` and `tonal` but overwrites `flat`.
-   * @default false
    */
   outlined?: boolean;
 
   /**
    * Equivalent to `variant="flat"`. Overwritten by any other variant if defined with the `variant` prop or other boolean variant props.
-   * @default false
    */
   flat?: boolean;
+}
+
+interface QBtnCommonProps extends Clickable, Linkable, QBtnVariantProps {
+  /**
+   * Uses the Material 3 Expressive button sizes, shapes, and motion.
+   *
+   * @default false
+   */
+  expressive?: boolean;
 
   /**
-   * Name of the leading icon to use for the button.
+   * Icon to display on the leading edge of the button.
    */
-  icon?: MaterialSymbol | `img:${string}`;
+  icon?: QBtnIcon;
 
   /**
    * Puts the button in a loading state, adding a loader as the leading icon.
-   * @default false
    */
   loading?: boolean;
 
   /**
-   * Use rectangle design for the button, removing the large border-radius.
+   * Disables the button's focus ring.
+   *
+   * @default false
+   */
+  noFocusRing?: boolean;
+
+  /**
+   * Uses a rectangular shape for a standard button.
+   *
    * @default false
    */
   rectangle?: boolean;
 
   /**
-   * Disable the ripple effect for the button.
-   * @default false
-   */
-  noRipple?: boolean;
-
-  /**
-   * Sets the ripple effect's color for the button.
-   */
-  rippleColor?: string;
-
-  /**
-   * Use round design for the button, giving it a circular shape.
+   * Uses a circular shape for a standard icon-only button.
+   *
    * @default false
    */
   round?: boolean;
 
   /**
+   * The shape used when `expressive` is enabled.
+   */
+  shape?: "round" | "squared";
+
+  /**
+   * Size of the button.
+   */
+  size?: QBtnSizeOptions;
+
+  /**
    * Removes the button's elevation.
-   * @default false
    */
   unelevated?: boolean;
 
   /**
-   * The tag to use for the button. If not specified, a button element will be used or, if `to` is specified, an anchor tag will be used.
+   * The tag to use for the button. If not specified, a button element will be used or, if `href` or `to` is specified, an anchor tag will be used.
    */
   tag?: keyof HTMLElementTagNameMap;
+}
+
+export interface QBtnProps extends QBtnCommonProps, Labelable, HTMLAttributes<HTMLButtonElement> {
+  /**
+   * Sets the color of the button.
+   */
+  color?: string;
+}
+
+export interface QIconBtnProps extends QBtnCommonProps, HTMLAttributes<HTMLButtonElement> {
+  /**
+   * Sets the color of the button.
+   */
+  color?: string;
 
   /**
-   * This event is emitted when the button is clicked.
+   * Defines the width of an expressive icon button.
    */
-  onclick?: MouseEventHandler<HTMLElement>;
+  width?: "narrow" | "default" | "wide";
 }

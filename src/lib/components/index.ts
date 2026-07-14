@@ -2,6 +2,7 @@ import QAvatar from "./avatar/QAvatar.svelte";
 import QBreadcrumbs from "./breadcrumbs/QBreadcrumbs.svelte";
 import QBreadcrumbsEl from "./breadcrumbs/QBreadcrumbsEl.svelte";
 import QBtn from "./button/QBtn.svelte";
+import QIconBtn from "./button/QIconBtn.svelte";
 import QCard from "./card/QCard.svelte";
 import QCardSection from "./card/QCardSection.svelte";
 import QCardActions from "./card/QCardActions.svelte";
@@ -38,6 +39,7 @@ export {
   QBreadcrumbs,
   QBreadcrumbsEl,
   QBtn,
+  QIconBtn,
   QCard,
   QCardSection,
   QCardActions,
