@@ -6,6 +6,7 @@
     QCardSection,
     QDialog,
     QIcon,
+    QIconBtn,
     QItem,
     QItemSection,
     QList,
@@ -171,7 +172,7 @@
           <div class="full-height column no-wrap">
             <div class="q-px-md q-py-sm flex justify-between">
               <h6 class="q-mb-none">Fullscreen Dialog</h6>
-              <QBtn flat round icon="close" onclick={() => (fullscreenDialogOpen = false)} />
+              <QIconBtn flat icon="close" onclick={() => (fullscreenDialogOpen = false)} />
             </div>
 
             <div class="q-pa-md">

@@ -5,123 +5,202 @@
 @layer q-btn {
   .q-btn {
     position: relative;
+    isolation: isolate;
 
     display: inline-flex;
     align-items: center;
     justify-content: center;
 
-    padding: 0 1.5rem;
+    height: var(--q-btn-height, 2.5rem);
+    min-width: var(--q-btn-height, 2.5rem);
+    padding-inline: 1.5rem;
+    gap: 0.5rem;
 
-    box-sizing: content-box;
     border: none;
-    outline: inherit;
+    border-radius: calc(var(--q-btn-height, 2.5rem) / 2);
+    outline: none;
 
-    background-color: transparent;
+    @include mixins.typography(label-large);
     color: var(--ripple-color);
-
-    font-family: inherit;
-    font-size: 0.875rem;
-    font-weight: 500;
-    line-height: normal;
 
     cursor: pointer;
     user-select: none;
     text-decoration: none;
 
     transition:
-      variables.$speed3 transform,
-      variables.$speed3 border-radius,
-      variables.$speed3 padding;
+      variables.$speed3 color,
+      variables.$speed3 background-color,
+      variables.$speed3 border-radius;
 
-    isolation: isolate;
-
-    @include mixins.btn-image;
-
-    $sizeMap: (
-      "sm": -1,
-      "md": 0,
-      "lg": 1,
-      "xl": 2,
-    );
-    @each $size, $val in $sizeMap {
-      &--#{$size} {
-        $dim: 2.5rem + 0.5 * $val;
-        height: $dim;
-        min-width: $dim;
-
-        border-radius: 1.25rem + 0.25 * $val;
-
-        font-size: 1rem + 0.125 * $val;
-
-        &.q-btn--round {
-          width: $dim;
-        }
-      }
+    &:not(:has(> .q-btn__label)) {
+      width: var(--q-btn-height, 2.5rem);
+      padding-inline: 0;
     }
 
-    &:not([aria-disabled]):hover::after {
-      @include mixins.overlay(var(--ripple-color), 0.08);
+    &:not(.q-btn--expressive):has(> :is(.q-btn__icon, .q-btn__img, .q-btn__loader)):has(
+        > .q-btn__label
+      ) {
+      padding-inline-start: 1rem;
     }
 
-    &:not([aria-disabled]):focus::after {
-      @include mixins.overlay(var(--ripple-color), 0.1);
+    &--xs,
+    &--sm {
+      --q-btn-height: 2rem;
     }
 
-    &--elevated {
-      &:not(.q-btn--unelevated, [aria-disabled]) {
-        @include mixins.elevate(1, "bottom");
-      }
-
-      background-color: var(--surface-container-low);
-
-      // Surface tint overlay
-      &::before {
-        @include mixins.overlay(var(--surface-tint), 0.12);
-      }
+    &--md {
+      --q-btn-height: 2.5rem;
     }
 
-    &--filled {
-      background-color: var(--primary);
-
-      &:hover:not([aria-disabled]) {
-        @include mixins.elevate(1, "bottom");
-      }
+    &--lg {
+      --q-btn-height: 3rem;
     }
 
-    &--tonal {
-      background-color: var(--secondary-container);
-
-      &:hover:not([aria-disabled]) {
-        @include mixins.elevate(1, "bottom");
-      }
-    }
-
-    &--outlined {
-      outline: solid 0.0625rem var(--outline-variant);
-
-      &:not([aria-disabled]):focus {
-        outline-color: var(--primary);
-      }
-    }
-
-    &--round {
-      border-radius: 50%;
-      padding: 0;
+    &--xl {
+      --q-btn-height: 3.5rem;
     }
 
     &--rectangle {
       border-radius: 0.5rem;
     }
-  }
 
-  .q-btn:not(.q-btn--round) > :is(.q-icon, .q-btn__img, .q-circular-progress) {
-    margin-left: -0.5rem;
-    margin-right: 0.5rem;
-    --size: 1.5rem;
+    &--round {
+      border-radius: 50%;
+    }
+
+    &--expressive {
+      transition-property: color, background-color, border-radius, width;
+      transition-duration: 0.35s;
+      transition-timing-function: cubic-bezier(0.42, 1.67, 0.21, 0.9);
+
+      &.q-btn--xs {
+        --q-btn-height: 2rem;
+        padding-inline: 0.75rem;
+        gap: 0.25rem;
+      }
+
+      &.q-btn--sm {
+        --q-btn-height: 2.5rem;
+        padding-inline: 1rem;
+      }
+
+      &.q-btn--md {
+        --q-btn-height: 3.5rem;
+        padding-inline: 1.5rem;
+        @include mixins.typography(title-medium);
+      }
+
+      &.q-btn--lg {
+        --q-btn-height: 6rem;
+        padding-inline: 3rem;
+        gap: 0.75rem;
+        @include mixins.typography(headline-small);
+      }
+
+      &.q-btn--xl {
+        --q-btn-height: 8.5rem;
+        padding-inline: 4rem;
+        gap: 1rem;
+        @include mixins.typography(headline-large);
+      }
+
+      &.q-btn--squared {
+        &.q-btn--xs,
+        &.q-btn--sm {
+          border-radius: 0.75rem;
+        }
+
+        &.q-btn--md {
+          border-radius: 1rem;
+        }
+
+        &.q-btn--lg,
+        &.q-btn--xl {
+          border-radius: 1.75rem;
+        }
+      }
+
+      &:active {
+        &.q-btn--xs,
+        &.q-btn--sm {
+          border-radius: 0.5rem;
+        }
+
+        &.q-btn--md {
+          border-radius: 0.75rem;
+        }
+
+        &.q-btn--lg,
+        &.q-btn--xl {
+          border-radius: 1rem;
+        }
+      }
+    }
+
+    &--elevated,
+    &--unelevated {
+      background-color: var(--surface-container-low);
+      --ripple-color: var(--primary);
+    }
+
+    &--elevated:not(&--unelevated) {
+      @include mixins.elevate(1, "bottom");
+    }
+
+    &--filled {
+      background-color: var(--primary);
+      --ripple-color: var(--on-primary);
+    }
+
+    &--tonal {
+      background-color: var(--secondary-container);
+      --ripple-color: var(--on-secondary-container);
+    }
+
+    &--filled,
+    &--tonal {
+      &:not([aria-disabled], [disabled]):hover {
+        @include mixins.elevate(1, "bottom");
+      }
+    }
+
+    &--outlined {
+      background-color: transparent;
+      --ripple-color: var(--on-surface-variant);
+
+      @include mixins.border();
+    }
+
+    &--flat {
+      background-color: transparent;
+      --ripple-color: var(--primary);
+    }
+
+    &:not([aria-disabled], [disabled]) {
+      &:hover::after {
+        @include mixins.overlay(var(--ripple-color), 0.08);
+      }
+
+      &:is(:active, :focus)::after {
+        @include mixins.overlay(var(--ripple-color), 0.1);
+      }
+
+      &:focus-visible:not(.no-focus-ring) {
+        z-index: 1;
+        outline: 0.1875rem solid var(--secondary);
+        outline-offset: 0.125rem;
+      }
+    }
+
+    &__img {
+      width: var(--q-btn-icon-size, 1.5rem);
+      height: var(--q-btn-icon-size, 1.5rem);
+      border-radius: 50%;
+      object-fit: cover;
+    }
   }
 }
 
-// Disabled
 @layer q-btn--disabled {
   .q-btn[aria-disabled] {
     @include disabled.base();
@@ -131,7 +210,7 @@
     }
 
     &.q-btn--outlined {
-      outline-color: disabled.rest-color();
+      border-color: disabled.rest-color();
     }
   }
 }

@@ -17,6 +17,7 @@
     QHeader,
     QHeaderTitle,
     QIcon,
+    QIconBtn,
     QInput,
     QItem,
     QItemSection,
@@ -69,6 +70,12 @@
       description: "Enable user interactions with versatile and stylish buttons.",
       href: "/components/button",
       snippet: button,
+    },
+    {
+      name: "QIconBtn",
+      description: "Use instead of QBtn when only an icon is required.",
+      href: "/components/button-icon",
+      snippet: buttonIcon,
     },
     {
       name: "QCard",
@@ -321,6 +328,10 @@
 
 {#snippet button()}
   <QBtn label="Make payment" variant="filled" />
+{/snippet}
+
+{#snippet buttonIcon()}
+  <QIconBtn icon="add" variant="filled" />
 {/snippet}
 
 {#snippet card()}

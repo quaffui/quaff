@@ -8,6 +8,7 @@
     QFooter,
     QHeader,
     QIcon,
+    QIconBtn,
     QItem,
     QItemSection,
     QLayout,
@@ -280,11 +281,10 @@
             <!-- Header -->
             {#snippet header()}
               <QHeader class="flex items-center justify-between">
-                <QBtn flat round icon="menu" onclick={() => (leftDrawerOpen = !leftDrawerOpen)} />
+                <QIconBtn flat icon="menu" onclick={() => (leftDrawerOpen = !leftDrawerOpen)} />
                 <div class="q-ml-md text-h6">Complete Layout</div>
-                <QBtn
+                <QIconBtn
                   flat
-                  round
                   icon="more_vert"
                   onclick={() => (rightDrawerOpen = !rightDrawerOpen)}
                 />

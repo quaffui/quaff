@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { QBtn, QCodeBlock, QDialog } from "$lib";
+  import { QCodeBlock, QDialog, QIconBtn } from "$lib";
   import { docsCtx } from "./QDocs.svelte";
   import type { Snippet } from "svelte";
 
@@ -36,7 +36,7 @@
     <h5>{title}</h5>
     {#if code && !noCode}
       <div class="q-docs-section__actions">
-        <QBtn icon="code" variant="outlined" round onclick={() => (dialog = true)} />
+        <QIconBtn icon="code" variant="outlined" onclick={() => (dialog = true)} />
       </div>
       <QDialog class="snippet-dialog" bind:value={dialog} modal style="max-width: 75vw">
         <QCodeBlock {code} language="svelte" {title} copiable />
