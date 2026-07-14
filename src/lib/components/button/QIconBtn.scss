@@ -1,0 +1,62 @@
+.q-icon-btn {
+  width: var(--q-btn-height, 2.5rem);
+  min-width: 0;
+  padding: 0;
+  gap: 0;
+
+  &.q-btn--expressive {
+    &.q-icon-btn--narrow {
+      &.q-btn--xs {
+        width: 1.75rem;
+      }
+
+      &.q-btn--sm {
+        width: 2rem;
+      }
+
+      &.q-btn--md {
+        width: 3rem;
+      }
+
+      &.q-btn--lg {
+        width: 4rem;
+      }
+
+      &.q-btn--xl {
+        width: 6.5rem;
+      }
+    }
+
+    &.q-icon-btn--wide {
+      &.q-btn--xs {
+        width: 2.5rem;
+      }
+
+      &.q-btn--sm {
+        width: 3.25rem;
+      }
+
+      &.q-btn--md {
+        width: 4.5rem;
+      }
+
+      &.q-btn--lg {
+        width: 8rem;
+      }
+
+      &.q-btn--xl {
+        width: 11.5rem;
+      }
+    }
+  }
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: max(100%, 3rem);
+    height: max(100%, 3rem);
+    transform: translate(-50%, -50%);
+  }
+}

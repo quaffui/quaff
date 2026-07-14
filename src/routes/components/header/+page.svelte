@@ -1,7 +1,7 @@
 <script lang="ts">
   import { docsCtx } from "$docs/QDocs.svelte";
   import { pageTitle } from "$helpers/pageTitle";
-  import { QBtn, QHeader, QHeaderTitle, QIcon, QInput, QLayout } from "$lib";
+  import { QHeader, QHeaderTitle, QIcon, QIconBtn, QInput, QLayout } from "$lib";
   import { QHeaderDocs, QHeaderTitleDocs } from "$lib/components/header/docs";
   import { QDocs, QDocsSection } from "$docs";
   import snippets from "./docs.snippets";
@@ -36,9 +36,9 @@
           integrates with QLayout when rendered through the layout's header snippet.
         {/snippet}
         <QHeader bordered>
-          <QBtn flat icon="menu" aria-label="Menu" />
+          <QIconBtn flat icon="menu" aria-label="Menu" />
           <QHeaderTitle>Basic Header</QHeaderTitle>
-          <QBtn flat icon="more_vert" aria-label="More options" />
+          <QIconBtn flat icon="more_vert" aria-label="More options" />
         </QHeader>
       </QDocsSection>
 
@@ -170,11 +170,11 @@
           <QLayout view="hHh Lpr fFf" style="min-height: 200px;">
             {#snippet header()}
               <QHeader elevated>
-                <QBtn flat round icon="menu" aria-label="Menu" />
+                <QIconBtn flat icon="menu" aria-label="Menu" />
                 <QHeaderTitle>App Title</QHeaderTitle>
                 <div style="flex-grow: 1;"></div>
-                <QBtn flat round icon="search" aria-label="Search" />
-                <QBtn flat round icon="more_vert" aria-label="More options" />
+                <QIconBtn flat icon="search" aria-label="Search" />
+                <QIconBtn flat icon="more_vert" aria-label="More options" />
               </QHeader>
             {/snippet}
             {#snippet content()}
@@ -190,7 +190,7 @@
           layout.
         {/snippet}
         <QHeader bordered>
-          <QBtn flat icon="arrow_back" aria-label="Back" />
+          <QIconBtn flat icon="arrow_back" aria-label="Back" />
           <QHeaderTitle class="q-mx-auto" style="max-width: 45rem;">
             <QInput value="Search" dense rounded style="width: 100%;">
               {#snippet prepend()}
@@ -198,7 +198,7 @@
               {/snippet}
             </QInput>
           </QHeaderTitle>
-          <QBtn flat icon="account_circle" aria-label="Account" />
+          <QIconBtn flat icon="account_circle" aria-label="Account" />
         </QHeader>
       </QDocsSection>
     </div>

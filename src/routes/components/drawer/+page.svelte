@@ -4,6 +4,7 @@
   import { pageTitle } from "$helpers/pageTitle";
   import {
     QBtn,
+    QIconBtn,
     QDrawer,
     QFooter,
     QHeader,
@@ -78,7 +79,7 @@
         >
           {#snippet header()}
             <QHeader>
-              <QBtn flat round icon="menu" onclick={() => (basicDrawerOpen = !basicDrawerOpen)} />
+              <QIconBtn flat icon="menu" onclick={() => (basicDrawerOpen = !basicDrawerOpen)} />
               <h6 class="q-ml-sm q-my-none">App Title</h6>
             </QHeader>
           {/snippet}
@@ -127,14 +128,9 @@
         >
           {#snippet header()}
             <QHeader class="justify-between">
-              <QBtn flat round icon="menu" onclick={() => (leftDrawerOpen = !leftDrawerOpen)} />
+              <QIconBtn flat icon="menu" onclick={() => (leftDrawerOpen = !leftDrawerOpen)} />
               <h6 class="q-ml-sm q-my-none">App Title</h6>
-              <QBtn
-                flat
-                round
-                icon="settings"
-                onclick={() => (rightDrawerOpen = !rightDrawerOpen)}
-              />
+              <QIconBtn flat icon="settings" onclick={() => (rightDrawerOpen = !rightDrawerOpen)} />
             </QHeader>
           {/snippet}
 
@@ -184,12 +180,7 @@
         >
           {#snippet header()}
             <QHeader>
-              <QBtn
-                flat
-                round
-                icon="menu"
-                onclick={() => (overlayDrawerOpen = !overlayDrawerOpen)}
-              />
+              <QIconBtn flat icon="menu" onclick={() => (overlayDrawerOpen = !overlayDrawerOpen)} />
               <h6 class="q-ml-sm q-my-none">Overlay Drawer</h6>
             </QHeader>
           {/snippet}
@@ -229,9 +220,8 @@
         >
           {#snippet header()}
             <QHeader>
-              <QBtn
+              <QIconBtn
                 flat
-                round
                 icon="menu"
                 onclick={() => (persistentDrawerOpen = !persistentDrawerOpen)}
               />
@@ -275,9 +265,8 @@
         >
           {#snippet header()}
             <QHeader>
-              <QBtn
+              <QIconBtn
                 flat
-                round
                 icon="menu"
                 onclick={() => (borderedDrawerOpen = !borderedDrawerOpen)}
               />
@@ -317,9 +306,8 @@
         >
           {#snippet header()}
             <QHeader>
-              <QBtn
+              <QIconBtn
                 flat
-                round
                 icon="menu"
                 onclick={() => (customWidthDrawerOpen = !customWidthDrawerOpen)}
               />
@@ -401,7 +389,7 @@
         >
           {#snippet header()}
             <QHeader>
-              <QBtn flat round icon="menu" onclick={() => (layoutDrawerOpen = !layoutDrawerOpen)} />
+              <QIconBtn flat icon="menu" onclick={() => (layoutDrawerOpen = !layoutDrawerOpen)} />
               <h6 class="q-ml-sm q-my-none">App with Layout</h6>
             </QHeader>
           {/snippet}

@@ -1,15 +1,13 @@
 <script lang="ts">
-  import { useSize } from "$composables";
+  import { useColor, useSize } from "$composables";
   import { ripple } from "$helpers";
-  import { isActivationKey, extractImgSrc, type QEvent, getRouterInfo } from "$utils";
-  import QIcon from "$components/icon/QIcon.svelte";
+  import { extractImgSrc, getRouterInfo, isActivationKey, type QEvent } from "$utils";
   import QCircularProgress from "$components/progress/QCircularProgress.svelte";
-  import type { MaterialSymbol } from "material-symbols";
-  import type { QBtnProps, QBtnVariantOptions } from "./props";
+  import QIconSnippet from "$internal/QIconSnippet.svelte";
+  import type { QBtnIcon, QBtnProps, QBtnVariantOptions } from "./props";
 
-  type QBtnMouseEvent = QEvent<MouseEvent, typeof qBtn>;
+  type ButtonEvent<T extends Event> = QEvent<T, HTMLElement>;
 
-  // #region:    --- Props
   let {
     disabled = false,
     variant,
@@ -18,35 +16,36 @@
     tonal = false,
     outlined = false,
     flat = false,
+    expressive = false,
     icon,
     label,
     loading = false,
-    rectangle = false,
+    noFocusRing = false,
     noRipple = false,
+    rectangle = false,
     rippleColor,
     round = false,
+    shape = "round",
     unelevated = false,
-    size = "md",
+    size,
+    href,
+    to,
+    replace = false,
     target,
     tag,
+    tabindex,
     onclick,
+    onkeydown,
     children,
     ...props
   }: QBtnProps = $props();
-  // #endregion: --- Props
 
-  // #region:    --- Non-reactive variables
-  let qBtn: HTMLElement;
-  let qBtnLabel: HTMLSpanElement;
-  // #endregion: --- Non-reactive variables
-
-  // #region:    --- Derived values
-  const routerInfo = $derived(getRouterInfo(props));
-
+  const routerInfo = $derived(getRouterInfo({ href, to, replace }));
   const computedTag = $derived(routerInfo.hasLink ? "a" : tag || "button");
-  const qSize = $derived(useSize(size, "q-btn"));
-
-  const src = $derived(extractImgSrc(icon));
+  const resolvedSize = $derived(size ?? (expressive ? "sm" : "md"));
+  const qSize = $derived(useSize(resolvedSize, "q-btn"));
+  const src = $derived(typeof icon === "string" ? extractImgSrc(icon) : undefined);
+  const hasLabel = $derived(label !== undefined || children !== undefined);
 
   const variants: Partial<Record<QBtnVariantOptions, boolean>> = $derived({
     filled,
@@ -58,94 +57,101 @@
   const boolVariant = $derived(
     (Object.keys(variants) as QBtnVariantOptions[]).find((key) => variants[key])
   );
-
   const finalVariant = $derived<QBtnVariantOptions>(variant || boolVariant || "elevated");
+
+  const iconSize = $derived.by(() => {
+    const standardSizes = {
+      xs: "1rem",
+      sm: "1.25rem",
+      md: "1.5rem",
+      lg: "1.75rem",
+      xl: "2rem",
+    } as const;
+    const expressiveSizes = {
+      ...standardSizes,
+      xs: "1.25rem",
+      lg: "2rem",
+      xl: "2.5rem",
+    } as const;
+
+    return (expressive ? expressiveSizes : standardSizes)[resolvedSize];
+  });
 
   const computedColor = $derived.by(() => {
     if (disabled) {
-      return undefined;
+      return;
     }
-
     if (color) {
       return color;
     }
-
     if (finalVariant === "filled") {
       return "on-primary";
     }
-
     if (finalVariant === "tonal") {
       return "on-secondary-container";
     }
-
     return "primary";
   });
-  // #endregion: --- Derived values
 
-  // #region:    --- Functions
-  function stopIfDisabled(e: QBtnMouseEvent) {
+  function handleClick(event: ButtonEvent<MouseEvent>) {
     if (disabled) {
-      e.preventDefault();
-      e.stopImmediatePropagation();
+      event.preventDefault();
+      event.stopImmediatePropagation();
       return;
     }
 
-    onclick?.(e);
+    onclick?.(event as Parameters<NonNullable<QBtnProps["onclick"]>>[0]);
   }
 
-  function onkeydown(e: KeyboardEvent) {
-    if (e.key === "Escape") {
-      qBtn?.blur();
+  function handleKeydown(event: ButtonEvent<KeyboardEvent>) {
+    if (event.key === "Escape") {
+      event.currentTarget.blur();
+    }
+
+    if (disabled) {
       return;
     }
 
-    if (!isActivationKey(e)) {
-      return;
+    onkeydown?.(event as Parameters<NonNullable<QBtnProps["onkeydown"]>>[0]);
+
+    if (isActivationKey(event)) {
+      event.preventDefault();
+      event.currentTarget.click();
     }
-
-    e.preventDefault();
-
-    const click = new MouseEvent("click", { relatedTarget: qBtn }) as QBtnMouseEvent;
-    stopIfDisabled(click);
   }
-  // #endregion: --- Functions
 
   Q.classes("q-btn", {
     bemClasses: {
       [finalVariant]: true,
       unelevated,
-      rectangle,
-      round: round || (!children && !label),
+      expressive,
+      squared: expressive && shape === "squared",
+      rectangle: !expressive && rectangle,
+      round: !expressive && (round || !hasLabel),
     },
-    classes: [qSize.class, routerInfo.linkClass, props.class],
+    classes: [qSize.class, routerInfo.linkClass, noFocusRing && "no-focus-ring", props.class],
   });
 </script>
 
 <svelte:element
   this={computedTag}
-  bind:this={qBtn}
-  {@attach ripple({ disabled: noRipple || disabled, color: rippleColor ?? computedColor })}
   {...props}
   class="q-btn"
-  style:--q-btn-size={qSize.style}
-  style:--ripple-color={computedColor && `var(--${computedColor})`}
-  {target}
-  {...routerInfo.linkAttributes}
-  role={computedTag === "a" ? "button" : undefined}
+  style:--q-btn-height={qSize.style}
+  style:--q-btn-icon-size={iconSize}
+  style:--ripple-color={color && useColor(color)}
+  href={disabled ? undefined : routerInfo.linkAttributes.href}
+  data-sveltekit-reload={routerInfo.linkAttributes["data-sveltekit-reload"]}
+  disabled={computedTag === "button" ? disabled : undefined}
+  role={computedTag === "button" ? undefined : "button"}
   aria-disabled={disabled || undefined}
-  tabindex={disabled ? -1 : props.tabindex || 0}
-  {onkeydown}
-  onclick={stopIfDisabled}
+  tabindex={disabled ? -1 : tabindex}
+  {target}
+  onclick={handleClick}
+  onkeydown={handleKeydown}
+  {@attach ripple({ disabled: noRipple || disabled, color: rippleColor ?? computedColor })}
   data-quaff
 >
-  {#if icon && !loading}
-    {#if src}
-      <img {src} alt="q-btn leading icon" class="q-btn__img q-btn__img--responsive" />
-    {:else}
-      <QIcon name={icon as MaterialSymbol} {color} class="q-btn__icon" {size} />
-    {/if}
-  {/if}
-
   {#if loading}
     <QCircularProgress
       indeterminate
@@ -154,13 +160,19 @@
       size="1.5em"
       class="q-btn__loader"
     />
+  {:else if src}
+    <img {src} alt="" class="q-btn__img" />
+  {:else if icon}
+    <QIconSnippet
+      icon={icon as Exclude<QBtnIcon, `img:${string}`>}
+      size={iconSize}
+      class="q-btn__icon"
+    />
   {/if}
 
-  <span bind:this={qBtnLabel} class="q-btn__label">
-    {#if label}
-      {label}
-    {/if}
-
-    {@render children?.()}
-  </span>
+  {#if label !== undefined}
+    <span class="q-btn__label">{label}</span>
+  {:else if children}
+    <span class="q-btn__label">{@render children()}</span>
+  {/if}
 </svelte:element>
