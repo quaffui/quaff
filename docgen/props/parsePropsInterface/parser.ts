@@ -165,10 +165,6 @@ export async function parseType(
   if (symbol) {
     const decls = symbol.getDeclarations();
 
-    decls.forEach((decl) => {
-      decl.replaceWithText(decl.getText().replace(/export\s+/, ""));
-    });
-
     if (decls.length > 0) {
       const decl = decls[0];
       const filePath = decl.getSourceFile().getFilePath();
@@ -193,7 +189,10 @@ export async function parseType(
         Node.isEnumDeclaration(decl) ||
         Node.isClassDeclaration(decl)
       ) {
-        definition = decl.getText({ includeJsDocComments: false }).replaceAll("\n\n", "\n");
+        definition = decl
+          .getText({ includeJsDocComments: false })
+          .replace(/^export\s+/, "")
+          .replaceAll("\n\n", "\n");
       } else {
         definition = `type ${typeText} = ${typeText};`;
       }
