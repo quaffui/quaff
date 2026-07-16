@@ -8,6 +8,7 @@
     QCardActions,
     QCardSection,
     QDialog,
+    QIcon,
     QItem,
     QItemSection,
     QList,
@@ -20,6 +21,7 @@
 
   let isDisplayMenuOpen = $state(false);
   let isBasicMenuOpen = $state(false);
+  let isExpressiveMenuOpen = $state(false);
   let isTargetMenuOpen = $state(false);
   let customTarget = $state<HTMLDivElement>();
   let isRightMenuOpen = $state(false);
@@ -64,6 +66,31 @@
                 <QItemSection>Profile</QItemSection>
               </QItem>
               <QItem clickable>
+                <QItemSection>Settings</QItemSection>
+              </QItem>
+              <QItem clickable>
+                <QItemSection>Sign out</QItemSection>
+              </QItem>
+            </QList>
+          </QMenu>
+        </QBtn>
+      </QDocsSection>
+
+      <QDocsSection title="Expressive Menu">
+        {#snippet sectionDescription()}
+          Enable <code>expressive</code> for one menu, or pass
+          <code>{`{ expressive: true }`}</code> to <code>Quaff.init()</code> to use Material 3 Expressive
+          components globally, including menus.
+        {/snippet}
+
+        <QBtn label="Open expressive menu" onclick={() => (isExpressiveMenuOpen = true)}>
+          <QMenu bind:value={isExpressiveMenuOpen} expressive>
+            <QList dense>
+              <QItem clickable>
+                <QItemSection>Profile</QItemSection>
+              </QItem>
+              <QItem active clickable>
+                <QItemSection type="icon"><QIcon name="check" /></QItemSection>
                 <QItemSection>Settings</QItemSection>
               </QItem>
               <QItem clickable>
