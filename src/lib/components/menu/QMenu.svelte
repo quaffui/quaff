@@ -3,6 +3,7 @@
   import { on } from "svelte/events";
   import { innerHeight, innerWidth } from "svelte/reactivity/window";
   import { browser } from "$app/environment";
+  import { quaffConfig } from "$internal/quaffConfig";
   import { doesOverlayUsePopover, getOverlayPortalTarget, usePortal } from "$utils";
   import type { QMenuAnchor, QMenuProps } from "./props";
 
@@ -13,6 +14,7 @@
     anchor = "bottom left",
     self = "top left",
     fit = false,
+    expressive = false,
     persistent = false,
     autoClose = true,
     children,
@@ -22,7 +24,7 @@
   // #endregion: --- Props
 
   // #region:    --- Reactive variables
-  let helperEl = $state<HTMLDivElement>();
+  let helperEl = $state<HTMLSpanElement>();
   let menuEl = $state<HTMLDivElement>();
   let anchorEl = $state<HTMLElement | null>(null);
   let menuTop = $state(0);
@@ -37,6 +39,7 @@
   // #region:    --- Derived values
   const [anchorX, anchorY] = $derived(parseAnchor(anchor));
   const [selfX, selfY] = $derived(parseAnchor(self));
+  const isExpressive = $derived(expressive || quaffConfig.expressive);
   const portalTarget = $derived(browser ? getOverlayPortalTarget(anchorEl) : undefined);
   // #endregion: --- Derived values
 
@@ -284,11 +287,14 @@
   // #endregion: --- Functions
 
   Q.classes("q-menu", {
+    bemClasses: {
+      expressive: isExpressive,
+    },
     classes: [userClass],
   });
 </script>
 
-<div bind:this={helperEl} class="q-menu__helper" aria-hidden="true"></div>
+<span bind:this={helperEl} class="q-menu__helper" aria-hidden="true"></span>
 
 {#if value}
   <div
