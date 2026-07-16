@@ -47,7 +47,7 @@
   const resolvedSize = $derived(size ?? (isExpressive ? "sm" : "md"));
   const qSize = $derived(useSize(resolvedSize, "q-btn"));
   const src = $derived(typeof icon === "string" ? extractImgSrc(icon) : undefined);
-  const hasLabel = $derived(label !== undefined || children !== undefined);
+  const hasContent = $derived(label !== undefined || children !== undefined);
 
   const variants: Partial<Record<QBtnVariantOptions, boolean>> = $derived({
     filled,
@@ -129,7 +129,7 @@
       expressive: isExpressive,
       squared: isExpressive && shape === "squared",
       rectangle: !isExpressive && rectangle,
-      round: !isExpressive && (round || !hasLabel),
+      round: !isExpressive && (round || !hasContent),
     },
     classes: [qSize.class, routerInfo.linkClass, noFocusRing && "no-focus-ring", props.class],
   });
@@ -172,9 +172,7 @@
     />
   {/if}
 
-  {#if label !== undefined}
-    <span class="q-btn__label">{label}</span>
-  {:else if children}
-    <span class="q-btn__label">{@render children()}</span>
+  {#if hasContent}
+    <span class="q-btn__label">{label}{@render children?.()}</span>
   {/if}
 </svelte:element>
