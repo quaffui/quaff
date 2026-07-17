@@ -7,59 +7,57 @@
   border-radius: 0px;
   outline: none;
   appearance: none;
-  font-family: inherit;
 }
 
-@mixin clip-border($clip-width, $clip-height) {
+@mixin clip-border($clip-start, $clip-height) {
   clip-path: polygon(
     0% 0%,
     0% 100%,
     100% 100%,
     100% $clip-height,
-    calc(100% - #{$clip-width}) $clip-height,
-    calc(100% - #{$clip-width}) 0%
+    $clip-start $clip-height,
+    $clip-start 0%
   );
 }
 
-@mixin border-substitute($variant: "outlined", $wrapper-height, $dense: false) {
-  $border-radius: if(sass($variant == "outlined"): 0.25rem; else: math.div($wrapper-height, 2));
-
+@mixin border-substitute($variant: "outlined") {
   &::before,
   &::after {
     content: "";
     position: absolute;
-    top: -0.0625rem;
-    bottom: -0.0625rem;
-    width: math.div($wrapper-height, 2);
-    height: $wrapper-height;
+    height: inherit;
+    aspect-ratio: 1 / 2;
     border: 0.0625rem solid transparent;
     border-top-color: var(--decorator-color);
-    border-radius: $border-radius;
+    border-radius: inherit;
     box-sizing: border-box;
-    pointer-events: none;
   }
 
   &::before {
+    top: -0.0625rem;
     left: -0.0625rem;
     border-top-right-radius: 0px;
     border-bottom-right-radius: 0px;
-    $clip-height: 0.25rem;
-    $clip-width: if(sass($variant == "outlined"): 0.9375rem; else: 0.25rem);
 
-    @if $dense == true and $variant == "outlined" {
-      $clip-width: math.div($clip-width, 1.4);
+    @if $variant == "outlined" {
+      @include clip-border(0.75rem, 0.25rem);
+    } @else {
+      border-right-width: 0;
+      border-left-color: var(--decorator-color);
+      border-bottom-color: var(--decorator-color);
     }
-
-    @if $dense == true and $variant != "outlined" {
-      $clip-width: 0rem;
-    }
-
-    @include clip-border($clip-width, $clip-height);
   }
 
   &::after {
+    top: -0.0625rem;
     right: -0.0625rem;
     border-top-left-radius: 0px;
     border-bottom-left-radius: 0px;
+
+    @if $variant != "outlined" {
+      border-left-width: 0;
+      border-right-color: var(--decorator-color);
+      border-bottom-color: var(--decorator-color);
+    }
   }
 }

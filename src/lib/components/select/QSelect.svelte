@@ -368,7 +368,7 @@
         readonly={!useInput}
       />
 
-      <span class="q-field__label">{label}</span>
+      <span class="q-field__label"><span class="q-field__label-text">{label}</span></span>
 
       <div class="q-field__snippet-append">
         {@render append?.()}
