@@ -3,8 +3,10 @@
 
 .q-field {
   $transition-duration: 0.2s;
-  $wrapper-height: 3rem;
+  $wrapper-height: 3.5rem;
   $wrapper-height-dense: 2.5rem;
+  $content-space: 1rem;
+  $rounded-content-space: 1.5rem;
 
   display: flex;
   min-width: 0;
@@ -25,39 +27,21 @@
     height: $wrapper-height;
     min-width: 0;
     max-width: 100%;
+    border-radius: 0px;
   }
 
   &--dense &__wrapper {
     height: $wrapper-height-dense;
   }
 
-  &--label#{&}--rounded#{&}--active &__wrapper {
-    $clip-x1: 1.25rem;
-    $clip-x2: 1.5rem;
-    $clip-y: 0.125rem;
-
-    // clip path has to go beyond 0% and 100% for y because of the floating label
-    clip-path: polygon(
-      0% -20%,
-      $clip-x1 -20%,
-      $clip-x1 $clip-y,
-      $clip-x2 $clip-y,
-      $clip-x2 -20%,
-      100% -20%,
-      100% 120%,
-      0% 120%
-    );
-  }
-
   &--default &__wrapper,
   &--filled &__wrapper {
-    border-bottom: 0.0625rem solid var(--decorator-color);
+    box-shadow: inset 0 -0.0625rem 0 var(--decorator-color);
   }
 
   &--focus#{&}--default &__wrapper,
   &--focus#{&}--filled &__wrapper {
-    border-bottom: 0.0625rem solid var(--decorator-color);
-    box-shadow: inset 0 -0.0625rem 0 var(--decorator-color);
+    box-shadow: inset 0 -0.1875rem 0 var(--decorator-color);
   }
 
   &--has-border &__wrapper {
@@ -66,14 +50,10 @@
 
   &--focus#{&}--has-border &__wrapper {
     box-shadow:
-      inset 0.0625rem 0 0 var(--decorator-color),
-      inset -0.0625rem 0 0 var(--decorator-color),
-      inset 0 0.0625rem 0 0 var(--decorator-color),
-      inset 0 -0.0625rem 0 0 var(--decorator-color);
-  }
-
-  &__wrapper {
-    border-radius: 0px;
+      inset 0.125rem 0 0 var(--decorator-color),
+      inset -0.125rem 0 0 var(--decorator-color),
+      inset 0 0.125rem 0 0 var(--decorator-color),
+      inset 0 -0.125rem 0 0 var(--decorator-color);
   }
 
   &--rounded &__wrapper {
@@ -102,27 +82,31 @@
     box-shadow: none;
   }
 
-  &--label#{&}--focus#{&}--has-border &__wrapper {
+  &--label#{&}--focus#{&}--outlined &__wrapper {
     box-shadow:
-      inset 0.0625rem 0 0 var(--decorator-color),
-      inset -0.0625rem 0 0 var(--decorator-color),
-      inset 0 -0.0625rem 0 0 var(--decorator-color);
+      inset 0.125rem 0 0 var(--decorator-color),
+      inset -0.125rem 0 0 var(--decorator-color),
+      inset 0 -0.125rem 0 0 var(--decorator-color);
   }
 
   &--label#{&}--active#{&}--rounded &__wrapper {
-    @include mixins.border-substitute("rounded", $wrapper-height);
-  }
-
-  &--label#{&}--active#{&}--rounded#{&}--dense &__wrapper {
-    @include mixins.border-substitute("rounded", $wrapper-height-dense, true);
+    border-inline-color: transparent;
+    @include mixins.border-substitute("rounded");
   }
 
   &--label#{&}--active#{&}--outlined &__wrapper {
-    @include mixins.border-substitute("outlined", $wrapper-height);
+    @include mixins.border-substitute("outlined");
   }
 
-  &--label#{&}--active#{&}--outlined#{&}--dense &__wrapper {
-    @include mixins.border-substitute("outlined", $wrapper-height-dense, true);
+  &__input,
+  &__label-text {
+    @include mixins.typography("body-large");
+  }
+
+  &--active &__label-text,
+  &__hint,
+  &__error {
+    @include mixins.typography("body-small");
   }
 
   // in case we have no label
@@ -131,101 +115,102 @@
   }
 
   &--label &__label {
+    align-items: center;
     display: flex;
+    height: 100%;
     position: absolute;
     top: 0px;
     right: 0px;
-    font-size: 1rem;
-    line-height: $wrapper-height - 0.25rem;
     color: var(--decorator-color);
     pointer-events: none;
     transition:
       color $transition-duration ease 0s,
-      left $transition-duration ease 0s,
-      top $transition-duration ease 0s,
-      font-size $transition-duration ease 0s,
-      line-height $transition-duration ease 0s,
-      border-color $transition-duration ease 0s;
-    will-change: top, left, font-size, line-height;
+      left $transition-duration ease 0s;
   }
 
-  &--label#{&}--dense &__label {
-    line-height: $wrapper-height-dense - 0.25rem;
+  &__label-text {
+    transition:
+      transform $transition-duration ease 0s,
+      font-size $transition-duration ease 0s,
+      line-height $transition-duration ease 0s,
+      letter-spacing $transition-duration ease 0s;
   }
 
   &--default &__label,
   &--filled &__label {
-    left: 1rem;
-  }
-
-  &--default:not(#{&}--dense) &__label,
-  &--filled:not(#{&}--dense) &__label {
-    top: 0.0625rem;
+    left: $content-space;
   }
 
   &--snippet-prepend#{&}--default &__label,
   &--snippet-prepend#{&}--filled &__label {
-    left: calc(0.5rem + var(--snippet-prepend-width));
-  }
-
-  &--active#{&}--default &__label,
-  &--active#{&}--filled &__label {
-    top: 0.6875rem;
+    left: calc($content-space + var(--snippet-prepend-width));
   }
 
   &--rounded &__label {
-    left: 1.4375rem;
+    left: $rounded-content-space - 0.0625rem;
   }
 
   &--snippet-prepend#{&}--rounded &__label {
-    left: calc(0.5rem + var(--snippet-prepend-width));
+    left: calc($content-space + var(--snippet-prepend-width));
   }
 
-  &--active#{&}--rounded &__label {
-    left: 1.4375rem;
-  }
-
-  &--label#{&}--has-border#{&}--focus &__wrapper {
+  &--label#{&}--outlined#{&}--focus &__wrapper {
     &::before,
     &::after {
-      box-shadow: inset 0 0.0625rem 0 var(--decorator-color);
+      box-shadow: inset 0 0.125rem 0 var(--decorator-color);
+    }
+  }
+
+  &--label#{&}--active#{&}--focus#{&}--rounded &__wrapper {
+    box-shadow: inset 0 -0.125rem 0 var(--decorator-color);
+
+    &::before {
+      box-shadow:
+        inset 0.125rem 0 0 var(--decorator-color),
+        inset 0 0.125rem 0 var(--decorator-color),
+        inset 0 -0.125rem 0 var(--decorator-color);
+    }
+
+    &::after {
+      box-shadow:
+        inset -0.125rem 0 0 var(--decorator-color),
+        inset 0 0.125rem 0 var(--decorator-color),
+        inset 0 -0.125rem 0 var(--decorator-color);
     }
   }
 
   &--outlined &__label {
-    left: 0.75rem;
+    left: $content-space - 0.0625rem;
   }
 
   &--snippet-prepend#{&}--outlined &__label {
-    left: calc(0.5rem + var(--snippet-prepend-width));
+    left: calc($content-space + var(--snippet-prepend-width));
   }
 
   // active state should not account for prepend snippet width
   &--active#{&}--outlined &__label {
-    left: 0.75rem;
+    left: $content-space - 0.0625rem;
   }
 
   &--active#{&}--has-border &__label::after {
+    align-self: flex-start;
     content: "";
-    display: block;
     margin-left: 0.25rem;
     flex-grow: 1;
-    border-top-width: 0.0625rem;
-    border-top-style: solid;
-    border-top-color: var(--decorator-color);
+    border-top: 0.0625rem solid var(--decorator-color);
     min-width: 0.625rem;
-    height: 0.5rem;
-    pointer-events: none;
     transition: border-color $transition-duration ease 0s;
-    opacity: 1 !important;
+    transform: translateY(-0.0625rem);
   }
 
   &--active#{&}--rounded &__label {
-    right: math.div($wrapper-height, 2) - 0.125rem;
+    left: math.div($wrapper-height, 2) + 0.1875rem;
+    right: math.div($wrapper-height, 2) - 0.0625rem;
   }
 
   &--active#{&}--rounded#{&}--dense &__label {
-    right: math.div($wrapper-height-dense, 2) - 0.125rem;
+    left: math.div($wrapper-height-dense, 2) + 0.1875rem;
+    right: math.div($wrapper-height-dense, 2) - 0.0625rem;
   }
 
   &--active#{&}--outlined &__label {
@@ -236,19 +221,22 @@
     right: 1.125rem;
   }
 
-  &--active &__label {
-    font-size: 0.75rem;
-    line-height: 0px;
-    margin-top: -0.0625rem;
+  &--active#{&}--default &__label-text,
+  &--active#{&}--filled &__label-text {
+    transform: translateY(-0.75rem);
   }
 
-  &--active#{&}--dense &__label {
-    line-height: 0px;
+  &--active#{&}--dense#{&}--default &__label-text,
+  &--active#{&}--dense#{&}--filled &__label-text {
+    transform: translateY(-0.5rem);
   }
 
-  &--active#{&}--default &__label,
-  &--active#{&}--filled &__label {
-    margin-top: 0px;
+  &--active#{&}--has-border &__label-text {
+    transform: translateY(math.div($wrapper-height, -2));
+  }
+
+  &--active#{&}--dense#{&}--has-border &__label-text {
+    transform: translateY(math.div($wrapper-height-dense, -2));
   }
 
   &--focus &__wrapper {
@@ -256,46 +244,69 @@
   }
 
   &--focus#{&}--has-border &__label::after {
-    border-top-width: 0.125rem;
+    border-top-width: 0.1875rem;
   }
 
   &__input {
     @include mixins.reset-form-element;
-    font-size: 1rem;
     height: 100%;
-    color: unset;
+    color: var(--on-surface);
     flex-grow: 1;
     min-width: 0;
+
+    &::placeholder {
+      color: var(--on-surface-variant);
+    }
   }
 
   &--default &__input,
   &--filled &__input {
-    padding: 0 1rem;
-    padding-top: 0.9375rem;
+    padding: 1rem $content-space;
+  }
+
+  &--label#{&}--default &__input,
+  &--label#{&}--filled &__input {
+    padding-block: 1.5rem 0.5rem;
   }
 
   &--rounded &__input {
-    padding: 0 1.4375rem;
+    padding: 0.9375rem ($rounded-content-space - 0.0625rem);
   }
 
   &--outlined &__input {
-    padding: 0 0.75rem;
+    padding: 0.9375rem ($content-space - 0.0625rem);
+  }
+
+  &--dense#{&}--default &__input,
+  &--dense#{&}--filled &__input {
+    padding-block: 0.5rem;
+  }
+
+  &--dense#{&}--label#{&}--default &__input,
+  &--dense#{&}--label#{&}--filled &__input {
+    padding-block: 0.875rem 0.125rem;
+  }
+
+  &--dense#{&}--outlined &__input {
+    padding-block: 0.4375rem;
+  }
+
+  &--dense#{&}--rounded &__input {
+    padding: 0.4375rem ($rounded-content-space - 0.0625rem);
   }
 
   &--snippet-prepend &__input {
-    padding-left: 0.5rem !important;
+    padding-left: $content-space !important;
   }
 
   &--snippet-append &__input {
-    padding-right: 0.5rem !important;
+    padding-right: $content-space !important;
   }
 
   &__hint,
   &__error {
-    font-size: 0.75rem;
-    text-align: left;
-    left: 1rem;
-    padding-top: 0.125rem;
+    text-align: start;
+    padding: 0.25rem $content-space 0;
   }
 
   &--error &__label,
@@ -303,8 +314,7 @@
     color: var(--error);
   }
 
-  &--error &__wrapper,
-  &--error#{&}--focus &__wrapper {
+  &--error &__wrapper {
     --decorator-color: var(--error);
   }
 
@@ -322,16 +332,24 @@
     padding-left: 0.75rem;
   }
 
+  &--has-border &__snippet-prepend {
+    padding-left: 0.6875rem;
+  }
+
   &--rounded &__snippet-prepend {
-    padding-left: 1rem;
+    padding-left: 0.9375rem;
   }
 
   &__snippet-append {
     padding-right: 0.75rem;
   }
 
+  &--has-border &__snippet-append {
+    padding-right: 0.6875rem;
+  }
+
   &--rounded &__snippet-append {
-    padding-right: 1rem;
+    padding-right: 0.9375rem;
   }
 
   &__snippet-before {
