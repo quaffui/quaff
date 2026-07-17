@@ -56,7 +56,6 @@
         <QInput bind:value={outlinedValue} label="Outlined" class="q-mt-md" outlined />
         <QInput bind:value={filledValue} label="Filled" class="q-mt-md" filled />
         <QInput bind:value={roundedValue} label="Rounded" class="q-mt-md" rounded />
-        <p class="text-sm q-mt-sm">Note: Rounded requires outlined or filled.</p>
       </QDocsSection>
 
       <QDocsSection title="Dense Layout">
@@ -67,6 +66,7 @@
         <QInput bind:value={denseValue} label="Dense Input" class="q-mt-md" dense />
         <QInput bind:value={denseValue} label="Dense Outlined" class="q-mt-md" dense outlined />
         <QInput bind:value={denseValue} label="Dense Filled" class="q-mt-md" dense filled />
+        <QInput bind:value={denseValue} label="Dense Rounded" class="q-mt-md" dense rounded />
       </QDocsSection>
 
       <QDocsSection title="Disabled State">

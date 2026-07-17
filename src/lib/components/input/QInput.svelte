@@ -195,7 +195,7 @@
         {disabled}
         tabindex={disabled === true ? -1 : (tabindex ?? 0)}
       />
-      <span class="q-field__label">{label}</span>
+      <span class="q-field__label"><span class="q-field__label-text">{label}</span></span>
 
       {#if append}
         <div class="q-field__snippet-append">
