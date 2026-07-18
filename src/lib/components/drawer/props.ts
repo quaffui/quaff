@@ -17,7 +17,7 @@ export interface QDrawerProps
   width?: number;
 
   /**
-   * The viewport width below which swipe gestures are enabled.
+   * The viewport width below which the drawer uses modal behavior and swipe gestures.
    */
   breakpoint?: number;
 
@@ -27,7 +27,7 @@ export interface QDrawerProps
   showIfAbove?: boolean;
 
   /**
-   * Controls swipe behavior: "default" follows the breakpoint, "mobile" enables swiping and "desktop" disables it.
+   * Controls responsive behavior: "default" follows the breakpoint, "mobile" uses a modal drawer and "desktop" uses a standard drawer.
    */
   behavior?: QDrawerBehaviorOptions;
 

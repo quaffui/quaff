@@ -76,7 +76,7 @@
         <QDrawer
           bind:value={displayLeftDrawer}
           bordered
-          class="no-round"
+          style="border-radius: 0"
           bind:this={displayLeftDrawerElement}
           width={150}
           persistent

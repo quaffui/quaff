@@ -1,7 +1,3 @@
-@use "sass:string";
-@use "$css/mixins";
-@use "$css/variables";
-
 .q-layout {
   z-index: 0;
   position: relative;
@@ -37,21 +33,9 @@
 }
 
 .q-layout > .q-drawer {
-  border-radius: 0;
-
-  &.q-drawer--offset-top {
-    // Put the railbar under the header to avoid hiding its box-shadow
+  &.q-drawer--offset-top:not(.q-drawer--overlay) {
+    // Put the drawer under the header to avoid hiding its box-shadow
     z-index: 2;
-  }
-
-  @function shouldHaveRadius($pos) {
-    @if not list-index(("top", "bottom"), $pos) {
-      @error 'The position "#{$pos}" is incorrect, should be "top" or "bottom"';
-    }
-
-    @return string.unquote(
-      ":is(.q-drawer--overlay,.q-drawer--offset-#{$pos},:not(:has(~ .q-header)),:has(~ .q-header--collapsed))"
-    );
   }
 
   $x-pos: "left", "right";
@@ -64,54 +48,8 @@
   }
 
   @each $pos in $y-pos {
-    @each $side in $x-pos {
-      &:not(.q-drawer--#{$side})#{shouldHaveRadius($pos)} {
-        border-#{$pos}-#{$side}-radius: 1rem;
-      }
-    }
-
     &.q-drawer--offset-#{$pos} {
       #{$pos}: var(--offset-#{$pos}, 0);
-    }
-  }
-
-  & .q-list > .q-item.q-link {
-    border-radius: 2rem;
-    overflow: hidden;
-
-    &::before {
-      content: "";
-
-      z-index: -1;
-      position: absolute;
-      bottom: 0;
-      left: 0;
-
-      width: 100%;
-      height: 100%;
-
-      background-color: var(--secondary-container);
-      opacity: 0;
-
-      border-radius: inherit;
-
-      transform: scaleX(0.32);
-
-      transition:
-        transform variables.$speed2,
-        opacity variables.$speed2,
-        top variables.$speed3,
-        bottom variables.$speed3,
-        left variables.$speed3;
-    }
-
-    &.q-item--active {
-      color: var(--on-secondary-container);
-
-      &::before {
-        opacity: 1;
-        transform: scaleX(1);
-      }
     }
   }
 }
