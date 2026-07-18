@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { QCardProps, QCardFillColors } from "./props";
+  import type { QCardProps } from "./props";
 
   // #region:    --- Props
   let {
@@ -12,29 +12,15 @@
   }: QCardProps = $props();
   // #endregion: --- Props
 
-  // #region:    --- Non-reactive variables
-  const colorOptions: QCardFillColors[] = ["primary", "secondary", "tertiary"] as const;
-  // #endregion: --- Non-reactive variables
-
-  // #region:    --- Derived values
-  const color = $derived.by(() => {
-    if (fill) {
-      return fill === true || !colorOptions.includes(fill as QCardFillColors)
-        ? "surface-variant"
-        : fill;
-    }
-
-    return "surface";
-  });
-  // #endregion: --- Derived values
-
   Q.classes("q-card", {
     bemClasses: {
       flat,
       bordered,
       rounded,
       fill,
-      [color]: fill && color !== "surface",
+      primary: fill === "primary",
+      secondary: fill === "secondary",
+      tertiary: fill === "tertiary",
     },
     classes: [props.class],
   });
