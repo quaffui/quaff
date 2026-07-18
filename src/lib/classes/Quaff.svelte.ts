@@ -85,6 +85,7 @@ class Quaff {
     this.dark = displayMode === "dark";
 
     if (typeof document !== "undefined") {
+      document.documentElement.style.colorScheme = displayMode;
       document.body.classList.remove("body--light", "body--dark");
       document.body.classList.add(`body--${displayMode}`);
     }

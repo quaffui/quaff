@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     %sveltekit.head%
   </head>
-  <body data-sveltekit-preload-data="hover" class="">
-    <script type="module">
+  <body data-sveltekit-preload-data="hover">
+    <script>
       // prevents a white flash on load for dark mode users
       const savedDisplayMode = localStorage.getItem("displayMode");
       let currentDisplayMode;
@@ -20,6 +20,7 @@
         currentDisplayMode = "light";
       }
 
+      document.documentElement.style.colorScheme = currentDisplayMode;
       document.body.classList.add(`body--${currentDisplayMode}`);
     </script>
 

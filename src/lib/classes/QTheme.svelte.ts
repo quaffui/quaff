@@ -1,6 +1,8 @@
-import { generateColors, type HexValue, type QuaffColors, type Mode } from "$utils";
+import { generateColors, type HexValue, type Mode, type QuaffColors } from "$utils";
 
-type ThemeColors = Record<`${keyof QuaffColors}-${Mode}`, HexValue>;
+type ThemeColor = keyof QuaffColors;
+type ThemeColorKey = `${ThemeColor}-${Mode}`;
+type ThemeColors = Record<ThemeColorKey, HexValue>;
 
 function extractColorFromCssVar(cssVar: string) {
   const rootStyles = getComputedStyle(document.documentElement);
@@ -19,12 +21,11 @@ function prepareThemeColors(from: string) {
   //@ts-expect-error The properties are added in the next for loop
   const themeColors: ThemeColors = {};
 
-  let mode: "light" | "dark";
+  let mode: Mode;
   for (mode in theme) {
-    let color: keyof QuaffColors;
+    let color: ThemeColor;
     for (color in theme[mode]) {
-      const cssColor: keyof typeof themeColors = `${color}-${mode}`;
-      themeColors[cssColor] = theme[mode][color];
+      themeColors[`${color}-${mode}`] = theme[mode][color];
     }
   }
 
@@ -41,16 +42,17 @@ class QTheme {
 
   private apply(colors: Partial<ThemeColors> = this.themeColors) {
     const root = document.documentElement;
-    if (root === null) {
-      return;
-    }
+    const colorNames = new Set(
+      (Object.keys(colors) as ThemeColorKey[]).map(
+        (color) => color.replace(/-(?:light|dark)$/, "") as ThemeColor
+      )
+    );
 
-    let colorName: keyof ThemeColors;
-    for (colorName in colors) {
-      const color = colors[colorName];
-      if (color) {
-        root.style.setProperty(`--${colorName}`, color);
-      }
+    for (const color of colorNames) {
+      root.style.setProperty(
+        `--${color}`,
+        `light-dark(${this.themeColors[`${color}-light`]}, ${this.themeColors[`${color}-dark`]})`
+      );
     }
   }
 

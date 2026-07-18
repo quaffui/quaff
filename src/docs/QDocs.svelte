@@ -48,7 +48,7 @@
     )
   );
 
-  const brightness = $derived(Quaff.darkMode.isActive ? 0.7 : 1.2);
+  const brightness = $derived(isDark ? 0.7 : 1.2);
   // #endregion: --- Derived values
 </script>
 
