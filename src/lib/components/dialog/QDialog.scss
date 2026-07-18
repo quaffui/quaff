@@ -27,16 +27,34 @@
   transition:
     variables.$speed3 all,
     0s background-color;
-  transform: translate(-50%, -4rem);
-  transform-origin: center left;
+  translate: -50% -4rem;
+  transform-origin: center;
   animation-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
 
   &::backdrop {
     pointer-events: none;
   }
 
-  &:not(&--left, &--right, &--top, &--bottom) {
-    border-radius: 0.75rem;
+  &:not(&--left, &--right, &--top, &--bottom, &--fullscreen) {
+    @include mixins.typography(body-medium);
+
+    top: 50%;
+    width: fit-content;
+    height: fit-content;
+    min-width: 17.5rem;
+    min-height: 8.75rem;
+    max-width: min(35rem, calc(100% - 3rem));
+    max-height: min(35rem, calc(100% - 3rem));
+    padding: 1.5rem;
+    border-radius: 1.75rem;
+    box-shadow: var(--elevate3);
+    background-color: var(--surface-container-high);
+    color: var(--on-surface-variant);
+    translate: -50% calc(-50% - 4rem);
+
+    :where(h1, h2, h3, h4, h5, h6) {
+      color: var(--on-surface);
+    }
   }
 
   &--small {
@@ -57,11 +75,11 @@
   &:is(&--active, [open], .active) {
     opacity: 1;
     visibility: visible;
-    transform: translate(-50%, 0);
+    translate: 0;
   }
 
-  &:is(&--active, [open]):is(&--left, &--right, &--top, &--bottom, &--fullscreen) {
-    transform: translate(0, 0);
+  &:is(&--active, [open], .active):not(&--left, &--right, &--top, &--bottom, &--fullscreen) {
+    translate: -50% -50%;
   }
 
   &--top {
@@ -74,7 +92,7 @@
     width: 100%;
     min-width: auto;
     max-height: 100%;
-    transform: translateY(-100%);
+    translate: 0 -100%;
   }
 
   &--left {
@@ -86,7 +104,7 @@
     width: auto;
     height: 100%;
     max-height: 100%;
-    transform: translateX(-100%);
+    translate: -100%;
   }
 
   &--right {
@@ -98,7 +116,7 @@
     width: auto;
     height: 100%;
     max-height: 100%;
-    transform: translateX(100%);
+    translate: 100%;
   }
 
   &--bottom {
@@ -111,7 +129,7 @@
     width: 100%;
     min-width: auto;
     max-height: 100%;
-    transform: translateY(100%);
+    translate: 0 100%;
   }
 
   &--fullscreen {
@@ -121,9 +139,13 @@
     bottom: auto;
     width: 100%;
     height: 100%;
+    min-width: 0;
     max-width: 100%;
     max-height: 100%;
-    transform: translateY(4rem);
+    padding: 0;
+    border-radius: 0;
+    box-shadow: none;
+    translate: 0 4rem;
   }
 
   &--small:is(&--left, &--right) {
@@ -156,7 +178,7 @@
 
   &--modal::backdrop {
     display: block;
-    background-color: mixins.with-alpha(var(--shadow), 50%);
+    background-color: mixins.with-alpha(var(--scrim), 32%);
   }
 
   &--animating {
@@ -177,13 +199,7 @@
 }
 
 @keyframes shake {
-  0% {
-    scale: 1;
-  }
   50% {
     scale: 1.01;
-  }
-  100% {
-    scale: 1;
   }
 }
