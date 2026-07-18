@@ -13,6 +13,11 @@ export interface QTabsProps
   variant?: QTabsVariants;
 
   /**
+   * Places icons and labels next to each other in primary tabs.
+   */
+  inlineLabel?: boolean;
+
+  /**
    * Removes the separator line under the tabs (or to the right for vertical tabs).
    */
   noSeparator?: boolean;

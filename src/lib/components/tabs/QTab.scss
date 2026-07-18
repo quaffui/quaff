@@ -11,49 +11,59 @@
   justify-content: center;
   flex: 1;
   background-color: var(--surface);
-  color: var(--on-surface);
+  color: var(--on-surface-variant);
   border-radius: 0;
-  gap: 0;
+  outline: none;
   overflow: visible;
+  cursor: pointer;
+  user-select: none;
+  text-decoration: none;
+  @include mixins.typography(title-small);
   @include mixins.padding("x-md");
 
-  & .q-tab__icon + span {
-    margin-left: 0.5rem;
+  &:focus-visible::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border: 0.1875rem solid var(--secondary);
+    border-radius: 0.5rem;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  &.q-tab--active:focus-visible::before {
+    bottom: 0.25rem;
   }
 
   &.q-tab--active {
-    color: var(--primary);
-
     & .q-tab__indicator {
       opacity: 1;
     }
   }
 
-  &:is(:hover, :focus):not([aria-disabled])::after {
+  &:is(:hover, :focus):not([disabled], [aria-disabled="true"])::after {
     content: "";
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: var(--on-surface);
-    border-radius: none;
-    overflow: hidden;
+    inset: 0;
+    background-color: var(--q-tab-state-layer, var(--on-surface));
+    pointer-events: none;
   }
 
-  &:hover:not([aria-disabled])::after {
+  &:hover:not([disabled], [aria-disabled="true"])::after {
     opacity: 0.08;
   }
 
-  &:focus:not([aria-disabled])::after {
-    opacity: 0.16;
+  &:focus:not([disabled], [aria-disabled="true"])::after {
+    opacity: 0.1;
   }
 
   & .q-tab__content {
+    position: relative;
     height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
+    gap: 0.5rem;
   }
 
   & .q-tab__indicator {
@@ -68,4 +78,51 @@
     opacity: 0;
     z-index: 1;
   }
+}
+
+.q-tabs--primary .q-tab,
+.q-tabs--vertical .q-tab {
+  --ripple-color: var(--primary);
+
+  &:is(:hover, :focus, :active):not(.q-tab--active) {
+    color: var(--on-surface);
+  }
+
+  &.q-tab--active {
+    --q-tab-state-layer: var(--primary);
+    color: var(--primary);
+  }
+}
+
+.q-tabs--primary .q-tab__indicator {
+  inset: auto auto 0 50%;
+  width: calc(100% - 0.25rem);
+  min-width: 1.5rem;
+  translate: -50%;
+}
+
+.q-tabs--primary .q-tab--stacked {
+  height: 4rem;
+
+  .q-tab__content {
+    flex-direction: column;
+    gap: 0.125rem;
+  }
+}
+
+.q-tabs--secondary .q-tab {
+  --ripple-color: var(--on-surface);
+
+  &:is(:hover, :focus, :active, .q-tab--active) {
+    color: var(--on-surface);
+  }
+}
+
+.q-tabs--secondary .q-tab--active:focus-visible::before {
+  bottom: 0.1875rem;
+}
+
+.q-tabs--vertical .q-tab--active:focus-visible::before {
+  right: 0.1875rem;
+  bottom: 0;
 }
