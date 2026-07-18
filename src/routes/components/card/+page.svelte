@@ -2,7 +2,7 @@
   import { QCardActionsDocs, QCardDocs, QCardSectionDocs } from "$components/card/docs";
   import { docsCtx } from "$docs/QDocs.svelte";
   import { pageTitle } from "$helpers/pageTitle";
-  import { QBtn, QCard, QCardActions, QCardSection } from "$lib";
+  import { QAvatar, QBtn, QCard, QCardActions, QCardSection, QIcon } from "$lib";
   import { QDocs, QDocsSection } from "$docs";
   import snippets from "./docs.snippets";
 
@@ -48,23 +48,45 @@
         {/snippet}
 
         <QCard class="q-ma-sm" title="Card with Horizontal Section">
-          <QCardSection horizontal>
-            <div class="col-6">This is a card with a horizontal section.</div>
-            <div class="col-6">It uses a 12 columns grid system.</div>
+          <QCardSection class="q-col-gutter-sm" horizontal>
+            <div class="col-12 col-sm-6">This is a card with a horizontal section.</div>
+            <div class="col-12 col-sm-6">It uses a 12 columns grid system.</div>
           </QCardSection>
-          <QCardSection horizontal>
-            <div class="col-4">Another horizontal section.</div>
-            <div class="col-4">Second part of the section.</div>
-            <div class="col-4">A horizontal section in 3 parts.</div>
+          <QCardSection class="q-col-gutter-sm" horizontal>
+            <div class="col-12 col-sm-4">Another horizontal section.</div>
+            <div class="col-12 col-sm-4">Second part of the section.</div>
+            <div class="col-12 col-sm-4">A horizontal section in 3 parts.</div>
           </QCardSection>
         </QCard>
 
         <QCard class="q-ma-sm" title="Card with Actions">
           <QCardSection>This is a card with actions.</QCardSection>
           <QCardActions>
-            <QBtn label="Button 1" />
-            <QBtn label="Button 2" />
+            <QBtn flat label="Button 1" />
+            <QBtn flat label="Button 2" />
           </QCardActions>
+        </QCard>
+      </QDocsSection>
+
+      <QDocsSection title="Structured Card Content">
+        {#snippet sectionDescription()}
+          Combine card sections with layout and typography classes to create headers, titles,
+          subheads, and supporting content.
+        {/snippet}
+
+        <QCard class="q-ma-sm flex column" style="max-width: 22.5rem; gap: 2rem">
+          <QCardSection class="flex items-center justify-between">
+            <QAvatar class="primary-container" size="sm">A</QAvatar>
+            <QIcon class="text-on-surface-variant" name="pentagon" filled aria-hidden="true" />
+          </QCardSection>
+          <QCardSection>
+            <div class="headline-medium">Title</div>
+            <div class="body-medium text-on-surface-variant">Subhead</div>
+          </QCardSection>
+          <QCardSection class="body-medium">
+            Cards can organize identity, hierarchy, and supporting information without requiring a
+            fixed content structure.
+          </QCardSection>
         </QCard>
       </QDocsSection>
 
@@ -99,40 +121,40 @@
         <QCard class="q-ma-sm" title="Default Actions (start)">
           <QCardSection>Actions are aligned to the left by default</QCardSection>
           <QCardActions>
-            <QBtn label="Action 1" />
-            <QBtn label="Action 2" />
+            <QBtn flat label="Action 1" />
+            <QBtn flat label="Action 2" />
           </QCardActions>
         </QCard>
 
         <QCard class="q-ma-sm" title="Center-aligned Actions">
           <QCardSection>But they can also be centered</QCardSection>
           <QCardActions align="center">
-            <QBtn label="Action 1" />
-            <QBtn label="Action 2" />
+            <QBtn flat label="Action 1" />
+            <QBtn flat label="Action 2" />
           </QCardActions>
         </QCard>
 
         <QCard class="q-ma-sm" title="End-aligned Actions">
           <QCardSection>Aligned to the right</QCardSection>
           <QCardActions align="right">
-            <QBtn label="Action 1" />
-            <QBtn label="Action 2" />
+            <QBtn flat label="Action 1" />
+            <QBtn flat label="Action 2" />
           </QCardActions>
         </QCard>
 
         <QCard class="q-ma-sm" title="End-aligned Actions">
           <QCardSection>With space between</QCardSection>
           <QCardActions align="between">
-            <QBtn label="Action 1" />
-            <QBtn label="Action 2" />
+            <QBtn flat label="Action 1" />
+            <QBtn flat label="Action 2" />
           </QCardActions>
         </QCard>
 
         <QCard class="q-ma-sm" title="End-aligned Actions">
           <QCardSection>Or with space around</QCardSection>
           <QCardActions align="around">
-            <QBtn label="Action 1" />
-            <QBtn label="Action 2" />
+            <QBtn flat label="Action 1" />
+            <QBtn flat label="Action 2" />
           </QCardActions>
         </QCard>
       </QDocsSection>
@@ -146,9 +168,9 @@
         <QCard class="q-ma-sm" title="Vertical Actions">
           <QCardSection>These actions are stacked vertically.</QCardSection>
           <QCardActions vertical>
-            <QBtn label="Action 1" class="q-mb-sm" />
-            <QBtn label="Action 2" class="q-mb-sm" />
-            <QBtn label="Action 3" />
+            <QBtn flat label="Action 1" />
+            <QBtn flat label="Action 2" />
+            <QBtn flat label="Action 3" />
           </QCardActions>
         </QCard>
       </QDocsSection>
