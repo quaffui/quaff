@@ -1,16 +1,6 @@
 <script lang="ts">
   import { ripple } from "$helpers";
-  import {
-    getClosestFocusableBlock,
-    getClosestFocusableSibling,
-    getDirection,
-    getRouterInfo,
-    isActivationKey,
-    isArrowKey,
-    isTabKey,
-    type Direction,
-    type QEvent,
-  } from "$utils";
+  import { getRouterInfo, isActivationKey, type QEvent } from "$utils";
   import QIcon from "$components/icon/QIcon.svelte";
   import { tabsCtx } from "./QTabs.svelte";
   import type { QTabProps } from "./props";
@@ -19,7 +9,15 @@
   type QTabEvent<T extends Event> = QEvent<T, QTabEl>;
 
   // #region:    --- Props
-  let { name, icon, children, ...props }: QTabProps = $props();
+  let {
+    name,
+    icon,
+    activeClass: activeClassProp,
+    activeStyle,
+    children,
+    style,
+    ...props
+  }: QTabProps = $props();
   // #endregion: --- Props
 
   // #region:    --- Non-reactive variables
@@ -36,7 +34,14 @@
 
   const isActive = $derived(routerInfo.isActive ?? name === ctx.value);
 
-  const activeClass = $derived(isActive && (props.activeClass ?? ctx.activeClass));
+  const activeClass = $derived(isActive && (activeClassProp ?? ctx.activeClass));
+  const tabStyle = $derived(
+    [isActive && (activeStyle ?? ctx.activeStyle), style].filter(Boolean).join("; ") || undefined
+  );
+  const stacked = $derived(ctx.variant === "primary" && !ctx.inlineLabel && !!icon && !!children);
+  const tabindex = $derived(
+    ctx.focused === name || (ctx.focused === null && (isActive || ctx.value === undefined)) ? 0 : -1
+  );
   // #endregion: --- Derived values
 
   // #region:    --- Functions
@@ -47,7 +52,7 @@
       return;
     }
 
-    ctx.request = name;
+    ctx.request(name);
   }
 
   function onkeydown(e: QTabEvent<KeyboardEvent>) {
@@ -55,36 +60,40 @@
 
     if (isActivationKey(e)) {
       e.preventDefault();
-
-      const click = new MouseEvent("click") as QTabEvent<MouseEvent>;
-      return onclick(click);
+      return qTab.click();
     }
 
-    if (isArrowKey(e)) {
-      e.preventDefault();
-      const direction = getDirection(e);
-      const targetTab = getClosestFocusableSibling(qTab, direction);
-
-      if (targetTab === qTab) {
-        return;
-      }
-
-      return targetTab?.focus();
+    const vertical = ctx.variant === "vertical";
+    const previous = vertical ? "ArrowUp" : "ArrowLeft";
+    const next = vertical ? "ArrowDown" : "ArrowRight";
+    if (![previous, next, "Home", "End"].includes(e.code)) {
+      return;
     }
 
-    if (isTabKey(e)) {
-      e.preventDefault();
-      const direction: Direction = e.shiftKey ? "previous" : "next";
-      const targetBlock = getClosestFocusableBlock(qTab, direction);
+    e.preventDefault();
+    const tabs = Array.from(
+      qTab.parentElement?.querySelectorAll<QTabEl>(
+        ':scope > .q-tab:not([disabled], [aria-disabled="true"])'
+      ) ?? []
+    );
+    const current = tabs.indexOf(qTab);
+    const rtl = !vertical && getComputedStyle(qTab).direction === "rtl";
+    const offset = (e.code === previous ? -1 : 1) * (rtl ? -1 : 1);
+    const index = e.code === "Home" ? 0 : e.code === "End" ? tabs.length - 1 : current + offset;
 
-      targetBlock?.focus();
-    }
+    tabs.at(index % tabs.length)?.focus();
+  }
+
+  function onfocus(e: QTabEvent<FocusEvent>) {
+    props.onfocus?.(e);
+    ctx.focused = name;
   }
   // #endregion: --- Functions
 
   Q.classes("q-tab", {
     bemClasses: {
       active: isActive,
+      stacked,
     },
     classes: [routerInfo.linkClass, activeClass, props.class],
   });
@@ -97,11 +106,16 @@
   {...props}
   {...routerInfo.linkAttributes}
   class="q-tab"
-  role={tag === "a" ? "button" : undefined}
-  aria-current={isActive || undefined}
-  aria-label={name}
+  style={tabStyle}
+  role="tab"
+  type={tag === "button" ? "button" : undefined}
+  aria-selected={isActive}
+  aria-label={props["aria-label"] ?? (children ? undefined : name)}
+  {tabindex}
+  data-q-tab-name={name}
   {onclick}
   {onkeydown}
+  {onfocus}
   data-quaff
 >
   <div class="q-tab__content">
