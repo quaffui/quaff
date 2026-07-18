@@ -1,3 +1,3 @@
 import { writeColorFile } from "../src/dev/colorgenPlugin.js";
 
-writeColorFile();
+await writeColorFile();
