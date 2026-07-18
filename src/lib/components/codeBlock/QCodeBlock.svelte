@@ -1,10 +1,9 @@
 <script lang="ts">
-  import { onMount } from "svelte";
+  import { codeToHtml, type BundledTheme, type ThemeRegistration } from "shiki";
   import Quaff from "$classes/Quaff.svelte";
   import QBtn from "$components/button/QBtn.svelte";
   import { copy, escape } from "$utils";
-  import { createQuaffHighlighter } from "$internal/shikiTheme";
-  import type { BundledTheme, Highlighter } from "shiki";
+  import { quaffShikiDarkTheme, quaffShikiLightTheme } from "$internal/shikiTheme";
   import type { QCodeBlockProps } from "./props";
 
   // #region:    --- Props
@@ -25,7 +24,6 @@
   } as const;
 
   // #region:    --- Reactive variables
-  let highlighter = $state<Highlighter>();
   let copyStatus = $state<keyof typeof copyButtonStates>("base");
   let html = $state("");
 
@@ -41,7 +39,7 @@
     const suffix = Quaff.darkMode.isActive ? "dark" : "light";
 
     if (theme === "quaff") {
-      return `quaff-${suffix}` as const;
+      return suffix === "dark" ? quaffShikiDarkTheme : quaffShikiLightTheme;
     }
 
     return theme[suffix];
@@ -49,23 +47,7 @@
   // #endregion: --- Derived values
 
   // #region:    --- Effects
-  onMount(async () => {
-    const themeList: BundledTheme[] = [];
-
-    if (typeof theme === "string" && theme !== "quaff") {
-      themeList.push(theme);
-    } else if (typeof theme === "object") {
-      themeList.push(...Object.values(theme));
-    }
-
-    highlighter = await createQuaffHighlighter([language], themeList);
-  });
-
   $effect(() => {
-    if (!highlighter) {
-      return;
-    }
-
     void updateHtml(code, language, resolvedTheme);
   });
   // #endregion: --- Effects
@@ -87,14 +69,10 @@
   async function updateHtml(
     source: string,
     language: QCodeBlockProps["language"],
-    resolvedTheme: BundledTheme | `quaff-${"light" | "dark"}`
+    resolvedTheme: BundledTheme | ThemeRegistration
   ) {
-    if (!highlighter) {
-      return;
-    }
-
     try {
-      html = highlighter.codeToHtml(source, {
+      html = await codeToHtml(source, {
         lang: language,
         theme: resolvedTheme,
       });
