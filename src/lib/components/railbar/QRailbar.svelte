@@ -4,7 +4,7 @@
   import type { QRailbarProps } from "./props";
 
   // #region:    --- Props
-  let { width = 88, side = "left", bordered = false, children, ...props }: QRailbarProps = $props();
+  let { width = 80, side = "left", bordered = false, children, ...props }: QRailbarProps = $props();
   // #endregion: --- Props
 
   // #region:    --- Non-reactive variables

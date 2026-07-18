@@ -72,9 +72,8 @@
     <div>
       <QDocsSection title="Basic Railbar">
         {#snippet sectionDescription()}
-          QRailbar is a navigational component that typically stays fixed to the side of your
-          layout. It's narrower than a drawer and often displays icons that expand to show text on
-          hover or focus.
+          QRailbar provides access to primary destinations from a fixed position at the side of a
+          layout. It is intended for three to seven destinations on medium and large screens.
         {/snippet}
 
         <div style="height: 300px; border: 1px solid var(--outline-variant);">
@@ -223,7 +222,7 @@
 
       <QDocsSection title="Custom Width Railbar">
         {#snippet sectionDescription()}
-          Adjust the width of the railbar using the <code>width</code> prop. The default width is 88px.
+          Adjust the width of the railbar using the <code>width</code> prop. The default width is 80px.
         {/snippet}
 
         <div style="height: 300px; border: 1px solid var(--outline-variant);">
@@ -264,7 +263,7 @@
 
             <div class="flex flex-center column" style="height: 100%">
               <h5>Custom Width</h5>
-              <p>This railbar has a custom width of 120px instead of the default 88px.</p>
+              <p>This railbar has a custom width of 120px instead of the default 80px.</p>
             </div>
           </QLayout>
         </div>
