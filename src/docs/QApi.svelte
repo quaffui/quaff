@@ -20,6 +20,7 @@
     ParsedPropertyFlags,
     type ParsedType,
   } from "$docgen/props/parsePropsInterface/defs";
+  import { quaffTsHighlighter } from "$internal/shikiTheme";
   import { docsCtx } from "./QDocs.svelte";
 
   type TabableDocsKey = Exclude<
@@ -45,7 +46,7 @@
 
     const generation = ++tooltipGeneration;
     cleanupTooltips();
-    attachTooltips(generation);
+    attachTooltips(generation, Quaff.darkMode.isActive);
 
     return cleanupTooltips;
   });
@@ -327,7 +328,7 @@
     tooltipTeardowns = [];
   }
 
-  async function attachTooltips(generation: number) {
+  async function attachTooltips(generation: number, darkMode: boolean) {
     await tick();
 
     if (generation !== tooltipGeneration) {
@@ -381,11 +382,9 @@
 
       const type = getType(typeName) || "/* No definition found */";
 
-      const { codeToHtml } = await import("shiki");
-
-      const html = await codeToHtml(type, {
+      const html = quaffTsHighlighter.codeToHtml(type, {
         lang: "typescript",
-        theme: Quaff.darkMode.isActive ? "github-dark-default" : "github-light-default",
+        theme: darkMode ? "quaff-dark" : "quaff-light",
         transformers: [
           {
             pre(node) {
