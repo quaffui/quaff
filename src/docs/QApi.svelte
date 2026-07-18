@@ -1,7 +1,6 @@
 <script lang="ts">
   /* eslint-disable svelte/no-at-html-tags */
   import { createRawSnippet, mount, tick, unmount } from "svelte";
-  import { codeToHtml } from "shiki";
   import {
     QCard,
     QCardSection,
@@ -21,7 +20,11 @@
     ParsedPropertyFlags,
     type ParsedType,
   } from "$docgen/props/parsePropsInterface/defs";
-  import { quaffShikiDarkTheme, quaffShikiLightTheme } from "$internal/shikiTheme";
+  import {
+    getQuaffHighlighter,
+    quaffShikiDarkTheme,
+    quaffShikiLightTheme,
+  } from "$internal/shikiTheme";
   import { docsCtx } from "./QDocs.svelte";
 
   type TabableDocsKey = Exclude<
@@ -374,7 +377,14 @@
       tooltipTeardowns.push(() => unmount(tooltip));
     });
 
-    document.querySelectorAll("span.prop-type.clickable").forEach(async (el) => {
+    const theme = darkMode ? quaffShikiDarkTheme : quaffShikiLightTheme;
+    const highlighter = await getQuaffHighlighter("typescript", theme);
+
+    if (generation !== tooltipGeneration) {
+      return;
+    }
+
+    document.querySelectorAll("span.prop-type.clickable").forEach((el) => {
       const typeName = el.getAttribute("data-type-name");
 
       if (!typeName || !(el instanceof HTMLElement) || !el.parentElement) {
@@ -383,9 +393,9 @@
 
       const type = getType(typeName) || "/* No definition found */";
 
-      const html = await codeToHtml(type, {
+      const html = highlighter.codeToHtml(type, {
         lang: "typescript",
-        theme: darkMode ? quaffShikiDarkTheme : quaffShikiLightTheme,
+        theme,
         transformers: [
           {
             pre(node) {
