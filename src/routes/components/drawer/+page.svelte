@@ -41,27 +41,32 @@
 
 <QDocs>
   {#snippet display()}
-    <QBtn label="Open drawer" onclick={() => (displayDrawerOpen = !displayDrawerOpen)} />
+    <QLayout view="hHh LpR fFf" style="height: 300px;">
+      {#snippet drawerLeft()}
+        <QDrawer bind:value={displayDrawerOpen} overlay>
+          <h6 class="q-drawer__headline">Navigation</h6>
+          <QList>
+            <QItem to="#" active>
+              <QItemSection type="avatar">
+                <QIcon name="home" />
+              </QItemSection>
+              <QItemSection>Home</QItemSection>
+            </QItem>
+            <QItem to="#">
+              <QItemSection type="avatar">
+                <QIcon name="settings" />
+              </QItemSection>
+              <QItemSection>Settings</QItemSection>
+              <QItemSection type="trailingText">3</QItemSection>
+            </QItem>
+          </QList>
+        </QDrawer>
+      {/snippet}
 
-    <QDrawer bind:value={displayDrawerOpen} overlay>
-      <div class="q-pa-md">
-        <h6 class="q-ml-md q-mb-md">Navigation</h6>
-        <QList>
-          <QItem to="#">
-            <QItemSection type="avatar">
-              <QIcon name="home" />
-            </QItemSection>
-            <QItemSection>Home</QItemSection>
-          </QItem>
-          <QItem to="#">
-            <QItemSection type="avatar">
-              <QIcon name="settings" />
-            </QItemSection>
-            <QItemSection>Settings</QItemSection>
-          </QItem>
-        </QList>
+      <div class="flex flex-center" style="height: 100%;">
+        <QBtn label="Open drawer" onclick={() => (displayDrawerOpen = !displayDrawerOpen)} />
       </div>
-    </QDrawer>
+    </QLayout>
   {/snippet}
 
   {#snippet usage()}
@@ -86,26 +91,21 @@
 
           {#snippet drawerLeft()}
             <QDrawer bind:value={basicDrawerOpen}>
-              <div class="q-pa-md">
-                <h6 class="q-ml-md q-mb-md">Navigation</h6>
-                <QList>
-                  <QItem to="#">
-                    <QItemSection type="avatar">
-                      <QIcon name="home" />
-                    </QItemSection>
-                    <QItemSection>Home</QItemSection>
-                  </QItem>
-                  <QItem to="#">
-                    <QItemSection type="avatar">
-                      <QIcon name="settings" />
-                    </QItemSection>
-                    <QItemSection>Settings</QItemSection>
-                  </QItem>
-                </QList>
-                <div class="q-mt-lg">
-                  <QBtn label="Close Drawer" onclick={() => (basicDrawerOpen = false)} />
-                </div>
-              </div>
+              <h6 class="q-drawer__headline">Navigation</h6>
+              <QList>
+                <QItem to="#" active>
+                  <QItemSection type="avatar">
+                    <QIcon name="home" />
+                  </QItemSection>
+                  <QItemSection>Home</QItemSection>
+                </QItem>
+                <QItem to="#">
+                  <QItemSection type="avatar">
+                    <QIcon name="settings" />
+                  </QItemSection>
+                  <QItemSection>Settings</QItemSection>
+                </QItem>
+              </QList>
             </QDrawer>
           {/snippet}
 
@@ -119,7 +119,7 @@
       <QDocsSection title="Drawer Sides">
         {#snippet sectionDescription()}
           QDrawer can be positioned on either the left or right side of the layout using the
-          <code>side</code> prop. The default is "left".
+          <code>side</code> prop. The default is <code>left</code>.
         {/snippet}
 
         <QLayout
@@ -169,9 +169,9 @@
 
       <QDocsSection title="Overlay Mode">
         {#snippet sectionDescription()}
-          By default, QDrawer pushes the content aside when opened. With the <code>overlay</code> prop,
-          the drawer will appear above the content instead, without affecting the layout. Overlay drawers
-          cannot be persistent.
+          By default, QDrawer behaves as a standard navigation drawer and moves the content when
+          opened. With the <code>overlay</code> prop, it becomes a modal drawer with a scrim and does
+          not affect the layout.
         {/snippet}
 
         <QLayout
@@ -297,7 +297,7 @@
       <QDocsSection title="Custom Width">
         {#snippet sectionDescription()}
           You can customize the width of the drawer using the <code>width</code> prop. The default width
-          is 300px. If specified as a number, it's interpreted as pixels.
+          is 360px. If specified as a number, it's interpreted as pixels.
         {/snippet}
 
         <QLayout
@@ -320,7 +320,7 @@
               <div class="q-pa-md">
                 <h6 class="q-mb-md">Wide Drawer (400px)</h6>
                 <p class="q-mb-md">
-                  This drawer has a custom width of 400px instead of the default 300px.
+                  This drawer has a custom width of 400px instead of the default 360px.
                 </p>
                 <QBtn label="Close" onclick={() => (customWidthDrawerOpen = false)} />
               </div>
@@ -396,23 +396,21 @@
 
           {#snippet drawerLeft()}
             <QDrawer bind:value={layoutDrawerOpen} bordered>
-              <div class="q-pa-md">
-                <h6 class="q-ml-md q-mb-md">Navigation</h6>
-                <QList>
-                  <QItem to="#">
-                    <QItemSection type="avatar">
-                      <QIcon name="home" />
-                    </QItemSection>
-                    <QItemSection>Home</QItemSection>
-                  </QItem>
-                  <QItem to="#">
-                    <QItemSection type="avatar">
-                      <QIcon name="person" />
-                    </QItemSection>
-                    <QItemSection>Profile</QItemSection>
-                  </QItem>
-                </QList>
-              </div>
+              <h6 class="q-drawer__headline">Navigation</h6>
+              <QList>
+                <QItem to="#" active>
+                  <QItemSection type="avatar">
+                    <QIcon name="home" />
+                  </QItemSection>
+                  <QItemSection>Home</QItemSection>
+                </QItem>
+                <QItem to="#">
+                  <QItemSection type="avatar">
+                    <QIcon name="person" />
+                  </QItemSection>
+                  <QItemSection>Profile</QItemSection>
+                </QItem>
+              </QList>
             </QDrawer>
           {/snippet}
 
@@ -439,10 +437,3 @@
     </div>
   {/snippet}
 </QDocs>
-
-<style>
-  /* This override is needed due to lack of a QLayout parent in the example */
-  :global(.q-docs .q-drawer .q-list > .q-item.q-link) {
-    border-radius: 2rem;
-  }
-</style>

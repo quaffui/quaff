@@ -10,7 +10,7 @@
   let {
     value = $bindable(false),
     side = "left",
-    width = 300,
+    width = 360,
     breakpoint = 1023,
     behavior = "default",
     bordered = false,
@@ -49,10 +49,6 @@
   const drawerCtxToUse = $derived(side === "left" ? leftDrawerCtx : rightDrawerCtx);
   const drawerContext = $derived(drawerCtxToUse.get());
 
-  const canHideOnClickOutside = $derived((value && !persistent) || overlay);
-
-  const hideOnRouteChange = $derived(!persistent || overlay);
-
   const isBelowBreakpoint = $derived.by(() => {
     if (behavior === "mobile") {
       return true;
@@ -66,6 +62,9 @@
     return currentWidth ? currentWidth <= breakpoint : false;
   });
 
+  const isModal = $derived(overlay || isBelowBreakpoint);
+  const canHideOnClickOutside = $derived((value && !persistent) || isModal);
+  const hideOnRouteChange = $derived(!persistent || isModal);
   const canSwipe = $derived(!noSwipe && isBelowBreakpoint);
 
   const offsetTop = $derived.by(() => {
@@ -151,11 +150,11 @@
 
   $effect(() => {
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    [value, overlay, width];
+    [value, isModal, width];
 
     untrack(() => {
       drawerCtxToUse.updateEntries({
-        takesSpace: !!value && !overlay,
+        takesSpace: !!value && !isModal,
         width,
         ready: true,
       });
@@ -357,7 +356,7 @@
     bemClasses: {
       [side]: true,
       active: value,
-      overlay,
+      overlay: isModal,
       bordered,
       "offset-top": offsetTop,
       "offset-bottom": offsetBottom,
@@ -366,6 +365,17 @@
   });
 </script>
 
+{#if isModal}
+  <button
+    type="button"
+    tabindex="-1"
+    aria-label="Close drawer"
+    class="q-drawer__scrim"
+    class:q-drawer__scrim--active={value}
+    onclick={hide}
+  ></button>
+{/if}
+
 <div bind:this={drawerEl} {...props} class="q-drawer" {style} data-quaff>
   {@render children?.()}
 </div>
@@ -373,7 +383,7 @@
 {#if canSwipe}
   <div
     bind:this={swipeAreaEl}
-    role="navigation"
+    role="presentation"
     class="q-drawer__swipearea q-drawer__swipearea--{side}"
     onpointerdown={handlePointerDown}
   ></div>

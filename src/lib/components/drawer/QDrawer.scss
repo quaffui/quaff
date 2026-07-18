@@ -10,7 +10,7 @@
   left: auto;
 
   height: auto;
-  @include mixins.padding("a-sm");
+  padding: 0.75rem;
 
   background-color: var(--surface);
   color: var(--on-surface);
@@ -19,6 +19,39 @@
 
   &.q-drawer--overlay {
     z-index: 6;
+
+    background-color: var(--surface-container-low);
+    box-shadow: var(--elevate1);
+  }
+
+  &__headline {
+    @include mixins.typography("label-large");
+    margin-block: 0.5rem;
+    padding-inline: 1rem;
+    color: var(--on-surface-variant);
+  }
+
+  &__scrim {
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+
+    background-color: var(--scrim);
+    border: 0;
+    border-radius: 0;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+
+    transition:
+      opacity variables.$speed3,
+      visibility variables.$speed3;
+
+    &--active {
+      opacity: 0.4;
+      visibility: visible;
+      pointer-events: auto;
+    }
   }
 
   &__swipearea {
@@ -35,6 +68,12 @@
       #{$side}: 0;
       width: var(--#{$side}-drawer-width);
       transform: translate(if(sass($side == "left"): -100%; else: 100%));
+
+      @if $side == "left" {
+        border-radius: 0 1rem 1rem 0;
+      } @else {
+        border-radius: 1rem 0 0 1rem;
+      }
     }
 
     &:not(.q-drawer--#{$side}).q-drawer--bordered {
@@ -44,6 +83,84 @@
 
   &.q-drawer--active {
     transform: translate(0);
+  }
+
+  & .q-list > .q-item:is(.q-link, .q-item--clickable) {
+    --ripple-color: var(--on-surface);
+
+    @include mixins.typography("label-large");
+    gap: 0.75rem;
+    height: 3.5rem;
+    padding: 0 1rem;
+
+    color: var(--on-surface-variant);
+    border-radius: 1.75rem;
+    overflow: hidden;
+
+    &::before {
+      content: "";
+      z-index: -1;
+      position: absolute;
+      inset: 0;
+
+      background-color: var(--secondary-container);
+      opacity: 0;
+      transform: scaleX(0.32);
+
+      transition:
+        transform variables.$speed2,
+        opacity variables.$speed2;
+    }
+
+    & > .q-item__section,
+    & > .q-item__section .q-item__section--headline,
+    & > .q-item__section--trailing > .label-small {
+      font: inherit;
+      letter-spacing: inherit;
+      color: inherit;
+    }
+
+    & > .q-item__section .q-icon {
+      transition: font-variation-settings variables.$speed2;
+    }
+
+    &:is(:hover, :focus, :active):not([aria-disabled]) {
+      color: var(--on-surface);
+    }
+
+    &:focus:not([aria-disabled])::after {
+      opacity: 0.1;
+    }
+
+    &:focus-visible {
+      outline: 0.1875rem solid var(--secondary);
+      outline-offset: -0.1875rem;
+    }
+
+    &.q-item--active {
+      --ripple-color: var(--on-secondary-container);
+
+      color: var(--on-secondary-container);
+      font-weight: 700;
+
+      &::before {
+        opacity: 1;
+        transform: scaleX(1);
+      }
+
+      & > .q-item__section .q-icon {
+        font-variation-settings: "FILL" 1;
+      }
+
+      &:is(:hover, :focus):not([aria-disabled])::after {
+        background-color: var(--on-secondary-container);
+      }
+    }
+  }
+
+  & .q-list--dense > .q-item:is(.q-link, .q-item--clickable) {
+    height: 2.75rem;
+    padding-block: 0;
   }
 }
 
