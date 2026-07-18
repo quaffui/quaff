@@ -34,46 +34,6 @@
       #{$pos}: var(--offset-#{$pos}, 0);
     }
   }
-
-  & > .q-list {
-    @include mixins.gap("sm");
-
-    & > .q-item {
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-
-      @include mixins.padding("x-sm");
-      @include mixins.gap("xs");
-
-      border-radius: 2rem;
-
-      &.q-link::after {
-        all: unset;
-      }
-
-      & > .q-item__section {
-        justify-content: start;
-      }
-
-      & > i {
-        @include mixins.padding("a-xs");
-        transition: padding variables.$speed1 linear;
-      }
-
-      &:is(:hover, :focus, .q-item--active) > i {
-        @include mixins.padding("x-lg");
-
-        background-color: var(--secondary-container);
-        color: var(--on-secondary-container);
-
-        font-variation-settings:
-          "FILL" 1,
-          "wght" 400,
-          "opsz" 24;
-      }
-    }
-  }
 }
 
 .q-layout > .q-drawer {

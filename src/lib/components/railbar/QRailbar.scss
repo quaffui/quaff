@@ -1,44 +1,119 @@
 @use "$css/mixins";
+@use "$css/variables";
 
 .q-railbar {
   z-index: 5;
   position: fixed;
   top: 0;
-  right: auto;
   bottom: 0;
-  left: auto;
 
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
   text-align: center;
-  vertical-align: middle;
 
-  height: auto;
-  margin: 0;
-  @include mixins.padding("a-sm");
+  @include mixins.padding("y-sm");
   @include mixins.gap("md");
 
   background-color: var(--surface);
   color: var(--on-surface);
 
-  border: 0;
   border-radius: 0;
 
-  transform: none;
   white-space: nowrap;
-  box-sizing: border-box;
   overflow: auto;
 
-  // Hide the scrollbar
-  // Internet Explorer 10+
-  -ms-overflow-style: none;
-  // Firefox
   scrollbar-width: none;
-  // Other
+
   &::-webkit-scrollbar {
     display: none;
+  }
+
+  & > .q-list {
+    @include mixins.gap("sm");
+
+    & > .q-item {
+      display: grid;
+      grid-template: 2rem 1rem / 100%;
+      align-content: center;
+      justify-items: center;
+      gap: 0.25rem;
+
+      height: 3.5rem;
+      padding: 0.125rem 0;
+      border-radius: 0;
+      color: var(--on-surface-variant);
+
+      &:is(:hover, :focus):not([aria-disabled])::after {
+        inset: 0.125rem auto auto 50%;
+        width: 3.5rem;
+        height: 2rem;
+        border-radius: 2rem;
+        background-color: var(--on-surface-variant);
+        translate: -50%;
+      }
+
+      &:focus:not([aria-disabled])::after {
+        opacity: 0.12;
+      }
+
+      & > .q-icon {
+        isolation: isolate;
+        transition: font-variation-settings variables.$speed2 cubic-bezier(0.2, 0, 0, 1);
+
+        &::before {
+          content: "";
+          z-index: -1;
+          position: absolute;
+          inset: 50% auto auto 50%;
+          width: 3.5rem;
+          height: 2rem;
+          border-radius: 2rem;
+          background-color: var(--secondary-container);
+          opacity: 0;
+          transform: scaleX(0.32);
+          translate: -50% -50%;
+          transition:
+            transform variables.$speed2 linear,
+            opacity variables.$speed2 linear;
+        }
+      }
+
+      & > .q-item__section {
+        color: inherit;
+      }
+
+      & > .q-item__section .q-item__section--headline {
+        @include mixins.typography("label-medium");
+        color: inherit;
+      }
+
+      & > .q-ripple__effect {
+        inset: 0.125rem auto auto 50%;
+        width: 3.5rem;
+        height: 2rem;
+        border-radius: 2rem;
+        translate: -50%;
+      }
+
+      &.q-item--active {
+        color: var(--on-secondary-container);
+
+        & > .q-icon {
+          font-variation-settings: "FILL" 1;
+
+          &::before {
+            opacity: 1;
+            transform: scaleX(1);
+          }
+        }
+
+        &:is(:hover, :focus):not([aria-disabled])::after {
+          background-color: var(--on-secondary-container);
+        }
+      }
+    }
   }
 
   @each $side in ("left", "right") {
