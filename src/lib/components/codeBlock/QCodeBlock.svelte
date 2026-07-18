@@ -1,14 +1,16 @@
 <script lang="ts">
+  import { onMount } from "svelte";
   import Quaff from "$classes/Quaff.svelte";
   import QBtn from "$components/button/QBtn.svelte";
   import { copy, escape } from "$utils";
+  import { createQuaffHighlighter } from "$internal/shikiTheme";
+  import type { BundledTheme, Highlighter } from "shiki";
   import type { QCodeBlockProps } from "./props";
 
   // #region:    --- Props
   let {
     language,
-    lightTheme = "github-light-default",
-    darkTheme = "github-dark-default",
+    theme = "quaff",
     code = "/* No code found */",
     title,
     copiable,
@@ -23,16 +25,46 @@
   } as const;
 
   // #region:    --- Reactive variables
+  let highlighter = $state<Highlighter>();
   let copyStatus = $state<keyof typeof copyButtonStates>("base");
   let html = $state("");
 
   const copyButton = $derived(copyButtonStates[copyStatus]);
   // #endregion: --- Reactive variables
 
+  // #region:    --- Derived values
+  const resolvedTheme = $derived(
+    typeof theme === "string" && theme !== "quaff"
+      ? theme
+      : Quaff.darkMode.isActive
+        ? theme === "quaff"
+          ? "quaff-dark"
+          : theme.dark
+        : theme === "quaff"
+          ? "quaff-light"
+          : theme.light
+  );
+  // #endregion: --- Derived values
+
   // #region:    --- Effects
+  onMount(async () => {
+    const themeList: BundledTheme[] = [];
+
+    if (typeof theme === "string" && theme !== "quaff") {
+      themeList.push(theme);
+    } else if (typeof theme === "object") {
+      themeList.push(...Object.values(theme));
+    }
+
+    highlighter = await createQuaffHighlighter([language], themeList);
+  });
+
   $effect(() => {
-    const theme = Quaff.darkMode.isActive ? darkTheme : lightTheme;
-    void updateHtml(code, language, theme);
+    if (!highlighter) {
+      return;
+    }
+
+    void updateHtml(code, language, resolvedTheme);
   });
   // #endregion: --- Effects
 
@@ -53,14 +85,16 @@
   async function updateHtml(
     source: string,
     language: QCodeBlockProps["language"],
-    theme: typeof lightTheme
+    resolvedTheme: BundledTheme | `quaff-${"light" | "dark"}`
   ) {
-    try {
-      const { codeToHtml } = await import("shiki");
+    if (!highlighter) {
+      return;
+    }
 
-      html = await codeToHtml(source, {
+    try {
+      html = highlighter.codeToHtml(source, {
         lang: language,
-        theme,
+        theme: resolvedTheme,
       });
     } catch (error) {
       console.error("Error while highlighting code with Shiki", error);
