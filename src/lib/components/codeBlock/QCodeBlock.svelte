@@ -33,17 +33,19 @@
   // #endregion: --- Reactive variables
 
   // #region:    --- Derived values
-  const resolvedTheme = $derived(
-    typeof theme === "string" && theme !== "quaff"
-      ? theme
-      : Quaff.darkMode.isActive
-        ? theme === "quaff"
-          ? "quaff-dark"
-          : theme.dark
-        : theme === "quaff"
-          ? "quaff-light"
-          : theme.light
-  );
+  const resolvedTheme = $derived.by(() => {
+    if (typeof theme === "string" && theme !== "quaff") {
+      return theme;
+    }
+
+    const suffix = Quaff.darkMode.isActive ? "dark" : "light";
+
+    if (theme === "quaff") {
+      return `quaff-${suffix}` as const;
+    }
+
+    return theme[suffix];
+  });
   // #endregion: --- Derived values
 
   // #region:    --- Effects
