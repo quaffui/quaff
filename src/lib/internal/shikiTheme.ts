@@ -1,4 +1,10 @@
-import type { ThemeRegistration } from "shiki";
+import {
+  createHighlighter,
+  type BundledLanguage,
+  type BundledTheme,
+  type SpecialLanguage,
+  type ThemeRegistration,
+} from "shiki";
 
 function createQuaffShikiTheme(
   name: string,
@@ -117,3 +123,62 @@ export const quaffShikiDarkTheme = createQuaffShikiTheme("quaff-dark", [
     },
   },
 ]);
+
+type QuaffShikiTheme = BundledTheme | ThemeRegistration;
+
+let highlighterPromise: ReturnType<typeof createHighlighter> | undefined;
+const languageLoads = new Map<string, Promise<void>>();
+const themeLoads = new Map<string, Promise<void>>();
+
+export async function getQuaffHighlighter(
+  language: BundledLanguage | SpecialLanguage,
+  theme: QuaffShikiTheme
+) {
+  if (!highlighterPromise) {
+    highlighterPromise = createHighlighter({
+      langs: [],
+      themes: [quaffShikiLightTheme, quaffShikiDarkTheme],
+    });
+  }
+
+  const highlighter = await highlighterPromise;
+  const languageName = highlighter.resolveLangAlias(language);
+  const themeName = typeof theme === "string" ? theme : theme.name;
+  const pendingLoads: Promise<void>[] = [];
+
+  if (!highlighter.getLoadedLanguages().includes(languageName)) {
+    pendingLoads.push(
+      loadOnce(languageLoads, languageName, () => highlighter.loadLanguage(language))
+    );
+  }
+
+  if (themeName && !highlighter.getLoadedThemes().includes(themeName)) {
+    pendingLoads.push(loadOnce(themeLoads, themeName, () => highlighter.loadTheme(theme)));
+  }
+
+  await Promise.all(pendingLoads);
+
+  return highlighter;
+}
+
+async function loadOnce(
+  cache: Map<string, Promise<void>>,
+  name: string,
+  load: () => Promise<void>
+) {
+  const pendingLoad = cache.get(name);
+
+  if (pendingLoad) {
+    await pendingLoad;
+    return;
+  }
+
+  const loadPromise = load();
+  cache.set(name, loadPromise);
+
+  try {
+    await loadPromise;
+  } finally {
+    cache.delete(name);
+  }
+}
