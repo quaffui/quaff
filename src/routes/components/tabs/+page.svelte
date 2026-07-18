@@ -10,7 +10,6 @@
 
   let activeTab = $state("hello");
   let contentTab = $state("tab1");
-  let mobileTab = $state("feed");
 </script>
 
 <svelte:head>
@@ -51,8 +50,9 @@
       <QDocsSection title="Tab Variants">
         {#snippet sectionDescription()}
           QTabs supports three variants: <code>primary</code> (default), <code>secondary</code>, and
-          <code>vertical</code>. Each variant has a different visual style and layout. Prefer
-          primary tabs for your main navigation.
+          <code>vertical</code>. Use primary tabs for top-level content and secondary tabs for
+          related content. Vertical tabs are a Quaff compatibility extension for layouts that need
+          them.
         {/snippet}
 
         <div class="row q-gap-lg q-ma-sm">
@@ -90,8 +90,10 @@
 
       <QDocsSection title="Tabs with Icons">
         {#snippet sectionDescription()}
-          QTab components can include icons using the <code>icon</code> prop. Icons can be displayed along
-          with text content or alone.
+          QTab components can include icons using the <code>icon</code> prop. Primary tabs stack an
+          icon above its label by default, while secondary tabs place them inline. Set
+          <code>inlineLabel</code> on QTabs to use the inline layout with primary tabs. Icons can also
+          be used alone.
         {/snippet}
 
         <div class="q-ma-sm">
@@ -102,7 +104,14 @@
             <QTab icon="help" name="bar">Help</QTab>
           </QTabs>
 
-          <QTabs class="q-my-md" bind:value={activeTab} variant="vertical">
+          <QTabs class="q-my-md" bind:value={activeTab} variant="secondary">
+            <QTab icon="home" name="hello">Home</QTab>
+            <QTab icon="person" name="world">Profile</QTab>
+            <QTab icon="settings" name="foo">Settings</QTab>
+            <QTab icon="help" name="bar">Help</QTab>
+          </QTabs>
+
+          <QTabs class="q-my-md" bind:value={activeTab} inlineLabel>
             <QTab icon="home" name="hello">Home</QTab>
             <QTab icon="person" name="world">Profile</QTab>
             <QTab icon="settings" name="foo">Settings</QTab>
@@ -111,10 +120,10 @@
 
           <h6 class="q-my-md">Icons Only</h6>
           <QTabs bind:value={activeTab}>
-            <QTab icon="home" name="hello" />
-            <QTab icon="person" name="world" />
-            <QTab icon="settings" name="foo" />
-            <QTab icon="help" name="bar" />
+            <QTab icon="home" name="hello" aria-label="Home" />
+            <QTab icon="person" name="world" aria-label="Profile" />
+            <QTab icon="settings" name="foo" aria-label="Settings" />
+            <QTab icon="help" name="bar" aria-label="Help" />
           </QTabs>
         </div>
       </QDocsSection>
@@ -182,30 +191,6 @@
         </QCard>
       </QDocsSection>
 
-      <QDocsSection title="Mobile Tab Navigation">
-        {#snippet sectionDescription()}
-          Tabs are commonly used for mobile navigation. Typically, these are placed at the bottom of
-          the screen and feature icons with optional labels.
-        {/snippet}
-
-        <QCard class="q-ma-sm" style="max-width: 375px; margin: 0 auto;">
-          <QCardSection style="height: 400px; position: relative;">
-            <div class="absolute-center text-center">
-              <h6>Mobile App Content</h6>
-              <p>Current tab: {mobileTab}</p>
-            </div>
-            <div style="position: absolute; bottom: 0; left: 0; right: 0;">
-              <QTabs bind:value={mobileTab} class="bg-surface">
-                <QTab name="feed" icon="home" />
-                <QTab name="search" icon="search" />
-                <QTab name="notifications" icon="notifications" />
-                <QTab name="profile" icon="person" />
-              </QTabs>
-            </div>
-          </QCardSection>
-        </QCard>
-      </QDocsSection>
-
       <QDocsSection title="Accessibility" noCode>
         {#snippet sectionDescription()}
           QTabs and QTab are built with accessibility in mind. They include proper ARIA attributes
@@ -227,7 +212,7 @@
                 <QIcon name="open_run" />
               </QItemSection>
               <QItemSection>
-                <strong>Keyboard Arrows:</strong> Navigate between tabs when focus is on a tab
+                <strong>Arrow, Home, and End Keys:</strong> Move focus between tabs
               </QItemSection>
             </QItem>
 
