@@ -1,9 +1,13 @@
 <script lang="ts">
-  import { codeToHtml, type BundledTheme, type ThemeRegistration } from "shiki";
   import Quaff from "$classes/Quaff.svelte";
   import QBtn from "$components/button/QBtn.svelte";
   import { copy, escape } from "$utils";
-  import { quaffShikiDarkTheme, quaffShikiLightTheme } from "$internal/shikiTheme";
+  import {
+    getQuaffHighlighter,
+    quaffShikiDarkTheme,
+    quaffShikiLightTheme,
+  } from "$internal/shikiTheme";
+  import type { BundledTheme, ThemeRegistration } from "shiki";
   import type { QCodeBlockProps } from "./props";
 
   // #region:    --- Props
@@ -72,7 +76,8 @@
     resolvedTheme: BundledTheme | ThemeRegistration
   ) {
     try {
-      html = await codeToHtml(source, {
+      const highlighter = await getQuaffHighlighter(language, resolvedTheme);
+      html = highlighter.codeToHtml(source, {
         lang: language,
         theme: resolvedTheme,
       });
