@@ -1,6 +1,7 @@
 <script lang="ts">
   /* eslint-disable svelte/no-at-html-tags */
   import { createRawSnippet, mount, tick, unmount } from "svelte";
+  import { codeToHtml } from "shiki";
   import {
     QCard,
     QCardSection,
@@ -20,7 +21,7 @@
     ParsedPropertyFlags,
     type ParsedType,
   } from "$docgen/props/parsePropsInterface/defs";
-  import { quaffTsHighlighter } from "$internal/shikiTheme";
+  import { quaffShikiDarkTheme, quaffShikiLightTheme } from "$internal/shikiTheme";
   import { docsCtx } from "./QDocs.svelte";
 
   type TabableDocsKey = Exclude<
@@ -382,9 +383,9 @@
 
       const type = getType(typeName) || "/* No definition found */";
 
-      const html = quaffTsHighlighter.codeToHtml(type, {
+      const html = await codeToHtml(type, {
         lang: "typescript",
-        theme: darkMode ? "quaff-dark" : "quaff-light",
+        theme: darkMode ? quaffShikiDarkTheme : quaffShikiLightTheme,
         transformers: [
           {
             pre(node) {
