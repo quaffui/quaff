@@ -1,4 +1,4 @@
-import { createHighlighter, type ThemeRegistration } from "shiki";
+import type { ThemeRegistration } from "shiki";
 
 function createQuaffShikiTheme(
   name: string,
@@ -100,7 +100,7 @@ function createQuaffShikiTheme(
   };
 }
 
-const quaffShikiLightTheme = createQuaffShikiTheme("quaff-light", [
+export const quaffShikiLightTheme = createQuaffShikiTheme("quaff-light", [
   {
     scope: ["entity.name.tag", "support.class.component"],
     settings: {
@@ -109,7 +109,7 @@ const quaffShikiLightTheme = createQuaffShikiTheme("quaff-light", [
   },
 ]);
 
-const quaffShikiDarkTheme = createQuaffShikiTheme("quaff-dark", [
+export const quaffShikiDarkTheme = createQuaffShikiTheme("quaff-dark", [
   {
     scope: ["entity.name.tag", "support.class.component"],
     settings: {
@@ -117,15 +117,3 @@ const quaffShikiDarkTheme = createQuaffShikiTheme("quaff-dark", [
     },
   },
 ]);
-
-export async function createQuaffHighlighter(
-  langs: Parameters<typeof createHighlighter>[0]["langs"],
-  themes: Parameters<typeof createHighlighter>[0]["themes"] = []
-) {
-  return await createHighlighter({
-    langs,
-    themes: [quaffShikiLightTheme, quaffShikiDarkTheme, ...themes],
-  });
-}
-
-export const quaffTsHighlighter = await createQuaffHighlighter(["typescript"]);
