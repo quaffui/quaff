@@ -10,12 +10,7 @@ export interface QCodeBlockProps extends HTMLAttributes<HTMLDivElement> {
   /**
    * Theme to use for highlighting for light mode.
    */
-  lightTheme?: BundledTheme;
-
-  /**
-   * Theme to use for highlighting for dark mode.
-   */
-  darkTheme?: BundledTheme;
+  theme?: "quaff" | BundledTheme | { light: BundledTheme; dark: BundledTheme };
 
   /**
    * Code to highlight.
