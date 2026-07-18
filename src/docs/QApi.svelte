@@ -424,7 +424,7 @@
         <QIcon name="info" />
         <span class="q-ml-md">{QDocument.name} API</span>
       </h5>
-      <QTabs bind:value={activeApiTabs[index]} noSeparator class="no-margin">
+      <QTabs bind:value={activeApiTabs[index]} noSeparator class="q-api__tabs no-margin">
         {#each getTabableEntries(QDocument) as [tabName, tabDoc] (tabName)}
           {#if tabDoc.length !== 0}
             <QTab name={tabName} style="min-width: 100px">
@@ -434,7 +434,7 @@
         {/each}
       </QTabs>
     </div>
-    <QCardSection style="max-height: 416px; overflow-y: auto">
+    <QCardSection class="q-px-md q-pb-md" style="max-height: 416px; overflow-y: auto">
       <QList separator bordered>
         {@const docs = QDocument.docs}
         {#if activeApiTabs[index] === "props" && (docs.generics.length || docs.domAttributesConstraint)}
@@ -525,5 +525,9 @@
 
   :global(.prop-description > a:hover) {
     color: var(--primary);
+  }
+
+  :global(.q-api__tabs .q-tab) {
+    background-color: transparent;
   }
 </style>

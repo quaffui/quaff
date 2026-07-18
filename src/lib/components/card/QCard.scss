@@ -3,23 +3,24 @@
 .q-card {
   display: block;
   border-radius: 0.75rem;
-  transition: transform var(--speed-3) padding var(--speed-3) border-radius var(--speed-3);
 
-  background-color: var(--surface);
+  background-color: var(--surface-container-low);
   color: var(--on-surface);
 
   @include mixins.padding("a-md");
   @include mixins.elevate(1, "bottom");
 
-  &--bordered {
-    box-sizing: border-box;
+  &--bordered,
+  &--flat,
+  &--fill {
     box-shadow: none;
-
-    @include mixins.border;
   }
 
-  &--flat {
-    box-shadow: none;
+  &--bordered {
+    box-sizing: border-box;
+    background-color: var(--surface);
+
+    @include mixins.border;
   }
 
   &--rounded {
@@ -27,7 +28,7 @@
   }
 
   &--fill {
-    background-color: var(--surface-variant);
+    background-color: var(--surface-container-highest);
 
     &.q-card--primary {
       background-color: var(--primary-container);
