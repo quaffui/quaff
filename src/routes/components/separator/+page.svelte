@@ -116,17 +116,17 @@
         </div>
       </QDocsSection>
 
-      <QDocsSection title="Custom Size (Thickness) - Not supported yet">
+      <QDocsSection title="Custom Size (Thickness)">
         {#snippet sectionDescription()}
           Control the thickness of the separator line with the <code>size</code> prop. This accepts any
-          valid CSS size value.
+          valid CSS size value. If a number is provided it will be treated as px.
         {/snippet}
 
         <div class="q-my-md">
           <QSeparator text="Default Size" />
-          <QSeparator text="2px Thick" size="2px" class="q-my-md" />
+          <QSeparator text="2px Thick (number)" size={2} class="q-my-md" />
           <QSeparator text="3px Thick" size="3px" class="q-my-md" />
-          <QSeparator text="5px Thick" size="5px" class="q-my-md" />
+          <QSeparator text="0.25rem Thick" size="0.25rem" class="q-my-md" />
         </div>
       </QDocsSection>
 

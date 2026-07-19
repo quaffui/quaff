@@ -1,7 +1,7 @@
-import type { QSize } from "$utils";
+import type { CssSizeable, QSize } from "$utils";
 import type { HTMLAttributes } from "svelte/elements";
 
-export interface QSeparatorVerticalProps {
+export interface QSeparatorVerticalProps extends CssSizeable {
   /**
    * Spacing around the separator.
    */
@@ -23,11 +23,6 @@ export interface QSeparatorVerticalProps {
   color?: string;
 
   /**
-   * Custom size (thickness) of the separator line.
-   */
-  size?: string;
-
-  /**
    * Text to display. Its position on the separator is determined by the textAlign prop.
    */
   text?: string;
@@ -38,7 +33,7 @@ export interface QSeparatorVerticalProps {
   textAlign?: "top" | "middle" | "bottom";
 }
 
-export interface QSeparatorHorizontalProps {
+export interface QSeparatorHorizontalProps extends CssSizeable {
   /**
    * Spacing around the separator.
    */
@@ -58,11 +53,6 @@ export interface QSeparatorHorizontalProps {
    * Color of the separator line.
    */
   color?: string;
-
-  /**
-   * Custom size (thickness) of the separator line.
-   */
-  size?: string;
 
   /**
    * Text to display. Its position on the separator is determined by the textAlign prop.

@@ -31,7 +31,7 @@
   flex: 1 1 auto;
 
   &--vertical {
-    width: var(--q-separator--size, 0.0625rem);
+    width: var(--q-separator-size, 0.0625rem);
 
     @each $space, $val in variables.$spaces {
       @if $space != "none" and $space != "auto" {
@@ -43,7 +43,7 @@
   }
 
   &:not(&--vertical) {
-    height: var(--q-separator--size, 0.0625rem);
+    height: var(--q-separator-size, 0.0625rem);
 
     @each $space, $val in variables.$spaces {
       @if $space != "auto" {
