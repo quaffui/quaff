@@ -375,8 +375,8 @@
 
       <QDocsSection title="Two-way Binding">
         {#snippet sectionDescription()}
-          QSelect supports Svelte's two-way binding with the <code>bind</code>value directive. This
-          makes it easy to sync the select's state with your component's variables.
+          QSelect supports Svelte's two-way binding with the <code>bind:value</code> directive. This makes
+          it easy to sync the select's state with your component's variables.
         {/snippet}
 
         <div class="row q-gutter-md q-ma-sm">
