@@ -17,7 +17,8 @@
 
   // #region:    --- Derived values
   const orientation = $derived(vertical ? "vertical" : "horizontal");
-  const qSize = $derived(useSize(spacing, "q-separator__spacing"));
+  const qSpacing = $derived(useSize(spacing, "q-separator__spacing"));
+  const qSize = $derived(size ? useSize(size) : undefined);
   const parsedColor = $derived(useColor(color));
   // #endregion: --- Derived values
 
@@ -25,7 +26,7 @@
     bemClasses: {
       vertical,
     },
-    classes: [qSize.class],
+    classes: [qSpacing.class],
   });
   Q.classes("q-separator__wrapper", {
     bemClasses: {
@@ -36,7 +37,13 @@
   });
 </script>
 
-<div {...props} class="q-separator__wrapper" data-quaff style:--q-separator-color={parsedColor}>
+<div
+  {...props}
+  class="q-separator__wrapper"
+  data-quaff
+  style:--q-separator-color={parsedColor}
+  style:--q-separator-size={qSize?.style}
+>
   {#if text}
     {#if (vertical && textAlign !== "top") || (!vertical && textAlign !== "left")}
       {@render hr()}
@@ -53,5 +60,5 @@
 </div>
 
 {#snippet hr()}
-  <hr class="q-separator" style:--q-separator-size={size} aria-orientation={orientation} />
+  <hr class="q-separator" aria-orientation={orientation} />
 {/snippet}
