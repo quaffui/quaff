@@ -1,4 +1,3 @@
-@use "sass:list";
 @use "../variables";
 
 @mixin elevate($strength, $position: null) {
@@ -11,21 +10,17 @@
   box-shadow: 0 $elevate * $coeff $elevate 0 with-alpha(var(--shadow), calc(24% + (8% * $strength)));
 }
 
-@mixin border($color: var(--outline-variant), $position: variables.$border-positions) {
-  @if list.index($list: $position, $value: top) {
-    border-top: 0.0625rem solid $color;
-  }
-
-  @if list.index($list: $position, $value: right) {
-    border-right: 0.0625rem solid $color;
-  }
-
-  @if list.index($list: $position, $value: bottom) {
-    border-bottom: 0.0625rem solid $color;
-  }
-
-  @if list.index($list: $position, $value: left) {
-    border-left: 0.0625rem solid $color;
+@mixin border(
+  $color: var(--outline-variant),
+  $position: variables.$border-positions,
+  $width: 0.0625rem
+) {
+  @if $position == variables.$border-positions {
+    border: $width solid $color;
+  } @else {
+    @each $side in $position {
+      border-#{$side}: $width solid $color;
+    }
   }
 }
 

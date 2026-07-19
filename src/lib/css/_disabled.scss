@@ -13,6 +13,6 @@
   @return mixins.with-alpha(var(--#{$color}), 38%);
 }
 
-@function rest-color($color: on-surface) {
-  @return mixins.with-alpha(var(--#{$color}), 12%);
+@function rest-color($color: on-surface, $opacity: 12%) {
+  @return mixins.with-alpha(var(--#{$color}), $opacity);
 }

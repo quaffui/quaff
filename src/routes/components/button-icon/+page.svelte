@@ -8,6 +8,9 @@
   import snippets from "./docs.snippets";
 
   docsCtx.set({ snippets, componentDocs: QIconBtnDocs });
+
+  let favoriteSelected = $state(false);
+  let outlinedSelected = $state(true);
 </script>
 
 <svelte:head>
@@ -16,7 +19,7 @@
 
 <QDocs>
   {#snippet display()}
-    <QIconBtn icon="star" />
+    <QIconBtn icon="star" aria-label="Star" />
   {/snippet}
 
   {#snippet usage()}
@@ -27,9 +30,9 @@
           inherits most of its features and properties.
         {/snippet}
 
-        <QIconBtn class="q-ma-sm" icon="favorite" />
-        <QIconBtn class="q-ma-sm" icon="search" />
-        <QIconBtn class="q-ma-sm" icon="share" />
+        <QIconBtn class="q-ma-sm" icon="favorite" aria-label="Favorite" />
+        <QIconBtn class="q-ma-sm" icon="search" aria-label="Search" />
+        <QIconBtn class="q-ma-sm" icon="share" aria-label="Share" />
       </QDocsSection>
 
       <QDocsSection title="Width Options">
@@ -38,9 +41,15 @@
           <code>width</code> prop.
         {/snippet}
 
-        <QIconBtn class="q-ma-sm" expressive icon="favorite" width="narrow" />
-        <QIconBtn class="q-ma-sm" expressive icon="favorite" width="default" />
-        <QIconBtn class="q-ma-sm" expressive icon="favorite" width="wide" />
+        <QIconBtn class="q-ma-sm" expressive icon="favorite" width="narrow" aria-label="Favorite" />
+        <QIconBtn
+          class="q-ma-sm"
+          expressive
+          icon="favorite"
+          width="default"
+          aria-label="Favorite"
+        />
+        <QIconBtn class="q-ma-sm" expressive icon="favorite" width="wide" aria-label="Favorite" />
       </QDocsSection>
 
       <QDocsSection title="Loading State">
@@ -49,7 +58,7 @@
           progress indicator replaces the icon.
         {/snippet}
 
-        <QIconBtn class="q-ma-sm" icon="refresh" loading />
+        <QIconBtn class="q-ma-sm" icon="refresh" loading aria-label="Refresh" />
       </QDocsSection>
 
       <QDocsSection title="Disabled State">
@@ -58,10 +67,11 @@
           appearance but don't respond to user interaction.
         {/snippet}
 
-        <QIconBtn class="q-ma-sm" icon="add" disabled />
+        <QIconBtn class="q-ma-sm" icon="add" disabled aria-label="Add" />
         <QIconBtn
           class="q-ma-sm"
           icon="close"
+          aria-label="Close"
           disabled
           onclick={() => alert("What's this sorcery?!")}
         />
@@ -73,12 +83,10 @@
           using the <code>variant</code> prop.
         {/snippet}
 
-        <QIconBtn class="q-ma-sm" icon="star" />
-        <QIconBtn class="q-ma-sm" icon="star" unelevated />
-        <QIconBtn class="q-ma-sm" icon="star" variant="filled" />
-        <QIconBtn class="q-ma-sm" icon="star" variant="tonal" />
-        <QIconBtn class="q-ma-sm" icon="star" variant="outlined" />
-        <QIconBtn class="q-ma-sm" icon="star" variant="flat" />
+        <QIconBtn class="q-ma-sm" icon="star" aria-label="Standard" />
+        <QIconBtn class="q-ma-sm" icon="star" variant="filled" aria-label="Filled" />
+        <QIconBtn class="q-ma-sm" icon="star" variant="tonal" aria-label="Tonal" />
+        <QIconBtn class="q-ma-sm" icon="star" variant="outlined" aria-label="Outlined" />
       </QDocsSection>
 
       <QDocsSection title="Button Variants Using Boolean Props">
@@ -87,23 +95,22 @@
           variant.
         {/snippet}
 
-        <QIconBtn class="q-ma-sm" icon="star" />
-        <QIconBtn class="q-ma-sm" icon="star" unelevated />
-        <QIconBtn class="q-ma-sm" icon="star" filled />
-        <QIconBtn class="q-ma-sm" icon="star" tonal />
-        <QIconBtn class="q-ma-sm" icon="star" outlined />
-        <QIconBtn class="q-ma-sm" icon="star" flat />
+        <QIconBtn class="q-ma-sm" icon="star" aria-label="Standard" />
+        <QIconBtn class="q-ma-sm" icon="star" filled aria-label="Filled" />
+        <QIconBtn class="q-ma-sm" icon="star" tonal aria-label="Tonal" />
+        <QIconBtn class="q-ma-sm" icon="star" outlined aria-label="Outlined" />
       </QDocsSection>
 
       <QDocsSection title="Size">
         {#snippet sectionDescription()}
-          Standard icon buttons support sm, md (default), lg, and xl sizes.
+          Baseline Material 3 uses the 40px <code>md</code> size by default. Quaff also keeps
+          <code>sm</code>, <code>lg</code>, and <code>xl</code> compatibility sizes.
         {/snippet}
 
-        <QIconBtn class="q-ma-sm" icon="star" size="sm" unelevated />
-        <QIconBtn class="q-ma-sm" icon="star" unelevated />
-        <QIconBtn class="q-ma-sm" icon="star" size="lg" unelevated />
-        <QIconBtn class="q-ma-sm" icon="star" size="xl" unelevated />
+        <QIconBtn class="q-ma-sm" icon="star" size="sm" aria-label="Small" />
+        <QIconBtn class="q-ma-sm" icon="star" aria-label="Medium" />
+        <QIconBtn class="q-ma-sm" icon="star" size="lg" aria-label="Large" />
+        <QIconBtn class="q-ma-sm" icon="star" size="xl" aria-label="Extra large" />
       </QDocsSection>
 
       <QDocsSection title="Expressive Icon Buttons">
@@ -113,9 +120,16 @@
           to <code>Quaff.init()</code> to use the Material 3 Expressive styles globally.
         {/snippet}
 
-        <QIconBtn class="q-ma-sm" expressive icon="star" size="xs" filled />
-        <QIconBtn class="q-ma-sm" expressive icon="star" filled />
-        <QIconBtn class="q-ma-sm" expressive icon="star" size="md" filled />
+        <QIconBtn
+          class="q-ma-sm"
+          expressive
+          icon="star"
+          size="xs"
+          filled
+          aria-label="Extra small"
+        />
+        <QIconBtn class="q-ma-sm" expressive icon="star" filled aria-label="Small" />
+        <QIconBtn class="q-ma-sm" expressive icon="star" size="md" filled aria-label="Medium" />
         <QIconBtn
           class="q-ma-sm"
           expressive
@@ -124,6 +138,29 @@
           width="wide"
           shape="squared"
           tonal
+          aria-label="Wide squared"
+        />
+      </QDocsSection>
+
+      <QDocsSection title="Toggle Icon Buttons">
+        {#snippet sectionDescription()}
+          Toggle icon buttons are available in both baseline Material 3 and Material 3 Expressive.
+          Bind <code>selected</code> to update both the value and <code>aria-pressed</code> when activated.
+        {/snippet}
+
+        <QIconBtn
+          class="q-ma-sm"
+          bind:selected={favoriteSelected}
+          icon="favorite"
+          aria-label="Favorite"
+        />
+        <QIconBtn
+          class="q-ma-sm"
+          expressive
+          bind:selected={outlinedSelected}
+          icon="notifications"
+          outlined
+          aria-label="Notifications"
         />
       </QDocsSection>
 
@@ -133,8 +170,8 @@
           the button as an anchor element.
         {/snippet}
 
-        <QIconBtn class="q-ma-sm" icon="open_in_new" to="#" />
-        <QIconBtn class="q-ma-sm" icon="open_in_new" to="#" disabled />
+        <QIconBtn class="q-ma-sm" icon="open_in_new" to="#" aria-label="Open link" />
+        <QIconBtn class="q-ma-sm" icon="open_in_new" to="#" disabled aria-label="Open link" />
       </QDocsSection>
 
       <QDocsSection title="Events">
@@ -143,10 +180,16 @@
           triggered when the button is disabled.
         {/snippet}
 
-        <QIconBtn class="q-ma-sm" icon="touch_app" onclick={() => alert("Omg you did it")} />
         <QIconBtn
           class="q-ma-sm"
           icon="touch_app"
+          aria-label="Activate"
+          onclick={() => alert("Omg you did it")}
+        />
+        <QIconBtn
+          class="q-ma-sm"
+          icon="touch_app"
+          aria-label="Activate"
           onclick={() => alert("Omg you did it")}
           disabled
         />
@@ -157,8 +200,8 @@
           Expressive icon buttons can use the <code>shape</code> prop.
         {/snippet}
 
-        <QIconBtn class="q-ma-sm" expressive icon="add" />
-        <QIconBtn class="q-ma-sm" expressive icon="add" shape="squared" />
+        <QIconBtn class="q-ma-sm" expressive icon="add" aria-label="Add" />
+        <QIconBtn class="q-ma-sm" expressive icon="add" shape="squared" aria-label="Add" />
       </QDocsSection>
 
       <QDocsSection title="Ripple Effect">
@@ -166,9 +209,9 @@
           QIconBtn includes a ripple effect by default. You can disable it or customize its color.
         {/snippet}
 
-        <QIconBtn class="q-ma-sm" icon="touch_app" />
-        <QIconBtn class="q-ma-sm" icon="touch_app" noRipple />
-        <QIconBtn class="q-ma-sm" icon="touch_app" rippleColor="error" />
+        <QIconBtn class="q-ma-sm" icon="touch_app" aria-label="Activate" />
+        <QIconBtn class="q-ma-sm" icon="touch_app" noRipple aria-label="Activate" />
+        <QIconBtn class="q-ma-sm" icon="touch_app" rippleColor="error" aria-label="Activate" />
       </QDocsSection>
     </div>
   {/snippet}
