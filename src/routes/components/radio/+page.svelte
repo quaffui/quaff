@@ -94,8 +94,8 @@
 
       <QDocsSection title="Two-way Binding">
         {#snippet sectionDescription()}
-          QRadio supports Svelte's two-way binding with the <code>bind</code>selected` directive.
-          This makes it easy to track and update the selected value in your component's state.
+          QRadio supports Svelte's two-way binding with the <code>bind:selected</code> directive. This
+          makes it easy to track and update the selected value in your component's state.
         {/snippet}
 
         <div class="q-ma-sm flex column q-gap-md">
