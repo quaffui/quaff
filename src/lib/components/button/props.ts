@@ -10,7 +10,7 @@ export type QBtnVariantOptions = "elevated" | "filled" | "tonal" | "outlined" | 
 
 interface QBtnVariantProps {
   /**
-   * Choose the variant for the button. If a variant is specified, it overwrites all other variants defined with boolean attributes. If no variant is specified using this prop or boolean props, the `elevated` variant will be used.
+   * Choose the variant for the button. If a variant is specified, it overwrites all other variants defined with boolean attributes. If no variant is specified using this prop or boolean props, labeled buttons use `elevated` and icon-only buttons use `flat`.
    */
   variant?: QBtnVariantOptions;
 
@@ -73,6 +73,11 @@ interface QBtnCommonProps extends Clickable, Linkable, QBtnVariantProps {
    * @default false
    */
   round?: boolean;
+
+  /**
+   * Controls the selection state of a toggle button. Supplying this prop enables toggle behavior, except on flat labeled buttons. This property is bindable.
+   */
+  selected?: boolean;
 
   /**
    * The shape used when `expressive` is enabled.

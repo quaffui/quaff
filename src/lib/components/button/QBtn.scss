@@ -32,6 +32,17 @@
       variables.$speed3 background-color,
       variables.$speed3 border-radius;
 
+    // Target area so small buttons remain accessible
+    &::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: max(100%, 3rem);
+      height: max(100%, 3rem);
+      transform: translate(-50%, -50%);
+    }
+
     &:not(:has(> .q-btn__label)) {
       width: var(--q-btn-height, 2.5rem);
       padding-inline: 0;
@@ -94,6 +105,7 @@
 
       &.q-btn--lg {
         --q-btn-height: 6rem;
+        --q-btn-outline-width: 0.125rem;
         padding-inline: 3rem;
         gap: 0.75rem;
         @include mixins.typography(headline-small);
@@ -101,12 +113,13 @@
 
       &.q-btn--xl {
         --q-btn-height: 8.5rem;
+        --q-btn-outline-width: 0.1875rem;
         padding-inline: 4rem;
         gap: 1rem;
         @include mixins.typography(headline-large);
       }
 
-      &.q-btn--squared {
+      &:is(.q-btn--squared, .q-btn--selected) {
         &.q-btn--xs,
         &.q-btn--sm {
           border-radius: 0.75rem;
@@ -120,6 +133,10 @@
         &.q-btn--xl {
           border-radius: 1.75rem;
         }
+      }
+
+      &.q-btn--selected.q-btn--squared {
+        border-radius: calc(var(--q-btn-height) / 2);
       }
 
       &:active {
@@ -159,23 +176,46 @@
       --ripple-color: var(--on-secondary-container);
     }
 
-    &--filled,
-    &--tonal {
-      &:not([aria-disabled], [disabled]):hover {
-        @include mixins.elevate(1, "bottom");
-      }
-    }
-
     &--outlined {
       background-color: transparent;
       --ripple-color: var(--on-surface-variant);
-
-      @include mixins.border();
+      @include mixins.border($width: var(--q-btn-outline-width, 0.0625rem));
     }
 
     &--flat {
       background-color: transparent;
       --ripple-color: var(--primary);
+
+      &:not(:has(> .q-btn__label)) {
+        --ripple-color: var(--on-surface-variant);
+
+        &.q-btn--selected {
+          --ripple-color: var(--primary);
+        }
+      }
+    }
+
+    &--filled[aria-pressed="false"] {
+      background-color: var(--surface-container);
+      --ripple-color: var(--on-surface-variant);
+    }
+
+    &--selected {
+      &:is(.q-btn--elevated, .q-btn--filled) {
+        background-color: var(--primary);
+        --ripple-color: var(--on-primary);
+      }
+
+      &.q-btn--tonal {
+        background-color: var(--secondary);
+        --ripple-color: var(--on-secondary);
+      }
+
+      &.q-btn--outlined {
+        background-color: var(--inverse-surface);
+        border-color: transparent;
+        --ripple-color: var(--inverse-on-surface);
+      }
     }
 
     &:not([aria-disabled], [disabled]) {
@@ -201,7 +241,7 @@
       object-fit: cover;
     }
 
-    &:not(.q-btn--expressive) > .q-btn__img {
+    &:not(.q-btn--expressive, .q-icon-btn) > .q-btn__img {
       width: calc(var(--q-btn-height, 2.5rem) - 0.5rem);
       height: calc(var(--q-btn-height, 2.5rem) - 0.5rem);
     }
@@ -212,12 +252,13 @@
   .q-btn[aria-disabled] {
     @include disabled.base();
 
-    &:not(.q-btn--outlined, .q-btn--flat) {
-      background-color: disabled.rest-color();
+    &:not(.q-btn--outlined, .q-btn--flat),
+    &.q-btn--outlined.q-btn--selected {
+      background-color: disabled.rest-color($opacity: 10%);
     }
 
     &.q-btn--outlined {
-      border-color: disabled.rest-color();
+      border-color: var(--outline-variant);
     }
   }
 }
