@@ -96,7 +96,7 @@
       <QDocsSection title="Custom Height Footer">
         {#snippet sectionDescription()}
           You can specify the height of the footer using the <code>height</code> prop. As of now, the
-          height can only be set in pixels (passing a number). The default height is 64px.
+          height can only be set in pixels (passing a number). The default height is 80px.
         {/snippet}
 
         <QLayout style="border: 1px solid var(--outline-variant)">
