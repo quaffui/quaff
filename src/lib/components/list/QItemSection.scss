@@ -4,12 +4,12 @@
   display: flex;
 
   @include mixins.typography("body-medium");
-  color: var(--on-surface-variant);
+  color: var(--q-item-color, var(--on-surface-variant));
 
   &--headline {
     max-width: 100%;
     @include mixins.typography("body-large");
-    color: var(--on-surface);
+    color: var(--q-item-color, var(--on-surface));
   }
 
   &--trailing {
@@ -20,16 +20,23 @@
     padding-block: 0.25rem;
 
     & video {
-      width: auto;
+      width: 7.125rem;
       height: 4rem;
       object-fit: cover;
-      object-position: center;
+      border-radius: 0.5rem;
     }
   }
 
-  & .q-avatar {
-    height: 2.5rem;
+  & .q-avatar,
+  &--avatar {
     width: 2.5rem;
+    height: 2.5rem;
+  }
+
+  &--avatar {
+    flex: 0 0 2.5rem;
+    align-items: center;
+    justify-content: center;
   }
 
   &--icon {
@@ -39,13 +46,12 @@
 
   &--thumbnail {
     border-radius: 0;
-  }
 
-  &--thumbnail img {
-    width: 3.5rem;
-    height: 3.5rem;
-    object-fit: cover;
-    object-position: center;
+    img {
+      width: 3.5rem;
+      height: 3.5rem;
+      object-fit: cover;
+    }
   }
 
   &--content {
@@ -58,11 +64,53 @@
     overflow-wrap: break-word;
   }
 
+  &--action {
+    appearance: none;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: none;
+    text-align: start;
+    cursor: pointer;
+
+    &:focus-visible {
+      outline: 0.1875rem solid var(--secondary);
+      outline-offset: -0.1875rem;
+    }
+  }
+
+  &--drag-handle {
+    cursor: grab;
+    touch-action: none;
+  }
+
+  .q-item--dragged &--drag-handle {
+    cursor: grabbing;
+  }
+
+  &--content#{&}--action {
+    align-self: stretch;
+    padding-block: 0.5rem;
+    padding-inline-start: 1rem;
+  }
+
+  &--content#{&}--action#{&}--has-leading {
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  &--action-leading {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+  }
+
   &--side {
     flex: 0 1 auto;
     align-items: flex-start;
     justify-content: center;
-    width: auto;
     min-width: 0;
     max-width: 100%;
   }
@@ -75,7 +123,5 @@
     flex: 0 0 auto;
     align-items: center;
     justify-content: center;
-    height: 1.5rem;
-    width: 3.25rem;
   }
 }

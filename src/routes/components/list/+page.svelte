@@ -2,16 +2,39 @@
   import { QItemDocs, QItemSectionDocs, QListDocs } from "$components/list/docs";
   import { docsCtx } from "$docs/QDocs.svelte";
   import { pageTitle } from "$helpers/pageTitle";
-  import { QAvatar, QCheckbox, QIcon, QInput, QItem, QItemSection, QList, QSwitch } from "$lib";
+  import {
+    QAvatar,
+    QCheckbox,
+    QIcon,
+    QIconBtn,
+    QInput,
+    QItem,
+    QItemSection,
+    QList,
+    QRadio,
+    QSwitch,
+  } from "$lib";
   import { QDocs, QDocsSection } from "$docs";
   import snippets from "./docs.snippets";
 
   docsCtx.set({ snippets, componentDocs: [QListDocs, QItemDocs, QItemSectionDocs] });
 
-  let selectedItem = $state(0);
+  let lastAction = $state("None");
+  let singleSelection = $state("Email");
+  let multipleSelection = $state(["Archive"]);
   let checkboxValue = $state(false);
   let switchValue = $state(false);
   let itemInputValue = $state("8");
+
+  function toggleSelection(item: string) {
+    multipleSelection = multipleSelection.includes(item)
+      ? multipleSelection.filter((entry) => entry !== item)
+      : [...multipleSelection, item];
+  }
+
+  function stopPropagation(event: Event) {
+    event.stopPropagation();
+  }
 </script>
 
 <svelte:head>
@@ -22,7 +45,7 @@
   {#snippet display()}
     <QList bordered class="surface">
       <QItem clickable>
-        <QItemSection type="avatar">
+        <QItemSection type="icon">
           <QIcon name="inbox" />
         </QItemSection>
         <QItemSection>
@@ -33,7 +56,7 @@
         </QItemSection>
       </QItem>
       <QItem clickable>
-        <QItemSection type="avatar">
+        <QItemSection type="icon">
           <QIcon name="send" />
         </QItemSection>
         <QItemSection>
@@ -41,7 +64,7 @@
         </QItemSection>
       </QItem>
       <QItem clickable>
-        <QItemSection type="avatar">
+        <QItemSection type="icon">
           <QIcon name="delete" />
         </QItemSection>
         <QItemSection>
@@ -57,7 +80,7 @@
 
   {#snippet usage()}
     <div>
-      <QDocsSection title="Basic List">
+      <QDocsSection title="Baseline List">
         {#snippet sectionDescription()}
           QList is a versatile component that displays a collection of items in a vertical layout.
           It integrates with QItem and QItemSection components to create structured content.
@@ -104,34 +127,162 @@
         </QList>
       </QDocsSection>
 
-      <QDocsSection title="Clickable Items">
+      <QDocsSection title="Single-action List">
         {#snippet sectionDescription()}
-          Use the <code>clickable</code> prop on QItem to make items interactive. Clickable items
-          include a ripple effect when clicked and can have the <code>active</code> prop to indicate the
-          selected item.
+          Use <code>clickable</code> when the entire item performs one action. Single-action items are
+          not persistent selections.
         {/snippet}
 
-        <QList bordered class="q-my-md" activeClass="primary">
-          <QItem clickable active={selectedItem === 0} onclick={() => (selectedItem = 0)}>
+        <QList bordered class="q-my-md">
+          <QItem clickable onclick={() => (lastAction = "Inbox")}>
             <QItemSection type="icon">
               <QIcon name="inbox" />
             </QItemSection>
             <QItemSection>Inbox</QItemSection>
           </QItem>
-          <QItem clickable active={selectedItem === 1} onclick={() => (selectedItem = 1)}>
+          <QItem clickable onclick={() => (lastAction = "Sent")}>
             <QItemSection type="icon">
               <QIcon name="send" />
             </QItemSection>
             <QItemSection>Sent</QItemSection>
           </QItem>
-          <QItem clickable active={selectedItem === 2} onclick={() => (selectedItem = 2)}>
+          <QItem clickable onclick={() => (lastAction = "Trash")}>
             <QItemSection type="icon">
               <QIcon name="delete" />
             </QItemSection>
             <QItemSection>Trash</QItemSection>
           </QItem>
         </QList>
-        <div class="q-mt-sm">Selected item: {["Inbox", "Sent", "Trash"][selectedItem]}</div>
+        <div class="q-mt-sm">Last action: {lastAction}</div>
+      </QDocsSection>
+
+      <QDocsSection title="Multi-action List">
+        {#snippet sectionDescription()}
+          In a multi-action item, the content section is the primary action and trailing controls
+          provide independent secondary actions. Add <code>action</code> to the content section to
+          render it as a native button, and use <code>leading</code> to include its leading visual in
+          the same target.
+        {/snippet}
+
+        <QList bordered class="q-my-md">
+          <QItem>
+            <QItemSection action onclick={() => (lastAction = "Play Northern Lights")}>
+              {#snippet leading()}<QIcon name="music_note" />{/snippet}
+              Northern Lights
+              {#snippet line1()}The Observatory{/snippet}
+            </QItemSection>
+            <QItemSection type="side" class="q-gap-sm">
+              <QIconBtn
+                icon="bookmark"
+                flat
+                aria-label="Bookmark Northern Lights"
+                onclick={() => (lastAction = "Bookmark Northern Lights")}
+              />
+              <QIconBtn
+                icon="more_vert"
+                flat
+                aria-label="More options for Northern Lights"
+                onclick={() => (lastAction = "More options")}
+              />
+            </QItemSection>
+          </QItem>
+        </QList>
+        <div class="q-mt-sm">Last action: {lastAction}</div>
+      </QDocsSection>
+
+      <QDocsSection title="Selection Lists">
+        {#snippet sectionDescription()}
+          Set <code>selection</code> to <code>single</code> or <code>multiple</code> for listbox
+          semantics. Keep selection in application state with QItem's <code>active</code> prop, and include
+          a non-color selection indicator.
+        {/snippet}
+
+        <div class="row q-col-gutter-md q-my-md">
+          <div class="col-12 col-md-6">
+            <div class="title-medium q-mb-sm">Baseline single-select</div>
+            <QList selection="single" aria-label="Choose a notification channel">
+              {#each ["Email", "Messages", "Calls"] as item (item)}
+                <QItem
+                  clickable
+                  active={singleSelection === item}
+                  onclick={() => (singleSelection = item)}
+                >
+                  <QItemSection type="side">
+                    <QRadio
+                      value={item}
+                      selected={singleSelection}
+                      aria-label={item}
+                      onclick={stopPropagation}
+                      onchange={() => (singleSelection = item)}
+                    />
+                  </QItemSection>
+                  <QItemSection>{item}</QItemSection>
+                </QItem>
+              {/each}
+            </QList>
+          </div>
+
+          <div class="col-12 col-md-6">
+            <div class="title-medium q-mb-sm">Baseline multi-select</div>
+            <QList selection="multiple" aria-label="Choose folders">
+              {#each ["Inbox", "Archive", "Trash"] as item (item)}
+                <QItem
+                  clickable
+                  active={multipleSelection.includes(item)}
+                  onclick={() => toggleSelection(item)}
+                >
+                  <QItemSection type="side">
+                    <QCheckbox
+                      value={multipleSelection.includes(item)}
+                      aria-label={item}
+                      onclick={stopPropagation}
+                      onchange={() => toggleSelection(item)}
+                    />
+                  </QItemSection>
+                  <QItemSection>{item}</QItemSection>
+                </QItem>
+              {/each}
+            </QList>
+          </div>
+        </div>
+      </QDocsSection>
+
+      <QDocsSection title="Expressive Lists">
+        {#snippet sectionDescription()}
+          Enable <code>expressive</code> for expressive shapes and spacing, then add
+          <code>segmented</code> for separated item containers. Native <code>draggable</code> items
+          apply the dragged state automatically; set <code>dragged</code> directly when using custom
+          pointer or touch reordering. Pass
+          <code>{`{ expressive: true }`}</code> to <code>Quaff.init()</code> to enable expressive styling
+          globally.
+        {/snippet}
+
+        <div class="row q-col-gutter-md q-my-md">
+          <div class="col-12 col-md-6">
+            <div class="title-medium q-mb-sm">Standard</div>
+            <QList expressive aria-label="Expressive folders">
+              {#each ["Inbox", "Archive", "Trash"] as item (item)}
+                <QItem clickable active={item === "Archive"}>
+                  <QItemSection>{item}</QItemSection>
+                </QItem>
+              {/each}
+            </QList>
+          </div>
+
+          <div class="col-12 col-md-6">
+            <div class="title-medium q-mb-sm">Segmented and draggable</div>
+            <QList expressive segmented aria-label="Draggable folders">
+              {#each ["Inbox", "Archive", "Trash"] as item (item)}
+                <QItem draggable>
+                  <QItemSection type="icon" dragHandle>
+                    <QIcon name="drag_indicator" />
+                  </QItemSection>
+                  <QItemSection>{item}</QItemSection>
+                </QItem>
+              {/each}
+            </QList>
+          </div>
+        </div>
       </QDocsSection>
 
       <QDocsSection title="List with Separators">
@@ -311,16 +462,16 @@
             </QItemSection>
             <QItemSection>Notifications</QItemSection>
             <QItemSection type="side">
-              <QSwitch bind:value={switchValue} />
+              <QSwitch bind:value={switchValue} aria-label="Notifications" />
             </QItemSection>
           </QItem>
-          <QItem tag="label" clickable>
+          <QItem>
             <QItemSection type="icon">
               <QIcon name="cloud_done" />
             </QItemSection>
             <QItemSection>Sync Data</QItemSection>
             <QItemSection type="side">
-              <QCheckbox bind:value={checkboxValue} />
+              <QCheckbox bind:value={checkboxValue} aria-label="Sync data" />
             </QItemSection>
           </QItem>
           <QItem>
@@ -340,7 +491,7 @@
               <QInput bind:value={itemInputValue} type="number" label="Value" outlined dense />
             </QItemSection>
             <QItemSection type="side">
-              <QSwitch bind:value={switchValue} />
+              <QSwitch bind:value={switchValue} aria-label="Enable custom threshold" />
             </QItemSection>
           </QItem>
         </QList>
@@ -488,7 +639,7 @@
             </QItemSection>
           </QItem>
 
-          <QItem tag="label" clickable>
+          <QItem>
             <QItemSection type="icon">
               <QIcon name="notifications" />
             </QItemSection>
@@ -502,7 +653,7 @@
               {/snippet}
             </QItemSection>
             <QItemSection type="toggle">
-              <QSwitch bind:value={switchValue} />
+              <QSwitch bind:value={switchValue} aria-label="Notification settings" />
             </QItemSection>
           </QItem>
         </QList>
@@ -588,7 +739,7 @@
               <div class="body-large">Section with trailing elements</div>
             </QItemSection>
             <QItemSection type="trailingIcon">
-              <QIcon name="more_vert" style="cursor:pointer;" />
+              <QIcon name="more_vert" />
             </QItemSection>
           </QItem>
 
@@ -604,15 +755,15 @@
             </QItemSection>
           </QItem>
 
-          <QItem tag="label" clickable>
-            <QItemSection type="avatar">
+          <QItem>
+            <QItemSection type="icon">
               <QIcon name="notifications" />
             </QItemSection>
             <QItemSection>
               <div class="body-large">With switch</div>
             </QItemSection>
             <QItemSection type="toggle">
-              <QSwitch />
+              <QSwitch aria-label="Enable switch" />
             </QItemSection>
           </QItem>
         </QList>

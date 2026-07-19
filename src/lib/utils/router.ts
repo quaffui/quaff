@@ -1,3 +1,4 @@
+import { resolve } from "$app/paths";
 import { page } from "$app/state";
 import type { Linkable, WithActiveAttrs } from "./types";
 
@@ -17,12 +18,14 @@ export function isRouteActive(route?: string) {
  * This includes link attributes, the `q-link` class, as well as whether the component is active due to routing.
  */
 export function getRouterInfo<T extends RouterProps>(props: T) {
-  const hasLink = [props.to, props.href].some((entry) => entry !== undefined);
-  const isActive = isRouteActive(props.to || props.href);
+  const href = props.to || props.href;
+  const hasLink = href !== undefined;
+  const resolvedHref = href?.startsWith("/") ? resolve(href, {}) : href;
+  const isActive = isRouteActive(resolvedHref);
 
   const linkAttributes = {
     "data-sveltekit-reload": props.replace || undefined,
-    href: props.to || props.href,
+    href: resolvedHref,
   };
 
   return {
