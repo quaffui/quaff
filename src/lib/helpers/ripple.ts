@@ -89,7 +89,6 @@ export function ripple(options: RippleOptions = {}): Attachment<HTMLElement> {
         return;
       }
 
-      event.preventDefault();
       const click = new PointerEvent("pointerdown");
       createRipple(el, click, true);
 
