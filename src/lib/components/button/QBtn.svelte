@@ -26,6 +26,7 @@
     rectangle = false,
     rippleColor,
     round = false,
+    selected = $bindable(),
     shape = "round",
     unelevated = false,
     size,
@@ -49,29 +50,51 @@
   const src = $derived(typeof icon === "string" ? extractImgSrc(icon) : undefined);
   const hasContent = $derived(label !== undefined || children !== undefined);
 
-  const variants: Partial<Record<QBtnVariantOptions, boolean>> = $derived({
-    filled,
-    tonal,
-    outlined,
-    flat,
-  });
+  const finalVariant = $derived.by(resolveVariant);
+  const isToggle = $derived(selected !== undefined && !(hasContent && finalVariant === "flat"));
+  const fillIcon = $derived(isToggle ? selected === true : hasContent);
 
-  const boolVariant = $derived(
-    (Object.keys(variants) as QBtnVariantOptions[]).find((key) => variants[key])
-  );
-  const finalVariant = $derived<QBtnVariantOptions>(variant || boolVariant || "elevated");
+  function resolveVariant(): QBtnVariantOptions {
+    if (variant) {
+      return variant;
+    }
+
+    if (filled) {
+      return "filled";
+    }
+
+    if (tonal) {
+      return "tonal";
+    }
+
+    if (outlined) {
+      return "outlined";
+    }
+
+    if (flat) {
+      return "flat";
+    }
+
+    if (unelevated || hasContent) {
+      return "elevated";
+    }
+
+    return "flat";
+  }
 
   const iconSize = $derived.by(() => {
     const standardSizes = {
       xs: "1rem",
       sm: "1.25rem",
-      md: "1.5rem",
+      md: hasContent ? "1.25rem" : "1.5rem",
       lg: "1.75rem",
       xl: "2rem",
     } as const;
     const expressiveSizes = {
       ...standardSizes,
       xs: "1.25rem",
+      sm: hasContent ? "1.25rem" : "1.5rem",
+      md: "1.5rem",
       lg: "2rem",
       xl: "2.5rem",
     } as const;
@@ -79,27 +102,15 @@
     return (isExpressive ? expressiveSizes : standardSizes)[resolvedSize];
   });
 
-  const computedColor = $derived.by(() => {
-    if (disabled) {
-      return;
-    }
-    if (color) {
-      return color;
-    }
-    if (finalVariant === "filled") {
-      return "on-primary";
-    }
-    if (finalVariant === "tonal") {
-      return "on-secondary-container";
-    }
-    return "primary";
-  });
-
   function handleClick(event: ButtonEvent<MouseEvent>) {
     if (disabled) {
       event.preventDefault();
       event.stopImmediatePropagation();
       return;
+    }
+
+    if (isToggle) {
+      selected = !selected;
     }
 
     onclick?.(event as Parameters<NonNullable<QBtnProps["onclick"]>>[0]);
@@ -127,6 +138,7 @@
       [finalVariant]: true,
       unelevated,
       expressive: isExpressive,
+      selected: isToggle && selected,
       squared: isExpressive && shape === "squared",
       rectangle: !isExpressive && rectangle,
       round: !isExpressive && (round || !hasContent),
@@ -147,11 +159,12 @@
   disabled={computedTag === "button" ? disabled : undefined}
   role={computedTag === "button" ? undefined : "button"}
   aria-disabled={disabled || undefined}
+  aria-pressed={isToggle ? selected : undefined}
   tabindex={disabled ? -1 : tabindex}
   {target}
   onclick={handleClick}
   onkeydown={handleKeydown}
-  {@attach ripple({ disabled: noRipple || disabled, color: rippleColor ?? computedColor })}
+  {@attach ripple({ disabled: noRipple || disabled, color: rippleColor })}
   data-quaff
 >
   {#if loading}
@@ -159,7 +172,7 @@
       indeterminate
       trackColor="transparent"
       {color}
-      size="1.5em"
+      size={iconSize}
       class="q-btn__loader"
     />
   {:else if src}
@@ -168,6 +181,7 @@
     <QIconSnippet
       icon={icon as Exclude<QBtnIcon, `img:${string}`>}
       size={iconSize}
+      filled={fillIcon}
       class="q-btn__icon"
     />
   {/if}

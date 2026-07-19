@@ -3,7 +3,14 @@
   import QBtn from "./QBtn.svelte";
   import type { QIconBtnProps } from "./props";
 
-  let { width = "default", expressive = false, icon, children, ...props }: QIconBtnProps = $props();
+  let {
+    width = "default",
+    expressive = false,
+    selected = $bindable(),
+    icon,
+    children,
+    ...props
+  }: QIconBtnProps = $props();
 
   const isExpressive = $derived(expressive || quaffConfig.expressive);
   const resolvedIcon = $derived(icon ?? children);
@@ -16,4 +23,4 @@
   });
 </script>
 
-<QBtn {...props} expressive={isExpressive} icon={resolvedIcon} class="q-icon-btn" />
+<QBtn {...props} expressive={isExpressive} bind:selected icon={resolvedIcon} class="q-icon-btn" />

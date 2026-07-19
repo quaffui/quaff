@@ -8,6 +8,9 @@
   import snippets from "./docs.snippets";
 
   docsCtx.set({ snippets, componentDocs: QBtnDocs });
+
+  let filledSelected = $state(false);
+  let outlinedSelected = $state(true);
 </script>
 
 <svelte:head>
@@ -52,7 +55,7 @@
         {/snippet}
 
         <QBtn class="q-ma-sm" label="loading" loading />
-        <QBtn class="q-ma-sm" icon="refresh" loading />
+        <QBtn class="q-ma-sm" icon="refresh" loading aria-label="Refresh" />
       </QDocsSection>
 
       <QDocsSection title="Disabled State Buttons">
@@ -107,7 +110,8 @@
 
       <QDocsSection title="Size">
         {#snippet sectionDescription()}
-          Standard buttons support sm, md (default), lg, and xl sizes.
+          Baseline Material 3 uses the 40px <code>md</code> size by default. Quaff also keeps
+          <code>sm</code>, <code>lg</code>, and <code>xl</code> compatibility sizes.
         {/snippet}
 
         <QBtn class="q-ma-sm" size="sm" label="Small" unelevated />
@@ -128,6 +132,30 @@
         <QBtn class="q-ma-sm" expressive label="Small" filled />
         <QBtn class="q-ma-sm" expressive size="md" label="Medium" filled />
         <QBtn class="q-ma-sm" expressive size="md" shape="squared" label="Squared" tonal />
+      </QDocsSection>
+
+      <QDocsSection title="Toggle Buttons">
+        {#snippet sectionDescription()}
+          Bind <code>selected</code> to update a toggle button and its <code>aria-pressed</code> state.
+          Material 3 defines toggle common buttons for Expressive, while Quaff keeps the same API on baseline
+          styles for compatibility. Flat labeled buttons remain regular text buttons.
+        {/snippet}
+
+        <QBtn
+          class="q-ma-sm"
+          bind:selected={filledSelected}
+          label="Filled"
+          icon="favorite"
+          filled
+        />
+        <QBtn
+          class="q-ma-sm"
+          expressive
+          bind:selected={outlinedSelected}
+          label="Outlined"
+          icon="notifications"
+          outlined
+        />
       </QDocsSection>
 
       <QDocsSection title="Button with Router Link">
