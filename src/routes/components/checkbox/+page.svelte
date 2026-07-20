@@ -13,6 +13,8 @@
   let value1 = false;
   let value2 = true;
   let value3 = false;
+  let mixedValue = false;
+  let indeterminate = true;
 </script>
 
 <svelte:head>
@@ -40,13 +42,21 @@
 
       <QDocsSection title="Checkbox States">
         {#snippet sectionDescription()}
-          Checkboxes can be in different states: unchecked, checked, or disabled. The state is
-          controlled by the <code>value</code> prop for checked/unchecked and the
-          <code>disabled</code> prop for disabled state.
+          Checkboxes support checked, unchecked, indeterminate, error, and disabled states. The
+          independent <code>indeterminate</code> prop is useful when a group is only partially
+          selected. The <code>error</code> prop communicates a validation problem.
         {/snippet}
 
         <QCheckbox class="q-ma-sm" label="Unchecked by default" bind:value={value3} />
         <QCheckbox class="q-ma-sm" label="Checked by default" bind:value={value2} />
+        <QCheckbox
+          class="q-ma-sm"
+          label="Indeterminate"
+          bind:value={mixedValue}
+          bind:indeterminate
+        />
+        <QCheckbox class="q-ma-sm" label="Error unchecked" value={false} error />
+        <QCheckbox class="q-ma-sm" label="Error checked" value={true} error />
         <QCheckbox class="q-ma-sm" label="Disabled unchecked" value={false} disabled />
         <QCheckbox class="q-ma-sm" label="Disabled checked" value={true} disabled />
       </QDocsSection>

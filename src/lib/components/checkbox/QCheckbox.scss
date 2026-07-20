@@ -1,0 +1,140 @@
+@use "$css/disabled";
+@use "$css/mixins";
+@use "$css/variables";
+
+.q-checkbox {
+  --q-checkbox-unselected-color: var(--on-surface-variant);
+  --q-checkbox-selected-color: var(--primary);
+  --q-checkbox-icon-color: var(--on-primary);
+  --q-checkbox-interaction-color: var(--on-surface);
+  --q-checkbox-state-color: var(--q-checkbox-interaction-color);
+  --q-checkbox-state-opacity: 0%;
+  --q-checkbox-pressed-color: var(--q-checkbox-selected-color);
+
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+  color: var(--on-surface);
+  cursor: pointer;
+  white-space: nowrap;
+
+  > input,
+  &__control {
+    width: 3rem;
+    height: 3rem;
+  }
+
+  > input {
+    position: absolute;
+    inset-block-start: 50%;
+    inset-inline-start: 0;
+    z-index: 1;
+    margin: 0;
+    opacity: 0;
+    cursor: inherit;
+    transform: translateY(-50%);
+
+    &:is(:checked, [aria-checked="mixed"]) + .q-checkbox__control {
+      --q-checkbox-state-color: var(--q-checkbox-selected-color);
+      --q-checkbox-pressed-color: var(--q-checkbox-interaction-color);
+
+      &::after {
+        content: "check";
+        background-color: var(--q-checkbox-selected-color);
+        border: 0;
+      }
+    }
+
+    &[aria-checked="mixed"] + .q-checkbox__control::after {
+      content: "remove";
+    }
+
+    &:focus-visible + .q-checkbox__control {
+      &::before {
+        outline: 0.1875rem solid var(--secondary);
+        outline-offset: 0.125rem;
+      }
+    }
+  }
+
+  > input:not(:checked, [aria-checked="mixed"]):focus-visible + .q-checkbox__control,
+  &:not([aria-disabled]):is(:hover, :active)
+    > input:not(:checked, [aria-checked="mixed"])
+    + .q-checkbox__control {
+    --q-checkbox-unselected-color: var(--q-checkbox-interaction-color);
+  }
+
+  &__control {
+    position: relative;
+    display: grid;
+    flex: none;
+    place-items: center;
+
+    &::before {
+      content: "";
+      position: absolute;
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 50%;
+      background-color: mixins.with-alpha(
+        var(--q-checkbox-state-color),
+        var(--q-checkbox-state-opacity)
+      );
+      transition: background-color variables.$speed1;
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      display: grid;
+      box-sizing: border-box;
+      width: 1.125rem;
+      height: 1.125rem;
+      place-items: center;
+      border: 0.125rem solid var(--q-checkbox-unselected-color);
+      border-radius: 0.125rem;
+      color: var(--q-checkbox-icon-color);
+      font-family: var(--font-icon);
+      font-size: 1.125rem;
+      font-variation-settings: "wght" 700;
+      line-height: 1;
+    }
+  }
+
+  &__label {
+    @include mixins.typography(body-large);
+  }
+
+  &:not([aria-disabled]):hover {
+    --q-checkbox-state-opacity: 8%;
+  }
+
+  &:not([aria-disabled]):active {
+    --q-checkbox-state-opacity: 10%;
+
+    > input + .q-checkbox__control {
+      --q-checkbox-state-color: var(--q-checkbox-pressed-color);
+    }
+  }
+
+  &--error {
+    --q-checkbox-unselected-color: var(--error);
+    --q-checkbox-selected-color: var(--error);
+    --q-checkbox-icon-color: var(--on-error);
+    --q-checkbox-interaction-color: var(--error);
+  }
+
+  &[aria-disabled] {
+    --q-checkbox-selected-color: #{disabled.font-color()};
+    --q-checkbox-unselected-color: var(--q-checkbox-selected-color);
+    --q-checkbox-icon-color: var(--surface);
+
+    color: var(--q-checkbox-selected-color);
+    cursor: not-allowed;
+
+    .q-checkbox__control::after {
+      transition: none;
+    }
+  }
+}
