@@ -45,7 +45,7 @@
           <code>value</code>.
         {/snippet}
         <QInput bind:value={defaultValue} label="Standard Input" class="q-mt-md" />
-        <p class="text-sm q-mt-sm">Current value: {defaultValue}</p>
+        <p class="q-mt-sm">Current value: {defaultValue}</p>
       </QDocsSection>
 
       <QDocsSection title="Input Styles">
@@ -148,7 +148,7 @@
             lastInputValue = event.currentTarget.value;
           }}
         />
-        <p class="text-sm q-mt-sm">Last input event value: {lastInputValue || "None"}</p>
+        <p class="q-mt-sm">Last input event value: {lastInputValue || "None"}</p>
       </QDocsSection>
 
       <QDocsSection title="Input Masks">
@@ -169,7 +169,7 @@
           class="q-mt-md"
           outlined
         />
-        <p class="text-sm q-mt-sm">Unmasked phone value: {phoneValue || "None"}</p>
+        <p class="q-mt-sm">Unmasked phone value: {phoneValue || "None"}</p>
         <QInput
           bind:value={batchCodeValue}
           mask="AA-####"
@@ -179,7 +179,7 @@
           class="q-mt-md"
           outlined
         />
-        <p class="text-sm q-mt-sm">Masked batch code: {batchCodeValue || "None"}</p>
+        <p class="q-mt-sm">Masked batch code: {batchCodeValue || "None"}</p>
       </QDocsSection>
 
       <QDocsSection title="Using Slots for Icons and Content">
@@ -198,7 +198,7 @@
         </QInput>
         <QInput bind:value={appendValue} label="Appended Icon" class="q-mt-md" filled>
           {#snippet append()}
-            <QIcon name="visibility" class="cursor-pointer" />
+            <QIcon name="visibility" />
           {/snippet}
         </QInput>
         <QInput bind:value={beforeValue} label="Before Slot" class="q-mt-md" outlined>
@@ -216,7 +216,7 @@
             <QIcon name="attach_money" />
           {/snippet}
           {#snippet append()}
-            <span class="text-sm">USD</span>
+            <span>USD</span>
           {/snippet}
         </QInput>
       </QDocsSection>

@@ -47,7 +47,7 @@
           Use the <code>elevated</code> prop to add a shadow or the <code>bordered</code> prop to add
           a bottom border to the header.
         {/snippet}
-        <div class="q-gutter-y-md">
+        <div>
           <div class="example-boundary" style="height: 200px;">
             <QLayout view="hHh Lpr fFf" style="min-height: 200px;">
               {#snippet header()}

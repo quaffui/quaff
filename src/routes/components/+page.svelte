@@ -292,7 +292,7 @@
           </div>
 
           <QCardSection class="q-px-lg flex column flex-center">
-            <h4 class="text-md">{component.name}</h4>
+            <h4>{component.name}</h4>
             <p class="text-center" style="text-wrap: balance">{component.description}</p>
           </QCardSection>
         </QCard>
