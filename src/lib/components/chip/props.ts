@@ -29,12 +29,18 @@ export interface QChipProps
   trailingIcon?: MaterialSymbol | `img:${string}`;
 
   /**
-   * Only for filter chips. Controls wether the chip is selected or not..
+   * Editable text for input chips. This property is bindable and independent of the displayed label.
+   * If no label is provided, the input chip will display the current value instead.
+   */
+  value?: string;
+
+  /**
+   * Only for filter chips. Controls whether the chip is selected or not.
    */
   selected?: boolean;
 
   /**
-   * Elevates the button, giving it box-shadow and a background color.
+   * Elevates an assist, filter, or suggestion chip, giving it box-shadow and a background color.
    */
   elevated?: boolean;
 

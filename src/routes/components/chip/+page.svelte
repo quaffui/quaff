@@ -9,7 +9,15 @@
 
   docsCtx.set({ snippets, componentDocs: QChipDocs });
 
-  let selectedValue = false;
+  let selectedValue = $state(false);
+  let kindInputValue = $state("Input");
+  let inputValue = $state("example@email.com");
+  let contactValue = $state("Ada Lovelace <ada@example.com>");
+  let importantValue = $state("Important");
+  let avatarValue = $state("Cocktail");
+  let eventInputValue = $state("Input chip");
+
+  const contactLabel = $derived(contactValue.split("<", 1)[0].trim());
 </script>
 
 <svelte:head>
@@ -18,7 +26,7 @@
 
 <QDocs>
   {#snippet display()}
-    <QChip elevated icon="img:/cocktail.jpg" label="Cocktail" />
+    <QChip elevated icon="calendar_today" label="Add to calendar" />
   {/snippet}
 
   {#snippet usage()}
@@ -33,32 +41,21 @@
         <div class="flex flex-wrap q-gap-lg items-center q-ma-sm">
           <QChip icon="map" label="Assist (default)" />
           <QChip kind="filter" icon="filter_list" label="Filter" bind:selected={selectedValue} />
-          <QChip kind="input" icon="person" trailingIcon="close" label="Input" />
+          <QChip kind="input" icon="person" trailingIcon="close" bind:value={kindInputValue} />
           <QChip kind="suggestion" icon="lightbulb" label="Suggestion" />
         </div>
       </QDocsSection>
 
       <QDocsSection title="Chip Appearances">
         {#snippet sectionDescription()}
-          QChips can have <code>outlined</code> (default) or <code>elevated</code> appearances. Elevated
-          chips have a shadow and background color, while outlined chips have a border.
+          Assist, filter, and suggestion chips can have <code>outlined</code> (default) or
+          <code>elevated</code> appearances. Elevated chips have a shadow and container color, while outlined
+          chips have a one-pixel border.
         {/snippet}
 
         <div class="flex flex-wrap q-gap-lg items-center q-ma-sm">
           <QChip label="Outlined (default)" icon="article" />
           <QChip elevated label="Elevated" icon="layers" />
-        </div>
-      </QDocsSection>
-
-      <QDocsSection title="Chip Sizes">
-        {#snippet sectionDescription()}
-          QChips come in three sizes: small (default), medium, and large.
-        {/snippet}
-
-        <div class="flex flex-wrap q-gap-lg items-center q-ma-sm">
-          <QChip label="Small (default)" size="sm" icon="mobile" />
-          <QChip label="Medium" size="md" icon="tablet" />
-          <QChip label="Large" size="lg" icon="computer" />
         </div>
       </QDocsSection>
 
@@ -68,27 +65,33 @@
           their leading icon. You can bind to the <code>selected</code> prop to track selection state.
         {/snippet}
 
-        <div class="flex flex-wrap q-gap-lg mb-4">
-          <div class="flex column q-gap-sm">
-            <QChip kind="filter" icon="location_city" label="Paris" bind:selected={selectedValue} />
-            <div>Selected: {selectedValue}</div>
-          </div>
+        <div class="flex flex-wrap q-gap-lg q-ma-sm">
+          <QChip kind="filter" icon="location_city" label="Paris" bind:selected={selectedValue} />
           <QChip kind="filter" icon="restaurant" label="Restaurants" />
           <QChip kind="filter" elevated icon="local_cafe" label="Cafés" />
         </div>
+        <div>Selected: {selectedValue}</div>
       </QDocsSection>
 
       <QDocsSection title="Input Chips">
         {#snippet sectionDescription()}
-          Input chips typically represent discrete pieces of information and can include a trailing
-          icon that functions as a remove button.
+          Input chips represent user-entered information. When activated, they become editable text.
+          Bind their <code>value</code> to store that text. With keyboard focus, Backspace selects the
+          whole chip and a second press activates its trailing action.
         {/snippet}
 
         <div class="flex flex-wrap q-gap-lg items-center q-ma-sm">
-          <QChip kind="input" icon="mail" label="example@email.com" trailingIcon="close" />
-          <QChip kind="input" icon="person" label="John Doe" trailingIcon="close" />
-          <QChip kind="input" elevated icon="tag" label="Important" trailingIcon="close" />
+          <QChip kind="input" icon="mail" bind:value={inputValue} trailingIcon="close" />
+          <QChip
+            kind="input"
+            icon="person"
+            label={contactLabel}
+            bind:value={contactValue}
+            trailingIcon="close"
+          />
+          <QChip kind="input" icon="tag" bind:value={importantValue} trailingIcon="close" />
         </div>
+        <div>Value: {inputValue}</div>
       </QDocsSection>
 
       <QDocsSection title="Suggestion Chips">
@@ -117,20 +120,17 @@
         </div>
       </QDocsSection>
 
-      <QDocsSection title="Chips with Images">
+      <QDocsSection title="Input Chips with Avatars">
         {#snippet sectionDescription()}
-          Chips can display images as avatars by using the <code>icon</code> prop with an "img:" prefix.
-          This is useful for representing people or categories with visual elements.
+          Input chips can display a 24-pixel avatar by using the <code>icon</code> prop with an "img:"
+          prefix.
         {/snippet}
 
         <div class="flex flex-wrap q-gap-lg items-center q-ma-sm">
-          <QChip icon="img:/cocktail.jpg" label="Cocktail" />
-          <QChip elevated icon="img:/cocktail.jpg" label="Elevated with image" />
-          <QChip kind="filter" icon="img:/cocktail.jpg" label="Filter with image" />
           <QChip
             kind="input"
             icon="img:/cocktail.jpg"
-            label="Input with image"
+            bind:value={avatarValue}
             trailingIcon="close"
           />
         </div>
@@ -164,13 +164,11 @@
 
       <QDocsSection title="Accessibility">
         {#snippet sectionDescription()}
-          QChips are keyboard-accessible and include appropriate ARIA attributes. Filter and assist
-          chips function as buttons and can be activated with Space or Enter keys.
+          QChips are keyboard-accessible, function as buttons, and can be activated with Space or
+          Enter keys.
         {/snippet}
 
-        <p class="text-sm mb-2">
-          Focus the chips below using Tab and activate with Space or Enter:
-        </p>
+        <p class="text-sm">Focus the chips below using Tab and activate with Space or Enter:</p>
         <div class="flex flex-wrap q-gap-lg items-center">
           <QChip label="Keyboard accessible" icon="keyboard" />
           <QChip kind="filter" label="Selectable with keyboard" icon="filter_list" />
@@ -190,7 +188,7 @@
           <QChip
             kind="input"
             icon="person"
-            label="Input chip"
+            bind:value={eventInputValue}
             trailingIcon="close"
             onTrailingIconClick={() => alert("Trailing icon clicked!")}
           />
