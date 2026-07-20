@@ -3,18 +3,27 @@
 
 @layer q-chip {
   .q-chip {
-    $state-layer-opacity: 0;
+    --chip-focus-outline-color: var(--on-surface);
+    --chip-avatar-size: 1.125rem;
+    --chip-outline-color: var(--outline-variant);
+    --chip-outline-width: 1px;
+    --state-layer-color: var(--on-surface);
+    --state-layer-opacity: 0%;
+    --ripple-color: var(--state-layer-color);
+
     padding-inline: 1rem;
     border-radius: 0.5rem;
 
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: start;
     gap: 0.5rem;
-    width: fit-content;
+    height: 2rem;
+    max-width: 100%;
 
     background-color: transparent;
     color: var(--on-surface);
+    outline: none;
 
     cursor: pointer;
     user-select: none;
@@ -23,133 +32,190 @@
 
     @include mixins.typography(label-large);
 
-    &::before {
+    &::before,
+    &::after {
       content: "";
       position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-
+      inset: 0;
       border-radius: inherit;
-      background-color: mixins.with-alpha(
-        var(--state-layer-color, transparent),
-        var(--state-layer-opacity, 0)
-      );
+      pointer-events: none;
+    }
+
+    &::before {
+      background-color: mixins.with-alpha(var(--state-layer-color), var(--state-layer-opacity));
+    }
+
+    &::after {
+      border: var(--chip-outline-width) solid var(--chip-outline-color);
     }
 
     &:hover:not([aria-disabled]) {
       --state-layer-opacity: 8%;
     }
 
-    &:focus:not([aria-disabled]) {
+    &:is(:focus, :active):not([aria-disabled]) {
       --state-layer-opacity: 10%;
     }
 
-    &.q-chip--sm {
-      height: 2rem;
+    &:focus:not([aria-disabled]) {
+      --chip-outline-color: var(--chip-focus-outline-color);
+    }
 
-      & > :is(.q-icon, .q-avatar) {
-        --size: 1.125rem;
-      }
+    &:focus-visible:not([aria-disabled]) {
+      outline: 3px solid var(--secondary);
+      outline-offset: 2px;
     }
 
     &.q-chip--md {
-      height: 2.5rem;
+      --chip-avatar-size: 1.40625rem;
 
-      & > :is(.q-icon, .q-avatar) {
-        --size: 1.40625rem;
-      }
+      height: 2.5rem;
     }
 
     &.q-chip--lg {
+      --chip-avatar-size: 1.6875rem;
+
       height: 3rem;
-
-      & > :is(.q-icon, .q-avatar) {
-        --size: 1.6875rem;
-      }
     }
 
-    &:focus:not([aria-disabled]) {
-      outline: 1px solid var(--secondary);
-
-      & > .q-icon {
-        color: var(--on-secondary-container);
-      }
-    }
-
-    &.q-chip--outlined {
-      outline: 1px solid var(--outline-variant);
-
-      &:focus:not([aria-disabled]) {
-        outline-color: var(--secondary);
-      }
+    & > .q-avatar.q-chip__avatar {
+      --size: var(--chip-avatar-size);
     }
 
     &.q-chip--elevated {
-      @include mixins.elevate(0.5);
+      --chip-outline-width: 0px;
+
+      box-shadow: var(--elevate1);
 
       &:hover:not([aria-disabled]) {
-        @include mixins.elevate(1);
+        box-shadow: var(--elevate2);
+      }
+
+      &:is(:focus, :active):not([aria-disabled]) {
+        box-shadow: var(--elevate1);
       }
 
       background-color: var(--surface-container-low);
     }
 
-    &.q-chip--assist {
-      --state-layer-color: var(--on-surface);
+    &:is(.q-chip--filter, .q-chip--input, .q-chip--suggestion) {
+      --chip-focus-outline-color: var(--on-surface-variant);
+      --state-layer-color: var(--on-surface-variant);
+
+      color: var(--on-surface-variant);
     }
 
     &.q-chip--filter {
-      --state-layer-color: var(--on-surface-variant);
-
-      &:focus:not([aria-disabled]) {
-        outline-color: var(--on-surface-variant);
+      &:active:not([aria-disabled]) {
+        --state-layer-color: var(--on-secondary-container);
       }
 
       &.q-chip--selected {
+        --chip-outline-width: 0px;
         --state-layer-color: var(--on-secondary-container);
 
-        outline-color: var(--secondary-container);
-        outline-width: 0;
-
         background-color: var(--secondary-container);
+        color: var(--on-secondary-container);
 
-        &.q-chip--elevated {
+        & > .q-icon {
           color: var(--on-secondary-container);
         }
 
-        &:hover:not([aria-disabled]):not([aria-disabled]) {
-          @include mixins.elevate(0.5);
-          color: var(--on-secondary-container);
+        &:active:not([aria-disabled]) {
+          --state-layer-color: var(--on-surface-variant);
+        }
+
+        &:not(.q-chip--elevated):hover:not([aria-disabled]) {
+          box-shadow: var(--elevate1);
+        }
+
+        &:not(.q-chip--elevated):is(:focus, :active):not([aria-disabled]) {
+          box-shadow: var(--elevate0);
         }
       }
     }
 
     &.q-chip--input {
-      --state-layer-color: var(--on-surface-variant);
-
-      padding-inline: 0.75rem;
-      color: var(--on-surface-variant);
+      &:has(> .q-chip__avatar) {
+        border-radius: 1rem;
+      }
 
       & > .q-icon {
         color: var(--on-surface-variant);
       }
+
+      &:is(:hover, :focus, :active):not([aria-disabled]) > .q-chip__leading-icon {
+        color: var(--primary);
+      }
+
+      &.q-chip--selected {
+        --chip-outline-width: 0px;
+        --state-layer-color: var(--on-secondary-container);
+
+        background-color: var(--secondary-container);
+        color: var(--on-secondary-container);
+
+        & > .q-chip__leading-icon {
+          color: var(--primary);
+        }
+
+        & > .q-chip__trailing-icon {
+          color: var(--on-secondary-container);
+        }
+      }
     }
 
-    &.q-chip--suggestion {
-      --state-layer-color: var(--on-surface-variant);
-
-      color: var(--on-surface-variant);
-
-      &:focus:not([aria-disabled]) {
-        outline-color: var(--secondary);
-      }
+    &:has(> .q-chip__trailing-icon) {
+      min-width: 5.5rem;
     }
   }
 
-  .q-chip > .q-icon {
+  .q-chip__touch-target {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    min-width: 3rem;
+    height: 3rem;
+    transform: translate(-50%, -50%);
+  }
+
+  .q-chip__label {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .q-chip__edit {
+    min-width: 1ch;
+    max-width: 100%;
+    padding: 0;
+    border: 0;
+
+    background: transparent;
+    color: inherit;
+    outline: 0;
+
+    font: inherit;
+  }
+
+  .q-chip > .q-chip__leading-icon {
     color: var(--primary);
+  }
+
+  .q-chip > .q-chip__trailing-icon {
+    color: var(--on-surface-variant);
+
+    &::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 3rem;
+      height: 3rem;
+      transform: translate(-50%, -50%);
+    }
   }
 
   .q-chip > :is(.q-icon.q-chip__leading-icon, .q-avatar.q-chip__avatar) {
@@ -162,6 +228,7 @@
 
   .q-chip.q-chip--input > .q-avatar.q-chip__avatar {
     --size: 1.5rem;
+    margin-left: -0.75rem;
   }
 }
 
@@ -170,12 +237,19 @@
   .q-chip[aria-disabled] {
     @include disabled.base();
 
-    &.q-chip--outlined {
-      outline-color: disabled.rest-color();
+    --chip-outline-color: #{disabled.rest-color()};
+    --state-layer-opacity: 0%;
+
+    &:is(.q-chip--elevated, .q-chip--selected) {
+      background-color: disabled.rest-color();
     }
 
     & .q-icon {
       color: disabled.font-color();
+    }
+
+    & .q-avatar {
+      opacity: 0.38;
     }
   }
 }
