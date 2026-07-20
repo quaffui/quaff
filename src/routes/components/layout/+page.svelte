@@ -116,8 +116,8 @@
         </QRailbar>
       {/snippet}
       {#snippet footer()}
-        <QFooter class="no-round flex flex-center" height={48}>
-          <h3 class="small center">Footer</h3>
+        <QFooter class="flex flex-center" height={48}>
+          <h3 class="small">Footer</h3>
         </QFooter>
       {/snippet}
     </QLayout>
@@ -233,7 +233,7 @@
       <QRadio bind:selected={viewArr[0][0]} value="h" label="h" />
       <QRadio style="margin: 0" bind:selected={viewArr[0][0]} value="l" label="l" />
     </div>
-    <div class="max flex column items-center" style="flex-grow: 1">
+    <div class="flex column items-center" style="flex-grow: 1">
       <QRadio style="width: fit-content" bind:selected={viewArr[0][1]} value="h" label="h" />
       <QRadio
         style="width: fit-content; margin: 0"
@@ -366,7 +366,7 @@
       <QRadio bind:selected={viewArr[2][0]} value="f" label="f" />
       <QRadio style="margin: 0" bind:selected={viewArr[2][0]} value="l" label="l" />
     </div>
-    <div class="max flex column items-center" style="flex-grow: 1">
+    <div class="flex column items-center" style="flex-grow: 1">
       <QRadio style="width: fit-content" bind:selected={viewArr[2][1]} value="f" label="f" />
       <QRadio
         style="width: fit-content; margin: 0"

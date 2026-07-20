@@ -244,7 +244,7 @@
           This overrides the default hover behavior.
         {/snippet}
 
-        <div class="flex flex-col q-gap-md q-ma-sm">
+        <div class="flex q-gap-md q-ma-sm">
           <div class="flex items-center q-gap-md">
             <QTooltip bind:value={showControlledTooltip}>
               {#snippet trigger(props)}

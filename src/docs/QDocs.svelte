@@ -63,12 +63,7 @@
       fill="primary"
       style="min-height: 400px; align-content: center;"
     >
-      <h1
-        class={[
-          "no-margin justify-center",
-          Quaff.breakpoints.isMoreThan("sm", true) ? "large" : "small",
-        ]}
-      >
+      <h1 class={["justify-center", Quaff.breakpoints.isMoreThan("sm", true) ? "large" : "small"]}>
         {docName || principalDocument?.name}
       </h1>
       <QCardSection class="q-docs__description flex flex-center">

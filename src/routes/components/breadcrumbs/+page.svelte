@@ -198,7 +198,7 @@
                 <span>🏠</span>
               {/snippet}
 
-              <span class="font-bold">Home</span>
+              <span>Home</span>
             </QBreadcrumbsEl>
             <QBreadcrumbsEl to="/components">
               <span class="text-green">Components</span>
