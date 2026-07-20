@@ -287,7 +287,7 @@
   }
 </script>
 
-<QLayout view="hhr lpr fff" class="main-layout" {drawerLeft}>
+<QLayout view="hhr lpr fff" {drawerLeft}>
   {#snippet header()}
     <QHeader class="elevate-2">
       {#if Quaff.breakpoints.isLessThan("md")}
@@ -368,7 +368,7 @@
 {/snippet}
 
 {#snippet railbar()}
-  <QRailbar class="surface no-round" bordered width={120}>
+  <QRailbar class="surface" bordered width={120}>
     {@render mainRoutesList()}
   </QRailbar>
 {/snippet}

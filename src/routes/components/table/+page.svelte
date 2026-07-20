@@ -282,7 +282,7 @@
 
             <QTable {columns} rows={rows.slice(0, 5)} dense bordered>
               {#snippet bodyCell({ row, column, style })}
-                <td {style} class="cursor-pointer" onclick={() => alert(`Selected: ${row.title}`)}>
+                <td {style} onclick={() => alert(`Selected: ${row.title}`)}>
                   {#if column.field === "id"}
                     #{row.id}
                   {:else if column.field === "title"}

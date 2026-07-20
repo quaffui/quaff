@@ -171,7 +171,7 @@
 
         <div class="flex q-gap-md">
           <div class="body-large">Regular size:</div>
-          <QList bordered separator class="flex-1">
+          <QList bordered separator>
             <QExpansionItem label="Regular item" icon="folder">
               <p>This is a regular-sized expansion item.</p>
             </QExpansionItem>
@@ -181,7 +181,7 @@
           </QList>
 
           <div class="body-large">Dense:</div>
-          <QList bordered separator class="flex-1">
+          <QList bordered separator>
             <QExpansionItem label="Dense item" icon="folder" dense>
               <p>This is a dense expansion item - more compact.</p>
             </QExpansionItem>
@@ -253,7 +253,7 @@
           <QExpansionItem>
             {#snippet summary({ expanded, toggle })}
               <QItemSection type="thumbnail">
-                <img src="/cocktail.jpg" alt="User avatar" class="rounded-full" />
+                <img src="/cocktail.jpg" alt="User avatar" />
               </QItemSection>
               <QItemSection>
                 {#snippet headline()}

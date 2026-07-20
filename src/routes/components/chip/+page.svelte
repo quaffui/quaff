@@ -38,7 +38,7 @@
           interfaces.
         {/snippet}
 
-        <div class="flex flex-wrap q-gap-lg items-center q-ma-sm">
+        <div class="flex q-gap-lg items-center q-ma-sm">
           <QChip icon="map" label="Assist (default)" />
           <QChip kind="filter" icon="filter_list" label="Filter" bind:selected={selectedValue} />
           <QChip kind="input" icon="person" trailingIcon="close" bind:value={kindInputValue} />
@@ -53,7 +53,7 @@
           chips have a one-pixel border.
         {/snippet}
 
-        <div class="flex flex-wrap q-gap-lg items-center q-ma-sm">
+        <div class="flex q-gap-lg items-center q-ma-sm">
           <QChip label="Outlined (default)" icon="article" />
           <QChip elevated label="Elevated" icon="layers" />
         </div>
@@ -65,7 +65,7 @@
           their leading icon. You can bind to the <code>selected</code> prop to track selection state.
         {/snippet}
 
-        <div class="flex flex-wrap q-gap-lg q-ma-sm">
+        <div class="flex q-gap-lg q-ma-sm">
           <QChip kind="filter" icon="location_city" label="Paris" bind:selected={selectedValue} />
           <QChip kind="filter" icon="restaurant" label="Restaurants" />
           <QChip kind="filter" elevated icon="local_cafe" label="Cafés" />
@@ -80,7 +80,7 @@
           whole chip and a second press activates its trailing action.
         {/snippet}
 
-        <div class="flex flex-wrap q-gap-lg items-center q-ma-sm">
+        <div class="flex q-gap-lg items-center q-ma-sm">
           <QChip kind="input" icon="mail" bind:value={inputValue} trailingIcon="close" />
           <QChip
             kind="input"
@@ -100,7 +100,7 @@
           icons.
         {/snippet}
 
-        <div class="flex flex-wrap q-gap-lg items-center q-ma-sm">
+        <div class="flex q-gap-lg items-center q-ma-sm">
           <QChip kind="suggestion" icon="search" label="Search nearby" />
           <QChip kind="suggestion" icon="history" label="Recent searches" />
           <QChip kind="suggestion" elevated icon="trending_up" label="Trending" />
@@ -113,7 +113,7 @@
           unavailability.
         {/snippet}
 
-        <div class="flex flex-wrap q-gap-lg items-center q-ma-sm">
+        <div class="flex q-gap-lg items-center q-ma-sm">
           <QChip disabled label="Disabled chip" icon="block" />
           <QChip disabled elevated label="Disabled elevated" icon="warning" />
           <QChip disabled kind="filter" label="Disabled filter" icon="filter_alt" />
@@ -126,7 +126,7 @@
           prefix.
         {/snippet}
 
-        <div class="flex flex-wrap q-gap-lg items-center q-ma-sm">
+        <div class="flex q-gap-lg items-center q-ma-sm">
           <QChip
             kind="input"
             icon="img:/cocktail.jpg"
@@ -142,7 +142,7 @@
           styles.
         {/snippet}
 
-        <div class="flex flex-wrap q-gap-lg items-center q-ma-sm">
+        <div class="flex q-gap-lg items-center q-ma-sm">
           <QChip class="bg-green" label="Green Chip" />
           <QChip class="error" label="Error Chip" />
           <QChip class="primary" label="Primary Chip" />
@@ -156,7 +156,7 @@
           the <code>noRipple</code> prop.
         {/snippet}
 
-        <div class="flex flex-wrap q-gap-lg items-center q-ma-sm">
+        <div class="flex q-gap-lg items-center q-ma-sm">
           <QChip label="Default ripple" icon="touch_app" />
           <QChip noRipple label="No ripple" icon="do_not_touch" />
         </div>
@@ -168,8 +168,8 @@
           Enter keys.
         {/snippet}
 
-        <p class="text-sm">Focus the chips below using Tab and activate with Space or Enter:</p>
-        <div class="flex flex-wrap q-gap-lg items-center">
+        <p>Focus the chips below using Tab and activate with Space or Enter:</p>
+        <div class="flex q-gap-lg items-center">
           <QChip label="Keyboard accessible" icon="keyboard" />
           <QChip kind="filter" label="Selectable with keyboard" icon="filter_list" />
         </div>
@@ -183,7 +183,7 @@
           prop.
         {/snippet}
 
-        <div class="flex flex-wrap q-gap-lg items-center q-ma-sm">
+        <div class="flex q-gap-lg items-center q-ma-sm">
           <QChip label="Click me" icon="notifications" onclick={() => alert("Chip clicked!")} />
           <QChip
             kind="input"

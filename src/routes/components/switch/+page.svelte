@@ -50,7 +50,7 @@
           by clearly communicating what the switch controls.
         {/snippet}
 
-        <div class="q-ma-sm flex flex-col q-gap-md">
+        <div class="q-ma-sm flex q-gap-md">
           <QSwitch bind:value={wifiEnabled} label="Enable Wi-Fi" />
           <QSwitch bind:value={bluetoothEnabled} label="Enable Bluetooth" />
           <QSwitch bind:value={notificationsEnabled} label="Enable Notifications" />
@@ -63,7 +63,7 @@
           label on either the left or right side of the switch.
         {/snippet}
 
-        <div class="q-ma-sm flex flex-col q-gap-md">
+        <div class="q-ma-sm flex q-gap-md">
           <QSwitch bind:value={toggle} label="Right label (default)" labelPosition="right" />
           <QSwitch bind:value={toggle} label="Left label" labelPosition="left" />
         </div>
@@ -77,7 +77,7 @@
           and <code>uncheckedIcon</code>.
         {/snippet}
 
-        <div class="q-ma-sm flex flex-col q-gap-md">
+        <div class="q-ma-sm flex q-gap-md">
           <QSwitch bind:value={toggle} icons label="With default icons" />
           <QSwitch bind:value={toggle} showOnlyCheckedIcon label="Only checked icon" />
           <QSwitch bind:value={toggle} checkedIcon="favorite" label="Custom checked icon" />
@@ -97,7 +97,7 @@
           maintain their appearance but don't respond to clicks or keyboard input.
         {/snippet}
 
-        <div class="q-ma-sm flex flex-col q-gap-md">
+        <div class="q-ma-sm flex q-gap-md">
           <QSwitch value={false} disabled label="Disabled - Off" />
           <QSwitch value={true} disabled label="Disabled - On" />
           <QSwitch value={true} icons disabled label="Disabled with icons" />

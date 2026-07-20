@@ -38,7 +38,7 @@
       <div class="q-docs-section__actions">
         <QIconBtn icon="code" variant="outlined" onclick={() => (dialog = true)} />
       </div>
-      <QDialog class="snippet-dialog" bind:value={dialog} modal style="max-width: 75vw">
+      <QDialog bind:value={dialog} modal style="max-width: 75vw">
         <QCodeBlock {code} language="svelte" {title} copiable />
       </QDialog>
     {/if}

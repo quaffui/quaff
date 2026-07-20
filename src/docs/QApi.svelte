@@ -431,11 +431,11 @@
 {#each componentDocs as QDocument, index (index)}
   <QCard class="q-px-none q-pb-none q-mt-lg">
     <div class="flex justify-between items-center q-px-md">
-      <h5 class="no-margin">
+      <h5>
         <QIcon name="info" />
         <span class="q-ml-md">{QDocument.name} API</span>
       </h5>
-      <QTabs bind:value={activeApiTabs[index]} noSeparator class="q-api__tabs no-margin">
+      <QTabs bind:value={activeApiTabs[index]} noSeparator class="q-api__tabs">
         {#each getTabableEntries(QDocument) as [tabName, tabDoc] (tabName)}
           {#if tabDoc.length !== 0}
             <QTab name={tabName} style="min-width: 100px">

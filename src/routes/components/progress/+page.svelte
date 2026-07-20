@@ -177,7 +177,7 @@
         {/snippet}
 
         <div class="q-my-md">
-          <div class="flex q-gap-lg flex-wrap">
+          <div class="flex q-gap-lg">
             <QCircularProgress value={circularValue} />
             <div class="flex column justify-center">
               <div class="flex q-gap-md q-mb-sm">
@@ -204,7 +204,7 @@
           when the progress duration is unknown.
         {/snippet}
 
-        <div class="q-my-md flex q-gap-lg flex-wrap">
+        <div class="q-my-md flex q-gap-lg">
           <QCircularProgress indeterminate size="3em" />
           <QCircularProgress indeterminate size="3em" color="secondary" />
           <QCircularProgress indeterminate size="3em" color="tertiary" thickness={0.1} />
@@ -218,7 +218,7 @@
           or custom values.
         {/snippet}
 
-        <div class="q-my-md flex q-gap-lg flex-wrap">
+        <div class="q-my-md flex q-gap-lg">
           <QCircularProgress value={75} color="primary" />
           <QCircularProgress value={75} color="secondary" />
           <QCircularProgress value={75} color="tertiary" />
@@ -233,7 +233,7 @@
           the circle. You can also customize the displayed content using the default slot.
         {/snippet}
 
-        <div class="q-my-md flex q-gap-lg flex-wrap">
+        <div class="q-my-md flex q-gap-lg">
           <QCircularProgress value={65} showValue />
 
           <QCircularProgress value={42} showValue size="4em">
@@ -252,7 +252,7 @@
           can be specified in any valid CSS unit or as a number (which will be interpreted as pixels).
         {/snippet}
 
-        <div class="q-my-md flex items-center q-gap-lg flex-wrap">
+        <div class="q-my-md flex items-center q-gap-lg">
           <QCircularProgress value={50} size="1.5em" />
           <QCircularProgress value={50} size="3em" />
           <QCircularProgress value={50} size="4.5em" />
@@ -266,7 +266,7 @@
           from 0 to 1, representing the proportion of the radius.
         {/snippet}
 
-        <div class="q-my-md flex q-gap-lg flex-wrap">
+        <div class="q-my-md flex q-gap-lg">
           <QCircularProgress value={60} thickness={0.1} size="3em" />
           <QCircularProgress value={60} thickness={0.2} size="3em" />
           <QCircularProgress value={60} thickness={0.3} size="3em" />
@@ -281,7 +281,7 @@
         {/snippet}
 
         <div class="q-my-md">
-          <div class="flex q-gap-lg flex-wrap">
+          <div class="flex q-gap-lg">
             <QCard class="flex column items-center q-pa-md">
               <QCardSection>
                 <div class="text-subtitle2">angle: 0° (top)</div>
@@ -311,7 +311,7 @@
             </QCard>
           </div>
 
-          <div class="q-mt-lg flex q-gap-lg flex-wrap">
+          <div class="q-mt-lg flex q-gap-lg">
             <QCard class="flex column items-center q-pa-md">
               <QCardSection>
                 <div class="text-subtitle2">Custom range (0-50)</div>
@@ -335,7 +335,7 @@
           whether the ends of the progress arc are rounded.
         {/snippet}
 
-        <div class="q-my-md flex q-gap-lg flex-wrap">
+        <div class="q-my-md flex q-gap-lg">
           <div class="text-center">
             <div class="text-subtitle2 q-mb-sm">Without <code>noRound</code> (Default)</div>
             <QCircularProgress value={65} size="3em" />
@@ -356,7 +356,7 @@
         {/snippet}
 
         <div class="q-my-md flex column q-gap-md" style="max-width: 600px;">
-          <div class="flex q-gap-lg flex-wrap">
+          <div class="flex q-gap-lg">
             <div class="text-center">
               <div class="text-subtitle2 q-mb-sm">Default (600ms)</div>
               <QCircularProgress bind:value={circularValue} size="3em" />
@@ -390,7 +390,7 @@
           Examples of how progress indicators can be used in real-world applications.
         {/snippet}
 
-        <div class="q-my-md flex flex-wrap q-gap-lg">
+        <div class="q-my-md flex q-gap-lg">
           <QCard class="q-pa-md" style="width: 280px;">
             <QCardSection>
               <div class="text-h6">File Upload</div>
