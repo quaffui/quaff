@@ -13,22 +13,20 @@
 
   position: relative;
   display: inline-flex;
+  min-height: 1.5rem;
   align-items: center;
+  gap: 0.9375rem;
   vertical-align: middle;
   color: var(--on-surface);
   cursor: pointer;
   white-space: nowrap;
 
-  > input,
-  &__control {
+  > input {
     width: 3rem;
     height: 3rem;
-  }
-
-  > input {
     position: absolute;
     inset-block-start: 50%;
-    inset-inline-start: 0;
+    inset-inline-start: -0.9375rem;
     z-index: 1;
     margin: 0;
     opacity: 0;
@@ -69,10 +67,12 @@
   }
 
   > .q-ripple__effect {
-    inset: 0.25rem auto auto 0.25rem;
+    inset-block: 50% auto;
+    inset-inline: -0.6875rem auto;
     width: 2.5rem;
     height: 2.5rem;
     border-radius: 50%;
+    transform: translateY(-50%);
 
     .q-ripple {
       max-width: 100%;
@@ -84,6 +84,8 @@
   &__control {
     position: relative;
     display: grid;
+    width: 1.125rem;
+    height: 1.125rem;
     flex: none;
     place-items: center;
 

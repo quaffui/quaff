@@ -36,8 +36,10 @@
           states. It's fully accessible and easy to use in forms or standalone.
         {/snippet}
 
-        <QCheckbox class="q-ma-sm" bind:value={value1} />
-        <QCheckbox class="q-ma-sm" label="With label" bind:value={value1} />
+        <div class="q-ma-sm flex column items-start q-gap-lg">
+          <QCheckbox aria-label="Checkbox without a visible label" bind:value={value1} />
+          <QCheckbox label="With label" bind:value={value1} />
+        </div>
       </QDocsSection>
 
       <QDocsSection title="Checkbox States">
@@ -47,18 +49,15 @@
           selected. The <code>error</code> prop communicates a validation problem.
         {/snippet}
 
-        <QCheckbox class="q-ma-sm" label="Unchecked by default" bind:value={value3} />
-        <QCheckbox class="q-ma-sm" label="Checked by default" bind:value={value2} />
-        <QCheckbox
-          class="q-ma-sm"
-          label="Indeterminate"
-          bind:value={mixedValue}
-          bind:indeterminate
-        />
-        <QCheckbox class="q-ma-sm" label="Error unchecked" value={false} error />
-        <QCheckbox class="q-ma-sm" label="Error checked" value={true} error />
-        <QCheckbox class="q-ma-sm" label="Disabled unchecked" value={false} disabled />
-        <QCheckbox class="q-ma-sm" label="Disabled checked" value={true} disabled />
+        <div class="q-ma-sm flex column items-start q-gap-lg">
+          <QCheckbox label="Unchecked by default" bind:value={value3} />
+          <QCheckbox label="Checked by default" bind:value={value2} />
+          <QCheckbox label="Indeterminate" bind:value={mixedValue} bind:indeterminate />
+          <QCheckbox label="Error unchecked" value={false} error />
+          <QCheckbox label="Error checked" value={true} error />
+          <QCheckbox label="Disabled unchecked" value={false} disabled />
+          <QCheckbox label="Disabled checked" value={true} disabled />
+        </div>
       </QDocsSection>
 
       <QDocsSection title="Two-way Binding">
