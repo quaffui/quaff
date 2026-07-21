@@ -9,7 +9,7 @@
   --q-checkbox-interaction-color: var(--on-surface);
   --q-checkbox-state-color: var(--q-checkbox-interaction-color);
   --q-checkbox-state-opacity: 0%;
-  --q-checkbox-pressed-color: var(--q-checkbox-selected-color);
+  --ripple-color: var(--q-checkbox-selected-color);
 
   position: relative;
   display: inline-flex;
@@ -37,7 +37,6 @@
 
     &:is(:checked, [aria-checked="mixed"]) + .q-checkbox__control {
       --q-checkbox-state-color: var(--q-checkbox-selected-color);
-      --q-checkbox-pressed-color: var(--q-checkbox-interaction-color);
 
       &::after {
         content: "check";
@@ -63,6 +62,23 @@
     > input:not(:checked, [aria-checked="mixed"])
     + .q-checkbox__control {
     --q-checkbox-unselected-color: var(--q-checkbox-interaction-color);
+  }
+
+  &:has(> input:is(:checked, [aria-checked="mixed"])) {
+    --ripple-color: var(--q-checkbox-interaction-color);
+  }
+
+  > .q-ripple__effect {
+    inset: 0.25rem auto auto 0.25rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+
+    .q-ripple {
+      max-width: 100%;
+      max-height: 100%;
+      opacity: 0.12;
+    }
   }
 
   &__control {
@@ -106,16 +122,8 @@
     @include mixins.typography(body-large);
   }
 
-  &:not([aria-disabled]):hover {
+  &:not([aria-disabled]):hover:not(:active) {
     --q-checkbox-state-opacity: 8%;
-  }
-
-  &:not([aria-disabled]):active {
-    --q-checkbox-state-opacity: 10%;
-
-    > input + .q-checkbox__control {
-      --q-checkbox-state-color: var(--q-checkbox-pressed-color);
-    }
   }
 
   &--error {

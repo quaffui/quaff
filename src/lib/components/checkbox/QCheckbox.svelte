@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { ripple } from "$helpers";
   import type { QCheckboxProps } from "./props";
 
   // #region:    --- Props
@@ -21,7 +22,13 @@
   });
 </script>
 
-<label {...props} class="q-checkbox" aria-disabled={disabled || undefined} data-quaff>
+<label
+  {@attach ripple({ center: true, disabled })}
+  {...props}
+  class="q-checkbox"
+  aria-disabled={disabled || undefined}
+  data-quaff
+>
   <input
     type="checkbox"
     bind:checked={value}
