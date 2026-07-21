@@ -20,6 +20,7 @@
   const qSpacing = $derived(useSize(spacing, "q-separator__spacing"));
   const qSize = $derived(size ? useSize(size) : undefined);
   const parsedColor = $derived(useColor(color));
+  const insetSide = $derived(inset === true ? "both" : inset);
   // #endregion: --- Derived values
 
   Q.classes("q-separator", {
@@ -31,7 +32,9 @@
   Q.classes("q-separator__wrapper", {
     bemClasses: {
       vertical,
-      inset,
+      "inset-left": insetSide === "left",
+      "inset-right": insetSide === "right",
+      "inset-both": insetSide === "both",
     },
     classes: [props.class],
   });
