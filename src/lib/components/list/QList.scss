@@ -40,7 +40,7 @@
     display: none !important;
   }
 
-  &:not(.q-list--expressive) > .q-separator__wrapper--inset {
+  &:not(.q-list--expressive) > .q-separator__wrapper--inset-both {
     padding-inline-end: 1.5rem;
   }
 }
