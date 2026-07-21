@@ -1,0 +1,154 @@
+@use "$css/disabled";
+@use "$css/mixins";
+@use "$css/variables";
+
+.q-radio {
+  --q-radio-icon-color: var(--on-surface-variant);
+  --q-radio-state-color: var(--on-surface);
+  --q-radio-state-opacity: 0%;
+  --ripple-color: var(--primary);
+
+  position: relative;
+  display: inline-flex;
+  min-height: 1.5rem;
+  align-items: center;
+  gap: 0.875rem;
+  vertical-align: middle;
+  color: var(--on-surface);
+  cursor: pointer;
+  white-space: nowrap;
+
+  > input {
+    width: 3rem;
+    height: 3rem;
+    position: absolute;
+    inset-block-start: 50%;
+    inset-inline-start: -0.875rem;
+    z-index: 1;
+    margin: 0;
+    opacity: 0;
+    cursor: inherit;
+    transform: translateY(-50%);
+
+    &:checked + .q-radio__control .q-radio__icon::after {
+      animation: q-radio-select 0.3s cubic-bezier(0.05, 0.7, 0.1, 1);
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    &:focus-visible + .q-radio__control::before {
+      outline: 0.1875rem solid var(--secondary);
+      outline-offset: 0.125rem;
+    }
+  }
+
+  > input:not(:checked):focus-visible + .q-radio__control,
+  &:not([aria-disabled]):is(:hover, :active) > input:not(:checked) + .q-radio__control {
+    --q-radio-icon-color: var(--on-surface);
+  }
+
+  &:has(> :where(:checked)) {
+    --q-radio-icon-color: var(--primary);
+    --q-radio-state-color: var(--primary);
+    --ripple-color: var(--on-surface);
+  }
+
+  > .q-ripple__effect {
+    inset-block: 50% auto;
+    inset-inline: -0.625rem auto;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    transform: translateY(-50%);
+
+    .q-ripple {
+      max-width: 100%;
+      max-height: 100%;
+    }
+  }
+
+  &__control {
+    position: relative;
+    display: grid;
+    width: 1.25rem;
+    height: 1.25rem;
+    flex: none;
+    place-items: center;
+
+    &::before {
+      content: "";
+      position: absolute;
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 50%;
+      background-color: mixins.with-alpha(var(--q-radio-state-color), var(--q-radio-state-opacity));
+      transition: background-color variables.$speed1;
+    }
+  }
+
+  &__icon {
+    position: relative;
+    width: 1.25rem;
+    height: 1.25rem;
+
+    &::before,
+    &::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+    }
+
+    &::before {
+      inset: 0;
+      border: 0.125rem solid var(--q-radio-icon-color);
+      transition: border-color 0.05s linear;
+    }
+
+    &::after {
+      inset: 0.3125rem;
+      background-color: var(--q-radio-icon-color);
+      opacity: 0;
+      transform: scale(0);
+      transition: opacity 0.05s linear;
+    }
+  }
+
+  &__label {
+    @include mixins.typography(body-large);
+  }
+
+  &:not([aria-disabled]):hover:not(:active) {
+    --q-radio-state-opacity: 8%;
+  }
+
+  &[aria-disabled] {
+    --q-radio-icon-color: #{disabled.font-color()};
+
+    color: var(--q-radio-icon-color);
+    cursor: not-allowed;
+
+    .q-radio__icon::before,
+    .q-radio__icon::after {
+      animation-duration: 0s;
+      transition-duration: 0s;
+    }
+  }
+
+  @media (forced-colors: active) {
+    --q-radio-icon-color: CanvasText;
+
+    &[aria-disabled] {
+      --q-radio-icon-color: GrayText;
+    }
+  }
+}
+
+@keyframes q-radio-select {
+  from {
+    transform: scale(0);
+  }
+
+  to {
+    transform: scale(1);
+  }
+}

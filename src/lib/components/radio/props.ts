@@ -14,6 +14,11 @@ export interface QRadioProps extends HTMLAttributes<HTMLLabelElement> {
   label?: string;
 
   /**
+   * Native name used to group radio buttons for keyboard navigation and form submission.
+   */
+  name?: string;
+
+  /**
    * Bound value that determines if this radio button is selected. This prop is bindable.
    * When using a group of radio buttons, this should be the same variable for all of them.
    */
