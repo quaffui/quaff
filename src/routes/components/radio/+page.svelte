@@ -2,19 +2,31 @@
   import { docsCtx } from "$docs/QDocs.svelte";
   import { QRadioDocs } from "$components/radio/docs";
   import { pageTitle } from "$helpers/pageTitle";
-  import { QBtn, QCard, QCardSection, QIcon, QItem, QItemSection, QList, QRadio } from "$lib";
+  import { QBtn, QCard, QCardSection, QItem, QItemSection, QList, QRadio } from "$lib";
   import { QDocs, QDocsSection } from "$docs";
   import snippets from "./docs.snippets";
 
   docsCtx.set({ snippets, componentDocs: QRadioDocs });
 
+  const listOptions = [
+    { value: "option1", label: "Option 1", description: "First choice with description" },
+    { value: "option2", label: "Option 2", description: "Second choice with description" },
+    { value: "option3", label: "Option 3", description: "Third choice with description" },
+  ];
+
   let displayValue = $state("option1");
   let selectedValue = $state("option1");
   let selectedFruit = $state("apple");
   let selectedColor = $state("red");
-  let selectedSize = $state("md");
+  let radioListValue = $state("option3");
+  let itemListValue = $state("option2");
   let selectedProgrammingLanguage = $state("");
   let eventSelectedValue = $state("event-option1");
+  let notificationMethod = $state("email");
+
+  function stopPropagation(event: Event) {
+    event.stopPropagation();
+  }
 </script>
 
 <svelte:head>
@@ -24,8 +36,8 @@
 <QDocs>
   {#snippet display()}
     <QCard class="flex column q-gap-sm">
-      <QRadio value="option1" bind:selected={displayValue} label="Option 1" />
-      <QRadio value="option2" bind:selected={displayValue} label="Option 2" />
+      <QRadio name="display" value="option1" bind:selected={displayValue} label="Option 1" />
+      <QRadio name="display" value="option2" bind:selected={displayValue} label="Option 2" />
     </QCard>
   {/snippet}
 
@@ -38,29 +50,65 @@
         {/snippet}
 
         <div class="q-ma-sm">
-          <QRadio class="q-ma-sm" value="option1" bind:selected={selectedValue} label="Option 1" />
-          <QRadio class="q-ma-sm" value="option2" bind:selected={selectedValue} label="Option 2" />
-          <QRadio class="q-ma-sm" value="option3" bind:selected={selectedValue} label="Option 3" />
+          <QRadio
+            class="q-ma-sm"
+            name="basic"
+            value="option1"
+            bind:selected={selectedValue}
+            label="Option 1"
+          />
+          <QRadio
+            class="q-ma-sm"
+            name="basic"
+            value="option2"
+            bind:selected={selectedValue}
+            label="Option 2"
+          />
+          <QRadio
+            class="q-ma-sm"
+            name="basic"
+            value="option3"
+            bind:selected={selectedValue}
+            label="Option 3"
+          />
           <div class="q-mt-sm">Selected value: {selectedValue}</div>
         </div>
       </QDocsSection>
 
       <QDocsSection title="Radio Groups">
         {#snippet sectionDescription()}
-          Radio buttons with the same <code>selected</code> binding form a group, ensuring that only one
-          option can be selected at a time. When a new option is selected, the previously selected option
-          is automatically deselected.
+          Radio buttons with the same <code>selected</code> binding and <code>name</code> form a group.
+          This keeps their value, keyboard navigation, and native form behavior in sync.
         {/snippet}
 
         <QCard class="q-ma-md" style="max-width: 400px;">
           <QCardSection>
             <h6 class="q-my-xs">Select your favorite fruit:</h6>
             <div class="q-ml-md">
-              <QRadio class="q-ma-sm" value="apple" bind:selected={selectedFruit} label="Apple" />
-              <QRadio class="q-ma-sm" value="banana" bind:selected={selectedFruit} label="Banana" />
-              <QRadio class="q-ma-sm" value="orange" bind:selected={selectedFruit} label="Orange" />
               <QRadio
                 class="q-ma-sm"
+                name="fruit"
+                value="apple"
+                bind:selected={selectedFruit}
+                label="Apple"
+              />
+              <QRadio
+                class="q-ma-sm"
+                name="fruit"
+                value="banana"
+                bind:selected={selectedFruit}
+                label="Banana"
+              />
+              <QRadio
+                class="q-ma-sm"
+                name="fruit"
+                value="orange"
+                bind:selected={selectedFruit}
+                label="Orange"
+              />
+              <QRadio
+                class="q-ma-sm"
+                name="fruit"
                 value="strawberry"
                 bind:selected={selectedFruit}
                 label="Strawberry"
@@ -100,9 +148,27 @@
 
         <div class="q-ma-sm flex column q-gap-md">
           <div>
-            <QRadio class="q-ma-sm" value="red" bind:selected={selectedColor} label="Red" />
-            <QRadio class="q-ma-sm" value="green" bind:selected={selectedColor} label="Green" />
-            <QRadio class="q-ma-sm" value="blue" bind:selected={selectedColor} label="Blue" />
+            <QRadio
+              class="q-ma-sm"
+              name="color"
+              value="red"
+              bind:selected={selectedColor}
+              label="Red"
+            />
+            <QRadio
+              class="q-ma-sm"
+              name="color"
+              value="green"
+              bind:selected={selectedColor}
+              label="Green"
+            />
+            <QRadio
+              class="q-ma-sm"
+              name="color"
+              value="blue"
+              bind:selected={selectedColor}
+              label="Blue"
+            />
           </div>
 
           <div class="flex q-gap-md items-center">
@@ -119,73 +185,66 @@
         </div>
       </QDocsSection>
 
-      <QDocsSection title="Horizontal Layout">
-        {#snippet sectionDescription()}
-          Radio buttons can be arranged horizontally by using appropriate layout classes or
-          containers. This is useful for shorter lists of options or where space is limited.
-        {/snippet}
-
-        <div class="q-ma-sm">
-          <div class="text-subtitle1 q-mb-xs">Select size:</div>
-          <div class="flex flex-wrap q-gap-x-lg">
-            <QRadio value="sm" bind:selected={selectedSize} label="Small" />
-            <QRadio value="md" bind:selected={selectedSize} label="Medium" />
-            <QRadio value="lg" bind:selected={selectedSize} label="Large" />
-            <QRadio value="xl" bind:selected={selectedSize} label="Extra Large" />
-          </div>
-          <div class="q-mt-sm">Selected size: {selectedSize}</div>
-        </div>
-      </QDocsSection>
-
       <QDocsSection title="With List Items">
         {#snippet sectionDescription()}
-          Radio buttons can be combined with QList and QItem components to create rich, interactive
-          selection interfaces with additional content or styling.
+          Keep the radio as the only action, or make the whole item selectable when a larger target
+          suits the interface.
         {/snippet}
 
-        <QList bordered style="max-width: 400px;" class="q-ma-sm">
-          <QItem tag="label" clickable>
-            <QItemSection type="avatar">
-              <QRadio value="option1" bind:selected={selectedValue} />
-            </QItemSection>
-            <QItemSection>
-              {#snippet headline()}
-                Option 1
-              {/snippet}
-              {#snippet line1()}
-                First choice with description
-              {/snippet}
-            </QItemSection>
-          </QItem>
+        <div class="row q-col-gutter-md q-my-md">
+          <div class="col-12 col-md-6">
+            <div class="title-medium q-mb-sm">Radio control</div>
+            <QList bordered aria-label="Choose an option using the radio controls">
+              {#each listOptions as option (option.value)}
+                <QItem>
+                  <QItemSection type="avatar">
+                    <QRadio
+                      name="list-options"
+                      value={option.value}
+                      bind:selected={radioListValue}
+                      aria-label={option.label}
+                    />
+                  </QItemSection>
+                  <QItemSection>
+                    {#snippet headline()}
+                      {option.label}
+                    {/snippet}
+                    {#snippet line1()}
+                      {option.description}
+                    {/snippet}
+                  </QItemSection>
+                </QItem>
+              {/each}
+            </QList>
+          </div>
 
-          <QItem tag="label" clickable>
-            <QItemSection type="avatar">
-              <QRadio value="option2" bind:selected={selectedValue} />
-            </QItemSection>
-            <QItemSection>
-              {#snippet headline()}
-                Option 2
-              {/snippet}
-              {#snippet line1()}
-                Second choice with description
-              {/snippet}
-            </QItemSection>
-          </QItem>
-
-          <QItem tag="label" clickable>
-            <QItemSection type="avatar">
-              <QRadio value="option3" bind:selected={selectedValue} />
-            </QItemSection>
-            <QItemSection>
-              {#snippet headline()}
-                Option 3
-              {/snippet}
-              {#snippet line1()}
-                Third choice with description
-              {/snippet}
-            </QItemSection>
-          </QItem>
-        </QList>
+          <div class="col-12 col-md-6">
+            <div class="title-medium q-mb-sm">Whole item</div>
+            <QList bordered aria-label="Choose an option using the whole item">
+              {#each listOptions as option (option.value)}
+                <QItem clickable onclick={() => (itemListValue = option.value)}>
+                  <QItemSection type="avatar">
+                    <QRadio
+                      name="item-options"
+                      value={option.value}
+                      bind:selected={itemListValue}
+                      aria-label={option.label}
+                      onclick={stopPropagation}
+                    />
+                  </QItemSection>
+                  <QItemSection>
+                    {#snippet headline()}
+                      {option.label}
+                    {/snippet}
+                    {#snippet line1()}
+                      {option.description}
+                    {/snippet}
+                  </QItemSection>
+                </QItem>
+              {/each}
+            </QList>
+          </div>
+        </div>
       </QDocsSection>
 
       <QDocsSection title="Dynamic Radio Buttons">
@@ -201,6 +260,7 @@
             {#each ["JavaScript", "TypeScript", "Svelte", "Vue", "React"] as language (language)}
               <QRadio
                 class="q-ma-sm"
+                name="programming-language"
                 value={language.toLowerCase()}
                 bind:selected={selectedProgrammingLanguage}
                 label={language}
@@ -220,6 +280,7 @@
         <div class="q-ma-sm">
           <QRadio
             class="q-ma-sm"
+            name="event-options"
             value="event-option1"
             bind:selected={eventSelectedValue}
             label="Option with event handler"
@@ -227,6 +288,7 @@
           />
           <QRadio
             class="q-ma-sm"
+            name="event-options"
             value="event-option2"
             bind:selected={eventSelectedValue}
             label="Another option"
@@ -235,37 +297,41 @@
         </div>
       </QDocsSection>
 
-      <QDocsSection title="Accessibility" noCode>
+      <QDocsSection title="Accessibility">
         {#snippet sectionDescription()}
-          QRadio components are built with accessibility in mind. They use native radio inputs under
-          the hood and include appropriate ARIA attributes, ensuring they work well with screen
-          readers and keyboard navigation.
+          Give each group a shared <code>name</code> and an accessible label. Tab enters or leaves the
+          group. Arrow keys move focus and immediately select the new option; Space selects the focused
+          option, while Enter has no native radio action.
         {/snippet}
 
-        <div class="q-ma-sm">
-          <div class="q-mb-sm">Keyboard navigation:</div>
-          <QList dense>
-            <QItem>
-              <QItemSection type="avatar">
-                <QIcon name="chevron_right" />
-              </QItemSection>
-              <QItemSection>
-                Tab: Move focus to the next focusable element out of the radio group
-              </QItemSection>
-            </QItem>
-            <QItem>
-              <QItemSection type="avatar">
-                <QIcon name="chevron_right" />
-              </QItemSection>
-              <QItemSection>Space: Select the focused radio button</QItemSection>
-            </QItem>
-            <QItem>
-              <QItemSection type="avatar">
-                <QIcon name="chevron_right" />
-              </QItemSection>
-              <QItemSection>Arrow keys: Navigate between radio buttons in a group</QItemSection>
-            </QItem>
-          </QList>
+        <div class="q-pa-md">
+          <div id="notification-method-label" class="text-subtitle1 q-mb-md">
+            Notification method
+          </div>
+          <div
+            class="flex column q-gap-md"
+            role="radiogroup"
+            aria-labelledby="notification-method-label"
+          >
+            <QRadio
+              name="notification-method"
+              value="email"
+              bind:selected={notificationMethod}
+              label="Email"
+            />
+            <QRadio
+              name="notification-method"
+              value="push"
+              bind:selected={notificationMethod}
+              label="Push notification"
+            />
+            <QRadio
+              name="notification-method"
+              value="none"
+              bind:selected={notificationMethod}
+              label="None"
+            />
+          </div>
         </div>
       </QDocsSection>
     </div>
