@@ -1,6 +1,8 @@
 import type { CssSizeable, QSize } from "$utils";
 import type { HTMLAttributes } from "svelte/elements";
 
+export type QSeparatorInset = boolean | "left" | "right" | "both";
+
 export interface QSeparatorVerticalProps extends CssSizeable {
   /**
    * Spacing around the separator.
@@ -8,9 +10,9 @@ export interface QSeparatorVerticalProps extends CssSizeable {
   spacing?: QSize;
 
   /**
-   * Adds horizontal padding to the separator container, adding space around the separator.
+   * Insets the separator by 16px from the selected side. `true` is an alias for "both".
    */
-  inset?: boolean;
+  inset?: QSeparatorInset;
 
   /**
    * Sets the separator orientation to vertical.
@@ -40,9 +42,9 @@ export interface QSeparatorHorizontalProps extends CssSizeable {
   spacing?: QSize;
 
   /**
-   * Adds vertical padding to the separator container, adding space around the separator.
+   * Insets the separator by 16px from the selected side. `true` is an alias for "both".
    */
-  inset?: boolean;
+  inset?: QSeparatorInset;
 
   /**
    * Sets the separator orientation to horizontal.

@@ -3,19 +3,36 @@
 .q-separator__wrapper {
   display: flex;
   align-items: center;
-  justify-content: center;
-  opacity: 0.75;
 
-  &--inset {
-    padding: 0 1rem;
+  &--inset-left {
+    padding-left: 1rem;
+  }
+
+  &--inset-right {
+    padding-right: 1rem;
+  }
+
+  &--inset-both {
+    padding-inline: 1rem;
   }
 
   &--vertical {
     height: 100%;
     flex-direction: column;
 
-    &.q-separator__wrapper--inset {
-      padding: 1rem 0;
+    &.q-separator__wrapper--inset-left {
+      padding-block-start: 1rem;
+      padding-left: 0;
+    }
+
+    &.q-separator__wrapper--inset-right {
+      padding-block-end: 1rem;
+      padding-right: 0;
+    }
+
+    &.q-separator__wrapper--inset-both {
+      padding-block: 1rem;
+      padding-inline: 0;
     }
   }
 
@@ -25,10 +42,11 @@
 }
 
 .q-separator {
-  background-color: var(--q-separator-color, "outline-variant");
+  background-color: var(--q-separator-color, var(--outline-variant));
 
   border: none;
   flex: 1 1 auto;
+  margin: 0;
 
   &--vertical {
     width: var(--q-separator-size, 0.0625rem);
@@ -46,7 +64,7 @@
     height: var(--q-separator-size, 0.0625rem);
 
     @each $space, $val in variables.$spaces {
-      @if $space != "auto" {
+      @if $space != "none" and $space != "auto" {
         &.q-separator__spacing--#{$space} {
           margin-block: $val;
         }

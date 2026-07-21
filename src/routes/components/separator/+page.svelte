@@ -109,7 +109,7 @@
         {/snippet}
 
         <div class="q-my-md">
-          <QSeparator text="Default Color (outline)" />
+          <QSeparator text="Default Color (outline variant)" />
           <QSeparator text="Primary Color" color="primary" class="q-my-md" />
           <QSeparator text="Secondary Color" color="secondary" class="q-my-md" />
           <QSeparator text="Error Color" color="error" class="q-my-md" />
@@ -132,15 +132,18 @@
 
       <QDocsSection title="Inset Separator">
         {#snippet sectionDescription()}
-          The <code>inset</code> prop adds padding to the separator's container, creating space around
-          the separator. This is useful when you want to visually indent the separator.
+          Use <code>inset</code> to add 16px of space on the left, right, or both sides.
         {/snippet}
 
         <div class="q-my-md" style="border: 1px dashed var(--outline-variant); padding: 1rem;">
-          <p>Container with border</p>
-          <QSeparator text="Normal Separator" />
-          <div class="q-my-md"></div>
-          <QSeparator text="Inset Separator" inset />
+          <p>Full-width</p>
+          <QSeparator />
+          <p class="q-mt-md">Left inset</p>
+          <QSeparator inset="left" />
+          <p class="q-mt-md">Right inset</p>
+          <QSeparator inset="right" />
+          <p class="q-mt-md">Both sides</p>
+          <QSeparator inset="both" />
         </div>
       </QDocsSection>
 
