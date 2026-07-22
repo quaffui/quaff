@@ -6,6 +6,12 @@
 
   const utils = [
     {
+      name: "Notify",
+      description: "Create and queue Material Design snackbar notifications programmatically.",
+      href: "/utils/notify",
+      hovered: false,
+    },
+    {
       name: "Quaff",
       description:
         "Main class of the framework, for managing different states like dark mode or breakpoints.",

@@ -4,12 +4,14 @@ import {
   ComponentCss,
   ComponentCssDependencies,
   ComponentPathCssDependencies,
+  UtilityCssDependencies,
   type ComponentCssName,
 } from "../internal/componentRegistry.js";
 import type { Plugin, ResolvedConfig } from "vite";
 
 type ComponentName = keyof typeof ComponentCssDependencies;
 type ComponentPath = keyof typeof ComponentPathCssDependencies;
+type UtilityName = keyof typeof UtilityCssDependencies;
 
 type QuaffCssOptions = {
   include?: readonly string[];
@@ -140,6 +142,8 @@ async function collectUsedCss(root: string, options: QuaffCssOptions) {
   for (const component of components) {
     if (isComponentName(component)) {
       addCss(css, ComponentCssDependencies[component]);
+    } else if (isUtilityName(component)) {
+      addCss(css, UtilityCssDependencies[component]);
     }
   }
 
@@ -203,6 +207,10 @@ function addCss(css: Set<ComponentCssName>, names: readonly ComponentCssName[] |
 
 function isComponentName(value: string): value is ComponentName {
   return value in ComponentCssDependencies;
+}
+
+function isUtilityName(value: string): value is UtilityName {
+  return value in UtilityCssDependencies;
 }
 
 function isComponentPath(value: string): value is ComponentPath {
