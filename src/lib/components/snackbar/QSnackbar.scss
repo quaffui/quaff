@@ -1,0 +1,105 @@
+@use "$css/mixins";
+
+.q-snackbar-positioner {
+  position: fixed;
+  z-index: 1200;
+  inset-inline: 0;
+  bottom: calc(var(--q-snackbar-offset, 0.75rem) + env(safe-area-inset-bottom, 0px));
+
+  display: flex;
+  justify-content: center;
+  padding-inline: 0.75rem;
+  pointer-events: none;
+}
+
+.q-snackbar {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 37.5rem;
+  min-height: 3rem;
+
+  border-radius: 0.25rem;
+  background-color: var(--inverse-surface);
+  box-shadow: var(--elevate3);
+  color: var(--inverse-on-surface);
+  pointer-events: auto;
+
+  &__message {
+    flex: 1 1 auto;
+    min-width: 0;
+    padding-block: 0.875rem;
+    padding-inline-start: 1rem;
+
+    @include mixins.typography(body-medium);
+    color: inherit;
+    overflow: hidden;
+    overflow-wrap: anywhere;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+  }
+
+  &__controls {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    min-height: 3rem;
+    padding-inline-end: 0.5rem;
+
+    &:has(.q-snackbar__close) {
+      padding-inline-end: 0;
+    }
+  }
+
+  &:has(.q-snackbar__action) &__message {
+    padding-inline-end: 0.5rem;
+  }
+
+  &:not(:has(&__controls)) &__message {
+    padding-inline-end: 1rem;
+  }
+
+  .q-snackbar__action {
+    min-width: 0;
+    padding-inline: 0.75rem;
+    color: var(--inverse-primary);
+    --ripple-color: var(--inverse-primary);
+  }
+
+  .q-snackbar__close {
+    flex: 0 0 2.5rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    margin-inline: 0.25rem;
+    color: var(--inverse-on-surface);
+    --ripple-color: var(--inverse-on-surface);
+  }
+
+  &--action-new-line {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+
+    .q-snackbar__message {
+      padding-inline-end: 1rem;
+    }
+
+    .q-snackbar__controls {
+      justify-self: end;
+      padding-block-end: 0.25rem;
+    }
+  }
+}
+
+@media (forced-colors: active) {
+  .q-snackbar {
+    @include mixins.border($color: CanvasText);
+  }
+}
+
+@media print {
+  .q-snackbar-positioner {
+    display: none;
+  }
+}

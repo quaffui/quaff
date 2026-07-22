@@ -145,6 +145,10 @@
       to: "/components/select",
     },
     {
+      name: "Snackbar",
+      to: "/components/snackbar",
+    },
+    {
       name: "Separator",
       to: "/components/separator",
     },
@@ -167,6 +171,10 @@
   ];
 
   const quaffUtils: Item[] = [
+    {
+      name: "Notify",
+      to: "/utils/notify",
+    },
     {
       name: "The Quaff class",
       to: "/utils/quaff",
