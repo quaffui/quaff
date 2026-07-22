@@ -19,6 +19,7 @@ import QHeaderTitle from "./header/QHeaderTitle.svelte";
 import QIcon from "./icon/QIcon.svelte";
 import QInput from "./input/QInput.svelte";
 import QSelect from "./select/QSelect.svelte";
+import QSnackbar from "./snackbar/QSnackbar.svelte";
 import QLayout from "./layout/QLayout.svelte";
 import QList from "./list/QList.svelte";
 import QItem from "./list/QItem.svelte";
@@ -56,6 +57,7 @@ export {
   QIcon,
   QInput,
   QSelect,
+  QSnackbar,
   QLayout,
   QList,
   QItem,

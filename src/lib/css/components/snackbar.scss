@@ -1,0 +1,9 @@
+@use "sass:meta";
+
+@layer theme, ripple, components, classes, disabled;
+
+@layer Quaff {
+  @layer components {
+    @include meta.load-css("../../components/snackbar/QSnackbar.scss");
+  }
+}

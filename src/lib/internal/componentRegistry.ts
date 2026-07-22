@@ -20,6 +20,7 @@ export const Components = {
   QIcon: "QIcon",
   QInput: "QInput",
   QSelect: "QSelect",
+  QSnackbar: "QSnackbar",
   QLayout: "QLayout",
   QList: "QList",
   QItem: "QItem",
@@ -58,6 +59,7 @@ export const ComponentPaths = {
   Radio: "radio",
   Railbar: "railbar",
   Select: "select",
+  Snackbar: "snackbar",
   Separator: "separator",
   Switch: "switch",
   Table: "table",
@@ -87,6 +89,7 @@ export const ComponentCss = {
   Radio: "components/radio",
   Railbar: "components/railbar",
   Select: "components/select",
+  Snackbar: "components/snackbar",
   Separator: "components/separator",
   Switch: "components/switch",
   Table: "components/table",
@@ -113,6 +116,7 @@ const selectCss = [
   ComponentCss.List,
   ComponentCss.Menu,
 ];
+const snackbarCss = [ComponentCss.Snackbar, ...buttonCss];
 const switchCss = [ComponentCss.Switch, ComponentCss.Icon];
 const tabsCss = [ComponentCss.Tabs, ComponentCss.Icon];
 const tableCss = [ComponentCss.Table, ...buttonCss, ...selectCss];
@@ -139,6 +143,7 @@ export const ComponentCssDependencies = {
   [Components.QIcon]: [ComponentCss.Icon],
   [Components.QInput]: fieldCss,
   [Components.QSelect]: selectCss,
+  [Components.QSnackbar]: snackbarCss,
   [Components.QLayout]: [ComponentCss.Layout],
   [Components.QList]: [ComponentCss.List],
   [Components.QItem]: [ComponentCss.List],
@@ -177,6 +182,7 @@ export const ComponentPathCssDependencies = {
   [ComponentPaths.Radio]: [ComponentCss.Radio],
   [ComponentPaths.Railbar]: [ComponentCss.Railbar],
   [ComponentPaths.Select]: selectCss,
+  [ComponentPaths.Snackbar]: snackbarCss,
   [ComponentPaths.Separator]: [ComponentCss.Separator],
   [ComponentPaths.Switch]: switchCss,
   [ComponentPaths.Table]: tableCss,
@@ -186,3 +192,7 @@ export const ComponentPathCssDependencies = {
   (typeof ComponentPaths)[keyof typeof ComponentPaths],
   readonly ComponentCssName[]
 >;
+
+export const UtilityCssDependencies = {
+  Notify: snackbarCss,
+} satisfies Record<string, readonly ComponentCssName[]>;
