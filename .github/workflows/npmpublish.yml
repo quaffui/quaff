@@ -48,3 +48,13 @@ jobs:
     uses: quaffui/quaff-shared/.github/workflows/generated-project-e2e.yml@main
     with:
       package-under-test: published
+
+  deploy-docs:
+    needs: generated-project-e2e
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    uses: ./.github/workflows/pages.yml
+    with:
+      version: ${{ inputs.version }}
