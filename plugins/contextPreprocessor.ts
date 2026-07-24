@@ -95,11 +95,16 @@ export function preprocessContext(): PreprocessorGroup {
         resetContextForNewFile(filename);
       }
 
+      if (!usesContext(content)) {
+        return;
+      }
+
+      const initialInfoCount = getContextInfoCount();
       const ast = parseContent(content, filename);
 
       processASTNodes(ast);
 
-      if (!hasContexts()) {
+      if (getContextInfoCount() === initialInfoCount) {
         return;
       }
 
@@ -115,6 +120,13 @@ export function preprocessContext(): PreprocessorGroup {
       };
     },
   };
+}
+
+function usesContext(content: string) {
+  return (
+    content.includes("QContext") ||
+    Object.keys(context).some((contextVarName) => content.includes(`${contextVarName}.set`))
+  );
 }
 
 /**
@@ -163,12 +175,8 @@ function isContextInterface(node: AST.ProgramStatement): node is AST.TSInterface
   );
 }
 
-/**
- * Check if there are any contexts to process
- * @returns {boolean}
- */
-function hasContexts() {
-  return Object.keys(context).length > 0;
+function getContextInfoCount() {
+  return Object.values(context).reduce((count, current) => count + current.infos.length, 0);
 }
 
 /**

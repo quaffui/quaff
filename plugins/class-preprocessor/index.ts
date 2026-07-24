@@ -27,6 +27,10 @@ export function preprocessClasses(namespace: string): PreprocessorGroup {
   return {
     name: "quaff-classes-preprocessor",
     async markup({ content, filename }) {
+      if (!content.includes(`${namespace}.classes`)) {
+        return;
+      }
+
       const source = new MagicString(content);
 
       const parsed = parse(content, { modern: true, filename });
@@ -42,6 +46,10 @@ export function preprocessClasses(namespace: string): PreprocessorGroup {
       }
 
       const scriptDefs = prepareScript(instance, content, namespace);
+
+      if (!Object.keys(scriptDefs).length) {
+        return;
+      }
 
       for (const component in scriptDefs) {
         const def = scriptDefs[component];
