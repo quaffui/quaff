@@ -10,13 +10,12 @@
     docDescription?: string;
   }
 
-  // Do not rename to end with `Context` or it will be incorrectly processed by the context preprocessor.
-  interface DocsCtx {
+  interface DocsContext {
     readonly componentDocs: QComponentDocs | QComponentDocs[];
     readonly snippets: Record<string, string> | (() => Record<string, string>);
   }
 
-  export const docsCtx = QContext<DocsCtx>("QDocs");
+  export const docsCtx = QContext<DocsContext>("QDocs");
 </script>
 
 <script lang="ts">
