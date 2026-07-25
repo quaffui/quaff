@@ -42,6 +42,7 @@
   const hasElevation = $derived(elevated && kind !== "input");
 
   const avatar = $derived(extractImgSrc(icon));
+  const trailingImage = $derived(extractImgSrc(trailing));
   const iconSize = $derived(size === "sm" ? 18 : size === "md" ? 22.5 : 27);
   // #endregion: --- Derived values
 
@@ -213,7 +214,8 @@
     {#if trailing}
       <QIcon
         class="q-chip__trailing-icon"
-        name={trailing}
+        name={trailingImage ? undefined : (trailing as MaterialSymbol)}
+        img={trailingImage}
         size={iconSize}
         onclick={(e) => handleClick(e, true)}
       />
