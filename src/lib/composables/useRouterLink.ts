@@ -33,7 +33,7 @@ export function useRouterLink<T extends UseRouterLinkProps>(props: T) {
 
   const linkAttributes = {
     href: props.to || props.href,
-    "data-sveltkit-reload": props.replace ? "" : undefined,
+    "data-sveltekit-replacestate": props.replace || undefined,
   };
 
   return {

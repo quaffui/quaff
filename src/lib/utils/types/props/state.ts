@@ -40,7 +40,7 @@ export interface Linkable {
   /**
    * Replaces the current entry in the browser's history rather than adding a new one.
    *
-   * This is the same as setting the `data-sveltekit-reload` attribute to "true".
+   * This is the same as setting the `data-sveltekit-replacestate` attribute to "true".
    *
    * @default false
    */
