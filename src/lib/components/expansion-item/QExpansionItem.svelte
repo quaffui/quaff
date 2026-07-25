@@ -1,6 +1,5 @@
 <script lang="ts">
   import { slide } from "svelte/transition";
-  import { goto } from "$app/navigation";
   import QBtn from "$components/button/QBtn.svelte";
   import QIcon from "$components/icon/QIcon.svelte";
   import QItem from "$components/list/QItem.svelte";
@@ -24,12 +23,16 @@
     expandIconToggle = false,
     to,
     href,
+    replace,
+    target,
     name,
     noRotateExpandIcon = false,
     disabled = false,
     noRipple = false,
     summary,
     children,
+    onclick: onClick,
+    onkeydown: onKeydown,
     onExpandIconClick,
     ...props
   }: QExpansionItemProps = $props();
@@ -130,7 +133,11 @@
       return;
     }
 
-    props.onclick?.(e);
+    onClick?.(e);
+
+    if (!e.defaultPrevented && expandIconToggle && !to && !href) {
+      e.preventDefault();
+    }
   }
 
   function onIconClick(e: QEvent<MouseEvent, HTMLElement>) {
@@ -146,7 +153,13 @@
     onExpandIconClick?.(e);
   }
 
-  function onkeydown(e: KeyboardEvent) {
+  function onkeydown(e: QEvent<KeyboardEvent, HTMLElement>) {
+    onKeydown?.(e);
+
+    if (e.defaultPrevented) {
+      return;
+    }
+
     if (disabled) {
       preventAndStop(e);
       return;
@@ -158,12 +171,6 @@
     }
 
     if (!isActivationKey(e)) {
-      return;
-    }
-
-    if (to || href) {
-      preventAndStop(e);
-      goto((to || href) as string);
       return;
     }
 
@@ -245,6 +252,8 @@
         {dense}
         {to}
         {href}
+        {replace}
+        {target}
         {disabled}
         noRipple={expandIconToggle || noRipple}
         clickable={!expandIconToggle}
@@ -258,6 +267,8 @@
         {dense}
         {to}
         {href}
+        {replace}
+        {target}
         {disabled}
         noRipple={expandIconToggle || noRipple}
         clickable={!expandIconToggle}

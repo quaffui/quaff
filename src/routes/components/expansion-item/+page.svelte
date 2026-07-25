@@ -156,6 +156,7 @@
             caption="Opens in new tab"
             icon="link"
             href="https://example.com"
+            target="_blank"
             expandIconToggle
           >
             <p>This demonstrates using an external link with expand icon toggle functionality.</p>
