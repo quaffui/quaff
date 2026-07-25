@@ -1,6 +1,8 @@
 # Quaff Agent Notes
 
 - Keep changes small and component-local. Do not stage unrelated work such as experimental components unless the task explicitly asks for it.
+- Keep every diff justified by the requested behavior: fix a reproduced bug, implement an explicitly requested feature, or make the code clearly simpler or faster. Avoid speculative changes and unrelated cleanup.
+- Add a blank line before and after control-flow blocks such as `if`, `for`, `while`, `switch`, and `try`/`catch` when they sit next to other statements. Omit it when the block is first or last in its enclosing scope, and keep paired clauses such as `else`, `catch`, and `finally` together.
 - Quaff is Svelte 5 only. Use runes-style component code (`$props`, `$state`, `$derived`, snippets) and avoid adding legacy Svelte 4 patterns.
 - Use `bun run check` and `bun run build` for full validation. `bun run format` currently also sees untracked local files, so verify the worktree before trusting a format failure.
 - Internal library code must not import components through `$lib` or the public package barrel. Use direct aliases such as `$components`, `$classes`, `$utils`, and `$internal`.
