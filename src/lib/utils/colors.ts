@@ -211,10 +211,13 @@ class QColors {
         "Invalid HEX value. It should follow the format #xxxxxx or #xxx where x is a hexadecimal digit."
       );
     }
-    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-    return result
-      ? [parseInt(result[1], 16), parseInt(result[2], 16), parseInt(result[3], 16)]
-      : [];
+
+    const normalized =
+      hex.length === 4
+        ? hex.replace(/./g, (character, index) => (index ? character + character : character))
+        : hex;
+    const result = /^#([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(normalized)!;
+    return result.slice(1).map((value) => parseInt(value, 16));
   }
 
   static rgbToHsl(r: string | number, g: string | number, b: string | number): number[] {
@@ -296,9 +299,7 @@ class QColors {
   }
 
   static hexToHsl(hex: HexValue): { h: number; s: number; l: number } {
-    const r = parseInt(hex.slice(1, 3), 16) / 255;
-    const g = parseInt(hex.slice(3, 5), 16) / 255;
-    const b = parseInt(hex.slice(5, 7), 16) / 255;
+    const [r, g, b] = QColors.hexToRgb(hex).map((value) => value / 255);
 
     const max = Math.max(r, g, b),
       min = Math.min(r, g, b);
