@@ -109,25 +109,31 @@
       return;
     }
 
+    onclick?.(event as Parameters<NonNullable<QBtnProps["onclick"]>>[0]);
+
+    if (event.defaultPrevented) {
+      return;
+    }
+
     if (isToggle) {
       selected = !selected;
     }
-
-    onclick?.(event as Parameters<NonNullable<QBtnProps["onclick"]>>[0]);
   }
 
   function handleKeydown(event: ButtonEvent<KeyboardEvent>) {
-    if (event.key === "Escape") {
-      event.currentTarget.blur();
-    }
-
     if (disabled) {
       return;
     }
 
     onkeydown?.(event as Parameters<NonNullable<QBtnProps["onkeydown"]>>[0]);
 
-    if (isActivationKey(event)) {
+    if (event.defaultPrevented) {
+      return;
+    }
+
+    if (event.key === "Escape") {
+      event.currentTarget.blur();
+    } else if (isActivationKey(event)) {
       event.preventDefault();
       event.currentTarget.click();
     }
