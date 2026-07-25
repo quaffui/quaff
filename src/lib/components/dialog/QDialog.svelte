@@ -1,6 +1,9 @@
 <script lang="ts">
   import { on } from "svelte/events";
+  import type { QEvent } from "$utils";
   import type { QDialogProps } from "./props";
+
+  type QDialogEvent<T extends Event> = QEvent<T, HTMLDialogElement>;
 
   // #region:    --- Props
   let {
@@ -10,6 +13,9 @@
     fullscreen = false,
     persistent = false,
     children,
+    onclick,
+    onkeydown,
+    oncancel,
     ...props
   }: QDialogProps = $props();
   // #endregion: --- Props
@@ -77,18 +83,39 @@
     }
   }
 
-  function handleClickInside(e: MouseEvent) {
+  function handleClickInside(e: QDialogEvent<MouseEvent>) {
+    onclick?.(e);
+
+    if (e.defaultPrevented) {
+      return;
+    }
+
     e.stopPropagation();
   }
 
-  function onkeydown(e: KeyboardEvent) {
-    if (e.key === "Escape") {
+  function handleKeydown(e: QDialogEvent<KeyboardEvent>) {
+    onkeydown?.(e);
+
+    if (!e.defaultPrevented && e.key === "Escape") {
+      tryCancel(e);
+    }
+  }
+
+  function handleCancel(e: QDialogEvent<Event>) {
+    oncancel?.(e);
+
+    if (!e.defaultPrevented) {
       tryCancel(e);
     }
   }
 
   function tryCancel(e: Event) {
+    if (e.defaultPrevented) {
+      return;
+    }
+
     const target = e.target;
+
     if (target instanceof Element && target.closest("[data-quaff-overlay]")) {
       return;
     }
@@ -118,8 +145,8 @@
   {...props}
   class="q-dialog"
   onclick={handleClickInside}
-  oncancel={tryCancel}
-  {onkeydown}
+  oncancel={handleCancel}
+  onkeydown={handleKeydown}
   aria-hidden={!value || undefined}
   data-quaff
 >
