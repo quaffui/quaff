@@ -4,6 +4,11 @@ import type { HTMLAttributes } from "svelte/elements";
 export interface QLinearProgressProps
   extends OptionalModel<number>, CssSizeable, HTMLAttributes<HTMLDivElement> {
   /**
+   * Uses the Material 3 Expressive wavy indicator.
+   */
+  expressive?: boolean;
+
+  /**
    * Secondary progress value, shown as a lighter track behind the main progress.
    */
   buffer?: number;
@@ -46,6 +51,11 @@ export interface QLinearProgressProps
 
 export interface QCircularProgressProps
   extends OptionalModel<number>, CssSizeable, HTMLAttributes<HTMLDivElement> {
+  /**
+   * Uses the Material 3 Expressive wavy indicator.
+   */
+  expressive?: boolean;
+
   /**
    * Enables an infinite spinning animation instead of showing progress.
    */

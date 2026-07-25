@@ -1,75 +1,149 @@
-@use "$css/mixins";
+@property --q-linear-progress-head {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+
+@property --q-linear-progress-tail {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+
+@property --q-linear-progress-wave-phase {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
 
 .q-linear-progress {
-  position: relative;
-
   flex-grow: 1;
-  height: 0.75em;
-
+  min-width: 2.5rem;
+  height: var(--q-progress-size, 0.25rem);
   overflow: hidden;
 
-  transform: scale3d(1, 1, 1);
-
-  &__indicator {
-    background-color: var(--q-indicator-color);
-    height: 100%;
-
-    &--indeterminate {
-      transition: none;
-      background-color: transparent;
-
-      &::before,
-      &::after {
-        content: "";
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-
-        background-color: var(--q-indicator-color);
-        transform-origin: 0 0;
-        border-radius: inherit;
-      }
-
-      &::before {
-        animation: q-progress 2.1s cubic-bezier(0.65, 0.815, 0.735, 0.395) infinite;
-      }
-
-      &::after {
-        transform: translate3d(-101%, 0, 0) scale3d(1, 1, 1);
-        animation: q-progress-fast 2.1s cubic-bezier(0.165, 0.84, 0.44, 1) infinite;
-        animation-delay: 1.15s;
-      }
-    }
+  &:dir(rtl),
+  &--reverse {
+    transform: scaleX(-1);
   }
 
-  &__track {
-    opacity: 0.4;
+  &--reverse:dir(rtl) {
+    transform: none;
+  }
+
+  &__svg {
+    display: block;
+    width: 100%;
     height: 100%;
+  }
+
+  &__svg--wave {
+    animation: q-linear-progress-wave-phase 1s linear infinite;
+  }
+
+  &__wave {
+    transform: translateX(calc(var(--q-linear-progress-wave-phase) * var(--q-progress-wavelength)));
+  }
+
+  &__active--wave {
+    stroke-dashoffset: calc(
+      -1 * var(--q-progress-wave-path-offset) + var(--q-linear-progress-wave-phase) *
+        var(--q-progress-wave-path-offset)
+    );
+  }
+
+  &__active--indeterminate {
+    stroke-width: clamp(
+      0px,
+      min(
+        calc((var(--q-linear-progress-head) - var(--q-progress-cap-path-offset)) * 1000),
+        calc((var(--q-linear-progress-head) - var(--q-linear-progress-tail)) * 1000)
+      ),
+      var(--q-progress-active-stroke-width)
+    );
+    stroke-dasharray: calc(var(--q-linear-progress-head) - var(--q-linear-progress-tail))
+      var(--q-progress-path-length);
+    stroke-dashoffset: calc(
+      -1 * var(--q-linear-progress-tail) - var(--q-progress-wave-path-offset) +
+        var(--q-linear-progress-wave-phase) * var(--q-progress-wave-path-offset)
+    );
+    animation:
+      q-linear-progress-first-head 1.75s infinite,
+      q-linear-progress-first-tail 1.75s infinite;
+  }
+
+  &__active--secondary {
+    animation-name: q-linear-progress-second-head, q-linear-progress-second-tail;
   }
 }
 
-@keyframes q-progress {
+@keyframes q-linear-progress-first-head {
   0% {
-    transform: translate3d(-35%, 0, 0) scale3d(0.35, 1, 1);
+    --q-linear-progress-head: 0px;
+    animation-timing-function: cubic-bezier(0.3, 0, 0.8, 0.15);
   }
-  60% {
-    transform: translate3d(100%, 0, 0) scale3d(0.9, 1, 1);
-  }
+
+  // 1000ms
+  57.1429%,
   100% {
-    transform: translate3d(100%, 0, 0) scale3d(0.9, 1, 1);
+    --q-linear-progress-head: 100px;
   }
 }
 
-@keyframes q-progress-fast {
+@keyframes q-linear-progress-first-tail {
   0% {
-    transform: translate3d(-101%, 0, 0) scale3d(1, 1, 1);
+    --q-linear-progress-tail: 0px;
   }
-  60% {
-    transform: translate3d(107%, 0, 0) scale3d(0.01, 1, 1);
+
+  // 250ms
+  14.2857% {
+    --q-linear-progress-tail: 0px;
+    animation-timing-function: cubic-bezier(0.3, 0, 0.8, 0.15);
   }
+
+  // 1250ms
+  71.4286%,
   100% {
-    transform: translate3d(107%, 0, 0) scale3d(0.01, 1, 1);
+    --q-linear-progress-tail: 100px;
+  }
+}
+
+@keyframes q-linear-progress-second-head {
+  0% {
+    --q-linear-progress-head: 0px;
+  }
+
+  // 650ms
+  37.1429% {
+    --q-linear-progress-head: 0px;
+    animation-timing-function: cubic-bezier(0.3, 0, 0.8, 0.15);
+  }
+
+  // 1500ms
+  85.7143%,
+  100% {
+    --q-linear-progress-head: 100px;
+  }
+}
+
+@keyframes q-linear-progress-second-tail {
+  0% {
+    --q-linear-progress-tail: 0px;
+  }
+
+  // 900ms
+  51.4286% {
+    --q-linear-progress-tail: 0px;
+    animation-timing-function: cubic-bezier(0.3, 0, 0.8, 0.15);
+  }
+
+  100% {
+    --q-linear-progress-tail: 100px;
+  }
+}
+
+@keyframes q-linear-progress-wave-phase {
+  to {
+    --q-linear-progress-wave-phase: 1;
   }
 }
