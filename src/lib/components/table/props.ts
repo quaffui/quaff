@@ -6,7 +6,7 @@ export type QTableColumn = {
   name: string;
   label: string;
   align?: "left" | "center" | "right";
-  field: string | ((row: QTableRow) => string);
+  field: string | ((row: QTableRow) => string | number);
   format?: (val: string) => string;
   sortable?: boolean;
   sort?: (a: string, b: string) => number;
@@ -17,7 +17,7 @@ export type QTableRow = {
 };
 
 export type QTableSort = {
-  columnField: string | ((row: QTableRow) => string);
+  columnField: QTableColumn["field"];
   type: "asc" | "desc";
 } | null;
 
