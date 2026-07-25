@@ -15,7 +15,7 @@ export interface QIconProps extends Sizeable, HTMLAttributes<HTMLElement> {
   /**
    * The name of the Material Symbols icon.
    */
-  name?: MaterialSymbol | `img:${string}`;
+  name?: MaterialSymbol;
 
   /**
    * Determines whether the icon should be filled.
