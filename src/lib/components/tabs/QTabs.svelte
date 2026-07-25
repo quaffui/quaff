@@ -35,7 +35,6 @@
 
   // #region:    --- Non-reactive variables
   let qTabs: HTMLElement;
-  let tabList: HTMLElement[] = [];
   // #endregion: --- Non-reactive variables
 
   // #region:    --- Reactive variables
@@ -55,10 +54,6 @@
   // #endregion: --- Context
 
   // #region:    --- Effects
-  $effect(() => {
-    tabList = Array.from(qTabs.querySelectorAll(".q-tab"));
-  });
-
   $effect.pre(() => {
     if (value === undefined) {
       return;
@@ -89,12 +84,16 @@
     value = req;
   }
 
+  function getTabs() {
+    return Array.from(qTabs?.querySelectorAll<HTMLElement>(".q-tab") ?? []);
+  }
+
   function getRequestingTab(requestingTabName: string) {
-    return tabList.find((tab) => tab.dataset.qTabName === requestingTabName) ?? null;
+    return getTabs().find((tab) => tab.dataset.qTabName === requestingTabName) ?? null;
   }
 
   function getActiveTab() {
-    return tabList.find((tab) => tab.getAttribute("aria-selected") === "true") ?? null;
+    return getTabs().find((tab) => tab.getAttribute("aria-selected") === "true") ?? null;
   }
 
   function handleFocusout(e: FocusEvent & { currentTarget: HTMLElement }) {
