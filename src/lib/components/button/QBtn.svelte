@@ -155,7 +155,7 @@
   style:--q-btn-icon-size={iconSize}
   style:--ripple-color={color && useColor(color)}
   href={disabled ? undefined : routerInfo.linkAttributes.href}
-  data-sveltekit-reload={routerInfo.linkAttributes["data-sveltekit-reload"]}
+  data-sveltekit-replacestate={routerInfo.linkAttributes["data-sveltekit-replacestate"]}
   disabled={computedTag === "button" ? disabled : undefined}
   role={computedTag === "button" ? undefined : "button"}
   aria-disabled={disabled || undefined}
