@@ -1,6 +1,6 @@
 import { MaterialSymbol } from "material-symbols";
 import { Snippet } from "svelte";
-import { HTMLDetailsAttributes, MouseEventHandler } from "svelte/elements";
+import { HTMLDetailsAttributes, KeyboardEventHandler, MouseEventHandler } from "svelte/elements";
 import { Disableable, Labelable, Linkable, OptionalModel } from "$utils";
 
 export interface QExpansionItemProps
@@ -97,4 +97,9 @@ export interface QExpansionItemProps
    * Event triggered when the expansion item is clicked.
    */
   onclick?: MouseEventHandler<HTMLElement>;
+
+  /**
+   * Event triggered when a key is pressed on the expansion item header.
+   */
+  onkeydown?: KeyboardEventHandler<HTMLElement>;
 }
