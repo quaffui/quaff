@@ -58,6 +58,10 @@
   function onkeydown(e: QTabEvent<KeyboardEvent>) {
     props.onkeydown?.(e);
 
+    if (e.defaultPrevented) {
+      return;
+    }
+
     if (isActivationKey(e)) {
       e.preventDefault();
       return qTab.click();
