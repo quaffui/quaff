@@ -184,6 +184,7 @@
       options={rowsPerPageOptions}
       bind:value={rowsPerPage}
       disabled={rowsPerPageOptions.length <= 1}
+      aria-label="Records per page"
     />
     {numberFrom}-{numberTo}&nbsp;of&nbsp;{rows.length}
     {#if lastPage > 1}
@@ -192,6 +193,7 @@
         size="sm"
         variant="flat"
         disabled={page === 1}
+        aria-label="Previous page"
         onclick={() => page--}
       />
       <QBtn
@@ -199,6 +201,7 @@
         size="sm"
         variant="flat"
         disabled={page === lastPage}
+        aria-label="Next page"
         onclick={() => page++}
       />
     {/if}
