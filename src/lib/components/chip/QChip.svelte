@@ -3,11 +3,14 @@
   import QAvatar from "$components/avatar/QAvatar.svelte";
   import QIcon from "$components/icon/QIcon.svelte";
   import { ripple } from "$helpers";
-  import { extractImgSrc, isActivationKey, type QEvent } from "$utils";
+  import {
+    type ActionableEventHandlers,
+    extractImgSrc,
+    getActionableEventHandlers,
+    type QEvent,
+  } from "$utils";
   import type { MaterialSymbol } from "material-symbols";
   import type { QChipProps } from "./props";
-
-  type QChipMouseEvent = QEvent<MouseEvent, HTMLElement>;
 
   // #region:    --- Props
   let {
@@ -21,6 +24,8 @@
     elevated,
     noRipple = false,
     size = "sm",
+    onclick,
+    onkeydown,
     onTrailingIconClick,
     children,
     ...props
@@ -43,6 +48,34 @@
 
   const avatar = $derived(extractImgSrc(icon));
   const iconSize = $derived(size === "sm" ? 18 : size === "md" ? 22.5 : 27);
+
+  const chipHandlers = $derived(
+    getActionableEventHandlers(
+      { disabled, onclick, onkeydown },
+      {
+        onAction: getAction(),
+        onBackspace(e) {
+          if (kind === "input") {
+            if (inputSelected) {
+              e.currentTarget.querySelector<HTMLElement>(".q-chip__trailing-icon")?.click();
+            } else {
+              inputSelected = true;
+            }
+          }
+        },
+        onEscape(e) {
+          inputSelected = false;
+          e.currentTarget.blur();
+        },
+      }
+    )
+  );
+  const iconHandlers = $derived(
+    getActionableEventHandlers(
+      { disabled, onclick: onTrailingIconClick },
+      { onAction: getAction(true) }
+    )
+  );
   // #endregion: --- Derived values
 
   // #region:    --- Effects
@@ -64,62 +97,23 @@
   // #endregion: --- Effects
 
   // #region:    --- Functions
-  async function handleClick(e: QChipMouseEvent, iconClick = false) {
-    if (disabled) {
-      e.preventDefault();
-      e.stopImmediatePropagation();
-      return;
-    }
-
-    if (kind === "input" && iconClick) {
-      inputSelected = false;
-    } else if (kind === "filter" && !iconClick) {
-      selected = !selected;
-    } else if (kind === "input" && !iconClick && value !== undefined) {
-      inputSelected = false;
-      editing = true;
-    }
-
-    e.stopPropagation();
-    if (iconClick) {
-      onTrailingIconClick?.(e);
-    } else {
-      props.onclick?.(e as QEvent<MouseEvent, HTMLDivElement>);
-    }
-
-    if (editing) {
-      await tick();
-      editInput?.focus();
-      editInput?.select();
-    }
-  }
-
-  async function onkeydown(e: KeyboardEvent) {
-    if (kind === "input" && e.key === "Backspace") {
-      e.preventDefault();
-
-      if (inputSelected) {
-        qChip?.querySelector<HTMLElement>(".q-chip__trailing-icon")?.click();
-      } else {
-        inputSelected = true;
+  function getAction(iconClick: boolean = false): ActionableEventHandlers<HTMLElement>["onAction"] {
+    return async function () {
+      if (kind === "input" && iconClick) {
+        inputSelected = false;
+      } else if (kind === "filter" && !iconClick) {
+        selected = !selected;
+      } else if (kind === "input" && !iconClick && value !== undefined) {
+        inputSelected = false;
+        editing = true;
       }
-      return;
-    }
 
-    if (e.key === "Escape") {
-      inputSelected = false;
-      qChip?.blur();
-      return;
-    }
-
-    if (!isActivationKey(e)) {
-      return;
-    }
-
-    e.preventDefault();
-
-    const click = new MouseEvent("click", { relatedTarget: qChip }) as QChipMouseEvent;
-    await handleClick(click);
+      if (editing) {
+        await tick();
+        editInput?.focus();
+        editInput?.select();
+      }
+    };
   }
 
   async function onInputKeydown(e: KeyboardEvent) {
@@ -134,8 +128,13 @@
   }
 
   function onblur(e: QEvent<FocusEvent, HTMLDivElement>) {
-    inputSelected = false;
     props.onblur?.(e);
+
+    if (e.defaultPrevented) {
+      return;
+    }
+
+    inputSelected = false;
   }
   // #endregion: --- Functions
 
@@ -170,8 +169,7 @@
     aria-pressed={kind === "filter" || kind === "input" ? chipSelected : undefined}
     {tabindex}
     role="button"
-    onclick={handleClick}
-    {onkeydown}
+    {...chipHandlers}
     {onblur}
     data-quaff
   >
@@ -200,7 +198,7 @@
         class="q-chip__trailing-icon"
         name={trailing}
         size={iconSize}
-        onclick={(e) => handleClick(e, true)}
+        onclick={iconHandlers.onclick}
       />
     {/if}
   </div>

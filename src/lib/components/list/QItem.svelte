@@ -11,7 +11,7 @@
 
 <script lang="ts">
   import { ripple } from "$helpers";
-  import { getRouterInfo, isActivationKey } from "$utils";
+  import { getActionableEventHandlers, getRouterInfo } from "$utils";
   import QSeparator from "../separator/QSeparator.svelte";
   import { listCtx } from "./QList.svelte";
   import type { QItemProps } from "./props";
@@ -78,6 +78,8 @@
   });
 
   const ariaSelected = $derived(ctx.selection ? isActive : (props["aria-selected"] ?? undefined));
+
+  const handlers = $derived(getActionableEventHandlers({ disabled, onclick, onkeydown }));
   // #endregion: --- Derived values
 
   // #region:    --- Context
@@ -100,30 +102,6 @@
   });
 
   // #region:    --- Functions
-  function handleClick(event: MouseEvent & { currentTarget: HTMLElement }) {
-    if (disabled) {
-      event.preventDefault();
-      event.stopImmediatePropagation();
-      return;
-    }
-
-    onclick?.(event);
-  }
-
-  function handleKeydown(event: KeyboardEvent & { currentTarget: HTMLElement }) {
-    onkeydown?.(event);
-
-    if (event.defaultPrevented || !isClickable || !isActivationKey(event)) {
-      return;
-    }
-
-    const isNativeActivation = tag === "button" || (routerInfo.hasLink && event.code === "Enter");
-    if (!isNativeActivation) {
-      event.preventDefault();
-      event.currentTarget.click();
-    }
-  }
-
   function handleDragstart(event: DragEvent & { currentTarget: HTMLElement }) {
     ondragstart?.(event);
     nativeDragged = isDraggable && !event.defaultPrevented;
@@ -154,8 +132,7 @@
     href={disabled ? undefined : routerInfo.linkAttributes.href}
     data-quaff
     {style}
-    onclick={handleClick}
-    onkeydown={handleKeydown}
+    {...handlers}
     ondragstart={handleDragstart}
     ondragend={handleDragend}
     {@attach ripple({ disabled: !isClickable || noRipple })}
@@ -176,8 +153,7 @@
     {...routerInfo.linkAttributes}
     data-quaff
     {style}
-    onclick={handleClick}
-    onkeydown={handleKeydown}
+    {...handlers}
     ondragstart={handleDragstart}
     ondragend={handleDragend}
     {@attach ripple({ disabled: !isClickable || noRipple })}

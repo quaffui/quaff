@@ -1,11 +1,10 @@
 <script lang="ts">
   import { slide } from "svelte/transition";
-  import { goto } from "$app/navigation";
   import QBtn from "$components/button/QBtn.svelte";
   import QIcon from "$components/icon/QIcon.svelte";
   import QItem from "$components/list/QItem.svelte";
   import QItemSection from "$components/list/QItemSection.svelte";
-  import { isActivationKey, type QEvent } from "$utils";
+  import { getActionableEventHandlers } from "$utils";
   import type { QExpansionItemProps } from "./props";
 
   // #region:    --- Props
@@ -73,6 +72,20 @@
     flat: expandIconToggle || undefined,
     "aria-label": toggleAriaLabel,
   });
+
+  const toggleIconHandlers = $derived(
+    getActionableEventHandlers(
+      { disabled, onclick: onExpandIconClick },
+      {
+        onAction(e) {
+          e.stopPropagation();
+          e.preventDefault();
+
+          toggle();
+        },
+      }
+    )
+  );
   // #endregion: --- Derived values
 
   // #region:    --- Effects
@@ -123,82 +136,6 @@
     e.preventDefault();
     e.stopPropagation();
   }
-
-  function onclick(e: QEvent<MouseEvent, HTMLElement>) {
-    if (disabled) {
-      preventAndStop(e);
-      return;
-    }
-
-    props.onclick?.(e);
-  }
-
-  function onIconClick(e: QEvent<MouseEvent, HTMLElement>) {
-    if (disabled) {
-      preventAndStop(e);
-      return;
-    }
-
-    e.stopPropagation();
-    e.preventDefault();
-
-    toggle();
-    onExpandIconClick?.(e);
-  }
-
-  function onkeydown(e: KeyboardEvent) {
-    if (disabled) {
-      preventAndStop(e);
-      return;
-    }
-
-    if (e.key === "Escape") {
-      detailsEl?.blur();
-      return;
-    }
-
-    if (!isActivationKey(e)) {
-      return;
-    }
-
-    if (to || href) {
-      preventAndStop(e);
-      goto((to || href) as string);
-      return;
-    }
-
-    if (expandIconToggle) {
-      // If expandIconToggle is true, we don't want to toggle the expansion item
-      // as the icon should do it
-      return;
-    }
-
-    e.preventDefault();
-    toggle();
-  }
-
-  function onIconKeydown(e: KeyboardEvent) {
-    if (disabled) {
-      preventAndStop(e);
-      return;
-    }
-
-    if (e.key === "Escape") {
-      (e.target as HTMLElement)?.blur();
-      return;
-    }
-
-    if (!isActivationKey(e) || !expandIconToggle) {
-      return;
-    }
-
-    preventAndStop(e);
-
-    const clickEvent = new MouseEvent("click", {
-      relatedTarget: e.target as HTMLElement,
-    }) as QEvent<MouseEvent, HTMLElement>;
-    onIconClick(clickEvent);
-  }
   // #endregion: --- Functions
 
   Q.classes("q-expansion-item", {
@@ -248,8 +185,6 @@
         {disabled}
         noRipple={expandIconToggle || noRipple}
         clickable={!expandIconToggle}
-        {onclick}
-        {onkeydown}
       >
         {@render summary({ expanded: value, show, hide, toggle })}
       </QItem>
@@ -261,8 +196,6 @@
         {disabled}
         noRipple={expandIconToggle || noRipple}
         clickable={!expandIconToggle}
-        {onclick}
-        {onkeydown}
       >
         {#if icon}
           <QItemSection type="icon">
@@ -287,8 +220,7 @@
                 color="on-surface"
                 tag="div"
                 tabindex={0}
-                onclick={onIconClick}
-                onkeydowncapture={onIconKeydown}
+                onclick={toggleIconHandlers.onclick}
               />
             {:else}
               <QIcon class="q-expansion-item__toggle-icon" {...iconAttributes} />

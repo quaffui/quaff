@@ -2,12 +2,10 @@
   import { useColor, useSize } from "$composables";
   import { ripple } from "$helpers";
   import { quaffConfig } from "$internal/quaffConfig";
-  import { extractImgSrc, getRouterInfo, isActivationKey, type QEvent } from "$utils";
+  import { extractImgSrc, getActionableEventHandlers, getRouterInfo } from "$utils";
   import QCircularProgress from "$components/progress/QCircularProgress.svelte";
   import QIconSnippet from "$internal/QIconSnippet.svelte";
   import type { QBtnIcon, QBtnProps, QBtnVariantOptions } from "./props";
-
-  type ButtonEvent<T extends Event> = QEvent<T, HTMLElement>;
 
   let {
     disabled = false,
@@ -54,6 +52,42 @@
   const isToggle = $derived(selected !== undefined && !(hasContent && finalVariant === "flat"));
   const fillIcon = $derived(isToggle ? selected === true : hasContent);
 
+  const eventHandlers = $derived(
+    getActionableEventHandlers(
+      { disabled, onclick, onkeydown },
+      {
+        onAction() {
+          if (isToggle) {
+            selected = !selected;
+          }
+        },
+        onEscape(event) {
+          event.currentTarget.blur();
+        },
+      }
+    )
+  );
+
+  const iconSize = $derived.by(() => {
+    const standardSizes = {
+      xs: "1rem",
+      sm: "1.25rem",
+      md: hasContent ? "1.25rem" : "1.5rem",
+      lg: "1.75rem",
+      xl: "2rem",
+    } as const;
+    const expressiveSizes = {
+      ...standardSizes,
+      xs: "1.25rem",
+      sm: hasContent ? "1.25rem" : "1.5rem",
+      md: "1.5rem",
+      lg: "2rem",
+      xl: "2.5rem",
+    } as const;
+
+    return (isExpressive ? expressiveSizes : standardSizes)[resolvedSize];
+  });
+
   function resolveVariant(): QBtnVariantOptions {
     if (variant) {
       return variant;
@@ -80,57 +114,6 @@
     }
 
     return "flat";
-  }
-
-  const iconSize = $derived.by(() => {
-    const standardSizes = {
-      xs: "1rem",
-      sm: "1.25rem",
-      md: hasContent ? "1.25rem" : "1.5rem",
-      lg: "1.75rem",
-      xl: "2rem",
-    } as const;
-    const expressiveSizes = {
-      ...standardSizes,
-      xs: "1.25rem",
-      sm: hasContent ? "1.25rem" : "1.5rem",
-      md: "1.5rem",
-      lg: "2rem",
-      xl: "2.5rem",
-    } as const;
-
-    return (isExpressive ? expressiveSizes : standardSizes)[resolvedSize];
-  });
-
-  function handleClick(event: ButtonEvent<MouseEvent>) {
-    if (disabled) {
-      event.preventDefault();
-      event.stopImmediatePropagation();
-      return;
-    }
-
-    if (isToggle) {
-      selected = !selected;
-    }
-
-    onclick?.(event as Parameters<NonNullable<QBtnProps["onclick"]>>[0]);
-  }
-
-  function handleKeydown(event: ButtonEvent<KeyboardEvent>) {
-    if (event.key === "Escape") {
-      event.currentTarget.blur();
-    }
-
-    if (disabled) {
-      return;
-    }
-
-    onkeydown?.(event as Parameters<NonNullable<QBtnProps["onkeydown"]>>[0]);
-
-    if (isActivationKey(event)) {
-      event.preventDefault();
-      event.currentTarget.click();
-    }
   }
 
   Q.classes("q-btn", {
@@ -162,8 +145,7 @@
   aria-pressed={isToggle ? selected : undefined}
   tabindex={disabled ? -1 : tabindex}
   {target}
-  onclick={handleClick}
-  onkeydown={handleKeydown}
+  {...eventHandlers}
   {@attach ripple({ disabled: noRipple || disabled, color: rippleColor })}
   data-quaff
 >
