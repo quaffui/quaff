@@ -69,14 +69,20 @@ export default class QScrollObserver {
     this.direction = horizontal ? "right" : "down";
 
     onMount(() => {
-      let parsedTarget = elFromSelector(target ?? null);
+      const resolvedTarget =
+        target === null || target === undefined ? window : elFromSelector(target);
 
-      if (parsedTarget === null) {
+      if (resolvedTarget === null) {
         console.warn(`The given target (${target}) is null, observing window instead`);
-        parsedTarget = window;
       }
 
+      const parsedTarget = resolvedTarget instanceof HTMLElement ? resolvedTarget : window;
+
       this.target = parsedTarget;
+      const initialPosition = this.getScrollPosition(parsedTarget);
+      this.lastScroll = initialPosition;
+      this.position = initialPosition;
+      this.inflectionPoint = initialPosition;
 
       this.removeScrollListener = on(parsedTarget, "scroll", this.handler, SCROLL_LISTENER_OPTIONS);
 
@@ -131,6 +137,11 @@ export default class QScrollObserver {
     this.position = newScrollPosition;
     this.delta = newScrollPosition - this.lastScroll;
 
+    if (this.delta === 0) {
+      this.changedDirection = false;
+      return;
+    }
+
     const newDirection: Direction =
       this.delta > 0 ? (this.horizontal ? "right" : "down") : this.horizontal ? "left" : "up";
 
@@ -165,7 +176,7 @@ export default class QScrollObserver {
     this.removeScrollListener = null;
 
     this.target = null;
-    this.direction = "down";
+    this.direction = this.horizontal ? "right" : "down";
     this.changedDirection = false;
     this.delta = 0;
     this.inflectionPoint = 0;
