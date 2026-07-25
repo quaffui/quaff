@@ -36,24 +36,24 @@ export function prepareScript(instance: Script, source: string, namespace: strin
     const { start, end } = expression as Node<"SimpleCallExpression">;
 
     if (expression.arguments.length !== 2) {
-      throw new Error("The ${namespace}.classes function takes exactly 2 arguments");
+      throw new Error(`The ${namespace}.classes function takes exactly 2 arguments`);
     }
 
     const [component, options] = expression.arguments;
 
     if (component.type !== "Literal") {
       throw new Error(
-        "The ${namespace}.classes 1st argument should be a Literal containing the name of the component"
+        `The ${namespace}.classes 1st argument should be a Literal containing the name of the component`
       );
     }
 
     if (options.type !== "ObjectExpression") {
-      throw new Error("The ${namespace}.classes 2nd argument should be an object");
+      throw new Error(`The ${namespace}.classes 2nd argument should be an object`);
     }
 
     if (options.properties.some((prop) => prop.type === "SpreadElement")) {
       throw new Error(
-        "The ${namespace}.classes 2nd argument doesn't take SpreadElements as a property"
+        `The ${namespace}.classes 2nd argument doesn't take SpreadElements as a property`
       );
     }
 
