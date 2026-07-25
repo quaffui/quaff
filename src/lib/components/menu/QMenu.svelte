@@ -4,7 +4,7 @@
   import { innerHeight, innerWidth } from "svelte/reactivity/window";
   import { browser } from "$app/environment";
   import { quaffConfig } from "$internal/quaffConfig";
-  import { doesOverlayUsePopover, getOverlayPortalTarget, usePortal } from "$utils";
+  import { doesOverlayUsePopover, getOverlayPortalTarget, usePortal, type QEvent } from "$utils";
   import type { QMenuAnchor, QMenuProps } from "./props";
 
   // #region:    --- Props
@@ -19,6 +19,7 @@
     autoClose = true,
     children,
     class: userClass,
+    onclick,
     ...props
   }: QMenuProps = $props();
   // #endregion: --- Props
@@ -105,9 +106,7 @@
         capture: true,
       }
     );
-    const removeDocumentKeydownListener = on(document, "keydown", handleDocumentKeydown, {
-      capture: true,
-    });
+    const removeDocumentKeydownListener = on(document, "keydown", handleDocumentKeydown);
 
     return () => {
       removeDocumentPointerdownListener();
@@ -270,7 +269,7 @@
   }
 
   function handleDocumentKeydown(event: KeyboardEvent) {
-    if (!value || event.key !== "Escape") {
+    if (!value || event.defaultPrevented || event.key !== "Escape") {
       return;
     }
 
@@ -279,8 +278,10 @@
     hide();
   }
 
-  function handleMenuClick() {
-    if (autoClose) {
+  function handleMenuClick(event: QEvent<MouseEvent, HTMLDivElement>) {
+    onclick?.(event);
+
+    if (!event.defaultPrevented && autoClose) {
       hide();
     }
   }
