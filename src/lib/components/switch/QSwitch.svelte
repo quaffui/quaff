@@ -34,25 +34,29 @@
 
   // #region:    --- Functions
   function onclick(event: QSwitchEvent<MouseEvent>) {
-    event.preventDefault();
     if (disabled) {
       return;
     }
 
     props.onclick?.(event);
 
+    if (event.defaultPrevented) {
+      return;
+    }
+
+    event.preventDefault();
     qSwitchInput.focus();
     toggle();
   }
 
   function onkeydown(event: QSwitchEvent<KeyboardEvent>) {
-    if (disabled || !isActivationKey(event)) {
+    if (disabled) {
       return;
     }
 
     props.onkeydown?.(event);
 
-    if (event.defaultPrevented) {
+    if (event.defaultPrevented || !isActivationKey(event)) {
       return;
     }
 
