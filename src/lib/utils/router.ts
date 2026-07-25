@@ -24,7 +24,7 @@ export function getRouterInfo<T extends RouterProps>(props: T) {
   const isActive = isRouteActive(resolvedHref);
 
   const linkAttributes = {
-    "data-sveltekit-reload": props.replace || undefined,
+    "data-sveltekit-replacestate": props.replace || undefined,
     href: resolvedHref,
   };
 
