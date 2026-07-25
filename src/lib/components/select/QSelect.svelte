@@ -45,6 +45,10 @@
     append,
     after,
     value = $bindable(),
+    "aria-label": ariaLabel,
+    onblur,
+    onfocus,
+    onkeydown,
     ...props
   }: QSelectProps = $props();
   // #endregion: --- Props
@@ -136,16 +140,18 @@
 
   function handleFocus(e: QSelectEvent<FocusEvent>) {
     isFocused = true;
-    props.onfocus?.(e);
+    onfocus?.(e);
   }
 
   function handleBlur(e: QSelectEvent<FocusEvent>) {
     isFocused = false;
-    props.onblur?.(e);
+    onblur?.(e);
   }
 
   function handleKeydown(e: QSelectEvent<KeyboardEvent>) {
-    if (disabled) {
+    onkeydown?.(e);
+
+    if (e.defaultPrevented || disabled) {
       return;
     }
 
@@ -182,8 +188,6 @@
     } else if (e.code === "Tab") {
       hideMenu();
     }
-
-    props.onkeydown?.(e);
   }
 
   function handleInput(e: Event) {
@@ -355,7 +359,7 @@
         aria-controls={listboxId}
         aria-expanded={isMenuOpen}
         aria-haspopup="listbox"
-        aria-label={label}
+        aria-label={ariaLabel ?? label}
         aria-activedescendant={activeOptionId}
         aria-readonly={useInput ? undefined : "true"}
         onfocus={handleFocus}
