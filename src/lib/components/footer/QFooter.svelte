@@ -28,14 +28,14 @@
   // #endregion: --- Reactive variables
 
   // #region:    --- Derived values
-  const revealObserver = useRevealScrollObserver("footer", uid, () => reveal);
+  const revealObserver = useRevealScrollObserver("footer", uid, () => reveal && value);
   const revealScroll = $derived(revealObserver.scroll);
 
   const offset = $derived(revealScroll ? revealScroll.position + height : undefined);
 
   // Collapse the footer `${revealOffset}px` above the bottom of layout content when scrolling up
   const collapsed = $derived(
-    reveal && revealScroll?.direction === "up" && offset! + revealOffset < contentScrollHeight
+    !value || (revealScroll?.direction === "up" && offset! + revealOffset < contentScrollHeight)
   );
 
   const leftOffset = $derived(footerContext.view.charAt(8) === "l");
