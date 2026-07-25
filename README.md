@@ -1,78 +1,78 @@
 # Quaff
 
-Quaff is a component library for Svelte that follows the [Material Design 3](https://m3.material.io/) guidelines. It provides a comprehensive set of UI components designed to create beautiful, consistent, and accessible web applications.
+<img src="./static/logo.svg" alt="Quaff cocktail logo" width="112" align="left" />
 
-> **⚠️ Early Development Notice:** Quaff is still maturing and not battle-tested yet. Use it in production if you're feeling brave! We welcome contributions and feedback to help shape the library.
+Quaff is a Material Design 3 framework built for Svelte 5. It includes ready-to-use
+components, layouts, and utilities for building Svelte apps.
 
-## Overview
+[Documentation](https://quaff.dev/) · [Components](https://quaff.dev/components) ·
+[npm](https://www.npmjs.com/package/@quaffui/quaff)
 
-Quaff is project that draws some inspiration from [Quasar Framework](https://quasar.dev/), [Material Web](https://material-web.dev/) and [BeerCSS](https://www.beercss.com/) adapted specifically for Svelte 5. It implements Material Design 3 (Material You) principles while providing a developer-friendly API.
-This is an independent project and is not endorsed by or affiliated with Material Design 3 or Quasar Framework.
+<br clear="left" />
 
-Key features:
-
-- Beautiful [documentation](https://quaff.dev/)
-- Built for [Svelte 5](https://svelte.dev/) and [SvelteKit](https://kit.svelte.dev/) with full runes support
-- Follows Material Design 3 guidelines
-- Type-safe components with TypeScript
-- Comprehensive component documentation
-- Components auto-import out of the box
-
-## Getting started
-
-Quaff comes with a CLI tool called `create-quaff`. You can use it to easily create a new Quaff project:
-
-```bash
-bun create quaff@latest
+```sh
+npm create quaff@latest
 ```
 
-## Developing
+> [!NOTE]
+> Quaff is in beta while we prepare `1.0.0-rc1`. Most of the framework is in place, but some
+> APIs may still change before 1.0.
 
-Once you've installed dependencies with `bun install`, start a development server:
+## Included
 
-```bash
+- Material Design 3 components, layouts, and themes
+- Built for Svelte 5 runes and SvelteKit
+- Fully typed component APIs
+- Easy setup, auto-imports, and component tree shaking through `create-quaff`
+
+## Getting Started
+
+`create-quaff` creates a new SvelteKit project with Quaff configured. Once it finishes, open the generated project and start building your app.
+
+Browse the [documentation](https://quaff.dev/) for components, layouts, and utilities.
+
+## Contributing to Quaff
+
+To work on the framework itself, install its dependencies and start the dev server:
+
+```sh
+bun install
 bun run dev
-
-# or start the server and open the app in a new browser tab
-bun run open
 ```
 
-Everything inside `src/lib` is part of the library, everything inside `src/routes` serves as documentation and component showcase.
+Common commands:
 
-## Building
+- `bun run open` starts the development server and opens it in a browser
+- `bun run check` runs Svelte and TypeScript diagnostics
+- `bun run lint` checks formatting and lint rules
+- `bun run package` builds and validates the publishable Svelte package
+- `bun run build` builds the package and its CSS bundles
+- `bun run build:docs` generates and builds the documentation site
 
-To build the library:
+## Repository Layout
 
-```bash
-bun run package
-```
-
-To create a production version of your app:
-
-```bash
-bun run build
-```
-
-You can preview the production build with `bun run preview`.
-
-> To deploy the documentation site, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
-
-## Project Structure
-
-- `/src/lib/components` - The individual UI components
-- `/src/lib/css` - Styling and theming utilities
-- `/src/routes` - Documentation and examples
-- `/docgen` - Documentation generation tools
-- `/plugins` - Preprocessors used by Quaff (compiled by the relevant package scripts)
+- `src/lib/components` contains the public UI components
+- `src/lib/css` contains component styles, themes, and layout utilities
+- `src/routes` contains the documentation and component examples
+- `plugins` contains the build-time preprocessors and CSS integration
+- `docgen` and `scripts` contain documentation and build tooling
 
 ## Acknowledgements
 
-This project draws inspiration from:
+Quaff began with code and ideas from several open-source projects and still maintains some
+compatible APIs. Most of that code has since been replaced with Quaff's own implementation:
 
-- [Quasar Framework](https://quasar.dev/): Copyright (c) 2015-present Razvan Stoenescu. Licensed under the [MIT License](https://github.com/quasarframework/quasar/blob/dev/LICENSE)
-- [Material Web Components](https://github.com/material-components/material-web): Copyright (c) Google LLC. Licensed under the [Apache License 2.0 License](https://github.com/material-components/material-web/blob/main/LICENSE)
-- [BeerCSS](https://www.beercss.com/): Copyright (c) 2021 Beer css! Licensed under the [MIT License](https://github.com/beercss/beercss/blob/main/LICENSE)
+- [Quasar Framework](https://quasar.dev/): Copyright (c) 2015-present Razvan Stoenescu.
+  Licensed under the [MIT License](https://github.com/quasarframework/quasar/blob/dev/LICENSE)
+- [Material Web](https://github.com/material-components/material-web): Copyright (c) Google
+  LLC. Licensed under the
+  [Apache License 2.0](https://github.com/material-components/material-web/blob/main/LICENSE)
+- [BeerCSS](https://www.beercss.com/): Copyright (c) 2021 Beer css! Licensed under the
+  [MIT License](https://github.com/beercss/beercss/blob/main/LICENSE)
+
+Quaff is independent and is not endorsed by or affiliated with Google, Material Design, or
+the projects listed.
 
 ## License
 
-MIT
+Quaff is available under the [MIT License](./LICENSE).
