@@ -39,7 +39,16 @@ export function useAlign(align: UseAlignOptions = "top left") {
     .split(" ")
     .map((entry) => {
       const val = alignMap[entry as keyof typeof alignMap];
-      return val ? `justify-${val}` : false;
+
+      if (val) {
+        return `justify-${val}`;
+      }
+
+      return {
+        top: "items-start",
+        middle: "items-center",
+        bottom: "items-end",
+      }[entry];
     })
     .filter((entry) => typeof entry === "string");
 
