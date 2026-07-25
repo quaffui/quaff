@@ -63,7 +63,7 @@
   });
 
   const isModal = $derived(overlay || isBelowBreakpoint);
-  const canHideOnClickOutside = $derived((value && !persistent) || isModal);
+  const canHideOnClickOutside = $derived(value && !persistent);
   const hideOnRouteChange = $derived(!persistent || isModal);
   const canSwipe = $derived(!noSwipe && isBelowBreakpoint);
 
@@ -369,10 +369,12 @@
   <button
     type="button"
     tabindex="-1"
-    aria-label="Close drawer"
+    aria-label={persistent ? undefined : "Close drawer"}
+    aria-hidden={persistent || undefined}
+    disabled={persistent}
     class="q-drawer__scrim"
     class:q-drawer__scrim--active={value}
-    onclick={hide}
+    onclick={persistent ? undefined : hide}
   ></button>
 {/if}
 
