@@ -71,6 +71,18 @@
       return;
     }
 
+    e.stopPropagation();
+
+    if (iconClick) {
+      onTrailingIconClick?.(e);
+    } else {
+      props.onclick?.(e as QEvent<MouseEvent, HTMLDivElement>);
+    }
+
+    if (e.defaultPrevented) {
+      return;
+    }
+
     if (kind === "input" && iconClick) {
       inputSelected = false;
     } else if (kind === "filter" && !iconClick) {
@@ -78,13 +90,6 @@
     } else if (kind === "input" && !iconClick && value !== undefined) {
       inputSelected = false;
       editing = true;
-    }
-
-    e.stopPropagation();
-    if (iconClick) {
-      onTrailingIconClick?.(e);
-    } else {
-      props.onclick?.(e as QEvent<MouseEvent, HTMLDivElement>);
     }
 
     if (editing) {
@@ -95,6 +100,16 @@
   }
 
   async function onkeydown(e: KeyboardEvent) {
+    if (disabled) {
+      return;
+    }
+
+    props.onkeydown?.(e as QEvent<KeyboardEvent, HTMLDivElement>);
+
+    if (e.defaultPrevented) {
+      return;
+    }
+
     if (kind === "input" && e.key === "Backspace") {
       e.preventDefault();
 
