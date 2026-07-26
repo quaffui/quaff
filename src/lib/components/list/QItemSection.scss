@@ -77,6 +77,16 @@
       outline: 0.1875rem solid var(--secondary);
       outline-offset: -0.1875rem;
     }
+
+    &:first-child {
+      border-top-left-radius: inherit;
+      border-bottom-left-radius: inherit;
+    }
+
+    &:last-child {
+      border-top-right-radius: inherit;
+      border-bottom-right-radius: inherit;
+    }
   }
 
   &--drag-handle {
