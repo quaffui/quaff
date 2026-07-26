@@ -11,6 +11,7 @@
 
   height: auto;
   padding: 0.75rem;
+  border-radius: 0;
 
   background-color: var(--surface);
   color: var(--on-surface);
@@ -69,10 +70,16 @@
       width: var(--#{$side}-drawer-width);
       transform: translate(if(sass($side == "left"): -100%; else: 100%));
 
-      @if $side == "left" {
-        border-radius: 0 1rem 1rem 0;
-      } @else {
-        border-radius: 1rem 0 0 1rem;
+      @each $position in ("top", "bottom") {
+        @if $side == "left" {
+          &.q-drawer--offset-#{$position} {
+            border-#{$position}-right-radius: 1rem;
+          }
+        } @else {
+          &.q-drawer--offset-#{$position} {
+            border-#{$position}-left-radius: 1rem;
+          }
+        }
       }
     }
 
