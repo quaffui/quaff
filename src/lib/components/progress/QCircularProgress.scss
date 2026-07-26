@@ -1,63 +1,130 @@
-@use "$css/mixins";
+@property --q-circular-progress-sweep {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 10;
+}
+
+@property --q-circular-progress-wave-phase {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
 
 .q-circular-progress {
   display: inline-block;
   position: relative;
   vertical-align: middle;
-
-  height: 1em;
+  font-size: var(--q-progress-size, 2.5rem);
   width: 1em;
-  font-size: var(--size);
+  height: 1em;
   line-height: 0;
 
   &__svg {
-    height: 100%;
+    display: block;
     width: 100%;
+    height: 100%;
+    transform: rotate(var(--q-progress-start-angle));
+    transform-origin: center;
+  }
+
+  &__svg--wave {
+    animation: q-circular-progress-wave-phase 1s linear infinite;
+  }
+
+  &__wave {
+    transform-origin: center;
+    transform: rotate(calc(var(--q-circular-progress-wave-phase) * -40deg));
+  }
+
+  &__active--wave {
+    stroke-dashoffset: calc(
+      -1 * var(--q-circular-progress-wave-phase) * var(--q-progress-wave-path-offset)
+    );
   }
 
   &--indeterminate {
-    & .q-circular-progress__svg {
-      transform-origin: 50% 50%;
-      animation: q-spin 2s linear infinite;
+    .q-circular-progress__svg {
+      animation: q-circular-progress-spin 6s linear infinite;
+    }
 
-      & .q-circular-progress__indicator {
-        stroke-dasharray: 1400;
-        stroke-dashoffset: 0;
-        animation: q-load 1.5s ease-in-out infinite;
-      }
+    .q-circular-progress__active,
+    .q-circular-progress__track {
+      animation: q-circular-progress-sweep 6s cubic-bezier(0.2, 0, 0, 1) infinite;
+    }
+
+    .q-circular-progress__active {
+      stroke-dasharray: var(--q-circular-progress-sweep) 100;
+    }
+
+    .q-circular-progress__track {
+      stroke-dasharray: calc(
+          100 - var(--q-circular-progress-sweep) - var(--q-progress-track-gap) * 2
+        )
+        100;
+      stroke-dashoffset: calc(
+        -1 * (var(--q-circular-progress-sweep) + var(--q-progress-track-gap))
+      );
+    }
+
+    .q-circular-progress__rotation {
+      transform-origin: center;
+      animation: q-circular-progress-rotation 6s linear infinite;
     }
   }
 }
 
-@keyframes q-spin {
-  0% {
-    transform: rotate3d(0, 0, 1, 0deg);
+@keyframes q-circular-progress-spin {
+  from {
+    transform: rotate(var(--q-progress-start-angle));
   }
-  25% {
-    transform: rotate3d(0, 0, 1, 90deg);
-  }
-  50% {
-    transform: rotate3d(0, 0, 1, 180deg);
-  }
-  75% {
-    transform: rotate3d(0, 0, 1, 270deg);
-  }
-  100% {
-    transform: rotate3d(0, 0, 1, 359deg);
+
+  to {
+    transform: rotate(var(--q-progress-end-angle));
   }
 }
 
-@keyframes q-load {
+@keyframes q-circular-progress-sweep {
   0% {
-    stroke-dasharray: 1, 400;
-    stroke-dashoffset: 0;
+    --q-circular-progress-sweep: 10;
   }
+
   50% {
-    stroke-dasharray: 400, 400;
-    stroke-dashoffset: -100;
+    --q-circular-progress-sweep: 87;
   }
+
   100% {
-    stroke-dasharray: 400, 400;
-    stroke-dashoffset: -300;
+    --q-circular-progress-sweep: 10;
+  }
+}
+
+@keyframes q-circular-progress-rotation {
+  0% {
+    transform: rotate(0);
+  }
+
+  5%,
+  25% {
+    transform: rotate(90deg);
+  }
+
+  30%,
+  50% {
+    transform: rotate(180deg);
+  }
+
+  55%,
+  75% {
+    transform: rotate(270deg);
+  }
+
+  80%,
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes q-circular-progress-wave-phase {
+  to {
+    --q-circular-progress-wave-phase: 1;
   }
 }
