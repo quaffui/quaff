@@ -10,7 +10,7 @@ import {
 export const QSwitchDocs: QComponentDocs = {
   name: "QSwitch",
   description:
-    "QSwitch is a switch-like checkbox which offers binary choices. It supports labels, icons and different positioning of the labels.",
+    "QSwitch controls a standalone binary setting that takes effect immediately. It supports labels, optional state icons, and configurable label positioning.",
   docs: {
     generics: QSwitchDocsGenerics,
     domAttributesConstraint: QSwitchDocsDomAttributesConstraint,
@@ -26,8 +26,13 @@ export const QSwitchDocs: QComponentDocs = {
     events: [
       {
         name: "input",
-        type: "(value: boolean) => void",
-        description: "Emitted when the user changes the value of the toggle.",
+        type: "InputEvent",
+        description: "Emitted when the switch value is toggled.",
+      },
+      {
+        name: "change",
+        type: "Event",
+        description: "Emitted after the switch value is toggled.",
       },
     ],
     typeDependencies: QSwitchDocsTypeDependencies,

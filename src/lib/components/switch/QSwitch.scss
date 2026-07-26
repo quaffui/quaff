@@ -1,4 +1,5 @@
 @use "$css/disabled";
+@use "$css/mixins";
 
 $root: ".q-switch";
 $track: "#{$root}__track";
@@ -7,19 +8,25 @@ $icon: "#{$root}__icon";
 
 $checked: "[aria-checked=true]";
 $unchecked: "[aria-checked=false]";
+$position-motion: 250ms cubic-bezier(0.2, 0, 0, 1);
 
 @layer q-switch {
   .q-switch {
+    --q-switch-state-opacity: 0%;
+    --ripple-color: var(--q-switch-state-color);
+
     position: relative;
 
     display: inline-flex;
+    min-height: 3rem;
     align-items: center;
-    flex-shrink: 0; // Stop from collapsing in flex containers
+    flex-shrink: 0;
     gap: 0.8rem;
 
+    color: var(--on-surface);
     cursor: pointer;
-
     outline: none;
+    vertical-align: top;
 
     isolation: isolate;
 
@@ -29,32 +36,92 @@ $unchecked: "[aria-checked=false]";
 
     &#{$checked} {
       --q-switch-track-color: var(--primary);
+      --q-switch-track-outline-color: transparent;
       --q-switch-handle-color: var(--on-primary);
-      --q-switch-handle-hover-color: var(--primary-container);
+      --q-switch-handle-interaction-color: var(--primary-container);
       --q-switch-icon-color: var(--on-primary-container);
+      --q-switch-state-color: var(--primary);
     }
 
     &#{$unchecked} {
       --q-switch-track-color: var(--surface-container-highest);
+      --q-switch-track-outline-color: var(--outline);
       --q-switch-handle-color: var(--outline);
-      --q-switch-handle-hover-color: var(--on-surface-variant);
+      --q-switch-handle-interaction-color: var(--on-surface-variant);
       --q-switch-icon-color: var(--surface-container-highest);
+      --q-switch-state-color: var(--on-surface);
+    }
+
+    &:not([aria-disabled]):is(:hover, :focus-visible, :active) {
+      --q-switch-handle-color: var(--q-switch-handle-interaction-color);
+    }
+
+    &:not([aria-disabled]):hover {
+      --q-switch-state-opacity: 8%;
+    }
+
+    &:not([aria-disabled]):is(:focus-visible, :active) {
+      --q-switch-state-opacity: 10%;
+    }
+
+    > .q-ripple__effect {
+      inset: auto;
+      inset-block-start: 50%;
+      inset-inline-start: -0.25rem;
+
+      width: 2.5rem;
+      height: 2.5rem;
+
+      border-radius: 50%;
+      transform: translateY(-50%);
+      transition:
+        inset-inline-start $position-motion,
+        inset-inline-end $position-motion;
+      z-index: 1;
+
+      .q-ripple {
+        max-width: 100%;
+        max-height: 100%;
+      }
+    }
+
+    &#{$checked} > .q-ripple__effect {
+      inset-inline-start: 1rem;
+    }
+
+    &--reversed > .q-ripple__effect {
+      inset-inline-start: auto;
+      inset-inline-end: 1rem;
+    }
+
+    &--reversed#{$checked} > .q-ripple__effect {
+      inset-inline-end: -0.25rem;
     }
 
     &__inner {
+      position: relative;
+
       width: 3.25rem;
       height: 2rem;
+      flex: none;
+
       border-radius: 10rem;
     }
 
-    & input {
-      appearance: none;
-      outline: none;
-      margin: 0;
+    &:focus-visible &__inner::after {
+      content: "";
       position: absolute;
-      width: 100%;
-      z-index: 1;
-      cursor: inherit;
+      inset: 0;
+
+      border-radius: inherit;
+      outline: 0.1875rem solid var(--secondary);
+      outline-offset: 0.125rem;
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    &__label {
+      @include mixins.typography(body-large);
     }
   }
 
@@ -62,57 +129,37 @@ $unchecked: "[aria-checked=false]";
   .q-switch {
     & #{$track} {
       position: absolute;
-      width: 100%;
-      height: 100%;
-      box-sizing: border-box;
+      inset: 0;
 
       display: flex;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
 
-      border-radius: 10rem;
-      cursor: pointer;
+      border-radius: inherit;
 
       &::before {
         content: "";
         position: absolute;
-        height: 100%;
-        width: 100%;
+        inset: 0;
 
-        display: flex;
-
-        border-radius: inherit;
         box-sizing: border-box;
+        border-color: var(--q-switch-track-outline-color);
+        border-style: solid;
+        border-width: 0;
+        border-radius: inherit;
         background-color: var(--q-switch-track-color);
-        transition-property: opacity, background-color;
-        transition-timing-function: linear;
-        transition-duration: 67ms;
-      }
-    }
-
-    &#{$checked} #{$track} {
-      background-color: transparent;
-      border-color: transparent;
-
-      &::before {
-        background-clip: content-box;
+        transition:
+          background-color 67ms linear,
+          border-color 67ms linear;
       }
     }
 
     &#{$unchecked} #{$track}::before {
-      border-color: var(--outline);
-      border-style: solid;
       border-width: 0.125rem;
-    }
-
-    &[aria-disabled] #{$track}::before,
-    &[aria-disabled] #{$track}::after {
-      transition: none;
-      opacity: 38%;
     }
   }
 
-  // Handle container
+  // Handle container and state layer
   .q-switch {
     & #{$handle}-container {
       position: relative;
@@ -121,8 +168,23 @@ $unchecked: "[aria-checked=false]";
       place-content: center;
       place-items: center;
 
-      // cubic-bezier(0.13, 0.78, 0.33, 1.15) for little bounce
-      transition: margin 200ms ease;
+      transition: margin $position-motion;
+      z-index: 2;
+
+      &::before {
+        content: "";
+        position: absolute;
+
+        width: 2.5rem;
+        height: 2.5rem;
+
+        border-radius: 50%;
+        background-color: var(--q-switch-state-color);
+        opacity: var(--q-switch-state-opacity);
+        transition:
+          opacity 15ms linear,
+          background-color 15ms linear;
+      }
     }
 
     &#{$checked} #{$handle}-container {
@@ -132,77 +194,38 @@ $unchecked: "[aria-checked=false]";
     &#{$unchecked} #{$handle}-container {
       margin-inline-end: 1.25rem;
     }
-
-    &[aria-disabled] #{$handle}-container {
-      transition: none;
-    }
   }
 
   // Handle
   .q-switch {
     & #{$handle} {
-      height: 1rem;
+      position: relative;
+
       width: 1rem;
+      height: 1rem;
 
-      border-radius: 100%;
-
-      transform-origin: center;
-      transition-property: height, width;
-      transition-duration: 250ms, 250ms;
-      transition-timing-function: cubic-bezier(0.2, 0, 0, 1), cubic-bezier(0.2, 0, 0, 1);
-      z-index: 0;
-
-      &::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-
-        display: flex;
-        border-radius: inherit;
-        box-sizing: border-box;
-        transition: background-color 67ms linear;
-      }
-
-      &::after {
-        content: "";
-        position: absolute;
-        inset: -0.5rem;
-        border-radius: inherit;
-
-        background-color: transparent;
-        opacity: 0.08;
-      }
-    }
-
-    &:not([aria-disabled])#{$checked}:is(:hover, :focus-within) #{$handle}::after {
-      background-color: var(--primary);
-    }
-
-    &:not([aria-disabled])#{$unchecked}:is(:hover, :focus-within) #{$handle}::after {
-      background-color: var(--on-surface);
+      border-radius: 50%;
+      background-color: var(--q-switch-handle-color);
+      transition:
+        width $position-motion,
+        height $position-motion,
+        background-color 67ms linear;
+      z-index: 1;
     }
 
     & #{$handle}--with-icon,
     &#{$checked} #{$handle} {
-      height: 1.5rem;
       width: 1.5rem;
+      height: 1.5rem;
     }
 
     &:not([aria-disabled]):active #{$handle} {
-      height: 1.75rem;
       width: 1.75rem;
-      transition-timing-function: linear;
-      transition-duration: 100ms;
-    }
-
-    &:not([aria-disabled]) {
-      & #{$handle}::before {
-        background-color: var(--q-switch-handle-color);
-      }
-
-      &:is(:hover, :focus-within, :active) #{$handle}::before {
-        background-color: var(--q-switch-handle-hover-color);
-      }
+      height: 1.75rem;
+      transition:
+        width 100ms linear,
+        height 100ms linear,
+        background-color 67ms linear;
     }
   }
 
@@ -210,16 +233,19 @@ $unchecked: "[aria-checked=false]";
   .q-switch {
     & #{$icon} {
       position: absolute;
-      // Equivalent to top, right, bottom and left set to 0
       inset: 0;
-      margin: auto;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--q-switch-icon-color);
 
-      transition: opacity 33ms linear;
+      display: grid;
+      margin: auto;
+      place-items: center;
+
+      color: var(--q-switch-icon-color);
       opacity: 0;
+      transform: rotate(0deg);
+      transition:
+        color 67ms linear,
+        opacity 33ms linear,
+        transform 167ms cubic-bezier(0.2, 0, 0, 1);
     }
 
     &#{$checked} #{$icon}--checked,
@@ -227,51 +253,100 @@ $unchecked: "[aria-checked=false]";
       opacity: 1;
     }
 
+    &#{$unchecked} #{$handle}:not(#{$handle}--with-icon) #{$icon}--checked {
+      transform: rotate(-45deg);
+    }
+  }
+}
+
+@layer q-switch--disabled {
+  .q-switch[aria-disabled] {
+    color: disabled.font-color();
+    cursor: default;
+    user-select: none;
+
+    &#{$unchecked} {
+      --q-switch-track-color: #{disabled.rest-color("surface-container-highest")};
+      --q-switch-track-outline-color: #{disabled.rest-color("on-surface")};
+      --q-switch-handle-color: #{disabled.font-color()};
+      --q-switch-icon-color: #{disabled.font-color("surface-container-highest")};
+    }
+
     &#{$checked} {
-      & #{$icon} {
-        transition: none;
+      --q-switch-track-color: #{disabled.rest-color()};
+      --q-switch-handle-color: var(--surface);
+      --q-switch-icon-color: #{disabled.font-color()};
+    }
+
+    & #{$track}::before,
+    & #{$handle}-container,
+    & #{$handle},
+    & #{$icon} {
+      transition: none;
+    }
+  }
+}
+
+@media (forced-colors: active) {
+  .q-switch {
+    --q-switch-track-color: Canvas;
+    --q-switch-track-outline-color: ButtonText;
+    --q-switch-handle-color: ButtonText;
+    --q-switch-handle-interaction-color: ButtonText;
+    --q-switch-icon-color: Canvas;
+
+    color: CanvasText;
+
+    &__inner {
+      forced-color-adjust: none;
+    }
+
+    & #{$handle}-container::before,
+    & .q-ripple__effect {
+      display: none;
+    }
+
+    &#{$checked} {
+      --q-switch-track-color: ButtonText;
+      --q-switch-handle-color: Canvas;
+      --q-switch-handle-interaction-color: Canvas;
+      --q-switch-icon-color: ButtonText;
+    }
+
+    &:focus-visible #{$root}__inner::after {
+      outline-color: Highlight;
+    }
+
+    &[aria-disabled] {
+      color: GrayText;
+
+      &#{$unchecked} {
+        --q-switch-track-outline-color: GrayText;
+        --q-switch-handle-color: GrayText;
+        --q-switch-handle-interaction-color: GrayText;
+      }
+
+      &#{$checked} {
+        --q-switch-track-color: GrayText;
+        --q-switch-icon-color: GrayText;
       }
     }
   }
 }
 
-// Disabled
-@layer q-switch--disabled {
-  .q-switch[aria-disabled] {
-    &,
-    & * {
-      @include disabled.base();
-    }
-
-    & #{$track}::before {
-      background-color: disabled.rest-color("surface-container-high");
-      border-color: disabled.rest-color("on-surface");
-    }
-
-    & #{$handle} {
-      background-color: disabled.font-color();
-    }
-
-    & #{$icon} {
-      color: disabled.font-color("surface-container-high");
-    }
-
-    &#{$checked} {
-      & #{$track}::before {
-        background-color: disabled.rest-color();
-      }
-
-      & #{$handle} {
-        background-color: var(--surface);
-      }
-
-      & #{$icon} {
-        color: disabled.font-color();
-      }
-    }
-
+@media (prefers-reduced-motion: reduce) {
+  .q-switch {
+    & #{$track}::before,
+    & #{$handle}-container,
+    & #{$handle}-container::before,
     & #{$handle},
-    & #{$handle}::before {
+    & #{$icon},
+    & > .q-ripple__effect {
+      transition: none;
+    }
+
+    & .q-ripple {
+      animation: none;
       transition: none;
     }
   }

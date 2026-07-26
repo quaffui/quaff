@@ -11,22 +11,24 @@ export interface QSwitchProps
   labelPosition?: "left" | "right";
 
   /**
-   * Shows default check/close icons in the switch handle.
+   * Shows the default check/close icons in the switch handle.
    */
   icons?: boolean;
 
   /**
-   * When true, only shows the check icon (when the switch is on).
+   * Shows only the check icon when the switch is on.
    */
   showOnlyCheckedIcon?: boolean;
 
   /**
-   * Custom icon to show when the switch is on. Can be a Material Symbol name or a custom snippet.
+   * Custom icon to show when the switch is on. Use an icon that communicates the selected state
+   * unambiguously. Can be a Material Symbol name or a custom snippet.
    */
   checkedIcon?: MaterialSymbol | Snippet;
 
   /**
-   * Custom icon to show when the switch is off. Can be a Material Symbol name or a custom snippet.
+   * Custom icon to show when the switch is off. Use an icon that communicates the unselected state
+   * unambiguously. Can be a Material Symbol name or a custom snippet.
    */
   uncheckedIcon?: MaterialSymbol | Snippet;
 }

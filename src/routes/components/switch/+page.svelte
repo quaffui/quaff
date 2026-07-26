@@ -36,7 +36,7 @@
         {/snippet}
 
         <div class="q-ma-sm">
-          <QSwitch bind:this={switchRef} bind:value={toggle} />
+          <QSwitch bind:this={switchRef} bind:value={toggle} label="Example setting" />
           <div class="q-mt-sm">Current value: {toggle ? "On" : "Off"}</div>
           <div class="q-mt-sm">
             <QBtn size="sm" label="Toggle programmatically" onclick={switchRef?.toggle} />
@@ -71,30 +71,26 @@
 
       <QDocsSection title="Switch with Icons">
         {#snippet sectionDescription()}
-          Enhance visual feedback with icons inside the switch handle. Use the <code>icons</code>
-          prop to display default check/close icons or specify custom icons with
-          <code>checkedIcon</code>
-          and <code>uncheckedIcon</code>.
+          Use the <code>icons</code> prop to display the default check/close icons, or provide custom
+          icons that communicate the selected and unselected states unambiguously.
         {/snippet}
 
         <div class="q-ma-sm flex q-gap-md">
           <QSwitch bind:value={toggle} icons label="With default icons" />
           <QSwitch bind:value={toggle} showOnlyCheckedIcon label="Only checked icon" />
-          <QSwitch bind:value={toggle} checkedIcon="favorite" label="Custom checked icon" />
-          <QSwitch bind:value={toggle} uncheckedIcon="warning" label="Custom unchecked icon" />
           <QSwitch
             bind:value={toggle}
-            checkedIcon="brightness_7"
-            uncheckedIcon="brightness_2"
-            label="Custom both icons"
+            checkedIcon="volume_up"
+            uncheckedIcon="volume_off"
+            label="Sound"
           />
         </div>
       </QDocsSection>
 
       <QDocsSection title="Disabled State">
         {#snippet sectionDescription()}
-          Use the <code>disabled</code> prop to prevent user interaction with the switch. Disabled switches
-          maintain their appearance but don't respond to clicks or keyboard input.
+          Use the <code>disabled</code> prop to prevent interaction. Disabled switches use reduced-emphasis
+          colors and don't respond to pointer or keyboard input.
         {/snippet}
 
         <div class="q-ma-sm flex q-gap-md">
@@ -114,13 +110,7 @@
           <QCardSection>
             <div class="text-h6">Dark Mode Settings</div>
             <div class="q-mt-md">
-              <QSwitch
-                bind:value={darkMode}
-                icons
-                checkedIcon="dark_mode"
-                uncheckedIcon="light_mode"
-                label="Enable Dark Mode"
-              />
+              <QSwitch bind:value={darkMode} label="Dark mode" />
             </div>
           </QCardSection>
 
@@ -138,57 +128,76 @@
         </QCard>
       </QDocsSection>
 
-      <QDocsSection title="In Forms and Lists">
+      <QDocsSection title="In Lists">
         {#snippet sectionDescription()}
-          QSwitch can be integrated into forms and lists to create intuitive settings interfaces.
+          Make the whole item the switch when a larger target is useful, or keep the switch as the
+          row's only control. Each setting applies immediately without a separate save action.
         {/snippet}
 
         <div class="flex q-gap-md">
           <QCard class="q-ma-sm">
-            <QCardSection>
-              <div class="text-h6">Settings</div>
+            <QCardSection class="q-mb-sm">
+              <div id="whole-item-switches-title" class="text-h6">Whole item</div>
             </QCardSection>
 
-            <QList>
-              <QItem tag="label">
+            <QList role="group" aria-labelledby="whole-item-switches-title">
+              <QItem
+                clickable
+                role="switch"
+                aria-checked={wifiEnabled}
+                aria-label="Wi-Fi"
+                onclick={() => (wifiEnabled = !wifiEnabled)}
+              >
                 <QItemSection type="avatar">
                   <QIcon name="wifi" />
                 </QItemSection>
                 <QItemSection>Wi-Fi</QItemSection>
                 <QItemSection type="toggle">
-                  <QSwitch bind:value={wifiEnabled} />
+                  <QSwitch value={wifiEnabled} inert aria-hidden="true" />
                 </QItemSection>
               </QItem>
 
-              <QItem tag="label">
+              <QItem
+                clickable
+                role="switch"
+                aria-checked={bluetoothEnabled}
+                aria-label="Bluetooth"
+                onclick={() => (bluetoothEnabled = !bluetoothEnabled)}
+              >
                 <QItemSection type="avatar">
                   <QIcon name="bluetooth" />
                 </QItemSection>
                 <QItemSection>Bluetooth</QItemSection>
                 <QItemSection type="toggle">
-                  <QSwitch bind:value={bluetoothEnabled} />
+                  <QSwitch value={bluetoothEnabled} inert aria-hidden="true" />
                 </QItemSection>
               </QItem>
 
-              <QItem tag="label">
+              <QItem
+                clickable
+                role="switch"
+                aria-checked={notificationsEnabled}
+                aria-label="Notifications"
+                onclick={() => (notificationsEnabled = !notificationsEnabled)}
+              >
                 <QItemSection type="avatar">
                   <QIcon name="notifications" />
                 </QItemSection>
                 <QItemSection>Notifications</QItemSection>
                 <QItemSection type="toggle">
-                  <QSwitch bind:value={notificationsEnabled} />
+                  <QSwitch value={notificationsEnabled} inert aria-hidden="true" />
                 </QItemSection>
               </QItem>
             </QList>
           </QCard>
 
           <QCard class="q-ma-sm">
-            <QCardSection>
-              <div class="text-h6">Privacy Settings</div>
+            <QCardSection class="q-mb-sm">
+              <div id="switch-only-settings-title" class="text-h6">Switch only</div>
             </QCardSection>
 
-            <QList>
-              <QItem tag="label">
+            <QList role="group" aria-labelledby="switch-only-settings-title">
+              <QItem>
                 <QItemSection>
                   {#snippet headline()}
                     Location Services
@@ -198,11 +207,11 @@
                   {/snippet}
                 </QItemSection>
                 <QItemSection type="toggle">
-                  <QSwitch />
+                  <QSwitch aria-label="Location services" />
                 </QItemSection>
               </QItem>
 
-              <QItem tag="label">
+              <QItem>
                 <QItemSection>
                   {#snippet headline()}
                     Activity Tracking
@@ -212,11 +221,11 @@
                   {/snippet}
                 </QItemSection>
                 <QItemSection type="toggle">
-                  <QSwitch />
+                  <QSwitch aria-label="Activity tracking" />
                 </QItemSection>
               </QItem>
 
-              <QItem tag="label">
+              <QItem>
                 <QItemSection>
                   {#snippet headline()}
                     Marketing Communications
@@ -226,7 +235,7 @@
                   {/snippet}
                 </QItemSection>
                 <QItemSection type="toggle">
-                  <QSwitch />
+                  <QSwitch aria-label="Marketing communications" />
                 </QItemSection>
               </QItem>
             </QList>
@@ -237,7 +246,8 @@
       <QDocsSection title="Event Handling">
         {#snippet sectionDescription()}
           QSwitch supports standard event handlers like <code>onclick</code> and
-          <code>onchange</code>. This allows you to perform actions when the switch state changes.
+          <code>oninput</code>/<code>onchange</code>. This allows you to respond when the switch
+          state changes.
         {/snippet}
 
         <div class="q-ma-sm">
@@ -245,6 +255,7 @@
             bind:value={toggle}
             label="Click me"
             onclick={() => console.log("Switch clicked")}
+            oninput={() => console.log("Switch input")}
             onchange={() => alert(`Switch value changed to: ${toggle ? "On" : "Off"}`)}
           />
         </div>
@@ -252,8 +263,9 @@
 
       <QDocsSection title="Accessibility" noCode>
         {#snippet sectionDescription()}
-          QSwitch is built with accessibility in mind. It includes proper ARIA attributes, supports
-          keyboard navigation, and provides visual feedback.
+          Give every switch a visible <code>label</code>, or an <code>aria-label</code> when nearby text
+          already provides the visual label. QSwitch exposes its current state and supports keyboard navigation
+          with a visible focus indicator.
         {/snippet}
 
         <div class="q-ma-sm">

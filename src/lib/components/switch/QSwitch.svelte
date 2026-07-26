@@ -21,13 +21,16 @@
   // #endregion: --- Props
 
   // #region:    --- Non-reactive variables
+  const id = $props.id();
+  const labelId = `q-switch__label-${id}`;
+
   let qSwitch: HTMLDivElement;
-  let qSwitchInput: HTMLInputElement;
   // #endregion: --- Non-reactive variables
 
   // #region:    --- Methods
   export function toggle() {
     value = !value;
+    qSwitch.dispatchEvent(new InputEvent("input", { bubbles: true, composed: true }));
     qSwitch.dispatchEvent(new Event("change", { bubbles: true }));
   }
   // #endregion: --- Methods
@@ -45,7 +48,7 @@
     }
 
     event.preventDefault();
-    qSwitchInput.focus();
+    qSwitch.focus();
     toggle();
   }
 
@@ -61,6 +64,11 @@
     }
 
     event.preventDefault();
+
+    if (event.repeat) {
+      return;
+    }
+
     event.currentTarget.click();
   }
   // #endregion: --- Functions
@@ -82,20 +90,23 @@
 
 <div
   bind:this={qSwitch}
+  {@attach ripple({ center: true, disabled })}
   {...props}
   class="q-switch"
   {onclick}
   {onkeydown}
+  tabindex={disabled ? undefined : (props.tabindex ?? 0)}
   aria-disabled={disabled || undefined}
   role="switch"
   aria-checked={!!value}
+  aria-labelledby={props["aria-labelledby"] ??
+    (!props["aria-label"] && label ? labelId : undefined)}
   data-quaff
 >
-  <label class="q-switch__inner">
-    <input bind:checked={value} bind:this={qSwitchInput} type="checkbox" {disabled} />
+  <span class="q-switch__inner" aria-hidden="true">
+    <input bind:checked={value} type="checkbox" hidden {disabled} />
     <span class="q-switch__track">
-      <span class="q-switch__touch"></span>
-      <span class="q-switch__handle-container" {@attach ripple({ disabled })}>
+      <span class="q-switch__handle-container">
         <span class="q-switch__handle">
           {#if (uncheckedIcon || icons) && !showOnlyCheckedIcon}
             {@render icon("unchecked")}
@@ -106,19 +117,20 @@
         </span>
       </span>
     </span>
-  </label>
+  </span>
   {#if label}
-    <span class="q-switch__label">
+    <span id={labelId} class="q-switch__label">
       {label}
     </span>
   {/if}
 </div>
 
 {#snippet icon(type: "unchecked" | "checked")}
-  <QIconSnippet
-    icon={type === "unchecked" ? uncheckedIcon : checkedIcon}
-    defaultIcon={type === "unchecked" ? "close" : "check"}
-    size="1rem"
-    class="q-switch__icon q-switch__icon--{type}"
-  />
+  <span class="q-switch__icon q-switch__icon--{type}">
+    <QIconSnippet
+      icon={type === "unchecked" ? uncheckedIcon : checkedIcon}
+      defaultIcon={type === "unchecked" ? "close" : "check"}
+      size="1rem"
+    />
+  </span>
 {/snippet}
