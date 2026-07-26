@@ -2,7 +2,14 @@
   import { docsCtx } from "$docs/QDocs.svelte";
   import { QCircularProgressDocs, QLinearProgressDocs } from "$components/progress/docs";
   import { pageTitle } from "$helpers/pageTitle";
-  import { QBtn, QCard, QCardSection, QCircularProgress, QLinearProgress } from "$lib";
+  import {
+    QBtn,
+    QCard,
+    QCardActions,
+    QCardSection,
+    QCircularProgress,
+    QLinearProgress,
+  } from "$lib";
   import { QDocs, QDocsSection } from "$docs";
 
   import snippets from "./docs.snippets";
@@ -43,9 +50,9 @@
           progress with a specific value or indeterminate progress when the duration is unknown.
         {/snippet}
 
-        <div class="q-my-md" style="max-width: 400px;">
+        <div class="q-my-md flex column q-gap-md" style="max-width: 400px;">
           <QLinearProgress value={linearValue} />
-          <div class="flex q-gap-md q-mt-sm">
+          <div class="flex q-gap-md">
             <QBtn
               size="sm"
               label="Decrease"
@@ -57,7 +64,7 @@
               onclick={() => (linearValue = Math.min(100, linearValue + 10))}
             />
           </div>
-          <div class="q-mt-xs">Current value: {linearValue}%</div>
+          <div>Current value: {linearValue}%</div>
         </div>
       </QDocsSection>
 
@@ -67,9 +74,9 @@
           an animated loading state to indicate that an operation is in progress.
         {/snippet}
 
-        <div class="q-my-md" style="max-width: 400px;">
+        <div class="q-my-md flex column q-gap-md" style="max-width: 400px;">
           <QLinearProgress indeterminate />
-          <div class="q-mt-sm">
+          <div>
             <QBtn
               size="sm"
               label="Toggle indeterminate"
@@ -77,11 +84,26 @@
             />
           </div>
 
-          <div class="q-mt-md">
-            <QLinearProgress
-              value={indeterminateProgress ? undefined : 45}
-              indeterminate={indeterminateProgress}
-            />
+          <div>
+            <QLinearProgress value={45} indeterminate={indeterminateProgress} />
+          </div>
+        </div>
+      </QDocsSection>
+
+      <QDocsSection title="Expressive Progress">
+        {#snippet sectionDescription()}
+          Set <code>expressive</code> for wavy Material 3 Expressive indicators. Pass
+          <code>{`{ expressive: true }`}</code> to <code>Quaff.init()</code> to enable them globally.
+        {/snippet}
+
+        <div class="q-my-md flex column q-gap-lg" style="max-width: 400px;">
+          <QLinearProgress value={65} expressive aria-label="Profile setup" />
+          <QLinearProgress expressive indeterminate aria-label="Uploading files" />
+
+          <div class="flex items-center q-gap-lg">
+            <QCircularProgress value={65} expressive aria-label="Profile setup" />
+            <QCircularProgress value={35} expressive aria-label="Download progress" />
+            <QCircularProgress expressive indeterminate aria-label="Download progress" />
           </div>
         </div>
       </QDocsSection>
@@ -103,16 +125,15 @@
 
       <QDocsSection title="Linear Progress Sizes and Shapes">
         {#snippet sectionDescription()}
-          Adjust the height of the progress bar with the <code>size</code> prop and modify its
-          appearance with
-          <code>noRound</code> to remove the rounded corners.
+          Baseline indicators are 4px high and expressive indicators are 10px high. Use the
+          <code>size</code> prop for a custom height or <code>noRound</code> for square ends.
         {/snippet}
 
         <div class="q-my-md flex column q-gap-md" style="max-width: 400px;">
-          <QLinearProgress value={50} size="0.25em" />
-          <QLinearProgress value={50} size="0.5em" />
-          <QLinearProgress value={50} size="0.75em" />
-          <QLinearProgress value={50} size="1em" noRound />
+          <QLinearProgress value={50} />
+          <QLinearProgress value={50} expressive />
+          <QLinearProgress value={50} size="0.5rem" />
+          <QLinearProgress value={50} size="0.5rem" noRound />
         </div>
       </QDocsSection>
 
@@ -268,9 +289,9 @@
 
         <div class="q-my-md flex q-gap-lg">
           <QCircularProgress value={60} thickness={0.1} size="3em" />
+          <QCircularProgress value={60} thickness={0.15} size="3em" />
           <QCircularProgress value={60} thickness={0.2} size="3em" />
           <QCircularProgress value={60} thickness={0.3} size="3em" />
-          <QCircularProgress value={60} thickness={0.4} size="3em" />
         </div>
       </QDocsSection>
 
@@ -282,28 +303,28 @@
 
         <div class="q-my-md">
           <div class="flex q-gap-lg">
-            <QCard class="flex column items-center q-pa-md">
+            <QCard class="flex column items-center q-gap-sm">
               <QCardSection>
                 <div class="text-subtitle2">angle: 0° (top)</div>
               </QCardSection>
               <QCircularProgress value={50} angle={0} size="3em" />
             </QCard>
 
-            <QCard class="flex column items-center q-pa-md">
+            <QCard class="flex column items-center q-gap-sm">
               <QCardSection>
                 <div class="text-subtitle2">angle: 90° (right)</div>
               </QCardSection>
               <QCircularProgress value={50} angle={90} size="3em" />
             </QCard>
 
-            <QCard class="flex column items-center q-pa-md">
+            <QCard class="flex column items-center q-gap-sm">
               <QCardSection>
                 <div class="text-subtitle2">angle: 180° (bottom)</div>
               </QCardSection>
               <QCircularProgress value={50} angle={180} size="3em" />
             </QCard>
 
-            <QCard class="flex column items-center q-pa-md">
+            <QCard class="flex column items-center q-gap-sm">
               <QCardSection>
                 <div class="text-subtitle2">angle: 270° (left)</div>
               </QCardSection>
@@ -312,14 +333,14 @@
           </div>
 
           <div class="q-mt-lg flex q-gap-lg">
-            <QCard class="flex column items-center q-pa-md">
+            <QCard class="flex column items-center q-gap-sm">
               <QCardSection>
                 <div class="text-subtitle2">Custom range (0-50)</div>
               </QCardSection>
               <QCircularProgress value={25} min={0} max={50} size="3em" showValue />
             </QCard>
 
-            <QCard class="flex column items-center q-pa-md">
+            <QCard class="flex column items-center q-gap-sm">
               <QCardSection>
                 <div class="text-subtitle2">Custom range (0-200)</div>
               </QCardSection>
@@ -391,13 +412,13 @@
         {/snippet}
 
         <div class="q-my-md flex q-gap-lg">
-          <QCard class="q-pa-md" style="width: 280px;">
+          <QCard style="width: 18rem;">
             <QCardSection>
               <div class="text-h6">File Upload</div>
               <div class="text-subtitle2">3 of 5 files completed</div>
             </QCardSection>
 
-            <QCardSection>
+            <QCardSection class="q-mt-md">
               <QLinearProgress value={60} />
               <div class="flex justify-between q-mt-xs">
                 <div class="text-caption">27.5 MB/45.8 MB</div>
@@ -405,13 +426,13 @@
               </div>
             </QCardSection>
 
-            <QCardSection class="flex justify-end">
-              <QBtn flat label="Cancel" class="q-mr-sm" />
-              <QBtn label="Pause" />
-            </QCardSection>
+            <QCardActions align="right">
+              <QBtn flat label="Cancel" />
+              <QBtn tonal label="Pause" />
+            </QCardActions>
           </QCard>
 
-          <QCard class="q-pa-md flex column justify-center" style="width: 280px;">
+          <QCard class="flex column justify-center" style="width: 18rem;">
             <div class="flex items-center justify-center q-mb-md">
               <QCircularProgress value={75} size="5em" showValue color="tertiary" />
             </div>
@@ -421,30 +442,15 @@
         </div>
       </QDocsSection>
 
-      <QDocsSection title="Accessibility" noCode>
+      <QDocsSection title="Accessibility">
         {#snippet sectionDescription()}
-          Both QLinearProgress and QCircularProgress include appropriate ARIA attributes to ensure
-          accessibility for screen readers.
+          Add a label that identifies the operation. Determinate indicators expose their current
+          value and range; indeterminate indicators omit <code>aria-valuenow</code>.
         {/snippet}
 
-        <div class="q-my-md">
-          <ul>
-            <li class="q-mb-sm">Progress components have <code>role="progressbar"</code></li>
-            <li class="q-mb-sm"><code>aria-valuenow</code> reflects the current progress value</li>
-            <li class="q-mb-sm">
-              <code>aria-valuemin</code> and <code>aria-valuemax</code> define the range
-            </li>
-            <li class="q-mb-sm">
-              Indeterminate progress indicators have no <code>aria-valuenow</code> attribute
-            </li>
-          </ul>
-
-          <div class="q-my-md">
-            <QLinearProgress value={35} />
-            <div class="text-caption q-mt-xs">
-              This progress bar has aria-valuenow="35", aria-valuemin="0", aria-valuemax="100"
-            </div>
-          </div>
+        <div class="q-my-md flex column q-gap-lg" style="max-width: 400px;">
+          <QLinearProgress value={35} aria-label="Uploading profile photo" />
+          <QCircularProgress indeterminate aria-label="Loading account details" />
         </div>
       </QDocsSection>
     </div>
