@@ -1,5 +1,6 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
+  import { resolve } from "$app/paths";
   import {
     QAvatar,
     QBreadcrumbs,
@@ -174,6 +175,12 @@
       snippet: select,
     },
     {
+      name: "QSnackbar",
+      description: "Display temporary messages to provide feedback to users.",
+      href: "/components/snackbar",
+      snippet: snackbar,
+    },
+    {
       name: "QSwitch",
       description: "Provide on/off toggles for binary state management.",
       href: "/components/switch",
@@ -274,11 +281,11 @@
         role="link"
         tabindex="0"
         style="grid-auto-rows: 1fr; cursor: pointer; width: 100%"
-        onclick={() => goto(component.href)}
+        onclick={() => goto(resolve(component.href, {}))}
         onkeypress={(e) => {
           if (e.key === "Enter") {
             e.preventDefault();
-            goto(component.href);
+            goto(resolve(component.href, {}));
           }
         }}
       >
@@ -291,8 +298,8 @@
             {@render component.snippet()}
           </div>
 
-          <QCardSection class="q-px-lg flex column flex-center">
-            <h4>{component.name}</h4>
+          <QCardSection class="q-px-lg q-py-sm flex column flex-center">
+            <div class="display-small">{component.name}</div>
             <p class="text-center" style="text-wrap: balance">{component.description}</p>
           </QCardSection>
         </QCard>
@@ -436,6 +443,7 @@
         <div class="flex column label-large">
           <div class="q-mb-sm">Socials</div>
           <div class="flex q-gap-sm">
+            <!-- eslint-disable svelte/no-at-html-tags -->
             {@html logos.facebook}
             {@html logos.x}
             {@html logos.instagram}
@@ -603,6 +611,17 @@
   {@const options = ["Apple", "Banana", "Cherry", "Strawberry"]}
 
   <QSelect class="q-select__demo" value="Apple" {options} label="Favorite fruit" filled />
+{/snippet}
+
+{#snippet snackbar()}
+  <div class="q-snackbar" data-quaff="true">
+    <div class="q-snackbar__message" role="status" aria-live="polite" aria-atomic="true">
+      Item removed
+    </div>
+    <div class="q-snackbar__controls">
+      <QBtn class="q-snackbar__action" label="Undo" flat />
+    </div>
+  </div>
 {/snippet}
 
 {#snippet qswitch()}
