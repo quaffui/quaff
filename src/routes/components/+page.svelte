@@ -250,16 +250,16 @@
 
         <div class="col-1"></div>
 
-        <QChip label="Hey!" icon="waving_hand" class="col-3 secondary-container" />
+        <QChip label="Hey!" icon="waving_hand" class="col-3 surface" />
 
         <div class="col-1"></div>
       </div>
     {/if}
     <div class="row q-gap-lg q-pa-lg items-center">
       {#if Quaff.breakpoints.isMoreThan("sm")}
-        <QChip label="Hey!" icon="waving_hand" class="col-3 secondary-container" />
+        <QChip label="Hey!" icon="waving_hand" class="col-3 surface" />
       {/if}
-      <QTabs value="home" class="col-12 col-sm-9">
+      <QTabs value="home" class="col-12 col-sm-9" style="border-radius: 0.5rem;">
         <QTab name="home" icon="home">Home</QTab>
         <QTab name="about" icon="info">About</QTab>
         <QTab name="account" icon="person">Account</QTab>
@@ -319,7 +319,7 @@
 {#snippet breadcrumbs()}
   <QCard>
     <QBreadcrumbs separator="icon:chevron_right">
-      <QBreadcrumbsEl>Home</QBreadcrumbsEl>
+      <QBreadcrumbsEl>Quaff</QBreadcrumbsEl>
       <QBreadcrumbsEl>Components</QBreadcrumbsEl>
       <QBreadcrumbsEl>Breadcrumb</QBreadcrumbsEl>
     </QBreadcrumbs>
@@ -327,7 +327,7 @@
 {/snippet}
 
 {#snippet button()}
-  <QBtn label="Make payment" variant="filled" />
+  <QBtn label="Add to cart" icon="shopping_cart" variant="filled" />
 {/snippet}
 
 {#snippet buttonIcon()}
@@ -336,22 +336,22 @@
 
 {#snippet card()}
   <QCard style="min-width: min-content;">
-    <QCardSection class="headline-small">Cocktail degustation</QCardSection>
+    <QCardSection class="headline-small q-mb-sm">Cocktail degustation</QCardSection>
     <QCardSection>Join us for an unforgettable evening of flavors and fun!</QCardSection>
 
-    <QCardActions align="left">
-      <QBtn label="Book now" />
+    <QCardActions align="right">
+      <QBtn label="Book now" flat />
     </QCardActions>
   </QCard>
 {/snippet}
 
 {#snippet checkbox()}
   <QCard style="width: 100%; min-width: min-content;">
-    <QCardSection class="headline-small">Appearance</QCardSection>
-    <QCardSection>
+    <QCardSection class="headline-small q-mb-sm">Appearance</QCardSection>
+    <QCardSection class="q-ml-md">
       <QCheckbox value={Quaff.darkMode.isActive} label="Dark mode" />
     </QCardSection>
-    <QCardSection>
+    <QCardSection class="q-ml-md">
       <QCheckbox value={false} label="Large text mode" />
     </QCardSection>
   </QCard>
@@ -359,7 +359,7 @@
 
 {#snippet chips()}
   <QCard style="width: 100%;">
-    <QCardSection class="headline-small">Pick your flavors</QCardSection>
+    <QCardSection class="headline-small q-mb-sm">Pick your flavors</QCardSection>
     <QSeparator />
     <QCardSection horizontal class="q-gap-sm" style="overflow: auto">
       <QChip label="Chocolate" kind="filter" selected={true} />
@@ -370,13 +370,15 @@
 {/snippet}
 
 {#snippet dialog()}
-  <QCard>
+  <QCard style="width: 100%;">
     <QCardSection class="headline-small">Delete this file?</QCardSection>
-    <QCardSection>This action cannot be undone.</QCardSection>
+    <QCardSection class="text-on-surface-variant q-mb-md">
+      This action cannot be undone.
+    </QCardSection>
 
     <QCardActions align="right">
-      <QBtn label="Cancel" variant="flat" />
-      <QBtn label="Delete" class="error-container" />
+      <QBtn flat label="Cancel" variant="flat" />
+      <QBtn flat label="Delete" class="error-container" />
     </QCardActions>
   </QCard>
 {/snippet}
@@ -386,7 +388,7 @@
     {#snippet drawerLeft()}
       <QDrawer value={true} persistent style="width: 100%;">
         <QList activeClass="text-primary">
-          <QItem>Mail</QItem>
+          <QItem class="headline-small">Mail</QItem>
           <QItem active clickable class="q-link">
             <QItemSection type="icon">
               <QIcon name="inbox" />
@@ -432,7 +434,7 @@
     {#snippet footer()}
       <QFooter class="flex">
         <div class="flex column label-large">
-          <div>Socials</div>
+          <div class="q-mb-sm">Socials</div>
           <div class="flex q-gap-sm">
             {@html logos.facebook}
             {@html logos.x}
@@ -448,7 +450,7 @@
 {#snippet header()}
   <QHeader style="position: absolute; left: 1rem; top: 1rem; width: 50vw;">
     <QBtn icon="menu" flat aria-label="Menu" />
-    <QHeaderTitle>Quaff</QHeaderTitle>
+    <QHeaderTitle shrink>Quaff</QHeaderTitle>
   </QHeader>
 {/snippet}
 
@@ -460,7 +462,7 @@
       <QIcon name="archive" />
       <QIcon name="forward" />
     </QCard>
-    <QCard class="flex" fill="primary" style="border-radius: 50rem;">
+    <QCard class="flex primary" style="border-radius: 50rem;">
       <QIcon name="add" />
     </QCard>
   </div>
@@ -566,7 +568,7 @@
   <div class="q-component-card__menu-demo">
     <QBtn label="Open menu" variant="filled" />
 
-    <div class="q-menu">
+    <div class="q-menu q-menu--expressive">
       <QList dense>
         <QItem clickable>
           <QItemSection>Profile</QItemSection>
@@ -608,7 +610,7 @@
     {#snippet header()}
       <QHeader bordered style="display: block;" height={86}>
         <div class="flex justify-between items-center q-pa-sm" style="width: 100%;">
-          09:30
+          <span class="q-ml-sm">09:30</span>
 
           <div>
             <QIcon name="signal_wifi_4_bar" size="sm" />
@@ -617,7 +619,7 @@
           </div>
         </div>
 
-        <div class="flex justify-between items-center" style="width: 100%;">
+        <div class="flex justify-between items-center q-px-md" style="width: 100%;">
           <div class="flex flex-center q-gap-md">
             <QIcon name="arrow_back" />
             <span class="headline-small">Settings</span>
@@ -628,9 +630,9 @@
     {/snippet}
 
     {#snippet content()}
-      <QList class="q-pa-md" dense>
-        <QItem class="body-large">Display options</QItem>
-        <QItem>
+      <QList dense class="q-pa-md" style="margin-inline: 0; max-width: unset;">
+        <QItem class="title-large">Display options</QItem>
+        <QItem class="flex justify-between">
           <QItemSection>Dark mode</QItemSection>
           <QItemSection type="toggle">
             <QSwitch value={Quaff.darkMode.isActive} checkedIcon="check" />
@@ -673,20 +675,16 @@
     { id: 5, title: "The Catcher in the Rye", author: "J.D. Salinger" },
   ]}
 
-  <QTable
-    {columns}
-    {rows}
-    bordered
-    dense
-    style="position: absolute; left: 1rem; top: 1rem; min-width: 110%"
-  />
+  <QCard class="surface" style="position: absolute; left: 1rem; top: 1rem; min-width: 110%">
+    <QTable {columns} {rows} bordered dense />
+  </QCard>
 {/snippet}
 
 {#snippet tabs()}
   <QLayout class="background" style="height: 50vh;">
     {#snippet header()}
-      <QHeader class="flex justify-between items-center" height={32}>
-        09:30
+      <QHeader class="flex justify-between items-center q-pa-sm" height={32}>
+        <span class="q-ml-sm">09:30</span>
 
         <div>
           <QIcon name="signal_wifi_4_bar" size="sm" />
@@ -707,8 +705,8 @@
 {/snippet}
 
 {#snippet tooltip()}
-  <QCard class="q-pa-sm">
-    <QCardSection class="label-medium text-primary">A cool component</QCardSection>
+  <QCard class="q-pa-md">
+    <QCardSection class="label-large text-primary q-mb-sm">A cool component</QCardSection>
     <QCardSection class="body-small">
       You can use the <code>QTooltip</code> component to provide additional information on hover.
     </QCardSection>
