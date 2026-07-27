@@ -1,0 +1,140 @@
+.q-date {
+  &__month-navigation {
+    display: flex;
+    flex: 0 0 3.5rem;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 2;
+    height: 3.5rem;
+    padding-inline: 0.75rem;
+    background-color: var(--surface-container-high);
+  }
+
+  &__month-year {
+    min-width: 0;
+    color: var(--on-surface-variant);
+
+    .q-btn__label {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+
+  &__dropdown-icon {
+    flex: 0 0 auto;
+
+    &--expanded {
+      transform: rotate(180deg);
+    }
+  }
+
+  &__month-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+
+    .q-btn {
+      color: var(--on-surface-variant);
+    }
+  }
+
+  &__navigation-arrow {
+    color: var(--on-surface-variant);
+
+    .q-icon {
+      --size: 1.5rem !important;
+    }
+
+    &:dir(rtl) .q-icon {
+      transform: scaleX(-1);
+    }
+  }
+
+  &__docked-navigation {
+    display: grid;
+    flex: 0 0 4rem;
+    grid-template-columns: 3rem minmax(0, 4.5rem) 3rem 3rem minmax(0, 4.5rem) 3rem;
+    align-items: center;
+    height: 4rem;
+    padding-inline: 0.75rem;
+
+    > .q-btn {
+      justify-self: center;
+    }
+
+    &--selection {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      border-block-end: 0.0625rem solid var(--outline-variant);
+    }
+  }
+
+  &__month-select,
+  &__year-select {
+    width: 100%;
+    min-width: 0;
+    padding-inline: 0;
+    color: var(--on-surface-variant);
+
+    .q-btn__label {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      min-width: 0;
+      gap: 0.125rem;
+
+      > span {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+  }
+
+  &__selector--active {
+    color: var(--primary);
+  }
+
+  &__docked-body {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    min-height: 0;
+    overflow: hidden;
+    background-color: var(--surface-container-high);
+  }
+
+  &__modal-calendar-body {
+    display: grid;
+    flex: 1 1 auto;
+    height: 21rem;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  &__calendar-viewport {
+    display: grid;
+    grid-area: 1 / 1;
+    width: 100%;
+    min-height: 0;
+    overflow: hidden;
+    touch-action: pan-y;
+  }
+
+  &__calendar-page {
+    grid-area: 1 / 1;
+    width: 100%;
+    min-width: 0;
+    min-height: 0;
+    background-color: var(--surface-container-high);
+  }
+
+  &__month-viewport {
+    display: grid;
+    overflow: hidden;
+  }
+}

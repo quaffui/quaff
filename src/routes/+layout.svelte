@@ -89,6 +89,10 @@
       to: "/components/chip",
     },
     {
+      name: "Date",
+      to: "/components/date",
+    },
+    {
       name: "Dialog",
       to: "/components/dialog",
     },

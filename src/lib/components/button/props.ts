@@ -1,7 +1,7 @@
 import type { Clickable, Labelable, Linkable, QSize } from "$utils";
 import type { MaterialSymbol } from "material-symbols";
 import type { Snippet } from "svelte";
-import type { HTMLAttributes } from "svelte/elements";
+import type { HTMLButtonAttributes } from "svelte/elements";
 
 export type QBtnSizeOptions = Exclude<QSize, "none">;
 export type QBtnIcon = MaterialSymbol | Snippet | `img:${string}`;
@@ -100,14 +100,15 @@ interface QBtnCommonProps extends Clickable, Linkable, QBtnVariantProps {
   tag?: keyof HTMLElementTagNameMap;
 }
 
-export interface QBtnProps extends QBtnCommonProps, Labelable, HTMLAttributes<HTMLButtonElement> {
+export interface QBtnProps
+  extends QBtnCommonProps, Labelable, Omit<HTMLButtonAttributes, "disabled"> {
   /**
    * Sets the color of the button.
    */
   color?: string;
 }
 
-export interface QIconBtnProps extends QBtnCommonProps, HTMLAttributes<HTMLButtonElement> {
+export interface QIconBtnProps extends QBtnCommonProps, Omit<HTMLButtonAttributes, "disabled"> {
   /**
    * Sets the color of the button.
    */
