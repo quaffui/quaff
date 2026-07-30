@@ -11,11 +11,15 @@ export interface QInputProps
     Omit<HTMLInputAttributes, "value" | "disabled"> {
   /**
    * Makes the input component more compact.
+   *
+   * @default false
    */
   dense?: boolean;
 
   /**
    * Indicates an error state for the input.
+   *
+   * @default false
    */
   error?: boolean;
 
@@ -27,6 +31,8 @@ export interface QInputProps
 
   /**
    * Applies a filled background style to the input.
+   *
+   * @default false
    */
   filled?: boolean;
 
@@ -38,11 +44,15 @@ export interface QInputProps
 
   /**
    * Applies an outlined style to the input.
+   *
+   * @default false
    */
   outlined?: boolean;
 
   /**
    * Makes the sides of the input round.
+   *
+   * @default false
    */
   rounded?: boolean;
 

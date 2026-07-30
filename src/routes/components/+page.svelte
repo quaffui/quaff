@@ -34,6 +34,7 @@
     QTab,
     QTable,
     QTabs,
+    QTime,
   } from "$components";
   import QDocs from "$docs/QDocs.svelte";
   import { pageTitle } from "$helpers/pageTitle";
@@ -204,6 +205,12 @@
       description: "Organize content into switchable sections with tabbed navigation.",
       href: "/components/tabs",
       snippet: tabs,
+    },
+    {
+      name: "QTime",
+      description: "Select times with accessible Material 3 dial and input modes.",
+      href: "/components/time",
+      snippet: time,
     },
     {
       name: "QTooltip",
@@ -385,6 +392,10 @@
 
 {#snippet date()}
   <QDate value="2026-07-26" label="Event date" filled />
+{/snippet}
+
+{#snippet time()}
+  <QTime value="14:30" label="Event time" filled />
 {/snippet}
 
 {#snippet dialog()}
