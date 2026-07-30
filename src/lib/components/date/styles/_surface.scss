@@ -1,0 +1,193 @@
+@use "$css/mixins";
+@use "$css/variables";
+
+.q-date {
+  .q-field__wrapper,
+  .q-field__input {
+    cursor: pointer;
+  }
+
+  .q-field__input {
+    caret-color: transparent;
+  }
+
+  .q-field__snippet-append {
+    gap: 0.5rem;
+  }
+
+  &__field-icon {
+    color: var(--on-surface-variant);
+  }
+
+  &__trigger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+  }
+
+  &__trigger-button {
+    color: var(--on-surface-variant);
+  }
+
+  &__dialog#{&}__dialog.q-dialog:not(.q-dialog--fullscreen) {
+    width: min(22.5rem, 100dvw);
+    height: fit-content;
+    min-width: 0;
+    min-height: 0;
+    max-width: 22.5rem;
+    max-height: min(35.75rem, calc(100dvh - 3rem));
+    padding: 0;
+    overflow: auto;
+    border-radius: 1.75rem;
+    background-color: var(--surface-container-high);
+    color: var(--on-surface);
+    box-shadow: var(--elevate3);
+  }
+
+  &__dialog#{&}__dialog.q-dialog:not(.q-dialog--fullscreen):has(#{&}__input-mode) {
+    width: min(20.5rem, 100dvw);
+    max-width: 20.5rem;
+  }
+
+  &__dialog#{&}__dialog.q-dialog.q-dialog--fullscreen {
+    inset: 0;
+    width: 100dvw;
+    height: 100dvh;
+    max-width: none;
+    max-height: none;
+    overflow: hidden;
+    background-color: var(--surface-container-high);
+    color: var(--on-surface);
+  }
+
+  &__docked#{&}__docked.q-menu {
+    width: min(22.5rem, calc(100dvw - 1rem));
+    max-width: 22.5rem;
+    max-height: calc(100dvh - 1rem);
+    margin-block-start: 0.5rem;
+    overflow: auto;
+    overscroll-behavior: contain;
+    border-radius: 1rem;
+    background-color: var(--surface-container-high);
+    color: var(--on-surface);
+    box-shadow: var(--elevate3);
+  }
+
+  &__picker {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    overflow: hidden;
+    border-radius: 0;
+
+    &--motion-ready {
+      transition: height variables.$speed3 cubic-bezier(0.2, 0, 0, 1);
+    }
+
+    &--selection {
+      .q-date__docked-body {
+        padding-block-end: 1.25rem;
+      }
+    }
+  }
+
+  &__picker:not(&__picker--fullscreen) {
+    height: 35.75rem;
+  }
+
+  &__picker--input:not(&__picker--fullscreen) {
+    height: 19rem;
+  }
+
+  &__picker--auto:not(&__picker--fullscreen) {
+    height: 32.75rem;
+  }
+
+  &__picker--input#{&}__picker--auto:not(&__picker--fullscreen) {
+    height: 15.25rem;
+  }
+
+  &__picker--docked:not(&__picker--fullscreen) {
+    height: 28.75rem;
+  }
+
+  &__picker--docked#{&}__picker--auto:not(&__picker--fullscreen) {
+    height: 25.75rem;
+  }
+
+  &__picker--docked#{&}__picker--selection:not(&__picker--fullscreen) {
+    height: 26.75rem;
+  }
+
+  &__app-bar {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: space-between;
+    min-height: calc(4rem + env(safe-area-inset-top));
+    padding-block-start: env(safe-area-inset-top);
+    padding-inline: max(0.5rem, env(safe-area-inset-left)) max(0.75rem, env(safe-area-inset-right));
+  }
+
+  &__save {
+    color: var(--primary);
+  }
+
+  &__close {
+    color: var(--on-surface-variant);
+  }
+
+  &__header {
+    display: flex;
+    flex: 0 0 7.5rem;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    min-height: 0;
+    padding-block: 1rem 0.75rem;
+    padding-inline: 1.5rem 4rem;
+    border-block-end: 0.0625rem solid var(--outline-variant);
+    color: var(--on-surface-variant);
+  }
+
+  &__title {
+    @include mixins.typography("label-large");
+  }
+
+  &__headline {
+    @include mixins.typography("headline-large");
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__mode-toggle {
+    position: absolute;
+    inset-inline-end: 0.75rem;
+    bottom: 0.75rem;
+    color: var(--on-surface-variant);
+  }
+
+  &__content {
+    display: grid;
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: hidden;
+    overscroll-behavior: contain;
+  }
+
+  &__mode-page {
+    display: flex;
+    grid-area: 1 / 1;
+    flex-direction: column;
+    width: 100%;
+    min-width: 0;
+    min-height: 0;
+    overflow: hidden;
+    background-color: var(--surface-container-high);
+  }
+}

@@ -11,6 +11,7 @@ export const Components = {
   QChip: "QChip",
   QCircularProgress: "QCircularProgress",
   QCodeBlock: "QCodeBlock",
+  QDate: "QDate",
   QDialog: "QDialog",
   QDrawer: "QDrawer",
   QExpansionItem: "QExpansionItem",
@@ -45,6 +46,7 @@ export const ComponentPaths = {
   Checkbox: "checkbox",
   Chip: "chip",
   CodeBlock: "codeBlock",
+  Date: "date",
   Dialog: "dialog",
   Drawer: "drawer",
   ExpansionItem: "expansion-item",
@@ -74,6 +76,7 @@ export const ComponentCss = {
   Card: "components/card",
   Checkbox: "components/checkbox",
   Chip: "components/chip",
+  Date: "components/date",
   Dialog: "components/dialog",
   Drawer: "components/drawer",
   ExpansionItem: "components/expansion-item",
@@ -101,6 +104,13 @@ export type ComponentCssName = (typeof ComponentCss)[keyof typeof ComponentCss];
 
 const buttonCss = [ComponentCss.Button, ComponentCss.Icon, ComponentCss.Progress];
 const chipCss = [ComponentCss.Chip, ComponentCss.Avatar, ComponentCss.Icon];
+const dateCss = [
+  ComponentCss.Date,
+  ComponentCss.Field,
+  ComponentCss.Dialog,
+  ComponentCss.Menu,
+  ...buttonCss,
+];
 const expansionItemCss = [
   ComponentCss.ExpansionItem,
   ComponentCss.Button,
@@ -134,6 +144,7 @@ export const ComponentCssDependencies = {
   [Components.QChip]: chipCss,
   [Components.QCircularProgress]: [ComponentCss.Progress],
   [Components.QCodeBlock]: buttonCss,
+  [Components.QDate]: dateCss,
   [Components.QDialog]: [ComponentCss.Dialog],
   [Components.QDrawer]: [ComponentCss.Drawer],
   [Components.QExpansionItem]: expansionItemCss,
@@ -168,6 +179,7 @@ export const ComponentPathCssDependencies = {
   [ComponentPaths.Checkbox]: [ComponentCss.Checkbox],
   [ComponentPaths.Chip]: chipCss,
   [ComponentPaths.CodeBlock]: buttonCss,
+  [ComponentPaths.Date]: dateCss,
   [ComponentPaths.Dialog]: [ComponentCss.Dialog],
   [ComponentPaths.Drawer]: [ComponentCss.Drawer],
   [ComponentPaths.ExpansionItem]: expansionItemCss,

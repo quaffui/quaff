@@ -1,0 +1,130 @@
+@use "$css/mixins";
+
+.q-date {
+  &__selection-list {
+    height: 100%;
+    min-height: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-gutter: stable;
+    scroll-padding-block: 1rem;
+  }
+
+  &__selection-option {
+    @include mixins.typography("body-large");
+
+    --q-date-container-color: transparent;
+    --q-date-state-layer-color: var(--on-surface);
+    --q-date-state-layer-opacity: 0%;
+
+    appearance: none;
+    display: grid;
+    grid-template-columns: 3rem minmax(0, 1fr);
+    align-items: center;
+    width: 100%;
+    height: 3rem;
+    padding-block: 0;
+    padding-inline: 0 1rem;
+    border: 0;
+    outline: 0;
+    background:
+      linear-gradient(
+        mixins.with-alpha(var(--q-date-state-layer-color), var(--q-date-state-layer-opacity)),
+        mixins.with-alpha(var(--q-date-state-layer-color), var(--q-date-state-layer-opacity))
+      ),
+      var(--q-date-container-color);
+    color: var(--on-surface);
+    text-align: start;
+    cursor: pointer;
+
+    &:hover:not(:disabled) {
+      --q-date-state-layer-opacity: 8%;
+    }
+
+    &:active:not(:disabled),
+    &:focus-visible {
+      --q-date-state-layer-opacity: 10%;
+    }
+
+    &:focus-visible {
+      outline: 0.1875rem solid var(--secondary);
+      outline-offset: -0.1875rem;
+    }
+
+    &--selected {
+      --q-date-container-color: var(--surface-variant);
+    }
+
+    &:disabled {
+      opacity: 0.38;
+      cursor: default;
+    }
+  }
+
+  &__selection-check {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 3rem;
+  }
+
+  &__input-mode {
+    flex: 1 1 auto;
+    position: relative;
+    height: 100%;
+    padding: 0.625rem 1.5rem 1rem;
+
+    .q-field {
+      width: 100%;
+    }
+  }
+
+  &__actions {
+    display: flex;
+    flex: 0 0 3.75rem;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    z-index: 2;
+    min-height: 3.75rem;
+    padding: 0.5rem 0.5rem 0.75rem;
+    background-color: var(--surface-container-high);
+
+    .q-btn {
+      color: var(--primary);
+    }
+  }
+
+  &__picker--fullscreen {
+    height: 100%;
+    padding-block-end: env(safe-area-inset-bottom);
+  }
+
+  &__picker--fullscreen &__header {
+    padding-inline-start: max(1.5rem, env(safe-area-inset-left));
+    padding-inline-end: max(4rem, calc(3.25rem + env(safe-area-inset-right)));
+  }
+
+  &__picker--fullscreen &__month-navigation,
+  &__picker--fullscreen &__calendar-viewport,
+  &__picker--fullscreen &__years,
+  &__picker--fullscreen &__input-mode {
+    width: min(100%, 22.5rem);
+    margin-inline: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .q-date {
+    &__picker,
+    &__day,
+    &__day::before,
+    &__day::after,
+    &__year::before,
+    &__year::after {
+      transition: none;
+    }
+  }
+}
