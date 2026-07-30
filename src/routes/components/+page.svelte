@@ -12,6 +12,7 @@
     QCheckbox,
     QChip,
     QCircularProgress,
+    QDate,
     QDrawer,
     QExpansionItem,
     QFooter,
@@ -95,6 +96,12 @@
       description: "Showcase compact information or tags with interactive chips.",
       href: "/components/chip",
       snippet: chips,
+    },
+    {
+      name: "QDate",
+      description: "Choose dates with an accessible Material 3 field and calendar dialog.",
+      href: "/components/date",
+      snippet: date,
     },
     {
       name: "QDialog",
@@ -374,6 +381,10 @@
       <QChip label="Strawberry" kind="filter" />
     </QCardSection>
   </QCard>
+{/snippet}
+
+{#snippet date()}
+  <QDate value="2026-07-26" label="Event date" filled />
 {/snippet}
 
 {#snippet dialog()}

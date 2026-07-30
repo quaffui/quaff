@@ -1,0 +1,196 @@
+@use "$css/mixins";
+@use "$css/variables";
+
+@mixin selection-state-layer($width, $height, $radius) {
+  --q-date-container-color: transparent;
+  --q-date-state-layer-color: var(--on-surface-variant);
+  --q-date-state-layer-opacity: 0%;
+
+  isolation: isolate;
+
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    width: $width;
+    height: $height;
+    border-radius: $radius;
+  }
+
+  &::before {
+    z-index: -2;
+    border: 0.0625rem solid transparent;
+    background-color: var(--q-date-container-color);
+    transition:
+      background-color variables.$speed2 linear,
+      border-color variables.$speed2 linear;
+  }
+
+  &::after {
+    z-index: -1;
+    background-color: var(--q-date-state-layer-color);
+    opacity: var(--q-date-state-layer-opacity);
+    transition:
+      background-color variables.$speed2 linear,
+      opacity variables.$speed2 linear;
+  }
+
+  &:not(:disabled):hover {
+    --q-date-state-layer-opacity: 8%;
+  }
+
+  &:not(:disabled):active,
+  &:focus-visible {
+    --q-date-state-layer-opacity: 10%;
+  }
+
+  &:focus-visible::before {
+    outline: 0.1875rem solid var(--secondary);
+    outline-offset: 0.125rem;
+  }
+}
+
+.q-date {
+  &__calendar {
+    position: relative;
+    width: 100%;
+    min-height: 0;
+    padding-inline: 0.75rem;
+  }
+
+  &__month-announcement {
+    position: absolute;
+    width: 0.0625rem;
+    height: 0.0625rem;
+    padding: 0;
+    margin: -0.0625rem;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  &__weekdays,
+  &__week {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+  }
+
+  &__weekdays {
+    height: 3rem;
+    background-color: var(--surface-container-high);
+  }
+
+  &__weekday {
+    @include mixins.typography("body-large");
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--on-surface);
+  }
+
+  &__week {
+    height: 3rem;
+  }
+
+  &__day {
+    @include mixins.typography("body-large");
+    @include selection-state-layer(2.5rem, 2.5rem, 50%);
+
+    appearance: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 100%;
+    height: 3rem;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: var(--on-surface);
+    cursor: pointer;
+    transition: color variables.$speed2 linear;
+
+    &--outside:not(&--selected) {
+      opacity: 0.38;
+    }
+
+    &--today:not(&--selected) {
+      --q-date-state-layer-color: var(--primary);
+
+      color: var(--primary);
+
+      &::before {
+        border-color: var(--primary);
+      }
+    }
+
+    &--selected {
+      --q-date-container-color: var(--primary);
+      --q-date-state-layer-color: var(--on-primary);
+
+      color: var(--on-primary);
+      opacity: 1;
+    }
+
+    &:disabled {
+      opacity: 0.38;
+      cursor: default;
+    }
+
+    &--empty {
+      pointer-events: none;
+    }
+  }
+
+  &__years {
+    display: grid;
+    grid-area: 1 / 1;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-content: start;
+    z-index: 1;
+    height: 100%;
+    min-height: 0;
+    padding: 1rem 0.75rem;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-gutter: stable;
+    scroll-padding-block: 1rem;
+    background-color: var(--surface-container-high);
+  }
+
+  &__year {
+    @include mixins.typography("body-large");
+    @include selection-state-layer(4.5rem, 2.25rem, 999rem);
+
+    appearance: none;
+    justify-self: center;
+    position: relative;
+    width: 4.5rem;
+    height: 3rem;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: var(--on-surface-variant);
+    cursor: pointer;
+
+    &--current:not(&--selected) {
+      color: var(--primary);
+
+      &::before {
+        border-color: var(--primary);
+      }
+    }
+
+    &--selected {
+      --q-date-container-color: var(--primary);
+      --q-date-state-layer-color: var(--on-primary);
+
+      color: var(--on-primary);
+    }
+  }
+}

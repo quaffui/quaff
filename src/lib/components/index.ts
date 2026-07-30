@@ -10,6 +10,7 @@ import QCheckbox from "./checkbox/QCheckbox.svelte";
 import QChip from "./chip/QChip.svelte";
 import QCircularProgress from "./progress/QCircularProgress.svelte";
 import QCodeBlock from "./codeBlock/QCodeBlock.svelte";
+import QDate from "./date/QDate.svelte";
 import QDialog from "./dialog/QDialog.svelte";
 import QDrawer from "./drawer/QDrawer.svelte";
 import QExpansionItem from "./expansion-item/QExpansionItem.svelte";
@@ -48,6 +49,7 @@ export {
   QChip,
   QCircularProgress,
   QCodeBlock,
+  QDate,
   QDialog,
   QDrawer,
   QExpansionItem,
