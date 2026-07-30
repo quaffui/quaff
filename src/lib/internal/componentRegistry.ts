@@ -35,6 +35,7 @@ export const Components = {
   QTab: "QTab",
   QTable: "QTable",
   QSwitch: "QSwitch",
+  QTime: "QTime",
   QTooltip: "QTooltip",
 } as const;
 
@@ -66,6 +67,7 @@ export const ComponentPaths = {
   Switch: "switch",
   Table: "table",
   Tabs: "tabs",
+  Time: "time",
   Tooltip: "tooltip",
 } as const;
 
@@ -97,6 +99,7 @@ export const ComponentCss = {
   Switch: "components/switch",
   Table: "components/table",
   Tabs: "components/tabs",
+  Time: "components/time",
   Tooltip: "components/tooltip",
 } as const;
 
@@ -104,13 +107,8 @@ export type ComponentCssName = (typeof ComponentCss)[keyof typeof ComponentCss];
 
 const buttonCss = [ComponentCss.Button, ComponentCss.Icon, ComponentCss.Progress];
 const chipCss = [ComponentCss.Chip, ComponentCss.Avatar, ComponentCss.Icon];
-const dateCss = [
-  ComponentCss.Date,
-  ComponentCss.Field,
-  ComponentCss.Dialog,
-  ComponentCss.Menu,
-  ...buttonCss,
-];
+const pickerCss = [ComponentCss.Field, ComponentCss.Dialog, ComponentCss.Menu, ...buttonCss];
+const dateCss = [ComponentCss.Date, ...pickerCss];
 const expansionItemCss = [
   ComponentCss.ExpansionItem,
   ComponentCss.Button,
@@ -130,6 +128,7 @@ const snackbarCss = [ComponentCss.Snackbar, ...buttonCss];
 const switchCss = [ComponentCss.Switch, ComponentCss.Icon];
 const tabsCss = [ComponentCss.Tabs, ComponentCss.Icon];
 const tableCss = [ComponentCss.Table, ...buttonCss, ...selectCss];
+const timeCss = [ComponentCss.Time, ...pickerCss];
 
 export const ComponentCssDependencies = {
   [Components.QAvatar]: [ComponentCss.Avatar],
@@ -168,6 +167,7 @@ export const ComponentCssDependencies = {
   [Components.QTab]: tabsCss,
   [Components.QTable]: tableCss,
   [Components.QSwitch]: switchCss,
+  [Components.QTime]: timeCss,
   [Components.QTooltip]: [ComponentCss.Tooltip],
 } satisfies Record<(typeof Components)[keyof typeof Components], readonly ComponentCssName[]>;
 
@@ -199,6 +199,7 @@ export const ComponentPathCssDependencies = {
   [ComponentPaths.Switch]: switchCss,
   [ComponentPaths.Table]: tableCss,
   [ComponentPaths.Tabs]: tabsCss,
+  [ComponentPaths.Time]: timeCss,
   [ComponentPaths.Tooltip]: [ComponentCss.Tooltip],
 } satisfies Record<
   (typeof ComponentPaths)[keyof typeof ComponentPaths],

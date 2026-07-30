@@ -169,6 +169,10 @@
       to: "/components/tabs",
     },
     {
+      name: "Time",
+      to: "/components/time",
+    },
+    {
       name: "Tooltip",
       to: "/components/tooltip",
     },

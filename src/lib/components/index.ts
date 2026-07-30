@@ -35,6 +35,7 @@ import QTab from "./tabs/QTab.svelte";
 import QTable from "./table/QTable.svelte";
 import QSwitch from "./switch/QSwitch.svelte";
 import QTooltip from "./tooltip/QTooltip.svelte";
+import QTime from "./time/QTime.svelte";
 
 export {
   QAvatar,
@@ -73,5 +74,6 @@ export {
   QTab,
   QTable,
   QSwitch,
+  QTime,
   QTooltip,
 };
