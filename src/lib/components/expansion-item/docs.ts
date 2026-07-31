@@ -10,18 +10,39 @@ import {
 export const QExpansionItemDocs: QComponentDocs = {
   name: "QExpansionItem",
   description:
-    "The QExpansionItem component allows users to create expandable/collapsible sections within a list or a card.",
+    "QExpansionItem adds an accessible expand/collapse disclosure to a list item while preserving QList density and expressive styling.",
   docs: {
     generics: QExpansionItemDocsGenerics,
     domAttributesConstraint: QExpansionItemDocsDomAttributesConstraint,
     props: QExpansionItemDocsProps,
     snippets: QExpansionItemDocsSnippets,
-    methods: [],
+    methods: [
+      {
+        name: "show",
+        type: "() => void",
+        description: "Expands the item.",
+      },
+      {
+        name: "hide",
+        type: "() => void",
+        description: "Collapses the item.",
+      },
+      {
+        name: "toggle",
+        type: "() => void",
+        description: "Toggles the expanded state.",
+      },
+    ],
     events: [
+      {
+        name: "toggle",
+        type: "ToggleEvent",
+        description: "Emitted when the expanded state changes.",
+      },
       {
         name: "click",
         type: "(e: MouseEvent) => void",
-        description: "Emitted when the user clicks on the expansion item.",
+        description: "Emitted when the user clicks the main header action.",
       },
     ],
     typeDependencies: QExpansionItemDocsTypeDependencies,
