@@ -1,10 +1,8 @@
 export type Direction = "previous" | "next";
 
 // Keyboard events
-export function isActivationKey(
-  e: KeyboardEvent
-): e is KeyboardEvent & { code: "Enter" | "Space" } {
-  return e.code === "Enter" || e.code === "Space";
+export function isActivationKey(e: KeyboardEvent) {
+  return e.key === "Enter" || e.code === "Enter" || e.key === " " || e.code === "Space";
 }
 
 export function isArrowKey(

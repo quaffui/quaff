@@ -1,10 +1,10 @@
 import { MaterialSymbol } from "material-symbols";
 import { Snippet } from "svelte";
-import { HTMLDetailsAttributes, KeyboardEventHandler, MouseEventHandler } from "svelte/elements";
+import { HTMLAttributes, KeyboardEventHandler, MouseEventHandler } from "svelte/elements";
 import { Disableable, Labelable, Linkable, OptionalModel } from "$utils";
 
 export interface QExpansionItemProps
-  extends OptionalModel<boolean>, Labelable, Linkable, Disableable, HTMLDetailsAttributes {
+  extends OptionalModel<boolean>, Labelable, Linkable, Disableable, HTMLAttributes<HTMLDivElement> {
   /**
    * The icon to display in the header of the expansion item.
    */
@@ -39,30 +39,31 @@ export interface QExpansionItemProps
 
   /**
    * Duration for the expansion animation in milliseconds.
+   * Defaults to 300ms, or 350ms inside an expressive list.
    */
   duration?: number;
 
   /**
-   * Whether to hide the expand icon.
+   * Hides the decorative expand icon when the whole header is the trigger.
+   * A separate or linked disclosure control remains visible so the panel stays operable.
    */
   hideExpandIcon?: boolean;
 
   /**
    * Register the expansion item into a group, closing other items in the group when this one is opened.
-   * This is often called "accordion" behavior. This name is used to identify the group of items
-   * and should thus be unique.
+   * Groups are scoped to the containing QList.
    */
   name?: string;
 
   /**
-   * The aria-label for the toggle button of the expansion item for accessibility.
+   * Overrides the accessible label of a separate expand/collapse button.
+   * By default, a state-aware label is generated from the item label.
    */
   toggleAriaLabel?: string;
 
   /**
    * Makes the toggle icon the trigger for the expansion item instead of the whole header.
-   * This is useful when using the expansion item as link, so the icon allows to expand/collapse the item
-   * while the header changes the route.
+   * Linked items always use a separate toggle so the link and disclosure remain sibling actions.
    */
   expandIconToggle?: boolean;
 
@@ -82,7 +83,8 @@ export interface QExpansionItemProps
 
   /**
    * The summary snippet, to override the default header.
-   * As the header uses QItem, you can easily use QItemSection components to customize the header layout.
+   * The header uses QItem, so QItemSection components can customize its layout. The component
+   * supplies the expand/collapse control; avoid placing other interactive controls in this snippet.
    */
   summary?: Snippet<
     [{ expanded: boolean; show: () => void; hide: () => void; toggle: () => void }]

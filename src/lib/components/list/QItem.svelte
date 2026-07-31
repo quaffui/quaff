@@ -26,6 +26,7 @@
     dragged = false,
     draggable,
     disabled = false,
+    noSeparator = false,
     activeStyle,
     noRipple = false,
     children,
@@ -48,6 +49,8 @@
   const routerInfo = $derived(getRouterInfo(props));
 
   const isActive = $derived(routerInfo.isActive || active);
+  const isDense = $derived(dense || ctx.dense);
+  const isExpressive = $derived(ctx.expressive);
 
   const isActionable = $derived(
     clickable || routerInfo.hasLink || tag === "button" || tag === "label"
@@ -77,7 +80,9 @@
     }
   });
 
-  const ariaSelected = $derived(ctx.selection ? isActive : (props["aria-selected"] ?? undefined));
+  const ariaSelected = $derived(
+    role === "option" && ctx.selection ? isActive : (props["aria-selected"] ?? undefined)
+  );
   // #endregion: --- Derived values
 
   // #region:    --- Context
@@ -91,7 +96,8 @@
     bemClasses: {
       multiline: lineCount > 1,
       "three-line": lineCount > 2,
-      dense,
+      dense: isDense,
+      expressive: isExpressive,
       active: isActive,
       clickable: clickable || tag === "button",
       dragged: isDragged,
@@ -136,7 +142,7 @@
   // #endregion: --- Functions
 </script>
 
-{#if ctx.separatorOptions}
+{#if ctx.separatorOptions && !noSeparator}
   <QSeparator {...ctx.separatorOptions} />
 {/if}
 

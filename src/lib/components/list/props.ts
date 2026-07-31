@@ -97,6 +97,11 @@ export interface QItemProps
   noRipple?: boolean;
 
   /**
+   * Prevents the separator supplied by the containing QList from rendering before this item.
+   */
+  noSeparator?: boolean;
+
+  /**
    * Target attribute for anchor tags when using router links.
    */
   target?: HTMLAnchorAttributes["target"];
