@@ -1,5 +1,6 @@
 @use "$css/disabled";
 @use "$css/mixins";
+@use "$css/variables";
 
 .q-item {
   display: flex;
@@ -84,5 +85,74 @@
 
   &--dense {
     min-height: 2rem;
+  }
+}
+
+.q-item--expressive {
+  --q-item-container-shape: 0.25rem;
+  --q-item-hover-shape: 0.75rem;
+  --q-item-active-shape: 1rem;
+
+  padding: 0.625rem 1rem;
+  gap: 0.75rem;
+  border-radius: var(--q-item-container-shape);
+  background-color: var(--surface);
+  transition:
+    border-radius var(--q-item-shape-duration, 0.35s) cubic-bezier(0.42, 1.67, 0.21, 0.9),
+    background-color variables.$speed2,
+    box-shadow variables.$speed2;
+
+  &:is(.q-link, .q-item--clickable:not(label)) {
+    &:hover:not([aria-disabled], .q-item--active, .q-item--dragged) {
+      border-radius: var(--q-item-hover-shape);
+    }
+
+    &:is(:focus-visible, :active):not([aria-disabled]) {
+      border-radius: var(--q-item-active-shape);
+    }
+  }
+
+  &.q-item--active,
+  &.q-item--dragged {
+    border-radius: var(--q-item-active-shape);
+  }
+
+  &.q-item--active {
+    --q-item-color: var(--on-secondary-container);
+    background-color: var(--secondary-container);
+    color: var(--q-item-color);
+  }
+
+  &.q-item--active[aria-disabled] {
+    --q-item-color: #{mixins.with-alpha(var(--on-surface), 38%)};
+    background-color: mixins.with-alpha(var(--on-surface), 38%);
+  }
+
+  .q-item__section:is(.q-item__section--icon, .q-item__section--trailingIcon) {
+    width: var(--q-item-section-width, 1.25rem);
+    height: var(--q-item-section-height, 1.25rem);
+
+    .q-icon--md {
+      --size: 1.25rem;
+    }
+  }
+
+  .q-item__section--thumbnail {
+    border-radius: 0.5rem;
+    overflow: hidden;
+  }
+
+  .q-item__section--video {
+    padding-block: 0;
+  }
+
+  .q-item__section--content.q-item__section--action.q-item__section--has-leading {
+    gap: 0.75rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .q-item--expressive {
+    transition: none;
   }
 }

@@ -1,6 +1,6 @@
 <script lang="ts">
   import { QExpansionItemDocs } from "$components/expansion-item/docs";
-  import { QExpansionItem, QList, QItemSection, QIcon, QSwitch, QBtn } from "$components";
+  import { QExpansionItem, QItem, QList, QItemSection, QIcon, QSwitch } from "$components";
   import { QDocs, QDocsSection } from "$docs";
   import { docsCtx } from "$docs/QDocs.svelte";
   import { pageTitle } from "$helpers/pageTitle";
@@ -9,7 +9,6 @@
   docsCtx.set({ snippets, componentDocs: QExpansionItemDocs });
 
   let customExpandedValue = $state(false);
-  let switchValue = $state(true);
 </script>
 
 <svelte:head>
@@ -65,17 +64,17 @@
         </QList>
       </QDocsSection>
 
-      <QDocsSection title="With name group (accordion)">
+      <QDocsSection title="Mutually exclusive groups">
         {#snippet sectionDescription()}
-          Use the <code>name</code> prop to group expansion items together, creating accordion behavior
-          where only one item in the group can be expanded at a time.
+          Use the <code>name</code> prop when only one item in a group should be expanded at a time.
+          Groups are scoped to their containing <code>QList</code>.
         {/snippet}
 
         <QList bordered separator>
           <QExpansionItem label="First section" icon="folder" name="group1">
             <p>
-              This is the first section of the accordion. When you expand another item in this
-              group, this one will automatically close.
+              This is the first section. When you expand another item in this group, this one will
+              automatically close.
             </p>
           </QExpansionItem>
           <QExpansionItem
@@ -90,7 +89,39 @@
             </p>
           </QExpansionItem>
           <QExpansionItem label="Third section" icon="settings" name="group1">
-            <p>And this is the third section of our accordion group.</p>
+            <p>And this is the third section of our mutually exclusive group.</p>
+          </QExpansionItem>
+        </QList>
+      </QDocsSection>
+
+      <QDocsSection title="Expressive and segmented lists">
+        {#snippet sectionDescription()}
+          The header reuses <code>QItem</code>, so density and expressive list styling are inherited
+          from the containing <code>QList</code>. Expanded items use the Material 3 large container
+          shape and surface colors.
+        {/snippet}
+
+        <QList expressive segmented>
+          <QExpansionItem
+            label="Projects"
+            caption="Three active projects"
+            icon="folder"
+            defaultOpened
+          >
+            <QList expressive segmented aria-label="Projects">
+              <QItem>
+                <QItemSection>Design system</QItemSection>
+              </QItem>
+              <QItem>
+                <QItemSection>Documentation</QItemSection>
+              </QItem>
+              <QItem>
+                <QItemSection>Mobile app</QItemSection>
+              </QItem>
+            </QList>
+          </QExpansionItem>
+          <QExpansionItem label="Archive" icon="archive">
+            Archived projects appear here.
           </QExpansionItem>
         </QList>
       </QDocsSection>
@@ -132,10 +163,12 @@
         </QList>
       </QDocsSection>
 
-      <QDocsSection title="Expand icon toggle">
+      <QDocsSection title="Links and separate toggles">
         {#snippet sectionDescription()}
-          Use <code>expandIconToggle</code> to make only the expand icon clickable, while the rest of
-          the header can be used for navigation or other actions.
+          Linked headers automatically keep navigation and expansion as separate sibling actions.
+          The default non-linked pattern keeps the whole row clickable, as specified by Material 3.
+          <code>expandIconToggle</code> remains available as a legacy product-specific override when only
+          the trailing control should expand the panel.
         {/snippet}
 
         <QList bordered separator>
@@ -144,7 +177,6 @@
             caption="Click the arrow to expand, or the text to navigate"
             icon="home"
             to="/components/button"
-            expandIconToggle
           >
             <p>
               The main header area navigates to a different page, while only the expand icon toggles
@@ -157,17 +189,26 @@
             icon="link"
             href="https://example.com"
             target="_blank"
+          >
+            <p>
+              The link and disclosure button are separate actions within the list's arrow-key order.
+            </p>
+          </QExpansionItem>
+          <QExpansionItem
+            label="Separate disclosure control"
+            caption="Only the trailing button expands this item"
+            icon="info"
             expandIconToggle
           >
-            <p>This demonstrates using an external link with expand icon toggle functionality.</p>
+            <p>The rest of this non-linked header is intentionally non-interactive.</p>
           </QExpansionItem>
         </QList>
       </QDocsSection>
 
       <QDocsSection title="Dense style">
         {#snippet sectionDescription()}
-          Use the <code>dense</code> prop to create more compact expansion items, useful when you need
-          to display many items in limited space.
+          Set <code>dense</code> on one expansion item or on the containing list to use the legacy compact
+          layout. Prefer regular density for touch interfaces.
         {/snippet}
 
         <div class="flex q-gap-md">
@@ -182,11 +223,11 @@
           </QList>
 
           <div class="body-large">Dense:</div>
-          <QList bordered separator>
-            <QExpansionItem label="Dense item" icon="folder" dense>
+          <QList bordered separator dense>
+            <QExpansionItem label="Dense item" icon="folder">
               <p>This is a dense expansion item - more compact.</p>
             </QExpansionItem>
-            <QExpansionItem label="Another dense item" icon="description" dense>
+            <QExpansionItem label="Another dense item" icon="description">
               <p>Another dense item showing the space savings.</p>
             </QExpansionItem>
           </QList>
@@ -200,8 +241,7 @@
           prop to control the expansion state programmatically.
 
           <div class="q-mt-md flex items-center q-gap-sm">
-            <QSwitch bind:value={customExpandedValue} />
-            <span>Toggle controlled expansion item</span>
+            <QSwitch bind:value={customExpandedValue} label="Toggle controlled expansion item" />
           </div>
         {/snippet}
 
@@ -211,7 +251,7 @@
             icon="settings"
             bind:value={customExpandedValue}
           >
-            <p>This expansion item is controlled by the switch below.</p>
+            <p>This expansion item is controlled by the switch above.</p>
           </QExpansionItem>
           <QExpansionItem label="Opened by default" icon="info" defaultOpened>
             <p>This expansion item is opened by default when the page loads.</p>
@@ -246,13 +286,14 @@
 
       <QDocsSection title="Custom summary with complex layouts">
         {#snippet sectionDescription()}
-          Use the <code>summary</code> snippet to completely customize the header layout. The
-          snippet receives an object with <code>expanded</code> state and control functions.
+          Use the <code>summary</code> snippet to customize the header's list-item sections. The expansion
+          item supplies the trailing disclosure control, so the custom summary should not add another
+          interactive control.
         {/snippet}
 
         <QList bordered separator>
           <QExpansionItem>
-            {#snippet summary({ expanded, toggle })}
+            {#snippet summary()}
               <QItemSection type="thumbnail">
                 <img src="/cocktail.jpg" alt="User avatar" />
               </QItemSection>
@@ -267,18 +308,6 @@
                   <span class="text-primary">Click to view details</span>
                 {/snippet}
               </QItemSection>
-              <QItemSection type="trailingIcon">
-                <QBtn
-                  icon={expanded ? "remove" : "add"}
-                  flat
-                  color="on-surface"
-                  tag="span"
-                  tabindex={-1}
-                  aria-label={expanded ? "Collapse details" : "Expand details"}
-                  onclick={toggle}
-                  style="margin: 0; margin-right: -8px;"
-                />
-              </QItemSection>
             {/snippet}
 
             <div class="q-pa-md">
@@ -291,21 +320,18 @@
           </QExpansionItem>
 
           <QExpansionItem>
-            {#snippet summary({ expanded })}
+            {#snippet summary()}
               <QItemSection type="icon">
-                <QIcon name="notifications" />
+                <QIcon name="notifications" aria-hidden="true" />
               </QItemSection>
               <QItemSection>
                 <span>Notification Settings</span>
-              </QItemSection>
-              <QItemSection type="trailingIcon">
-                <QIcon name={expanded ? "keyboard_arrow_up" : "keyboard_arrow_down"} />
               </QItemSection>
             {/snippet}
 
             <div class="q-pa-md">
               <div class="q-mb-sm">Configure your notification preferences:</div>
-              <div>• Email notifications: {switchValue ? "Enabled" : "Disabled"}</div>
+              <div>• Email notifications: Enabled</div>
               <div>• Push notifications: Enabled</div>
               <div>• SMS notifications: Disabled</div>
             </div>
@@ -313,62 +339,18 @@
         </QList>
       </QDocsSection>
 
-      <QDocsSection title="Navigation and links">
-        {#snippet sectionDescription()}
-          QExpansionItem can function as a navigation element using <code>to</code> or
-          <code>href</code>
-          for routes and external links. If not combined with <code>expandIconToggle</code>,
-          clicking the header will not expand the content, but rather navigate to the specified
-          route or link (making the use of <code>QExpansionItem</code> kind of useless).
-        {/snippet}
-
-        <QList bordered separator>
-          <QExpansionItem
-            label="Internal navigation"
-            caption="Click to navigate to buttons page"
-            icon="touch_app"
-            to="/components/button"
-          >
-            <p>This item navigates to the buttons component page when clicked.</p>
-          </QExpansionItem>
-
-          <QExpansionItem
-            label="External link"
-            caption="Opens in current tab"
-            icon="link"
-            href="https://svelte.dev"
-          >
-            <p>This item navigates to an external website when clicked.</p>
-          </QExpansionItem>
-
-          <QExpansionItem
-            label="Dual functionality"
-            caption="Click text to navigate, arrow to expand"
-            icon="open_in_new"
-            to="/components/list"
-            expandIconToggle
-          >
-            <p>
-              The header text navigates to the list component, while the arrow icon toggles this
-              content.
-            </p>
-          </QExpansionItem>
-        </QList>
-      </QDocsSection>
-
       <QDocsSection title="Accessibility">
         {#snippet sectionDescription()}
-          QExpansionItem includes accessibility features like ARIA labels and keyboard navigation.
-          Use <code>toggleAriaLabel</code> to customize the accessibility label for the toggle button.
+          The whole-row trigger exposes <code>aria-expanded</code> and supports Enter and Space. Tab
+          enters the list's current action; arrow keys move through its rows and any separate
+          actions. Separate toggles get a state-aware label automatically; use
+          <code>toggleAriaLabel</code>
+          when a different stable name is more useful. Do not set <code>selection</code> on a
+          <code>QList</code> containing expansion items: disclosures are actions, not listbox options.
         {/snippet}
 
         <QList bordered separator>
-          <QExpansionItem
-            label="FAQ Item 1"
-            caption="What is Quaff?"
-            icon="help"
-            toggleAriaLabel="Show answer to: What is Quaff?"
-          >
+          <QExpansionItem label="FAQ Item 1" caption="What is Quaff?" icon="help">
             <p>
               Quaff is a comprehensive UI component library built with Svelte 5, designed to help
               developers create beautiful and accessible web applications quickly and efficiently.
@@ -379,7 +361,8 @@
             label="FAQ Item 2"
             caption="How do I get started?"
             icon="help"
-            toggleAriaLabel="Show answer to: How do I get started?"
+            expandIconToggle
+            toggleAriaLabel="Toggle answer: How do I get started?"
           >
             <p>
               Getting started is easy! Install the package and start building, the components are
@@ -391,8 +374,8 @@
 
       <QDocsSection title="Complex example">
         {#snippet sectionDescription()}
-          A comprehensive example combining multiple features: accordion grouping, custom icons,
-          dense styling, and mixed content types.
+          A comprehensive example combining multiple features: mutually exclusive grouping, custom
+          icons, dense styling, and mixed content types.
         {/snippet}
 
         <QList bordered separator>

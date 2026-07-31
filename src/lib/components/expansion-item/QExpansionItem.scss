@@ -1,59 +1,398 @@
+@use "$css/disabled";
 @use "$css/mixins";
 @use "$css/variables";
 
+@property --q-expansion-panel-size {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 0px;
+}
+
 .q-expansion-item {
+  --q-expansion-toggle-width: 2.5rem;
+  --q-expansion-toggle-height: 2.5rem;
+  --q-expansion-inner-shape: 0;
+  --q-expansion-shape-easing: cubic-bezier(0.2, 0, 0, 1);
+  --q-expansion-container-color: var(--surface);
+
   width: 100%;
   padding: 0;
-  overflow: hidden;
+  overflow: clip;
 
   border-radius: 0;
+  background-color: var(--q-expansion-container-color);
+  transition: border-radius var(--q-expansion-duration) var(--q-expansion-shape-easing);
 
-  &:first-child {
+  &--expressive {
+    --q-expansion-toggle-width: 2rem;
+    --q-expansion-inner-shape: 0.25rem;
+    --q-expansion-shape-easing: cubic-bezier(0.42, 1.67, 0.21, 0.9);
+    border-radius: 1rem;
+    background-color: transparent;
+  }
+
+  @supports (transition-timing-function: linear(0, 1)) {
+    &--expressive {
+      --q-expansion-shape-easing: linear(
+        0,
+        0.091603,
+        0.293893,
+        0.526718,
+        0.73855,
+        0.900763,
+        1.01145,
+        1.072519,
+        1.09542,
+        1.091603,
+        1.072519,
+        1.053435,
+        1.030534,
+        1.015267,
+        1,
+        0.996183,
+        0.992366,
+        0.992366,
+        0.992366,
+        0.996183,
+        0.996183,
+        1
+      );
+    }
+  }
+
+  &--expressive#{&}--measured {
+    --q-expansion-panel-size: 0px;
+    margin-block-end: min(0px, var(--q-expansion-panel-size));
+  }
+
+  &--expressive#{&}--measured#{&}--panel-open {
+    --q-expansion-panel-size: var(--q-expansion-panel-height);
+  }
+
+  &--expressive#{&}--measured#{&}--motion-ready {
+    transition:
+      border-radius var(--q-expansion-duration) var(--q-expansion-shape-easing),
+      --q-expansion-panel-size var(--q-expansion-duration) var(--q-expansion-shape-easing);
+  }
+
+  &--expressive#{&}--measured#{&}--panel-raised {
+    z-index: 2;
+  }
+
+  &--expanded:not(.q-expansion-item--no-round) {
+    border-radius: 1rem;
+  }
+
+  &:where(:first-child),
+  :where(.q-separator__wrapper:first-child) + & {
     border-top-left-radius: inherit;
     border-top-right-radius: inherit;
   }
 
-  &:last-child {
+  &:where(:last-child) {
     border-bottom-left-radius: inherit;
     border-bottom-right-radius: inherit;
   }
 
-  &[aria-disabled] :is(.q-item__section, .q-item__section *) {
-    color: unset;
+  &--no-round {
+    --q-expansion-inner-shape: 0;
+    border-radius: 0;
   }
 
-  & summary::marker,
-  & summary::-webkit-details-marker {
-    display: none;
-    content: "";
+  &__item {
+    --q-item-shape-duration: var(--q-expansion-duration);
   }
 
-  &::details-content {
-    transition: content-visibility var(--duration) allow-discrete;
+  & > &__item--whole {
+    padding-inline-end: 1rem;
+    border-start-start-radius: inherit;
+    border-start-end-radius: inherit;
+    background-color: var(--q-expansion-container-color);
+  }
+
+  &:not(.q-expansion-item--expressive, .q-expansion-item--expanded)
+    > :is(&__item--whole, &__header) {
+    border-end-start-radius: var(--q-expansion-collapsed-end-shape, inherit);
+    border-end-end-radius: var(--q-expansion-collapsed-end-shape, inherit);
+  }
+
+  &:not(.q-expansion-item--expressive) > &__item--whole {
+    transition:
+      border-end-start-radius var(--q-expansion-duration) var(--q-expansion-shape-easing),
+      border-end-end-radius var(--q-expansion-duration) var(--q-expansion-shape-easing);
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding-inline-end: 1rem;
+    overflow: clip;
+    border-radius: inherit;
+    background-color: var(--q-expansion-container-color);
+    transition: border-radius var(--q-expansion-duration) var(--q-expansion-shape-easing);
+
+    > .q-expansion-item__item {
+      min-width: 0;
+      max-width: none;
+      padding-inline-end: 0;
+      flex: 1 1 auto;
+      align-self: stretch;
+    }
+  }
+
+  &--expressive:not(.q-expansion-item--expanded, .q-expansion-item--no-round) > &__header {
+    border-radius: 0.25rem;
+
+    &:has(
+      > .q-expansion-item__item:is(.q-link, .q-item--clickable):hover:not(
+          [aria-disabled],
+          .q-item--active,
+          .q-item--dragged
+        )
+    ) {
+      border-radius: 0.75rem;
+    }
+
+    &:has(
+      > .q-expansion-item__item:is(:focus-visible, :active):not([aria-disabled]),
+      > .q-expansion-item__item.q-item--active
+    ) {
+      border-radius: 1rem;
+    }
+  }
+
+  &--expressive:not(.q-expansion-item--dense) > &__header {
+    gap: 0.75rem;
+  }
+
+  &--expanded > &__header {
+    border-end-start-radius: var(--q-expansion-inner-shape);
+    border-end-end-radius: var(--q-expansion-inner-shape);
+  }
+
+  &--expressive#{&}--expanded:not(.q-expansion-item--no-round)
+    > :is(
+      .q-expansion-item__item--whole.q-item--expressive,
+      .q-expansion-item__header > .q-expansion-item__item.q-item--expressive
+    ) {
+    border-start-start-radius: inherit;
+    border-start-end-radius: inherit;
+    border-end-start-radius: var(--q-expansion-inner-shape);
+    border-end-end-radius: var(--q-expansion-inner-shape);
+  }
+
+  &__item#{&}__item--square {
+    --q-item-container-shape: 0;
+    --q-item-hover-shape: 0;
+    --q-item-active-shape: 0;
+    border-radius: 0;
   }
 
   &__toggle-icon {
     margin: 0;
-    z-index: 1;
+    border-radius: 9999px;
+    background-color: var(--surface);
+    color: var(--on-surface);
+    place-items: center;
+    transition: background-color variables.$speed2;
 
-    &:is(.q-btn) {
-      margin-right: -0.5rem;
+    &:not(.q-btn) {
+      display: grid;
+      width: var(--q-expansion-toggle-width);
+      min-width: var(--q-expansion-toggle-width);
+      height: var(--q-expansion-toggle-height);
+      min-height: var(--q-expansion-toggle-height);
     }
 
-    &:not(.q-btn),
-    &.q-btn .q-icon {
-      transition: rotate var(--duration);
+    &.q-btn {
+      flex: none;
+      z-index: 1;
+
+      &:focus-visible {
+        outline-offset: 0;
+      }
     }
 
-    &--rotate:not(.q-btn),
-    &--rotate.q-btn .q-icon {
-      rotate: 180deg;
+    &-glyph {
+      transition: transform var(--q-expansion-duration) cubic-bezier(0.2, 0, 0, 1);
     }
+
+    &--rotate &-glyph {
+      transform: rotate(180deg);
+    }
+  }
+
+  &__toggle-icon--expanded {
+    background-color: var(--surface-container);
+  }
+
+  &__toggle-icon--disabled {
+    color: disabled.font-color();
+  }
+
+  &__toggle-icon--expanded#{&}__toggle-icon--disabled {
+    background-color: disabled.rest-color();
+  }
+
+  &__toggle-section {
+    --q-item-section-width: var(--q-expansion-toggle-width);
+    --q-item-section-height: var(--q-expansion-toggle-height);
+    min-width: var(--q-expansion-toggle-width);
+    min-height: var(--q-expansion-toggle-height);
+    flex: 0 0 var(--q-expansion-toggle-width);
+  }
+
+  &__panel {
+    display: grid;
+    grid-template-rows: minmax(0, 0fr);
+    visibility: hidden;
+    border-radius: 0;
+    transition:
+      grid-template-rows var(--q-expansion-duration) var(--q-expansion-shape-easing),
+      visibility 0s linear var(--q-expansion-duration);
+  }
+
+  &--expressive#{&}--measured > &__panel {
+    height: max(0px, var(--q-expansion-panel-size));
+  }
+
+  &--expanded > &__panel {
+    grid-template-rows: minmax(0, 1fr);
+    visibility: visible;
+    transition-delay: 0s;
+  }
+
+  &__panel-clip {
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  &--expressive > &__panel > &__panel-clip {
+    display: grid;
+    align-content: end;
+  }
+
+  &--expressive#{&}--measured > &__panel > &__panel-clip {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+
+  &--expressive#{&}--measured > &__panel > &__panel-clip > &__content {
+    flex: none;
   }
 
   &__content {
     @include mixins.padding("x-md", "y-sm");
     width: 100%;
-    overflow: hidden;
+    background-color: var(--q-expansion-container-color);
+
+    &:has(> .q-list:only-child) {
+      padding: 0;
+    }
+
+    &--regular > .q-list:only-child {
+      border-start-start-radius: var(--q-expansion-inner-shape);
+      border-start-end-radius: var(--q-expansion-inner-shape);
+    }
+
+    &--regular#{&}--expressive:has(> .q-list.q-list--segmented:only-child) {
+      padding-block-start: 0.125rem;
+      background-color: transparent;
+    }
+
+    &--regular#{&}--expressive
+      > .q-list.q-list--expressive:only-child
+      > .q-item:not(.q-item--multiline, .q-item--dense) {
+      min-height: 3.75rem;
+    }
+  }
+
+  &--dense {
+    > .q-expansion-item__header {
+      min-height: 3rem;
+    }
+
+    > .q-expansion-item__item,
+    > .q-expansion-item__header > .q-expansion-item__item {
+      padding-block: 0.25rem;
+    }
+  }
+}
+
+.q-list--bordered:not(.q-list--expressive) > .q-expansion-item {
+  border-radius: 0;
+}
+
+.q-list--bordered:not(.q-list--expressive, .q-list--no-round)
+  > :is(.q-expansion-item:first-child, .q-separator__wrapper:first-child + .q-expansion-item) {
+  border-top-left-radius: inherit;
+  border-top-right-radius: inherit;
+}
+
+.q-list--bordered:not(.q-list--expressive, .q-list--no-round) > .q-expansion-item:last-child {
+  --q-expansion-collapsed-end-shape: 1rem;
+}
+
+.q-list--bordered > .q-expansion-item--expressive.q-expansion-item--measured:last-child {
+  margin-block-end: 0;
+}
+
+@media (forced-colors: active) {
+  .q-expansion-item {
+    border: 1px solid CanvasText;
+
+    &--expressive:not(.q-expansion-item--expanded) {
+      border-color: transparent;
+
+      > :is(.q-expansion-item__item--whole, .q-expansion-item__header) {
+        border: 1px solid CanvasText;
+      }
+
+      &.q-expansion-item--disabled
+        > :is(.q-expansion-item__item--whole, .q-expansion-item__header) {
+        border-color: GrayText;
+      }
+    }
+
+    &__toggle-icon {
+      border: 1px solid ButtonText;
+      background-color: Canvas;
+      color: ButtonText;
+      forced-color-adjust: none;
+    }
+
+    &__toggle-icon--expanded {
+      background-color: ButtonFace;
+    }
+
+    &__toggle-icon--disabled {
+      border-color: GrayText;
+      color: GrayText;
+    }
+
+    &__toggle-icon.q-btn:focus-visible {
+      outline-color: Highlight;
+    }
+
+    &--disabled {
+      border-color: GrayText;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .q-expansion-item {
+    --q-expansion-duration: 0ms !important;
+
+    &__toggle-icon {
+      transition: none;
+    }
+
+    .q-ripple {
+      animation: none;
+      transition: none;
+    }
   }
 }

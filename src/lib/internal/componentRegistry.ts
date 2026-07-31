@@ -117,11 +117,12 @@ const buttonCss = [ComponentCss.Button, ComponentCss.Icon, ComponentCss.Progress
 const chipCss = [ComponentCss.Chip, ComponentCss.Avatar, ComponentCss.Icon];
 const pickerCss = [ComponentCss.Field, ComponentCss.Dialog, ComponentCss.Menu, ...buttonCss];
 const dateCss = [ComponentCss.Date, ...pickerCss];
+const listCss = [ComponentCss.List, ComponentCss.Separator];
 const expansionItemCss = [
   ComponentCss.ExpansionItem,
   ComponentCss.Button,
   ComponentCss.Icon,
-  ComponentCss.List,
+  ...listCss,
   ComponentCss.Progress,
 ];
 const fieldCss = [ComponentCss.Field];
@@ -166,8 +167,8 @@ export const ComponentCssDependencies = {
   [Components.QSlider]: [ComponentCss.Slider, ComponentCss.Icon],
   [Components.QSnackbar]: snackbarCss,
   [Components.QLayout]: [ComponentCss.Layout],
-  [Components.QList]: [ComponentCss.List],
-  [Components.QItem]: [ComponentCss.List],
+  [Components.QList]: listCss,
+  [Components.QItem]: listCss,
   [Components.QItemSection]: [ComponentCss.List],
   [Components.QLinearProgress]: [ComponentCss.Progress],
   [Components.QMenu]: [ComponentCss.Menu],
@@ -201,7 +202,7 @@ export const ComponentPathCssDependencies = {
   [ComponentPaths.Icon]: [ComponentCss.Icon],
   [ComponentPaths.Input]: fieldCss,
   [ComponentPaths.Layout]: [ComponentCss.Layout],
-  [ComponentPaths.List]: [ComponentCss.List],
+  [ComponentPaths.List]: listCss,
   [ComponentPaths.Menu]: [ComponentCss.Menu],
   [ComponentPaths.Navbar]: navbarCss,
   [ComponentPaths.Progress]: [ComponentCss.Progress],
