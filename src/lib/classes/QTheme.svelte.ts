@@ -1,4 +1,4 @@
-import { Variant } from "@material/material-color-utilities";
+import { Variant } from "@quaffui/material-color-utilities";
 import { untrack } from "svelte";
 import { convertCase, generateColors, type HexValue, type Mode, type QuaffColors } from "$utils";
 

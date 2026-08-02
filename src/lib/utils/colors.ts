@@ -5,7 +5,7 @@ import {
   Variant,
   argbFromHex,
   hexFromArgb,
-} from "@material/material-color-utilities";
+} from "@quaffui/material-color-utilities";
 import { isNumeric } from "./number";
 import { convertCase } from "./string";
 
