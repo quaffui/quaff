@@ -1,14 +1,35 @@
 <script lang="ts">
-  import { onDestroy } from "svelte";
+  import { onDestroy, untrack } from "svelte";
   import { QDocs, QDocsSection } from "$docs";
   import { QBtn, QCodeBlock, QTheme, Quaff } from "$lib";
-  import type { HexValue } from "$utils";
   import { pageTitle } from "$helpers/pageTitle";
+  import QSelect from "$components/select/QSelect.svelte";
+  import type { HexValue } from "$utils";
+  import type { ThemeVariant } from "$classes/QTheme.svelte";
 
   let hexColor = $state("");
   let customPrimary = $state<HexValue>(
-    QTheme.themeColors[`primary-${Quaff.darkMode.isActive ? "dark" : "light"}`]
+    QTheme.themeColors[`primary${Quaff.darkMode.isActive ? "Dark" : "Light"}`]
   );
+  let variant = $state<ThemeVariant>("vibrant");
+
+  const options = [
+    { label: "Monochrome", value: "monochrome" },
+    { label: "Neutral", value: "neutral" },
+    { label: "Tonal Spot", value: "tonalSpot" },
+    { label: "Vibrant", value: "vibrant" },
+    { label: "Expressive", value: "expressive" },
+    { label: "Fidelity", value: "fidelity" },
+    { label: "Content", value: "content" },
+    { label: "Rainbow", value: "rainbow" },
+    { label: "Fruit Salad", value: "fruitSalad" },
+  ];
+
+  $effect(() => {
+    void variant;
+
+    untrack(() => QTheme.setThemeVariant(variant));
+  });
 
   function getRandomHexColor() {
     const letters = "0123456789ABCDEF";
@@ -21,8 +42,8 @@
 
   function changeColors() {
     QTheme.updateThemeColors({
-      "primary-light": customPrimary,
-      "primary-dark": customPrimary,
+      primaryLight: customPrimary,
+      primaryDark: customPrimary,
     });
   }
 
@@ -80,7 +101,30 @@
       />
     </QDocsSection>
 
-    <QDocsSection title="Switching themes">
+    <QDocsSection title="Theme Variants">
+      {#snippet sectionDescription()}
+        <p>
+          With Quaff, you can easily switch between the different color theme variants that Material
+          Design 3 supports.
+        </p>
+        <p>For that, you can use the <code> QTheme.setThemeVariant() </code> method.</p>
+      {/snippet}
+
+      <div class="flex q-gap-md">
+        <QSelect
+          bind:value={variant}
+          {options}
+          label="Change theme variant"
+          outlined
+          emitValue
+          style="max-width: 20rem;"
+        />
+
+        <QCodeBlock language="ts" code={`QTheme.setThemeVariant('${variant}')`} />
+      </div>
+    </QDocsSection>
+
+    <QDocsSection title="Switching Themes">
       {#snippet sectionDescription()}
         <p>
           Material Design 3 provides a very convenient method to create a color theme based on a
@@ -123,7 +167,7 @@
       <QBtn class="q-mt-md" icon="undo" label="Reset" onclick={resetTheme} />
     </QDocsSection>
 
-    <QDocsSection title="Custom colors">
+    <QDocsSection title="Custom Colors">
       {#snippet sectionDescription()}
         <p>
           For fine-tuning the colors of your app, you can use the
@@ -161,7 +205,7 @@
 
         <QCodeBlock
           language="ts"
-          code={`QTheme.updateThemeColors({ 'primary-light': '${customPrimary}', 'primary-dark': '${customPrimary}' })`}
+          code={`QTheme.updateThemeColors({ primaryLight: '${customPrimary}', primaryDark: '${customPrimary}' })`}
         />
       </div>
 
