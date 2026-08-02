@@ -1,170 +1,74 @@
 import {
-  TonalPalette,
+  DynamicScheme,
+  Hct,
+  MaterialDynamicColors,
+  Variant,
   argbFromHex,
   hexFromArgb,
-  themeFromSourceColor,
-  type Theme,
-} from "@material/material-color-utilities";
-import { isNumeric } from "./number.js";
-import { convertCase } from "./string.js";
+} from "@quaffui/material-color-utilities";
+import { isNumeric } from "./number";
+import { convertCase } from "./string";
 
 export type Mode = "light" | "dark";
 export type HexValue = `#${string}`;
 
-type BaseColorNames = [
-  "error",
-  "error-container",
-  "on-error",
-  "on-error-container",
-  "on-primary",
-  "on-primary-container",
-  "on-secondary",
-  "on-secondary-container",
-  "on-tertiary",
-  "on-tertiary-container",
-  "primary",
-  "primary-container",
-  "secondary",
-  "secondary-container",
-  "tertiary",
-  "tertiary-container",
-];
+export interface QColorsOptions {
+  sourceColor: HexValue;
+  variant?: Variant;
+  contrastLevel?: number;
+}
 
-type BaseColors = Record<BaseColorNames[number], HexValue>;
+type NamesToExclude =
+  | "highestSurface"
+  | "allColors"
+  | "primaryPaletteKeyColor"
+  | "secondaryPaletteKeyColor"
+  | "tertiaryPaletteKeyColor"
+  | "neutralPaletteKeyColor"
+  | "neutralVariantPaletteKeyColor"
+  | "errorPaletteKeyColor";
 
-type ToneColorNames = [
-  "background",
-  "inverse-on-surface",
-  "inverse-primary",
-  "inverse-surface",
-  "on-background",
-  "on-primary-fixed",
-  "on-primary-fixed-variant",
-  "on-secondary-fixed",
-  "on-secondary-fixed-variant",
-  "on-surface",
-  "on-surface-variant",
-  "on-tertiary-fixed",
-  "on-tertiary-fixed-variant",
-  "outline",
-  "outline-variant",
-  "primary-fixed",
-  "primary-fixed-dim",
-  "scrim",
-  "secondary-fixed",
-  "secondary-fixed-dim",
-  "shadow",
-  "surface",
-  "surface-bright",
-  "surface-container",
-  "surface-container-high",
-  "surface-container-highest",
-  "surface-container-low",
-  "surface-container-lowest",
-  "surface-dim",
-  "surface-tint",
-  "surface-variant",
-  "tertiary-fixed",
-  "tertiary-fixed-dim",
-];
+export type QuaffColorName = Exclude<keyof MaterialDynamicColors, NamesToExclude>;
+export type QuaffColors = Record<QuaffColorName, HexValue>;
 
-type ToneColors = Record<ToneColorNames[number], HexValue>;
+export function generateColors({
+  sourceColor,
+  variant = Variant.VIBRANT,
+  contrastLevel = 0,
+}: QColorsOptions): { light: QuaffColors; dark: QuaffColors } {
+  const argb = argbFromHex(sourceColor);
+  const hct = Hct.fromInt(argb);
 
-export type QuaffColorNames = [...BaseColorNames, ...ToneColorNames];
-export type QuaffColors = BaseColors & ToneColors;
-
-const COLOR_TONES: Record<
-  keyof ToneColors,
-  { fromColor: keyof Theme["palettes"]; light: number; dark: number }
-> = {
-  background: { fromColor: "neutral", light: 98, dark: 6 },
-  "inverse-on-surface": { fromColor: "neutral", light: 95, dark: 20 },
-  "inverse-primary": { fromColor: "primary", light: 80, dark: 40 },
-  "inverse-surface": { fromColor: "neutral", light: 20, dark: 90 },
-  "on-background": { fromColor: "neutral", light: 10, dark: 90 },
-  "on-primary-fixed": { fromColor: "primary", light: 10, dark: 10 },
-  "on-primary-fixed-variant": { fromColor: "primary", light: 30, dark: 30 },
-  "on-secondary-fixed": { fromColor: "secondary", light: 10, dark: 10 },
-  "on-secondary-fixed-variant": { fromColor: "secondary", light: 30, dark: 30 },
-  "on-surface": { fromColor: "neutral", light: 10, dark: 90 },
-  "on-surface-variant": { fromColor: "neutralVariant", light: 30, dark: 80 },
-  "on-tertiary-fixed": { fromColor: "tertiary", light: 10, dark: 10 },
-  "on-tertiary-fixed-variant": { fromColor: "tertiary", light: 30, dark: 30 },
-  outline: { fromColor: "neutralVariant", light: 50, dark: 60 },
-  "outline-variant": { fromColor: "neutralVariant", light: 80, dark: 30 },
-  "primary-fixed": { fromColor: "primary", light: 90, dark: 90 },
-  "primary-fixed-dim": { fromColor: "primary", light: 80, dark: 80 },
-  scrim: { fromColor: "neutral", light: 0, dark: 0 },
-  "secondary-fixed": { fromColor: "secondary", light: 90, dark: 90 },
-  "secondary-fixed-dim": { fromColor: "secondary", light: 80, dark: 80 },
-  shadow: { fromColor: "neutral", light: 0, dark: 0 },
-  surface: { fromColor: "neutral", light: 98, dark: 6 },
-  "surface-bright": { fromColor: "neutral", light: 98, dark: 24 },
-  "surface-container": { fromColor: "neutral", light: 94, dark: 12 },
-  "surface-container-high": { fromColor: "neutral", light: 92, dark: 17 },
-  "surface-container-highest": { fromColor: "neutral", light: 90, dark: 22 },
-  "surface-container-low": { fromColor: "neutral", light: 96, dark: 10 },
-  "surface-container-lowest": { fromColor: "neutral", light: 100, dark: 4 },
-  "surface-dim": { fromColor: "neutral", light: 87, dark: 6 },
-  "surface-tint": { fromColor: "primary", light: 40, dark: 80 },
-  "surface-variant": { fromColor: "neutralVariant", light: 90, dark: 30 },
-  "tertiary-fixed": { fromColor: "tertiary", light: 90, dark: 90 },
-  "tertiary-fixed-dim": { fromColor: "tertiary", light: 80, dark: 80 },
-};
-
-export function generateColors(from: string): { light: QuaffColors; dark: QuaffColors } {
-  const argb = argbFromHex(from);
-  const palettes = themeFromSourceColor(argb).palettes;
+  const baseOptions = { sourceColorHct: hct, variant, contrastLevel };
 
   return {
-    light: getColors(palettes, "light"),
-    dark: getColors(palettes, "dark"),
+    light: getColors({ ...baseOptions, isDark: false }),
+    dark: getColors({ ...baseOptions, isDark: true }),
   };
 }
 
-function getColors(palettes: Theme["palettes"], mode: "light" | "dark") {
-  const tones =
-    mode === "light"
-      ? {
-          base: 40,
-          onBase: 100,
-          baseContainer: 90,
-          onBaseContainer: 30,
-        }
-      : {
-          base: 80,
-          onBase: 20,
-          baseContainer: 30,
-          onBaseContainer: 90,
-        };
+function getColors(opts: ConstructorParameters<typeof DynamicScheme>[0]) {
+  const scheme = new DynamicScheme(opts);
 
-  const getColor = (color: string, palette: TonalPalette) => {
-    color = convertCase(color, "pascal", "kebab");
+  const results = {} as QuaffColors;
 
-    return [
-      [color, palette.tone(tones.base)],
-      [`on-${color}`, palette.tone(tones.onBase)],
-      [`${color}-container`, palette.tone(tones.baseContainer)],
-      [`on-${color}-container`, palette.tone(tones.onBaseContainer)],
-    ];
-  };
+  for (const color of scheme.colors.allColors) {
+    const colorName = convertCase(color.name, "snake", "camel") as QuaffColorName;
+    const hex = hexFromArgb(color.getArgb(scheme)) as HexValue;
 
-  const results: Record<keyof QuaffColors, number> = Object.fromEntries(
-    Object.entries(palettes)
-      .filter(([color]) => !["neutral", "neutralVariant"].includes(color))
-      .map(([color, palette]) => getColor(color, palette))
-      .flat(1)
-  );
-
-  let toneColor: keyof typeof COLOR_TONES;
-  for (toneColor in COLOR_TONES) {
-    const toneInfo = COLOR_TONES[toneColor];
-    results[toneColor] = palettes[toneInfo.fromColor].tone(toneInfo[mode]);
+    results[colorName] = hex;
   }
 
-  return Object.fromEntries(
-    Object.entries(results).map(([color, value]) => [color, hexFromArgb(value)])
-  ) as QuaffColors;
+  // Colors that aren't in allcolors
+  const remainingColors = ["scrim", "shadow", "surfaceTint", "surfaceVariant"] as const;
+  for (const color of remainingColors) {
+    const colorName = convertCase(color, "snake", "camel") as QuaffColorName;
+    const hex = hexFromArgb(scheme.colors[color]().getArgb(scheme)) as HexValue;
+
+    results[colorName] = hex;
+  }
+
+  return results;
 }
 
 class QColors {

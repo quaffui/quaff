@@ -41,10 +41,7 @@
   const isDark = $derived(Quaff.darkMode.isActive);
 
   const hueRotate = $derived(
-    QColors.calculateHueRotate(
-      "#ec6b08",
-      QTheme.themeColors[`primary-${isDark ? "dark" : "light"}`]
-    )
+    QColors.calculateHueRotate("#ec6b08", QTheme.themeColors[`primary${isDark ? "Dark" : "Light"}`])
   );
 
   const brightness = $derived(isDark ? 0.7 : 1.2);

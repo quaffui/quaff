@@ -87,7 +87,7 @@
   "types": "./dist/index.d.ts",
   "type": "module",
   "dependencies": {
-    "@material/material-color-utilities": "^0.3.0"
+    "@quaffui/material-color-utilities": "^0.4.2"
   },
   "license": "MIT"
 }
