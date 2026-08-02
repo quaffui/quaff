@@ -1,12 +1,13 @@
 import fs from "fs/promises";
 import { format } from "prettier";
-import { generateColors } from "../lib/utils/colors.js";
-import type { QuaffColors } from "../lib/utils/colors.js";
+import { convertCase } from "../lib/utils/string";
+import { generateColors } from "../lib/utils/colors";
+import type { QuaffColors } from "../lib/utils/colors";
 
 const BASE_COLOR = "#0039b4";
 
 export async function writeColorFile() {
-  const colors = generateColors(BASE_COLOR);
+  const colors = generateColors({ sourceColor: BASE_COLOR });
 
   const rootContent = ["color-scheme: light dark;", ""];
 
@@ -15,7 +16,9 @@ export async function writeColorFile() {
     const lightEntry = colors.light[colorName];
     const darkEntry = colors.dark[colorName];
 
-    rootContent.push(`--${colorName}: light-dark(${lightEntry}, ${darkEntry});`);
+    const kebab = convertCase(colorName, "camel", "kebab");
+
+    rootContent.push(`--${kebab}: light-dark(${lightEntry}, ${darkEntry});`);
   }
 
   const disclaimer = "// AUTO GENERATED FILE - DO NOT MODIFY OR DELETE";
