@@ -159,9 +159,8 @@ class QTheme {
 
   setTheme(from: string) {
     untrack(() => {
-      const newTheme = prepareThemeColors(from);
-      this.themeColors = newTheme;
       this.srcColor = from;
+      this.themeColors = prepareThemeColors(from, this.variant, this.normalizeContrastLevel);
       this.apply();
     });
   }
