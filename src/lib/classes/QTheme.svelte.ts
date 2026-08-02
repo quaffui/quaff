@@ -1,4 +1,5 @@
 import { Variant } from "@material/material-color-utilities";
+import { untrack } from "svelte";
 import { convertCase, generateColors, type HexValue, type Mode, type QuaffColors } from "$utils";
 
 type ThemeColor = keyof QuaffColors;
@@ -48,7 +49,7 @@ function getThemeVariant(variant: ThemeVariant) {
   }
 }
 
-function prepareThemeColors(from: string, variant: ThemeVariant = "vibrant") {
+function prepareThemeColors(from: string, variant: ThemeVariant = "vibrant", contrastLevel = 0) {
   if (from.startsWith("var(")) {
     from = extractColorFromCssVar(from);
   }
@@ -56,6 +57,7 @@ function prepareThemeColors(from: string, variant: ThemeVariant = "vibrant") {
   const theme = generateColors({
     sourceColor: from as HexValue,
     variant: getThemeVariant(variant),
+    contrastLevel,
   });
 
   //@ts-expect-error The properties are added in the next for loop
@@ -77,9 +79,22 @@ class QTheme {
   themeColors = $state({} as ThemeColors);
   srcColor = $state("#0039b4");
   variant = $state<ThemeVariant>("vibrant");
+  contrastLevel = $state<number>(0);
+
+  private normalizeContrastLevel = $derived.by(() => {
+    if (this.contrastLevel < -1 || this.contrastLevel > 1) {
+      console.warn(
+        "The theme's contrast level should be between -1 and 1, where -1 represents minimum contrast, 0 represents standard (i.e. the design as spec'd), and 1 represents maximum contrast."
+      );
+
+      return Math.max(-1, Math.min(this.contrastLevel, 1));
+    }
+
+    return this.contrastLevel;
+  });
 
   constructor() {
-    this.themeColors = prepareThemeColors(this.srcColor, this.variant);
+    this.themeColors = prepareThemeColors(this.srcColor, this.variant, this.normalizeContrastLevel);
   }
 
   private apply(colors: Partial<ThemeColors> = this.themeColors) {
@@ -100,35 +115,55 @@ class QTheme {
     }
   }
 
+  setContrastLevel(contrastLevel: number) {
+    untrack(() => {
+      this.contrastLevel = contrastLevel;
+      this.themeColors = prepareThemeColors(
+        this.srcColor,
+        this.variant,
+        this.normalizeContrastLevel
+      );
+      this.apply();
+    });
+  }
+
   setThemeVariant(variant: ThemeVariant) {
-    this.variant = variant;
-    this.themeColors = prepareThemeColors(this.srcColor, variant);
-    this.apply();
+    untrack(() => {
+      this.variant = variant;
+      this.themeColors = prepareThemeColors(this.srcColor, variant, this.normalizeContrastLevel);
+      this.apply();
+    });
   }
 
   updateThemeColor(color: keyof ThemeColors, newVal: HexValue) {
-    this.themeColors[color] = newVal;
-    this.apply({ [color]: newVal });
+    untrack(() => {
+      this.themeColors[color] = newVal;
+      this.apply({ [color]: newVal });
+    });
   }
 
   updateThemeColors(colors: Partial<ThemeColors>) {
-    let colorName: keyof ThemeColors;
-    for (colorName in colors) {
-      const color = colors[colorName];
+    untrack(() => {
+      let colorName: keyof ThemeColors;
+      for (colorName in colors) {
+        const color = colors[colorName];
 
-      if (color) {
-        this.themeColors[colorName] = color;
+        if (color) {
+          this.themeColors[colorName] = color;
+        }
       }
-    }
 
-    this.apply(colors);
+      this.apply(colors);
+    });
   }
 
   setTheme(from: string) {
-    const newTheme = prepareThemeColors(from);
-    this.themeColors = newTheme;
-    this.srcColor = from;
-    this.apply();
+    untrack(() => {
+      const newTheme = prepareThemeColors(from);
+      this.themeColors = newTheme;
+      this.srcColor = from;
+      this.apply();
+    });
   }
 }
 

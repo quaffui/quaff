@@ -1,17 +1,19 @@
 <script lang="ts">
-  import { onDestroy, untrack } from "svelte";
+  import { onDestroy } from "svelte";
   import { QDocs, QDocsSection } from "$docs";
   import { QBtn, QCodeBlock, QTheme, Quaff } from "$lib";
   import { pageTitle } from "$helpers/pageTitle";
   import QSelect from "$components/select/QSelect.svelte";
   import type { HexValue } from "$utils";
   import type { ThemeVariant } from "$classes/QTheme.svelte";
+  import QInput from "$components/input/QInput.svelte";
 
   let hexColor = $state("");
   let customPrimary = $state<HexValue>(
     QTheme.themeColors[`primary${Quaff.darkMode.isActive ? "Dark" : "Light"}`]
   );
   let variant = $state<ThemeVariant>("vibrant");
+  let contrast = $state(0);
 
   const options = [
     { label: "Monochrome", value: "monochrome" },
@@ -26,9 +28,11 @@
   ];
 
   $effect(() => {
-    void variant;
+    QTheme.setThemeVariant(variant);
+  });
 
-    untrack(() => QTheme.setThemeVariant(variant));
+  $effect(() => {
+    QTheme.setContrastLevel(contrast);
   });
 
   function getRandomHexColor() {
@@ -94,11 +98,13 @@
       {/snippet}
 
       Current colors theme:
-      <QCodeBlock
-        code={JSON.stringify(QTheme.themeColors, null, 2)}
-        language="json"
-        style="max-height: 300px; overflow: auto;"
-      />
+      <div class="with-code-block q-mt-sm">
+        <QCodeBlock
+          code={JSON.stringify(QTheme.themeColors, null, 2)}
+          language="json"
+          style="max-height: 300px; overflow: auto;"
+        />
+      </div>
     </QDocsSection>
 
     <QDocsSection title="Theme Variants">
@@ -110,7 +116,7 @@
         <p>For that, you can use the <code> QTheme.setThemeVariant() </code> method.</p>
       {/snippet}
 
-      <div class="flex q-gap-md">
+      <div class="flex q-gap-md with-code-block">
         <QSelect
           bind:value={variant}
           {options}
@@ -121,6 +127,37 @@
         />
 
         <QCodeBlock language="ts" code={`QTheme.setThemeVariant('${variant}')`} />
+      </div>
+    </QDocsSection>
+
+    <QDocsSection title="Contrast Level">
+      {#snippet sectionDescription()}
+        <p>
+          In addition to the theme variant, you can also change the contrast level of the theme.
+        </p>
+        <p>
+          You can do this with the <code> QTheme.setContrastLevel() </code> method.
+        </p>
+        <p>
+          The contrast level should be a value between -1 and 1, where -1 represents minimum
+          contrast, 0 represents standard contrast, and 1 represents maximum contrast. Out of range
+          values will be clamped to the nearest valid value.
+        </p>
+      {/snippet}
+
+      <div class="flex q-gap-md with-code-block">
+        <QInput
+          bind:value={contrast}
+          type="number"
+          label="Set contrast level"
+          outlined
+          min="-1"
+          max="1"
+          step="0.1"
+          style="max-width: 20rem; min-width: 10rem;"
+        />
+
+        <QCodeBlock language="ts" code={`QTheme.setContrastLevel(${contrast})`} />
       </div>
     </QDocsSection>
 
@@ -151,7 +188,7 @@
         {/if}
       </div>
 
-      <div class="flex items-center q-gap-md q-mt-md">
+      <div class="flex items-center q-gap-md q-mt-md with-code-block">
         <QBtn
           icon="palette"
           label="Set color theme"
@@ -195,7 +232,7 @@
         <span>{customPrimary}</span>
       </div>
 
-      <div class="flex items-center q-gap-md q-mt-md">
+      <div class="flex items-center q-gap-md q-mt-md with-code-block">
         <QBtn
           icon="palette"
           label="Set primary color"
@@ -213,3 +250,9 @@
     </QDocsSection>
   {/snippet}
 </QDocs>
+
+<style>
+  .with-code-block {
+    border-radius: 0.5rem;
+  }
+</style>
