@@ -1,0 +1,25 @@
+@use "$css/mixins";
+
+.q-navbar {
+  z-index: 4;
+  position: fixed;
+  inset: auto 0 0;
+
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+
+  min-height: calc(var(--q-navbar-min-height, 4rem) + env(safe-area-inset-bottom, 0px));
+  padding: 0 env(safe-area-inset-right, 0px) env(safe-area-inset-bottom, 0px)
+    env(safe-area-inset-left, 0px);
+
+  overflow: visible;
+  border: 0;
+  border-radius: 0;
+  background-color: var(--surface-container);
+  color: var(--on-surface-variant);
+
+  &.q-navbar--bordered {
+    @include mixins.border($position: "top");
+  }
+}

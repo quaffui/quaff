@@ -18,8 +18,14 @@
     ready: boolean;
   }
 
+  interface NavbarContext {
+    height: number;
+    ready: boolean;
+  }
+
   export const headerCtx = QContext<AppbarContext>("QHeader");
   export const footerCtx = QContext<AppbarContext>("QFooter");
+  export const navbarCtx = QContext<NavbarContext>("QNavbar");
 
   export const leftRailbarCtx = QContext<DrawerContext>("QRailbarLeft");
   export const rightRailbarCtx = QContext<DrawerContext>("QRailbarRight");
@@ -38,6 +44,7 @@
     drawerRight,
     header,
     footer,
+    navbar,
     onscroll,
     onresize,
     children,
@@ -57,6 +64,10 @@
   const footerInfo = $state({
     height: 0,
     collapsed: false,
+    ready: false,
+  });
+  const navbarInfo = $state({
+    height: 0,
     ready: false,
   });
   const leftRailbarInfo = $state({
@@ -83,14 +94,16 @@
 
   // #region:    --- Derived values
   const topOffset = $derived(!header || headerInfo.collapsed ? 0 : headerInfo.height);
-  const bottomOffset = $derived(!footer || footerInfo.collapsed ? 0 : footerInfo.height);
+  const footerOffset = $derived(!footer || footerInfo.collapsed ? 0 : footerInfo.height);
+  const navbarOffset = $derived(!navbar || !navbarInfo.ready ? 0 : navbarInfo.height);
+  const bottomOffset = $derived(footerOffset + navbarOffset);
   const leftOffset = $derived(handleDrawerCtx(leftRailbarInfo) + handleDrawerCtx(leftDrawerInfo));
   const rightOffset = $derived(
     handleDrawerCtx(rightRailbarInfo) + handleDrawerCtx(rightDrawerInfo)
   );
 
   const contentMargin = $derived(
-    `${header ? topOffset : 0}px ${rightOffset}px ${footer ? bottomOffset : 0}px ${leftOffset}px`
+    `${header ? topOffset : 0}px ${rightOffset}px ${bottomOffset}px ${leftOffset}px`
   );
 
   const isReady = $derived(
@@ -99,7 +112,8 @@
       sideBarReady("railbar", "left") &&
       sideBarReady("railbar", "right") &&
       sideBarReady("drawer", "left") &&
-      sideBarReady("drawer", "right")
+      sideBarReady("drawer", "right") &&
+      navbarReady()
   );
   // #endregion: --- Derived values
 
@@ -115,6 +129,10 @@
     height: footerInfo.height,
     collapsed: footerInfo.collapsed,
     ready: footerInfo.ready,
+  });
+  navbarCtx.set({
+    height: navbarInfo.height,
+    ready: navbarInfo.ready,
   });
 
   leftRailbarCtx.set({
@@ -183,6 +201,12 @@
       barReady[barType] || (layoutEl && !layoutEl.querySelector(`:scope > .q-${barType}--${side}`))
     );
   }
+
+  function navbarReady() {
+    return (
+      !navbar || navbarInfo.ready || (layoutEl && !layoutEl.querySelector(":scope > .q-navbar"))
+    );
+  }
   // #endregion: --- Functions
 
   Q.classes("q-layout", {
@@ -201,6 +225,7 @@
   style:--right-drawer-width={`${drawerRight ? rightDrawerInfo.width : 0}px`}
   style:--left-railbar-width={`${railbarLeft ? leftRailbarInfo.width : 0}px`}
   style:--right-railbar-width={`${railbarRight ? rightRailbarInfo.width : 0}px`}
+  style:--navbar-height={`${navbarOffset}px`}
   style:--offset-top={`${topOffset}px`}
   style:--offset-right={`${rightOffset}px`}
   style:--offset-bottom={`${bottomOffset}px`}
@@ -214,11 +239,13 @@
   {@render drawerRight?.()}
   {@render header?.()}
   {@render footer?.()}
+  {@render navbar?.()}
 
   <ContextResetter
     keys={[
       headerCtx.symbol,
       footerCtx.symbol,
+      navbarCtx.symbol,
       leftRailbarCtx.symbol,
       rightRailbarCtx.symbol,
       leftDrawerCtx.symbol,

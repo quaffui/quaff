@@ -14,6 +14,7 @@
     QItemSection,
     QLayout,
     QList,
+    QNavItem,
     QRailbar,
     QTheme,
     Quaff,
@@ -131,6 +132,10 @@
     {
       name: "Menu",
       to: "/components/menu",
+    },
+    {
+      name: "Navbar",
+      to: "/components/navbar",
     },
     {
       name: "Progress",
@@ -389,7 +394,9 @@
 
 {#snippet railbar()}
   <QRailbar class="surface" bordered width={120}>
-    {@render mainRoutesList()}
+    {#each pages as { name, icon, to } (`${name}-${icon}-${to}`)}
+      <QNavItem {icon} label={name} {to} noRipple />
+    {/each}
   </QRailbar>
 {/snippet}
 
