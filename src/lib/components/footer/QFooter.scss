@@ -6,7 +6,7 @@
   position: absolute;
   top: auto;
   right: 0;
-  bottom: 0;
+  bottom: var(--navbar-height, 0);
   left: 0;
 
   @include mixins.layoutBarDisplay;
