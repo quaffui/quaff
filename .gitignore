@@ -18,3 +18,5 @@ src/routes/components/**/docs.snippets.ts
 src/docs/types.json
 parseInterface.d.ts
 /plugins/dist/
+
+target
