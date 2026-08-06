@@ -1,5 +1,6 @@
 use std::collections::HashMap;
 
+use bitflags::{Flag, bitflags};
 use oxc::ast::ast::{
     TSInterfaceDeclaration, TSLiteralType, TSTypeAliasDeclaration, VariableDeclarator,
 };
@@ -10,43 +11,45 @@ use crate::defs::FunctionType;
 use super::structs::{ComplexType, ExternalType, StandardType};
 
 /// Flags indicating the property's characteristics
-pub enum ParsedPropertyFlags {
-    /// No flags set
-    None = 0,
-    /// The property is marked as optional with `?`
-    Optional = 1,
-    /// The property's type is a Svelte `Snippet`
-    Snippet = 2,
-    /// The property's type uses the `Array<T>` form (converted to `T[]` in output)
-    Array = 4,
-    /// The property is bindable (e.g. `$bindable` in the `$props` declaration)
-    Bindable = 8,
-    /// The property is an `Omit<T, U>` utility type
-    Omit = 16,
-    /// The property is an `Exclude<T, U>` utility type
-    Exclude = 32,
-    /// The property is a `Pick<T, U>` utility type
-    Pick = 64,
-    /// The property is an `Extract<T, U>` utility type
-    Extract = 128,
-    /// The property is a `Partial<T>` utility type
-    Partial = 256,
-    /// The property is a `Required<T>` utility type
-    Required = 512,
-    /// The property is a `Readonly<T>` utility type
-    Readonly = 1024,
-    /// The property is a `Record<T, U>` utility type
-    Record = 2048,
-    /// The property is a `NonNullable<T>` utility type
-    NonNullable = 4096,
-    /// The property is a `ReturnType<T>` utility type
-    ReturnType = 8192,
-    /// The property is a `InstanceType<T>` utility type
-    InstanceType = 16384,
-    /// The property is a `ThisParameterType<T>` utility type
-    ThisParameterType = 32768,
-    /// The property is a `ThisType<T>` utility type
-    ThisType = 65536,
+bitflags! {
+    pub struct ParsedPropertyFlags: u32 {
+        /// No flags set
+        const None = 0;
+        /// The property is marked as optional with `?`
+        const Optional = 1 << 0;
+        /// The property's type is a Svelte `Snippet`
+        const Snippet = 1 << 1;
+        /// The property's type uses the `Array<T>` form (converted to `T[]` in output)
+        const Array = 1 << 2;
+        /// The property is bindable (e.g. `$bindable` in the `$props` declaration)
+        const Bindable = 1 << 3;
+        /// The property is an `Omit<T; U>` utility type
+        const Omit = 1 << 4;
+        /// The property is an `Exclude<T; U>` utility type
+        const Exclude = 1 << 5;
+        /// The property is a `Pick<T; U>` utility type
+        const Pick = 1 << 6;
+        /// The property is an `Extract<T; U>` utility type
+        const Extract = 1 << 7;
+        /// The property is a `Partial<T>` utility type
+        const Partial = 1 << 8;
+        /// The property is a `Required<T>` utility type
+        const Required = 1 << 9;
+        /// The property is a `Readonly<T>` utility type
+        const Readonly = 1 << 10;
+        /// The property is a `Record<T; U>` utility type
+        const Record = 1 << 11;
+        /// The property is a `NonNullable<T>` utility type
+        const NonNullable = 1 << 12;
+        /// The property is a `ReturnType<T>` utility type
+        const ReturnType = 1 << 13;
+        /// The property is a `InstanceType<T>` utility type
+        const InstanceType = 1 << 14;
+        /// The property is a `ThisParameterType<T>` utility type
+        const ThisParameterType = 1 << 15;
+        /// The property is a `ThisType<T>` utility type
+        const ThisType = 1 << 16;
+    }
 }
 
 /// A parsed type. Can be standard, external or complex.
@@ -96,7 +99,7 @@ pub struct ParsedProp {
     /// The JSDoc description explaining the property's purpose
     pub description: String,
     /// Flags indicating the property's characteristics (see [ParsedPropertyFlags])
-    pub flags: u64,
+    pub flags: ParsedPropertyFlags,
     /// The computed type(s) for this property. A single [ParsedType] for simple types (Vec of size 1), or an array of [ParsedType] for union types (Vec of size >= 2).
     pub type_def: Vec<ParsedType>,
     /// The default value from the `@default` JSDoc tag, if present
@@ -125,6 +128,26 @@ pub enum ParsedDefault {
     Value(Option<String>),
     /// The property is bindable in the `$props` declaration (e.g. `{ myProp = $bindable(false) }`)
     Bindable(Option<String>),
+}
+
+impl ParsedDefault {
+    /// Returns the inner value
+    fn inner(&self) -> &Option<String> {
+        match self {
+            Self::Value(val) => val,
+            Self::Bindable(val) => val,
+        }
+    }
+
+    /// Returns `true` if the property is bindable in the `$props` declaration
+    pub fn is_bindable(&self) -> bool {
+        matches!(self, Self::Bindable(_))
+    }
+
+    /// Returns the default value of the property
+    pub fn value(&self) -> String {
+        self.inner().as_deref().unwrap_or("undefined").to_string()
+    }
 }
 
 /// Information about a property's default value and bindable status, derived from the component's Svelte file.

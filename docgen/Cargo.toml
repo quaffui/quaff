@@ -4,6 +4,7 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
+bitflags = "2.13.1"
 oxc = "0.143.0"
 oxc_semantic = "0.143.0"
 regex = "1.13.1"

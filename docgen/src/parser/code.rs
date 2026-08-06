@@ -36,8 +36,6 @@ pub fn parse_props_interfaces(
             let name = interface.id.name.to_string();
             let mut type_deps: TypeDependencies = HashMap::new();
 
-            // println!("{:#?}", interface);
-
             let generics = interface
                 .type_parameters
                 .as_ref()
@@ -45,7 +43,14 @@ pub fn parse_props_interfaces(
                 .transpose()?
                 .unwrap_or_default();
 
-            println!("{:#?}", generics);
+            let interface = ParsedPropsInterface {
+                type_dependencies: type_deps,
+                generics,
+                properties: todo!(),
+                dom_attributes_constraint: todo!(),
+            };
+
+            parsed_interfaces.insert(name, interface);
         }
 
         Ok(false)

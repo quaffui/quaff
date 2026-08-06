@@ -67,6 +67,7 @@ checksum = "417bef24afe1460300965a25ff4a24b8b45ad011948302ec221e8a0a81eb2c79"
 name = "docgen"
 version = "0.1.0"
 dependencies = [
+ "bitflags",
  "oxc",
  "oxc_semantic",
  "regex",
