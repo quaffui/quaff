@@ -2,7 +2,7 @@
 pub const PRESERVE_TYPE_NAMES: [&str; 2] = ["Snippet", "MaterialSymbol"];
 
 /// Package path prefixes that identify "external" types (Svelte, Material, Shiki, etc.)
-pub const EXTERNAL_PACKAGE_PREFIXES: [&str; 3] = ["svelte/", "material-symbols", "shiki"];
+pub const EXTERNAL_PACKAGE_PREFIXES: [&str; 3] = ["svelte", "material-symbols", "shiki"];
 
 /// List of Typescript builtin types that should never be inlined.
 /// Avoid creating deep type trees for basic types.

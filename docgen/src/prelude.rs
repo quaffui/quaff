@@ -4,21 +4,16 @@ use oxc_semantic::Semantic;
 /// A wrapper around a type to allow external types to implement external traits
 pub struct W<T>(pub T);
 
-impl<T: GetSpan> W<Option<&T>> {
-    pub fn display(self, semantic: &Semantic) -> Option<String> {
-        self.0
-            .map(|x| x.span().source_text(semantic.source_text()).to_string())
+pub trait SpanDisplay {
+    fn display(&self, semantic: &Semantic) -> String;
+    fn display_option(opt: Option<&Self>, semantic: &Semantic) -> Option<String> {
+        opt.as_ref().map(|t| t.display(semantic))
     }
 }
 
-impl<T: GetSpan> W<&T> {
-    pub fn display(self, semantic: &Semantic) -> Option<String> {
-        Some(
-            self.0
-                .span()
-                .source_text(semantic.source_text())
-                .to_string(),
-        )
+impl<T: GetSpan> SpanDisplay for T {
+    fn display(&self, semantic: &Semantic) -> String {
+        self.span().source_text(semantic.source_text()).to_string()
     }
 }
 

@@ -5,7 +5,7 @@ use oxc_semantic::Semantic;
 
 use crate::{
     defs::{ParsedDefault, ParsedDefaults, PathResolver, ResolvedReference},
-    prelude::{Result, W},
+    prelude::{Result, SpanDisplay, W},
     resolver::resolve_reference,
 };
 
@@ -31,13 +31,14 @@ pub fn parse_defaults(
                         if expr.callee_name() == Some("$bindable") {
                             // Case: const { name = $bindable(...) } = $props();
                             // => The prop is bindable and the default is the first argument (if any)
-                            let default = W(expr.arguments.first()).display(semantic);
+                            let default =
+                                SpanDisplay::display_option(expr.arguments.first(), semantic);
                             res.insert(name, ParsedDefault::Bindable(default));
                         } else {
                             // Case: const { name = someFunction() } = $props();
                             // => The default is the function call, we don't try to resolve it (maybe TODO later)
-                            let default = W(expr.as_ref()).display(semantic);
-                            res.insert(name, ParsedDefault::Value(default));
+                            let default = expr.display(semantic);
+                            res.insert(name, ParsedDefault::Value(Some(default)));
                         }
                     }
                     Expression::Identifier(ident) => {
@@ -48,7 +49,7 @@ pub fn parse_defaults(
                             let ResolvedReference::VariableDeclarator(decl, sem) = resolved else {
                                 return Ok(());
                             };
-                            init = W(decl.init.as_ref()).display(sem);
+                            init = SpanDisplay::display_option(decl.init.as_ref(), sem);
 
                             Ok(())
                         })?;
@@ -57,8 +58,8 @@ pub fn parse_defaults(
                     }
                     _ => {
                         // Case: const { name = ... } = $props(); where ... is neither an Identifier nor a "$bindable" CallExpression
-                        let default = W(&pattern.right).display(semantic);
-                        res.insert(name, ParsedDefault::Value(default));
+                        let default = pattern.right.display(semantic);
+                        res.insert(name, ParsedDefault::Value(Some(default)));
                     }
                 },
                 _ => {

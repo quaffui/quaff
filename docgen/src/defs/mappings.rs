@@ -127,6 +127,17 @@ pub static TYPE_SRC_MAPPINGS: [TypeSrcMapping; 14] = [
 pub struct PathResolver<'a>(pub &'a Path);
 
 impl<'a> PathResolver<'a> {
+    /// Tries to resolve a path that:
+    /// - is relative to the currently processed file (e.g. `./date` or `../utils`)
+    /// - is a Quaff path alias starting with `$` (e.g. `$utils`)
+    ///
+    /// Due to how TS allows export forwarding using `index.ts` files,
+    /// you can import stuff from directories directly.
+    ///
+    /// To allow finding imports even from directories, the function will give access to
+    /// all files recursively to all files within an exisiting directory via a callback.
+    /// When you found your file and are done with it, return `Ok(true)` in the callback
+    /// to stop the recursion.
     pub fn resolve<T: FnMut(PathBuf) -> Result<bool>>(
         &self,
         path_str: &str,

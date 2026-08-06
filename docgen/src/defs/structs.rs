@@ -3,7 +3,7 @@ use crate::defs::{ParsedGeneric, ParsedType, TYPE_SRC_MAPPINGS};
 /// Type used for primitive types or types that couldn't be resolved to an external type.
 ///
 /// For example, `string`, `number`, `boolean`, etc.
-#[derive(Clone)]
+#[derive(Debug, Clone)]
 pub struct StandardType {
     /// The full text of the type definition
     definition: String,
@@ -21,7 +21,7 @@ impl StandardType {
 /// In this case, the name of those other types will be accessible through the `dependencies` property.
 ///
 /// For example, `QSize` or `CssValue`.
-#[derive(Clone)]
+#[derive(Debug, Clone)]
 pub struct ComplexType {
     /// The full text of the type definition
     definition: String,
@@ -56,19 +56,21 @@ pub struct ExternalType {
 }
 
 impl ExternalType {
-    pub fn new(name: String) -> Self {
-        let type_src = TYPE_SRC_MAPPINGS
-            .iter()
-            .find(|m| m.matches(&name))
-            .map(|m| m.map(&name))
-            .unwrap_or("#".to_string());
+    pub fn maybe_new(name: String) -> Option<Self> {
+        let maybe_src_mapping = TYPE_SRC_MAPPINGS.iter().find(|m| m.matches(&name));
 
-        Self { name, type_src }
+        if let Some(src_mapping) = maybe_src_mapping {
+            let type_src = src_mapping.map(&name);
+
+            return Some(Self { name, type_src });
+        }
+
+        None
     }
 }
 
 /// Represents a function parameter.
-#[derive(Clone)]
+#[derive(Debug, Clone)]
 pub struct FunctionTypeParam {
     /// The name of the parameter (e.g. `name` in `(name: string) => string`)
     pub name: String,
@@ -79,12 +81,34 @@ pub struct FunctionTypeParam {
 }
 
 /// Represents a function's type definition, e.g. `(name: string) => string`
-#[derive(Clone)]
+#[derive(Debug, Clone)]
 pub struct FunctionType {
     /// The parameters of the function
     pub params: Vec<FunctionTypeParam>,
     /// The return type of the function
     pub return_type: ParsedType,
     /// Potential generics associated with the function
-    pub generics: Option<Vec<ParsedGeneric>>,
+    pub generics: Vec<ParsedGeneric>,
+}
+
+/// Represents an interface's property, e.g. `name: string` or `disabled?: boolean`
+pub struct InterfaceProperty {
+    /// The property's name (e.g. `name` in `(name: string) => string`)
+    pub name: String,
+    /// The type annotation of the property
+    pub type_annotation: ParsedType,
+    /// Whether the property is optional
+    pub optional: bool,
+}
+
+/// Represents an interface type definition, e.g. `interface MyInterface {}`.
+///
+/// Given the similarities, it could also represent an oxc `TypeLiteral`.
+pub struct InterfaceType {
+    /// The name of the interface (or type alias in the case of `TypeLiteral`)
+    pub name: String,
+    /// The interface's generic type parameters.
+    pub generics: Vec<ParsedGeneric>,
+    /// All parsed properties, including those inherited from extended internal interfaces.
+    pub properties: Vec<InterfaceProperty>,
 }

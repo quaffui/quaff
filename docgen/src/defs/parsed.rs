@@ -1,6 +1,8 @@
 use std::collections::HashMap;
 
-use oxc::ast::ast::{TSInterfaceDeclaration, TSTypeAliasDeclaration, VariableDeclarator};
+use oxc::ast::ast::{
+    TSInterfaceDeclaration, TSLiteralType, TSTypeAliasDeclaration, VariableDeclarator,
+};
 use oxc_semantic::Semantic;
 
 use crate::defs::FunctionType;
@@ -48,7 +50,7 @@ pub enum ParsedPropertyFlags {
 }
 
 /// A parsed type. Can be standard, external or complex.
-#[derive(Clone)]
+#[derive(Debug, Clone)]
 pub enum ParsedType {
     /// An external type, see [ExternalType] for more information
     External(ExternalType),
@@ -69,7 +71,7 @@ pub enum ParsedType {
 pub type TypeDependencies = HashMap<String, Vec<ParsedType>>;
 
 /// Represents a generic type parameter of an interface (e.g. `<T extends string>`).
-#[derive(Clone)]
+#[derive(Debug, Clone)]
 pub struct ParsedGeneric {
     /// Name of the generic type parameter (e.g. "T")
     pub name: String,
@@ -84,11 +86,11 @@ pub struct ParsedHeritage {
     /// The DOM attributes constraint if the interface extends `HTMLAttributes<...>` or similar
     pub dom: Option<ParsedType>,
     /// A collection of properties from interfaces that the current interface extends, excluding DOM attributes and the like.
-    pub herited_props: ParsedProperties,
+    pub herited_props: ParsedProps,
 }
 
 /// Represents a single parsed property from an interface.
-pub struct ParsedProperty {
+pub struct ParsedProp {
     /// The property's identifier name (e.g. "disabled", "icon")
     pub name: String,
     /// The JSDoc description explaining the property's purpose
@@ -103,16 +105,16 @@ pub struct ParsedProperty {
 
 /// A map of property names to their parsed properties.
 /// It allows overriding earlier ones, matching the behaviour of TypeScript's type merging.
-pub type ParsedProperties = HashMap<String, ParsedProperty>;
+pub type ParsedProps = HashMap<String, ParsedProp>;
 
 /// Represents a fully parsed TypeScript interface.
-pub struct ParsedInterface {
+pub struct ParsedPropsInterface {
     /// The full text of the DOM attributes extension clause, if the interface extends `HTMLAttributes<...>` or similar.
     pub dom_attributes_constraint: Option<ParsedType>,
     /// The interface's generic type parameters.
     pub generics: Vec<ParsedGeneric>,
     /// All parsed properties, including those inherited from extended internal interfaces.
-    pub properties: Vec<ParsedProperty>,
+    pub properties: Vec<ParsedProp>,
     /// The resolved type dependencies for the interface.
     pub type_dependencies: HashMap<String, Vec<ParsedType>>,
 }
@@ -138,4 +140,17 @@ pub enum ResolvedReference<'a> {
     TSTypeAliasDeclaration(&'a TSTypeAliasDeclaration<'a>, &'a Semantic<'a>),
     /// A reference to an interface declaration.
     TSInterfaceDeclaration(&'a TSInterfaceDeclaration<'a>, &'a Semantic<'a>),
+    /// A reference to a literal type declaration.
+    TSLiteralType(&'a TSLiteralType<'a>, &'a Semantic<'a>),
+}
+
+impl<'a> std::fmt::Debug for ResolvedReference<'a> {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::TSInterfaceDeclaration(decl, _) => decl.fmt(f),
+            Self::TSTypeAliasDeclaration(decl, _) => decl.fmt(f),
+            Self::VariableDeclarator(decl, _) => decl.fmt(f),
+            Self::TSLiteralType(decl, _) => decl.fmt(f),
+        }
+    }
 }

@@ -1,28 +1,31 @@
 use std::{collections::HashMap, path::Path};
 
-use oxc::ast::{
-    AstKind,
+use oxc::{
     ast::{
-        BindingPattern, Declaration, TSFunctionType, TSInterfaceDeclaration, TSType, TSTypeName,
+        AstKind,
+        ast::{
+            BindingPattern, Declaration, TSFunctionType, TSInterfaceDeclaration, TSType, TSTypeName,
+        },
     },
+    span::GetSpan,
 };
 use oxc_semantic::Semantic;
 
 use crate::{
     defs::{
-        FunctionType, FunctionTypeParam, ParsedGeneric, ParsedInterface, ParsedType, PathResolver,
-        ResolvedReference, StandardType, TypeDependencies,
+        ExternalType, FunctionType, FunctionTypeParam, ParsedGeneric, ParsedPropsInterface,
+        ParsedType, PathResolver, ResolvedReference, StandardType, TypeDependencies,
     },
     extractor::extract_generics,
     parser::parse_ts_file,
-    prelude::Result,
+    prelude::*,
     resolver::resolve_reference,
 };
 
 pub fn parse_props_interfaces(
     path: &Path,
     resolver: &PathResolver,
-) -> Result<HashMap<String, ParsedInterface>> {
+) -> Result<HashMap<String, ParsedPropsInterface>> {
     let mut parsed_interfaces = HashMap::new();
 
     parse_ts_file(path, |node, semantic, _program| {
@@ -33,11 +36,16 @@ pub fn parse_props_interfaces(
             let name = interface.id.name.to_string();
             let mut type_deps: TypeDependencies = HashMap::new();
 
+            // println!("{:#?}", interface);
+
             let generics = interface
                 .type_parameters
                 .as_ref()
                 .map(|decl| extract_generics(decl, &mut type_deps, semantic, resolver))
-                .transpose()?;
+                .transpose()?
+                .unwrap_or_default();
+
+            println!("{:#?}", generics);
         }
 
         Ok(false)
@@ -53,58 +61,68 @@ pub fn parse_type(
     resolver: &PathResolver,
     generics: &[ParsedGeneric],
 ) -> Result<ParsedType> {
-    if let TSType::TSUnionType(union) = ts_type {
-        let parsed = union
-            .types
-            .iter()
-            .map(|t| parse_type(t, type_deps, semantic, resolver, generics))
-            .collect::<Result<Vec<ParsedType>>>()?;
-        return Ok(ParsedType::Union(parsed));
-    }
+    match ts_type {
+        TSType::TSUnionType(union) => {
+            let parsed = union
+                .types
+                .iter()
+                .map(|t| parse_type(t, type_deps, semantic, resolver, generics))
+                .collect::<Result<Vec<ParsedType>>>()?;
+            return Ok(ParsedType::Union(parsed));
+        }
+        TSType::TSIntersectionType(intersection) => {
+            let parsed = intersection
+                .types
+                .iter()
+                .map(|t| parse_type(t, type_deps, semantic, resolver, generics))
+                .collect::<Result<Vec<ParsedType>>>()?;
 
-    if let TSType::TSIntersectionType(intersection) = ts_type {
-        let parsed = intersection
-            .types
-            .iter()
-            .map(|t| parse_type(t, type_deps, semantic, resolver, generics))
-            .collect::<Result<Vec<ParsedType>>>()?;
+            return Ok(ParsedType::Intersection(parsed));
+        }
+        TSType::TSFunctionType(func) => {
+            let parsed = parse_fn_type(func, type_deps, semantic, resolver, generics)?;
+            return Ok(ParsedType::Function(Box::new(parsed)));
+        }
+        TSType::TSTypeReference(reference) => {
+            let TSTypeName::IdentifierReference(ident) = &reference.type_name else {
+                return Err(format!("Unsupported type name: {:#?}", reference.type_name).into());
+            };
 
-        return Ok(ParsedType::Intersection(parsed));
-    }
-
-    if let TSType::TSFunctionType(func) = ts_type {
-        let parsed = parse_fn_type(func, type_deps, semantic, resolver, generics)?;
-        return Ok(ParsedType::Function(Box::new(parsed)));
-    }
-
-    if let TSType::TSTypeReference(reference) = ts_type {
-        let TSTypeName::IdentifierReference(ident) = &reference.type_name else {
-            return Err(format!("Unsupported type name: {:#?}", reference.type_name).into());
-        };
-
-        let name = ident.name.to_string();
-        let mut parsed_type = ParsedType::Standard(StandardType::new(ident.to_string()));
-
-        resolve_reference(ident, semantic, resolver, |resolved| {
-            match resolved {
-                ResolvedReference::VariableDeclarator(..) => return Ok(()),
-                ResolvedReference::TSTypeAliasDeclaration(decl, semantic) => {
-                    parsed_type = parse_type(
-                        &decl.type_annotation,
-                        type_deps,
-                        semantic,
-                        resolver,
-                        generics,
-                    )?;
-                }
-                ResolvedReference::TSInterfaceDeclaration(decl, semantic) => {}
+            // This allows to check for external types like `HTMLAttributes<...>`.
+            let whole_name = reference.span().display(semantic);
+            if let Some(external) = ExternalType::maybe_new(whole_name) {
+                return Ok(ParsedType::External(external));
             }
 
-            Ok(())
-        })?;
-    }
+            let name = ident.name.to_string();
+            let mut parsed_type = ParsedType::Standard(StandardType::new(ident.to_string()));
 
-    Ok(todo!())
+            resolve_reference(ident, semantic, resolver, |resolved| {
+                match resolved {
+                    ResolvedReference::VariableDeclarator(..) => {}
+                    ResolvedReference::TSTypeAliasDeclaration(decl, semantic) => {
+                        parsed_type = parse_type(
+                            &decl.type_annotation,
+                            type_deps,
+                            semantic,
+                            resolver,
+                            generics,
+                        )?;
+                    }
+                    ResolvedReference::TSInterfaceDeclaration(decl, semantic) => {}
+                    ResolvedReference::TSLiteralType(literal, semantic) => {}
+                }
+
+                Ok(())
+            })?;
+
+            Ok(parsed_type)
+        }
+        _ => {
+            let def = ts_type.span().display(semantic);
+            return Ok(ParsedType::Standard(StandardType::new(def)));
+        }
+    }
 }
 
 pub fn parse_fn_type(
@@ -118,13 +136,10 @@ pub fn parse_fn_type(
         .type_parameters
         .as_ref()
         .map(|params| extract_generics(params, type_deps, semantic, resolver))
-        .transpose()?;
+        .transpose()?
+        .unwrap_or_default();
 
-    let mut all_generics = generics.to_vec();
-
-    if let Some(fg) = &fn_generics {
-        all_generics.extend(fg.iter().cloned());
-    }
+    let all_generics = [generics.to_vec(), fn_generics.clone()].concat();
 
     let return_type = parse_type(
         &fn_type.return_type.type_annotation,
