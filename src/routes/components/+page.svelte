@@ -30,6 +30,7 @@
     QRailbar,
     QSelect,
     QSeparator,
+    QSlider,
     QSwitch,
     QTab,
     QTable,
@@ -181,6 +182,12 @@
       description: "Offer users a dropdown list for making single or multiple selections.",
       href: "/components/select",
       snippet: select,
+    },
+    {
+      name: "QSlider",
+      description: "Select values and ranges with accessible Material 3 sliders.",
+      href: "/components/slider",
+      snippet: slider,
     },
     {
       name: "QSnackbar",
@@ -633,6 +640,13 @@
   {@const options = ["Apple", "Banana", "Cherry", "Strawberry"]}
 
   <QSelect class="q-select__demo" value="Apple" {options} label="Favorite fruit" filled />
+{/snippet}
+
+{#snippet slider()}
+  <QCard class="column q-gap-lg" style="width: 75%;">
+    <QSlider value={35} aria-label="Preview value" />
+    <QSlider value={65} step={20} markers aria-label="Preview stops" />
+  </QCard>
 {/snippet}
 
 {#snippet snackbar()}

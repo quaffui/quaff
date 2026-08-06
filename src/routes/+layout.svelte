@@ -149,6 +149,10 @@
       to: "/components/select",
     },
     {
+      name: "Slider",
+      to: "/components/slider",
+    },
+    {
       name: "Snackbar",
       to: "/components/snackbar",
     },
