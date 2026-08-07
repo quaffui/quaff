@@ -31,6 +31,13 @@ npm create quaff@latest
 
 Browse the [documentation](https://quaff.dev/) for components, layouts, and utilities.
 
+## CSS tree shaking
+
+`quaffCss()` keeps all base and helper CSS plus complete stylesheets for used components in
+development and production by default. Selector pruning is opt-in with `quaffCss({ prune: true })`.
+
+See [CSS tree shaking](https://quaff.dev/utils/css) for setup, safelists, and fallbacks.
+
 ## Contributing to Quaff
 
 To work on the framework itself, install its dependencies and start the dev server:

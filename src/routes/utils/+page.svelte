@@ -6,6 +6,12 @@
 
   const utils = [
     {
+      name: "CSS Tree Shaking",
+      description: "Include used component styles, with optional selector pruning.",
+      href: "/utils/css",
+      hovered: false,
+    },
+    {
       name: "Meta",
       description: "Manage page titles, SEO metadata, and canonical links.",
       href: "/utils/meta",

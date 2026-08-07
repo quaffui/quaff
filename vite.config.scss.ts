@@ -1,8 +1,8 @@
 import { resolve } from "path";
 import { defineConfig } from "vite";
-import { ComponentCss } from "./src/lib/internal/componentRegistry.ts";
+import { COMPONENT_CSS } from "./src/lib/internal/componentRegistry.ts";
 
-const componentCss = Object.values(ComponentCss);
+const componentCss = Object.values(COMPONENT_CSS);
 
 const cssEntries = Object.fromEntries([
   ["index", "src/lib/css/index.scss"],

@@ -21,7 +21,7 @@
     quaffShikiDarkTheme,
     quaffShikiLightTheme,
   } from "$internal/shikiTheme";
-  import { ComponentParentFolder } from "$internal/componentRegistry";
+  import { COMPONENT_PARENT_FOLDER } from "$internal/componentRegistry";
   import { getOwnTypeDefinition } from "./QApi.utils";
   import { docsCtx } from "./QDocs.svelte";
 
@@ -224,7 +224,7 @@
 {/snippet}
 
 {#each componentDocs as QDocument, index (QDocument)}
-  {@const path = ComponentParentFolder[QDocument.name as keyof typeof ComponentParentFolder]}
+  {@const path = COMPONENT_PARENT_FOLDER[QDocument.name as keyof typeof COMPONENT_PARENT_FOLDER]}
 
   <div bind:this={apiElements[index]} class="q-api">
     <QCard class="q-px-none q-pb-none q-mt-lg">

@@ -1,152 +1,304 @@
-const buttonCss = ["button", "icon", "progress"] as const;
-const fabCss = ["fab", ...buttonCss, "tooltip"] as const;
-const listCss = ["list", "separator"] as const;
-const pickerCss = ["field", "dialog", "menu", ...buttonCss] as const;
-const selectCss = ["field", "select", "icon", "list", "menu"] as const;
-const sliderCss = ["slider", "icon"] as const;
-
-// Order determines the CSS cascade. Each group declares its stylesheet and component dependencies.
-const registry = {
-  avatar: { css: "components/avatar", components: { QAvatar: ["avatar"] } },
-  badge: { css: "components/badge", components: { QBadge: ["badge"] } },
-  "bottom-sheet": {
-    css: "components/bottom-sheet",
-    components: { QBottomSheet: ["bottom-sheet"] },
-  },
-  breadcrumbs: {
-    css: "components/breadcrumbs",
-    components: { QBreadcrumbs: ["breadcrumbs"], QBreadcrumbsEl: ["breadcrumbs", "icon"] },
-  },
-  button: { css: "components/button", components: { QBtn: buttonCss, QIconBtn: buttonCss } },
-  "button-group": {
-    css: "components/button-group",
-    components: {
-      QBtnGroup: ["button-group", ...buttonCss],
-      QBtnToggle: ["button-group", ...buttonCss],
-    },
-  },
-  "split-button": {
-    css: "components/split-button",
-    components: { QSplitBtn: ["split-button", ...buttonCss, "menu"] },
-  },
-  card: {
-    css: "components/card",
-    components: { QCard: ["card"], QCardSection: ["card"], QCardActions: ["card"] },
-  },
-  carousel: { css: "components/carousel", components: { QCarousel: ["carousel", ...buttonCss] } },
-  checkbox: { css: "components/checkbox", components: { QCheckbox: ["checkbox"] } },
-  chip: { css: "components/chip", components: { QChip: ["chip", "avatar", "icon"] } },
-  codeBlock: { components: { QCodeBlock: buttonCss } },
-  date: { css: "components/date", components: { QDate: ["date", ...pickerCss] } },
-  dialog: { css: "components/dialog", components: { QDialog: ["dialog"] } },
-  drawer: { css: "components/drawer", components: { QDrawer: ["drawer"] } },
-  "expansion-item": {
-    css: "components/expansion-item",
-    components: { QExpansionItem: ["expansion-item", "button", "icon", ...listCss, "progress"] },
-  },
-  fab: {
-    css: "components/fab",
-    components: { QFab: fabCss, QExtendedFab: fabCss, QFabMenu: [...fabCss, "menu"] },
-  },
-  field: { css: "shared/field" },
-  footer: { css: "components/footer", components: { QFooter: ["footer"] } },
-  header: {
-    css: "components/header",
-    components: { QHeader: ["header"], QHeaderTitle: ["header"] },
-  },
-  icon: { css: "components/icon", components: { QIcon: ["icon"] } },
-  input: { css: "components/input", components: { QInput: ["field"] } },
-  layout: { css: "components/layout", components: { QLayout: ["layout"] } },
-  list: {
-    css: "components/list",
-    components: { QList: listCss, QItem: listCss, QItemSection: ["list"] },
-  },
-  "loading-indicator": {
-    css: "components/loading-indicator",
-    components: { QLoadingIndicator: ["loading-indicator"] },
-  },
-  menu: { css: "components/menu", components: { QMenu: ["menu"] } },
-  meta: { components: { QMeta: [] } },
-  navbar: {
-    css: "components/navbar",
-    components: { QNavbar: ["navbar"], QNavItem: ["navbar", "icon"] },
-  },
-  progress: {
-    css: "components/progress",
-    components: { QCircularProgress: ["progress"], QLinearProgress: ["progress"] },
-  },
-  radio: { css: "components/radio", components: { QRadio: ["radio"] } },
-  railbar: { css: "components/railbar", components: { QRailbar: ["railbar"] } },
-  search: {
-    css: "components/search",
-    components: { QSearch: ["field", "dialog", ...buttonCss, "search"] },
-  },
-  select: { css: "components/select", components: { QSelect: selectCss } },
-  "side-sheet": {
-    css: "components/side-sheet",
-    components: { QSideSheet: ["side-sheet", ...buttonCss] },
-  },
-  slider: { css: "components/slider", components: { QRange: sliderCss, QSlider: sliderCss } },
-  snackbar: { css: "components/snackbar", components: { QSnackbar: ["snackbar", ...buttonCss] } },
-  separator: { css: "components/separator", components: { QSeparator: ["separator"] } },
-  switch: { css: "components/switch", components: { QSwitch: ["switch", "icon"] } },
-  table: { css: "components/table", components: { QTable: ["table", ...buttonCss, ...selectCss] } },
-  tabs: { css: "components/tabs", components: { QTabs: ["tabs"], QTab: ["tabs", "icon"] } },
-  time: { css: "components/time", components: { QTime: ["time", ...pickerCss] } },
-  toolbar: { css: "components/toolbar", components: { QToolbar: ["toolbar"] } },
-  tooltip: { css: "components/tooltip", components: { QTooltip: ["tooltip"] } },
+// Order determines the CSS cascade. Blocks are explicit because component names do not always match.
+const COMPONENT_REGISTRY = {
+  avatar: group("components/avatar", { QAvatar: component("q-avatar") }),
+  badge: group("components/badge", { QBadge: component("q-badge") }),
+  "bottom-sheet": group("components/bottom-sheet", {
+    QBottomSheet: component("q-bottom-sheet"),
+  }),
+  breadcrumbs: group("components/breadcrumbs", {
+    QBreadcrumbs: component("q-breadcrumbs"),
+    QBreadcrumbsEl: component("q-breadcrumbs", {
+      helpers: ["q-px-none", "q-px-sm", "q-px-md", "q-px-lg"],
+      renders: ["QIcon"],
+    }),
+  }),
+  button: group("components/button", {
+    QBtn: component("q-btn", {
+      renders: ["QCircularProgress", "QIcon"],
+      selectorBlocks: ["q-ripple"],
+    }),
+    QIconBtn: component("q-icon-btn", { renders: ["QBtn"] }),
+  }),
+  "button-group": group("components/button-group", {
+    QBtnGroup: component("q-btn-group"),
+    QBtnToggle: component("q-btn-group", { renders: ["QBtnGroup", "QBtn"] }),
+  }),
+  "split-button": group("components/split-button", {
+    QSplitBtn: component("q-split-btn", { renders: ["QBtn", "QIconBtn", "QIcon", "QMenu"] }),
+  }),
+  card: group("components/card", {
+    QCard: component("q-card"),
+    QCardSection: component("q-card", { helpers: ["row"] }),
+    QCardActions: component("q-card", {
+      helpers: [
+        "flex",
+        "items-start",
+        "items-center",
+        "items-end",
+        "justify-start",
+        "justify-center",
+        "justify-end",
+        "justify-between",
+        "justify-around",
+        "justify-evenly",
+      ],
+    }),
+  }),
+  carousel: group("components/carousel", {
+    QCarousel: component("q-carousel", { renders: ["QIconBtn"] }),
+  }),
+  checkbox: group("components/checkbox", {
+    QCheckbox: component("q-checkbox", { selectorBlocks: ["q-ripple"] }),
+  }),
+  chip: group("components/chip", {
+    QChip: component("q-chip", { renders: ["QAvatar", "QIcon"], selectorBlocks: ["q-ripple"] }),
+  }),
+  codeBlock: group(undefined, {
+    QCodeBlock: component([], {
+      helpers: [
+        "q-pb-sm",
+        "q-ma-none",
+        "items-center",
+        "justify-between",
+        "justify-end",
+        "border-primary",
+        "text-primary",
+        "border-error",
+        "text-error",
+        "border-green",
+        "text-green",
+      ],
+      renders: ["QBtn"],
+    }),
+  }),
+  date: group("components/date", {
+    QDate: component("q-date", {
+      renders: ["QDialog", "QMenu", "QBtn", "QIconBtn", "QIcon", "QInput"],
+    }),
+  }),
+  dialog: group("components/dialog", { QDialog: component("q-dialog") }),
+  drawer: group("components/drawer", { QDrawer: component("q-drawer") }),
+  "expansion-item": group("components/expansion-item", {
+    QExpansionItem: component("q-expansion-item", {
+      renders: ["QIconBtn", "QIcon", "QItem", "QItemSection", "QSeparator"],
+    }),
+  }),
+  fab: group("components/fab", {
+    QFab: component("q-fab", { renders: ["QBtn", "QTooltip"] }),
+    QExtendedFab: component(["q-fab", "q-extended-fab"], { renders: ["QBtn", "QTooltip"] }),
+    QFabMenu: component("q-fab", { renders: ["QBtn", "QTooltip", "QMenu"] }),
+  }),
+  field: group("shared/field", {}),
+  footer: group("components/footer", { QFooter: component("q-footer") }),
+  header: group("components/header", {
+    QHeader: component("q-header"),
+    QHeaderTitle: component("q-header-title"),
+  }),
+  icon: group("components/icon", { QIcon: component("q-icon") }),
+  input: group(undefined, { QInput: component("q-field", { css: ["shared/field"] }) }),
+  layout: group("components/layout", { QLayout: component("q-layout") }),
+  list: group("components/list", {
+    QList: component("q-list", { helpers: ["q-py-sm"], css: ["components/separator"] }),
+    QItem: component("q-item", { renders: ["QSeparator"], selectorBlocks: ["q-ripple"] }),
+    QItemSection: component("q-item", { selectorBlocks: ["q-ripple"] }),
+  }),
+  "loading-indicator": group("components/loading-indicator", {
+    QLoadingIndicator: component("q-loading-indicator"),
+  }),
+  menu: group("components/menu", { QMenu: component("q-menu") }),
+  meta: group(undefined, { QMeta: component([]) }),
+  navbar: group("components/navbar", {
+    QNavbar: component("q-navbar"),
+    QNavItem: component("q-nav-item", {
+      renders: ["QIcon", "QBadge"],
+      selectorBlocks: ["q-ripple"],
+    }),
+  }),
+  progress: group("components/progress", {
+    QCircularProgress: component("q-circular-progress", {
+      helpers: ["absolute-full", "flex", "flex-center"],
+    }),
+    QLinearProgress: component("q-linear-progress"),
+  }),
+  radio: group("components/radio", {
+    QRadio: component("q-radio", { selectorBlocks: ["q-ripple"] }),
+  }),
+  railbar: group("components/railbar", { QRailbar: component("q-railbar") }),
+  search: group("components/search", {
+    QSearch: component("q-search", {
+      renders: ["QDialog", "QIcon", "QIconBtn", "QLinearProgress"],
+      css: ["shared/field"],
+    }),
+  }),
+  select: group("components/select", {
+    QSelect: component("q-select", {
+      renders: ["QIcon", "QItem", "QItemSection", "QList", "QMenu"],
+      css: ["shared/field"],
+    }),
+  }),
+  "side-sheet": group("components/side-sheet", {
+    QSideSheet: component("q-side-sheet", { renders: ["QIconBtn"] }),
+  }),
+  slider: group("components/slider", {
+    QRange: component("q-slider", { renders: ["QIcon"] }),
+    QSlider: component("q-slider", { renders: ["QIcon"] }),
+  }),
+  snackbar: group("components/snackbar", {
+    QSnackbar: component(["q-snackbar", "q-snackbar-positioner"], {
+      renders: ["QBtn", "QIconBtn"],
+    }),
+  }),
+  separator: group("components/separator", {
+    QSeparator: component("q-separator", { helpers: ["q-px-sm", "q-py-sm"] }),
+  }),
+  switch: group("components/switch", {
+    QSwitch: component("q-switch", { renders: ["QIcon"], selectorBlocks: ["q-ripple"] }),
+  }),
+  table: group("components/table", {
+    QTable: component("q-table", { renders: ["QBtn", "QIcon", "QSelect"] }),
+  }),
+  tabs: group("components/tabs", {
+    QTabs: component("q-tabs"),
+    QTab: component("q-tab", { renders: ["QIcon"], selectorBlocks: ["q-ripple"] }),
+  }),
+  time: group("components/time", {
+    QTime: component("q-time", { renders: ["QIconBtn", "QDialog", "QInput", "QMenu", "QBtn"] }),
+  }),
+  toolbar: group("components/toolbar", { QToolbar: component("q-toolbar") }),
+  tooltip: group("components/tooltip", { QTooltip: component("q-tooltip") }),
 } as const;
 
-type Registry = typeof registry;
-type RegistryKeysWith<Property extends string> = {
-  [Key in keyof Registry]: Registry[Key] extends Record<Property, unknown> ? Key : never;
+type Registry = typeof COMPONENT_REGISTRY;
+export type ComponentName = {
+  [Path in keyof Registry]: keyof Registry[Path]["components"];
 }[keyof Registry];
-type CssKey = RegistryKeysWith<"css">;
-type ComponentPath = RegistryKeysWith<"components">;
-type ComponentName = {
-  [Path in ComponentPath]: keyof Registry[Path]["components"];
-}[ComponentPath];
+export type ComponentCssName = NonNullable<Registry[keyof Registry]["css"]>;
 
-export type ComponentCssName = Registry[CssKey]["css"];
+interface ComponentOptions<Css extends string = string> {
+  css?: readonly Css[];
+  helpers?: readonly string[];
+  renders?: readonly string[];
+  selectorBlocks?: readonly string[];
+}
 
-const entries: Record<
+interface ComponentDefinition extends ComponentOptions<ComponentCssName> {
+  path: string;
+  blocks: readonly string[];
+  css: readonly ComponentCssName[];
+}
+
+interface ResolvedComponentMetadata {
+  blocks: string[];
+  css: ComponentCssName[];
+  helpers: string[];
+}
+
+const COMPONENT_GROUPS: Record<
   string,
-  { css?: ComponentCssName; components?: Record<string, readonly CssKey[]> }
-> = registry;
+  {
+    css: ComponentCssName | undefined;
+    components: Record<string, ReturnType<typeof component<ComponentCssName>>>;
+  }
+> = COMPONENT_REGISTRY;
 
-export const ComponentCss = Object.fromEntries(
-  Object.entries(entries).flatMap(([key, { css }]) => (css ? [[key, css]] : []))
-) as Record<CssKey, ComponentCssName>;
+export const COMPONENT_CSS = Object.fromEntries(
+  Object.entries(COMPONENT_GROUPS).flatMap(([path, { css }]) => (css ? [[path, css]] : []))
+) as Record<string, ComponentCssName>;
 
-export const ComponentCssDependencies = Object.fromEntries(
-  Object.values(entries).flatMap(({ components }) =>
-    Object.entries(components ?? {}).map(([name, css]) => [
+export const COMPONENT_DEFINITIONS = Object.fromEntries<ComponentDefinition>(
+  Object.entries(COMPONENT_GROUPS).flatMap(([path, group]) =>
+    Object.entries(group.components).map(([name, definition]) => [
       name,
-      css.map((key) => ComponentCss[key]),
+      {
+        ...definition,
+        path: `${path}/${name}.svelte`,
+        css: [...(group.css ? [group.css] : []), ...(definition.css ?? [])],
+      },
     ])
   )
-) as Record<ComponentName, ComponentCssName[]>;
+) as Record<ComponentName, ComponentDefinition>;
 
-export const ComponentPathCssDependencies = Object.fromEntries(
-  Object.entries(entries).flatMap(([path, { components }]) => {
-    if (!components) {
-      return [];
+export const COMPONENT_PARENT_FOLDER = Object.fromEntries(
+  Object.entries(COMPONENT_GROUPS).flatMap(([path, { components }]) =>
+    Object.keys(components).map((name) => [name, `components/${path}`])
+  )
+) as Record<ComponentName, string>;
+
+export const COMPONENT_NAMES_BY_IMPORT_PATH = Object.fromEntries(
+  Object.entries(COMPONENT_DEFINITIONS).map(([name, definition]) => [definition.path, name])
+) as Readonly<Record<string, ComponentName>>;
+
+export const COMPONENT_METADATA = Object.fromEntries(
+  Object.keys(COMPONENT_DEFINITIONS).map((name) => [
+    name,
+    collectComponentMetadata(name as ComponentName),
+  ])
+) as Record<ComponentName, ResolvedComponentMetadata>;
+
+export const COMPONENT_BLOCK_CSS_DEPENDENCIES: Record<string, ComponentCssName[]> = {};
+
+for (const definition of Object.values(COMPONENT_DEFINITIONS)) {
+  for (const block of definition.blocks) {
+    addUnique((COMPONENT_BLOCK_CSS_DEPENDENCIES[block] ??= []), definition.css);
+  }
+
+  for (const block of definition.selectorBlocks ?? []) {
+    COMPONENT_BLOCK_CSS_DEPENDENCIES[block] ??= [];
+  }
+}
+
+export const UTILITY_COMPONENT_DEPENDENCIES = {
+  Notify: ["QSnackbar"],
+} satisfies Record<string, readonly ComponentName[]>;
+
+function group<Css extends string | undefined, Components>(css: Css, components: Components) {
+  return { css, components };
+}
+
+function component<Css extends string = never>(
+  blocks: string | readonly string[],
+  options: ComponentOptions<Css> = {}
+) {
+  return { blocks: typeof blocks === "string" ? [blocks] : blocks, ...options };
+}
+
+function collectComponentMetadata(
+  name: ComponentName,
+  seen = new Set<ComponentName>()
+): ResolvedComponentMetadata {
+  const metadata: ResolvedComponentMetadata = { blocks: [], css: [], helpers: [] };
+
+  if (seen.has(name)) {
+    return metadata;
+  }
+
+  seen.add(name);
+
+  const definition = COMPONENT_DEFINITIONS[name];
+
+  metadata.blocks.push(...definition.blocks, ...(definition.selectorBlocks ?? []));
+  metadata.css.push(...definition.css);
+  metadata.helpers.push(...(definition.helpers ?? []));
+
+  for (const dependency of definition.renders ?? []) {
+    if (!(dependency in COMPONENT_DEFINITIONS)) {
+      throw new Error(`${name} renders unknown component ${dependency}`);
     }
 
-    const css = Object.keys(components).flatMap(
-      (name) => ComponentCssDependencies[name as ComponentName]
-    );
+    const dependencyMetadata = collectComponentMetadata(dependency as ComponentName, seen);
 
-    return [[path, [...new Set(css)]]];
-  })
-) as Record<ComponentPath, ComponentCssName[]>;
+    addUnique(metadata.blocks, dependencyMetadata.blocks);
+    addUnique(metadata.css, dependencyMetadata.css);
+    addUnique(metadata.helpers, dependencyMetadata.helpers);
+  }
 
-export const ComponentParentFolder = Object.fromEntries(
-  Object.values(entries).flatMap(({ components, css }) =>
-    Object.entries(components ?? {}).map(([name]) => [name, css])
-  )
-) as Record<ComponentName, ComponentCssName>;
+  return metadata;
+}
 
-export const UtilityCssDependencies = {
-  Notify: ComponentCssDependencies.QSnackbar,
-} satisfies Record<string, readonly ComponentCssName[]>;
+function addUnique<Value>(target: Value[], values: readonly Value[]) {
+  for (const value of values) {
+    if (!target.includes(value)) {
+      target.push(value);
+    }
+  }
+}
