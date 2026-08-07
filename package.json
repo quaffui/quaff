@@ -8,11 +8,11 @@
   "scripts": {
     "dev": "tsc -p plugins/tsconfig.json && vite dev",
     "open": "tsc -p plugins/tsconfig.json && vite dev --open",
-    "build": "tsc -p plugins/tsconfig.json && svelte-kit sync && svelte-package && publint && vite build --config vite.config.scss.ts",
+    "build": "tsc -p plugins/tsconfig.json && svelte-kit sync && svelte-package && bun run build:css && publint",
     "build:css": "vite build --config vite.config.scss.ts",
     "build:docs": "tsc -p plugins/tsconfig.json && bun scripts/docgenProps.ts && bun scripts/docgenSnippets.ts && vite build --config vite.config.scss.ts && svelte-kit sync && vite build",
     "preview": "vite preview",
-    "package": "tsc -p plugins/tsconfig.json && svelte-kit sync && svelte-package && publint",
+    "package": "tsc -p plugins/tsconfig.json && svelte-kit sync && svelte-package && bun run build:css && publint",
     "check": "tsc -p plugins/tsconfig.json && svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "tsc -p plugins/tsconfig.json && svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
     "test:unit": "vitest",
@@ -37,6 +37,7 @@
       "svelte": "./dist/meta.js"
     },
     "./css/*": "./dist/css/*",
+    "./css/components/input.css": "./dist/css/shared/field.css",
     "./locales/*": {
       "types": "./dist/locales/*.d.ts",
       "default": "./dist/locales/*.js"
@@ -99,7 +100,8 @@
   "types": "./dist/index.d.ts",
   "type": "module",
   "dependencies": {
-    "@quaffui/material-color-utilities": "^0.4.2"
+    "@quaffui/material-color-utilities": "^0.4.2",
+    "purgecss": "^8.0.0"
   },
   "license": "MIT"
 }

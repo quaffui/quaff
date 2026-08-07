@@ -229,6 +229,10 @@
 
   const quaffUtils: Item[] = [
     {
+      name: "CSS Tree Shaking",
+      to: "/utils/css",
+    },
+    {
       name: "Meta",
       to: "/utils/meta",
     },
