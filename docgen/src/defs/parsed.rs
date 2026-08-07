@@ -1,17 +1,15 @@
 use std::collections::HashMap;
 
-use bitflags::{Flag, bitflags};
-use oxc::ast::ast::{
-    TSInterfaceDeclaration, TSLiteralType, TSTypeAliasDeclaration, VariableDeclarator,
-};
+use bitflags::bitflags;
+use oxc::ast::ast::{TSInterfaceDeclaration, TSTypeAliasDeclaration, VariableDeclarator};
 use oxc_semantic::Semantic;
 
 use crate::defs::{FunctionType, InterfaceProperty, InterfaceType};
 
 use super::structs::{ComplexType, ExternalType, StandardType};
 
-/// Flags indicating the property's characteristics
 bitflags! {
+    /// Flags indicating the property's characteristics
     pub struct ParsedPropertyFlags: u32 {
         /// No flags set
         const None = 0;

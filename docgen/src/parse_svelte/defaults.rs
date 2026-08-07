@@ -5,7 +5,7 @@ use oxc_semantic::Semantic;
 
 use crate::{
     defs::{ParsedDefault, ParsedDefaults, PathResolver, ResolvedReference},
-    prelude::{Result, SpanDisplay, W},
+    prelude::{Result, SpanDisplay},
     resolver::resolve_reference,
 };
 
