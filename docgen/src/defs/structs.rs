@@ -92,6 +92,7 @@ pub struct FunctionType {
 }
 
 /// Represents an interface's property, e.g. `name: string` or `disabled?: boolean`
+#[derive(Debug, Clone)]
 pub struct InterfaceProperty {
     /// The property's name (e.g. `name` in `(name: string) => string`)
     pub name: String,
@@ -104,6 +105,7 @@ pub struct InterfaceProperty {
 /// Represents an interface type definition, e.g. `interface MyInterface {}`.
 ///
 /// Given the similarities, it could also represent an oxc `TypeLiteral`.
+#[derive(Debug, Clone)]
 pub struct InterfaceType {
     /// The name of the interface (or type alias in the case of `TypeLiteral`)
     pub name: String,

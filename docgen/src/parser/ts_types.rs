@@ -1,11 +1,6 @@
-use std::{collections::HashMap, path::Path};
-
 use oxc::{
-    ast::{
-        AstKind,
-        ast::{
-            BindingPattern, Declaration, TSFunctionType, TSInterfaceDeclaration, TSType, TSTypeName,
-        },
+    ast::ast::{
+        BindingPattern, PropertyKey, TSFunctionType, TSSignature, TSType, TSTypeLiteral, TSTypeName,
     },
     span::GetSpan,
 };
@@ -13,51 +8,14 @@ use oxc_semantic::Semantic;
 
 use crate::{
     defs::{
-        ExternalType, FunctionType, FunctionTypeParam, ParsedGeneric, ParsedPropsInterface,
+        ExternalType, FunctionType, FunctionTypeParam, InterfaceProperty, ParsedGeneric,
         ParsedType, PathResolver, ResolvedReference, StandardType, TypeDependencies,
     },
     extractor::extract_generics,
-    parser::parse_ts_file,
+    parser::interfaces::parse_interface,
     prelude::*,
     resolver::resolve_reference,
 };
-
-pub fn parse_props_interfaces(
-    path: &Path,
-    resolver: &PathResolver,
-) -> Result<HashMap<String, ParsedPropsInterface>> {
-    let mut parsed_interfaces = HashMap::new();
-
-    parse_ts_file(path, |node, semantic, _program| {
-        if let AstKind::ExportDeclaration(export) = node.kind()
-            && let Declaration::TSInterfaceDeclaration(interface) = &export.declaration
-            && interface.id.name.ends_with("Props")
-        {
-            let name = interface.id.name.to_string();
-            let mut type_deps: TypeDependencies = HashMap::new();
-
-            let generics = interface
-                .type_parameters
-                .as_ref()
-                .map(|decl| extract_generics(decl, &mut type_deps, semantic, resolver))
-                .transpose()?
-                .unwrap_or_default();
-
-            let interface = ParsedPropsInterface {
-                type_dependencies: type_deps,
-                generics,
-                properties: todo!(),
-                dom_attributes_constraint: todo!(),
-            };
-
-            parsed_interfaces.insert(name, interface);
-        }
-
-        Ok(false)
-    })?;
-
-    Ok(parsed_interfaces)
-}
 
 pub fn parse_type(
     ts_type: &TSType,
@@ -88,6 +46,10 @@ pub fn parse_type(
             let parsed = parse_fn_type(func, type_deps, semantic, resolver, generics)?;
             return Ok(ParsedType::Function(Box::new(parsed)));
         }
+        TSType::TSTypeLiteral(literal) => {
+            let parsed = parse_ts_literal(literal, type_deps, semantic, resolver)?;
+            return Ok(ParsedType::TypeLiteral(parsed));
+        }
         TSType::TSTypeReference(reference) => {
             let TSTypeName::IdentifierReference(ident) = &reference.type_name else {
                 return Err(format!("Unsupported type name: {:#?}", reference.type_name).into());
@@ -99,7 +61,6 @@ pub fn parse_type(
                 return Ok(ParsedType::External(external));
             }
 
-            let name = ident.name.to_string();
             let mut parsed_type = ParsedType::Standard(StandardType::new(ident.to_string()));
 
             resolve_reference(ident, semantic, resolver, |resolved| {
@@ -114,8 +75,11 @@ pub fn parse_type(
                             generics,
                         )?;
                     }
-                    ResolvedReference::TSInterfaceDeclaration(decl, semantic) => {}
-                    ResolvedReference::TSLiteralType(literal, semantic) => {}
+                    ResolvedReference::TSInterfaceDeclaration(decl, semantic) => {
+                        parsed_type = ParsedType::Interface(parse_interface(
+                            decl, type_deps, semantic, resolver,
+                        )?);
+                    }
                 }
 
                 Ok(())
@@ -191,13 +155,51 @@ pub fn parse_fn_type(
     })
 }
 
-pub fn parse_interface(
-    decl: &TSInterfaceDeclaration,
+pub fn parse_ts_literal(
+    literal: &TSTypeLiteral,
     type_deps: &mut TypeDependencies,
     semantic: &Semantic,
     resolver: &PathResolver,
-) -> Result<HashMap<String, ParsedType>> {
-    let name = decl.id.name.to_string();
+) -> Result<Vec<InterfaceProperty>> {
+    let mut props = Vec::new();
 
-    Ok(todo!())
+    for prop in &literal.members {
+        let TSSignature::TSPropertySignature(prop) = prop else {
+            return Err(format!("Unsupported literal member: {:#?}", prop).into());
+        };
+
+        let PropertyKey::StaticIdentifier(key) = &prop.key else {
+            return Err(format!(
+                "Literal properties must be identifiers. Parsing property: {:#?}",
+                prop
+            )
+            .into());
+        };
+
+        let prop_name = key.name.to_string();
+
+        let Some(annotation) = &prop.type_annotation else {
+            return Err(format!(
+                "Literal properties must have type annotations. Parsing property: {:#?}",
+                prop
+            )
+            .into());
+        };
+
+        let parsed_type = parse_type(
+            &annotation.type_annotation,
+            type_deps,
+            semantic,
+            resolver,
+            &Vec::new(),
+        )?;
+
+        props.push(InterfaceProperty {
+            name: prop_name,
+            type_annotation: parsed_type,
+            optional: prop.optional,
+        });
+    }
+
+    Ok(props)
 }

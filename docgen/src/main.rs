@@ -29,8 +29,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
         if svelte_file.as_ref().is_none_or(|file| !file.exists()) {
             println!(
-                "Skip parsing defaults for {:#?}: No Svelte file found",
-                svelte_file
+                "Skip parsing defaults for {}: No corresponding Svelte file found",
+                name
             );
 
             continue;
@@ -38,7 +38,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
         let parsed_defaults = parse_svelte_file(&svelte_file.unwrap())?;
 
-        for mut prop in interface.properties.into_iter() {
+        for (_prop_name, mut prop) in interface.properties.into_iter() {
             if let Some(prop_default) = parsed_defaults.get(&prop.name) {
                 if prop_default.is_bindable() {
                     prop.flags |= ParsedPropertyFlags::Bindable;

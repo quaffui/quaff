@@ -43,7 +43,6 @@ pub fn resolve_reference<T: for<'a> FnMut(ResolvedReference<'a>) -> Result<()>>(
         AstKind::TSInterfaceDeclaration(decl) => {
             callback(ResolvedReference::TSInterfaceDeclaration(decl, semantic))
         }
-        AstKind::TSLiteralType(decl) => callback(ResolvedReference::TSLiteralType(decl, semantic)),
         _ => Ok(()),
     }
 }

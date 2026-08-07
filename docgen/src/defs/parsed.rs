@@ -6,7 +6,7 @@ use oxc::ast::ast::{
 };
 use oxc_semantic::Semantic;
 
-use crate::defs::FunctionType;
+use crate::defs::{FunctionType, InterfaceProperty, InterfaceType};
 
 use super::structs::{ComplexType, ExternalType, StandardType};
 
@@ -61,6 +61,11 @@ pub enum ParsedType {
     Standard(StandardType),
     /// A complex type, see [ComplexType] for more information
     Complex(ComplexType),
+    /// An interface type, see [InterfaceType] for more information
+    Interface(InterfaceType),
+    /// A type literal, which is just an inline interface, without a name or generics.
+    /// It can be represented as a vec of properties.
+    TypeLiteral(Vec<InterfaceProperty>),
     /// A function type, see [FunctionType] for more information
     Function(Box<FunctionType>),
     /// A union of [ParsedType]. The vector will always contain more than one element.
@@ -92,6 +97,13 @@ pub struct ParsedHeritage {
     pub herited_props: ParsedProps,
 }
 
+pub struct ParsedComment {
+    /// The JSDoc description explaining the property's purpose
+    pub description: String,
+    /// The default value from the `@default` JSDoc tag, if present
+    pub default: Option<String>,
+}
+
 /// Represents a single parsed property from an interface.
 pub struct ParsedProp {
     /// The property's identifier name (e.g. "disabled", "icon")
@@ -100,13 +112,13 @@ pub struct ParsedProp {
     pub description: String,
     /// Flags indicating the property's characteristics (see [ParsedPropertyFlags])
     pub flags: ParsedPropertyFlags,
-    /// The computed type(s) for this property. A single [ParsedType] for simple types (Vec of size 1), or an array of [ParsedType] for union types (Vec of size >= 2).
-    pub type_def: Vec<ParsedType>,
+    /// The computed type of this property.
+    pub type_def: ParsedType,
     /// The default value from the `@default` JSDoc tag, if present
     pub default: Option<String>,
 }
 
-/// A map of property names to their parsed properties.
+/// A map of property names to their parsed information.
 /// It allows overriding earlier ones, matching the behaviour of TypeScript's type merging.
 pub type ParsedProps = HashMap<String, ParsedProp>;
 
@@ -117,7 +129,7 @@ pub struct ParsedPropsInterface {
     /// The interface's generic type parameters.
     pub generics: Vec<ParsedGeneric>,
     /// All parsed properties, including those inherited from extended internal interfaces.
-    pub properties: Vec<ParsedProp>,
+    pub properties: ParsedProps,
     /// The resolved type dependencies for the interface.
     pub type_dependencies: HashMap<String, Vec<ParsedType>>,
 }
@@ -163,8 +175,6 @@ pub enum ResolvedReference<'a> {
     TSTypeAliasDeclaration(&'a TSTypeAliasDeclaration<'a>, &'a Semantic<'a>),
     /// A reference to an interface declaration.
     TSInterfaceDeclaration(&'a TSInterfaceDeclaration<'a>, &'a Semantic<'a>),
-    /// A reference to a literal type declaration.
-    TSLiteralType(&'a TSLiteralType<'a>, &'a Semantic<'a>),
 }
 
 impl<'a> std::fmt::Debug for ResolvedReference<'a> {
@@ -173,7 +183,6 @@ impl<'a> std::fmt::Debug for ResolvedReference<'a> {
             Self::TSInterfaceDeclaration(decl, _) => decl.fmt(f),
             Self::TSTypeAliasDeclaration(decl, _) => decl.fmt(f),
             Self::VariableDeclarator(decl, _) => decl.fmt(f),
-            Self::TSLiteralType(decl, _) => decl.fmt(f),
         }
     }
 }
