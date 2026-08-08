@@ -1,7 +1,7 @@
 use std::path::PathBuf;
 
 use crate::{
-    defs::{ParsedPropertyFlags, PathResolver, QApiPropInfo, ToHtml},
+    defs::{ParsedPropertyFlags, PathResolver},
     parse_svelte::parse_svelte_file,
     parser::parse_props_interfaces,
 };
@@ -14,9 +14,15 @@ mod prelude;
 mod resolver;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let file = PathBuf::from(
-        "src/lib/components/button/props.ts",
-    );
+    // Get file path from args. Error if no arg provided.
+    let args = std::env::args().collect::<Vec<String>>();
+    if args.len() < 2 {
+        return Err("Please provide a path to the props file.".into());
+    }
+    let file = PathBuf::from(&args[1]);
+    if !file.exists() {
+        return Err(format!("File not found: {}", file.display()).into());
+    }
 
     let resolver = PathResolver(&file);
 
