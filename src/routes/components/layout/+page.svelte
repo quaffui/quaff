@@ -12,6 +12,7 @@
     QItemSection,
     QLayout,
     QList,
+    QNavItem,
     QRadio,
     QRailbar,
     QSwitch,
@@ -103,16 +104,8 @@
       {/snippet}
       {#snippet railbarRight()}
         <QRailbar side="right" bordered>
-          <QList>
-            <QItem to="#">
-              <QIcon name="home" />
-              <QItemSection>Home</QItemSection>
-            </QItem>
-            <QItem to="#">
-              <QIcon name="help" />
-              <QItemSection>About</QItemSection>
-            </QItem>
-          </QList>
+          <QNavItem icon="home" label="Home" to="#" />
+          <QNavItem icon="help" label="About" to="#" />
         </QRailbar>
       {/snippet}
       {#snippet footer()}
@@ -254,47 +247,19 @@
 
 {#snippet railbarLeft()}
   <QRailbar bordered>
-    <QList>
-      <QItem to="#" noRipple>
-        <QIcon name="home" />
-        <QItemSection>Home</QItemSection>
-      </QItem>
-      <QItem to="#" noRipple>
-        <QIcon name="help" />
-        <QItemSection>About</QItemSection>
-      </QItem>
-      <QItem to="#" noRipple>
-        <QIcon name="shopping_cart" />
-        <QItemSection>Store</QItemSection>
-      </QItem>
-      <QItem to="#" noRipple>
-        <QIcon name="mail" />
-        <QItemSection>Contact</QItemSection>
-      </QItem>
-    </QList>
+    <QNavItem icon="home" label="Home" to="#" noRipple />
+    <QNavItem icon="help" label="About" to="#" noRipple />
+    <QNavItem icon="shopping_cart" label="Store" to="#" noRipple />
+    <QNavItem icon="mail" label="Contact" to="#" noRipple />
   </QRailbar>
 {/snippet}
 
 {#snippet railbarRight()}
   <QRailbar side="right" bordered>
-    <QList>
-      <QItem to="#" noRipple>
-        <QIcon name="home" />
-        <QItemSection>Home</QItemSection>
-      </QItem>
-      <QItem to="#" noRipple>
-        <QIcon name="help" />
-        <QItemSection>About</QItemSection>
-      </QItem>
-      <QItem to="#" noRipple>
-        <QIcon name="shopping_cart" />
-        <QItemSection>Store</QItemSection>
-      </QItem>
-      <QItem to="#" noRipple>
-        <QIcon name="mail" />
-        <QItemSection>Contact</QItemSection>
-      </QItem>
-    </QList>
+    <QNavItem icon="home" label="Home" to="#" noRipple />
+    <QNavItem icon="help" label="About" to="#" noRipple />
+    <QNavItem icon="shopping_cart" label="Store" to="#" noRipple />
+    <QNavItem icon="mail" label="Contact" to="#" noRipple />
   </QRailbar>
 {/snippet}
 

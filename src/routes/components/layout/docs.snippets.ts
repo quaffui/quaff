@@ -34,27 +34,39 @@ function navbarBuilder(kind: "railbar" | "drawer", side: "left" | "right") {
     attributes.push("persistent", `bind:value={${side}DrawerShown}`)
   }
 
+  const items =
+    kind === "railbar"
+      ? [
+          `      <QNavItem icon="home" label="Home" to="#" />`,
+          `      <QNavItem icon="help" label="About" to="#" />`,
+          `      <QNavItem icon="shopping_cart" label="Store" to="#" />`,
+          `      <QNavItem icon="mail" label="Contact" to="#" />`,
+        ]
+      : [
+          `      <QList>`,
+          `        <QItem to="#">`,
+          `          <QIcon name="home" />`,
+          `          <QItemSection>Home</QItemSection>`,
+          `        </QItem>`,
+          `        <QItem to="#">`,
+          `          <QIcon name="help" />`,
+          `          <QItemSection>About</QItemSection>`,
+          `        </QItem>`,
+          `        <QItem to="#">`,
+          `          <QIcon name="shopping_cart" />`,
+          `          <QItemSection>Store</QItemSection>`,
+          `        </QItem>`,
+          `        <QItem to="#">`,
+          `          <QIcon name="mail" />`,
+          `          <QItemSection>Contact</QItemSection>`,
+          `        </QItem>`,
+          `      </QList>`,
+        ]
+
   return [
     `  {#snippet ${kind}${capitalize(side)}()}`,
     `    <Q${capitalize(kind)} ${attributes.join(" ")}>`,
-    `      <QList>`,
-    `        <QItem to="#">`,
-    `          <QIcon name="home" />`,
-    `          <QItemSection>Home</QItemSection>`,
-    `        </QItem>`,
-    `        <QItem to="#">`,
-    `          <QIcon name="help" />`,
-    `          <QItemSection>About</QItemSection>`,
-    `        </QItem>`,
-    `        <QItem to="#">`,
-    `          <QIcon name="shopping_cart" />`,
-    `          <QItemSection>Store</QItemSection>`,
-    `        </QItem>`,
-    `        <QItem to="#">`,
-    `          <QIcon name="mail" />`,
-    `          <QItemSection>Contact</QItemSection>`,
-    `        </QItem>`,
-    `      </QList>`,
+    ...items,
     `    </Q${capitalize(kind)}>`,
     `  {/snippet}\n`,
   ].join("\n")

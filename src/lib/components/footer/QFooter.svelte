@@ -54,10 +54,21 @@
 
   // #region:    --- Lifecycle
   onMount(() => {
-    // Calculating the layout content's height
-    const content = document.querySelector(`.q-footer--${uid} ~ .q-layout__content`);
+    const content = footerEl?.parentElement?.querySelector<HTMLElement>(
+      ":scope > .q-layout__content"
+    );
+    const updateContentScrollHeight = () => {
+      contentScrollHeight = content
+        ? content.scrollHeight - content.clientHeight + (collapsed ? height : 0)
+        : 0;
+    };
+    const contentResizeObserver = new ResizeObserver(updateContentScrollHeight);
 
-    contentScrollHeight = content ? content.scrollHeight - content.clientHeight : 0;
+    updateContentScrollHeight();
+
+    if (content) {
+      contentResizeObserver.observe(content);
+    }
 
     setTimeout(() => {
       if (footerEl) {
@@ -66,6 +77,8 @@
     }, 100);
 
     return () => {
+      contentResizeObserver.disconnect();
+
       footerCtx.updateEntries({
         height: 0,
         collapsed: false,

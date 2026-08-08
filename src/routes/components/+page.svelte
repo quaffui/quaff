@@ -26,6 +26,8 @@
     QLayout,
     QLinearProgress,
     QList,
+    QNavbar,
+    QNavItem,
     QRadio,
     QRailbar,
     QSelect,
@@ -164,6 +166,12 @@
       description: "Display anchored popup content with reliable overlay behavior.",
       href: "/components/menu",
       snippet: menu,
+    },
+    {
+      name: "QNavbar",
+      description: "Navigate between primary destinations from a fixed bottom bar.",
+      href: "/components/navbar",
+      snippet: navbar,
     },
     {
       name: "QProgress",
@@ -619,6 +627,26 @@
       </QList>
     </div>
   </div>
+{/snippet}
+
+{#snippet navbar()}
+  <QLayout class="background" style="height: 50vh; width: 100%;">
+    {#snippet content()}
+      <div class="flex flex-center" style="height: 100%;">
+        <span class="headline-small">Home</span>
+      </div>
+    {/snippet}
+
+    {#snippet navbar()}
+      <QNavbar bordered>
+        <QNavItem icon="home" label="Home" active />
+        <QNavItem icon="search" label="Explore" />
+        <QNavItem icon="notifications" label="Updates" badgeAriaLabel="3 unread updates">
+          {#snippet badge()}3{/snippet}
+        </QNavItem>
+      </QNavbar>
+    {/snippet}
+  </QLayout>
 {/snippet}
 
 {#snippet radio()}

@@ -1,5 +1,6 @@
 <script lang="ts">
   import { docsCtx } from "$docs/QDocs.svelte";
+  import { QNavItemDocs } from "$components/navbar/docs";
   import { QRailbarDocs } from "$components/railbar/docs";
   import { pageTitle } from "$helpers/pageTitle";
   import {
@@ -13,12 +14,13 @@
     QItemSection,
     QLayout,
     QList,
+    QNavItem,
     QRailbar,
   } from "$lib";
   import { QDocs, QDocsSection } from "$docs";
   import snippets from "./docs.snippets";
 
-  docsCtx.set({ snippets, componentDocs: QRailbarDocs });
+  docsCtx.set({ snippets, componentDocs: [QRailbarDocs, QNavItemDocs] });
 
   let selectedRoute = $state("home");
   let leftDrawerOpen = $state(false);
@@ -34,35 +36,27 @@
     <QLayout view="hHh LpR fFf" style="height: 300px;">
       {#snippet railbarLeft()}
         <QRailbar bordered>
-          <QList>
-            <QItem
-              to="#"
-              active={selectedRoute === "home"}
-              clickable
-              onclick={() => (selectedRoute = "home")}
-            >
-              <QIcon name="home" />
-              <QItemSection>Home</QItemSection>
-            </QItem>
-            <QItem
-              to="#"
-              active={selectedRoute === "person"}
-              clickable
-              onclick={() => (selectedRoute = "person")}
-            >
-              <QIcon name="person" />
-              <QItemSection>Profile</QItemSection>
-            </QItem>
-            <QItem
-              to="#"
-              active={selectedRoute === "settings"}
-              clickable
-              onclick={() => (selectedRoute = "settings")}
-            >
-              <QIcon name="settings" />
-              <QItemSection>Settings</QItemSection>
-            </QItem>
-          </QList>
+          <QNavItem
+            icon="home"
+            label="Home"
+            to="#"
+            active={selectedRoute === "home"}
+            onclick={() => (selectedRoute = "home")}
+          />
+          <QNavItem
+            icon="person"
+            label="Profile"
+            to="#"
+            active={selectedRoute === "person"}
+            onclick={() => (selectedRoute = "person")}
+          />
+          <QNavItem
+            icon="settings"
+            label="Settings"
+            to="#"
+            active={selectedRoute === "settings"}
+            onclick={() => (selectedRoute = "settings")}
+          />
         </QRailbar>
       {/snippet}
     </QLayout>
@@ -73,48 +67,73 @@
       <QDocsSection title="Basic Railbar">
         {#snippet sectionDescription()}
           QRailbar provides access to primary destinations from a fixed position at the side of a
-          layout. It is intended for three to seven destinations on medium and large screens.
+          layout. It is intended for three to seven destinations on medium and large screens. Place
+          QNavItem components directly inside it so navigation styling stays scoped to navigation
+          items rather than QList and QItem.
         {/snippet}
 
         <div style="height: 300px; border: 1px solid var(--outline-variant);">
           <QLayout view="hHh LpR fFf">
             {#snippet railbarLeft()}
               <QRailbar>
-                <QList>
-                  <QItem
-                    to="#"
-                    active={selectedRoute === "home"}
-                    clickable
-                    onclick={() => (selectedRoute = "home")}
-                  >
-                    <QIcon name="home" />
-                    <QItemSection>Home</QItemSection>
-                  </QItem>
-                  <QItem
-                    to="#"
-                    active={selectedRoute === "person"}
-                    clickable
-                    onclick={() => (selectedRoute = "person")}
-                  >
-                    <QIcon name="person" />
-                    <QItemSection>Profile</QItemSection>
-                  </QItem>
-                  <QItem
-                    to="#"
-                    active={selectedRoute === "settings"}
-                    clickable
-                    onclick={() => (selectedRoute = "settings")}
-                  >
-                    <QIcon name="settings" />
-                    <QItemSection>Settings</QItemSection>
-                  </QItem>
-                </QList>
+                <QNavItem
+                  icon="home"
+                  label="Home"
+                  to="#"
+                  active={selectedRoute === "home"}
+                  onclick={() => (selectedRoute = "home")}
+                />
+                <QNavItem
+                  icon="person"
+                  label="Profile"
+                  to="#"
+                  active={selectedRoute === "person"}
+                  onclick={() => (selectedRoute = "person")}
+                />
+                <QNavItem
+                  icon="settings"
+                  label="Settings"
+                  to="#"
+                  active={selectedRoute === "settings"}
+                  onclick={() => (selectedRoute = "settings")}
+                />
               </QRailbar>
             {/snippet}
 
             <div class="flex flex-center column" style="height: 100%">
               <h5>Selected route: {selectedRoute}</h5>
               <p>Click the icons in the railbar to change the route.</p>
+            </div>
+          </QLayout>
+        </div>
+      </QDocsSection>
+
+      <QDocsSection title="Badges">
+        {#snippet sectionDescription()}
+          QNavItem badges work the same way in railbars and navigation bars. Use an empty
+          <code>badge</code> snippet for a 6px dot, or plain text of up to four characters including
+          <code>+</code> for a count. Describe meaningful badge information with
+          <code>badgeAriaLabel</code>; for a dot, use a description such as “New notification”.
+          Remove unread markers once the destination is selected.
+        {/snippet}
+
+        <div style="height: 300px; border: 1px solid var(--outline-variant);">
+          <QLayout view="hHh LpR fFf">
+            {#snippet railbarLeft()}
+              <QRailbar aria-label="Inbox navigation">
+                <QNavItem icon="home" label="Home" active />
+                <QNavItem icon="notifications" label="Updates" badgeAriaLabel="New notification">
+                  {#snippet badge()}{/snippet}
+                </QNavItem>
+                <QNavItem icon="inbox" label="Inbox" badgeAriaLabel="More than 999 unread emails">
+                  {#snippet badge()}999+{/snippet}
+                </QNavItem>
+              </QRailbar>
+            {/snippet}
+
+            <div class="flex flex-center column" style="height: 100%">
+              <h5>Navigation badges</h5>
+              <p>Badges are anchored to each destination icon.</p>
             </div>
           </QLayout>
         </div>
@@ -130,35 +149,27 @@
           <QLayout view="hHh LpR fFf">
             {#snippet railbarLeft()}
               <QRailbar bordered>
-                <QList>
-                  <QItem
-                    to="#"
-                    active={selectedRoute === "home"}
-                    clickable
-                    onclick={() => (selectedRoute = "home")}
-                  >
-                    <QIcon name="home" />
-                    <QItemSection>Home</QItemSection>
-                  </QItem>
-                  <QItem
-                    to="#"
-                    active={selectedRoute === "person"}
-                    clickable
-                    onclick={() => (selectedRoute = "person")}
-                  >
-                    <QIcon name="person" />
-                    <QItemSection>Profile</QItemSection>
-                  </QItem>
-                  <QItem
-                    to="#"
-                    active={selectedRoute === "settings"}
-                    clickable
-                    onclick={() => (selectedRoute = "settings")}
-                  >
-                    <QIcon name="settings" />
-                    <QItemSection>Settings</QItemSection>
-                  </QItem>
-                </QList>
+                <QNavItem
+                  icon="home"
+                  label="Home"
+                  to="#"
+                  active={selectedRoute === "home"}
+                  onclick={() => (selectedRoute = "home")}
+                />
+                <QNavItem
+                  icon="person"
+                  label="Profile"
+                  to="#"
+                  active={selectedRoute === "person"}
+                  onclick={() => (selectedRoute = "person")}
+                />
+                <QNavItem
+                  icon="settings"
+                  label="Settings"
+                  to="#"
+                  active={selectedRoute === "settings"}
+                  onclick={() => (selectedRoute = "settings")}
+                />
               </QRailbar>
             {/snippet}
 
@@ -172,43 +183,35 @@
 
       <QDocsSection title="Right Side Railbar">
         {#snippet sectionDescription()}
-          Position the railbar on the right side of the layout using the <code>side</code>"right"
-          prop.
+          Position the railbar on the right side of the layout using
+          <code>side="right"</code>.
         {/snippet}
 
         <div style="height: 300px; border: 1px solid var(--outline-variant);">
           <QLayout view="hHh LpR fFf">
             {#snippet railbarRight()}
               <QRailbar side="right" bordered>
-                <QList>
-                  <QItem
-                    to="#"
-                    active={selectedRoute === "home"}
-                    clickable
-                    onclick={() => (selectedRoute = "home")}
-                  >
-                    <QIcon name="home" />
-                    <QItemSection>Home</QItemSection>
-                  </QItem>
-                  <QItem
-                    to="#"
-                    active={selectedRoute === "person"}
-                    clickable
-                    onclick={() => (selectedRoute = "person")}
-                  >
-                    <QIcon name="person" />
-                    <QItemSection>Profile</QItemSection>
-                  </QItem>
-                  <QItem
-                    to="#"
-                    active={selectedRoute === "settings"}
-                    clickable
-                    onclick={() => (selectedRoute = "settings")}
-                  >
-                    <QIcon name="settings" />
-                    <QItemSection>Settings</QItemSection>
-                  </QItem>
-                </QList>
+                <QNavItem
+                  icon="home"
+                  label="Home"
+                  to="#"
+                  active={selectedRoute === "home"}
+                  onclick={() => (selectedRoute = "home")}
+                />
+                <QNavItem
+                  icon="person"
+                  label="Profile"
+                  to="#"
+                  active={selectedRoute === "person"}
+                  onclick={() => (selectedRoute = "person")}
+                />
+                <QNavItem
+                  icon="settings"
+                  label="Settings"
+                  to="#"
+                  active={selectedRoute === "settings"}
+                  onclick={() => (selectedRoute = "settings")}
+                />
               </QRailbar>
             {/snippet}
 
@@ -229,35 +232,27 @@
           <QLayout view="hHh LpR fFf">
             {#snippet railbarLeft()}
               <QRailbar width={120} bordered>
-                <QList>
-                  <QItem
-                    to="#"
-                    active={selectedRoute === "home"}
-                    clickable
-                    onclick={() => (selectedRoute = "home")}
-                  >
-                    <QIcon name="home" />
-                    <QItemSection>Home</QItemSection>
-                  </QItem>
-                  <QItem
-                    to="#"
-                    active={selectedRoute === "person"}
-                    clickable
-                    onclick={() => (selectedRoute = "person")}
-                  >
-                    <QIcon name="person" />
-                    <QItemSection>Profile</QItemSection>
-                  </QItem>
-                  <QItem
-                    to="#"
-                    active={selectedRoute === "settings"}
-                    clickable
-                    onclick={() => (selectedRoute = "settings")}
-                  >
-                    <QIcon name="settings" />
-                    <QItemSection>Settings</QItemSection>
-                  </QItem>
-                </QList>
+                <QNavItem
+                  icon="home"
+                  label="Home"
+                  to="#"
+                  active={selectedRoute === "home"}
+                  onclick={() => (selectedRoute = "home")}
+                />
+                <QNavItem
+                  icon="person"
+                  label="Profile"
+                  to="#"
+                  active={selectedRoute === "person"}
+                  onclick={() => (selectedRoute = "person")}
+                />
+                <QNavItem
+                  icon="settings"
+                  label="Settings"
+                  to="#"
+                  active={selectedRoute === "settings"}
+                  onclick={() => (selectedRoute = "settings")}
+                />
               </QRailbar>
             {/snippet}
 
@@ -293,44 +288,34 @@
             <!-- Left Railbar -->
             {#snippet railbarLeft()}
               <QRailbar bordered>
-                <QList>
-                  <QItem
-                    to="#"
-                    active={selectedRoute === "home"}
-                    clickable
-                    onclick={() => (selectedRoute = "home")}
-                  >
-                    <QIcon name="home" />
-                    <QItemSection>Home</QItemSection>
-                  </QItem>
-                  <QItem
-                    to="#"
-                    active={selectedRoute === "person"}
-                    clickable
-                    onclick={() => (selectedRoute = "person")}
-                  >
-                    <QIcon name="person" />
-                    <QItemSection>Profile</QItemSection>
-                  </QItem>
-                  <QItem
-                    to="#"
-                    active={selectedRoute === "favorite"}
-                    clickable
-                    onclick={() => (selectedRoute = "favorite")}
-                  >
-                    <QIcon name="favorite" />
-                    <QItemSection>Favorites</QItemSection>
-                  </QItem>
-                  <QItem
-                    to="#"
-                    active={selectedRoute === "settings"}
-                    clickable
-                    onclick={() => (selectedRoute = "settings")}
-                  >
-                    <QIcon name="settings" />
-                    <QItemSection>Settings</QItemSection>
-                  </QItem>
-                </QList>
+                <QNavItem
+                  icon="home"
+                  label="Home"
+                  to="#"
+                  active={selectedRoute === "home"}
+                  onclick={() => (selectedRoute = "home")}
+                />
+                <QNavItem
+                  icon="person"
+                  label="Profile"
+                  to="#"
+                  active={selectedRoute === "person"}
+                  onclick={() => (selectedRoute = "person")}
+                />
+                <QNavItem
+                  icon="favorite"
+                  label="Favorites"
+                  to="#"
+                  active={selectedRoute === "favorite"}
+                  onclick={() => (selectedRoute = "favorite")}
+                />
+                <QNavItem
+                  icon="settings"
+                  label="Settings"
+                  to="#"
+                  active={selectedRoute === "settings"}
+                  onclick={() => (selectedRoute = "settings")}
+                />
               </QRailbar>
             {/snippet}
 
@@ -436,55 +421,36 @@
             <!-- Left Railbar -->
             {#snippet railbarLeft()}
               <QRailbar bordered>
-                <QList>
-                  <QItem
-                    to="#"
-                    active={selectedRoute === "home"}
-                    clickable
-                    onclick={() => (selectedRoute = "home")}
-                  >
-                    <QIcon name="home" />
-                    <QItemSection>Home</QItemSection>
-                  </QItem>
-                  <QItem
-                    to="#"
-                    active={selectedRoute === "person"}
-                    clickable
-                    onclick={() => (selectedRoute = "person")}
-                  >
-                    <QIcon name="person" />
-                    <QItemSection>Profile</QItemSection>
-                  </QItem>
-                  <QItem
-                    to="#"
-                    active={selectedRoute === "settings"}
-                    clickable
-                    onclick={() => (selectedRoute = "settings")}
-                  >
-                    <QIcon name="settings" />
-                    <QItemSection>Settings</QItemSection>
-                  </QItem>
-                </QList>
+                <QNavItem
+                  icon="home"
+                  label="Home"
+                  to="#"
+                  active={selectedRoute === "home"}
+                  onclick={() => (selectedRoute = "home")}
+                />
+                <QNavItem
+                  icon="person"
+                  label="Profile"
+                  to="#"
+                  active={selectedRoute === "person"}
+                  onclick={() => (selectedRoute = "person")}
+                />
+                <QNavItem
+                  icon="settings"
+                  label="Settings"
+                  to="#"
+                  active={selectedRoute === "settings"}
+                  onclick={() => (selectedRoute = "settings")}
+                />
               </QRailbar>
             {/snippet}
 
             <!-- Right Railbar -->
             {#snippet railbarRight()}
               <QRailbar side="right" bordered>
-                <QList>
-                  <QItem to="#" clickable>
-                    <QIcon name="lightbulb" />
-                    <QItemSection>Ideas</QItemSection>
-                  </QItem>
-                  <QItem to="#" clickable>
-                    <QIcon name="notifications" />
-                    <QItemSection>Alerts</QItemSection>
-                  </QItem>
-                  <QItem to="#" clickable>
-                    <QIcon name="help" />
-                    <QItemSection>Help</QItemSection>
-                  </QItem>
-                </QList>
+                <QNavItem icon="lightbulb" label="Ideas" to="#" />
+                <QNavItem icon="notifications" label="Alerts" to="#" />
+                <QNavItem icon="help" label="Help" to="#" />
               </QRailbar>
             {/snippet}
 
@@ -517,35 +483,27 @@
 
             {#snippet railbarLeft()}
               <QRailbar bordered>
-                <QList>
-                  <QItem
-                    to="#"
-                    active={selectedRoute === "home"}
-                    clickable
-                    onclick={() => (selectedRoute = "home")}
-                  >
-                    <QIcon name="home" />
-                    <QItemSection>Home</QItemSection>
-                  </QItem>
-                  <QItem
-                    to="#"
-                    active={selectedRoute === "person"}
-                    clickable
-                    onclick={() => (selectedRoute = "person")}
-                  >
-                    <QIcon name="person" />
-                    <QItemSection>Profile</QItemSection>
-                  </QItem>
-                  <QItem
-                    to="#"
-                    active={selectedRoute === "settings"}
-                    clickable
-                    onclick={() => (selectedRoute = "settings")}
-                  >
-                    <QIcon name="settings" />
-                    <QItemSection>Settings</QItemSection>
-                  </QItem>
-                </QList>
+                <QNavItem
+                  icon="home"
+                  label="Home"
+                  to="#"
+                  active={selectedRoute === "home"}
+                  onclick={() => (selectedRoute = "home")}
+                />
+                <QNavItem
+                  icon="person"
+                  label="Profile"
+                  to="#"
+                  active={selectedRoute === "person"}
+                  onclick={() => (selectedRoute = "person")}
+                />
+                <QNavItem
+                  icon="settings"
+                  label="Settings"
+                  to="#"
+                  active={selectedRoute === "settings"}
+                  onclick={() => (selectedRoute = "settings")}
+                />
               </QRailbar>
             {/snippet}
 
@@ -582,35 +540,27 @@
 
             {#snippet railbarLeft()}
               <QRailbar bordered>
-                <QList>
-                  <QItem
-                    to="#"
-                    active={selectedRoute === "home"}
-                    clickable
-                    onclick={() => (selectedRoute = "home")}
-                  >
-                    <QIcon name="home" />
-                    <QItemSection>Home</QItemSection>
-                  </QItem>
-                  <QItem
-                    to="#"
-                    active={selectedRoute === "person"}
-                    clickable
-                    onclick={() => (selectedRoute = "person")}
-                  >
-                    <QIcon name="person" />
-                    <QItemSection>Profile</QItemSection>
-                  </QItem>
-                  <QItem
-                    to="#"
-                    active={selectedRoute === "settings"}
-                    clickable
-                    onclick={() => (selectedRoute = "settings")}
-                  >
-                    <QIcon name="settings" />
-                    <QItemSection>Settings</QItemSection>
-                  </QItem>
-                </QList>
+                <QNavItem
+                  icon="home"
+                  label="Home"
+                  to="#"
+                  active={selectedRoute === "home"}
+                  onclick={() => (selectedRoute = "home")}
+                />
+                <QNavItem
+                  icon="person"
+                  label="Profile"
+                  to="#"
+                  active={selectedRoute === "person"}
+                  onclick={() => (selectedRoute = "person")}
+                />
+                <QNavItem
+                  icon="settings"
+                  label="Settings"
+                  to="#"
+                  active={selectedRoute === "settings"}
+                  onclick={() => (selectedRoute = "settings")}
+                />
               </QRailbar>
             {/snippet}
 
@@ -641,35 +591,27 @@
           <QLayout view="hHh LpR fFf">
             {#snippet railbarLeft()}
               <QRailbar bordered class="surface-variant">
-                <QList>
-                  <QItem
-                    to="#"
-                    active={selectedRoute === "home"}
-                    clickable
-                    onclick={() => (selectedRoute = "home")}
-                  >
-                    <QIcon name="home" />
-                    <QItemSection>Home</QItemSection>
-                  </QItem>
-                  <QItem
-                    to="#"
-                    active={selectedRoute === "person"}
-                    clickable
-                    onclick={() => (selectedRoute = "person")}
-                  >
-                    <QIcon name="person" />
-                    <QItemSection>Profile</QItemSection>
-                  </QItem>
-                  <QItem
-                    to="#"
-                    active={selectedRoute === "settings"}
-                    clickable
-                    onclick={() => (selectedRoute = "settings")}
-                  >
-                    <QIcon name="settings" />
-                    <QItemSection>Settings</QItemSection>
-                  </QItem>
-                </QList>
+                <QNavItem
+                  icon="home"
+                  label="Home"
+                  to="#"
+                  active={selectedRoute === "home"}
+                  onclick={() => (selectedRoute = "home")}
+                />
+                <QNavItem
+                  icon="person"
+                  label="Profile"
+                  to="#"
+                  active={selectedRoute === "person"}
+                  onclick={() => (selectedRoute = "person")}
+                />
+                <QNavItem
+                  icon="settings"
+                  label="Settings"
+                  to="#"
+                  active={selectedRoute === "settings"}
+                  onclick={() => (selectedRoute = "settings")}
+                />
               </QRailbar>
             {/snippet}
 

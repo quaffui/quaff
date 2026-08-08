@@ -30,6 +30,8 @@ export const Components = {
   QItemSection: "QItemSection",
   QLinearProgress: "QLinearProgress",
   QMenu: "QMenu",
+  QNavbar: "QNavbar",
+  QNavItem: "QNavItem",
   QRadio: "QRadio",
   QRailbar: "QRailbar",
   QSeparator: "QSeparator",
@@ -60,6 +62,7 @@ export const ComponentPaths = {
   Layout: "layout",
   List: "list",
   Menu: "menu",
+  Navbar: "navbar",
   Progress: "progress",
   Radio: "radio",
   Railbar: "railbar",
@@ -93,6 +96,7 @@ export const ComponentCss = {
   Layout: "components/layout",
   List: "components/list",
   Menu: "components/menu",
+  Navbar: "components/navbar",
   Progress: "components/progress",
   Radio: "components/radio",
   Railbar: "components/railbar",
@@ -121,6 +125,7 @@ const expansionItemCss = [
   ComponentCss.Progress,
 ];
 const fieldCss = [ComponentCss.Field];
+const navbarCss = [ComponentCss.Navbar, ComponentCss.Icon];
 const selectCss = [
   ComponentCss.Field,
   ComponentCss.Select,
@@ -166,6 +171,8 @@ export const ComponentCssDependencies = {
   [Components.QItemSection]: [ComponentCss.List],
   [Components.QLinearProgress]: [ComponentCss.Progress],
   [Components.QMenu]: [ComponentCss.Menu],
+  [Components.QNavbar]: [ComponentCss.Navbar],
+  [Components.QNavItem]: navbarCss,
   [Components.QRadio]: [ComponentCss.Radio],
   [Components.QRailbar]: [ComponentCss.Railbar],
   [Components.QSeparator]: [ComponentCss.Separator],
@@ -196,6 +203,7 @@ export const ComponentPathCssDependencies = {
   [ComponentPaths.Layout]: [ComponentCss.Layout],
   [ComponentPaths.List]: [ComponentCss.List],
   [ComponentPaths.Menu]: [ComponentCss.Menu],
+  [ComponentPaths.Navbar]: navbarCss,
   [ComponentPaths.Progress]: [ComponentCss.Progress],
   [ComponentPaths.Radio]: [ComponentCss.Radio],
   [ComponentPaths.Railbar]: [ComponentCss.Railbar],
