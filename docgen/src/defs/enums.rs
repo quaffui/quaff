@@ -1,4 +1,4 @@
-use std::str::FromStr;
+use std::{fmt::Display, str::FromStr};
 
 /// Typescript utility types that are used with a single type argument, e.g. `Partial<T>`
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
@@ -31,6 +31,21 @@ impl FromStr for UtilityTKind {
     }
 }
 
+impl Display for UtilityTKind {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Array => write!(f, "Array"),
+            Self::InstanceType => write!(f, "InstanceType"),
+            Self::NonNullable => write!(f, "NonNullable"),
+            Self::Parameters => write!(f, "Parameters"),
+            Self::Partial => write!(f, "Partial"),
+            Self::Readonly => write!(f, "Readonly"),
+            Self::Required => write!(f, "Required"),
+            Self::ReturnType => write!(f, "ReturnType"),
+        }
+    }
+}
+
 /// Typescript utility types that are used with two type arguments, e.g. `Record<K, T>`
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum UtilityKVKind {
@@ -52,6 +67,18 @@ impl FromStr for UtilityKVKind {
             "Pick" => Ok(UtilityKVKind::Pick),
             "Record" => Ok(UtilityKVKind::Record),
             _ => Err(format!("Unknown utility type: {}", s)),
+        }
+    }
+}
+
+impl Display for UtilityKVKind {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Exclude => write!(f, "Exclude"),
+            Self::Extract => write!(f, "Extract"),
+            Self::Omit => write!(f, "Omit"),
+            Self::Pick => write!(f, "Pick"),
+            Self::Record => write!(f, "Record"),
         }
     }
 }

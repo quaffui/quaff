@@ -1,7 +1,7 @@
 use std::path::PathBuf;
 
 use crate::{
-    defs::{ParsedPropertyFlags, PathResolver},
+    defs::{ParsedPropertyFlags, PathResolver, QApiPropInfo, ToHtml},
     parse_svelte::parse_svelte_file,
     parser::parse_props_interfaces,
 };
@@ -15,7 +15,7 @@ mod resolver;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let file = PathBuf::from(
-        "src/lib/components/table/props.ts",
+        "src/lib/components/button/props.ts",
     );
 
     let resolver = PathResolver(&file);
@@ -51,8 +51,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             };
         }
     }
-
-    dbg!(&parsed_interfaces);
 
     Ok(())
 }
