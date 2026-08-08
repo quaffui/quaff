@@ -39,20 +39,21 @@ pub fn parse_props_interfaces(
 
             let mut properties: HashMap<String, ParsedProp> = HashMap::new();
 
-            parse_props_interface_body(
+            let own_props = parse_props_interface_body(
                 interface,
                 &mut type_deps,
                 semantic,
                 resolver,
                 &generics,
-                &mut properties,
             )?;
+
+            properties.extend(own_props);
 
             let parsed_interface = ParsedPropsInterface {
                 type_dependencies: type_deps,
                 generics,
                 properties,
-                dom_attributes_constraint: todo!(),
+                dom_attrs_heritage: todo!(),
             };
 
             parsed_interfaces.insert(name, parsed_interface);
@@ -70,8 +71,9 @@ fn parse_props_interface_body(
     semantic: &Semantic,
     resolver: &PathResolver,
     generics: &[ParsedGeneric],
-    extended_props: &mut ParsedProps,
-) -> Result<()> {
+) -> Result<ParsedProps> {
+    let mut props = HashMap::new();
+
     for ts_signature in &interface.body.body {
         let TSSignature::TSPropertySignature(prop) = ts_signature else {
             return Err(format!(
@@ -114,6 +116,7 @@ fn parse_props_interface_body(
             semantic,
             resolver,
             &generics,
+            &None,
         )?;
 
         let mut flags = ParsedPropertyFlags::None;
@@ -129,8 +132,8 @@ fn parse_props_interface_body(
             default,
         };
 
-        extended_props.insert(parsed.name.clone(), parsed);
+        props.insert(parsed.name.clone(), parsed);
     }
 
-    Ok(())
+    Ok(props)
 }

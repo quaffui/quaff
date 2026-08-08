@@ -4,49 +4,24 @@ use bitflags::bitflags;
 use oxc::ast::ast::{TSInterfaceDeclaration, TSTypeAliasDeclaration, VariableDeclarator};
 use oxc_semantic::Semantic;
 
-use crate::defs::{FunctionType, InterfaceProperty, InterfaceType};
+use crate::defs::{
+    FunctionType, InterfaceProperty, InterfaceType,
+    enums::{UtilityKVKind, UtilityTKind},
+};
 
 use super::structs::{ComplexType, ExternalType, StandardType};
 
 bitflags! {
     /// Flags indicating the property's characteristics
-    pub struct ParsedPropertyFlags: u32 {
+    pub struct ParsedPropertyFlags: u8 {
         /// No flags set
         const None = 0;
         /// The property is marked as optional with `?`
         const Optional = 1 << 0;
         /// The property's type is a Svelte `Snippet`
         const Snippet = 1 << 1;
-        /// The property's type uses the `Array<T>` form (converted to `T[]` in output)
-        const Array = 1 << 2;
         /// The property is bindable (e.g. `$bindable` in the `$props` declaration)
-        const Bindable = 1 << 3;
-        /// The property is an `Omit<T; U>` utility type
-        const Omit = 1 << 4;
-        /// The property is an `Exclude<T; U>` utility type
-        const Exclude = 1 << 5;
-        /// The property is a `Pick<T; U>` utility type
-        const Pick = 1 << 6;
-        /// The property is an `Extract<T; U>` utility type
-        const Extract = 1 << 7;
-        /// The property is a `Partial<T>` utility type
-        const Partial = 1 << 8;
-        /// The property is a `Required<T>` utility type
-        const Required = 1 << 9;
-        /// The property is a `Readonly<T>` utility type
-        const Readonly = 1 << 10;
-        /// The property is a `Record<T; U>` utility type
-        const Record = 1 << 11;
-        /// The property is a `NonNullable<T>` utility type
-        const NonNullable = 1 << 12;
-        /// The property is a `ReturnType<T>` utility type
-        const ReturnType = 1 << 13;
-        /// The property is a `InstanceType<T>` utility type
-        const InstanceType = 1 << 14;
-        /// The property is a `ThisParameterType<T>` utility type
-        const ThisParameterType = 1 << 15;
-        /// The property is a `ThisType<T>` utility type
-        const ThisType = 1 << 16;
+        const Bindable = 1 << 2;
     }
 }
 
@@ -59,6 +34,17 @@ pub enum ParsedType {
     Standard(StandardType),
     /// A complex type, see [ComplexType] for more information
     Complex(ComplexType),
+    /// A TS utility type with one type argument, e.g. `Partial<T>`
+    UtilityT {
+        kind: UtilityTKind,
+        t: Box<ParsedType>,
+    },
+    /// A TS utility type with two type arguments, e.g. `Record<K, V>`
+    UtilityKV {
+        kind: UtilityKVKind,
+        k: Box<ParsedType>,
+        v: Box<ParsedType>,
+    },
     /// An interface type, see [InterfaceType] for more information
     Interface(InterfaceType),
     /// A type literal, which is just an inline interface, without a name or generics.
@@ -95,10 +81,13 @@ pub struct ParsedHeritage {
     pub herited_props: ParsedProps,
 }
 
+/// Represents the JSDoc documentation for a property.
+#[derive(Debug, Clone)]
 pub struct ParsedComment {
     /// The JSDoc description explaining the property's purpose
     pub description: String,
     /// The default value from the `@default` JSDoc tag, if present
+    /// NOTE: This can be later overriden by a Svelte $props default value.
     pub default: Option<String>,
 }
 
@@ -122,8 +111,8 @@ pub type ParsedProps = HashMap<String, ParsedProp>;
 
 /// Represents a fully parsed TypeScript interface.
 pub struct ParsedPropsInterface {
-    /// The full text of the DOM attributes extension clause, if the interface extends `HTMLAttributes<...>` or similar.
-    pub dom_attributes_constraint: Option<ParsedType>,
+    /// The DOM attributes the interface extends, such as `HTMLAttributes<...>` or similar.
+    pub dom_attrs_heritage: Option<ParsedType>,
     /// The interface's generic type parameters.
     pub generics: Vec<ParsedGeneric>,
     /// All parsed properties, including those inherited from extended internal interfaces.

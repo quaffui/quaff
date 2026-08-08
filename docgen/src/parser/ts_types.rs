@@ -1,6 +1,9 @@
+use std::str::FromStr;
+
 use oxc::{
     ast::ast::{
-        BindingPattern, PropertyKey, TSFunctionType, TSSignature, TSType, TSTypeLiteral, TSTypeName,
+        BindingPattern, IdentifierReference, PropertyKey, TSFunctionType, TSSignature, TSType,
+        TSTypeLiteral, TSTypeName, TSTypeReference,
     },
     span::GetSpan,
 };
@@ -9,9 +12,10 @@ use oxc_semantic::Semantic;
 use crate::{
     defs::{
         ExternalType, FunctionType, FunctionTypeParam, InterfaceProperty, ParsedGeneric,
-        ParsedType, PathResolver, ResolvedReference, StandardType, TypeDependencies,
+        ParsedType, PathResolver, ResolvedReference, StandardType, TypeDependencies, UtilityKVKind,
+        UtilityTKind,
     },
-    extractor::extract_generics,
+    extractor::{extract_generics, extract_prop_comment_info},
     parser::interfaces::parse_interface,
     prelude::*,
     resolver::resolve_reference,
@@ -23,13 +27,14 @@ pub fn parse_type(
     semantic: &Semantic,
     resolver: &PathResolver,
     generics: &[ParsedGeneric],
+    type_arg: &Option<ParsedType>,
 ) -> Result<ParsedType> {
     match ts_type {
         TSType::TSUnionType(union) => {
             let parsed = union
                 .types
                 .iter()
-                .map(|t| parse_type(t, type_deps, semantic, resolver, generics))
+                .map(|t| parse_type(t, type_deps, semantic, resolver, generics, type_arg))
                 .collect::<Result<Vec<ParsedType>>>()?;
             return Ok(ParsedType::Union(parsed));
         }
@@ -37,7 +42,7 @@ pub fn parse_type(
             let parsed = intersection
                 .types
                 .iter()
-                .map(|t| parse_type(t, type_deps, semantic, resolver, generics))
+                .map(|t| parse_type(t, type_deps, semantic, resolver, generics, type_arg))
                 .collect::<Result<Vec<ParsedType>>>()?;
 
             return Ok(ParsedType::Intersection(parsed));
@@ -50,10 +55,47 @@ pub fn parse_type(
             let parsed = parse_ts_literal(literal, type_deps, semantic, resolver)?;
             return Ok(ParsedType::TypeLiteral(parsed));
         }
+        TSType::TSArrayType(arr) => {
+            let parsed = parse_type(
+                &arr.element_type,
+                type_deps,
+                semantic,
+                resolver,
+                generics,
+                type_arg,
+            )?;
+            return Ok(ParsedType::UtilityT {
+                kind: UtilityTKind::Array,
+                t: Box::new(parsed),
+            });
+        }
         TSType::TSTypeReference(reference) => {
             let TSTypeName::IdentifierReference(ident) = &reference.type_name else {
                 return Err(format!("Unsupported type name: {:#?}", reference.type_name).into());
             };
+
+            // This allows to check for utility types.
+            if let Ok(utility_kind) = UtilityTKind::from_str(&ident.name) {
+                return parse_utility_t_kind(
+                    ident,
+                    reference,
+                    utility_kind,
+                    type_deps,
+                    semantic,
+                    resolver,
+                    generics,
+                );
+            } else if let Ok(utility_kind) = UtilityKVKind::from_str(&ident.name) {
+                return parse_utility_kv_kind(
+                    ident,
+                    reference,
+                    utility_kind,
+                    type_deps,
+                    semantic,
+                    resolver,
+                    generics,
+                );
+            }
 
             // This allows to check for external types like `HTMLAttributes<...>`.
             let whole_name = reference.span().display(semantic);
@@ -73,11 +115,12 @@ pub fn parse_type(
                             semantic,
                             resolver,
                             generics,
+                            type_arg,
                         )?;
                     }
                     ResolvedReference::TSInterfaceDeclaration(decl, semantic) => {
                         parsed_type = ParsedType::Interface(parse_interface(
-                            decl, type_deps, semantic, resolver,
+                            decl, type_deps, semantic, resolver, type_arg,
                         )?);
                     }
                 }
@@ -116,6 +159,7 @@ pub fn parse_fn_type(
         semantic,
         resolver,
         &all_generics,
+        &None,
     )?;
 
     let mut params = Vec::new();
@@ -139,6 +183,7 @@ pub fn parse_fn_type(
             semantic,
             resolver,
             &all_generics,
+            &None,
         )?;
 
         params.push(FunctionTypeParam {
@@ -176,6 +221,8 @@ pub fn parse_ts_literal(
             .into());
         };
 
+        let comment = extract_prop_comment_info(&key.span, semantic)?;
+
         let prop_name = key.name.to_string();
 
         let Some(annotation) = &prop.type_annotation else {
@@ -192,14 +239,71 @@ pub fn parse_ts_literal(
             semantic,
             resolver,
             &Vec::new(),
+            &None,
         )?;
 
-        props.push(InterfaceProperty {
-            name: prop_name,
-            type_annotation: parsed_type,
-            optional: prop.optional,
-        });
+        let parsed_prop = InterfaceProperty::new(prop_name, parsed_type, prop.optional, comment);
+        props.push(parsed_prop);
     }
 
     Ok(props)
+}
+
+fn parse_utility_t_kind(
+    ident: &IdentifierReference,
+    reference: &TSTypeReference,
+    utility_kind: UtilityTKind,
+    type_deps: &mut TypeDependencies,
+    semantic: &Semantic,
+    resolver: &PathResolver,
+    generics: &[ParsedGeneric],
+) -> Result<ParsedType> {
+    let Some(type_arg) = &reference.type_arguments else {
+        return Err(format!("Found utility type {} without a type argument", ident.name).into());
+    };
+
+    let Some(first_arg) = type_arg.params.first() else {
+        return Err(format!("Found utility type {} without a type argument", ident.name).into());
+    };
+
+    let parsed_arg = parse_type(first_arg, type_deps, semantic, resolver, generics, &None)?;
+
+    Ok(ParsedType::UtilityT {
+        kind: utility_kind,
+        t: Box::new(parsed_arg),
+    })
+}
+
+fn parse_utility_kv_kind(
+    ident: &IdentifierReference,
+    reference: &TSTypeReference,
+    utility_kind: UtilityKVKind,
+    type_deps: &mut TypeDependencies,
+    semantic: &Semantic,
+    resolver: &PathResolver,
+    generics: &[ParsedGeneric],
+) -> Result<ParsedType> {
+    let Some(type_arg) = &reference.type_arguments else {
+        return Err(format!("Found utility type {} without a type argument", ident.name).into());
+    };
+
+    let Some(first_arg) = type_arg.params.first() else {
+        return Err(format!("Found utility type {} without a type argument", ident.name).into());
+    };
+    let Some(second_arg) = type_arg.params.get(1) else {
+        return Err(format!(
+            "Found utility type {} without a second type argument",
+            ident.name
+        )
+        .into());
+    };
+
+    let parsed_k = parse_type(first_arg, type_deps, semantic, resolver, generics, &None)?;
+    let parsed_v = parse_type(second_arg, type_deps, semantic, resolver, generics, &None)?;
+
+    Ok(ParsedType::UtilityKV {
+        kind: utility_kind,
+        k: Box::new(parsed_k),
+        v: Box::new(parsed_v),
+    })
 }

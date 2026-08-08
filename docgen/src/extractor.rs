@@ -19,12 +19,12 @@ pub fn extract_generics(
         let constraint = param
             .constraint
             .as_ref()
-            .map(|t| parse_type(t, type_deps, semantic, resolver, &[]))
+            .map(|t| parse_type(t, type_deps, semantic, resolver, &[], &None))
             .transpose()?;
         let default = param
             .default
             .as_ref()
-            .map(|t| parse_type(t, type_deps, semantic, resolver, &[]))
+            .map(|t| parse_type(t, type_deps, semantic, resolver, &[], &None))
             .transpose()?;
 
         generics.push(ParsedGeneric {

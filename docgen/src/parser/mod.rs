@@ -1,4 +1,5 @@
 mod ast;
+mod heritage;
 mod interfaces;
 mod props;
 mod ts_types;

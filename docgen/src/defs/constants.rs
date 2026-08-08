@@ -1,6 +1,3 @@
-/// Type names whose resolved union values should never be inlined.
-pub const PRESERVE_TYPE_NAMES: [&str; 2] = ["Snippet", "MaterialSymbol"];
-
 /// Package path prefixes that identify "external" types (Svelte, Material, Shiki, etc.)
 pub const EXTERNAL_PACKAGE_PREFIXES: [&str; 3] = ["svelte", "material-symbols", "shiki"];
 

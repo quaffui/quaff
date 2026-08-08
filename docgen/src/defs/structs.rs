@@ -1,4 +1,4 @@
-use crate::defs::{ParsedGeneric, ParsedType, TYPE_SRC_MAPPINGS};
+use crate::defs::{ParsedComment, ParsedGeneric, ParsedType, TYPE_SRC_MAPPINGS};
 
 /// Type used for primitive types or types that couldn't be resolved to an external type.
 ///
@@ -100,6 +100,32 @@ pub struct InterfaceProperty {
     pub type_annotation: ParsedType,
     /// Whether the property is optional
     pub optional: bool,
+    /// Comment associated with the property
+    pub comment: Option<ParsedComment>,
+    /// Type argument to replace the generic with.
+    type_arg: Option<ParsedType>,
+}
+
+impl InterfaceProperty {
+    pub fn new(
+        name: String,
+        type_annotation: ParsedType,
+        optional: bool,
+        comment: Option<ParsedComment>,
+    ) -> Self {
+        Self {
+            name,
+            type_annotation,
+            optional,
+            comment,
+            type_arg: None,
+        }
+    }
+
+    pub fn with_type_arg(mut self, type_arg: &Option<ParsedType>) -> Self {
+        self.type_arg = type_arg.clone();
+        self
+    }
 }
 
 /// Represents an interface type definition, e.g. `interface MyInterface {}`.

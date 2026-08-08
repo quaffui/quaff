@@ -2,8 +2,10 @@ use oxc::ast::ast::{PropertyKey, TSInterfaceDeclaration, TSSignature};
 use oxc_semantic::Semantic;
 
 use crate::{
-    defs::{InterfaceProperty, InterfaceType, ParsedGeneric, PathResolver, TypeDependencies},
-    extractor::extract_generics,
+    defs::{
+        InterfaceProperty, InterfaceType, ParsedGeneric, ParsedType, PathResolver, TypeDependencies,
+    },
+    extractor::{extract_generics, extract_prop_comment_info},
     parser::ts_types::parse_type,
     prelude::*,
 };
@@ -13,6 +15,7 @@ pub fn parse_interface(
     type_deps: &mut TypeDependencies,
     semantic: &Semantic,
     resolver: &PathResolver,
+    type_arg: &Option<ParsedType>,
 ) -> Result<InterfaceType> {
     let name = decl.id.name.to_string();
 
@@ -22,7 +25,8 @@ pub fn parse_interface(
         generics = extract_generics(params, type_deps, semantic, resolver)?;
     }
 
-    let properties = parse_interface_body(decl, type_deps, semantic, resolver, &generics)?;
+    let properties =
+        parse_interface_body(decl, type_deps, semantic, resolver, &generics, &type_arg)?;
 
     Ok(InterfaceType {
         name,
@@ -37,6 +41,7 @@ fn parse_interface_body(
     semantic: &Semantic,
     resolver: &PathResolver,
     generics: &[ParsedGeneric],
+    type_arg: &Option<ParsedType>,
 ) -> Result<Vec<InterfaceProperty>> {
     let mut props = Vec::new();
 
@@ -57,6 +62,8 @@ fn parse_interface_body(
             .into());
         };
 
+        let comment = extract_prop_comment_info(&key.span, semantic)?;
+
         let prop_name = key.name.to_string();
 
         let Some(annotation) = &prop.type_annotation else {
@@ -73,13 +80,12 @@ fn parse_interface_body(
             semantic,
             resolver,
             &generics,
+            type_arg,
         )?;
 
-        props.push(InterfaceProperty {
-            name: prop_name,
-            type_annotation: parsed_type,
-            optional: prop.optional,
-        });
+        let parsed_prop = InterfaceProperty::new(prop_name, parsed_type, prop.optional, comment)
+            .with_type_arg(type_arg);
+        props.push(parsed_prop);
     }
 
     Ok(props)
