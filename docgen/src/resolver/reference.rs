@@ -21,14 +21,11 @@ pub fn resolve_reference<T: for<'a> FnMut(ResolvedReference<'a>) -> Result<()>>(
 
     let reference = semantic.scoping().get_reference(ident.reference_id());
 
-    dbg!("{}", ident.name);
-
     let Some(sym_id) = reference.symbol_id() else {
         return Ok(());
     };
 
     let decl = semantic.symbol_declaration(sym_id);
-    dbg!("{} -> {:#?}", ident.name, decl);
 
     match decl.kind() {
         AstKind::ImportSpecifier(spec) => {

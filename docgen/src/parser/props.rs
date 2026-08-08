@@ -12,7 +12,7 @@ use crate::{
         PathResolver, TypeDependencies,
     },
     extractor::{extract_generics, extract_prop_comment_info},
-    parser::{parse_ts_file, ts_types::parse_type},
+    parser::{heritage::parse_heritage, parse_ts_file, ts_types::parse_type},
     prelude::*,
 };
 
@@ -37,7 +37,8 @@ pub fn parse_props_interfaces(
                 .transpose()?
                 .unwrap_or_default();
 
-            let mut properties: HashMap<String, ParsedProp> = HashMap::new();
+            let mut parsed_heritage =
+                parse_heritage(&interface.extends, &mut type_deps, semantic, resolver)?;
 
             let own_props = parse_props_interface_body(
                 interface,
@@ -47,13 +48,13 @@ pub fn parse_props_interfaces(
                 &generics,
             )?;
 
-            properties.extend(own_props);
+            parsed_heritage.herited_props.extend(own_props);
 
             let parsed_interface = ParsedPropsInterface {
                 type_dependencies: type_deps,
                 generics,
-                properties,
-                dom_attrs_heritage: todo!(),
+                properties: parsed_heritage.herited_props,
+                dom_attrs_heritage: parsed_heritage.dom,
             };
 
             parsed_interfaces.insert(name, parsed_interface);
@@ -116,7 +117,7 @@ fn parse_props_interface_body(
             semantic,
             resolver,
             &generics,
-            &None,
+            &vec![],
         )?;
 
         let mut flags = ParsedPropertyFlags::None;

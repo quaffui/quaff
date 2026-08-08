@@ -13,6 +13,7 @@ use super::structs::{ComplexType, ExternalType, StandardType};
 
 bitflags! {
     /// Flags indicating the property's characteristics
+    #[derive(Debug)]
     pub struct ParsedPropertyFlags: u8 {
         /// No flags set
         const None = 0;
@@ -92,6 +93,7 @@ pub struct ParsedComment {
 }
 
 /// Represents a single parsed property from an interface.
+#[derive(Debug)]
 pub struct ParsedProp {
     /// The property's identifier name (e.g. "disabled", "icon")
     pub name: String,
@@ -110,6 +112,7 @@ pub struct ParsedProp {
 pub type ParsedProps = HashMap<String, ParsedProp>;
 
 /// Represents a fully parsed TypeScript interface.
+#[derive(Debug)]
 pub struct ParsedPropsInterface {
     /// The DOM attributes the interface extends, such as `HTMLAttributes<...>` or similar.
     pub dom_attrs_heritage: Option<ParsedType>,

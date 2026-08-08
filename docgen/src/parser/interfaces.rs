@@ -15,7 +15,7 @@ pub fn parse_interface(
     type_deps: &mut TypeDependencies,
     semantic: &Semantic,
     resolver: &PathResolver,
-    type_arg: &Option<ParsedType>,
+    type_args: &Vec<ParsedType>,
 ) -> Result<InterfaceType> {
     let name = decl.id.name.to_string();
 
@@ -26,7 +26,7 @@ pub fn parse_interface(
     }
 
     let properties =
-        parse_interface_body(decl, type_deps, semantic, resolver, &generics, &type_arg)?;
+        parse_interface_body(decl, type_deps, semantic, resolver, &generics, &type_args)?;
 
     Ok(InterfaceType {
         name,
@@ -41,7 +41,7 @@ fn parse_interface_body(
     semantic: &Semantic,
     resolver: &PathResolver,
     generics: &[ParsedGeneric],
-    type_arg: &Option<ParsedType>,
+    type_args: &Vec<ParsedType>,
 ) -> Result<Vec<InterfaceProperty>> {
     let mut props = Vec::new();
 
@@ -80,11 +80,11 @@ fn parse_interface_body(
             semantic,
             resolver,
             &generics,
-            type_arg,
+            type_args,
         )?;
 
         let parsed_prop = InterfaceProperty::new(prop_name, parsed_type, prop.optional, comment)
-            .with_type_arg(type_arg);
+            .with_type_args(type_args);
         props.push(parsed_prop);
     }
 

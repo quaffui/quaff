@@ -15,12 +15,14 @@ mod resolver;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let file = PathBuf::from(
-        "src/lib/components/tooltip/props.ts",
+        "src/lib/components/button/props.ts",
     );
 
     let resolver = PathResolver(&file);
 
     let parsed_interfaces = parse_props_interfaces(&file, &resolver)?;
+
+    dbg!(&parsed_interfaces);
 
     for (name, interface) in parsed_interfaces {
         let svelte_file = file

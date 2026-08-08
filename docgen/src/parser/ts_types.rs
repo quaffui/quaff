@@ -27,7 +27,7 @@ pub fn parse_type(
     semantic: &Semantic,
     resolver: &PathResolver,
     generics: &[ParsedGeneric],
-    type_arg: &Option<ParsedType>,
+    type_arg: &Vec<ParsedType>,
 ) -> Result<ParsedType> {
     match ts_type {
         TSType::TSUnionType(union) => {
@@ -159,7 +159,7 @@ pub fn parse_fn_type(
         semantic,
         resolver,
         &all_generics,
-        &None,
+        &vec![],
     )?;
 
     let mut params = Vec::new();
@@ -183,7 +183,7 @@ pub fn parse_fn_type(
             semantic,
             resolver,
             &all_generics,
-            &None,
+            &vec![],
         )?;
 
         params.push(FunctionTypeParam {
@@ -239,7 +239,7 @@ pub fn parse_ts_literal(
             semantic,
             resolver,
             &Vec::new(),
-            &None,
+            &vec![],
         )?;
 
         let parsed_prop = InterfaceProperty::new(prop_name, parsed_type, prop.optional, comment);
@@ -266,7 +266,7 @@ fn parse_utility_t_kind(
         return Err(format!("Found utility type {} without a type argument", ident.name).into());
     };
 
-    let parsed_arg = parse_type(first_arg, type_deps, semantic, resolver, generics, &None)?;
+    let parsed_arg = parse_type(first_arg, type_deps, semantic, resolver, generics, &vec![])?;
 
     Ok(ParsedType::UtilityT {
         kind: utility_kind,
@@ -298,8 +298,8 @@ fn parse_utility_kv_kind(
         .into());
     };
 
-    let parsed_k = parse_type(first_arg, type_deps, semantic, resolver, generics, &None)?;
-    let parsed_v = parse_type(second_arg, type_deps, semantic, resolver, generics, &None)?;
+    let parsed_k = parse_type(first_arg, type_deps, semantic, resolver, generics, &vec![])?;
+    let parsed_v = parse_type(second_arg, type_deps, semantic, resolver, generics, &vec![])?;
 
     Ok(ParsedType::UtilityKV {
         kind: utility_kind,

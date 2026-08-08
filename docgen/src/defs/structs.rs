@@ -102,8 +102,8 @@ pub struct InterfaceProperty {
     pub optional: bool,
     /// Comment associated with the property
     pub comment: Option<ParsedComment>,
-    /// Type argument to replace the generic with.
-    type_arg: Option<ParsedType>,
+    /// Type arguments to replace the generic with.
+    type_args: Vec<ParsedType>,
 }
 
 impl InterfaceProperty {
@@ -118,12 +118,12 @@ impl InterfaceProperty {
             type_annotation,
             optional,
             comment,
-            type_arg: None,
+            type_args: vec![],
         }
     }
 
-    pub fn with_type_arg(mut self, type_arg: &Option<ParsedType>) -> Self {
-        self.type_arg = type_arg.clone();
+    pub fn with_type_args(mut self, type_args: &Vec<ParsedType>) -> Self {
+        self.type_args = type_args.clone();
         self
     }
 }
