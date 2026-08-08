@@ -15,16 +15,14 @@ mod resolver;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let file = PathBuf::from(
-        "src/lib/components/button/props.ts",
+        "src/lib/components/table/props.ts",
     );
 
     let resolver = PathResolver(&file);
 
-    let parsed_interfaces = parse_props_interfaces(&file, &resolver)?;
+    let mut parsed_interfaces = parse_props_interfaces(&file, &resolver)?;
 
-    dbg!(&parsed_interfaces);
-
-    for (name, interface) in parsed_interfaces {
+    for (name, interface) in &mut parsed_interfaces {
         let svelte_file = file
             .parent()
             .map(|dir| dir.join(name.replace("Props", ".svelte")));
@@ -40,7 +38,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
         let parsed_defaults = parse_svelte_file(&svelte_file.unwrap())?;
 
-        for (_prop_name, mut prop) in interface.properties.into_iter() {
+        for (_prop_name, prop) in &mut interface.properties {
             if let Some(prop_default) = parsed_defaults.get(&prop.name) {
                 if prop_default.is_bindable() {
                     prop.flags |= ParsedPropertyFlags::Bindable;
@@ -53,6 +51,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             };
         }
     }
+
+    dbg!(&parsed_interfaces);
 
     Ok(())
 }

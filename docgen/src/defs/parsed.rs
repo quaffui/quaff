@@ -9,7 +9,7 @@ use crate::defs::{
     enums::{UtilityKVKind, UtilityTKind},
 };
 
-use super::structs::{ComplexType, ExternalType, StandardType};
+use super::structs::{ExternalType, ReferenceType, StandardType};
 
 bitflags! {
     /// Flags indicating the property's characteristics
@@ -34,7 +34,7 @@ pub enum ParsedType {
     /// A standard type, see [StandardType] for more information
     Standard(StandardType),
     /// A complex type, see [ComplexType] for more information
-    Complex(ComplexType),
+    Reference(ReferenceType),
     /// A TS utility type with one type argument, e.g. `Partial<T>`
     UtilityT {
         kind: UtilityTKind,

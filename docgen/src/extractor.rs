@@ -58,7 +58,7 @@ pub fn extract_prop_comment_info(
     let lines: Vec<&str> = content.lines().collect();
 
     for line in lines {
-        let text = line.trim_start_matches(|c| char::is_alphanumeric(c) || c == '@');
+        let text = line.trim_start_matches(|c| !char::is_alphanumeric(c) && c != '@');
 
         if text.starts_with("@default") {
             if let Some(default_value) = text.strip_prefix("@default") {

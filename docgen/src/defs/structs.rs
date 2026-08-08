@@ -6,12 +6,12 @@ use crate::defs::{ParsedComment, ParsedGeneric, ParsedType, TYPE_SRC_MAPPINGS};
 #[derive(Debug, Clone)]
 pub struct StandardType {
     /// The full text of the type definition
-    definition: String,
+    pub name: String,
 }
 
 impl StandardType {
-    pub fn new(definition: String) -> Self {
-        Self { definition }
+    pub fn new(name: String) -> Self {
+        Self { name }
     }
 }
 
@@ -22,24 +22,12 @@ impl StandardType {
 ///
 /// For example, `QSize` or `CssValue`.
 #[derive(Debug, Clone)]
-pub struct ComplexType {
-    /// The full text of the type definition
-    definition: String,
+pub struct ReferenceType {
+    /// The name of the type as it appears in the source code (e.g. `QSize`)
+    pub name: String,
     /// The names of other "complex" types that this type depends on
     /// (e.g. `["CssUnit"]` which `CssValue` depends on)
-    dependencies: Vec<String>,
-    /// The name of the type as it appears in the source code (e.g. `QSize`)
-    name: String,
-}
-
-impl ComplexType {
-    pub fn new(definition: String, dependencies: Vec<String>, name: String) -> Self {
-        Self {
-            definition,
-            dependencies,
-            name,
-        }
-    }
+    pub parsed: Box<ParsedType>,
 }
 
 /// Corresponds to a type definition from an external package (including built-in DOM types).
@@ -50,9 +38,9 @@ impl ComplexType {
 #[derive(Debug, Clone)]
 pub struct ExternalType {
     /// The name of the type as it appears in the source code (e.g. `MaterialSymbol`)
-    name: String,
+    pub name: String,
     /// The URL to the external documentation source
-    type_src: String,
+    pub type_src: String,
 }
 
 impl ExternalType {

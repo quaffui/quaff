@@ -12,8 +12,8 @@ use oxc_semantic::Semantic;
 use crate::{
     defs::{
         ExternalType, FunctionType, FunctionTypeParam, InterfaceProperty, ParsedGeneric,
-        ParsedType, PathResolver, ResolvedReference, StandardType, TypeDependencies, UtilityKVKind,
-        UtilityTKind,
+        ParsedType, PathResolver, ReferenceType, ResolvedReference, StandardType, TypeDependencies,
+        UtilityKVKind, UtilityTKind,
     },
     extractor::{extract_generics, extract_prop_comment_info},
     parser::interfaces::parse_interface,
@@ -30,6 +30,14 @@ pub fn parse_type(
     type_arg: &Vec<ParsedType>,
 ) -> Result<ParsedType> {
     match ts_type {
+        TSType::TSParenthesizedType(p_type) => parse_type(
+            &p_type.type_annotation,
+            type_deps,
+            semantic,
+            resolver,
+            generics,
+            type_arg,
+        ),
         TSType::TSUnionType(union) => {
             let parsed = union
                 .types
@@ -71,7 +79,7 @@ pub fn parse_type(
         }
         TSType::TSTypeReference(reference) => {
             let TSTypeName::IdentifierReference(ident) = &reference.type_name else {
-                return Err(format!("Unsupported type name: {:#?}", reference.type_name).into());
+                return Err(format!("Unsupported type name: {:?}", reference.type_name).into());
             };
 
             // This allows to check for utility types.
@@ -103,13 +111,26 @@ pub fn parse_type(
                 return Ok(ParsedType::External(external));
             }
 
-            let mut parsed_type = ParsedType::Standard(StandardType::new(ident.to_string()));
+            let mut complex_type = None;
 
             resolve_reference(ident, semantic, resolver, |resolved| {
+                complex_type = Some(ReferenceType {
+                    name: ident.name.to_string(),
+                    parsed: Box::new(ParsedType::Standard(StandardType {
+                        name: "".to_string(),
+                    })),
+                });
+
                 match resolved {
-                    ResolvedReference::VariableDeclarator(..) => {}
+                    ResolvedReference::VariableDeclarator(..) => {
+                        return Err(format!(
+                            "Type declarations must be types, not variables. Parsing: {:?}",
+                            resolved
+                        )
+                        .into());
+                    }
                     ResolvedReference::TSTypeAliasDeclaration(decl, semantic) => {
-                        parsed_type = parse_type(
+                        *complex_type.as_mut().unwrap().parsed = parse_type(
                             &decl.type_annotation,
                             type_deps,
                             semantic,
@@ -119,14 +140,20 @@ pub fn parse_type(
                         )?;
                     }
                     ResolvedReference::TSInterfaceDeclaration(decl, semantic) => {
-                        parsed_type = ParsedType::Interface(parse_interface(
-                            decl, type_deps, semantic, resolver, type_arg,
-                        )?);
+                        *complex_type.as_mut().unwrap().parsed = ParsedType::Interface(
+                            parse_interface(decl, type_deps, semantic, resolver, type_arg)?,
+                        );
                     }
                 }
 
                 Ok(())
             })?;
+
+            let parsed_type = if let Some(complex_type) = complex_type {
+                ParsedType::Reference(complex_type)
+            } else {
+                ParsedType::Standard(StandardType::new(ident.to_string()))
+            };
 
             Ok(parsed_type)
         }
@@ -167,14 +194,14 @@ pub fn parse_fn_type(
     for param in &fn_type.params.items {
         let Some(annotation) = &param.type_annotation else {
             return Err(format!(
-                "Parameters in function types must have type annotations. Parsing function type: {:#?}",
+                "Parameters in function types must have type annotations. Parsing function type: {:?}",
                 fn_type
             )
             .into());
         };
 
         let BindingPattern::BindingIdentifier(ident) = &param.pattern else {
-            return Err(format!("Parameters that are not identifiers are not currently supported. Parsing parameter: {:#?}", param).into());
+            return Err(format!("Parameters that are not identifiers are not currently supported. Parsing parameter: {:?}", param).into());
         };
 
         let parsed = parse_type(
@@ -210,12 +237,12 @@ pub fn parse_ts_literal(
 
     for prop in &literal.members {
         let TSSignature::TSPropertySignature(prop) = prop else {
-            return Err(format!("Unsupported literal member: {:#?}", prop).into());
+            return Err(format!("Unsupported literal member: {:?}", prop).into());
         };
 
         let PropertyKey::StaticIdentifier(key) = &prop.key else {
             return Err(format!(
-                "Literal properties must be identifiers. Parsing property: {:#?}",
+                "Literal properties must be identifiers. Parsing property: {:?}",
                 prop
             )
             .into());
