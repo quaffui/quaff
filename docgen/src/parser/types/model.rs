@@ -52,8 +52,10 @@ pub enum ParsedType {
     External(ExternalType),
     /// A standard type, see [StandardType] for more information
     Standard(StandardType),
-    /// A complex type, see [ComplexType] for more information
+    /// A complex type, see [ReferenceType] for more information
     Reference(ReferenceType),
+    /// A Svelte snippet type, containing a map of its parameters' names and their types.
+    Snippet(HashMap<String, ParsedType>),
     /// A TS utility type with one type argument, e.g. `Partial<T>`
     UtilityT {
         kind: UtilityTKind,

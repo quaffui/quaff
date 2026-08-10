@@ -1,5 +1,8 @@
 use crate::{
-    parser::types::interfaces::{InterfaceProperty, InterfacePropertyFlags},
+    parser::types::{
+        interfaces::{InterfaceProperty, InterfacePropertyFlags},
+        snippets::Snippet,
+    },
     transformer::html::{ToHtml, model::QApiPropInfo},
 };
 
@@ -8,6 +11,31 @@ use super::HtmlItem;
 impl From<HtmlItem> for String {
     fn from(value: HtmlItem) -> Self {
         value.create_item()
+    }
+}
+
+impl From<Snippet> for QApiPropInfo {
+    fn from(value: Snippet) -> Self {
+        let prop_name = HtmlItem::prop_name(&value.name);
+
+        let opt_str = if value.optional { "?" } else { "" };
+
+        let params_info = format!("{}.({})", opt_str, value.params.to_html());
+        let params_info_html = HtmlItem::new(params_info)
+            .tag("pre")
+            .class("prop-type")
+            .create_item();
+
+        let header = HtmlItem::new("")
+            .tag("div")
+            .class("q-api__doc-heading q-my-sm")
+            .child(prop_name + &params_info_html)
+            .create_item();
+
+        Self {
+            header,
+            description: value.description,
+        }
     }
 }
 
@@ -20,11 +48,7 @@ impl From<InterfaceProperty> for QApiPropInfo {
             );
         };
 
-        let prop_name = HtmlItem::new("")
-            .tag("span")
-            .class("q-docs-code q-mr-xs")
-            .child(HtmlItem::new(&prop.name).tag("b"))
-            .create_item();
+        let prop_name = HtmlItem::prop_name(&prop.name);
 
         let mut prop_info_content = String::new();
 
@@ -62,7 +86,6 @@ impl From<InterfaceProperty> for QApiPropInfo {
         Self {
             header,
             description: prop_comment.description,
-            is_snippet: prop.flags.contains(InterfacePropertyFlags::Snippet),
         }
     }
 }

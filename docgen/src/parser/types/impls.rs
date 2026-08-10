@@ -1,9 +1,9 @@
-use std::str::FromStr;
+use std::{collections::HashMap, str::FromStr};
 
 use oxc::{
     ast::ast::{
-        TSArrayType, TSIntersectionType, TSParenthesizedType, TSType, TSTypeName, TSTypeReference,
-        TSUnionType,
+        TSArrayType, TSIntersectionType, TSParenthesizedType, TSTupleElement, TSType, TSTypeName,
+        TSTypeReference, TSUnionType,
     },
     span::GetSpan,
 };
@@ -168,10 +168,44 @@ impl TypeParser for TSTypeReference<'_> {
             return Ok(ParsedType::External(external));
         }
 
-        let mut complex_type = None;
+        // This allow to check for snippets
+        if ident.name == "Snippet" {
+            let mut snippet_args = None;
+
+            if let Some(args) = &self.type_arguments {
+                let Some(TSType::TSTupleType(inner)) = &args.params.get(0) else {
+                    return Err(format!(
+                        "Invalid snippet type parameter: {:?}",
+                        args.params.get(0)
+                    )
+                    .into());
+                };
+
+                let Some(TSTupleElement::TSTypeLiteral(literal)) = &inner.element_types.get(0)
+                else {
+                    return Err(format!(
+                        "Expected a type literal for snippet type arguments but got: {:?}",
+                        inner.element_types.get(0)
+                    )
+                    .into());
+                };
+
+                let parsed: HashMap<String, ParsedType> = literal
+                    .parse_body(semantic, resolver, generics, type_arg, type_deps)?
+                    .into_iter()
+                    .map(|prop| (prop.name, prop.type_annotation))
+                    .collect();
+
+                snippet_args = Some(parsed);
+            }
+
+            return Ok(ParsedType::Snippet(snippet_args.unwrap_or_default()));
+        }
+
+        let mut reference_type = None;
 
         ident.resolve(semantic, resolver, &mut |resolved, scope_resolver| {
-            complex_type = Some(ReferenceType {
+            reference_type = Some(ReferenceType {
                 name: ident.name.to_string(),
                 parsed: Box::new(ParsedType::Standard(StandardType {
                     name: "".to_string(),
@@ -187,7 +221,7 @@ impl TypeParser for TSTypeReference<'_> {
                     .into());
                 }
                 ResolvedReference::TSTypeAliasDeclaration(decl, semantic) => {
-                    *complex_type.as_mut().unwrap().parsed = decl.type_annotation.parse_type(
+                    *reference_type.as_mut().unwrap().parsed = decl.type_annotation.parse_type(
                         semantic,
                         scope_resolver,
                         generics,
@@ -196,7 +230,7 @@ impl TypeParser for TSTypeReference<'_> {
                     )?;
                 }
                 ResolvedReference::TSInterfaceDeclaration(decl, semantic) => {
-                    *complex_type.as_mut().unwrap().parsed = ParsedType::Interface(decl.parse(
+                    *reference_type.as_mut().unwrap().parsed = ParsedType::Interface(decl.parse(
                         semantic,
                         scope_resolver,
                         type_arg,
@@ -208,8 +242,8 @@ impl TypeParser for TSTypeReference<'_> {
             Ok(())
         })?;
 
-        let parsed_type = if let Some(complex_type) = complex_type {
-            ParsedType::Reference(complex_type)
+        let parsed_type = if let Some(ref_type) = reference_type {
+            ParsedType::Reference(ref_type)
         } else {
             ParsedType::Standard(StandardType::new(ident.to_string()))
         };

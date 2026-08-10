@@ -2,7 +2,11 @@ use std::path::PathBuf;
 
 use crate::{
     extractor::comments::CommentInfo,
-    parser::{TSPropsParser, svelte::parse_svelte_file, types::interfaces::InterfacePropertyFlags},
+    parser::{
+        TSPropsParser,
+        svelte::parse_svelte_file,
+        types::{interfaces::InterfacePropertyFlags, snippets::Snippet},
+    },
     resolver::PathResolver,
     transformer::html::{QApiPropInfo, ToHtml},
 };
@@ -48,13 +52,29 @@ fn main() -> std::result::Result<(), Box<dyn std::error::Error>> {
             continue;
         }
 
+        let api_heritage_header = interface.dom_props_heritage.map(|heritage| {
+            format!(
+                "interface {} extends {}",
+                interface.name.to_string(),
+                heritage.to_html(),
+            )
+        });
+
         let (mut parsed_svelte_prop, parsed_methods) = parse_svelte_file(&svelte_file.unwrap())?;
+        let mut snippets: Vec<Snippet> = Vec::new();
 
         let mut api_props_info: Vec<QApiPropInfo> = Vec::new();
 
-        for mut prop in interface.properties.into_iter() {
-            let prop_comment = prop.comment.get_or_insert(CommentInfo::default());
+        for prop in interface.properties.into_iter() {
+            let mut prop = match Snippet::try_from(prop) {
+                Ok(snippet) => {
+                    snippets.push(snippet);
+                    continue;
+                }
+                Err(prop) => prop,
+            };
 
+            let prop_comment = prop.comment.get_or_insert(CommentInfo::default());
             if let Some(prop_info) = parsed_svelte_prop.get_mut(&prop.name) {
                 if prop_info.bindable {
                     prop.flags |= InterfacePropertyFlags::Bindable;
@@ -71,15 +91,8 @@ fn main() -> std::result::Result<(), Box<dyn std::error::Error>> {
             api_props_info.push(QApiPropInfo::from(prop));
         }
 
-        let heritage_header = interface.dom_props_heritage.map(|heritage| {
-            format!(
-                "interface {} extends {}",
-                interface.name.to_string(),
-                heritage.to_html(),
-            )
-        });
-
-        dbg!(heritage_header);
+        let api_snippets_info: Vec<QApiPropInfo> =
+            snippets.into_iter().map(QApiPropInfo::from).collect();
     }
 
     Ok(())

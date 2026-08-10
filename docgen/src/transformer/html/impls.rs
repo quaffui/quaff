@@ -1,11 +1,11 @@
-use std::fmt::Display;
+use std::{collections::HashMap, fmt::Display};
 
 use crate::{
     extractor::generics::GenericInfo,
     parser::types::{
         ExternalType, ParsedType, ReferenceType, StandardType,
         functions::FunctionType,
-        interfaces::{Interface, InterfaceProperty},
+        interfaces::{Interface, InterfaceProperty, InterfacePropertyFlags},
         ts_utilities::UtilityTKind,
     },
 };
@@ -38,6 +38,14 @@ impl HtmlItem {
             content: content.into(),
             ..Default::default()
         }
+    }
+
+    pub fn prop_name(name: &str) -> String {
+        Self::new("")
+            .tag("span")
+            .class("q-docs-code q-mr-xs")
+            .child(Self::new(name).tag("b"))
+            .create_item()
     }
 
     pub fn accent(mut self) -> Self {
@@ -153,11 +161,32 @@ impl ToHtml for ReferenceType {
     }
 }
 
+impl ToHtml for HashMap<String, ParsedType> {
+    fn to_html(self) -> String {
+        self.into_iter()
+            .map(|(key, value)| format!("{}: {}", key, value.to_html()))
+            .collect::<Vec<String>>()
+            .join(", ")
+    }
+}
+
 impl ToHtml for Vec<InterfaceProperty> {
     fn to_html(self) -> String {
         let mapped = self
             .into_iter()
-            .map(|prop| format!("{}: {}", prop.name, prop.type_annotation.to_html()))
+            .map(|prop| {
+                let opt_str = if prop.flags.contains(InterfacePropertyFlags::Optional) {
+                    "?"
+                } else {
+                    ""
+                };
+                format!(
+                    "{}{}: {}",
+                    prop.name,
+                    opt_str,
+                    prop.type_annotation.to_html()
+                )
+            })
             .collect::<Vec<String>>()
             .join(", ");
 
@@ -239,6 +268,7 @@ impl ToHtml for ParsedType {
             Self::Standard(inner) => inner.to_html(),
             Self::External(inner) => inner.to_html(),
             Self::Reference(inner) => inner.to_html(),
+            Self::Snippet(inner) => inner.to_html(),
             Self::Interface(inner) => inner.to_html(),
             Self::TypeLiteral(inner) => inner.to_html(),
             Self::Function(inner) => inner.to_html(),

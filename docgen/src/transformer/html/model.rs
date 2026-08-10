@@ -24,6 +24,4 @@ pub struct QApiPropInfo {
     pub header: String,
     /// The description of the property
     pub description: String,
-    /// Whether the property is a snippet
-    pub is_snippet: bool,
 }

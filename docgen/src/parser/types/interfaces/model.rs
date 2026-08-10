@@ -13,8 +13,6 @@ bitflags! {
         const None = 0;
         /// The property is marked as optional with `?`
         const Optional = 1 << 0;
-        /// The property's type is a Svelte `Snippet`
-        const Snippet = 1 << 1;
         /// The property is bindable (e.g. `$bindable` in the `$props` declaration)
         const Bindable = 1 << 2;
     }
