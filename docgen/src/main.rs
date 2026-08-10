@@ -1,19 +1,25 @@
 use std::path::PathBuf;
 
 use crate::{
-    defs::{ParsedPropertyFlags, PathResolver},
-    parse_svelte::parse_svelte_file,
-    parser::parse_props_interfaces,
+    extractor::comments::CommentInfo,
+    parser::{TSPropsParser, svelte::parse_svelte_file, types::interfaces::InterfacePropertyFlags},
+    resolver::PathResolver,
+    transformer::html::{QApiPropInfo, ToHtml},
 };
 
-mod defs;
+mod constants;
 mod extractor;
-mod parse_svelte;
+mod impls;
 mod parser;
 mod prelude;
 mod resolver;
+mod traits;
+mod transformer;
 
-fn main() -> Result<(), Box<dyn std::error::Error>> {
+pub use prelude::{Result, W};
+pub use traits::SpanDisplay;
+
+fn main() -> std::result::Result<(), Box<dyn std::error::Error>> {
     // Get file path from args. Error if no arg provided.
     let args = std::env::args().collect::<Vec<String>>();
     if args.len() < 2 {
@@ -26,9 +32,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let resolver = PathResolver(&file);
 
-    let mut parsed_interfaces = parse_props_interfaces(&file, &resolver)?;
+    let parsed_interfaces = file.parse_props(&resolver)?;
 
-    for (name, interface) in &mut parsed_interfaces {
+    for (name, interface) in parsed_interfaces.into_iter() {
         let svelte_file = file
             .parent()
             .map(|dir| dir.join(name.replace("Props", ".svelte")));
@@ -42,20 +48,39 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             continue;
         }
 
-        let parsed_defaults = parse_svelte_file(&svelte_file.unwrap())?;
+        let (mut parsed_svelte_prop, _parsed_methods) = parse_svelte_file(&svelte_file.unwrap())?;
 
-        for (_prop_name, prop) in &mut interface.properties {
-            if let Some(prop_default) = parsed_defaults.get(&prop.name) {
-                if prop_default.is_bindable() {
-                    prop.flags |= ParsedPropertyFlags::Bindable;
+        let mut api_props_info: Vec<QApiPropInfo> = Vec::new();
+
+        for mut prop in interface.properties.into_iter() {
+            let prop_comment = prop.comment.get_or_insert(CommentInfo::default());
+
+            if let Some(prop_info) = parsed_svelte_prop.get_mut(&prop.name) {
+                if prop_info.bindable {
+                    prop.flags |= InterfacePropertyFlags::Bindable;
                 }
 
-                prop.default.replace(prop_default.value());
+                if let Some(new_default) = prop_info.default.take() {
+                    prop_comment.default.replace(new_default);
+                }
             } else {
-                prop.default.get_or_insert("undefined".to_string());
+                prop_comment.default.get_or_insert("undefined".to_string());
                 continue;
             };
+
+            api_props_info.push(QApiPropInfo::from(prop));
         }
+
+        let heritage_header = interface.dom_props_heritage.map(|heritage| {
+            format!(
+                "interface {} extends {}",
+                interface.name.to_string(),
+                heritage.to_html(),
+            )
+        });
+
+        dbg!(heritage_header);
+        dbg!(api_props_info);
     }
 
     Ok(())
