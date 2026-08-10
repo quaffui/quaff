@@ -48,7 +48,7 @@ fn main() -> std::result::Result<(), Box<dyn std::error::Error>> {
             continue;
         }
 
-        let (mut parsed_svelte_prop, _parsed_methods) = parse_svelte_file(&svelte_file.unwrap())?;
+        let (mut parsed_svelte_prop, parsed_methods) = parse_svelte_file(&svelte_file.unwrap())?;
 
         let mut api_props_info: Vec<QApiPropInfo> = Vec::new();
 
@@ -80,7 +80,6 @@ fn main() -> std::result::Result<(), Box<dyn std::error::Error>> {
         });
 
         dbg!(heritage_header);
-        dbg!(api_props_info);
     }
 
     Ok(())

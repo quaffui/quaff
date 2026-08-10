@@ -32,10 +32,10 @@ impl<'a> SvelteParser<'a> for &'a [BindingProperty<'a>] {
         None
     }
 
-    fn parse(self, semantic: &Semantic, resolver: &PathResolver) -> Self::Output {
+    fn parse(&mut self, semantic: &Semantic, resolver: &PathResolver) -> Self::Output {
         let mut res: ParsedSvelteProps = HashMap::new();
 
-        for prop in self {
+        for prop in self.into_iter() {
             if let PropertyKey::StaticIdentifier(id) = &prop.key {
                 let name = id.name.to_string();
                 let mut parsed = ParsedSvelteProp::default();

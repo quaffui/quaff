@@ -21,10 +21,11 @@ pub fn parse_svelte_file(svelte_file: &Path) -> Result<(ParsedSvelteProps, Parse
     let mut methods = HashMap::new();
 
     SourceType::Svelte(svelte_file).parse_source(|node, semantic| {
-        if let Some(props) = <&[BindingProperty]>::extract(node) {
+        if let Some(mut props) = <&[BindingProperty]>::extract(node) {
             defaults.extend(props.parse(semantic, &resolver)?);
-        } else if let Some(func) = <&Function>::extract(node) {
-            // methods.extend(func.parse(semantic, &resolver)?);
+        } else if let Some(mut func) = <&Function>::extract(node) {
+            let (name, func_type) = func.parse(semantic, &resolver)?;
+            methods.insert(name, func_type);
         }
 
         Ok(false)

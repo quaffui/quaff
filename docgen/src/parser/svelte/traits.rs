@@ -7,5 +7,10 @@ pub trait SvelteParser<'a>: Sized {
 
     fn extract(node: &'a AstNode) -> Option<Self>;
 
-    fn parse(self, semantic: &Semantic, resolver: &PathResolver) -> Self::Output;
+    fn parse(&mut self, semantic: &Semantic, resolver: &PathResolver) -> Self::Output {
+        let _ = self;
+        let _ = semantic;
+        let _ = resolver;
+        panic!("SvelteParser::parse should not be called without proper implementation.")
+    }
 }
