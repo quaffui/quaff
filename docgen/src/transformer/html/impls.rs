@@ -5,7 +5,7 @@ use crate::{
     parser::types::{
         ExternalType, ParsedType, ReferenceType, StandardType,
         functions::FunctionType,
-        interfaces::{Interface, InterfaceProperty, InterfacePropertyFlags},
+        interfaces::{Interface, InterfaceProperty, InterfacePropertyFlags, InterfacePropertyKey},
         ts_utilities::UtilityTKind,
     },
 };
@@ -182,7 +182,7 @@ impl ToHtml for Vec<InterfaceProperty> {
                 };
                 format!(
                     "{}{}: {}",
-                    prop.name,
+                    prop.key.to_html(),
                     opt_str,
                     prop.type_annotation.to_html()
                 )
@@ -191,6 +191,18 @@ impl ToHtml for Vec<InterfaceProperty> {
             .join(", ");
 
         format!("{{ {mapped} }}")
+    }
+}
+
+impl ToHtml for InterfacePropertyKey {
+    fn to_html(self) -> String {
+        match self {
+            Self::Identifier(name) => name.to_string(),
+            Self::IndexSignature {
+                name,
+                type_annotation,
+            } => format!("[{}: {}]", name, type_annotation.to_html()),
+        }
     }
 }
 
@@ -213,7 +225,7 @@ impl ToHtml for Interface {
         let props = self
             .properties
             .into_iter()
-            .map(|p| format!("{}: {}", p.name, p.type_annotation.to_html()))
+            .map(|p| format!("{}: {}", p.key.to_html(), p.type_annotation.to_html()))
             .collect::<Vec<String>>()
             .join(", ");
 

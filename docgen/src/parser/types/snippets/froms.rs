@@ -1,6 +1,6 @@
 use crate::parser::types::{
     ParsedType,
-    interfaces::{InterfaceProperty, InterfacePropertyFlags},
+    interfaces::{InterfaceProperty, InterfacePropertyFlags, InterfacePropertyKey},
     snippets::Snippet,
 };
 
@@ -8,29 +8,22 @@ impl TryFrom<InterfaceProperty> for Snippet {
     type Error = InterfaceProperty;
 
     fn try_from(value: InterfaceProperty) -> Result<Self, Self::Error> {
-        if matches!(value.type_annotation, ParsedType::Snippet(_)) {
-            let InterfaceProperty {
-                name,
-                type_annotation,
+        dbg!(&value);
+
+        match value {
+            InterfaceProperty {
+                key: InterfacePropertyKey::Identifier(name),
+                type_annotation: ParsedType::Snippet(params),
                 flags,
                 comment,
                 ..
-            } = value;
-
-            let ParsedType::Snippet(params) = type_annotation else {
-                unreachable!();
-            };
-
-            let snippet = Snippet {
+            } => Ok(Snippet {
                 name,
-                description: comment.unwrap_or_default().description,
+                description: comment.map(|c| c.description).unwrap_or_default(),
                 optional: flags.contains(InterfacePropertyFlags::Optional),
                 params,
-            };
-
-            Ok(snippet)
-        } else {
-            Err(value)
+            }),
+            other => Err(other),
         }
     }
 }

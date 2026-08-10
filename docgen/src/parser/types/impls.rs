@@ -12,6 +12,7 @@ use oxc_semantic::Semantic;
 use crate::{
     Result, SpanDisplay,
     extractor::generics::GenericInfo,
+    parser::types::interfaces::InterfacePropertyKey,
     resolver::{PathResolver, ReferenceResolver, ResolvedReference},
     transformer::mapping::TYPE_SRC_MAPPINGS,
 };
@@ -193,7 +194,25 @@ impl TypeParser for TSTypeReference<'_> {
                 let parsed: HashMap<String, ParsedType> = literal
                     .parse_body(semantic, resolver, generics, type_arg, type_deps)?
                     .into_iter()
-                    .map(|prop| (prop.name, prop.type_annotation))
+                    .map(|prop| {
+                        let name = match prop.key {
+                            InterfacePropertyKey::Identifier(name) => name,
+                            InterfacePropertyKey::IndexSignature {
+                                name,
+                                type_annotation,
+                            } => {
+                                let ParsedType::Standard(StandardType { name: index_type }) =
+                                    type_annotation
+                                else {
+                                    panic!("Invalid index type: {:?}", type_annotation)
+                                };
+
+                                format!("[{}: {}]", name, index_type)
+                            }
+                        };
+
+                        (name, prop.type_annotation)
+                    })
                     .collect();
 
                 snippet_args = Some(parsed);

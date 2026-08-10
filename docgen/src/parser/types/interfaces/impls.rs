@@ -3,7 +3,7 @@ use oxc_semantic::Semantic;
 
 use crate::{
     extractor::{Extractor, comments::CommentInfo, generics::GenericInfo},
-    parser::types::{ParsedType, TypeDependencies, TypeParser},
+    parser::types::{ParsedType, TypeDependencies, TypeParser, interfaces::InterfacePropertyKey},
     prelude::*,
     resolver::PathResolver,
 };
@@ -12,13 +12,13 @@ use super::{Interface, InterfaceParser, InterfaceProperty, InterfacePropertyFlag
 
 impl InterfaceProperty {
     pub fn new(
-        name: String,
+        key: InterfacePropertyKey,
         type_annotation: ParsedType,
         optional: bool,
         comment: Option<CommentInfo>,
     ) -> Self {
         Self {
-            name,
+            key,
             type_annotation,
             flags: if optional {
                 InterfacePropertyFlags::Optional
@@ -77,41 +77,62 @@ impl InterfaceParser for TSInterfaceDeclaration<'_> {
         let mut props = Vec::new();
 
         for ts_signature in &self.body.body {
-            let TSSignature::TSPropertySignature(prop) = ts_signature else {
-                return Err(format!(
-                    "Unsupported interface property signature: {:#?}",
-                    ts_signature
-                )
-                .into());
-            };
+            let prop_key;
+            let type_annotation;
+            let mut comment = None;
+            let mut optional = false;
 
-            let PropertyKey::StaticIdentifier(key) = &prop.key else {
-                return Err(format!(
-                    "Interface properties must be identifiers. Parsing property: {:#?}",
-                    prop
-                )
-                .into());
-            };
+            match ts_signature {
+                TSSignature::TSPropertySignature(prop) => {
+                    let PropertyKey::StaticIdentifier(key) = &prop.key else {
+                        return Err(format!(
+                            "Literal properties must be identifiers. Parsing property: {:?}",
+                            prop
+                        )
+                        .into());
+                    };
 
-            let comment = key.span.extract(semantic, resolver, type_deps)?;
+                    prop_key = InterfacePropertyKey::Identifier(key.name.to_string());
+                    comment = key.span.extract(semantic, resolver, type_deps)?;
+                    optional = prop.optional;
 
-            let prop_name = key.name.to_string();
+                    let Some(annotation) = &prop.type_annotation else {
+                        return Err(format!(
+                            "Literal properties must have type annotations. Parsing property: {:#?}",
+                            prop
+                        )
+                        .into());
+                    };
 
-            let Some(annotation) = &prop.type_annotation else {
-                return Err(format!(
-                    "Interface properties must have type annotations. Parsing property: {:#?}",
-                    prop
-                )
-                .into());
-            };
+                    type_annotation = annotation
+                        .type_annotation
+                        .parse_type(semantic, resolver, generics, type_args, type_deps)?;
+                }
+                TSSignature::TSIndexSignature(prop) => {
+                    let name = prop.parameter.name.to_string();
+                    let key_type = prop
+                        .parameter
+                        .type_annotation
+                        .type_annotation
+                        .parse_type(semantic, resolver, generics, type_args, type_deps)?;
+                    let value_type = prop
+                        .type_annotation
+                        .type_annotation
+                        .parse_type(semantic, resolver, generics, type_args, type_deps)?;
 
-            let parsed_type = annotation
-                .type_annotation
-                .parse_type(semantic, resolver, generics, type_args, type_deps)?;
+                    prop_key = InterfacePropertyKey::IndexSignature {
+                        name,
+                        type_annotation: key_type,
+                    };
+                    type_annotation = value_type;
+                }
+                _ => {
+                    return Err(format!("Unsupported interface member: {:?}", ts_signature).into());
+                }
+            }
 
-            let parsed_prop =
-                InterfaceProperty::new(prop_name, parsed_type, prop.optional, comment)
-                    .with_type_args(type_args);
+            let parsed_prop = InterfaceProperty::new(prop_key, type_annotation, optional, comment)
+                .with_type_args(type_args);
             props.push(parsed_prop);
         }
 
@@ -131,36 +152,61 @@ impl InterfaceParser for TSTypeLiteral<'_> {
         let mut props = Vec::new();
 
         for prop in &self.members {
-            let TSSignature::TSPropertySignature(prop) = prop else {
-                return Err(format!("Unsupported literal member: {:?}", prop).into());
-            };
+            let prop_key;
+            let type_annotation;
+            let mut comment = None;
+            let mut optional = false;
 
-            let PropertyKey::StaticIdentifier(key) = &prop.key else {
-                return Err(format!(
-                    "Literal properties must be identifiers. Parsing property: {:?}",
-                    prop
-                )
-                .into());
-            };
+            match prop {
+                TSSignature::TSPropertySignature(prop) => {
+                    let PropertyKey::StaticIdentifier(key) = &prop.key else {
+                        return Err(format!(
+                            "Literal properties must be identifiers. Parsing property: {:?}",
+                            prop
+                        )
+                        .into());
+                    };
 
-            let comment = key.span.extract(semantic, resolver, type_deps)?;
+                    prop_key = InterfacePropertyKey::Identifier(key.name.to_string());
+                    comment = key.span.extract(semantic, resolver, type_deps)?;
+                    optional = prop.optional;
 
-            let prop_name = key.name.to_string();
+                    let Some(annotation) = &prop.type_annotation else {
+                        return Err(format!(
+                            "Literal properties must have type annotations. Parsing property: {:#?}",
+                            prop
+                        )
+                        .into());
+                    };
 
-            let Some(annotation) = &prop.type_annotation else {
-                return Err(format!(
-                    "Literal properties must have type annotations. Parsing property: {:#?}",
-                    prop
-                )
-                .into());
-            };
+                    type_annotation = annotation
+                        .type_annotation
+                        .parse_type(semantic, resolver, generics, type_args, type_deps)?;
+                }
+                TSSignature::TSIndexSignature(prop) => {
+                    let name = prop.parameter.name.to_string();
+                    let key_type = prop
+                        .parameter
+                        .type_annotation
+                        .type_annotation
+                        .parse_type(semantic, resolver, generics, type_args, type_deps)?;
+                    let value_type = prop
+                        .type_annotation
+                        .type_annotation
+                        .parse_type(semantic, resolver, generics, type_args, type_deps)?;
 
-            let parsed_type = annotation
-                .type_annotation
-                .parse_type(semantic, resolver, generics, type_args, type_deps)?;
+                    prop_key = InterfacePropertyKey::IndexSignature {
+                        name,
+                        type_annotation: key_type,
+                    };
+                    type_annotation = value_type;
+                }
+                _ => {
+                    return Err(format!("Unsupported literal member: {:?}", prop).into());
+                }
+            }
 
-            let parsed_prop =
-                InterfaceProperty::new(prop_name, parsed_type, prop.optional, comment);
+            let parsed_prop = InterfaceProperty::new(prop_key, type_annotation, optional, comment);
             props.push(parsed_prop);
         }
 

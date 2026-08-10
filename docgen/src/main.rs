@@ -5,7 +5,10 @@ use crate::{
     parser::{
         TSPropsParser,
         svelte::parse_svelte_file,
-        types::{interfaces::InterfacePropertyFlags, snippets::Snippet},
+        types::{
+            interfaces::{InterfacePropertyFlags, InterfacePropertyKey},
+            snippets::Snippet,
+        },
     },
     resolver::PathResolver,
     transformer::html::{QApiPropInfo, ToHtml},
@@ -74,8 +77,15 @@ fn main() -> std::result::Result<(), Box<dyn std::error::Error>> {
                 Err(prop) => prop,
             };
 
+            let InterfacePropertyKey::Identifier(name) = &prop.key else {
+                panic!(
+                    "Invalid property key, expected Identifier but got an index signature: {:?}",
+                    prop
+                );
+            };
+
             let prop_comment = prop.comment.get_or_insert(CommentInfo::default());
-            if let Some(prop_info) = parsed_svelte_prop.get_mut(&prop.name) {
+            if let Some(prop_info) = parsed_svelte_prop.get_mut(name.as_str()) {
                 if prop_info.bindable {
                     prop.flags |= InterfacePropertyFlags::Bindable;
                 }

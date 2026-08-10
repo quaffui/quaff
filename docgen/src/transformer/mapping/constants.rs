@@ -1,6 +1,6 @@
 use super::model::TypeSrcMapping;
 
-pub static TYPE_SRC_MAPPINGS: [TypeSrcMapping; 14] = [
+pub static TYPE_SRC_MAPPINGS: [TypeSrcMapping; 15] = [
     TypeSrcMapping::new_string("MaterialSymbol", "https://fonts.google.com/icons"),
     TypeSrcMapping::new_string(
         "BundledLanguage",
@@ -18,6 +18,10 @@ pub static TYPE_SRC_MAPPINGS: [TypeSrcMapping; 14] = [
     TypeSrcMapping::new_string(
         "HTMLElementTagNameMap",
         "https://typhonjs-typedoc.github.io/ts-lib-docs/2024/dom/interfaces/HTMLElementTagNameMap.html",
+    ),
+    TypeSrcMapping::new_regex(
+        r#"^Attachment(<.*?>)?"#,
+        "https://svelte.dev/docs/svelte/svelte-attachments#Attachment",
     ),
     TypeSrcMapping::new_regex(
         r#"^(?<event>[A-Z][a-z]+Event)Handler<.*>$"#,

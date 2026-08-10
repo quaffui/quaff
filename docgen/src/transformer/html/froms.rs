@@ -1,6 +1,6 @@
 use crate::{
     parser::types::{
-        interfaces::{InterfaceProperty, InterfacePropertyFlags},
+        interfaces::{InterfaceProperty, InterfacePropertyFlags, InterfacePropertyKey},
         snippets::Snippet,
     },
     transformer::html::{ToHtml, model::QApiPropInfo},
@@ -20,7 +20,7 @@ impl From<Snippet> for QApiPropInfo {
 
         let opt_str = if value.optional { "?" } else { "" };
 
-        let params_info = format!("{}.({})", opt_str, value.params.to_html());
+        let params_info = format!("{}.({{ {} }})", opt_str, value.params.to_html());
         let params_info_html = HtmlItem::new(params_info)
             .tag("pre")
             .class("prop-type")
@@ -43,12 +43,19 @@ impl From<InterfaceProperty> for QApiPropInfo {
     fn from(mut prop: InterfaceProperty) -> Self {
         let Some(prop_comment) = prop.comment.take() else {
             panic!(
-                "No description or default value found for property: {}. This shouldn't happen.",
-                prop.name
+                "No description or default value found for property: {:?}. This shouldn't happen.",
+                prop.key
             );
         };
 
-        let prop_name = HtmlItem::prop_name(&prop.name);
+        let InterfacePropertyKey::Identifier(name) = &prop.key else {
+            panic!(
+                "Expected identifier for property key but got index signature: {:?}",
+                prop.key
+            );
+        };
+
+        let prop_name = HtmlItem::prop_name(name);
 
         let mut prop_info_content = String::new();
 

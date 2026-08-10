@@ -5,7 +5,7 @@ use oxc::ast::ast::{
 use oxc_semantic::Semantic;
 
 use crate::parser::types::StandardType;
-use crate::parser::types::interfaces::InterfaceProperty;
+use crate::parser::types::interfaces::{InterfaceProperty, InterfacePropertyKey};
 use crate::parser::types::ts_utilities::UtilityKVKind;
 use crate::{
     Result, SpanDisplay,
@@ -63,7 +63,7 @@ impl Extractor<HeritageInfo> for OxcVec<'_, TSInterfaceHeritage<'_>> {
                             match kind {
                                 UtilityKVKind::Pick => {
                                     let (all_props, props_to_pick, dom_heritage) = parse_utility_reference(k, v, decl, sem)?;
-                                    let filtered: Vec<InterfaceProperty> = all_props.into_iter().filter(|p| props_to_pick.contains(&p.name)).collect();
+                                    let filtered: Vec<InterfaceProperty> = all_props.into_iter().filter(|p| matches!(&p.key, InterfacePropertyKey::Identifier(name) if props_to_pick.contains(&name))).collect();
 
                                     if let Some(dom_heritage) = dom_heritage {
                                         dom = Some(*dom_heritage);
@@ -73,7 +73,7 @@ impl Extractor<HeritageInfo> for OxcVec<'_, TSInterfaceHeritage<'_>> {
                                 },
                                 UtilityKVKind::Omit => {
                                     let (all_props, props_to_omit, dom_heritage) = parse_utility_reference(k, v, decl, sem)?;
-                                    let filtered: Vec<InterfaceProperty> = all_props.into_iter().filter(|p| !props_to_omit.contains(&p.name)).collect();
+                                    let filtered: Vec<InterfaceProperty> = all_props.into_iter().filter(|p| matches!(&p.key, InterfacePropertyKey::Identifier(name) if !props_to_omit.contains(&name))).collect();
 
                                     if let Some(dom_heritage) = dom_heritage {
                                         dom = Some(*dom_heritage);

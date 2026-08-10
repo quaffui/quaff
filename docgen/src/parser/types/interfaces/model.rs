@@ -18,11 +18,23 @@ bitflags! {
     }
 }
 
+/// Represents a property name or an index signature, e.g. `name: string` or `[key: string]: string`
+#[derive(Debug, Clone)]
+pub enum InterfacePropertyKey {
+    /// A property identifier, e.g. `name` in `interface MyInterface { name: string }`.
+    Identifier(String),
+    /// An index signature, e.g. `[key: string]: string` in `interface MyInterface { [key: string]: string }`.
+    IndexSignature {
+        name: String,
+        type_annotation: ParsedType,
+    },
+}
+
 /// Represents an interface's property, e.g. `name: string` or `disabled?: boolean`
 #[derive(Debug, Clone)]
 pub struct InterfaceProperty {
-    /// The property's name (e.g. `name` in `interface MyInterface { name: string }`).
-    pub name: String,
+    /// The property's key (e.g. `name` in `interface MyInterface { name: string }` or `[key: string]` in `interface MyInterface { [key: string]: string }`).
+    pub key: InterfacePropertyKey,
     /// The type annotation of the property.
     pub type_annotation: ParsedType,
     /// Flags indicating the property's characteristics (see [ParsedPropertyFlags])
