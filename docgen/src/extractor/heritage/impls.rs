@@ -1,6 +1,7 @@
 use oxc::allocator::Vec as OxcVec;
 use oxc::ast::ast::{
-    Expression, TSInterfaceHeritage, TSTypeAliasDeclaration, TSTypeParameterInstantiation,
+    Expression, TSInterfaceHeritage, TSTypeAliasDeclaration, TSTypeName,
+    TSTypeParameterInstantiation,
 };
 use oxc_semantic::Semantic;
 
@@ -36,7 +37,7 @@ impl Extractor<HeritageInfo> for OxcVec<'_, TSInterfaceHeritage<'_>> {
                 continue;
             }
 
-            let Expression::Identifier(ident) = &clause.expression else {
+            let TSTypeName::IdentifierReference(ident) = &clause.type_name else {
                 return Err(format!(
                     "Unsupported interface heritage clause, expected an identifier. Parsing: {:#?}",
                     clause
