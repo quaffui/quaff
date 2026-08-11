@@ -54,7 +54,7 @@ impl Extractor<HeritageInfo> for OxcVec<'_, TSInterfaceHeritage<'_>> {
             ident.resolve(semantic, resolver, &mut |resolved, scope_resolver| {
                 match resolved {
                     ResolvedReference::TSInterfaceDeclaration(decl, sem) => {
-                        let parsed = decl.parse(sem, resolver, &type_args, type_deps)?;
+                        let parsed = decl.parse(sem, scope_resolver, &type_args, type_deps)?;
                         herited_props.extend(parsed.properties);
                     }
                     ResolvedReference::TSTypeAliasDeclaration(decl, sem) => {
