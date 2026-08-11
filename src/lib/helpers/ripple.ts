@@ -21,6 +21,10 @@ interface RippleOptions {
    * Whether the ripple should be disabled.
    */
   disabled?: boolean;
+  /**
+   * A selector for a descendant that should contain the ripple effect.
+   */
+  effectTarget?: string;
 }
 
 const TRIGGER_EVENTS = ["pointerdown", "touchstart", "keydown"] as const;
@@ -59,7 +63,12 @@ export function ripple(options: RippleOptions = {}): Attachment<HTMLElement> {
     }
 
     rippleContainer = document.createElement("div");
-    el.appendChild(rippleContainer);
+
+    const effectTarget = options.effectTarget
+      ? (el.querySelector<HTMLElement>(options.effectTarget) ?? el)
+      : el;
+
+    effectTarget.appendChild(rippleContainer);
 
     if (duration) {
       rippleContainer.style.setProperty(DURATION_PROPERTY, `${duration}ms`);
@@ -98,20 +107,26 @@ export function ripple(options: RippleOptions = {}): Attachment<HTMLElement> {
     const rippleContainer = getRippleContainer(el);
     addClasses(rippleContainer, center);
 
-    const rect = el.getBoundingClientRect();
+    const rect = options.effectTarget
+      ? rippleContainer.getBoundingClientRect()
+      : el.getBoundingClientRect();
 
     const { clientX, clientY } =
       window.TouchEvent && event instanceof TouchEvent ? event.touches[0] : (event as PointerEvent);
 
-    const x = clientX - rect.left > el.offsetWidth / 2 ? 0 : el.offsetWidth;
-    const y = clientY - rect.top > el.offsetHeight / 2 ? 0 : el.offsetHeight;
-    const radius = Math.hypot(x - (clientX - rect.left), y - (clientY - rect.top));
+    const localX =
+      options.effectTarget && (center || options.center) ? rect.width / 2 : clientX - rect.left;
+    const localY =
+      options.effectTarget && (center || options.center) ? rect.height / 2 : clientY - rect.top;
+    const x = localX > rect.width / 2 ? 0 : rect.width;
+    const y = localY > rect.height / 2 ? 0 : rect.height;
+    const radius = Math.hypot(x - localX, y - localY);
 
     const ripple = document.createElement("div");
     ripple.classList.add(RIPPLE_CLASS);
 
-    ripple.style.left = `${clientX - rect.left - radius}px`;
-    ripple.style.top = `${clientY - rect.top - radius}px`;
+    ripple.style.left = `${localX - radius}px`;
+    ripple.style.top = `${localY - radius}px`;
     ripple.style.width = ripple.style.height = `${radius * 2}px`;
 
     rippleContainer.appendChild(ripple);

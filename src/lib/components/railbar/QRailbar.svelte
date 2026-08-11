@@ -1,10 +1,18 @@
 <script lang="ts">
   import { onMount } from "svelte";
+  import { useColor } from "$composables";
   import { leftRailbarCtx, rightRailbarCtx } from "../layout/QLayout.svelte";
   import type { QRailbarProps } from "./props";
 
   // #region:    --- Props
-  let { width = 80, side = "left", bordered = false, children, ...props }: QRailbarProps = $props();
+  let {
+    activeColor = "secondary-container",
+    width = 80,
+    side = "left",
+    bordered = false,
+    children,
+    ...props
+  }: QRailbarProps = $props();
   // #endregion: --- Props
 
   // #region:    --- Non-reactive variables
@@ -25,6 +33,9 @@
   });
 
   const railbarWidthStyle = $derived(`--${side}-railbar-width: ${width}px`);
+  const parsedActiveColor = $derived(
+    activeColor === "secondary-container" ? undefined : useColor(activeColor)
+  );
 
   const style = $derived(`${railbarWidthStyle};${props.style ?? ""}`);
   // #endregion: --- Derived values
@@ -62,6 +73,13 @@
   });
 </script>
 
-<nav bind:this={railbarEl} {...props} class="q-railbar" {style} data-quaff>
+<nav
+  bind:this={railbarEl}
+  {...props}
+  class="q-railbar"
+  {style}
+  style:--q-nav-item-active-indicator-color={parsedActiveColor}
+  data-quaff
+>
   {@render children?.()}
 </nav>

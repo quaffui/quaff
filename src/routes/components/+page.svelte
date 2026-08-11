@@ -26,6 +26,8 @@
     QLayout,
     QLinearProgress,
     QList,
+    QNavbar,
+    QNavItem,
     QRadio,
     QRailbar,
     QSelect,
@@ -166,6 +168,12 @@
       snippet: menu,
     },
     {
+      name: "QNavbar",
+      description: "Navigate between primary destinations from a fixed bottom bar.",
+      href: "/components/navbar",
+      snippet: navbar,
+    },
+    {
       name: "QProgress",
       description: "Indicate task completion or loading status with linear or cicular indicators.",
       href: "/components/progress",
@@ -176,6 +184,12 @@
       description: "Enable exclusive choices from a set using radio buttons.",
       href: "/components/radio",
       snippet: radio,
+    },
+    {
+      name: "QRailbar",
+      description: "Navigate between primary destinations from a fixed side rail.",
+      href: "/components/railbar",
+      snippet: railbar,
     },
     {
       name: "QSelect",
@@ -621,6 +635,26 @@
   </div>
 {/snippet}
 
+{#snippet navbar()}
+  <QLayout class="background" style="height: 100%; width: 100%;">
+    {#snippet content()}
+      <div class="flex flex-center" style="height: 100%;">
+        <span class="headline-small">Home</span>
+      </div>
+    {/snippet}
+
+    {#snippet navbar()}
+      <QNavbar bordered>
+        <QNavItem icon="home" label="Home" active />
+        <QNavItem icon="search" label="Explore" />
+        <QNavItem icon="notifications" label="Updates" badgeAriaLabel="3 unread updates">
+          {#snippet badge()}3{/snippet}
+        </QNavItem>
+      </QNavbar>
+    {/snippet}
+  </QLayout>
+{/snippet}
+
 {#snippet radio()}
   <QList class="surface q-pa-lg" style="width: 100%; min-width: min-content;" dense>
     <QItem class="headline-small">Language</QItem>
@@ -634,6 +668,24 @@
       <QRadio value="chinese" label="Chinese (Mandarin)" />
     </QItem>
   </QList>
+{/snippet}
+
+{#snippet railbar()}
+  <QLayout class="background" style="height: 100%; width: 100%;">
+    {#snippet content()}
+      <div class="flex flex-center" style="height: 100%;">
+        <span class="headline-small">Home</span>
+      </div>
+    {/snippet}
+
+    {#snippet railbarLeft()}
+      <QRailbar bordered width={72} activeColor="primary-container" class="q-py-xs">
+        <QNavItem icon="home" label="Home" active />
+        <QNavItem icon="person" label="Profile" />
+        <QNavItem icon="settings" label="Settings" />
+      </QRailbar>
+    {/snippet}
+  </QLayout>
 {/snippet}
 
 {#snippet select()}

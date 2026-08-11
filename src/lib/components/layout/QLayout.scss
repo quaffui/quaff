@@ -19,6 +19,7 @@
 
 .q-layout > .q-railbar {
   position: absolute;
+  bottom: var(--navbar-height, 0);
 
   &.q-railbar--offset-top {
     // Put the railbar under the header to avoid hiding its box-shadow
@@ -32,7 +33,15 @@
   }
 }
 
+.q-layout > .q-navbar {
+  position: absolute;
+}
+
 .q-layout > .q-drawer {
+  &:not(.q-drawer--overlay) {
+    bottom: var(--navbar-height, 0);
+  }
+
   &.q-drawer--offset-top:not(.q-drawer--overlay) {
     // Put the drawer under the header to avoid hiding its box-shadow
     z-index: 2;
@@ -76,7 +85,7 @@
   border-top-right-radius: 0;
 }
 
-.q-layout > .q-footer ~ .q-layout__content {
+.q-layout > :is(.q-footer, .q-navbar) ~ .q-layout__content {
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
 }

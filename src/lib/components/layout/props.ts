@@ -6,13 +6,13 @@ export type QLayoutViewOptions = `${"l"|"h"}${"h"|"H"}${"r"|"h"} ${"l"|"L"}${"p"
 
 export interface QLayoutProps extends HTMLAttributes<HTMLDivElement> {
   /**
-   * The layout view configuration, which defines how layout components (header, railbars, drawers, footer) should be displayed on screen.
-   * Controls how layout components (header, railbars, drawers, footer) are displayed on screen.
+   * The layout view configuration, which defines how layout components (header, railbars, drawers, and footer) should be displayed on screen.
+   * The navbar always occupies the bottom edge of the layout.
    */
   view?: QLayoutViewOptions;
 
   /**
-   * Main area of the layout where the content will be displayed, meaning everything besides the layout components (header, railbars, drawers, footer).
+   * Main area of the layout where the content will be displayed, meaning everything besides the layout components (header, railbars, drawers, footer, and navbar).
    * It overrides the default children snippet.
    */
   content?: Snippet;
@@ -46,6 +46,11 @@ export interface QLayoutProps extends HTMLAttributes<HTMLDivElement> {
    * The footer of the layout.
    */
   footer?: Snippet;
+
+  /**
+   * The navigation bar at the bottom of the layout.
+   */
+  navbar?: Snippet;
 }
 
 export type QLayoutEvents = "resize" | "scroll" | "scrollHeight";
