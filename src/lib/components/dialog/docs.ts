@@ -2,6 +2,7 @@ import type { QComponentDocs } from "$docs";
 import {
   QDialogDocsProps,
   QDialogDocsSnippets,
+  QDialogDocsMethods,
   QDialogDocsDomAttributesConstraint,
   QDialogDocsGenerics,
   QDialogDocsTypeDependencies,
@@ -15,7 +16,7 @@ export const QDialogDocs: QComponentDocs = {
     domAttributesConstraint: QDialogDocsDomAttributesConstraint,
     props: QDialogDocsProps,
     snippets: QDialogDocsSnippets,
-    methods: [],
+    methods: QDialogDocsMethods,
     events: [],
     typeDependencies: QDialogDocsTypeDependencies,
   },

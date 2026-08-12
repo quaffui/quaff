@@ -127,6 +127,7 @@
   // #endregion: --- Effects
 
   // #region:    --- Methods
+  /** Shows the tooltip. */
   export function show() {
     clearTimeout(timer);
     isOpening = !value && !!realTarget;
@@ -138,6 +139,7 @@
     }
   }
 
+  /** Hides the tooltip. */
   export function hide() {
     clearTimeout(timer);
     isOpening = false;
@@ -146,6 +148,7 @@
     }, hideDelay);
   }
 
+  /** Toggles the tooltip visibility. */
   export function toggle() {
     value || isOpening ? hide() : show();
   }

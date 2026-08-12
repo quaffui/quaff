@@ -2,6 +2,7 @@ import type { QComponentDocs } from "$docs";
 import {
   QTableDocsProps,
   QTableDocsSnippets,
+  QTableDocsMethods,
   QTableDocsDomAttributesConstraint,
   QTableDocsGenerics,
   QTableDocsTypeDependencies,
@@ -15,7 +16,7 @@ export const QTableDocs: QComponentDocs = {
     domAttributesConstraint: QTableDocsDomAttributesConstraint,
     props: QTableDocsProps,
     snippets: QTableDocsSnippets,
-    methods: [],
+    methods: QTableDocsMethods,
     events: [],
     typeDependencies: QTableDocsTypeDependencies,
   },

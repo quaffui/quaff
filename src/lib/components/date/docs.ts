@@ -4,6 +4,7 @@ import {
   QDateDocsGenerics,
   QDateDocsProps,
   QDateDocsSnippets,
+  QDateDocsMethods,
   QDateDocsTypeDependencies,
 } from "./docs.props";
 
@@ -16,23 +17,7 @@ export const QDateDocs: QComponentDocs = {
     domAttributesConstraint: QDateDocsDomAttributesConstraint,
     props: QDateDocsProps,
     snippets: QDateDocsSnippets,
-    methods: [
-      {
-        name: "show",
-        type: "() => void",
-        description: "Opens the date picker when the field is interactive.",
-      },
-      {
-        name: "hide",
-        type: "() => void",
-        description: "Closes the date picker without committing its draft selection.",
-      },
-      {
-        name: "toggle",
-        type: "() => void",
-        description: "Toggles the date picker overlay.",
-      },
-    ],
+    methods: QDateDocsMethods,
     events: [],
     typeDependencies: QDateDocsTypeDependencies,
   },

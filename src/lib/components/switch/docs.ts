@@ -2,6 +2,7 @@ import type { QComponentDocs } from "$docs";
 import {
   QSwitchDocsProps,
   QSwitchDocsSnippets,
+  QSwitchDocsMethods,
   QSwitchDocsDomAttributesConstraint,
   QSwitchDocsGenerics,
   QSwitchDocsTypeDependencies,
@@ -16,13 +17,7 @@ export const QSwitchDocs: QComponentDocs = {
     domAttributesConstraint: QSwitchDocsDomAttributesConstraint,
     props: QSwitchDocsProps,
     snippets: QSwitchDocsSnippets,
-    methods: [
-      {
-        name: "toggle",
-        type: "() => void",
-        description: "Toggles the switch value.",
-      },
-    ],
+    methods: QSwitchDocsMethods,
     events: [
       {
         name: "input",

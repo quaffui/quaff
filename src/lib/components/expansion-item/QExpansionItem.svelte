@@ -166,14 +166,17 @@
   // #endregion: --- Effects
 
   // #region:    --- Methods
+  /** Toggles the expanded state. */
   export function toggle() {
     value = !value;
   }
 
+  /** Expands the item. */
   export function show() {
     value = true;
   }
 
+  /** Collapses the item. */
   export function hide() {
     value = false;
   }

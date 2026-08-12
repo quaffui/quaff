@@ -179,6 +179,7 @@
     focus.scheduleCurrent(currentOverlayId);
   });
 
+  /** Opens the time picker when the field is interactive. */
   export function show() {
     if (!disabled && !readonly) {
       clearPendingClose();
@@ -186,11 +187,13 @@
     }
   }
 
+  /** Closes the time picker without committing its draft selection. */
   export function hide() {
     clearPendingClose();
     open = false;
   }
 
+  /** Toggles the time picker overlay. */
   export function toggle() {
     open ? hide() : show();
   }

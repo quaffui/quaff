@@ -120,18 +120,20 @@
   // #endregion: --- Lifecycle
 
   // #region:    --- Methods
+  /** Opens the menu. */
   export function show() {
     value = true;
   }
 
+  /** Closes the menu. */
   export function hide() {
     value = false;
   }
 
+  /** Toggles the menu open state. */
   export function toggle() {
     value = !value;
   }
-
   // #endregion: --- Methods
 
   // #region:    --- Functions
