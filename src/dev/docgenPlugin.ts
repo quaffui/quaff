@@ -1,6 +1,6 @@
 import { spawn } from "child_process";
 import { existsSync } from "fs";
-import { basename, resolve as resolvePath } from "path";
+import { basename, relative, resolve as resolvePath, sep } from "path";
 import updateAllSnippets from "../../docgen/snippets/updateAllSnippets.js";
 import updateSnippetsForPage from "../../docgen/snippets/updateSnippetsForPage.js";
 import getSnippetPagePaths from "../../docgen/snippets/getSnippetPagePaths.js";
@@ -8,16 +8,49 @@ import waitForSvelteKit from "./waitForSvelteKit.js";
 import type { Logger, Plugin, ViteDevServer } from "vite";
 
 const SVELTE_KIT_PATH = "./.svelte-kit";
+const LIB_PATH = resolvePath("src/lib");
+const COMPONENTS_PATH = resolvePath("src/lib/components");
+const GENERATED_PROPS_FILE = "docs.props.ts";
+const SNIPPET_PAGE_FILE = "+page.svelte";
+const DOCGEN_DEBOUNCE_MS = 75;
 
-enum HotUpdateFileName {
-  Props = "props.ts",
-  Page = "+page.svelte",
+function isInside(root: string, file: string) {
+  const relativePath = relative(root, file);
+
+  return (
+    relativePath !== ".." &&
+    !relativePath.startsWith(`..${sep}`) &&
+    !relativePath.includes(`${sep}..${sep}`)
+  );
 }
 
-function runDocGenProps(): Promise<void> {
+function isComponentSvelteFile(file: string) {
+  return isInside(COMPONENTS_PATH, file) && file.endsWith(".svelte");
+}
+
+function isDocgenSourceFile(file: string) {
+  return (
+    (isInside(LIB_PATH, file) &&
+      file.endsWith(".ts") &&
+      !file.endsWith(".d.ts") &&
+      basename(file) !== GENERATED_PROPS_FILE) ||
+    isComponentSvelteFile(file)
+  );
+}
+
+async function debounceDocgen() {
+  await new Promise((resolve) => setTimeout(resolve, DOCGEN_DEBOUNCE_MS));
+}
+
+function runDocGenProps(targets?: string[]): Promise<void> {
   return new Promise((resolve, reject) => {
     const cmd = "bun";
     const args = ["scripts/docgenProps.ts"];
+
+    if (targets?.length) {
+      args.push(...targets);
+    }
+
     const options = {
       env: {
         ...process.env,
@@ -26,14 +59,27 @@ function runDocGenProps(): Promise<void> {
     };
 
     const child = spawn(cmd, args, options);
+    let settled = false;
 
-    child.on("error", reject);
+    child.once("error", (error) => {
+      if (!settled) {
+        settled = true;
+        reject(error);
+      }
+    });
 
-    child.on("exit", (code: number) => {
+    child.once("exit", (code, signal) => {
+      if (settled) {
+        return;
+      }
+
+      settled = true;
+
       if (code === 0) {
         resolve();
       } else {
-        reject(new Error(`Process exited with code: ${code}`));
+        const status = signal ? `signal ${signal}` : `exit code ${code ?? "unknown"}`;
+        reject(new Error(`Props docgen process failed with ${status}.`));
       }
     });
   });
@@ -42,12 +88,43 @@ function runDocGenProps(): Promise<void> {
 const DOCGEN_LOG_MESSAGE = "→ docgen";
 
 function docgenPlugin(): Plugin {
-  const lastUpdated = {
-    file: "",
-    at: 0,
-  };
-
   let snippetPagePaths: string[] = [];
+  let propsDirty = false;
+  let propsRun: Promise<void> | undefined;
+  let pendingAllProps = false;
+  const pendingPropsTargets = new Set<string>();
+
+  function queueDocGenProps(file?: string) {
+    if (!file || !isInside(COMPONENTS_PATH, file)) {
+      pendingAllProps = true;
+      pendingPropsTargets.clear();
+    } else if (!pendingAllProps) {
+      pendingPropsTargets.add(file);
+    }
+
+    propsDirty = true;
+
+    if (!propsRun) {
+      propsRun = (async () => {
+        while (propsDirty) {
+          await debounceDocgen();
+          propsDirty = false;
+
+          const runAll = pendingAllProps;
+          const targets = runAll ? undefined : [...pendingPropsTargets];
+
+          pendingAllProps = false;
+          pendingPropsTargets.clear();
+
+          await runDocGenProps(targets);
+        }
+      })().finally(() => {
+        propsRun = undefined;
+      });
+    }
+
+    return propsRun;
+  }
 
   async function updateSnippet(file: string, server: ViteDevServer) {
     if (!snippetPagePaths.includes(file)) {
@@ -61,14 +138,14 @@ function docgenPlugin(): Plugin {
   async function runDocgen(logger: Logger) {
     logger.info(DOCGEN_LOG_MESSAGE);
     snippetPagePaths = await getSnippetPagePaths();
-    await Promise.all([runDocGenProps(), updateAllSnippets()]);
+    await Promise.all([queueDocGenProps(), updateAllSnippets()]);
     logger.clearScreen("info");
   }
 
   return {
     name: "docgen-plugin",
     async configResolved(config) {
-      if (config.command !== "serve") {
+      if (config.command !== "serve" || config.mode === "test") {
         return;
       }
 
@@ -81,34 +158,28 @@ function docgenPlugin(): Plugin {
       }
 
       // don't block
-      waitForSvelteKit({ svelteKitPathResolved, svelteKitTsconfigPathResolved }).then(() =>
-        runDocgen(config.logger)
-      );
+      void waitForSvelteKit({ svelteKitPathResolved, svelteKitTsconfigPathResolved })
+        .then(() => runDocgen(config.logger))
+        .catch((error) => config.logger.error(String(error)));
     },
 
     handleHotUpdate({ file, server }: { file: string; server: ViteDevServer }) {
-      const now = new Date().getTime();
       const fileName = basename(file);
+      const isPropsSource = isDocgenSourceFile(file);
+      const isSnippetPage = fileName === SNIPPET_PAGE_FILE;
 
-      if (!Object.values(HotUpdateFileName).includes(fileName as HotUpdateFileName)) {
+      if (!isPropsSource && !isSnippetPage) {
         return;
       }
 
-      if (lastUpdated.file === file && now - lastUpdated.at < 500) {
-        // throttle calls, in case of formatters etc.
-        return;
-      }
-
-      lastUpdated.file = file;
-      lastUpdated.at = now;
-
-      const isProps = fileName === HotUpdateFileName.Props;
       server.config.logger.info(DOCGEN_LOG_MESSAGE);
 
-      if (isProps) {
-        runDocGenProps().then(() => server.config.logger.clearScreen("info"));
+      if (isPropsSource) {
+        queueDocGenProps(file)
+          .then(() => server.config.logger.clearScreen("info"))
+          .catch((error) => server.config.logger.error(String(error)));
       } else {
-        updateSnippet(file, server);
+        updateSnippet(file, server).catch((error) => server.config.logger.error(String(error)));
       }
     },
   };

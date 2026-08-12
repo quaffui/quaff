@@ -25,6 +25,9 @@ jobs:
         with:
           bun-version: 1.4.2
 
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@1.95.0
+
       - name: Install Dependencies
         run: bun install --frozen-lockfile
 

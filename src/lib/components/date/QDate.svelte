@@ -176,16 +176,19 @@
     return focus.cancel;
   });
 
+  /** Opens the date picker when the field is interactive. */
   export function show() {
     if (!disabled && !readonly) {
       open = true;
     }
   }
 
+  /** Closes the date picker without committing its draft selection. */
   export function hide() {
     open = false;
   }
 
+  /** Toggles the date picker overlay. */
   export function toggle() {
     open ? hide() : show();
   }

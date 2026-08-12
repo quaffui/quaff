@@ -61,10 +61,12 @@
     return () => clearTimeout(timer);
   });
 
+  /** Shows the snackbar. */
   export function show() {
     value = true;
   }
 
+  /** Hides the snackbar. */
   export function hide(reason: QSnackbarDismissReason = "programmatic") {
     if (!value) {
       return;
@@ -75,6 +77,7 @@
     value = false;
   }
 
+  /** Toggles the snackbar visibility. */
   export function toggle() {
     if (value) {
       hide();

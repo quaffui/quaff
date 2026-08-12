@@ -2,6 +2,7 @@ import type { QComponentDocs } from "$docs";
 import {
   QSnackbarDocsProps,
   QSnackbarDocsSnippets,
+  QSnackbarDocsMethods,
   QSnackbarDocsDomAttributesConstraint,
   QSnackbarDocsGenerics,
   QSnackbarDocsTypeDependencies,
@@ -15,23 +16,7 @@ export const QSnackbarDocs: QComponentDocs = {
     domAttributesConstraint: QSnackbarDocsDomAttributesConstraint,
     props: QSnackbarDocsProps,
     snippets: QSnackbarDocsSnippets,
-    methods: [
-      {
-        name: "show",
-        description: "Shows the snackbar.",
-        type: "() => void",
-      },
-      {
-        name: "hide",
-        description: "Hides the snackbar.",
-        type: "(reason?: QSnackbarDismissReason) => void",
-      },
-      {
-        name: "toggle",
-        description: "Toggles the snackbar visibility.",
-        type: "() => void",
-      },
-    ],
+    methods: QSnackbarDocsMethods,
     events: [],
     typeDependencies: QSnackbarDocsTypeDependencies,
   },

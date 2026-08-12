@@ -68,7 +68,7 @@ export interface QAvatarProps extends Sizeable, HTMLAttributes<HTMLElement> {
    */
   alt?: string;
   /**
-   * Content inside the <video> element, such as caption tracks, additional sources or fallback text.
+   * Content inside the &lt;video&gt; element, such as caption tracks, additional sources or fallback text.
    * Use the paused binding for playback controls outside the video.
    */
   videoAccessibility?: Snippet;

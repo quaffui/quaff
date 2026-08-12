@@ -28,6 +28,7 @@
   // #endregion: --- Non-reactive variables
 
   // #region:    --- Methods
+  /** Toggles the switch value. */
   export function toggle() {
     value = !value;
     qSwitch.dispatchEvent(new InputEvent("input", { bubbles: true, composed: true }));

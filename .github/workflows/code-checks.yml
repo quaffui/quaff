@@ -15,8 +15,18 @@ jobs:
         with:
           bun-version: 1.4.2
 
+      - uses: dtolnay/rust-toolchain@1.95.0
+        with:
+          components: clippy, rustfmt
+
       - name: Install Dependencies
         run: bun install --frozen-lockfile
+
+      - name: Check Rust docgen
+        run: |
+          cargo fmt --manifest-path docgen/Cargo.toml --check
+          cargo clippy --manifest-path docgen/Cargo.toml --all-targets --locked -- -D warnings
+          cargo test --manifest-path docgen/Cargo.toml --all-targets --locked
 
       - name: Generate docs
         run: |

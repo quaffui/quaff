@@ -1,0 +1,61 @@
+import path from "path";
+import { fileURLToPath } from "url";
+import { describe, expect, it } from "vitest";
+import pathExists from "../helpers/pathExists.js";
+import updateAllProps, { resolveTargetDirs } from "./updateAllProps.js";
+
+const dirname = path.dirname(fileURLToPath(import.meta.url));
+const componentsDir = path.resolve(dirname, "../../src/lib/components");
+const sampleComponentDirs = ["button", "card", "tabs"];
+
+describe("resolveTargetDirs", () => {
+  it("returns undefined when no targets are supplied", () => {
+    expect(resolveTargetDirs(sampleComponentDirs)).toBeUndefined();
+    expect(resolveTargetDirs(sampleComponentDirs, [])).toBeUndefined();
+    expect(resolveTargetDirs(sampleComponentDirs, ["   "])).toBeUndefined();
+  });
+
+  it("resolves direct component directory names", () => {
+    expect(resolveTargetDirs(sampleComponentDirs, ["button"])).toEqual(new Set(["button"]));
+    expect(resolveTargetDirs(sampleComponentDirs, ["button", "tabs"])).toEqual(
+      new Set(["button", "tabs"])
+    );
+  });
+
+  it("resolves relative and absolute file paths within components", () => {
+    const relativeProps = "src/lib/components/button/props.ts";
+    const absoluteSvelte = path.resolve(componentsDir, "card/QCard.svelte");
+
+    expect(resolveTargetDirs(sampleComponentDirs, [relativeProps])).toEqual(new Set(["button"]));
+    expect(resolveTargetDirs(sampleComponentDirs, [absoluteSvelte])).toEqual(new Set(["card"]));
+    expect(resolveTargetDirs(sampleComponentDirs, [relativeProps, absoluteSvelte])).toEqual(
+      new Set(["button", "card"])
+    );
+  });
+
+  it("returns undefined when the root components directory is passed", () => {
+    expect(resolveTargetDirs(sampleComponentDirs, [componentsDir])).toBeUndefined();
+    expect(resolveTargetDirs(sampleComponentDirs, ["src/lib/components"])).toBeUndefined();
+  });
+
+  it("rejects targets outside the components directory", () => {
+    expect(() => resolveTargetDirs(sampleComponentDirs, ["src/lib/types/index.ts"])).toThrow(
+      "Target is not within the components directory"
+    );
+  });
+
+  it("rejects unknown component targets", () => {
+    expect(() =>
+      resolveTargetDirs(sampleComponentDirs, ["src/lib/components/unknown/props.ts"])
+    ).toThrow("Component directory not found for target");
+  });
+});
+
+describe("targeted updateAllProps", () => {
+  it("regenerates props documentation for a single component target", async () => {
+    await updateAllProps(["button"]);
+
+    const generatedFile = path.resolve(componentsDir, "button/docs.props.ts");
+    expect(await pathExists(generatedFile)).toBe(true);
+  });
+});

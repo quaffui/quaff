@@ -51,18 +51,21 @@
   // #endregion: --- Effects
 
   // #region:    --- Methods
+  /** Closes the dialog. */
   export function hide() {
     if (dialogEl?.open) {
       value = false;
     }
   }
 
+  /** Opens the dialog. */
   export function show() {
     if (!dialogEl?.open) {
       value = true;
     }
   }
 
+  /** Toggles the dialog open state. */
   export function toggle() {
     if (dialogEl?.open) {
       hide();

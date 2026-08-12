@@ -7,7 +7,7 @@ export type QBreadcrumbsGutterOptions = Exclude<QSize, "xs" | "xl">;
 
 export interface QBreadcrumbsProps extends WithActiveAttrs, HTMLAttributes<HTMLElement> {
   /**
-   * Color to use for the active breadcrumb element. See <link to colors docs> to see what colors can be used.
+   * Color to use for the active breadcrumb element.
    */
   activeColor?: string;
   /**

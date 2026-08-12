@@ -4,6 +4,7 @@ import {
   QTimeDocsGenerics,
   QTimeDocsProps,
   QTimeDocsSnippets,
+  QTimeDocsMethods,
   QTimeDocsTypeDependencies,
 } from "./docs.props";
 
@@ -16,23 +17,7 @@ export const QTimeDocs: QComponentDocs = {
     domAttributesConstraint: QTimeDocsDomAttributesConstraint,
     props: QTimeDocsProps,
     snippets: QTimeDocsSnippets,
-    methods: [
-      {
-        name: "show",
-        type: "() => void",
-        description: "Opens the time picker when the field is interactive.",
-      },
-      {
-        name: "hide",
-        type: "() => void",
-        description: "Closes the time picker without committing its draft selection.",
-      },
-      {
-        name: "toggle",
-        type: "() => void",
-        description: "Toggles the time picker overlay.",
-      },
-    ],
+    methods: QTimeDocsMethods,
     events: [],
     typeDependencies: QTimeDocsTypeDependencies,
   },

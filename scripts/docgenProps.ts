@@ -1,3 +1,5 @@
 import updateAllProps from "../docgen/props/updateAllProps.js";
 
-updateAllProps();
+const targets = process.argv.slice(2);
+
+await updateAllProps(targets.length ? targets : undefined);

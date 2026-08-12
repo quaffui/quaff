@@ -14,23 +14,20 @@
     Quaff,
   } from "$lib";
   import { capitalize, escape } from "$utils";
-  import type { QComponentDocs, QComponentEvent, QComponentMethod } from "$docs";
-  import {
-    type ParsedProperty,
-    ParsedPropertyFlags,
-    type ParsedType,
-  } from "$docgen/props/parsePropsInterface/defs";
+  import type { QApiEntry, QComponentDocs, QComponentEvent, QComponentMethod } from "$docs";
   import {
     getQuaffHighlighter,
     quaffShikiDarkTheme,
     quaffShikiLightTheme,
   } from "$internal/shikiTheme";
+  import { getOwnTypeDefinition } from "./QApi.utils";
   import { docsCtx } from "./QDocs.svelte";
 
   type TabableDocsKey = Exclude<
     keyof QComponentDocs["docs"],
     "generics" | "domAttributesConstraint" | "typeDependencies"
   >;
+  type TooltipTeardown = () => void | Promise<void>;
 
   // #region:    --- Context
   let { componentDocs: docOrDocs } = docsCtx.assertGet("QApi should be used inside QDocs");
@@ -40,7 +37,10 @@
   // #region:    --- Reactive variables
   let activeApiTabs: TabableDocsKey[] = $state(componentDocs.map(() => "props"));
   let tooltipGeneration = 0;
-  let tooltipTeardowns: (() => unknown)[] = [];
+  let apiElements: (HTMLElement | undefined)[] = $state([]);
+  // Lifecycle ownership only; making this reactive would retrigger the effect while it attaches.
+  // eslint-disable-next-line svelte/prefer-svelte-reactivity
+  const tooltipTeardowns = new Map<number, TooltipTeardown[]>();
   // #endregion: --- Reactive variables
 
   // #region:    --- Effects
@@ -50,84 +50,23 @@
 
     const generation = ++tooltipGeneration;
     cleanupTooltips();
-    attachTooltips(generation, Quaff.darkMode.isActive);
 
-    return cleanupTooltips;
+    void attachTooltips(generation, Quaff.darkMode.isActive).catch((error: unknown) => {
+      cleanupTooltips(generation);
+
+      if (generation === tooltipGeneration) {
+        console.error("Error while attaching QApi tooltips", error);
+      }
+    });
+
+    return () => {
+      ++tooltipGeneration;
+      cleanupTooltips(generation);
+    };
   });
   // #endregion: --- Effects
 
   // #region:    --- Functions
-  function hasFlag(prop: ParsedProperty, kind: Lowercase<keyof typeof ParsedPropertyFlags>) {
-    switch (kind) {
-      case "optional":
-        return prop.flags & ParsedPropertyFlags.OPTIONAL;
-      case "array":
-        return prop.flags & ParsedPropertyFlags.ARRAY;
-      case "bindable":
-        return prop.flags & ParsedPropertyFlags.BINDABLE;
-      case "snippet":
-        return prop.flags & ParsedPropertyFlags.SNIPPET;
-    }
-  }
-
-  function getFullTypeDefinition(typeName: string, docs: QComponentDocs["docs"]): string {
-    // This is not a reactive variable so we can safely ignore this svelte lint rule
-    // eslint-disable-next-line svelte/prefer-svelte-reactivity
-    const visited = new Set<string>();
-    const definitions: string[] = [];
-
-    function collect(name: string) {
-      if (visited.has(name)) {
-        return;
-      }
-      visited.add(name);
-
-      const dep = docs.typeDependencies?.[name];
-      if (!dep) {
-        return;
-      }
-
-      if (Array.isArray(dep)) {
-        for (const item of dep) {
-          if ("name" in item) {
-            collect(item.name);
-          }
-        }
-      } else {
-        if ("dependencies" in dep && dep.dependencies) {
-          for (const child of dep.dependencies) {
-            collect(child);
-          }
-        }
-        if ("definition" in dep) {
-          definitions.push(dep.definition);
-        }
-      }
-    }
-
-    collect(typeName);
-
-    const trimmedDefs = definitions.map((def) => def.trim());
-    const mainDef = trimmedDefs.pop();
-    if (!mainDef) {
-      return "";
-    }
-    if (trimmedDefs.length === 0) {
-      return mainDef;
-    }
-    return `${trimmedDefs.join("\n")}\n\n${mainDef}`;
-  }
-
-  function getType(type: string) {
-    for (const QDocument of componentDocs) {
-      if (QDocument.docs.typeDependencies && type in QDocument.docs.typeDependencies) {
-        return getFullTypeDefinition(type, QDocument.docs);
-      }
-    }
-
-    return null;
-  }
-
   function getTabableEntries(QDocument: QComponentDocs) {
     return Object.entries(QDocument.docs).filter(
       ([name]) =>
@@ -135,77 +74,33 @@
     ) as [TabableDocsKey, QComponentDocs["docs"][TabableDocsKey]][];
   }
 
-  function isProp(
-    doc: ParsedProperty | QComponentEvent | QComponentMethod,
-    index: number
-  ): doc is ParsedProperty {
-    return activeApiTabs[index] === "props";
+  function isGeneratedEntry(doc: QApiEntry | QComponentEvent | QComponentMethod): doc is QApiEntry {
+    return "header" in doc;
   }
 
-  function isEvent(
-    doc: ParsedProperty | QComponentEvent | QComponentMethod,
-    index: number
-  ): doc is QComponentEvent {
-    return activeApiTabs[index] === "events";
-  }
-
-  function isSnippet(
-    doc: ParsedProperty | QComponentEvent | QComponentMethod,
-    index: number
-  ): doc is ParsedProperty {
-    return activeApiTabs[index] === "snippets";
-  }
-
-  function inSpan(
-    spanContent: string,
-    { typeStyle = false, isClickable = false, typeName = "", typeSrc = "" } = {}
-  ) {
-    const classes = [
-      typeStyle && "prop-type",
-      isClickable && "clickable",
-      typeSrc && "link",
-    ].filter(Boolean);
-    const classString = classes.length ? ` class="${classes.join(" ")}"` : "";
-
-    const dataAttrs = isClickable
-      ? ` data-quaff data-type-name="${escape(typeName)}" tabindex="0"`
-      : "";
-
-    const linkAttrs = typeSrc ? ` href="${typeSrc}" target="_blank"` : "";
-
-    const tag = typeSrc ? "a" : "span";
-
-    return `<${tag}${classString}${dataAttrs}${linkAttrs}>${spanContent}</${tag}>`;
-  }
-
-  function renderType(t: ParsedType) {
-    const isNamed = "name" in t;
-    const text = isNamed ? t.name : t.definition;
-    const typeSrc = "typeSrc" in t && t.typeSrc ? t.typeSrc : "";
-
-    return inSpan(escape(text), {
-      typeStyle: true,
-      isClickable: isNamed,
-      typeSrc,
-      typeName: isNamed ? t.name : "",
-    });
+  function inTypeSpan(content: string) {
+    return `<span class="prop-type">${escape(content)}</span>`;
   }
 
   function prepareHeaderForGenericsAndConstraints(name: string, docs: QComponentDocs["docs"]) {
     let content = `<pre>`;
 
-    content += inSpan(`interface ${name}Props`, { typeStyle: true });
+    content += inTypeSpan(`interface ${name}Props`);
 
     if (docs.generics.length) {
-      content += inSpan("<", { typeStyle: true });
+      content += inTypeSpan("<");
 
       const generics = docs.generics.map((generic) => {
-        let genericContent = inSpan(generic.name, { typeStyle: true });
+        let genericContent = inTypeSpan(generic.name);
 
         if (generic.constraint) {
-          genericContent += inSpan(" extends ", { typeStyle: true }).concat(
-            renderType(generic.constraint)
-          );
+          genericContent += inTypeSpan(" extends ");
+          genericContent += generic.constraint;
+        }
+
+        if (generic.default) {
+          genericContent += inTypeSpan(" = ");
+          genericContent += generic.default;
         }
 
         return genericContent;
@@ -213,12 +108,12 @@
 
       content += generics.join(", ");
 
-      content += inSpan(">", { typeStyle: true });
+      content += inTypeSpan(">");
     }
 
     if (docs.domAttributesConstraint) {
-      content += inSpan(" extends ", { typeStyle: true });
-      content += renderType(docs.domAttributesConstraint);
+      content += inTypeSpan(" extends ");
+      content += docs.domAttributesConstraint;
     }
 
     content += `</pre>`;
@@ -226,112 +121,23 @@
     return content;
   }
 
-  function prepareHeaderForSnippet(snippet: ParsedProperty) {
-    let content = "<pre>";
+  function cleanupTooltips(generation?: number) {
+    const generations = generation === undefined ? [...tooltipTeardowns.keys()] : [generation];
 
-    if (hasFlag(snippet, "optional")) {
-      content += inSpan("?.", { typeStyle: true });
-    }
+    for (const generationToClean of generations) {
+      const teardowns = tooltipTeardowns.get(generationToClean) || [];
+      tooltipTeardowns.delete(generationToClean);
 
-    content += inSpan("(", { typeStyle: true });
-
-    if (Array.isArray(snippet.type)) {
-      content += snippet.type.map(renderType).join(" | ");
-    } else {
-      const { type } = snippet;
-      const text = "name" in type ? type.name : type.definition;
-      if (text !== "void") {
-        content += renderType(type);
+      for (const teardown of teardowns) {
+        try {
+          void Promise.resolve(teardown()).catch((error: unknown) => {
+            console.error("Error while detaching a QApi tooltip", error);
+          });
+        } catch (error) {
+          console.error("Error while detaching a QApi tooltip", error);
+        }
       }
     }
-
-    content += inSpan(")", { typeStyle: true });
-
-    content += "</pre>";
-
-    return content;
-  }
-
-  function getUtilityName(flags: number): string | null {
-    if (flags & ParsedPropertyFlags.OMIT) {
-      return "Omit";
-    }
-    if (flags & ParsedPropertyFlags.EXCLUDE) {
-      return "Exclude";
-    }
-    if (flags & ParsedPropertyFlags.PICK) {
-      return "Pick";
-    }
-    if (flags & ParsedPropertyFlags.EXTRACT) {
-      return "Extract";
-    }
-    return null;
-  }
-
-  function prepareHeaderForProp(prop: ParsedProperty) {
-    let content = "<pre>";
-
-    if (prop.flags & ParsedPropertyFlags.OPTIONAL) {
-      content += inSpan("?", { typeStyle: true });
-    }
-
-    content += inSpan(": ", { typeStyle: true });
-
-    const utilityName = getUtilityName(prop.flags);
-    const isUnion = Array.isArray(prop.type) && !utilityName;
-
-    if (hasFlag(prop, "array") && isUnion) {
-      content += inSpan("(", { typeStyle: true });
-    }
-
-    if (utilityName && Array.isArray(prop.type) && prop.type.length === 2) {
-      const [target, param] = prop.type;
-
-      content += inSpan(utilityName, { typeStyle: true });
-      content += inSpan("<", { typeStyle: true });
-      content += renderType(target);
-      content += inSpan(", ", { typeStyle: true });
-      content += renderType(param);
-      content += inSpan(">", { typeStyle: true });
-    } else if (Array.isArray(prop.type)) {
-      content += prop.type.map(renderType).join(" | ");
-    } else {
-      content += renderType(prop.type);
-    }
-
-    if (hasFlag(prop, "array")) {
-      if (isUnion) {
-        content += inSpan(")", { typeStyle: true });
-      }
-
-      content += inSpan("[]", { typeStyle: true });
-    }
-
-    if (prop.default) {
-      content += inSpan(` = `);
-
-      if (hasFlag(prop, "bindable")) {
-        content += inSpan("$bindable(");
-      }
-
-      content += inSpan(escape(prop.default), { typeStyle: true });
-    }
-
-    if (hasFlag(prop, "bindable")) {
-      content += inSpan(")");
-    }
-
-    content += "</pre>";
-
-    return content;
-  }
-
-  function cleanupTooltips() {
-    for (const teardown of tooltipTeardowns) {
-      teardown();
-    }
-
-    tooltipTeardowns = [];
   }
 
   async function attachTooltips(generation: number, darkMode: boolean) {
@@ -341,176 +147,197 @@
       return;
     }
 
-    document.querySelectorAll("a.prop-type.link").forEach((el) => {
-      const typeSrc = el.getAttribute("href");
+    const teardowns: TooltipTeardown[] = [];
+    tooltipTeardowns.set(generation, teardowns);
 
-      if (!(el instanceof HTMLElement) || !typeSrc || !el.parentElement) {
-        return;
-      }
+    for (const apiElement of apiElements) {
+      apiElement?.querySelectorAll<HTMLElement>("a.link[href]").forEach((el) => {
+        const typeSrc = el.getAttribute("href");
 
-      const tooltipContent = createRawSnippet(() => ({
-        render() {
-          return `<span class="flex items-center"></span>`;
-        },
-        setup(target) {
-          mount(QIcon, {
-            target,
-            props: {
-              name: "open_in_browser",
-            },
-          });
+        if (!typeSrc || !el.parentElement) {
+          return;
+        }
 
-          const textNode = document.createElement("span");
-          textNode.textContent = "Open in a new tab";
-          textNode.classList.add("q-ml-xs");
+        const tooltipContent = createRawSnippet(() => ({
+          render() {
+            return `<span class="flex items-center"></span>`;
+          },
+          setup(target) {
+            const icon = mount(QIcon, {
+              target,
+              props: {
+                name: "open_in_browser",
+              },
+            });
 
-          target.append(textNode);
-        },
-      }));
+            const textNode = document.createElement("span");
+            textNode.textContent = "Open in a new tab";
+            textNode.classList.add("q-ml-xs");
 
-      const tooltip = mount(QTooltip, {
-        target: el.parentElement,
-        props: {
-          target: el,
-          children: tooltipContent,
-        },
+            target.append(textNode);
+
+            return () => {
+              void unmount(icon).catch((error: unknown) => {
+                console.error("Error while detaching a QApi tooltip icon", error);
+              });
+              textNode.remove();
+            };
+          },
+        }));
+
+        const tooltip = mount(QTooltip, {
+          target: el.parentElement,
+          props: {
+            target: el,
+            children: tooltipContent,
+          },
+        });
+
+        teardowns.push(() => unmount(tooltip));
       });
+    }
 
-      tooltipTeardowns.push(() => unmount(tooltip));
-    });
+    if (generation !== tooltipGeneration) {
+      cleanupTooltips(generation);
+      return;
+    }
 
     const theme = darkMode ? quaffShikiDarkTheme : quaffShikiLightTheme;
     const highlighter = await getQuaffHighlighter("typescript", theme);
 
     if (generation !== tooltipGeneration) {
+      cleanupTooltips(generation);
       return;
     }
 
-    document.querySelectorAll("span.prop-type.clickable").forEach((el) => {
-      const typeName = el.getAttribute("data-type-name");
+    for (const [index, QDocument] of componentDocs.entries()) {
+      const apiElement = apiElements[index];
 
-      if (!typeName || !(el instanceof HTMLElement) || !el.parentElement) {
-        return;
-      }
+      apiElement?.querySelectorAll<HTMLElement>("[data-quaff][data-type-name]").forEach((el) => {
+        const typeName = el.getAttribute("data-type-name");
 
-      const type = getType(typeName) || "/* No definition found */";
+        if (!typeName || !el.parentElement) {
+          return;
+        }
 
-      const html = highlighter.codeToHtml(type, {
-        lang: "typescript",
-        theme,
-        transformers: [
-          {
-            pre(node) {
-              node.properties.style += ";padding: 1rem; text-align: left;";
+        const type =
+          getOwnTypeDefinition(QDocument.docs.typeDependencies, typeName) ??
+          "/* No definition found */";
+        const html = highlighter.codeToHtml(type, {
+          lang: "typescript",
+          theme,
+          transformers: [
+            {
+              pre(node) {
+                node.properties.style += ";padding: 1rem; text-align: left;";
+              },
             },
+          ],
+        });
+
+        if (generation !== tooltipGeneration) {
+          return;
+        }
+
+        const snip = createRawSnippet(() => ({
+          render: () => html,
+        }));
+        const tooltip = mount(QTooltip, {
+          target: el.parentElement,
+          props: {
+            target: el,
+            class: "q-pa-none transparent",
+            children: snip,
           },
-        ],
+        });
+
+        teardowns.push(() => unmount(tooltip));
       });
-
-      if (generation !== tooltipGeneration) {
-        return;
-      }
-
-      const snip = createRawSnippet(() => ({
-        render: () => html,
-      }));
-
-      const tooltip = mount(QTooltip, {
-        target: el.parentElement,
-        props: {
-          target: el,
-          class: "q-pa-none transparent",
-          style: "max-width: calc(100vw - 1rem)",
-          children: snip,
-        },
-      });
-
-      tooltipTeardowns.push(() => unmount(tooltip));
-    });
+    }
   }
   // #endregion: --- Functions
 </script>
 
-{#each componentDocs as QDocument, index (index)}
-  <QCard class="q-px-none q-pb-none q-mt-lg">
-    <div class="flex justify-between items-center q-px-md">
-      <h5>
-        <QIcon name="info" />
-        <span class="q-ml-md">{QDocument.name} API</span>
-      </h5>
-      <QTabs bind:value={activeApiTabs[index]} noSeparator class="q-api__tabs">
-        {#each getTabableEntries(QDocument) as [tabName, tabDoc] (tabName)}
-          {#if tabDoc.length !== 0}
-            <QTab name={tabName} style="min-width: 100px">
-              <h6 style="margin: 0">{capitalize(tabName)}</h6>
-            </QTab>
+{#each componentDocs as QDocument, index (QDocument)}
+  <div bind:this={apiElements[index]} class="q-api">
+    <QCard class="q-px-none q-pb-none q-mt-lg">
+      <div class="flex justify-between items-center q-px-md">
+        <h5>
+          <QIcon name="info" />
+          <span class="q-ml-md">{QDocument.name} API</span>
+        </h5>
+        <QTabs bind:value={activeApiTabs[index]} noSeparator class="q-api__tabs">
+          {#each getTabableEntries(QDocument) as [tabName, tabDoc] (tabName)}
+            {#if tabDoc.length !== 0}
+              <QTab name={tabName} style="min-width: 100px">
+                <h6 style="margin: 0">{capitalize(tabName)}</h6>
+              </QTab>
+            {/if}
+          {/each}
+        </QTabs>
+      </div>
+      <QCardSection class="q-px-md q-pb-md" style="max-height: 416px; overflow-y: auto">
+        <QList separator bordered>
+          {@const docs = QDocument.docs}
+          {#if activeApiTabs[index] === "props" && (docs.generics.length || docs.domAttributesConstraint)}
+            <QItem>
+              <QItemSection>
+                {#snippet headline()}
+                  {@html prepareHeaderForGenericsAndConstraints(QDocument.name, docs)}
+                {/snippet}
+              </QItemSection>
+            </QItem>
           {/if}
-        {/each}
-      </QTabs>
-    </div>
-    <QCardSection class="q-px-md q-pb-md" style="max-height: 416px; overflow-y: auto">
-      <QList separator bordered preserveTabOrder>
-        {@const docs = QDocument.docs}
-        {#if activeApiTabs[index] === "props" && (docs.generics.length || docs.domAttributesConstraint)}
-          <QItem>
-            <QItemSection>
-              {#snippet headline()}
-                {@html prepareHeaderForGenericsAndConstraints(QDocument.name, docs)}
-              {/snippet}
-            </QItemSection>
-          </QItem>
-        {/if}
-        {#each docs[activeApiTabs[index]] as doc (doc)}
-          <QItem>
-            <QItemSection type="content">
-              {#snippet headline()}
-                <div class="q-api__doc-heading q-my-sm">
-                  <span class="q-docs-code q-mr-xs">
-                    <b>{doc.name}</b>
-                  </span>
-                  {#if isProp(doc, index)}
-                    {@html prepareHeaderForProp(doc)}
-                  {:else if isSnippet(doc, index)}
-                    {@html prepareHeaderForSnippet(doc)}
-                  {:else if isEvent(doc, index)}
-                    <span class="prop-type">
-                      : {doc.type}
-                    </span>
+          {#each docs[activeApiTabs[index]] as doc (doc)}
+            <QItem>
+              <QItemSection type="content">
+                {#snippet headline()}
+                  {#if isGeneratedEntry(doc)}
+                    {@html doc.header}
+                  {:else}
+                    <div class="q-api__doc-heading q-my-sm">
+                      <span class="q-docs-code q-mr-xs">
+                        <b>{doc.name}</b>
+                      </span>
+                      <span class="prop-type">
+                        {activeApiTabs[index] === "events" ? `: ${doc.type}` : doc.type}
+                      </span>
+                    </div>
                   {/if}
-                </div>
-              {/snippet}
-              {#snippet line1()}
-                <div class="q-mt-sm prop-description" style="white-space: normal;">
-                  {@html doc.description}
-                </div>
-              {/snippet}
-            </QItemSection>
-          </QItem>
-        {/each}
-      </QList>
-    </QCardSection>
-  </QCard>
+                {/snippet}
+                {#snippet line1()}
+                  <div class="q-mt-sm prop-description" style="white-space: normal;">
+                    {@html doc.description}
+                  </div>
+                {/snippet}
+              </QItemSection>
+            </QItem>
+          {/each}
+        </QList>
+      </QCardSection>
+    </QCard>
+  </div>
 {/each}
 
 <style lang="scss">
-  :global(.clickable) {
+  :global(.q-api .clickable) {
     cursor: pointer;
     &:hover {
       color: var(--primary);
     }
   }
 
-  :global(.link) {
+  :global(.q-api .link) {
     display: unset;
   }
 
-  :global(.prop-type) {
+  :global(.q-api .prop-type) {
     opacity: 0.75;
     width: 100%;
     letter-spacing: 0.5px;
   }
 
-  :global(.prop-type.clickable) {
+  :global(.q-api .prop-type.clickable) {
     cursor: pointer;
 
     &:hover {
@@ -518,7 +345,7 @@
     }
   }
 
-  .q-api__doc-heading {
+  :global(.q-api .q-api__doc-heading) {
     display: flex;
     align-items: center;
     max-width: 100%;
@@ -527,21 +354,21 @@
     border-radius: 0;
   }
 
-  .q-api__doc-heading :global(pre) {
+  :global(.q-api .q-api__doc-heading pre) {
     margin: 0;
   }
 
-  :global(.q-drawer.api-drawer pre) {
+  :global(.q-drawer.api-drawer .q-api pre) {
     margin: 0;
     border-radius: inherit;
     white-space: pre-wrap;
   }
 
-  :global(.prop-description > a:hover) {
+  :global(.q-api .prop-description > a:hover) {
     color: var(--primary);
   }
 
-  :global(.q-api__tabs .q-tab) {
+  :global(.q-api .q-api__tabs .q-tab) {
     background-color: transparent;
   }
 </style>

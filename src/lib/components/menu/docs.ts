@@ -2,6 +2,7 @@ import type { QComponentDocs } from "$docs";
 import {
   QMenuDocsProps,
   QMenuDocsSnippets,
+  QMenuDocsMethods,
   QMenuDocsDomAttributesConstraint,
   QMenuDocsGenerics,
   QMenuDocsTypeDependencies,
@@ -16,23 +17,7 @@ export const QMenuDocs: QComponentDocs = {
     domAttributesConstraint: QMenuDocsDomAttributesConstraint,
     props: QMenuDocsProps,
     snippets: QMenuDocsSnippets,
-    methods: [
-      {
-        name: "show",
-        type: "() => void",
-        description: "Opens the menu.",
-      },
-      {
-        name: "hide",
-        type: "() => void",
-        description: "Closes the menu.",
-      },
-      {
-        name: "toggle",
-        type: "() => void",
-        description: "Toggles the menu open state.",
-      },
-    ],
+    methods: QMenuDocsMethods,
     events: [],
     typeDependencies: QMenuDocsTypeDependencies,
   },
