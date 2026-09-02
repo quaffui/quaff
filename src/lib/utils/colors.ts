@@ -1,13 +1,16 @@
 import {
+  Blend,
+  DynamicColor,
   DynamicScheme,
   Hct,
   MaterialDynamicColors,
+  TonalPalette,
   Variant,
   argbFromHex,
   hexFromArgb,
 } from "@quaffui/material-color-utilities";
 import { isNumeric } from "./number";
-import { convertCase } from "./string";
+import { capitalize, convertCase } from "./string";
 
 export type Mode = "light" | "dark";
 export type HexValue = `#${string}`;
@@ -68,7 +71,58 @@ function getColors(opts: ConstructorParameters<typeof DynamicScheme>[0]) {
     results[colorName] = hex;
   }
 
-  return results;
+  // Success and Warning colors
+  const successSource = "#088d01";
+  const warningSource = "#ffb71c";
+
+  const success = generateNewColor({ scheme, name: "success", sourceColor: successSource });
+  const warning = generateNewColor({ scheme, name: "warning", sourceColor: warningSource });
+
+  return { ...results, ...success, ...warning };
+}
+
+type newColorKeyPrefix<T extends string> =
+  | `${T}${"Container" | ""}`
+  | `on${Capitalize<T>}${"Container" | ""}`;
+type NewColorKey<
+  T extends string,
+  Dark extends boolean,
+> = `${newColorKeyPrefix<T>}${Dark extends true ? "Dark" : "Light"}`;
+
+function generateNewColor<T extends string, D extends boolean>({
+  name,
+  sourceColor,
+  scheme,
+}: {
+  name: T;
+  sourceColor: HexValue;
+  scheme: DynamicScheme & { isDark: D };
+}): Record<NewColorKey<T, D>, HexValue> {
+  const blended = Blend.harmonize(argbFromHex(sourceColor), scheme.sourceColorArgb);
+  const palette = () => TonalPalette.fromInt(blended);
+
+  const res = {} as Record<NewColorKey<T, D>, HexValue>;
+
+  for (const func of [
+    (n: string) => n,
+    (n: string) => `on${capitalize(n)}`,
+    (n: string) => `${n}Container`,
+    (n: string) => `on${capitalize(n)}Container`,
+  ]) {
+    const errorClone = (
+      scheme.colors[func("error") as keyof typeof scheme.colors] as unknown as () => DynamicColor
+    )().clone();
+    const color = DynamicColor.fromPalette({
+      ...errorClone,
+      name: func(name),
+      palette,
+      toneDeltaPair: undefined,
+    });
+    const colorName = func(name) as NewColorKey<T, D>;
+    res[colorName] = hexFromArgb(color.getArgb(scheme)) as HexValue;
+  }
+
+  return res;
 }
 
 class QColors {
