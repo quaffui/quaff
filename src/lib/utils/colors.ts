@@ -81,13 +81,15 @@ function getColors(opts: ConstructorParameters<typeof DynamicScheme>[0]) {
   return { ...results, ...success, ...warning };
 }
 
-type newColorKeyPrefix<T extends string> =
-  | `${T}${"Container" | ""}`
-  | `on${Capitalize<T>}${"Container" | ""}`;
+type NewColorKeyPrefix<T extends string> =
+  | T
+  | `${T}Container`
+  | `on${Capitalize<T>}`
+  | `on${Capitalize<T>}Container`;
 type NewColorKey<
   T extends string,
   Dark extends boolean,
-> = `${newColorKeyPrefix<T>}${Dark extends true ? "Dark" : "Light"}`;
+> = `${NewColorKeyPrefix<T>}${Dark extends true ? "Dark" : "Light"}`;
 
 function generateNewColor<T extends string, D extends boolean>({
   name,
@@ -103,23 +105,21 @@ function generateNewColor<T extends string, D extends boolean>({
 
   const res = {} as Record<NewColorKey<T, D>, HexValue>;
 
-  for (const func of [
-    (n: string) => n,
-    (n: string) => `on${capitalize(n)}`,
-    (n: string) => `${n}Container`,
-    (n: string) => `on${capitalize(n)}Container`,
-  ]) {
-    const errorClone = (
-      scheme.colors[func("error") as keyof typeof scheme.colors] as unknown as () => DynamicColor
-    )().clone();
+  for (const errorColor of ["error", "onError", "errorContainer", "onErrorContainer"] as const) {
+    const errorClone = scheme.colors[errorColor]().clone();
+
+    const customColorName = errorColor
+      .replace("Error", capitalize(name))
+      .replace("error", name) as NewColorKey<T, D>;
+
     const color = DynamicColor.fromPalette({
       ...errorClone,
-      name: func(name),
+      name: customColorName,
       palette,
       toneDeltaPair: undefined,
     });
-    const colorName = func(name) as NewColorKey<T, D>;
-    res[colorName] = hexFromArgb(color.getArgb(scheme)) as HexValue;
+
+    res[customColorName] = hexFromArgb(color.getArgb(scheme)) as HexValue;
   }
 
   return res;
