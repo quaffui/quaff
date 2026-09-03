@@ -143,7 +143,8 @@
         {/snippet}
 
         <div class="flex q-gap-lg items-center q-ma-sm">
-          <QChip class="bg-green" label="Green Chip" />
+          <QChip class="success" label="Success Chip" />
+          <QChip class="warning" label="Warning Chip" />
           <QChip class="error" label="Error Chip" />
           <QChip class="primary" label="Primary Chip" />
           <QChip class="primary-container" label="Primary Container" />

@@ -56,4 +56,12 @@
   --shadow: light-dark(#000000, #000000);
   --surface-tint: light-dark(#004deb, #b7c4ff);
   --surface-variant: light-dark(#e0e1f3, #444654);
+  --success: light-dark(#006d3d, #6edc97);
+  --on-success: light-dark(#ffffff, #00391d);
+  --success-container: light-dark(#8af9b1, #00522c);
+  --on-success-container: light-dark(#00522c, #8af9b1);
+  --warning: light-dark(#895107, #ffb86e);
+  --on-warning: light-dark(#ffffff, #492900);
+  --warning-container: light-dark(#ffdcbd, #693c00);
+  --on-warning-container: light-dark(#693c00, #ffdcbd);
 }
