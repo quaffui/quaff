@@ -31,7 +31,20 @@ type NamesToExclude =
   | "neutralVariantPaletteKeyColor"
   | "errorPaletteKeyColor";
 
-export type QuaffColorName = Exclude<keyof MaterialDynamicColors, NamesToExclude>;
+type ColorPalette<T extends string> =
+  | T
+  | `${T}Container`
+  | `on${Capitalize<T>}`
+  | `on${Capitalize<T>}Container`;
+type ColorPaletteWithTheme<
+  T extends string,
+  Dark extends boolean,
+> = `${ColorPalette<T>}${Dark extends true ? "Dark" : "Light"}`;
+
+export type QuaffColorName =
+  | Exclude<keyof MaterialDynamicColors, NamesToExclude>
+  | ColorPalette<"success">
+  | ColorPalette<"warning">;
 export type QuaffColors = Record<QuaffColorName, HexValue>;
 
 export function generateColors({
@@ -81,16 +94,6 @@ function getColors(opts: ConstructorParameters<typeof DynamicScheme>[0]) {
   return { ...results, ...success, ...warning };
 }
 
-type NewColorKeyPrefix<T extends string> =
-  | T
-  | `${T}Container`
-  | `on${Capitalize<T>}`
-  | `on${Capitalize<T>}Container`;
-type NewColorKey<
-  T extends string,
-  Dark extends boolean,
-> = `${NewColorKeyPrefix<T>}${Dark extends true ? "Dark" : "Light"}`;
-
 function generateNewColor<T extends string, D extends boolean>({
   name,
   sourceColor,
@@ -99,18 +102,18 @@ function generateNewColor<T extends string, D extends boolean>({
   name: T;
   sourceColor: HexValue;
   scheme: DynamicScheme & { isDark: D };
-}): Record<NewColorKey<T, D>, HexValue> {
+}): Record<ColorPaletteWithTheme<T, D>, HexValue> {
   const blended = Blend.harmonize(argbFromHex(sourceColor), scheme.sourceColorArgb);
   const palette = () => TonalPalette.fromInt(blended);
 
-  const res = {} as Record<NewColorKey<T, D>, HexValue>;
+  const res = {} as Record<ColorPaletteWithTheme<T, D>, HexValue>;
 
   for (const errorColor of ["error", "onError", "errorContainer", "onErrorContainer"] as const) {
     const errorClone = scheme.colors[errorColor]().clone();
 
     const customColorName = errorColor
       .replace("Error", capitalize(name))
-      .replace("error", name) as NewColorKey<T, D>;
+      .replace("error", name) as ColorPaletteWithTheme<T, D>;
 
     const color = DynamicColor.fromPalette({
       ...errorClone,
