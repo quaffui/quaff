@@ -12,7 +12,7 @@
     ...props
   }: QIconBtnProps = $props();
 
-  const isExpressive = $derived(expressive || quaffConfig.expressive);
+  const isExpressive = $derived(expressive ?? quaffConfig.expressive);
   const resolvedIcon = $derived(icon ?? children);
 
   Q.classes("q-icon-btn", {

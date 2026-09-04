@@ -58,7 +58,7 @@
 
   // #region:    --- Derived values
   const id = $props.id();
-  const isExpressive = $derived(expressive || quaffConfig.expressive);
+  const isExpressive = $derived(expressive ?? quaffConfig.expressive);
   const qSize = $derived(
     useSize(size ?? (isExpressive ? "0.625rem" : "0.25rem"), "q-linear-progress")
   );
