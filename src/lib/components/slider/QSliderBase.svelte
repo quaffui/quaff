@@ -93,7 +93,7 @@
 
   const effectiveMax = $derived(max > min ? max : min + 1);
   const effectiveStep = $derived(Math.max(0, step));
-  const isExpressive = $derived(expressive || quaffConfig.expressive);
+  const isExpressive = $derived(expressive ?? quaffConfig.expressive);
   const resolvedSize = $derived(isExpressive ? size : "xs");
   const isVertical = $derived(isExpressive && vertical);
   const hasIcon = $derived(

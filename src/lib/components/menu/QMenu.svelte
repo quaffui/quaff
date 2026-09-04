@@ -40,7 +40,7 @@
   // #region:    --- Derived values
   const [anchorX, anchorY] = $derived(parseAnchor(anchor));
   const [selfX, selfY] = $derived(parseAnchor(self));
-  const isExpressive = $derived(expressive || quaffConfig.expressive);
+  const isExpressive = $derived(expressive ?? quaffConfig.expressive);
   const portalTarget = $derived(browser ? getOverlayPortalTarget(anchorEl) : undefined);
   // #endregion: --- Derived values
 

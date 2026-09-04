@@ -44,7 +44,7 @@
 
   const routerInfo = $derived(getRouterInfo({ href, to, replace }));
   const computedTag = $derived(routerInfo.hasLink ? "a" : tag || "button");
-  const isExpressive = $derived(expressive || quaffConfig.expressive);
+  const isExpressive = $derived(expressive ?? quaffConfig.expressive);
   const resolvedSize = $derived(size ?? (isExpressive ? "sm" : "md"));
   const qSize = $derived(useSize(resolvedSize, "q-btn"));
   const src = $derived(typeof icon === "string" ? extractImgSrc(icon) : undefined);

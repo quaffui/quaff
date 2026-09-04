@@ -45,7 +45,7 @@
   // #endregion: --- Props
 
   // #region:    --- Derived values
-  const isExpressive = $derived(expressive || quaffConfig.expressive);
+  const isExpressive = $derived(expressive ?? quaffConfig.expressive);
   const role = $derived(props.role ?? (selection ? "listbox" : undefined));
   // #endregion: --- Derived values
 

@@ -31,7 +31,7 @@
 
   // #region:    --- Derived values
   const id = $props.id();
-  const isExpressive = $derived(expressive || quaffConfig.expressive);
+  const isExpressive = $derived(expressive ?? quaffConfig.expressive);
   const resolvedSize = $derived(size ?? (isExpressive ? "3rem" : "2.5rem"));
   const resolvedThickness = $derived(thickness ?? (isExpressive ? 1 / 6 : 0.2));
   const resolvedTrackColor = $derived(
