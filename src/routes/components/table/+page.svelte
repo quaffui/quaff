@@ -239,11 +239,24 @@
 
       <QDocsSection title="Custom Cell Rendering">
         {#snippet sectionDescription()}
-          QTable allows complete customization of cell rendering through the <code>bodyCell</code> snippet.
-          This enables you to include components, formatting, and interactive elements within cells.
+          QTable allows complete customization of cell rendering through the <code>bodyCell</code>
+          snippet. This enables you to include components, formatting, and interactive elements within
+          cells. <br />
+          For each column you can define a specific snippet using the
+          <code>bodyCell{"{ColumnName}"}</code>
+          syntax. In this example we define the
+          <code>bodyCellAuthor</code>
+          snippet for the
+          <code>author</code> column.
         {/snippet}
 
         <QTable rows={rows.slice(0, 5)} columns={columnsWithActions} class="q-mt-md">
+          {#snippet bodyCellAuthor({ row, style })}
+            <td {style}>
+              <span class="text-primary">{row.author}</span>
+            </td>
+          {/snippet}
+
           {#snippet bodyCell({ row, column, style })}
             <td {style}>
               {#if column.field === "id"}
@@ -253,8 +266,6 @@
                 </div>
               {:else if column.field === "title"}
                 <span class="text-weight-bold">{row.title}</span>
-              {:else if column.field === "author"}
-                <span class="text-primary">{row.author}</span>
               {:else if column.field === "actions"}
                 <div class="flex justify-end q-gap-sm">
                   <QBtn icon="edit" size="sm" flat />

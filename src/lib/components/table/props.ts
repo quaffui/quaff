@@ -46,4 +46,8 @@ export interface QTableProps extends Borderable, HTMLAttributes<HTMLDivElement> 
    * Optionally pass a snippet to render each table cell.
    */
   bodyCell?: Snippet<[{ column: QTableColumn; row: QTableRow; style: string }]>;
+
+  [key: `bodyCell${string}`]:
+    | Snippet<[{ column: QTableColumn; row: QTableRow; style: string }]>
+    | undefined;
 }
