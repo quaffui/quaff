@@ -2,6 +2,7 @@
   import QBtn from "$components/button/QBtn.svelte";
   import QIcon from "$components/icon/QIcon.svelte";
   import QSelect from "$components/select/QSelect.svelte";
+  import { capitalize } from "$utils";
   import type { QTableProps, QTableColumn, QTableRow, QTableSort } from "./props";
 
   // #region:    --- Props
@@ -163,12 +164,15 @@
       {#each rowsPaginated as row (row)}
         <tr>
           {#each columns as column (column)}
-            {#if bodyCell}
+            {@const bodyCellColumn = props[`bodyCell${capitalize(column.name)}`]}
+            {#if typeof bodyCellColumn === "function"}
+              {@render bodyCellColumn({ column, row, style: getCellStyle(column) })}
+            {:else if bodyCell}
               {@render bodyCell({ column, row, style: getCellStyle(column) })}
             {:else}
-              <td class="q-table__body-cell" style={getCellStyle(column)}
-                >{getCellValue(column, row)}</td
-              >
+              <td class="q-table__body-cell" style={getCellStyle(column)}>
+                {getCellValue(column, row)}
+              </td>
             {/if}
           {/each}
         </tr>
