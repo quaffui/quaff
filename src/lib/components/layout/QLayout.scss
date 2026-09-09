@@ -51,7 +51,7 @@
   $y-pos: "top", "bottom";
 
   @each $side in $x-pos {
-    &.q-drawer--#{$side} {
+    &.q-drawer--#{$side}:not(.q-drawer--overlay) {
       #{$side}: var(--#{$side}-railbar-width, 0);
     }
   }
@@ -65,7 +65,8 @@
 
 // Offset for drawer with railbar
 @each $side in ("left", "right") {
-  .q-railbar.q-railbar--#{$side}:not([style="display: none"]) ~ .q-drawer.q-drawer--#{$side} {
+  .q-railbar.q-railbar--#{$side}:not([style="display: none"])
+    ~ .q-drawer:not(.q-drawer--overlay).q-drawer--#{$side} {
     #{$side}: var(--#{$side}-railbar-width);
   }
 

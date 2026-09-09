@@ -284,7 +284,7 @@
       <div class="row q-gap-lg q-pa-lg items-center">
         <QLinearProgress
           indeterminate
-          class="col-7"
+          class="col-xs-6 col-sm-7"
           trackColor="secondary"
           color="on-secondary"
           style="width: 100%"
@@ -292,7 +292,7 @@
 
         <div class="col-1"></div>
 
-        <QChip label="Hey!" icon="waving_hand" class="col-3 surface" />
+        <QChip label="Hey!" icon="waving_hand" class="col-xs-4 col-sm-3 surface" />
 
         <div class="col-1"></div>
       </div>
@@ -436,7 +436,7 @@
 {#snippet drawer()}
   <QLayout view="lhh LpR fFf" style="height: 50vh;">
     {#snippet drawerLeft()}
-      <QDrawer value={true} persistent style="width: 100%;">
+      <QDrawer value={true} persistent behavior="desktop" style="width: 100%;">
         <QList activeClass="text-primary">
           <QItem class="headline-small">Mail</QItem>
           <QItem active clickable class="q-link">
@@ -480,7 +480,7 @@
 {/snippet}
 
 {#snippet footer()}
-  <QLayout style="width: 50vw; position: absolute; left: 1rem; bottom: 1rem;">
+  <QLayout style="width: 150%; position: absolute; left: 1rem; bottom: 1rem;">
     {#snippet footer()}
       <QFooter class="flex">
         <div class="flex column label-large">
@@ -499,7 +499,7 @@
 {/snippet}
 
 {#snippet header()}
-  <QHeader style="position: absolute; left: 1rem; top: 1rem; width: 50vw;">
+  <QHeader style="position: absolute; left: 1rem; top: 1rem; width: 150%;">
     <QBtn icon="menu" flat aria-label="Menu" />
     <QHeaderTitle shrink>Quaff</QHeaderTitle>
   </QHeader>
@@ -507,7 +507,7 @@
 
 {#snippet icons()}
   <div class="flex flex-center q-gap-sm">
-    <QCard class="flex q-gap-lg q-px-lg" fill="tertiary" style="border-radius: 50rem;">
+    <QCard class="flex q-gap-lg q-px-lg" style="border-radius: 50rem;">
       <QIcon name="search" />
       <QIcon name="delete" />
       <QIcon name="archive" />
@@ -541,7 +541,7 @@
     {/snippet}
 
     {#snippet drawerRight()}
-      <QDrawer value={true} persistent width={64} side="right" bordered />
+      <QDrawer value={true} persistent width={64} side="right" behavior="desktop" bordered />
     {/snippet}
 
     {#snippet footer()}
@@ -679,7 +679,7 @@
     {/snippet}
 
     {#snippet railbarLeft()}
-      <QRailbar bordered width={72} activeColor="primary-container" class="q-py-xs">
+      <QRailbar bordered width={72} class="q-py-xs">
         <QNavItem icon="home" label="Home" active />
         <QNavItem icon="person" label="Profile" />
         <QNavItem icon="settings" label="Settings" />
