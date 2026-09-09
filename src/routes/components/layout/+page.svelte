@@ -16,6 +16,7 @@
     QRadio,
     QRailbar,
     QSwitch,
+    Quaff,
   } from "$lib";
   import { QDocs, QDocsSection } from "$docs";
   import type { QLayoutProps } from "$components/layout/props";
@@ -81,6 +82,7 @@
           bind:this={displayLeftDrawerElement}
           width={150}
           persistent
+          behavior="desktop"
         >
           <QList dense>
             <QItem to="#">
@@ -267,7 +269,7 @@
   <QDrawer
     bordered
     width={160}
-    persistent
+    persistent={Quaff.breakpoints.currentWidth >= 1023}
     bind:value={leftDrawerShown}
     bind:this={leftDrawerElement}
   >
@@ -296,7 +298,7 @@
   <QDrawer
     side="right"
     bordered
-    persistent
+    persistent={Quaff.breakpoints.currentWidth >= 1023}
     width={160}
     bind:value={rightDrawerShown}
     bind:this={rightDrawerElement}

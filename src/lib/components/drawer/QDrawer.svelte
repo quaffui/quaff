@@ -69,11 +69,11 @@
 
   const offsetTop = $derived.by(() => {
     const charPos = side === "left" ? 0 : 2;
-    return drawerContext?.view.charAt(charPos) === "h";
+    return drawerContext?.view.charAt(charPos) === "h" && !isModal;
   });
   const offsetBottom = $derived.by(() => {
     const charPos = side === "left" ? 8 : 10;
-    return drawerContext?.view.charAt(charPos) === "f";
+    return drawerContext?.view.charAt(charPos) === "f" && !isModal;
   });
 
   const widthStyle = $derived(!drawerContext ? useSize(width).style : null);
