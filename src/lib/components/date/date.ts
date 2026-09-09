@@ -186,7 +186,7 @@ function createDateValuePattern(mask: string) {
   const order: Array<keyof QCalendarDate> = [];
   let expression = "^";
 
-  for (let index = 0; index < mask.length; ) {
+  for (let index = 0; index < mask.length;) {
     const token = dateMaskTokens.find((candidate) => mask.startsWith(candidate, index));
 
     if (token) {

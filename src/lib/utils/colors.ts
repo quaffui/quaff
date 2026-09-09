@@ -32,10 +32,7 @@ type NamesToExclude =
   | "errorPaletteKeyColor";
 
 type ColorPalette<T extends string> =
-  | T
-  | `${T}Container`
-  | `on${Capitalize<T>}`
-  | `on${Capitalize<T>}Container`;
+  T | `${T}Container` | `on${Capitalize<T>}` | `on${Capitalize<T>}Container`;
 type ColorPaletteWithTheme<
   T extends string,
   Dark extends boolean,

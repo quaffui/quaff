@@ -4,12 +4,7 @@ import type { HTMLAttributes, MouseEventHandler } from "svelte/elements";
 
 export type QChipKindOptions = "assist" | "filter" | "input" | "suggestion";
 export type QChipFillOptions =
-  | "primary"
-  | "secondary"
-  | "tertiary"
-  | "neutral"
-  | "neutral-variant"
-  | "error";
+  "primary" | "secondary" | "tertiary" | "neutral" | "neutral-variant" | "error";
 
 export interface QChipProps
   extends QSizeable<"none" | "xs" | "xl">, Labelable, Disableable, HTMLAttributes<HTMLDivElement> {

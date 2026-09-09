@@ -71,6 +71,7 @@ export default [
             camelCase: true,
             pascalCase: true,
           },
+          checkDirectories: false,
           ignore: ["\\.shim\\.d\\.ts$"],
         },
       ],

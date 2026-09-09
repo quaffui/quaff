@@ -4,14 +4,7 @@ import { OptionalModel } from "$utils";
 import type { HTMLAttributes } from "svelte/elements";
 
 export type QTooltipPosition =
-  | "top-left"
-  | "top"
-  | "top-right"
-  | "right"
-  | "bottom-right"
-  | "bottom"
-  | "bottom-left"
-  | "left";
+  "top-left" | "top" | "top-right" | "right" | "bottom-right" | "bottom" | "bottom-left" | "left";
 
 export type QTooltipOffset = { x?: number; y?: number };
 
