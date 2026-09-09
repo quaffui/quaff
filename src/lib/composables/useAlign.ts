@@ -1,11 +1,5 @@
 export type JustifyOptions =
-  | "left"
-  | "center"
-  | "right"
-  | "between"
-  | "around"
-  | "evenly"
-  | "stretch";
+  "left" | "center" | "right" | "between" | "around" | "evenly" | "stretch";
 
 export type AlignOptions = "top" | "middle" | "bottom";
 
