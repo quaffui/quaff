@@ -11,8 +11,15 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      id-token: write
     steps:
       - uses: actions/checkout@v7.0.1
+
+      - uses: actions/setup-node@v7.0.0
+        with:
+          node-version: "24"
+          registry-url: "https://registry.npmjs.org/"
+          package-manager-cache: false
 
       - uses: oven-sh/setup-bun@v2.2.0
         with:
@@ -29,9 +36,7 @@ jobs:
         run: bun run build
 
       - name: Publish to npm
-        run: |
-          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > .npmrc
-          bun publish --access public --ignore-scripts
+        run: npm publish --access public --ignore-scripts --tag latest
 
       - name: Create GitHub release
         env:

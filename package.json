@@ -1,6 +1,10 @@
 {
   "name": "@quaffui/quaff",
   "version": "0.0.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/quaffui/quaff.git"
+  },
   "scripts": {
     "dev": "tsc -p plugins/tsconfig.json && vite dev",
     "open": "tsc -p plugins/tsconfig.json && vite dev --open",
