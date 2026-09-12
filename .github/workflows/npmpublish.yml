@@ -53,6 +53,8 @@ jobs:
     uses: quaffui/quaff-shared/.github/workflows/generated-project-e2e.yml@main
     with:
       package-under-test: published
+      published-package: "@quaffui/quaff"
+      published-version: ${{ inputs.version }}
 
   deploy-docs:
     needs: generated-project-e2e
