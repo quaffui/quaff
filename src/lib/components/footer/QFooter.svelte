@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte";
+  import { on } from "svelte/events";
   import { useRevealScrollObserver } from "$composables";
   import { footerCtx } from "../layout/QLayout.svelte";
   import type { QFooterProps } from "./props";
@@ -22,7 +23,7 @@
 
   // #region:    --- Reactive variables
   let footerEl = $state<HTMLElement>();
-  let contentScrollHeight = $state(0);
+  let scrollRange = $state(0);
 
   const footerContext = footerCtx.assertGet("QFooter should be used inside QLayout");
   // #endregion: --- Reactive variables
@@ -31,70 +32,77 @@
   const revealObserver = useRevealScrollObserver("footer", uid, () => reveal && value);
   const revealScroll = $derived(revealObserver.scroll);
 
-  const offset = $derived(revealScroll ? revealScroll.position + height : undefined);
+  let isCollapsed = $derived.by(() => {
+    if (!value) {
+      return true;
+    }
 
-  // Collapse the footer `${revealOffset}px` above the bottom of layout content when scrolling up
-  const collapsed = $derived(
-    !value || (revealScroll?.direction === "up" && offset! + revealOffset < contentScrollHeight)
-  );
+    const isScrollingDown = revealScroll?.direction === "down" && revealScroll.delta > 0;
 
-  const leftOffset = $derived(footerContext.view.charAt(8) === "l");
-  const rightOffset = $derived(footerContext.view.charAt(10) === "r");
+    if (!isScrollingDown) {
+      return false;
+    }
+
+    const isBeforeRevealThreshold = revealScroll.position + revealOffset < scrollRange;
+    return isBeforeRevealThreshold && !footerEl?.matches(":focus-within");
+  });
   // #endregion: --- Derived values
 
   // #region:    --- Effects
   $effect.pre(() => {
     footerCtx.updateEntries({
       height,
-      collapsed,
+      collapsed: isCollapsed,
       ready: true,
     });
+  });
+
+  $effect(() => {
+    const footer = footerEl;
+
+    if (!reveal || !footer) {
+      return;
+    }
+
+    const content = footer.parentElement?.querySelector<HTMLElement>(":scope > .q-layout__content");
+
+    if (!content) {
+      return;
+    }
+
+    const updateScrollRange = () => {
+      const availableHeight = footer.offsetTop + footer.offsetHeight - content.offsetTop;
+      scrollRange = content.scrollHeight - availableHeight;
+    };
+    let resizeFrame = 0;
+    const observer = new ResizeObserver(() => {
+      cancelAnimationFrame(resizeFrame);
+      resizeFrame = requestAnimationFrame(updateScrollRange);
+    });
+    const stopScroll = on(content, "scroll", updateScrollRange);
+    observer.observe(content);
+
+    return () => {
+      observer.disconnect();
+      cancelAnimationFrame(resizeFrame);
+      stopScroll();
+    };
   });
   // #endregion: --- Effects
 
   // #region:    --- Lifecycle
-  onMount(() => {
-    const content = footerEl?.parentElement?.querySelector<HTMLElement>(
-      ":scope > .q-layout__content"
-    );
-    const updateContentScrollHeight = () => {
-      contentScrollHeight = content
-        ? content.scrollHeight - content.clientHeight + (collapsed ? height : 0)
-        : 0;
-    };
-    const contentResizeObserver = new ResizeObserver(updateContentScrollHeight);
-
-    updateContentScrollHeight();
-
-    if (content) {
-      contentResizeObserver.observe(content);
-    }
-
-    setTimeout(() => {
-      if (footerEl) {
-        footerEl.style.transition = "all 0.3s";
-      }
-    }, 100);
-
-    return () => {
-      contentResizeObserver.disconnect();
-
-      footerCtx.updateEntries({
-        height: 0,
-        collapsed: false,
-        ready: false,
-      });
-    };
+  onMount(() => () => {
+    footerCtx.updateEntries({ height: 0, collapsed: false, ready: false });
   });
   // #endregion: --- Lifecycle
 
   Q.classes("q-footer", {
     bemClasses: {
       [uid]: true,
-      collapsed,
+      collapsed: isCollapsed,
       bordered,
-      "offset-left": leftOffset,
-      "offset-right": rightOffset,
+      "offset-left": footerContext.view.charAt(8) === "l",
+      "offset-right": footerContext.view.charAt(10) === "r",
     },
     classes: [props.class],
   });
@@ -106,6 +114,10 @@
     {...props}
     class="q-footer"
     style:--footer-height="{height}px"
+    onfocusin={(event) => {
+      isCollapsed = false;
+      props.onfocusin?.(event);
+    }}
     data-quaff
   >
     {@render children?.()}
