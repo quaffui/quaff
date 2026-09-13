@@ -3,7 +3,7 @@
   import QIcon from "$components/icon/QIcon.svelte";
   import QSelect from "$components/select/QSelect.svelte";
   import { capitalize } from "$utils";
-  import type { QTableProps, QTableColumn, QTableRow, QTableSort } from "./props";
+  import type { QTableProps, QTableColumn, QTableRow } from "./props";
 
   // #region:    --- Props
   let {
@@ -13,6 +13,9 @@
     bordered,
     dense = false,
     bodyCell,
+    "aria-label": ariaLabel,
+    "aria-labelledby": ariaLabelledby,
+    "aria-describedby": ariaDescribedby,
     ...props
   }: QTableProps = $props();
   // #endregion: --- Props
@@ -20,40 +23,37 @@
   // #region:    --- Reactive variables
   let page = $state(1);
   let rowsPerPage = $state(5);
-
-  let sort: QTableSort = $state(null);
+  let sortName = $state<string>();
+  let isDescending = $state(false);
   // #endregion: --- Reactive variables
 
   // #region:    --- Derived values
-  const rowsPerPageOptions = $derived(
-    [5, 10, 25, 50].filter((option) => rows.length >= option || option === 5)
-  );
-
   const lastPage = $derived(Math.max(1, Math.ceil(rows.length / rowsPerPage)));
   const pageStart = $derived(rowsPerPage * (page - 1));
   const numberFrom = $derived(rows.length ? pageStart + 1 : 0);
   const numberTo = $derived(Math.min(pageStart + rowsPerPage, rows.length));
-
+  const sortColumn = $derived(
+    columns.find((column) => column.name === sortName && column.sortable)
+  );
+  const sortDirection = $derived(isDescending ? "descending" : "ascending");
+  const sortIcon = $derived(isDescending ? "arrow_downward" : "arrow_upward");
   const rowsSorted = $derived.by(() => {
-    if (!sort) {
+    const column = sortColumn;
+
+    if (!column) {
       return rows;
     }
 
-    const currentSort = sort;
-    const sortColumn = columns.find((column) => column.field === currentSort.columnField);
-    const direction = currentSort.type === "desc" ? -1 : 1;
-
-    return [...rows].sort((rowA, rowB) => {
-      const valueA = getField(currentSort.columnField, rowA);
-      const valueB = getField(currentSort.columnField, rowB);
-      const comparison = sortColumn?.sort
-        ? sortColumn.sort(String(valueA), String(valueB))
+    return rows.toSorted((rowA, rowB) => {
+      const valueA = getField(column.field, rowA);
+      const valueB = getField(column.field, rowB);
+      const comparison = column.sort
+        ? column.sort(String(valueA), String(valueB))
         : compareValues(valueA, valueB);
 
-      return comparison * direction;
+      return isDescending ? -comparison : comparison;
     });
   });
-
   const rowsPaginated = $derived(rowsSorted.slice(pageStart, numberTo));
   // #endregion: --- Derived values
 
@@ -76,138 +76,139 @@
   }
 
   function compareValues(valueA: string | number, valueB: string | number) {
-    return typeof valueA === "number" && typeof valueB === "number"
-      ? valueA - valueB
-      : String(valueA).localeCompare(String(valueB));
+    if (typeof valueA === "number" && typeof valueB === "number") {
+      return valueA - valueB;
+    }
+
+    return String(valueA).localeCompare(String(valueB));
   }
 
   function getCellStyle(column: QTableColumn) {
-    if (column.align === "center") {
-      return "text-align: center";
-    } else if (column.align === "right") {
-      return "text-align: right";
-    }
-
-    return "";
-  }
-
-  function isLeftAligned(column: QTableColumn) {
-    return !column.align || column.align === "left";
-  }
-
-  function hasSort(column: QTableColumn) {
-    return sort?.columnField === column.field;
-  }
-
-  function getSortIcon(column: QTableColumn) {
-    return hasSort(column) && sort?.type === "desc" ? "keyboard_arrow_down" : "keyboard_arrow_up";
-  }
-
-  function getAriaSort(column: QTableColumn) {
-    if (!hasSort(column)) {
-      return undefined;
-    }
-
-    return sort?.type === "desc" ? "descending" : "ascending";
+    return column.align ? `text-align: ${column.align}` : "";
   }
 
   function setSort(column: QTableColumn) {
-    if (sort?.columnField !== column.field) {
-      sort = { columnField: column.field, type: "asc" };
-      return;
+    if (sortName !== column.name) {
+      sortName = column.name;
+      isDescending = false;
+    } else if (!isDescending) {
+      isDescending = true;
+    } else {
+      sortName = undefined;
     }
 
-    sort = sort.type === "asc" ? { ...sort, type: "desc" } : null;
+    page = 1;
   }
   // #endregion: --- Functions
 
-  Q.classes("q-table__table", {
-    bemClasses: {
-      flat,
-      bordered,
-      dense,
-    },
-    classes: [props.class],
-  });
+  Q.classes("q-table", { bemClasses: { flat, bordered, dense }, classes: [props.class] });
 </script>
 
 <div {...props} class="q-table" data-quaff>
-  <table class="q-table__table">
-    <thead>
-      <tr>
-        {#each columns as column (column)}
-          <th style={getCellStyle(column)} aria-sort={getAriaSort(column)}>
-            {#if column.sortable}
-              <button class="q-table__sort-button" type="button" onclick={() => setSort(column)}>
-                {#if isLeftAligned(column)}
-                  {column.label}
-                {/if}
-
-                <QIcon
-                  name={getSortIcon(column)}
-                  class="q-icon {hasSort(column) ? 'q-icon--sort' : ''}"
-                  aria-hidden="true"
-                />
-
-                {#if !isLeftAligned(column)}
-                  {column.label}
-                {/if}
-              </button>
-            {:else}
-              {column.label}
-            {/if}
-          </th>
-        {/each}
-      </tr>
-    </thead>
-    <tbody>
-      {#each rowsPaginated as row (row)}
+  <!-- svelte-ignore a11y_no_noninteractive_tabindex (Keyboard users need to scroll wide tables.) -->
+  <div
+    class="q-table__scroll"
+    role="region"
+    aria-label={ariaLabel ?? "Table"}
+    aria-labelledby={ariaLabelledby}
+    tabindex="0"
+  >
+    <table
+      class="q-table__table"
+      aria-label={ariaLabel}
+      aria-labelledby={ariaLabelledby}
+      aria-describedby={ariaDescribedby}
+    >
+      <thead>
         <tr>
-          {#each columns as column (column)}
-            {@const bodyCellColumn = props[`bodyCell${capitalize(column.name)}`]}
-            {#if typeof bodyCellColumn === "function"}
-              {@render bodyCellColumn({ column, row, style: getCellStyle(column) })}
-            {:else if bodyCell}
-              {@render bodyCell({ column, row, style: getCellStyle(column) })}
-            {:else}
-              <td class="q-table__body-cell" style={getCellStyle(column)}>
-                {getCellValue(column, row)}
-              </td>
-            {/if}
+          {#each columns as column (column.name)}
+            {@const isSorted = sortColumn === column}
+            <th
+              scope="col"
+              style={getCellStyle(column)}
+              aria-sort={isSorted ? sortDirection : undefined}
+            >
+              {#if column.sortable}
+                <button
+                  class="q-table__sort-button"
+                  type="button"
+                  aria-label={`Sort by ${column.label}`}
+                  style:justify-content={column.align ?? "flex-start"}
+                  onclick={() => setSort(column)}
+                >
+                  <span>{column.label}</span>
+                  <QIcon
+                    name={isSorted ? sortIcon : "unfold_more"}
+                    style={column.align && column.align !== "left" ? "order: -1" : undefined}
+                    aria-hidden="true"
+                  />
+                </button>
+              {:else}
+                {column.label}
+              {/if}
+            </th>
           {/each}
         </tr>
-      {/each}
-    </tbody>
-  </table>
-  <div class="q-table__footer q-mt-lg">
-    Records&nbsp;per&nbsp;page:
-    <QSelect
-      class="q-table__footer-records-per-page-select"
-      dense
-      outlined
-      options={rowsPerPageOptions}
-      bind:value={rowsPerPage}
-      disabled={rowsPerPageOptions.length <= 1}
-      aria-label="Records per page"
-    />
-    {numberFrom}-{numberTo}&nbsp;of&nbsp;{rows.length}
-    {#if lastPage > 1}
-      <QBtn
-        icon="chevron_left"
-        size="sm"
-        variant="flat"
-        disabled={page === 1}
-        aria-label="Previous page"
-        onclick={() => page--}
-      />
-      <QBtn
-        icon="chevron_right"
-        size="sm"
-        variant="flat"
-        disabled={page === lastPage}
-        aria-label="Next page"
-        onclick={() => page++}
-      />
-    {/if}
+      </thead>
+      <tbody>
+        {#each rowsPaginated as row (row)}
+          <tr>
+            {#each columns as column (column.name)}
+              {@const style = getCellStyle(column)}
+              {@const columnCell = props[`bodyCell${capitalize(column.name)}`]}
+              {@const cell = typeof columnCell === "function" ? columnCell : bodyCell}
+              {#if cell}
+                {@render cell({ column, row, style })}
+              {:else}
+                <td class="q-table__body-cell" {style}>
+                  {getCellValue(column, row)}
+                </td>
+              {/if}
+            {/each}
+          </tr>
+        {/each}
+      </tbody>
+    </table>
   </div>
+  <div class="q-table__footer">
+    <div class="q-table__pagination">
+      Records per page:
+      <QSelect
+        class="q-table__footer-select"
+        dense
+        outlined
+        options={[5, 10, 25, 50]}
+        bind:value={
+          () => rowsPerPage,
+          (value) => {
+            rowsPerPage = Number(value);
+            page = 1;
+          }
+        }
+        aria-label="Records per page"
+      />
+    </div>
+    <div class="q-table__pagination">
+      <span aria-live="polite" aria-atomic="true">{numberFrom}-{numberTo} of {rows.length}</span>
+      {#if lastPage > 1}
+        <QBtn
+          icon="chevron_left"
+          variant="flat"
+          disabled={page === 1}
+          aria-label="Previous page"
+          onclick={() => page--}
+        />
+        <QBtn
+          icon="chevron_right"
+          variant="flat"
+          disabled={page === lastPage}
+          aria-label="Next page"
+          onclick={() => page++}
+        />
+      {/if}
+    </div>
+  </div>
+  <span class="q-table__announcement" aria-live="polite" aria-atomic="true">
+    {sortColumn ? `Sorted by ${sortColumn.label}, ${sortDirection}` : "Unsorted"}
+  </span>
 </div>

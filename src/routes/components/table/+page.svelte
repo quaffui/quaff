@@ -106,6 +106,16 @@
     { id: 34, title: "Little Women", author: "Louisa May Alcott" },
     { id: 35, title: "The Sound and the Fury", author: "William Faulkner" },
   ];
+
+  let interactiveRows = $state(rows.slice(0, 5));
+
+  function addBook() {
+    const book = rows[interactiveRows.length];
+
+    if (book) {
+      interactiveRows.push(book);
+    }
+  }
 </script>
 
 <svelte:head>
@@ -114,7 +124,7 @@
 
 <QDocs>
   {#snippet display()}
-    <QCard>
+    <QCard style="max-width: 100%">
       <QTable {columns} rows={rows.slice(0, 3)} bordered flat />
     </QCard>
   {/snippet}
@@ -268,8 +278,14 @@
                 <span class="text-weight-bold">{row.title}</span>
               {:else if column.field === "actions"}
                 <div class="flex justify-end q-gap-sm">
-                  <QBtn icon="edit" size="sm" flat />
-                  <QBtn icon="delete" size="sm" flat color="error" />
+                  <QBtn icon="edit" size="sm" flat aria-label={`Edit ${row.title}`} />
+                  <QBtn
+                    icon="delete"
+                    size="sm"
+                    flat
+                    color="error"
+                    aria-label={`Delete ${row.title}`}
+                  />
                 </div>
               {/if}
             </td>
@@ -288,18 +304,28 @@
           <QCardSection>
             <div class="flex justify-between items-center q-mb-md">
               <h6 class="q-mb-none">Interactive Book List</h6>
-              <QBtn icon="add" label="Add Book" />
+              <QBtn
+                icon="add"
+                label="Add Book"
+                variant="outlined"
+                disabled={interactiveRows.length >= rows.length}
+                onclick={addBook}
+              />
             </div>
 
-            <QTable {columns} rows={rows.slice(0, 5)} dense bordered>
+            <QTable {columns} rows={interactiveRows} dense bordered>
               {#snippet bodyCell({ row, column, style })}
-                <td {style} onclick={() => alert(`Selected: ${row.title}`)}>
-                  {#if column.field === "id"}
-                    #{row.id}
-                  {:else if column.field === "title"}
-                    {row.title}
-                  {:else if column.field === "author"}
-                    {row.author}
+                <td {style}>
+                  {#if column.field === "title"}
+                    <QBtn
+                      flat
+                      style="padding-inline: 0.75rem; margin-inline: -0.75rem"
+                      onclick={() => alert(`Selected: ${row.title}`)}
+                    >
+                      {row.title}
+                    </QBtn>
+                  {:else}
+                    {column.field === "id" ? `#${row.id}` : row.author}
                   {/if}
                 </td>
               {/snippet}

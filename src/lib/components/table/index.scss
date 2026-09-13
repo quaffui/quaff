@@ -1,86 +1,122 @@
 @use "$css/mixins";
 
 .q-table {
+  --q-table-header-height: 3.5rem;
+  --q-table-row-height: 3.25rem;
+  @include mixins.typography("body-medium");
+  border-radius: 0.25rem;
+  background-color: var(--surface);
+  color: var(--on-surface);
+  box-shadow: var(--elevate1);
+  overflow: hidden;
+
+  &--flat {
+    box-shadow: none;
+  }
+
+  &--bordered {
+    border: 1px solid var(--outline-variant);
+  }
+
+  &--dense {
+    --q-table-header-height: 2.5rem;
+    --q-table-row-height: 2.25rem;
+
+    > .q-table__scroll > table > tbody > tr > td {
+      padding-block: 0.25rem;
+    }
+  }
+
+  &__scroll {
+    overflow-x: auto;
+  }
+
+  &__scroll:focus-visible,
+  &__sort-button:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: -2px;
+  }
+
   &__table {
-    @include mixins.table;
+    width: 100%;
+    border-spacing: 0;
+    border-radius: 0;
+    text-align: start;
 
-    border-radius: 0.75rem;
-    box-shadow: var(--elevate1);
+    > :is(thead, tbody) > tr > :is(th, td) {
+      padding: 0.5rem 1rem;
+      border-bottom: 1px solid var(--outline-variant);
+      text-align: inherit;
+    }
 
-    th {
-      font-weight: 600;
+    > thead > tr > th {
+      @include mixins.typography("title-small");
+      height: var(--q-table-header-height);
+      color: var(--on-surface-variant);
 
-      .q-icon {
-        position: relative;
-        top: -1px;
-        opacity: 0;
-
-        &.q-icon--sort {
-          opacity: 1;
-        }
-      }
-
-      &:hover {
-        .q-icon:not(.q-icon--sort) {
-          opacity: 0.5;
-        }
-        .q-icon--sort {
-          opacity: 0.8;
-        }
+      &:has(> button) {
+        padding: 0;
       }
     }
 
-    .q-table__sort-button {
-      all: unset;
-      cursor: pointer;
-
-      &:focus-visible {
-        outline: 2px solid var(--primary);
-        outline-offset: 0.25rem;
-      }
+    > tbody > tr > td {
+      height: var(--q-table-row-height);
     }
 
-    tr:last-child td {
-      border-bottom: none;
+    > tbody > tr:hover {
+      background-color: color-mix(in srgb, var(--on-surface) 8%, var(--surface));
     }
+  }
 
-    &--flat {
-      box-shadow: none;
-    }
+  &__sort-button {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    width: 100%;
+    min-height: calc(var(--q-table-header-height) - 1px);
+    padding: 0.25rem 1rem;
+    background: transparent;
+    border-radius: 0;
+    font: inherit;
+    letter-spacing: inherit;
+    text-align: inherit;
 
-    &--bordered {
-      border: 1px solid var(--outline-variant);
-
-      tr:last-child td {
-        border-bottom: none;
-      }
-    }
-
-    &--dense {
-      border-radius: 0.5rem;
-
-      th,
-      td {
-        padding: 0.25rem;
-      }
-    }
-
-    > * {
-      border-radius: 0;
+    &:hover,
+    &:focus-visible {
+      color: var(--on-surface);
     }
   }
 
   &__footer {
     display: flex;
-    justify-content: end;
+    justify-content: flex-end;
+    flex-wrap: wrap;
     align-items: center;
+    gap: 0.5rem 1rem;
+    min-height: 3.25rem;
+    padding: 0.25rem 1rem;
+    color: var(--on-surface-variant);
+  }
 
-    &-records-per-page-select {
-      width: 80px;
-      display: inline-block;
-      margin-bottom: 0 !important;
-      margin-left: 1em;
-      margin-right: 1em;
-    }
+  &__pagination {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  &__footer &__footer-select {
+    width: 5rem;
+    margin: 0;
+  }
+
+  &__announcement {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
   }
 }
