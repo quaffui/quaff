@@ -1,33 +1,44 @@
-@use "$css/mixins";
-
 .q-breadcrumbs__item {
   display: flex;
   align-items: center;
-
+  min-width: 0;
+  max-width: 100%;
   color: var(--q-breadcrumbs-color, currentColor);
-
-  &:has(> a):hover .q-breadcrumbs__label {
-    text-decoration: underline;
-    text-decoration-color: currentColor;
-
-    &__item:first-child > .q-breadcrumbs__separator {
-      display: none;
-    }
-  }
 
   &:first-child > .q-breadcrumbs__separator {
     display: none;
   }
+}
 
-  .q-breadcrumbs__separator {
-    color: var(--q-separator-color, currentColor);
+.q-breadcrumbs__separator {
+  flex-shrink: 0;
+  color: var(--q-separator-color, currentColor);
+}
+
+.q-breadcrumbs__el {
+  display: flex;
+  align-items: center;
+  min-width: 1.5rem;
+  min-height: 1.5rem;
+  gap: 0.5rem;
+  text-decoration: none;
+  color: inherit;
+
+  &:is(a:hover, :focus-visible) .q-breadcrumbs__label {
+    text-decoration: underline;
   }
 
-  .q-breadcrumbs__el {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    text-decoration: none;
-    color: inherit;
+  &:focus-visible {
+    z-index: 1;
+    outline: 0.1875rem solid var(--secondary);
+    outline-offset: 0.125rem;
+  }
+}
+
+.q-breadcrumbs__label {
+  overflow-wrap: anywhere;
+
+  &:empty {
+    display: none;
   }
 }

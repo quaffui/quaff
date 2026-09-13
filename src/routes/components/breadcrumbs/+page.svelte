@@ -29,9 +29,9 @@
       <QDocsSection title="Basic Usage">
         {#snippet sectionDescription()}
           <p>
-            Breadcrumbs provide navigation links for the current page location. The last item is
-            automatically styled as active using the default
-            <code>activeColor</code> which is <code>primary</code>.
+            Breadcrumbs provide navigation links for the current page location. Links to the active
+            route, including its parent routes, use <code>activeColor</code>, which defaults to
+            <code>primary</code>. A non-linked last item keeps its normal appearance.
           </p>
         {/snippet}
         <div class="q-mb-md">
@@ -122,8 +122,9 @@
       <QDocsSection title="With Icons">
         {#snippet sectionDescription()}
           <p>
-            Add icons to breadcrumb items using the <code>icon</code> prop to display Material Symbols
-            icons. Icons appear before the item label.
+            Add icons to breadcrumb items using the <code>icon</code> prop to display Material
+            Symbols icons. Icons appear before the item label. Give icon-only items an
+            <code>aria-label</code>.
           </p>
         {/snippet}
         <div class="q-mb-md">

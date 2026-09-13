@@ -1,14 +1,21 @@
+@use "$css/mixins";
+
 .q-breadcrumbs {
+  @include mixins.typography(body-medium);
+
   width: fit-content;
+  max-width: 100%;
+  min-width: 0;
+  color: var(--on-surface);
+  white-space: normal;
 
   &__list {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
-    justify-content: center;
-
+    row-gap: 0.25rem;
     margin: 0;
     padding: 0;
-
     list-style: none;
   }
 }

@@ -1,5 +1,6 @@
 <script lang="ts">
-  import { getRouterInfo } from "$utils";
+  import { page } from "$app/state";
+  import { getRouterInfo } from "$utils/router";
   import QIcon from "$components/icon/QIcon.svelte";
   import { breadcrumbsCtx } from "./QBreadcrumbs.svelte";
   import type { MaterialSymbol } from "material-symbols";
@@ -10,7 +11,12 @@
     label = "",
     icon,
     tag = "span",
-    children = fallback,
+    children,
+    target,
+    "aria-label": ariaLabel,
+    "aria-labelledby": ariaLabelledby,
+    "aria-describedby": ariaDescribedby,
+    "aria-current": ariaCurrent,
     ...props
   }: QBreadcrumbsElProps = $props();
   // #endregion: --- Props
@@ -22,6 +28,8 @@
   // #region:    --- Derived values
   const routerInfo = $derived(getRouterInfo(props));
   const activeClass = $derived(props.activeClass ?? ctx.activeClass);
+  const linkAttributes = $derived({ ...routerInfo.linkAttributes, target });
+  const hideIcon = $derived(!!(ariaLabel || ariaLabelledby || (!children && label)));
   const style = $derived(
     [
       routerInfo.isActive && (props.activeStyle ?? ctx.activeStyle),
@@ -42,31 +50,18 @@
   });
 </script>
 
-{#snippet fallback()}
-  {label}
-{/snippet}
-
-{#snippet breadcrumbEl()}
-  {#if icon !== undefined}
-    {#if typeof icon === "string"}
-      <QIcon name={icon} size="1rem" />
-    {:else}
-      <span class="q-icon">
-        {@render icon()}
-      </span>
-    {/if}
-  {/if}
-
-  <span class="q-breadcrumbs__label">
-    {@render children()}
-  </span>
-{/snippet}
-
-<li {...props} class="q-breadcrumbs__item" {style}>
+<li
+  {...props}
+  class="q-breadcrumbs__item"
+  {style}
+  aria-label={routerInfo.hasLink ? undefined : ariaLabel}
+  aria-labelledby={routerInfo.hasLink ? undefined : ariaLabelledby}
+  aria-describedby={routerInfo.hasLink ? undefined : ariaDescribedby}
+>
   <span class="q-breadcrumbs__separator" aria-hidden="true">
     {#if typeof ctx.separator === "string"}
       {#if ctx.separator.startsWith("icon:")}
-        <QIcon name={ctx.separator.slice(5) as MaterialSymbol} size="1rem" />
+        <QIcon name={ctx.separator.slice(5) as MaterialSymbol} size="sm" />
       {:else}
         {ctx.separator}
       {/if}
@@ -75,18 +70,32 @@
     {/if}
   </span>
 
-  {#if routerInfo.hasLink}
-    <a
-      {...routerInfo.linkAttributes}
-      class="q-breadcrumbs__el"
-      aria-current={routerInfo.isActive ? "page" : undefined}
-      data-quaff
-    >
-      {@render breadcrumbEl()}
-    </a>
-  {:else}
-    <svelte:element this={tag} class="q-breadcrumbs__el" data-quaff>
-      {@render breadcrumbEl()}
-    </svelte:element>
-  {/if}
+  <svelte:element
+    this={routerInfo.hasLink ? "a" : tag}
+    {...routerInfo.hasLink ? linkAttributes : {}}
+    class="q-breadcrumbs__el"
+    aria-label={ariaLabel}
+    aria-labelledby={ariaLabelledby}
+    aria-describedby={ariaDescribedby}
+    aria-current={ariaCurrent ??
+      (routerInfo.linkAttributes.href === page.url.pathname ? "page" : undefined)}
+    data-quaff
+  >
+    {#if icon !== undefined}
+      <QIcon
+        size="sm"
+        name={typeof icon === "string" ? icon : undefined}
+        children={typeof icon === "string" ? undefined : icon}
+        aria-hidden={hideIcon}
+      />
+    {/if}
+
+    <span class="q-breadcrumbs__label">
+      {#if children}
+        {@render children()}
+      {:else}
+        {label}
+      {/if}
+    </span>
+  </svelte:element>
 </li>
