@@ -72,11 +72,11 @@
 
       @each $position in ("top", "bottom") {
         @if $side == "left" {
-          &.q-drawer--offset-#{$position} {
+          &.q-drawer--offset-#{$position}:not(.q-drawer--bordered) {
             border-#{$position}-right-radius: 1rem;
           }
         } @else {
-          &.q-drawer--offset-#{$position} {
+          &.q-drawer--offset-#{$position}:not(.q-drawer--bordered) {
             border-#{$position}-left-radius: 1rem;
           }
         }
