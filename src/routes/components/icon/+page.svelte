@@ -109,7 +109,8 @@
       <QDocsSection title="Using Images">
         {#snippet sectionDescription()}
           Display an image instead of a font icon using the <code>img</code> prop. Provide the image
-          URL. You can pass additional attributes to the underlying <code>&lt;img&gt;</code> tag via
+          URL. Images are decorative by default. You can pass additional attributes to the
+          underlying <code>&lt;img&gt;</code> tag via
           <code>imgAttributes</code>, such as <code>alt</code> text.
         {/snippet}
         <div class="flex q-gap-lg items-center">
@@ -177,8 +178,9 @@
               >).
             </li>
             <li>
-              If the icon itself conveys information not otherwise present, consider adding an
-              <code>aria-label</code> directly to the icon or using visually hidden text.
+              If the icon itself conveys information not otherwise present, give it an
+              <code>aria-label</code> or <code>aria-labelledby</code>. QIcon then exposes it as an
+              image. You can also use visually hidden text.
             </li>
           </ul>
           The<code>QIcon</code> component renders an <code>&lt;i&gt;</code> tag. You can pass ARIA attributes

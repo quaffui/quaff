@@ -22,11 +22,6 @@
 
   const parsedColor = $derived(color && useColor(color));
 
-  const imgAttrs = $derived({
-    alt: "Quaff Image Icon",
-    ...imgAttributes,
-  });
-
   const typeClass = $derived(`q-icon--${type}`);
   // #endregion: --- Derived values
 
@@ -38,11 +33,18 @@
   });
 </script>
 
-<i {...props} class="q-icon" style:--size={qSize.style} style:color={parsedColor} data-quaff>
+<i
+  {...props}
+  role={props.role ?? (props["aria-label"] || props["aria-labelledby"] ? "img" : undefined)}
+  class="q-icon"
+  style:--size={qSize.style}
+  style:color={parsedColor}
+  data-quaff
+>
   {#if name !== undefined}
     {name}
   {:else if img !== undefined}
-    <img src={img} {...imgAttrs} />
+    <img src={img} alt="" {...imgAttributes} />
   {:else if svg}
     {@html svg}
   {:else}

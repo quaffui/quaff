@@ -10,7 +10,7 @@ import {
 export const QIconDocs: QComponentDocs = {
   name: "QIcon",
   description:
-    "This component allows you to insert icons within elements of the page. Supported cions are Material Symbols icons.",
+    "This component allows you to insert icons within elements of the page. Supported icons are Material Symbols icons.",
   docs: {
     generics: QIconDocsGenerics,
     domAttributesConstraint: QIconDocsDomAttributesConstraint,
