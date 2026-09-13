@@ -76,8 +76,8 @@
       <QDocsSection title="Reveal Footer">
         {#snippet sectionDescription()}
           The <code>reveal</code> prop allows the footer to hide when scrolling down and reappear
-          when scrolling up. You can customize the reveal offset using the <code>revealOffset</code>
-          prop.
+          when scrolling up. It also reappears near the bottom of the content. The
+          <code>revealOffset</code> prop sets this distance from the bottom in pixels.
         {/snippet}
 
         <QLayout style="border: 1px solid var(--outline-variant); height: 15rem">
