@@ -31,6 +31,10 @@
   &[aria-disabled] {
     @include disabled.base();
     --q-item-color: #{disabled.font-color()};
+
+    .q-avatar {
+      opacity: 0.38;
+    }
   }
 
   &:is(.q-link, &--clickable:not(label), &--dragged) {

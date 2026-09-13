@@ -1,15 +1,17 @@
 <script lang="ts">
-  import { useSize } from "$composables";
+  import { useSize } from "$composables/useSize";
+  import type { QEvent } from "$utils/types/quaff";
   import type { QAvatarProps } from "./props";
 
   // #region:    --- Props
   let {
-    alt,
+    alt = "",
     shape = "circle",
-    size = "md",
+    size = "sm",
     src,
     sources,
     video = false,
+    paused = $bindable(false),
     children,
     videoAccessibility,
     ...props
@@ -18,18 +20,54 @@
 
   // #region:    --- Derived values
   const qSize = $derived(useSize(size, "q-avatar"));
-  const qShape = $derived(`q-avatar--${shape}`);
   // #endregion: --- Derived values
 
+  let videoElement = $state<HTMLVideoElement>();
+
+  $effect(() => {
+    if (videoElement) {
+      updatePlayback(videoElement, paused);
+    }
+  });
+
+  function syncPaused(event: QEvent<Event, HTMLVideoElement>) {
+    paused = event.currentTarget.paused;
+  }
+
+  async function updatePlayback(element: HTMLVideoElement, shouldPause: boolean) {
+    if (shouldPause) {
+      element.pause();
+      return;
+    }
+
+    try {
+      await element.play();
+    } catch {
+      // Playback can be blocked or interrupted by pausing before loading finishes.
+      if (element === videoElement) {
+        paused = element.paused;
+      }
+    }
+  }
+
   Q.classes("q-avatar", {
-    classes: [qShape, qSize.class, props.class],
+    bemClasses: { [shape]: true },
+    classes: [qSize.class, props.class],
   });
 </script>
 
 <div {...props} class="q-avatar" style:--size={qSize.style} data-quaff>
   {#if video}
-    <video autoplay loop muted playsinline>
-      {#if sources && sources.length > 0}
+    <video
+      bind:this={videoElement}
+      autoplay={!paused}
+      onplay={syncPaused}
+      onpause={syncPaused}
+      loop
+      muted
+      playsinline
+    >
+      {#if sources?.length}
         {#each sources as { src, type } (type)}
           <source {src} {type} />
         {/each}
