@@ -11,7 +11,7 @@ export type QTooltipOffset = { x?: number; y?: number };
 export interface QTooltipProps<T extends Element | string>
   extends OptionalModel<boolean>, HTMLAttributes<HTMLDivElement> {
   /**
-   * The target element the tooltip should be attached to. Can be an HTML element or a CSS selector. If not specified, the tooltip will be attached to the nearest Quaff component in the parent tree.
+   * The target element the tooltip should be attached to. Can be an HTML element or a CSS selector. When omitted, provide a trigger snippet.
    */
   target?: T;
 

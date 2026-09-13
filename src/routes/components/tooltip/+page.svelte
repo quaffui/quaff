@@ -31,8 +31,8 @@
     <div>
       <QDocsSection title="Basic Tooltip">
         {#snippet sectionDescription()}
-          QTooltip provides additional information when hovering over an element. By default, it's
-          attached to its parent element and appears on hover.
+          QTooltip provides additional information when hovering over or focusing an element. Use
+          the trigger snippet to attach it to a button or another element.
         {/snippet}
 
         <div class="flex q-gap-md q-ma-sm">
@@ -46,7 +46,7 @@
 
           <QTooltip>
             {#snippet trigger(props)}
-              <QBtn icon="help" {...props} />
+              <QBtn icon="help" aria-label="Help" {...props} />
             {/snippet}
 
             Help information
@@ -188,8 +188,9 @@
 
       <QDocsSection title="Custom Target">
         {#snippet sectionDescription()}
-          By default, tooltips attach to their parent Quaff component. You can specify a different
-          target using the <code>target</code> prop with either a DOM element or a CSS selector.
+          Instead of a trigger snippet, you can attach a tooltip to an existing element using the <code
+            >target</code
+          > prop with either a DOM element or a CSS selector.
         {/snippet}
 
         <div class="flex q-gap-md q-ma-sm">
@@ -206,13 +207,16 @@
       <QDocsSection title="Rich Content">
         {#snippet sectionDescription()}
           Tooltips can contain rich content, not just text. You can include icons, formatted text,
-          and even interactive elements.
+          and interactive elements. For interactive content, use a labelled <code
+            >role="dialog"</code
+          >
+          and press Tab from the trigger to reach its actions.
         {/snippet}
 
         <div class="flex q-gap-md q-ma-sm">
           <QTooltip class="error">
             {#snippet trigger(props)}
-              <QBtn icon="info" {...props} />
+              <QBtn icon="info" aria-label="Information" {...props} />
             {/snippet}
 
             <div class="flex items-center">
@@ -241,7 +245,8 @@
       <QDocsSection title="Programmatically Controlled">
         {#snippet sectionDescription()}
           Control tooltip visibility programmatically using the <code>value</code> prop with two-way binding.
-          This overrides the default hover behavior.
+          Setting the value changes visibility immediately. Hover and focus still work normally; the timing
+          props apply to these interactions and the show/hide methods.
         {/snippet}
 
         <div class="flex q-gap-md q-ma-sm">
@@ -319,9 +324,9 @@
             Tooltip with more padding
           </QTooltip>
 
-          <QTooltip>
+          <QTooltip role="dialog" aria-label="Tooltip Title">
             {#snippet trigger(props)}
-              <QBtn {...props}>Rich tooltip</QBtn>
+              <QBtn {...props} aria-haspopup="dialog">Rich tooltip</QBtn>
             {/snippet}
 
             <QCard>
