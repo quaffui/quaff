@@ -1,4 +1,5 @@
 @use "$css/mixins";
+@use "$css/variables";
 
 .q-railbar {
   z-index: 5;
@@ -24,6 +25,12 @@
   overflow: auto;
 
   scrollbar-width: none;
+  transition-property: top, bottom, transform;
+  transition-duration: variables.$speed3;
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
 
   &::-webkit-scrollbar {
     display: none;

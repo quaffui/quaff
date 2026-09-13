@@ -175,37 +175,37 @@
                 <QList style="text-align: center;">
                   <QItem>
                     <QItemSection type="toggle">
-                      <QSwitch bind:value={showHeader} />
+                      <QSwitch bind:value={showHeader} aria-label="Header" />
                     </QItemSection>
                     <QItemSection>Header</QItemSection>
                   </QItem>
                   <QItem>
                     <QItemSection type="toggle">
-                      <QSwitch bind:value={leftRailbar} />
+                      <QSwitch bind:value={leftRailbar} aria-label="Left Railbar" />
                     </QItemSection>
                     <QItemSection>Left Railbar</QItemSection>
                   </QItem>
                   <QItem>
                     <QItemSection type="toggle">
-                      <QSwitch bind:value={rightRailbar} />
+                      <QSwitch bind:value={rightRailbar} aria-label="Right Railbar" />
                     </QItemSection>
                     <QItemSection>Right Railbar</QItemSection>
                   </QItem>
                   <QItem>
                     <QItemSection type="toggle">
-                      <QSwitch bind:value={leftDrawer} />
+                      <QSwitch bind:value={leftDrawer} aria-label="Left Drawer" />
                     </QItemSection>
                     <QItemSection>Left Drawer</QItemSection>
                   </QItem>
                   <QItem>
                     <QItemSection type="toggle">
-                      <QSwitch bind:value={rightDrawer} />
+                      <QSwitch bind:value={rightDrawer} aria-label="Right Drawer" />
                     </QItemSection>
                     <QItemSection>Right Drawer</QItemSection>
                   </QItem>
                   <QItem>
                     <QItemSection type="toggle">
-                      <QSwitch bind:value={showFooter} />
+                      <QSwitch bind:value={showFooter} aria-label="Footer" />
                     </QItemSection>
                     <QItemSection>Footer</QItemSection>
                   </QItem>
@@ -222,7 +222,12 @@
 {#snippet header()}
   <QHeader elevated>
     {#if leftDrawer}
-      <QBtn icon="menu" variant="flat" onclick={leftDrawerElement?.toggle} />
+      <QBtn
+        icon="menu"
+        variant="flat"
+        onclick={leftDrawerElement?.toggle}
+        aria-label="Toggle left drawer"
+      />
     {/if}
     <div class="flex column">
       <QRadio bind:selected={viewArr[0][0]} value="h" label="h" />
@@ -242,7 +247,12 @@
       <QRadio style="margin: 0" bind:selected={viewArr[0][2]} value="r" label="r" />
     </div>
     {#if rightDrawer}
-      <QBtn icon="menu" variant="flat" onclick={rightDrawerElement?.toggle} />
+      <QBtn
+        icon="menu"
+        variant="flat"
+        onclick={rightDrawerElement?.toggle}
+        aria-label="Toggle right drawer"
+      />
     {/if}
   </QHeader>
 {/snippet}
@@ -327,7 +337,12 @@
 {#snippet footer()}
   <QFooter bordered>
     {#if leftDrawer}
-      <QBtn icon="menu" variant="flat" onclick={leftDrawerElement?.toggle} />
+      <QBtn
+        icon="menu"
+        variant="flat"
+        onclick={leftDrawerElement?.toggle}
+        aria-label="Toggle left drawer"
+      />
     {/if}
     <div class="flex column">
       <QRadio bind:selected={viewArr[2][0]} value="f" label="f" />
@@ -347,7 +362,12 @@
       <QRadio style="margin: 0" bind:selected={viewArr[2][2]} value="r" label="r" />
     </div>
     {#if rightDrawer}
-      <QBtn icon="menu" variant="flat" onclick={rightDrawerElement?.toggle} />
+      <QBtn
+        icon="menu"
+        variant="flat"
+        onclick={rightDrawerElement?.toggle}
+        aria-label="Toggle right drawer"
+      />
     {/if}
   </QFooter>
 {/snippet}

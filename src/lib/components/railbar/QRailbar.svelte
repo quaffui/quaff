@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { onMount } from "svelte";
   import { useColor } from "$composables";
   import { leftRailbarCtx, rightRailbarCtx } from "../layout/QLayout.svelte";
   import type { QRailbarProps } from "./props";
@@ -15,59 +14,57 @@
   }: QRailbarProps = $props();
   // #endregion: --- Props
 
-  // #region:    --- Non-reactive variables
-  let railbarEl: HTMLElement;
-  // #endregion: --- Non-reactive variables
+  let railbarEl = $state<HTMLElement>();
+  const leftContext = leftRailbarCtx.get();
+  const rightContext = rightRailbarCtx.get();
 
   // #region:    --- Derived values
-  const railbarCtxToUse = $derived(side === "left" ? leftRailbarCtx : rightRailbarCtx);
-  const railbarCtx = $derived(railbarCtxToUse.get());
-
-  const offsetTop = $derived.by(() => {
-    const charPos = side === "left" ? 0 : 2;
-    return railbarCtx?.view.charAt(charPos) === "h";
-  });
-  const offsetBottom = $derived.by(() => {
-    const charPos = side === "left" ? 8 : 10;
-    return railbarCtx?.view.charAt(charPos) === "f";
-  });
-
-  const railbarWidthStyle = $derived(`--${side}-railbar-width: ${width}px`);
+  const railbarCtx = $derived(side === "left" ? leftContext : rightContext);
+  const hasTopOffset = $derived(railbarCtx?.view.charAt(side === "left" ? 0 : 2) === "h");
+  const hasBottomOffset = $derived(railbarCtx?.view.charAt(side === "left" ? 8 : 10) === "f");
   const parsedActiveColor = $derived(
     activeColor === "secondary-container" ? undefined : useColor(activeColor)
   );
 
-  const style = $derived(`${railbarWidthStyle};${props.style ?? ""}`);
+  const style = $derived(`--${side}-railbar-width: ${width}px;${props.style ?? ""}`);
   // #endregion: --- Derived values
 
-  // #region:    --- Lifecycle
-  onMount(() => {
-    railbarCtxToUse.updateEntries({
-      width,
-      takesSpace: railbarEl.style.display !== "none" || false,
-      ready: true,
-    });
+  $effect(() => {
+    // Keep this side's context so cleanup resets it after a side change.
+    const context = railbarCtx;
+    const element = railbarEl;
+    const configuredWidth = width;
 
-    setTimeout(() => {
-      railbarEl.style.transition = "top 0.3s, bottom 0.3s, transform 0.3s";
-    }, 100);
+    if (!context || !element) {
+      return;
+    }
+
+    const updateLayout = () => {
+      const style = getComputedStyle(element);
+      let measuredWidth = element.offsetWidth;
+
+      if (!measuredWidth && style.display !== "none") {
+        measuredWidth = style.width.endsWith("px") ? parseFloat(style.width) : configuredWidth;
+      }
+
+      Object.assign(context, { width: measuredWidth, takesSpace: measuredWidth > 0, ready: true });
+    };
+    const observer = new ResizeObserver(updateLayout);
+    updateLayout();
+    observer.observe(element);
 
     return () => {
-      railbarCtxToUse.updateEntries({
-        width: 0,
-        takesSpace: false,
-        ready: false,
-      });
+      observer.disconnect();
+      Object.assign(context, { width: 0, takesSpace: false, ready: false });
     };
   });
-  // #endregion: --- Lifecycle
 
   Q.classes("q-railbar", {
     bemClasses: {
       [side]: true,
       bordered,
-      "offset-top": offsetTop,
-      "offset-bottom": offsetBottom,
+      "offset-top": hasTopOffset,
+      "offset-bottom": hasBottomOffset,
     },
     classes: [props.class],
   });
