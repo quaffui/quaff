@@ -11,7 +11,6 @@
 </script>
 
 <script lang="ts">
-  import { onMount } from "svelte";
   import { useColor } from "$composables";
 
   // #region:    --- Props
@@ -25,15 +24,6 @@
   }: QBreadcrumbsProps = $props();
   // #endregion: --- Props
 
-  // #region:    --- Derived values
-  const parsedActiveColor = $derived(useColor(activeColor));
-  const parsedSeparatorColor = $derived(useColor(separatorColor));
-  // #endregion: --- Derived values
-
-  // #region:    --- Non-reactive variables
-  let breadcrumbList: HTMLOListElement;
-  // #endregion: --- Non-reactive variables
-
   // #region:    --- Context
   breadcrumbsCtx.set({
     separator,
@@ -43,24 +33,18 @@
   });
   // #endregion: --- Context
 
-  // #region:    --- Lifecycle
-  onMount(() => {
-    breadcrumbList.querySelector(".q-breadcrumbs__separator:first-child")?.remove();
-  });
-  // #endregion: --- Lifecycle
-
   Q.classes("q-breadcrumbs", { classes: [props.class] });
 </script>
 
 <nav
   {...props}
   class="q-breadcrumbs"
-  aria-label="Breadcrumbs"
+  aria-label={props["aria-label"] ?? "Breadcrumbs"}
   data-quaff
-  style:--q-separator-color={parsedSeparatorColor}
-  style:--q-active-color={parsedActiveColor}
+  style:--q-separator-color={useColor(separatorColor)}
+  style:--q-active-color={useColor(activeColor)}
 >
-  <ol bind:this={breadcrumbList} class="q-breadcrumbs__list">
+  <ol class="q-breadcrumbs__list">
     {@render children?.()}
   </ol>
 </nav>
