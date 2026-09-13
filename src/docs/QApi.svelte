@@ -167,7 +167,9 @@
     ].filter(Boolean);
     const classString = classes.length ? ` class="${classes.join(" ")}"` : "";
 
-    const dataAttrs = isClickable ? ` data-quaff data-type-name="${escape(typeName)}"` : "";
+    const dataAttrs = isClickable
+      ? ` data-quaff data-type-name="${escape(typeName)}" tabindex="0"`
+      : "";
 
     const linkAttrs = typeSrc ? ` href="${typeSrc}" target="_blank"` : "";
 
@@ -418,6 +420,7 @@
         props: {
           target: el,
           class: "q-pa-none transparent",
+          style: "max-width: calc(100vw - 1rem)",
           children: snip,
         },
       });

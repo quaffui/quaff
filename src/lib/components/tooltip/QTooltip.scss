@@ -1,40 +1,49 @@
-@use "$css/variables";
+@use "$css/mixins";
 
 .q-tooltip {
-  --space: -0.5rem;
+  @include mixins.typography("body-small");
   display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: auto;
+  align-items: safe center;
+  justify-content: safe center;
   gap: 0.5rem;
   background-color: var(--inverse-surface);
   color: var(--inverse-on-surface);
-  font-size: 0.75rem;
   text-align: center;
+  border: none;
   border-radius: 0.25rem;
-  padding: 0.5rem;
+  padding: 0.25rem 0.5rem;
   position: fixed;
-  bottom: auto;
-  right: auto;
-  width: auto;
-  white-space: nowrap;
-  font-weight: 500;
-  transition: opacity variables.$speed2;
+  inset: auto;
+  margin: 0;
+  width: max-content;
+  min-width: 2.5rem;
+  min-height: 1.5rem;
+  max-width: min(12.5rem, calc(100vw - 1rem));
+  max-height: calc(100vh - 1rem);
+  overflow: auto;
+  overflow-wrap: anywhere;
   z-index: 9999;
 
-  &__helper {
-    // Remove the helper element from the flow so it doesn't affect pre elements
-    position: absolute;
-  }
-
   &:has(> .q-card) {
+    @include mixins.typography("body-medium");
     padding: 0;
-    overflow: hidden;
-    background-color: transparent;
-    text-align: unset;
+    max-width: min(20rem, calc(100vw - 1rem));
+    border-radius: 0.75rem;
+    background-color: var(--surface-container);
+    color: var(--on-surface-variant);
+    box-shadow: var(--elevate2);
+    text-align: start;
 
-    & > .q-card {
+    > .q-card {
+      width: 100%;
+      background-color: transparent;
+      color: inherit;
+      border-radius: inherit;
       box-shadow: none;
+
+      :is(h1, h2, h3, h4, h5, h6) {
+        @include mixins.typography("title-small");
+      }
     }
   }
 }
