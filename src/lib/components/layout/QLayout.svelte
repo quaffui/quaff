@@ -46,7 +46,6 @@
     footer,
     navbar,
     onscroll,
-    onresize,
     children,
     ...props
   }: QLayoutProps = $props();
@@ -54,7 +53,7 @@
 
   // #region:    --- Reactive variables
   let layoutEl = $state<HTMLDivElement>();
-  let contentEl = $state<HTMLDivElement>();
+  let isAnimated = $state(false);
 
   const headerInfo = $state({
     height: 0,
@@ -97,23 +96,17 @@
   const footerOffset = $derived(!footer || footerInfo.collapsed ? 0 : footerInfo.height);
   const navbarOffset = $derived(!navbar || !navbarInfo.ready ? 0 : navbarInfo.height);
   const bottomOffset = $derived(footerOffset + navbarOffset);
-  const leftOffset = $derived(handleDrawerCtx(leftRailbarInfo) + handleDrawerCtx(leftDrawerInfo));
-  const rightOffset = $derived(
-    handleDrawerCtx(rightRailbarInfo) + handleDrawerCtx(rightDrawerInfo)
-  );
-
-  const contentMargin = $derived(
-    `${header ? topOffset : 0}px ${rightOffset}px ${bottomOffset}px ${leftOffset}px`
-  );
+  const leftOffset = $derived(occupiedWidth(leftRailbarInfo) + occupiedWidth(leftDrawerInfo));
+  const rightOffset = $derived(occupiedWidth(rightRailbarInfo) + occupiedWidth(rightDrawerInfo));
 
   const isReady = $derived(
-    appBarReady("header") &&
-      appBarReady("footer") &&
-      sideBarReady("railbar", "left") &&
-      sideBarReady("railbar", "right") &&
-      sideBarReady("drawer", "left") &&
-      sideBarReady("drawer", "right") &&
-      navbarReady()
+    isLayoutPartReady(header, headerInfo, "q-header") &&
+      isLayoutPartReady(footer, footerInfo, "q-footer") &&
+      isLayoutPartReady(railbarLeft, leftRailbarInfo, "q-railbar--left") &&
+      isLayoutPartReady(railbarRight, rightRailbarInfo, "q-railbar--right") &&
+      isLayoutPartReady(drawerLeft, leftDrawerInfo, "q-drawer--left") &&
+      isLayoutPartReady(drawerRight, rightDrawerInfo, "q-drawer--right") &&
+      isLayoutPartReady(navbar, navbarInfo, "q-navbar")
   );
   // #endregion: --- Derived values
 
@@ -162,56 +155,35 @@
   });
   // #endregion: --- Context
 
-  // #region:    --- Lifecycle
-  onMount(() => {
-    setTimeout(() => {
-      if (contentEl) {
-        contentEl.style.transition = "margin 0.3s";
-      }
-    }, 100);
-  });
-  // #endregion: --- Lifecycle
-
   // #region:    --- Functions
-  function handleDrawerCtx(info: Omit<DrawerContext, "view">) {
+  function occupiedWidth(info: Omit<DrawerContext, "view">) {
     return info.takesSpace ? info.width : 0;
   }
 
-  function appBarReady(barType: "header" | "footer") {
-    const hasBar = barType === "header" ? header : footer;
-    const barInfo = barType === "header" ? headerInfo : footerInfo;
-    const barReady = !hasBar || barInfo.ready;
-
-    return barReady || (layoutEl && !layoutEl.querySelector(`.q-${barType}`));
-  }
-
-  function sideBarReady(barType: "railbar" | "drawer", side: "left" | "right") {
-    const barReady =
-      side === "left"
-        ? {
-            railbar: !railbarLeft || leftRailbarInfo.ready,
-            drawer: !drawerLeft || leftDrawerInfo.ready,
-          }
-        : {
-            railbar: !railbarRight || rightRailbarInfo.ready,
-            drawer: !drawerRight || rightDrawerInfo.ready,
-          };
-
+  function isLayoutPartReady(
+    snippet: QLayoutProps["header"],
+    info: { ready: boolean },
+    selector: string
+  ) {
     return (
-      barReady[barType] || (layoutEl && !layoutEl.querySelector(`:scope > .q-${barType}--${side}`))
-    );
-  }
-
-  function navbarReady() {
-    return (
-      !navbar || navbarInfo.ready || (layoutEl && !layoutEl.querySelector(":scope > .q-navbar"))
+      !snippet || info.ready || (!!layoutEl && !layoutEl.querySelector(`:scope > .${selector}`))
     );
   }
   // #endregion: --- Functions
 
+  onMount(() => {
+    // Let initial bar measurements render before enabling layout transitions.
+    let frame = requestAnimationFrame(() => {
+      frame = requestAnimationFrame(() => (isAnimated = true));
+    });
+
+    return () => cancelAnimationFrame(frame);
+  });
+
   Q.classes("q-layout", {
     bemClasses: {
       ready: isReady,
+      animated: isAnimated,
     },
     classes: [props.class],
   });
@@ -221,17 +193,15 @@
   bind:this={layoutEl}
   {...props}
   class="q-layout"
-  style:--left-drawer-width={`${drawerLeft ? leftDrawerInfo.width : 0}px`}
-  style:--right-drawer-width={`${drawerRight ? rightDrawerInfo.width : 0}px`}
-  style:--left-railbar-width={`${railbarLeft ? leftRailbarInfo.width : 0}px`}
-  style:--right-railbar-width={`${railbarRight ? rightRailbarInfo.width : 0}px`}
+  style:--left-drawer-width={`${leftDrawerInfo.width}px`}
+  style:--right-drawer-width={`${rightDrawerInfo.width}px`}
+  style:--left-railbar-width={`${occupiedWidth(leftRailbarInfo)}px`}
+  style:--right-railbar-width={`${occupiedWidth(rightRailbarInfo)}px`}
   style:--navbar-height={`${navbarOffset}px`}
   style:--offset-top={`${topOffset}px`}
   style:--offset-right={`${rightOffset}px`}
   style:--offset-bottom={`${bottomOffset}px`}
   style:--offset-left={`${leftOffset}px`}
-  {onscroll}
-  {onresize}
 >
   {@render railbarLeft?.()}
   {@render railbarRight?.()}
@@ -252,7 +222,7 @@
       rightDrawerCtx.symbol,
     ]}
   >
-    <div bind:this={contentEl} class="q-layout__content" style:margin={contentMargin}>
+    <div class="q-layout__content" {onscroll}>
       {#if content}
         {@render content()}
       {:else}

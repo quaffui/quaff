@@ -2,7 +2,7 @@ import { capitalize } from "$utils";
 import type { QLayoutProps } from "$components/layout/props";
 
 function drawerBtn (side: "left" | "right") {
- return `      <QBtn icon="menu" flat onclick={() => (${side}DrawerShown = !${side}DrawerShown)} />`
+ return `      <QBtn icon="menu" flat onclick={() => (${side}DrawerShown = !${side}DrawerShown)} aria-label="Toggle ${side} drawer" />`
 }
 
 function hfBuilder(
@@ -16,7 +16,7 @@ function hfBuilder(
     `  {#snippet ${kind}()}`,
     `    <Q${capitalize(kind)}${classes}>`,
     leftDrawer && drawerBtn("left"),
-    `      <div class="title-large">Header</div>`,
+    `      <div class="title-large">${capitalize(kind)}</div>`,
     rightDrawer && drawerBtn("right"),
     `    </Q${capitalize(kind)}>`,
     `  {/snippet}${kind === "header" ? "\n" : ""}`,
@@ -28,6 +28,7 @@ function hfBuilder(
 function navbarBuilder(kind: "railbar" | "drawer", side: "left" | "right") {
   const attributes = [
     "bordered",
+    `side="${side}"`,
   ]
 
   if (kind === "drawer") {

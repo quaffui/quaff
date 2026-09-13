@@ -46,8 +46,9 @@
   // #endregion: --- Reactive variables
 
   // #region:    --- Derived values
-  const drawerCtxToUse = $derived(side === "left" ? leftDrawerCtx : rightDrawerCtx);
-  const drawerContext = $derived(drawerCtxToUse.get());
+  const leftContext = leftDrawerCtx.get();
+  const rightContext = rightDrawerCtx.get();
+  const drawerContext = $derived(side === "left" ? leftContext : rightContext);
 
   const isBelowBreakpoint = $derived.by(() => {
     if (behavior === "mobile") {
@@ -102,12 +103,6 @@
 
         resetBodyStyles();
       }
-
-      drawerCtxToUse.updateEntries({
-        takesSpace: false,
-        width: 0,
-        ready: false,
-      });
     };
   });
   // #endregion: --- Lifecycle
@@ -149,16 +144,18 @@
   });
 
   $effect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    [value, isModal, width];
+    // Keep this side's context so cleanup resets it after a side change.
+    const context = drawerContext;
 
-    untrack(() => {
-      drawerCtxToUse.updateEntries({
-        takesSpace: !!value && !isModal,
-        width,
-        ready: true,
-      });
-    });
+    if (!context) {
+      return;
+    }
+
+    Object.assign(context, { takesSpace: !!value && !isModal, width, ready: true });
+
+    return () => {
+      Object.assign(context, { takesSpace: false, width: 0, ready: false });
+    };
   });
   // #endregion: --- Effects
 
