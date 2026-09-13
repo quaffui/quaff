@@ -1,4 +1,4 @@
-import type { Sizeable } from "$utils";
+import type { Sizeable } from "$utils/types/props/design";
 import type { Snippet } from "svelte";
 import type { HTMLAttributes } from "svelte/elements";
 
@@ -37,7 +37,7 @@ export type QAvatarVideoSrcOptions = {
 
 export interface QAvatarProps extends Sizeable, HTMLAttributes<HTMLElement> {
   /**
-   * Shape of the avatar.
+   * Shape of the avatar. The default circle follows Material 3; other shapes are Quaff extensions.
    */
   shape?: QAvatarShapeOptions;
   /**
@@ -53,20 +53,23 @@ export interface QAvatarProps extends Sizeable, HTMLAttributes<HTMLElement> {
    */
   sources?: QAvatarVideoSrcOptions[];
   /**
-   * If set to true, the avatar will be treaded as a video avatar.
+   * If set to true, the avatar will be treated as a video avatar.
    * This means that the "src" prop will be used as an MP4 video source and the "sources" prop can be used to specify multiple sources for the video.
    */
   video?: boolean;
   /**
-   * alt property for the image.
+   * Pauses a video avatar. Bind this property to provide a play/pause control.
+   * Set it to true to prevent autoplay. Defaults to false; has no effect on images.
+   */
+  paused?: boolean;
+  /**
+   * Image alternative text. Defaults to an empty string for decorative images.
+   * Provide a description when the image conveys information not already present in nearby text.
    */
   alt?: string;
   /**
-   * Accessibility controls you might want to add inside the <video> element.
-   * For example, you might want to add a <p> tag in case the video player doesn't work.
-   * This can also be use to add captions or subtitles to the video or even to add the sources manually (without using the "src" or "sources" props).
-   *
-   * This snippet will be added inside the <video> tag.
+   * Content inside the <video> element, such as caption tracks, additional sources or fallback text.
+   * Use the paused binding for playback controls outside the video.
    */
   videoAccessibility?: Snippet;
 }
