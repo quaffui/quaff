@@ -1,6 +1,6 @@
 import { resolve } from "path";
 import { defineConfig } from "vite";
-import { ComponentCss } from "./src/lib/internal/componentRegistry";
+import { ComponentCss } from "./src/lib/internal/componentRegistry.ts";
 
 const componentCss = Object.values(ComponentCss);
 
@@ -13,10 +13,10 @@ const cssEntries = Object.fromEntries([
 export default defineConfig({
   resolve: {
     alias: {
-      $lib: resolve(__dirname, "src/lib"),
-      $components: resolve(__dirname, "./src/lib/components"),
-      $classes: resolve(__dirname, "./src/lib/classes"),
-      $css: resolve(__dirname, "./src/lib/css"),
+      $lib: resolve(import.meta.dirname, "src/lib"),
+      $components: resolve(import.meta.dirname, "./src/lib/components"),
+      $classes: resolve(import.meta.dirname, "./src/lib/classes"),
+      $css: resolve(import.meta.dirname, "./src/lib/css"),
     },
   },
   build: {
