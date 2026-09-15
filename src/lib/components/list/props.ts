@@ -38,6 +38,11 @@ export interface QListProps extends WithActiveAttrs, HTMLAttributes<HTMLElement>
   selection?: QListSelection;
 
   /**
+   * Preserves child elements' tab order and disables the list's arrow-key navigation.
+   */
+  preserveTabOrder?: boolean;
+
+  /**
    * Adds separators between list items.
    */
   separator?: boolean;
