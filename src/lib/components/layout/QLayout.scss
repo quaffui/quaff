@@ -71,12 +71,14 @@
   overflow: auto;
 }
 
-.q-layout:not(.q-layout--animated) > .q-railbar {
+.q-layout:not(.q-layout--animated) > :is(.q-header, .q-railbar) {
   transition: none;
 }
 
 .q-layout--animated > .q-layout__content {
-  transition: margin variables.$speed3;
+  transition:
+    margin variables.$speed3,
+    height variables.$speed3;
 
   @media (prefers-reduced-motion: reduce) {
     transition: none;

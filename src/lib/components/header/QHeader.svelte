@@ -10,6 +10,8 @@
 
   // #region:    --- Reactive variables
   let headerEl = $state<HTMLElement>();
+  let scrollPosition = $state(0);
+  let isScrollingDown = $state(true);
 
   const headerContext = headerCtx.get();
   // #endregion: --- Reactive variables
@@ -30,13 +32,7 @@
   // #region:    --- Derived values
   const revealObserver = useRevealScrollObserver("header", uid, () => reveal && !!headerContext);
   const revealScroll = $derived(revealObserver.scroll);
-
-  const offset = $derived(revealScroll ? revealScroll.position - height : undefined);
-
-  // Collapse the header `${reavealOffset}px` below the top of layout content when scrolling down
-  const collapsed = $derived(
-    reveal && revealScroll?.direction === "down" && offset! - revealOffset > 0
-  );
+  const isCollapsed = $derived(reveal && isScrollingDown && scrollPosition > height + revealOffset);
 
   const leftOffset = $derived(headerContext?.view.charAt(0) === "l");
 
@@ -45,39 +41,43 @@
 
   // #region:    --- Effects
   $effect.pre(() => {
+    const position = revealScroll?.position ?? 0;
+
+    if (revealScroll?.direction === "up" && position > 0) {
+      const content = headerEl?.parentElement?.querySelector<HTMLElement>(
+        ":scope > .q-layout__content"
+      );
+
+      // Growing the viewport can clamp its scroll position without the user scrolling up.
+      if (content && position >= content.scrollHeight - content.clientHeight) {
+        return;
+      }
+    }
+
+    scrollPosition = position;
+    isScrollingDown = revealScroll?.direction === "down";
+  });
+
+  $effect.pre(() => {
     if (!headerContext) {
       return;
     }
 
     headerCtx.updateEntries({
       height,
-      collapsed,
+      collapsed: isCollapsed,
       ready: true,
     });
   });
   // #endregion: --- Effects
 
   // #region:    --- Lifecycle
-  onMount(() => {
-    if (headerContext) {
-      setTimeout(() => {
-        if (headerEl) {
-          headerEl.style.transition = "all 0.3s";
-        }
-      }, 100);
-    }
-
-    return () => {
-      if (headerEl) {
-        headerEl.style.transition = "none";
-      }
-
-      headerCtx.updateEntries({
-        height: 0,
-        collapsed: false,
-        ready: false,
-      });
-    };
+  onMount(() => () => {
+    headerCtx.updateEntries({
+      height: 0,
+      collapsed: false,
+      ready: false,
+    });
   });
   // #endregion: --- Lifecycle
 
@@ -86,7 +86,7 @@
       [uid]: true,
       elevated,
       bordered,
-      collapsed,
+      collapsed: isCollapsed,
       "offset-left": leftOffset,
       "offset-right": rightOffset,
       inset,
