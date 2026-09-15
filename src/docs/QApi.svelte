@@ -449,7 +449,7 @@
       </QTabs>
     </div>
     <QCardSection class="q-px-md q-pb-md" style="max-height: 416px; overflow-y: auto">
-      <QList separator bordered>
+      <QList separator bordered preserveTabOrder>
         {@const docs = QDocument.docs}
         {#if activeApiTabs[index] === "props" && (docs.generics.length || docs.domAttributesConstraint)}
           <QItem>

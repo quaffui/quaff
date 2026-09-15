@@ -395,7 +395,7 @@
       role="listbox"
       aria-multiselectable={multiple ? "true" : undefined}
     >
-      <QList dense>
+      <QList dense preserveTabOrder>
         {#each visibleOptions as option, idx (idx)}
           <QItem
             clickable

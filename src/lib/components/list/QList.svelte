@@ -30,6 +30,7 @@
     expressive = false,
     segmented = false,
     selection,
+    preserveTabOrder = false,
     separator = false,
     separatorOptions = {},
     padding = false,
@@ -44,14 +45,19 @@
   }: QListProps = $props();
   // #endregion: --- Props
 
+  // #region:    --- Reactive variables
+  let listEl = $state<HTMLElement>();
+  // #endregion: --- Reactive variables
+
   // #region:    --- Derived values
   const isExpressive = $derived(expressive ?? quaffConfig.expressive);
   const role = $derived(props.role ?? (selection ? "listbox" : undefined));
   // #endregion: --- Derived values
 
   // #region:    --- Non-reactive variables
-  let listEl: HTMLElement;
   let hasMounted = false;
+  // eslint-disable-next-line svelte/prefer-svelte-reactivity
+  const originalTabIndexes = new Map<HTMLElement, string | null>();
   // This registry must stay non-reactive so registration effects cannot invalidate themselves.
   // eslint-disable-next-line svelte/prefer-svelte-reactivity
   const expansionGroups = new Map<string, () => void>();
@@ -73,11 +79,21 @@
   });
   // #endregion: --- Context
 
+  // #region:    --- Effects
+  $effect(() => {
+    if (preserveTabOrder || !listEl) {
+      return;
+    }
+
+    resetTabStop();
+    return restoreTabIndexes;
+  });
+  // #endregion: --- Effects
+
   // #region:    --- Lifecycle
   onMount(() => {
     hasMounted = true;
     initiallyOpenExpansionGroups.clear();
-    resetTabStop();
   });
   // #endregion: --- Lifecycle
 
@@ -120,13 +136,13 @@
     }
 
     for (const action of nestedActions) {
-      action.tabIndex = -1;
+      setTabIndex(action, -1);
     }
     return [item];
   }
 
   function getActions() {
-    return Array.from(listEl.children)
+    return Array.from(listEl?.children ?? [])
       .flatMap((child) => {
         if (!(child instanceof HTMLElement)) {
           return [];
@@ -154,9 +170,29 @@
       );
   }
 
+  function setTabIndex(action: HTMLElement, tabIndex: number) {
+    if (!originalTabIndexes.has(action)) {
+      originalTabIndexes.set(action, action.getAttribute("tabindex"));
+    }
+
+    action.tabIndex = tabIndex;
+  }
+
+  function restoreTabIndexes() {
+    for (const [action, tabIndex] of originalTabIndexes) {
+      if (tabIndex === null) {
+        action.removeAttribute("tabindex");
+      } else {
+        action.setAttribute("tabindex", tabIndex);
+      }
+    }
+
+    originalTabIndexes.clear();
+  }
+
   function setTabStop(actions: HTMLElement[], target?: HTMLElement) {
     for (const action of actions) {
-      action.tabIndex = action === target ? 0 : -1;
+      setTabIndex(action, action === target ? 0 : -1);
     }
   }
 
@@ -168,6 +204,10 @@
 
   function handleFocusin(event: FocusEvent) {
     onfocusin?.(event as Parameters<NonNullable<QListProps["onfocusin"]>>[0]);
+
+    if (preserveTabOrder) {
+      return;
+    }
 
     const target = event.target as HTMLElement;
     const actions = getActions();
@@ -183,7 +223,7 @@
   function handleFocusout(event: FocusEvent) {
     onfocusout?.(event as Parameters<NonNullable<QListProps["onfocusout"]>>[0]);
 
-    if (!listEl.contains(event.relatedTarget as Node)) {
+    if (!preserveTabOrder && !listEl?.contains(event.relatedTarget as Node)) {
       resetTabStop();
     }
   }
@@ -191,7 +231,7 @@
   function handleKeydown(event: KeyboardEvent) {
     onkeydown?.(event as Parameters<NonNullable<QListProps["onkeydown"]>>[0]);
 
-    if (event.defaultPrevented || !isArrowKey(event)) {
+    if (preserveTabOrder || event.defaultPrevented || !isArrowKey(event)) {
       return;
     }
 
