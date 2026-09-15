@@ -11,7 +11,10 @@
 
   @include mixins.layoutBarDisplay;
 
-  @include mixins.padding("x-md");
+  @include mixins.typography("body-medium");
+
+  padding-inline: 1rem;
+  gap: 0.5rem;
 
   min-height: unset;
   height: var(--footer-height);
@@ -20,13 +23,23 @@
   border-radius: 0;
 
   background-color: var(--surface);
+  transition-property: translate, bottom, left, right;
+  transition-duration: variables.$speed3;
 
-  &.q-footer--bordered {
+  &:focus-within {
+    transition: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+
+  &--bordered {
     @include mixins.border($position: "top");
   }
 
-  &.q-footer--collapsed {
-    translate: 0 calc(1.5 * var(--footer-height));
+  &--collapsed:not(:focus-within) {
+    translate: 0 100%;
   }
 
   & > nav {
@@ -35,7 +48,7 @@
   }
 
   @each $side in ("left", "right") {
-    &.q-footer--offset-#{$side} {
+    &--offset-#{$side} {
       #{$side}: var(--offset-#{$side}, 0);
     }
   }
