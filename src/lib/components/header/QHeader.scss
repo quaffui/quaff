@@ -18,6 +18,10 @@
   background-color: var(--surface);
   transition: all variables.$speed3;
 
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+
   > .q-btn--round {
     width: 3rem;
     min-width: 3rem;
@@ -31,7 +35,6 @@
     bottom: auto;
     left: 0;
     width: auto;
-    transition: none;
   }
 
   &--inset {
@@ -55,7 +58,8 @@
   }
 
   &.q-header--collapsed {
-    translate: 0 calc(-1.5 * var(--header-height));
+    translate: 0 -100%;
+    box-shadow: none;
   }
 
   @each $side in ("left", "right") {
