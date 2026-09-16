@@ -1,22 +1,27 @@
-<!-- This component should be used when an icon can be set from props. The icon can either be undefined, a string or a Snippet so this componnet handles it all. -->
+<!-- Renders icons, image sources, or snippets supplied through component props. -->
 <script lang="ts">
   import QIcon from "$components/icon/QIcon.svelte";
   import type { QIconProps } from "$components/icon/props";
+  import { extractImgSrc } from "$utils/string";
   import type { MaterialSymbol } from "material-symbols";
   import type { Snippet } from "svelte";
 
   interface IconSnippetProps extends Omit<QIconProps, "name"> {
-    icon?: MaterialSymbol | Snippet;
-    defaultIcon?: MaterialSymbol | Snippet;
+    icon?: MaterialSymbol | Snippet | `img:${string}`;
+    defaultIcon?: MaterialSymbol | Snippet | `img:${string}`;
+    image?: Snippet<[src: string]>;
   }
 
-  let { icon, defaultIcon, ...props }: IconSnippetProps = $props();
+  let { icon, defaultIcon, image, ...props }: IconSnippetProps = $props();
 
   const iconToUse = $derived(icon ?? defaultIcon);
+  const src = $derived(typeof iconToUse === "string" ? extractImgSrc(iconToUse) : undefined);
 </script>
 
-{#if typeof iconToUse === "string"}
-  <QIcon name={iconToUse} {...props} />
+{#if src && image}
+  {@render image(src)}
+{:else if typeof iconToUse === "string"}
+  <QIcon name={src ? undefined : (iconToUse as MaterialSymbol)} img={src} {...props} />
 {:else}
   {@render iconToUse?.()}
 {/if}

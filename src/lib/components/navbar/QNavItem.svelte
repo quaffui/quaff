@@ -1,7 +1,7 @@
 <script lang="ts">
   import QIconSnippet from "$internal/QIconSnippet.svelte";
   import { ripple } from "$helpers";
-  import { getRouterInfo, isActivationKey, type QEvent } from "$utils";
+  import { getRouterInfo, handleActivationKeydown, type QEvent } from "$utils";
   import type { QNavItemProps } from "./props";
 
   type QNavItemElement = HTMLAnchorElement | HTMLButtonElement;
@@ -78,14 +78,7 @@
 
     onkeydown?.(event);
 
-    if (event.defaultPrevented || tag !== "a" || !isActivationKey(event)) {
-      return;
-    }
-
-    if (event.code !== "Enter") {
-      event.preventDefault();
-      event.currentTarget.click();
-    }
+    handleActivationKeydown(event);
   }
   // #endregion: --- Functions
 

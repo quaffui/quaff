@@ -11,7 +11,7 @@
 
 <script lang="ts">
   import { ripple } from "$helpers";
-  import { getRouterInfo, isActivationKey } from "$utils";
+  import { getRouterInfo, handleActivationKeydown } from "$utils";
   import QSeparator from "../separator/QSeparator.svelte";
   import { listCtx } from "./QList.svelte";
   import type { QItemProps } from "./props";
@@ -119,14 +119,8 @@
   function handleKeydown(event: KeyboardEvent & { currentTarget: HTMLElement }) {
     onkeydown?.(event);
 
-    if (event.defaultPrevented || !isClickable || !isActivationKey(event)) {
-      return;
-    }
-
-    const isNativeActivation = tag === "button" || (routerInfo.hasLink && event.code === "Enter");
-    if (!isNativeActivation) {
-      event.preventDefault();
-      event.currentTarget.click();
+    if (isClickable) {
+      handleActivationKeydown(event);
     }
   }
 

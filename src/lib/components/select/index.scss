@@ -1,3 +1,5 @@
+@use "$css/mixins";
+
 .q-select {
   .q-field__wrapper,
   .q-field__input {
@@ -32,7 +34,7 @@
     }
 
     &--focused {
-      background-color: color-mix(in srgb, var(--on-surface) 12%, transparent);
+      background-color: mixins.with-alpha(var(--on-surface), 12%);
     }
   }
 

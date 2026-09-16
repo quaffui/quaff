@@ -2,10 +2,10 @@
   import { useColor, useSize } from "$composables";
   import { ripple } from "$helpers";
   import { quaffConfig } from "$internal/quaffConfig";
-  import { extractImgSrc, getRouterInfo, isActivationKey, type QEvent } from "$utils";
+  import { getRouterInfo, handleActivationKeydown, type QEvent } from "$utils";
   import QCircularProgress from "$components/progress/QCircularProgress.svelte";
   import QIconSnippet from "$internal/QIconSnippet.svelte";
-  import type { QBtnIcon, QBtnProps, QBtnVariantOptions } from "./props";
+  import type { QBtnProps, QBtnVariantOptions } from "./props";
 
   type ButtonEvent<T extends Event> = QEvent<T, HTMLElement>;
 
@@ -47,7 +47,6 @@
   const isExpressive = $derived(expressive ?? quaffConfig.expressive);
   const resolvedSize = $derived(size ?? (isExpressive ? "sm" : "md"));
   const qSize = $derived(useSize(resolvedSize, "q-btn"));
-  const src = $derived(typeof icon === "string" ? extractImgSrc(icon) : undefined);
   const hasContent = $derived(label !== undefined || children !== undefined);
 
   const finalVariant = $derived.by(resolveVariant);
@@ -133,9 +132,8 @@
 
     if (event.key === "Escape") {
       event.currentTarget.blur();
-    } else if (isActivationKey(event)) {
-      event.preventDefault();
-      event.currentTarget.click();
+    } else {
+      handleActivationKeydown(event);
     }
   }
 
@@ -181,15 +179,12 @@
       size={iconSize}
       class="q-btn__loader"
     />
-  {:else if src}
-    <img {src} alt="" class="q-btn__img" />
   {:else if icon}
-    <QIconSnippet
-      icon={icon as Exclude<QBtnIcon, `img:${string}`>}
-      size={iconSize}
-      filled={fillIcon}
-      class="q-btn__icon"
-    />
+    <QIconSnippet {icon} size={iconSize} filled={fillIcon} class="q-btn__icon">
+      {#snippet image(src)}
+        <img {src} alt="" class="q-btn__img" />
+      {/snippet}
+    </QIconSnippet>
   {/if}
 
   {#if hasContent}

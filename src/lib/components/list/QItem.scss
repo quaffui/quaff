@@ -128,8 +128,8 @@
   }
 
   &.q-item--active[aria-disabled] {
-    --q-item-color: #{mixins.with-alpha(var(--on-surface), 38%)};
-    background-color: mixins.with-alpha(var(--on-surface), 38%);
+    --q-item-color: #{disabled.font-color()};
+    background-color: disabled.rest-color($opacity: 38%);
   }
 
   .q-item__section:is(.q-item__section--icon, .q-item__section--trailingIcon) {

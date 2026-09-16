@@ -1,7 +1,7 @@
 <script lang="ts">
   import { ripple } from "$helpers";
-  import { getRouterInfo, isActivationKey, type QEvent } from "$utils";
-  import QIcon from "$components/icon/QIcon.svelte";
+  import { getRouterInfo, handleActivationKeydown, type QEvent } from "$utils";
+  import QIconSnippet from "$internal/QIconSnippet.svelte";
   import { tabsCtx } from "./QTabs.svelte";
   import type { QTabProps } from "./props";
 
@@ -58,13 +58,10 @@
   function onkeydown(e: QTabEvent<KeyboardEvent>) {
     props.onkeydown?.(e);
 
-    if (e.defaultPrevented) {
-      return;
-    }
+    handleActivationKeydown(e);
 
-    if (isActivationKey(e)) {
-      e.preventDefault();
-      return qTab.click();
+    if (e.defaultPrevented || e.target !== e.currentTarget) {
+      return;
     }
 
     const vertical = ctx.variant === "vertical";
@@ -123,11 +120,7 @@
   data-quaff
 >
   <div class="q-tab__content">
-    {#if typeof icon === "string"}
-      <QIcon name={icon} class="q-tab__icon" />
-    {:else}
-      {@render icon?.()}
-    {/if}
+    <QIconSnippet {icon} class="q-tab__icon" />
 
     {#if children}
       <span>{@render children?.()}</span>
