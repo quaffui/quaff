@@ -74,10 +74,14 @@ class Quaff {
   }
 
   protected getCurrentDisplayMode(): DisplayMode {
-    const savedDisplayMode = localStorage.getItem(DISPLAY_MODE_STORAGE_KEY);
+    try {
+      const savedDisplayMode = localStorage.getItem(DISPLAY_MODE_STORAGE_KEY);
 
-    if (savedDisplayMode === "dark" || savedDisplayMode === "light") {
-      return savedDisplayMode;
+      if (savedDisplayMode === "dark" || savedDisplayMode === "light") {
+        return savedDisplayMode;
+      }
+    } catch {
+      // Use the system preference when storage is unavailable.
     }
 
     return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
@@ -92,8 +96,12 @@ class Quaff {
       document.body.classList.add(`body--${displayMode}`);
     }
 
-    if (persist && typeof localStorage !== "undefined") {
-      localStorage.setItem(DISPLAY_MODE_STORAGE_KEY, displayMode);
+    if (persist && typeof window !== "undefined") {
+      try {
+        localStorage.setItem(DISPLAY_MODE_STORAGE_KEY, displayMode);
+      } catch {
+        // Theme changes still apply when storage is blocked or full.
+      }
     }
   }
 
