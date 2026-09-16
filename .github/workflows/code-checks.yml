@@ -34,6 +34,9 @@ jobs:
           bun run docgen-props
           bun run docgen-snippets
 
+      - name: Run Unit Tests
+        run: bun run test:unit --run
+
       - name: Run Type Check
         run: bun run check
 

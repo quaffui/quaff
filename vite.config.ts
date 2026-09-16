@@ -7,7 +7,7 @@ import { quaffCssMinifier } from "./src/lib/plugins/css.ts";
 export default defineConfig({
   plugins: [docgenPlugin(), sveltekit(), quaffCssMinifier()],
   test: {
-    include: ["src/**/*.{test,spec}.{js,ts}"],
+    include: ["src/**/*.{test,spec}.{js,ts}", "docgen/**/*.{test,spec}.{js,ts}"],
   },
   resolve: {
     alias: {

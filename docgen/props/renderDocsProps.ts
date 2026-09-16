@@ -8,7 +8,7 @@ function exportName(interfaceName: string) {
   return interfaceName.replace(/Props$/, "Docs");
 }
 
-export default async function renderDocsProps(interfaces: DocgenInterface[]) {
+export default async function renderDocsProps(interfaces: DocgenInterface[], hash?: string) {
   for (const parsedInterface of interfaces) {
     if (!isPropsInterfaceName(parsedInterface.name)) {
       throw new Error(`Cannot render invalid props interface name: ${parsedInterface.name}.`);
@@ -22,7 +22,7 @@ export default async function renderDocsProps(interfaces: DocgenInterface[]) {
       .toSorted((a, b) => a.name.localeCompare(b.name))
       .map(async (parsedInterface) => {
         const name = exportName(parsedInterface.name);
-        const formattedTypeDependencies: Record<string, string> = {};
+        const formattedTypeDependencies: [string, string][] = [];
 
         for (const [typeName, definition] of Object.entries(parsedInterface.typeDependencies)) {
           let formatted;
@@ -38,7 +38,7 @@ export default async function renderDocsProps(interfaces: DocgenInterface[]) {
             formatted = definition;
           }
 
-          formattedTypeDependencies[typeName] = formatted;
+          formattedTypeDependencies.push([typeName, formatted]);
         }
 
         return [
@@ -46,14 +46,15 @@ export default async function renderDocsProps(interfaces: DocgenInterface[]) {
           `export const ${name}Generics: QApiGeneric[] = ${JSON.stringify(parsedInterface.generics)};`,
           `export const ${name}Props: QApiEntry[] = ${JSON.stringify(parsedInterface.props)};`,
           `export const ${name}Snippets: QApiEntry[] = ${JSON.stringify(parsedInterface.snippets)};`,
-          `export const ${name}Methods: QApiEntry[] = ${JSON.stringify(parsedInterface.methods ?? [])};`,
-          `export const ${name}TypeDependencies: Record<string, string> = ${JSON.stringify(formattedTypeDependencies)};`,
+          `export const ${name}Methods: QApiEntry[] = ${JSON.stringify(parsedInterface.methods)};`,
+          `export const ${name}TypeDependencies: Record<string, string> = Object.fromEntries(${JSON.stringify(formattedTypeDependencies)});`,
         ].join("\n\n");
       })
   );
 
   const source = [
     "// AUTO GENERATED FILE - DO NOT MODIFY OR DELETE",
+    ...(hash ? [`// @quaffHash ${hash}`] : []),
     'import type { QApiEntry, QApiGeneric } from "$docs";',
     "",
     declarations.join("\n\n"),

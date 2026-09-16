@@ -38,7 +38,7 @@ impl DefinitionId {
 impl TypeDefinition {
     pub fn name(&self) -> &str {
         match self {
-            Self::TypeAlias { name, .. } => name,
+            Self::TypeAlias { name, .. } | Self::Variable { name, .. } => name,
             Self::Interface(interface) => &interface.name,
         }
     }
@@ -225,20 +225,18 @@ impl TypeRegistry {
         Ok(())
     }
 
-    /// Expands a reference once per active generic instantiation.
+    /// Expands each declaration once along the active reference path, even if type arguments change.
     ///
     /// `Ok(None)` is returned for a recursive back-edge. Callers should retain a shallow
     /// [`ParsedType`](crate::parser::types::ParsedType) reference in that case.
     pub fn expand_reference<T, E, F>(
         &mut self,
-        key: impl Into<String>,
+        key: DefinitionId,
         expand: F,
     ) -> std::result::Result<Option<T>, E>
     where
         F: FnOnce(&mut Self) -> std::result::Result<T, E>,
     {
-        let key = key.into();
-
         if !self.active_expansions.insert(key.clone()) {
             return Ok(None);
         }
@@ -276,22 +274,30 @@ impl TypeRegistry {
             .iter()
             .map(|(lookup_name, reference)| {
                 let ordered = self.ordered_definitions(reference)?;
-                let last_index = ordered.len().saturating_sub(1);
                 let definitions = ordered
                     .into_iter()
-                    .enumerate()
-                    .map(|(index, id)| {
+                    .map(|id| {
                         let node = self
                             .nodes
                             .get(id)
                             .ok_or_else(|| DependencyError::MissingDefinition(id.clone()))?;
 
-                        Ok(if index == last_index {
-                            node.definition
-                                .to_ts_definition_as(&reference.declaration_name)
-                        } else {
-                            node.definition.to_ts_definition()
-                        })
+                        let names = self
+                            .uses
+                            .values()
+                            .filter(|usage| usage.target == *id)
+                            .map(|usage| usage.declaration_name.as_str())
+                            .collect::<BTreeSet<_>>();
+
+                        if names.is_empty() {
+                            return Ok(node.definition.to_ts_definition());
+                        }
+
+                        Ok(names
+                            .into_iter()
+                            .map(|name| node.definition.to_ts_definition_as(name))
+                            .collect::<Vec<_>>()
+                            .join("\n"))
                     })
                     .collect::<Result<Vec<_>, DependencyError>>()?;
 
@@ -687,6 +693,29 @@ mod tests {
     }
 
     #[test]
+    fn keeps_original_names_for_recursive_and_transitive_import_aliases()
+    -> Result<(), DependencyError> {
+        let mut registry = TypeRegistry::default();
+        let node = id("Node");
+        let wrapper = id("Wrapper");
+        registry.ensure_definition(node.clone(), |registry| {
+            registry.register_reference("Node", "Node", node.clone())?;
+            Ok(alias("Node", "{ next?: Node }"))
+        })?;
+        registry.ensure_definition(wrapper.clone(), |registry| {
+            registry.register_reference("LocalNode", "LocalNode", node.clone())?;
+            Ok(alias("Wrapper", "LocalNode"))
+        })?;
+        registry.register_reference("Wrapper", "Wrapper", wrapper)?;
+
+        let definitions = registry.build_type_definitions()?;
+        assert!(definitions["LocalNode"].contains("type Node = { next?: Node };"));
+        assert!(definitions["LocalNode"].contains("type LocalNode = { next?: Node };"));
+        assert!(definitions["Wrapper"].contains("type LocalNode = { next?: Node };"));
+        Ok(())
+    }
+
+    #[test]
     fn rejects_ambiguous_lookup_names() -> Result<(), DependencyError> {
         let mut registry = TypeRegistry::default();
         let first = id("first/Foo");
@@ -727,10 +756,10 @@ mod tests {
     fn terminates_recursive_generic_expansions() -> Result<(), DependencyError> {
         let mut registry = TypeRegistry::default();
 
-        let expanded = registry.expand_reference("Node<string>", |registry| {
+        let expanded = registry.expand_reference(id("Node"), |registry| {
             assert!(
                 registry
-                    .expand_reference("Node<string>", |_| Ok::<_, DependencyError>(()))?
+                    .expand_reference(id("Node"), |_| Ok::<_, DependencyError>(()))?
                     .is_none()
             );
             Ok::<_, DependencyError>("expanded")
@@ -738,7 +767,7 @@ mod tests {
 
         assert_eq!(expanded, Some("expanded"));
         assert_eq!(
-            registry.expand_reference("Node<string>", |_| Ok::<_, DependencyError>("again"))?,
+            registry.expand_reference(id("Node"), |_| Ok::<_, DependencyError>("again"))?,
             Some("again")
         );
 

@@ -31,13 +31,15 @@ impl UtilityKVKind {
     pub fn simplify(self, k: ParsedType, v: ParsedType) -> ParsedType {
         match self {
             Self::Exclude => {
-                let clean_v = filter_undefined_or_never(v);
+                if is_standard_type(&v, "never") {
+                    return k;
+                }
 
-                let Some(v) = clean_v else {
+                if is_standard_type(&v, "undefined") && can_remove_undefined(&k) {
                     return filter_undefined_or_never(k).unwrap_or_else(|| {
                         ParsedType::Standard(StandardType::new("never".to_string()))
                     });
-                };
+                }
 
                 ParsedType::UtilityKV {
                     kind: Self::Exclude,
@@ -64,6 +66,55 @@ impl UtilityKVKind {
                 v: Box::new(v),
             },
         }
+    }
+}
+
+fn is_standard_type(parsed: &ParsedType, expected: &str) -> bool {
+    match parsed {
+        ParsedType::Standard(standard) => standard.name == expected,
+        ParsedType::Reference(reference) => is_standard_type(&reference.parsed, expected),
+        _ => false,
+    }
+}
+
+fn can_remove_undefined(parsed: &ParsedType) -> bool {
+    match parsed {
+        ParsedType::Standard(standard) => {
+            matches!(
+                standard.name.as_str(),
+                "undefined"
+                    | "never"
+                    | "string"
+                    | "number"
+                    | "boolean"
+                    | "bigint"
+                    | "symbol"
+                    | "object"
+                    | "null"
+                    | "true"
+                    | "false"
+            ) || standard.name.starts_with(['"', '\''])
+                || standard.name.parse::<f64>().is_ok()
+        }
+        ParsedType::Reference(reference) => is_definitely_defined(&reference.parsed),
+        ParsedType::Union(types) => types.iter().all(can_remove_undefined),
+        _ => is_definitely_defined(parsed),
+    }
+}
+
+fn is_definitely_defined(parsed: &ParsedType) -> bool {
+    match parsed {
+        ParsedType::Reference(reference) => is_definitely_defined(&reference.parsed),
+        ParsedType::Union(types) => types.iter().all(is_definitely_defined),
+        ParsedType::Standard(standard) => {
+            standard.name != "undefined" && can_remove_undefined(parsed)
+        }
+        ParsedType::TemplateLiteral(_)
+        | ParsedType::TypeLiteral(_)
+        | ParsedType::Interface(_)
+        | ParsedType::Function(_)
+        | ParsedType::Tuple(_) => true,
+        _ => false,
     }
 }
 

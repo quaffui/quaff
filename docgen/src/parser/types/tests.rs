@@ -16,6 +16,10 @@ use crate::{
 };
 
 fn parse_interface(source: &str, target: &str) -> Interface {
+    parse_interface_with_registry(source, target).0
+}
+
+fn parse_interface_with_registry(source: &str, target: &str) -> (Interface, TypeRegistry) {
     let resolver = PathResolver(Path::new("/virtual/fixture.ts"));
     let mut registry = TypeRegistry::new(Path::new("/virtual"));
     let mut parsed = None;
@@ -41,7 +45,10 @@ fn parse_interface(source: &str, target: &str) -> Interface {
         })
         .unwrap();
 
-    parsed.unwrap_or_else(|| panic!("Interface {target} was not parsed"))
+    (
+        parsed.unwrap_or_else(|| panic!("Interface {target} was not parsed")),
+        registry,
+    )
 }
 
 fn property<'a>(interface: &'a Interface, name: &str) -> &'a ParsedType {
@@ -451,4 +458,290 @@ fn recursive_generic_aliases_terminate_with_a_shallow_reference() {
         panic!("Expected recursive Node reference")
     };
     assert_standard(next.parsed.as_ref(), "Node");
+}
+
+#[test]
+fn inherited_properties_keep_child_overrides_once() {
+    let interface = parse_interface(
+        r#"
+            interface Base { value?: string; other: number }
+            interface Middle extends Base { value: "middle" }
+            interface Props extends Middle { value: "child" }
+        "#,
+        "Props",
+    );
+
+    assert_eq!(interface.properties.len(), 2);
+    assert_standard(property(&interface, "value"), "\"child\"");
+}
+
+#[test]
+fn inherits_type_literals_and_single_key_utilities() {
+    let source = r#"
+        type Base = { first: string; second: number };
+        type Picked = Pick<Base, 'first'>;
+        type Omitted = Omit<Base, "first">;
+        type Combined = Base & { third: boolean };
+        interface CombinedProps extends Combined {}
+        interface LiteralProps extends Base {}
+        interface PickedProps extends Picked {}
+        interface DirectProps extends Pick<Base, "second"> {}
+        interface OmittedProps extends Omitted {}
+    "#;
+    let combined = parse_interface(source, "CombinedProps");
+    assert_eq!(combined.properties.len(), 3);
+    assert_standard(property(&combined, "third"), "boolean");
+    let literal = parse_interface(source, "LiteralProps");
+    assert_eq!(literal.properties.len(), 2);
+    let direct = parse_interface(source, "DirectProps");
+    assert_eq!(direct.properties.len(), 1);
+    assert_standard(property(&direct, "second"), "number");
+    let picked = parse_interface(source, "PickedProps");
+    assert_eq!(picked.properties.len(), 1);
+    assert_standard(property(&picked, "first"), "string");
+    let omitted = parse_interface(source, "OmittedProps");
+    assert_eq!(omitted.properties.len(), 1);
+    assert_standard(property(&omitted, "second"), "number");
+}
+
+#[test]
+fn exclusion_does_not_remove_unexcluded_undefined() {
+    let interface = parse_interface(
+        r#"interface Props<T> {
+            generic: Exclude<T, undefined>;
+            unchanged: Exclude<string | undefined, never>;
+            both: Exclude<string | undefined, string | undefined>;
+        }"#,
+        "Props",
+    );
+    assert!(matches!(
+        property(&interface, "generic"),
+        ParsedType::UtilityKV { .. }
+    ));
+    let unchanged = property(&interface, "unchanged");
+    assert!(matches!(unchanged, ParsedType::Union(types) if types.len() == 2));
+    let ParsedType::UtilityKV { v, .. } = property(&interface, "both") else {
+        panic!("Expected exclusion utility")
+    };
+    assert!(matches!(v.as_ref(), ParsedType::Union(types) if types.len() == 2));
+}
+
+#[test]
+fn function_types_preserve_rest_and_destructured_parameters() {
+    let interface = parse_interface(
+        "interface Props { callback: ({ value }: { value: string }, ...values: number[]) => void }",
+        "Props",
+    );
+    let ParsedType::Function(callback) = property(&interface, "callback") else {
+        panic!("Expected function type")
+    };
+    assert_eq!(callback.params.len(), 2);
+    assert_eq!(callback.params[0].name, "{ value }");
+    assert_eq!(callback.params[1].name, "...values");
+    assert!(matches!(
+        callback.params[1].type_annotation,
+        ParsedType::UtilityT {
+            kind: UtilityTKind::Array,
+            ..
+        }
+    ));
+}
+
+#[test]
+fn intersection_heritage_combines_overlapping_properties() {
+    let interface = parse_interface(
+        r#"
+            type Combined = { value?: string; optional?: number; required: string }
+                & { value: "narrow"; optional?: 1; required?: "narrow" };
+            interface Props extends Combined {}
+        "#,
+        "Props",
+    );
+    assert_eq!(interface.properties.len(), 3);
+    let value = interface
+        .properties
+        .iter()
+        .find(|property| property.key.doc_name() == "value")
+        .unwrap();
+    assert!(
+        !value
+            .flags
+            .contains(super::interfaces::InterfacePropertyFlags::Optional)
+    );
+    let ParsedType::Intersection(types) = &value.type_annotation else {
+        panic!("Expected narrowed intersection")
+    };
+    assert_standard(&types[0], "string");
+    assert_standard(&types[1], "\"narrow\"");
+    let optional = interface
+        .properties
+        .iter()
+        .find(|property| property.key.doc_name() == "optional")
+        .unwrap();
+    assert!(
+        optional
+            .flags
+            .contains(super::interfaces::InterfacePropertyFlags::Optional)
+    );
+    let required = interface
+        .properties
+        .iter()
+        .find(|property| property.key.doc_name() == "required")
+        .unwrap();
+    assert!(
+        !required
+            .flags
+            .contains(super::interfaces::InterfacePropertyFlags::Optional)
+    );
+}
+
+#[test]
+fn typeof_dependencies_preserve_variable_declarations() {
+    let (_, registry) = parse_interface_with_registry(
+        r#"
+            let selected: "day" | "night" = "day";
+            const labels = { day: "Day", night: "Night" };
+            type Labels = { [Key in keyof typeof labels]: string };
+            interface Props { selected: typeof selected; labels: Labels }
+        "#,
+        "Props",
+    );
+    let definitions = registry.build_type_definitions().unwrap();
+    assert_eq!(
+        definitions["selected"],
+        r#"let selected: "day" | "night" = "day";"#
+    );
+    assert_eq!(
+        definitions["Labels"],
+        r#"const labels = { day: "Day", night: "Night" };
+
+type Labels = { [Key in keyof typeof labels]: string };"#
+    );
+}
+
+#[test]
+fn pick_and_omit_keep_dom_heritage_constraints() {
+    use crate::transformer::typescript::ToTs;
+
+    let source = r#"
+        interface Base extends Omit<HTMLInputAttributes, "value" | "disabled"> {
+            custom?: string;
+            class?: string;
+        }
+        type Picked = Pick<Base, "custom" | "id" | "class">;
+        type Omitted = Omit<Base, "custom" | "id">;
+        interface PickedProps extends Picked {}
+        interface OmittedProps extends Omitted {}
+        interface CustomProps extends Pick<Base, "custom"> {}
+    "#;
+    let picked = parse_interface(source, "PickedProps");
+    assert_eq!(picked.properties.len(), 2);
+    assert_eq!(
+        picked.dom_props_heritage.unwrap().to_ts(),
+        r#"Pick<Omit<HTMLInputAttributes, "value" | "disabled">, "id">"#
+    );
+    let omitted = parse_interface(source, "OmittedProps");
+    assert_eq!(omitted.properties.len(), 1);
+    assert_eq!(
+        omitted.dom_props_heritage.unwrap().to_ts(),
+        r#"Omit<Omit<HTMLInputAttributes, "value" | "disabled">, "custom" | "id">"#
+    );
+    assert!(
+        parse_interface(source, "CustomProps")
+            .dom_props_heritage
+            .is_none()
+    );
+}
+
+#[test]
+fn recursive_generic_arguments_can_change_without_unbounded_expansion() {
+    let (interface, registry) = parse_interface_with_registry(
+        r#"
+            type Nest<T> = { value: T; next?: Nest<T[]> };
+            interface Branch<T> { value: T; next?: Branch<T[]> }
+            type Left<T> = { next?: Right<T[]> };
+            type Right<T> = { next?: Left<T[]> };
+            type Box<T> = { value: T };
+            interface Props {
+                nested: Nest<string>;
+                branch: Branch<number>;
+                mutual: Left<boolean>;
+                strings: Box<string>;
+                numbers: Box<number>;
+                boxes: Box<Box<string>>;
+            }
+        "#,
+        "Props",
+    );
+    use crate::transformer::typescript::ToTs;
+
+    let ParsedType::Reference(nested) = property(&interface, "nested") else {
+        panic!("Expected Nest reference")
+    };
+    let properties = literal_properties(&nested.parsed);
+    assert_standard(literal_property(properties, "value"), "string");
+    let ParsedType::Reference(next) = literal_property(properties, "next") else {
+        panic!("Expected recursive Nest reference")
+    };
+    assert_eq!(next.to_ts(), "Nest<string[]>");
+    assert_standard(&next.parsed, "Nest");
+
+    let ParsedType::Reference(branch) = property(&interface, "branch") else {
+        panic!("Expected Branch reference")
+    };
+    let ParsedType::Interface(branch) = branch.parsed.as_ref() else {
+        panic!("Expected expanded Branch interface")
+    };
+    assert_standard(property(branch, "value"), "number");
+    let ParsedType::Reference(next) = property(branch, "next") else {
+        panic!("Expected recursive Branch reference")
+    };
+    assert_eq!(next.to_ts(), "Branch<number[]>");
+    assert_standard(&next.parsed, "Branch");
+
+    for (name, expected) in [("strings", "string"), ("numbers", "number")] {
+        let ParsedType::Reference(reference) = property(&interface, name) else {
+            panic!("Expected Box reference")
+        };
+        assert_standard(
+            literal_property(literal_properties(&reference.parsed), "value"),
+            expected,
+        );
+    }
+
+    let ParsedType::Reference(boxes) = property(&interface, "boxes") else {
+        panic!("Expected nested Box reference")
+    };
+    let ParsedType::Reference(inner) = literal_property(literal_properties(&boxes.parsed), "value")
+    else {
+        panic!("Expected inner Box reference")
+    };
+    assert_standard(
+        literal_property(literal_properties(&inner.parsed), "value"),
+        "string",
+    );
+
+    let definitions = registry.build_type_definitions().unwrap();
+    assert_eq!(
+        definitions["Left<boolean>"].matches("type Left<T>").count(),
+        1
+    );
+    assert_eq!(
+        definitions["Left<boolean>"]
+            .matches("type Right<T>")
+            .count(),
+        1
+    );
+}
+
+#[test]
+fn snippet_parameters_reuse_structural_property_key_rendering() {
+    let interface = parse_interface(
+        r#"interface Props { cell?: Snippet<[{ [key: `data-${string}`]: string }]> }"#,
+        "Props",
+    );
+    let ParsedType::Snippet(parameters) = property(&interface, "cell") else {
+        panic!("Expected snippet parameters")
+    };
+    assert_standard(&parameters["[key: `data-${string}`]"], "string");
 }

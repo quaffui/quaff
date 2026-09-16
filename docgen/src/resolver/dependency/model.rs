@@ -13,6 +13,7 @@ use crate::{
 pub enum DefinitionKind {
     TypeAlias,
     Interface,
+    Variable,
 }
 
 /// Stable identity for a declaration within a docgen run.
@@ -35,6 +36,11 @@ pub enum TypeDefinition {
         value: ParsedType,
     },
     Interface(Interface),
+    Variable {
+        name: String,
+        kind: String,
+        declarator: String,
+    },
 }
 
 /// Final lookup emitted for documentation consumers.
@@ -73,7 +79,7 @@ pub struct TypeRegistry {
     pub(super) pending_dependencies: BTreeMap<DefinitionId, BTreeSet<DefinitionId>>,
     pub(super) owner_stack: Vec<DefinitionId>,
     pub(super) uses: BTreeMap<String, ReferenceUse>,
-    pub(super) active_expansions: BTreeSet<String>,
+    pub(super) active_expansions: BTreeSet<DefinitionId>,
 }
 
 /// A consistency error encountered while building or rendering the dependency graph.

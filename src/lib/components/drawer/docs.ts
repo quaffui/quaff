@@ -1,6 +1,7 @@
 import type { QComponentDocs } from "$docs";
 import {
   QDrawerDocsProps,
+  QDrawerDocsMethods,
   QDrawerDocsSnippets,
   QDrawerDocsDomAttributesConstraint,
   QDrawerDocsGenerics,
@@ -15,7 +16,7 @@ export const QDrawerDocs: QComponentDocs = {
     domAttributesConstraint: QDrawerDocsDomAttributesConstraint,
     props: QDrawerDocsProps,
     snippets: QDrawerDocsSnippets,
-    methods: [],
+    methods: QDrawerDocsMethods,
     events: [],
     typeDependencies: QDrawerDocsTypeDependencies,
   },

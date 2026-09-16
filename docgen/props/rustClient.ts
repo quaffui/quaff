@@ -93,13 +93,13 @@ export function validateDocgenResponse(value: unknown): DocgenResponse {
 
 export default function runRustDocgen(request: DocgenRequest): Promise<DocgenResponse> {
   return new Promise((resolve, reject) => {
-    const usesProcessGroup = process.platform !== "win32";
+    const canUseProcessGroup = process.platform !== "win32";
     const child = spawn(
       "cargo",
       ["run", "--quiet", "--locked", "--manifest-path", manifestPath, "--", "generate"],
       {
         cwd: projectRoot,
-        detached: usesProcessGroup,
+        detached: canUseProcessGroup,
         stdio: ["pipe", "pipe", "pipe"],
       }
     );
@@ -108,7 +108,7 @@ export default function runRustDocgen(request: DocgenRequest): Promise<DocgenRes
     const stderr: Buffer[] = [];
     let stdoutBytes = 0;
     let stderrBytes = 0;
-    let settled = false;
+    let hasSettled = false;
     let forceKillTimer: ReturnType<typeof setTimeout> | undefined;
 
     const timeout = setTimeout(() => {
@@ -119,12 +119,12 @@ export default function runRustDocgen(request: DocgenRequest): Promise<DocgenRes
     }, DOCGEN_TIMEOUT_MS);
 
     function signalChild(signal: NodeJS.Signals) {
-      if (child.exitCode !== null || child.signalCode !== null) {
+      if (!canUseProcessGroup && (child.exitCode !== null || child.signalCode !== null)) {
         return;
       }
 
       try {
-        if (usesProcessGroup && child.pid) {
+        if (canUseProcessGroup && child.pid) {
           process.kill(-child.pid, signal);
         } else {
           child.kill(signal);
@@ -140,15 +140,15 @@ export default function runRustDocgen(request: DocgenRequest): Promise<DocgenRes
       forceKillTimer.unref();
     }
 
-    function rejectOnce(error: unknown, terminate = false) {
-      if (settled) {
+    function rejectOnce(error: unknown, doTerminate = false) {
+      if (hasSettled) {
         return;
       }
 
-      settled = true;
+      hasSettled = true;
       clearTimeout(timeout);
 
-      if (terminate) {
+      if (doTerminate) {
         terminateChild();
       }
 
@@ -156,17 +156,17 @@ export default function runRustDocgen(request: DocgenRequest): Promise<DocgenRes
     }
 
     function resolveOnce(response: DocgenResponse) {
-      if (settled) {
+      if (hasSettled) {
         return;
       }
 
-      settled = true;
+      hasSettled = true;
       clearTimeout(timeout);
       resolve(response);
     }
 
     child.stdout.on("data", (chunk: Buffer) => {
-      if (settled) {
+      if (hasSettled) {
         return;
       }
 
@@ -180,7 +180,7 @@ export default function runRustDocgen(request: DocgenRequest): Promise<DocgenRes
       stdout.push(chunk);
     });
     child.stderr.on("data", (chunk: Buffer) => {
-      if (settled) {
+      if (hasSettled) {
         return;
       }
 
@@ -202,7 +202,7 @@ export default function runRustDocgen(request: DocgenRequest): Promise<DocgenRes
         clearTimeout(forceKillTimer);
       }
 
-      if (settled) {
+      if (hasSettled) {
         return;
       }
 

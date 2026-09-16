@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import ts from "typescript";
 import renderDocsProps from "../../docgen/props/renderDocsProps";
 import { validateDocgenResponse } from "../../docgen/props/rustClient";
 
@@ -27,6 +28,34 @@ describe("Rust docgen integration", () => {
     expect(output).toContain('header: "<div>value: T</div>"');
     expect(output).toContain('header: "<div>focus()</div>"');
     expect(output).toContain('| "alpha"');
+  });
+
+  it("preserves prototype-named type definitions in the generated exports", async () => {
+    const typeDependencies = Object.fromEntries([
+      ["__proto__", "type __proto__ = string;"],
+      ["constructor", "type constructor = number;"],
+    ]);
+    const output = await renderDocsProps([
+      {
+        name: "QExampleProps",
+        generics: [],
+        props: [],
+        snippets: [],
+        methods: [],
+        typeDependencies,
+      },
+    ]);
+    const { outputText } = ts.transpileModule(output, {
+      compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 },
+    });
+    const generatedExports: Record<string, unknown> = {};
+    new Function("exports", outputText)(generatedExports);
+    const definitions = generatedExports.QExampleDocsTypeDependencies as Record<string, string>;
+
+    expect(Object.hasOwn(definitions, "__proto__")).toBe(true);
+    expect(definitions.__proto__).toBe(typeDependencies.__proto__);
+    expect(Object.hasOwn(definitions, "constructor")).toBe(true);
+    expect(definitions.constructor).toBe(typeDependencies.constructor);
   });
 
   it("rejects malformed Rust response data", () => {

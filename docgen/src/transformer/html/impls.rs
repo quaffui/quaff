@@ -9,7 +9,7 @@ use crate::{
         interfaces::{Interface, InterfaceProperty, InterfacePropertyFlags, InterfacePropertyKey},
         ts_utilities::UtilityTKind,
     },
-    transformer::typescript::ToTs,
+    transformer::typescript::{ToTs, TsPrecedence},
 };
 
 use super::{HtmlItem, ToHtml};
@@ -91,6 +91,7 @@ impl HtmlItem {
             tag = Some("span");
             classes.push("clickable");
             attrs.push("data-quaff".to_string());
+            attrs.push(r#"tabindex="0""#.to_string());
             attrs.push(format!(
                 r#"data-type-name="{}""#,
                 escape_html(&self.type_name)
@@ -156,6 +157,14 @@ fn text(value: impl AsRef<str>) -> String {
     HtmlItem::new(value).create_item()
 }
 
+fn render_nested(parsed: ParsedType, parent: TsPrecedence) -> String {
+    if parsed.ts_precedence() < parent {
+        format!("{}{}{}", text("("), parsed.to_html(), text(")"))
+    } else {
+        parsed.to_html()
+    }
+}
+
 fn render_generic(generic: GenericInfo) -> String {
     let mut result = text(generic.name);
 
@@ -172,16 +181,10 @@ fn render_generic(generic: GenericInfo) -> String {
     result
 }
 
-fn render_joined(types: Vec<ParsedType>, joiner: &str) -> String {
+fn render_joined(types: Vec<ParsedType>, joiner: &str, parent: TsPrecedence) -> String {
     types
         .into_iter()
-        .map(|parsed| {
-            if parsed.needs_html_braces() {
-                format!("{}{}{}", text("("), parsed.to_html(), text(")"))
-            } else {
-                parsed.to_html()
-            }
-        })
+        .map(|parsed| render_nested(parsed, parent))
         .collect::<Vec<_>>()
         .join(joiner)
 }
@@ -245,7 +248,19 @@ impl ToHtml for Vec<InterfaceProperty> {
         let mapped = self
             .into_iter()
             .map(|prop| {
-                let optional = if prop.flags.contains(InterfacePropertyFlags::Optional) {
+                let is_optional = prop.flags.contains(InterfacePropertyFlags::Optional);
+
+                if is_optional && matches!(&prop.key, InterfacePropertyKey::IndexSignature { .. }) {
+                    return format!(
+                        "{}{}{}{}",
+                        prop.key.to_html(),
+                        text(": "),
+                        render_nested(prop.type_annotation, TsPrecedence::Union),
+                        text(" | undefined")
+                    );
+                }
+
+                let optional = if is_optional {
                     text("?")
                 } else {
                     String::new()
@@ -348,7 +363,7 @@ impl ToHtml for FunctionType {
                 .join(&text(", ")),
         );
         result.push_str(&text(") => "));
-        result.push_str(&self.return_type.to_html());
+        result.push_str(&render_nested(self.return_type, TsPrecedence::Function));
         result
     }
 }
@@ -391,7 +406,12 @@ impl ToHtml for Vec<TupleElement> {
                     result.push_str(&text(": "));
                 }
 
-                result.push_str(&element.type_annotation.to_html());
+                let type_html = if !has_label && element.optional {
+                    render_nested(element.type_annotation, TsPrecedence::Array)
+                } else {
+                    element.type_annotation.to_html()
+                };
+                result.push_str(&type_html);
 
                 if !has_label && element.optional {
                     result.push_str(&text("?"));
@@ -407,17 +427,12 @@ impl ToHtml for Vec<TupleElement> {
 }
 
 impl ToHtml for ParsedType {
-    fn needs_html_braces(&self) -> bool {
-        matches!(
-            self,
-            Self::Union(_) | Self::Intersection(_) | Self::Function(_) | Self::Conditional { .. }
-        )
-    }
-
     fn to_html(self) -> String {
         match self {
-            Self::Union(types) => render_joined(types, &text(" | ")),
-            Self::Intersection(types) => render_joined(types, &text(" & ")),
+            Self::Union(types) => render_joined(types, &text(" | "), TsPrecedence::Union),
+            Self::Intersection(types) => {
+                render_joined(types, &text(" & "), TsPrecedence::Intersection)
+            }
             Self::Standard(inner) => inner.to_html(),
             Self::External(inner) => inner.to_html(),
             Self::Reference(inner) => inner.to_html(),
@@ -437,11 +452,15 @@ impl ToHtml for ParsedType {
                     TypeOperatorKind::Readonly => "readonly ",
                 };
 
-                format!("{}{}", text(operator), type_annotation.to_html())
+                format!(
+                    "{}{}",
+                    text(operator),
+                    render_nested(*type_annotation, TsPrecedence::TypeOperator)
+                )
             }
             Self::IndexedAccess { object, index } => format!(
                 "{}{}{}{}",
-                object.to_html(),
+                render_nested(*object, TsPrecedence::IndexedAccess),
                 text("["),
                 index.to_html(),
                 text("]")
@@ -453,9 +472,9 @@ impl ToHtml for ParsedType {
                 false_type,
             } => format!(
                 "{}{}{}{}{}{}{}",
-                check.to_html(),
+                render_nested(*check, TsPrecedence::Union),
                 text(" extends "),
-                extends.to_html(),
+                render_nested(*extends, TsPrecedence::Union),
                 text(" ? "),
                 true_type.to_html(),
                 text(" : "),
@@ -463,11 +482,7 @@ impl ToHtml for ParsedType {
             ),
             Self::UtilityT { kind, t } => match kind {
                 UtilityTKind::Array => {
-                    if t.needs_html_braces() {
-                        format!("{}{}{}", text("("), t.to_html(), text(")[]"))
-                    } else {
-                        format!("{}{}", t.to_html(), text("[]"))
-                    }
+                    format!("{}{}", render_nested(*t, TsPrecedence::Array), text("[]"))
                 }
                 _ => format!(
                     "{}{}{}{}",
@@ -529,12 +544,45 @@ mod tests {
 
         assert_eq!(
             reference,
-            r#"<span class="clickable" data-quaff data-type-name="A&quot; onmouseover=&quot;bad">A&quot; onmouseover=&quot;bad</span>"#
+            r#"<span class="clickable" data-quaff tabindex="0" data-type-name="A&quot; onmouseover=&quot;bad">A&quot; onmouseover=&quot;bad</span>"#
         );
         assert_eq!(
             external,
             r#"<a class="clickable link" href="https://example.test/?q=&quot;&lt;&amp;" target="_blank">Type&lt;unsafe&gt;</a>"#
         );
+    }
+
+    #[test]
+    fn preserves_operator_precedence_in_html() {
+        use crate::parser::types::{TypeOperatorKind, ts_utilities::UtilityTKind};
+        use crate::transformer::typescript::ToTs;
+
+        let standard = |name: &str| ParsedType::Standard(StandardType::new(name.to_string()));
+        let union = || ParsedType::Union(vec![standard("A"), standard("B")]);
+        let cases = [
+            ParsedType::IndexedAccess {
+                object: Box::new(union()),
+                index: Box::new(standard("0")),
+            },
+            ParsedType::TypeOperator {
+                kind: TypeOperatorKind::Keyof,
+                type_annotation: Box::new(union()),
+            },
+            ParsedType::UtilityT {
+                kind: UtilityTKind::Array,
+                t: Box::new(ParsedType::TypeOperator {
+                    kind: TypeOperatorKind::Readonly,
+                    type_annotation: Box::new(ParsedType::UtilityT {
+                        kind: UtilityTKind::Array,
+                        t: Box::new(standard("string")),
+                    }),
+                }),
+            },
+        ];
+
+        for parsed in cases {
+            assert_eq!(parsed.clone().to_html(), parsed.to_ts());
+        }
     }
 
     #[test]
@@ -548,5 +596,55 @@ mod tests {
 
         assert!(bare.contains(">Snippet</a>"));
         assert!(parameterized.contains(">Snippet</a>&lt;[{ value: string }]&gt;"));
+    }
+
+    #[test]
+    fn preserves_optional_tuple_index_and_conditional_grouping() {
+        use crate::parser::types::{
+            TupleElement,
+            functions::FunctionType,
+            interfaces::{InterfaceProperty, InterfacePropertyFlags, InterfacePropertyKey},
+        };
+
+        let standard = |name: &str| ParsedType::Standard(StandardType::new(name.to_string()));
+        let function = || {
+            ParsedType::Function(Box::new(FunctionType {
+                params: Vec::new(),
+                return_type: standard("string"),
+                generics: Vec::new(),
+            }))
+        };
+        let tuple = ParsedType::Tuple(vec![TupleElement {
+            label: None,
+            type_annotation: ParsedType::Union(vec![standard("string"), standard("number")]),
+            optional: true,
+            rest: false,
+        }]);
+        assert_eq!(tuple.to_html(), "[(string | number)?]");
+
+        let index = ParsedType::TypeLiteral(vec![InterfaceProperty {
+            key: InterfacePropertyKey::IndexSignature {
+                name: "key".to_string(),
+                type_annotation: standard("string"),
+            },
+            type_annotation: function(),
+            flags: InterfacePropertyFlags::Optional,
+            comment: None,
+        }]);
+        assert_eq!(
+            index.to_html(),
+            "{ [key: string]: (() =&gt; string) | undefined }"
+        );
+
+        let conditional = ParsedType::Conditional {
+            check: Box::new(function()),
+            extends: Box::new(function()),
+            true_type: Box::new(standard("true")),
+            false_type: Box::new(standard("false")),
+        };
+        assert_eq!(
+            conditional.to_html(),
+            "(() =&gt; string) extends (() =&gt; string) ? true : false"
+        );
     }
 }

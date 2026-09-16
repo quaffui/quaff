@@ -1,3 +1,4 @@
+import { stat, utimes } from "fs/promises";
 import path from "path";
 import { fileURLToPath } from "url";
 import { describe, expect, it } from "vitest";
@@ -52,10 +53,15 @@ describe("resolveTargetDirs", () => {
 });
 
 describe("targeted updateAllProps", () => {
-  it("regenerates props documentation for a single component target", async () => {
+  it("generates a target without replacing unchanged documentation", async () => {
     await updateAllProps(["button"]);
 
     const generatedFile = path.resolve(componentsDir, "button/docs.props.ts");
     expect(await pathExists(generatedFile)).toBe(true);
-  });
+
+    const previousTime = new Date("2020-01-01T00:00:00Z");
+    await utimes(generatedFile, previousTime, previousTime);
+    await updateAllProps(["button"]);
+    expect((await stat(generatedFile)).mtimeMs).toBe(previousTime.getTime());
+  }, 60_000);
 });

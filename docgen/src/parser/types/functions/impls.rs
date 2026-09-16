@@ -1,10 +1,10 @@
-use oxc::ast::ast::{BindingPattern, TSFunctionType};
+use oxc::ast::ast::{FormalParameters, TSFunctionType};
 use oxc_semantic::Semantic;
 
 use crate::{
-    Result,
+    Result, SpanDisplay,
     extractor::{Extractor, generics::GenericBindings},
-    parser::types::{ParsedType, TypeParser, functions::FunctionTypeParam},
+    parser::types::{ParsedType, StandardType, TypeParser, functions::FunctionTypeParam},
     resolver::{PathResolver, dependency::TypeRegistry},
 };
 
@@ -34,34 +34,13 @@ impl TypeParser for TSFunctionType<'_> {
             registry,
         )?;
 
-        let mut params = Vec::new();
-
-        for param in &self.params.items {
-            let Some(annotation) = &param.type_annotation else {
-                return Err(format!(
-                "Parameters in function types must have type annotations. Parsing function type: {:?}",
-                self
-            )
-            .into());
-            };
-
-            let BindingPattern::BindingIdentifier(ident) = &param.pattern else {
-                return Err(format!("Parameters that are not identifiers are not currently supported. Parsing parameter: {:?}", param).into());
-            };
-
-            let parsed = annotation.type_annotation.parse_type(
-                semantic,
-                resolver,
-                &fn_bindings,
-                registry,
-            )?;
-
-            params.push(FunctionTypeParam {
-                name: ident.name.to_string(),
-                type_annotation: parsed,
-                optional: param.optional,
-            })
-        }
+        let params = FunctionTypeParam::parse_parameters(
+            &self.params,
+            semantic,
+            resolver,
+            &fn_bindings,
+            registry,
+        )?;
 
         let function_type = FunctionType {
             params,
@@ -70,5 +49,60 @@ impl TypeParser for TSFunctionType<'_> {
         };
 
         Ok(ParsedType::Function(Box::new(function_type)))
+    }
+}
+
+impl FunctionTypeParam {
+    pub fn parse_parameters(
+        parameters: &FormalParameters,
+        semantic: &Semantic,
+        resolver: &PathResolver,
+        bindings: &GenericBindings,
+        registry: &mut TypeRegistry,
+    ) -> Result<Vec<Self>> {
+        let mut params = Vec::new();
+
+        for (index, param) in parameters.items.iter().enumerate() {
+            let annotation = param
+                .type_annotation
+                .as_ref()
+                .ok_or("Function parameters must have type annotations")?;
+            let has_required_following = parameters.items[index + 1..]
+                .iter()
+                .any(|following| !following.optional && following.initializer.is_none());
+            let is_defaulted = param.initializer.is_some();
+            let mut type_annotation = annotation
+                .type_annotation
+                .parse_type(semantic, resolver, bindings, registry)?;
+
+            if is_defaulted && has_required_following {
+                type_annotation = ParsedType::Union(vec![
+                    type_annotation,
+                    ParsedType::Standard(StandardType::new("undefined".to_string())),
+                ]);
+            }
+
+            params.push(Self {
+                name: param.pattern.display(semantic),
+                type_annotation,
+                optional: param.optional || (is_defaulted && !has_required_following),
+            });
+        }
+
+        if let Some(param) = &parameters.rest {
+            let annotation = param
+                .type_annotation
+                .as_ref()
+                .ok_or("Rest parameters must have type annotations")?;
+            params.push(Self {
+                name: format!("...{}", param.rest.argument.display(semantic)),
+                type_annotation: annotation
+                    .type_annotation
+                    .parse_type(semantic, resolver, bindings, registry)?,
+                optional: false,
+            });
+        }
+
+        Ok(params)
     }
 }

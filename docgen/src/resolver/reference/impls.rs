@@ -1,16 +1,17 @@
 use std::{
+    collections::BTreeSet,
     fmt::{Debug, Formatter, Result as FmtResult},
-    fs::read_to_string,
+    path::PathBuf,
 };
 
-use oxc::ast::ast::ImportSpecifier;
+use oxc::ast::ast::{ImportSpecifier, ModuleExportName};
 use oxc::ast::{AstKind, ast::IdentifierReference};
 use oxc_semantic::{AstNode, Semantic};
 
 use crate::Result;
 use crate::parser::source::{ParseSource, SourceType};
 use crate::{
-    constants::{BUILTIN_TYPE_NAMES, EXTERNAL_PACKAGE_PREFIXES},
+    constants::BUILTIN_TYPE_NAMES,
     resolver::{PathResolver, ReferenceNodeMatcher, ReferenceResolver, ResolvedReference},
 };
 
@@ -70,45 +71,152 @@ impl ReferenceResolver for ImportSpecifier<'_> {
         resolver: &PathResolver,
         callback: &mut T,
     ) -> Result<()> {
-        let target = self.imported.name().to_string();
-
         for ancestor in semantic.nodes().ancestors(self.node_id()) {
             let AstKind::ImportDeclaration(decl) = ancestor.kind() else {
                 continue;
             };
 
-            let src = decl.source.to_string();
-
-            if EXTERNAL_PACKAGE_PREFIXES
-                .iter()
-                .any(|prefix| src.starts_with(prefix))
-            {
-                // We ignore external package imports like svelte, shiki, etc.
-                return Ok(());
-            }
-
-            resolver.resolve(&src, |file| {
-                let content = read_to_string(&file)?;
-                let new_resolver = PathResolver(&file);
-
-                if !content.contains(&target) {
-                    return Ok(false);
-                }
-
-                let mut has_found = false;
-
-                SourceType::TS(&file).parse_source(|node, scope_sem| {
-                    has_found |=
-                        node.resolve_matching_node(&target, scope_sem, &new_resolver, callback)?;
-                    Ok(has_found)
-                })?;
-
-                Ok(has_found)
-            })?;
+            resolve_export(
+                &decl.source.value,
+                self.imported.name().as_str(),
+                resolver,
+                &mut BTreeSet::new(),
+                callback,
+            )?;
+            break;
         }
 
         Ok(())
     }
+}
+
+/// Follows the module's exports rather than searching private sibling files for a matching name.
+fn resolve_export(
+    source: &str,
+    target: &str,
+    resolver: &PathResolver,
+    visited: &mut BTreeSet<(PathBuf, String)>,
+    callback: &mut dyn for<'a> FnMut(ResolvedReference<'a>, &PathResolver<'a>) -> Result<()>,
+) -> Result<bool> {
+    if !source.starts_with('.') && !source.starts_with('$') {
+        return Ok(false);
+    }
+
+    let mut has_found = false;
+
+    resolver.resolve(source, |file| {
+        if !visited.insert((file.clone(), target.to_string())) {
+            return Ok(false);
+        }
+
+        let resolver = PathResolver(&file);
+        let mut star_exports = Vec::new();
+
+        SourceType::TS(&file).parse_source(|node, semantic| {
+            let is_module_export =
+                |id| matches!(semantic.nodes().parent_kind(id), AstKind::Program(_));
+
+            match node.kind() {
+                AstKind::ExportFromDeclaration(export) if is_module_export(node.id()) => {
+                    if let Some(specifier) = export
+                        .specifiers
+                        .iter()
+                        .find(|specifier| specifier.exported.name() == target)
+                    {
+                        has_found = resolve_export(
+                            &export.source.value,
+                            specifier.local.name().as_str(),
+                            &resolver,
+                            visited,
+                            callback,
+                        )?;
+                    }
+                }
+                AstKind::ExportNamedDeclaration(export) if is_module_export(node.id()) => {
+                    if let Some(specifier) = export
+                        .specifiers
+                        .iter()
+                        .find(|specifier| specifier.exported.name() == target)
+                        && let ModuleExportName::IdentifierReference(identifier) = &specifier.local
+                    {
+                        let reference = semantic.scoping().get_reference(identifier.reference_id());
+
+                        if let Some(symbol) = reference.symbol_id() {
+                            let declaration = semantic.symbol_declaration(symbol);
+
+                            if let AstKind::ImportSpecifier(specifier) = declaration.kind() {
+                                for ancestor in semantic.nodes().ancestors(declaration.id()) {
+                                    if let AstKind::ImportDeclaration(import) = ancestor.kind() {
+                                        has_found = resolve_export(
+                                            &import.source.value,
+                                            specifier.imported.name().as_str(),
+                                            &resolver,
+                                            visited,
+                                            callback,
+                                        )?;
+                                        break;
+                                    }
+                                }
+                            } else {
+                                has_found = declaration.resolve_matching_node(
+                                    identifier.name.as_str(),
+                                    semantic,
+                                    &resolver,
+                                    &mut |resolved, resolver| callback(resolved, resolver),
+                                )?;
+                            }
+                        }
+                    }
+                }
+                AstKind::ExportAllDeclaration(export)
+                    if export.exported.is_none() && is_module_export(node.id()) =>
+                {
+                    star_exports.push(export.source.value.to_string());
+                }
+                _ => {
+                    let is_exported = match semantic.nodes().parent_kind(node.id()) {
+                        AstKind::ExportDeclaration(export) => {
+                            is_module_export(export.node_id.get())
+                        }
+                        AstKind::VariableDeclaration(declaration) => {
+                            match semantic.nodes().parent_kind(declaration.node_id()) {
+                                AstKind::ExportDeclaration(export) => {
+                                    is_module_export(export.node_id.get())
+                                }
+                                _ => false,
+                            }
+                        }
+                        _ => false,
+                    };
+
+                    if is_exported {
+                        has_found = node.resolve_matching_node(
+                            target,
+                            semantic,
+                            &resolver,
+                            &mut |resolved, resolver| callback(resolved, resolver),
+                        )?;
+                    }
+                }
+            }
+
+            Ok(has_found)
+        })?;
+
+        // Explicit exports take precedence over export-star declarations regardless of source order.
+        if !has_found {
+            for source in star_exports {
+                if resolve_export(&source, target, &resolver, visited, callback)? {
+                    has_found = true;
+                    break;
+                }
+            }
+        }
+
+        Ok(has_found)
+    })?;
+
+    Ok(has_found)
 }
 
 impl ReferenceNodeMatcher for AstNode<'_> {
@@ -162,5 +270,140 @@ impl ReferenceNodeMatcher for AstNode<'_> {
         }
 
         Ok(true)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use std::{
+        fs,
+        path::PathBuf,
+        time::{SystemTime, UNIX_EPOCH},
+    };
+
+    use crate::{parser::TSPropsParser, resolver::PathResolver};
+
+    struct Fixture(PathBuf);
+
+    impl Fixture {
+        fn new() -> Self {
+            let nonce = SystemTime::now()
+                .duration_since(UNIX_EPOCH)
+                .unwrap()
+                .as_nanos();
+            Self(std::env::temp_dir().join(format!(
+                "quaff-docgen-import-{}-{nonce}",
+                std::process::id()
+            )))
+        }
+
+        fn write(&self, name: &str, source: &str) -> PathBuf {
+            let path = self.0.join(name);
+            fs::create_dir_all(path.parent().unwrap()).unwrap();
+            fs::write(&path, source).unwrap();
+            path
+        }
+    }
+
+    impl Drop for Fixture {
+        fn drop(&mut self) {
+            let _ = fs::remove_dir_all(&self.0);
+        }
+    }
+
+    #[test]
+    fn imports_resolve_module_exports_without_namespace_members() -> crate::Result<()> {
+        let fixture = Fixture::new();
+        fixture.write(
+            "types.ts",
+            r#"
+                namespace Internal {
+                    export type Value = "wrong";
+                    export interface Shape { wrong: string }
+                    export const defaultValue = "wrong";
+                }
+                export type Value = "correct";
+                export interface Shape { correct: string }
+                export const defaultValue = "correct";
+            "#,
+        );
+        let props = fixture.write(
+            "props.ts",
+            r#"
+                import { Value, Shape, defaultValue } from "./types";
+                export interface TestProps { value: Value; shape: Shape; default: typeof defaultValue }
+            "#,
+        );
+        let parsed = props.parse_props(&PathResolver(&props))?;
+        let definitions = &parsed["TestProps"].type_definitions;
+        assert_eq!(definitions["Value"], "type Value = \"correct\";");
+        assert_eq!(
+            definitions["Shape"],
+            "interface Shape {\n  correct: string;\n}"
+        );
+        assert_eq!(
+            definitions["defaultValue"],
+            "const defaultValue = \"correct\";"
+        );
+        Ok(())
+    }
+
+    #[test]
+    fn resolves_named_reexports_without_reading_unexported_siblings() -> crate::Result<()> {
+        let fixture = Fixture::new();
+        fixture.write(
+            "types/index.ts",
+            "export type { Original as Public } from './actual';",
+        );
+        fixture.write("types/actual.ts", "export type Original = 'correct';");
+        fixture.write("types/private.ts", "export type Public = 'wrong';");
+        let props = fixture.write(
+            "props.ts",
+            "import type { Public } from './types'; export interface TestProps { value: Public }",
+        );
+        let parsed = props.parse_props(&PathResolver(&props))?;
+        assert_eq!(
+            parsed["TestProps"].type_definitions["Public"],
+            "type Public = 'correct';"
+        );
+        Ok(())
+    }
+
+    #[test]
+    fn resolves_nested_export_stars_and_ignores_cycles() -> crate::Result<()> {
+        let fixture = Fixture::new();
+        fixture.write(
+            "types/index.ts",
+            "export * from './cycle'; export * from './nested';",
+        );
+        fixture.write("types/cycle.ts", "export * from './index';");
+        fixture.write("types/nested/index.ts", "export { Value } from '../value';");
+        fixture.write(
+            "types/value.ts",
+            "type Internal = number; export { Internal as Value };",
+        );
+        let props = fixture.write(
+            "props.ts",
+            "import type { Value } from './types'; export interface TestProps { value: Value }",
+        );
+        let parsed = props.parse_props(&PathResolver(&props))?;
+        assert_eq!(
+            parsed["TestProps"].type_definitions["Value"],
+            "type Value = number;"
+        );
+        Ok(())
+    }
+
+    #[test]
+    fn resolves_svelte_typescript_suffixes_and_lib_alias() -> crate::Result<()> {
+        let fixture = Fixture::new();
+        fixture.write("lib/state.svelte.ts", "export type Value = number;");
+        let props = fixture.write("lib/components/props.ts", "import type { Value } from '$lib/state.svelte'; export interface TestProps { value: Value }");
+        let parsed = props.parse_props(&PathResolver(&props))?;
+        assert_eq!(
+            parsed["TestProps"].type_definitions["Value"],
+            "type Value = number;"
+        );
+        Ok(())
     }
 }

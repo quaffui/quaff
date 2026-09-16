@@ -206,7 +206,7 @@ fn generate_interface(
     interface: Interface,
     svelte_props: &ParsedSvelteProps,
     svelte_methods: &ParsedSvelteMethods,
-    type_dependencies: std::collections::BTreeMap<String, String>,
+    mut type_dependencies: std::collections::BTreeMap<String, String>,
 ) -> Result<DocgenInterface> {
     let Interface {
         name,
@@ -240,20 +240,32 @@ fn generate_interface(
             .default
             .get_or_insert_with(|| "undefined".to_string());
 
-        if let InterfacePropertyKey::Identifier(property_name) = &property.key {
-            if let Some(svelte_prop) = svelte_props.get(property_name) {
-                if svelte_prop.bindable {
-                    property.flags |= InterfacePropertyFlags::Bindable;
-                }
+        if let InterfacePropertyKey::Identifier(property_name) = &property.key
+            && let Some(svelte_prop) = svelte_props.get(property_name)
+        {
+            if svelte_prop.bindable {
+                property.flags |= InterfacePropertyFlags::Bindable;
+            }
 
-                if let Some(default) = &svelte_prop.default {
-                    let default = default.clone();
-                    comment.default = Some(default);
-                }
+            if let Some(default) = &svelte_prop.default {
+                let default = default.clone();
+                comment.default = Some(default);
             }
         }
 
         props.push(QApiPropInfo::try_from(property)?);
+    }
+
+    for method in svelte_methods.values() {
+        for (type_name, definition) in &method.type_definitions {
+            if let Some(existing) = type_dependencies.insert(type_name.clone(), definition.clone())
+                && existing != *definition
+            {
+                return Err(
+                    format!("Conflicting type definitions for {type_name} in {name}").into(),
+                );
+            }
+        }
     }
 
     let mut methods = svelte_methods
@@ -443,6 +455,42 @@ mod tests {
         assert!(horizontal.props[0].header.contains("false"));
         assert!(vertical.props[0].header.contains("false"));
         assert_eq!(defaults["vertical"].default.as_deref(), Some("false"));
+    }
+
+    #[test]
+    fn includes_type_definitions_used_only_by_methods() -> Result<()> {
+        let root =
+            std::env::temp_dir().join(format!("quaff-docgen-method-ipc-{}", std::process::id()));
+        let props = fixture_file(&root, "props.ts");
+        let svelte = fixture_file(&root, "Test.svelte");
+        std::fs::write(&props, "export interface TestProps {}")?;
+        std::fs::write(
+            &svelte,
+            r#"<script lang="ts">
+            type DismissReason = "escape" | "programmatic";
+            export function hide(reason: DismissReason = "programmatic") {}
+        </script>"#,
+        )?;
+        let response = generate_response(DocgenRequest {
+            version: PROTOCOL_VERSION,
+            components: vec![DocgenComponentInput {
+                props_file: props,
+                svelte_files: vec![svelte],
+            }],
+        })?;
+        let interface = &response.components[0].interfaces[0];
+
+        assert!(
+            interface.methods[0]
+                .header
+                .contains("data-type-name=\"DismissReason\"")
+        );
+        assert_eq!(
+            interface.type_dependencies["DismissReason"],
+            "type DismissReason = \"escape\" | \"programmatic\";"
+        );
+        std::fs::remove_dir_all(root)?;
+        Ok(())
     }
 
     #[test]

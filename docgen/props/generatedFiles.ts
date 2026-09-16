@@ -1,5 +1,5 @@
 import { createHash, randomUUID } from "crypto";
-import { open, readFile, rename, rm, stat, writeFile } from "fs/promises";
+import { mkdir, readdir, rename, rm, rmdir, writeFile } from "fs/promises";
 import { tmpdir } from "os";
 import path from "path";
 import pathExists from "../helpers/pathExists.js";
@@ -23,7 +23,6 @@ interface LockInfo {
 
 const LOCK_POLL_INTERVAL_MS = 50;
 const LOCK_WAIT_TIMEOUT_MS = 10 * 60 * 1000;
-const INVALID_LOCK_STALE_AFTER_MS = 30 * 1000;
 
 const defaultOperations: GeneratedFileOperations = {
   exists: pathExists,
@@ -43,7 +42,7 @@ function isNodeError(error: unknown): error is NodeJS.ErrnoException {
 function lockPath(scope: string) {
   const key = createHash("sha256").update(path.resolve(scope)).digest("hex").slice(0, 20);
 
-  return path.join(tmpdir(), `quaff-docgen-props-${key}.lock`);
+  return path.join(tmpdir(), `quaff-docgen-props-${key}.lockdir`);
 }
 
 function isProcessAlive(pid: number) {
@@ -57,50 +56,49 @@ function isProcessAlive(pid: number) {
 
 async function readLockInfo(file: string): Promise<LockInfo | undefined> {
   try {
-    const value: unknown = JSON.parse(await readFile(file, "utf8"));
+    const [token] = await readdir(file);
 
-    if (
-      typeof value === "object" &&
-      value !== null &&
-      "pid" in value &&
-      typeof value.pid === "number" &&
-      Number.isSafeInteger(value.pid) &&
-      value.pid > 0 &&
-      "token" in value &&
-      typeof value.token === "string" &&
-      value.token.length > 0
-    ) {
-      return { pid: value.pid, token: value.token };
+    if (!token) {
+      return;
     }
-  } catch {
-    // A process can observe the lock between its creation and metadata write.
+
+    const pid = Number(token.split("-", 1)[0]);
+
+    if (!Number.isSafeInteger(pid) || pid <= 0) {
+      throw new Error(`Invalid props docgen lock owner in ${file}.`);
+    }
+
+    return { pid, token };
+  } catch (error) {
+    if (!isNodeError(error) || error.code !== "ENOENT") {
+      throw error;
+    }
+  }
+}
+
+async function removeOwnedLock(file: string, token: string) {
+  await rm(path.join(file, token), { force: true });
+
+  try {
+    await rmdir(file);
+    return true;
+  } catch (error) {
+    if (isNodeError(error) && (error.code === "ENOENT" || error.code === "ENOTEMPTY")) {
+      return false;
+    }
+
+    throw error;
   }
 }
 
 async function removeStaleLock(file: string) {
   const info = await readLockInfo(file);
 
-  if (info) {
-    if (isProcessAlive(info.pid)) {
-      return false;
-    }
-
-    await rm(file, { force: true });
-    return true;
+  if (!info || isProcessAlive(info.pid)) {
+    return false;
   }
 
-  try {
-    const { mtimeMs } = await stat(file);
-
-    if (Date.now() - mtimeMs < INVALID_LOCK_STALE_AFTER_MS) {
-      return false;
-    }
-
-    await rm(file, { force: true });
-    return true;
-  } catch (error) {
-    return isNodeError(error) && error.code === "ENOENT";
-  }
+  return removeOwnedLock(file, info.token);
 }
 
 async function delay(milliseconds: number) {
@@ -109,49 +107,33 @@ async function delay(milliseconds: number) {
 
 async function acquireLock(scope: string) {
   const file = lockPath(scope);
-  const token = randomUUID();
+  const token = `${process.pid}-${randomUUID()}`;
+  const prepared = `${file}.${token}`;
   const deadline = Date.now() + LOCK_WAIT_TIMEOUT_MS;
+  await mkdir(prepared);
 
-  while (true) {
-    try {
-      const handle = await open(file, "wx");
+  try {
+    await writeFile(path.join(prepared, token), "", { flag: "wx" });
 
+    while (Date.now() < deadline) {
       try {
-        await handle.writeFile(JSON.stringify({ pid: process.pid, token }), "utf8");
+        // Publish ownership atomically, so a fresh lock never has incomplete metadata.
+        await rename(prepared, file);
+        return () => removeOwnedLock(file, token);
       } catch (error) {
-        await handle.close();
-        await rm(file, { force: true });
-        throw error;
+        if (!isNodeError(error) || (error.code !== "EEXIST" && error.code !== "ENOTEMPTY")) {
+          throw error;
+        }
       }
 
-      return async () => {
-        await handle.close();
-
-        const current = await readLockInfo(file);
-
-        if (current?.token === token) {
-          await rm(file, { force: true });
-        }
-      };
-    } catch (error) {
-      if (!isNodeError(error) || error.code !== "EEXIST") {
-        if (await removeStaleLock(file)) {
-          continue;
-        }
-
-        throw error;
+      if (!(await removeStaleLock(file))) {
+        await delay(LOCK_POLL_INTERVAL_MS);
       }
     }
 
-    if (await removeStaleLock(file)) {
-      continue;
-    }
-
-    if (Date.now() >= deadline) {
-      throw new Error(`Timed out waiting for another props docgen process to release ${file}.`);
-    }
-
-    await delay(LOCK_POLL_INTERVAL_MS);
+    throw new Error(`Timed out waiting for another props docgen process to release ${file}.`);
+  } finally {
+    await rm(prepared, { recursive: true, force: true });
   }
 }
 
