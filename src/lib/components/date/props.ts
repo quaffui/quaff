@@ -80,7 +80,7 @@ export interface QDateProps extends OptionalModel<QDateValue>, Disableable, QDat
   /** Dates to disable as YYYY-MM-DD values or a predicate. */
   disabledDates?: QDateDisabledDates;
 
-  /** BCP 47 locale used for labels and the default first weekday. */
+  /** BCP 47 locale for date formatting and the first weekday. Defaults to Quaff.init() locale. */
   locale?: string;
 
   /** Overrides the locale's first weekday. Zero is Sunday. */
@@ -113,6 +113,6 @@ export interface QDateProps extends OptionalModel<QDateValue>, Disableable, QDat
   /** Commits and closes immediately after a date is selected. */
   autoApply?: boolean;
 
-  /** Overrides accessible labels and validation messages. */
+  /** Overrides the shared translations for accessible labels and validation messages. */
   labels?: Partial<QDateLabels>;
 }

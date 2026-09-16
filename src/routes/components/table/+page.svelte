@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { resolve } from "$app/paths";
+  import QLanguageExample from "$docs/QLanguageExample.svelte";
   import { QTableDocs } from "$components/table/docs";
   import { QBtn, QCard, QCardSection, QCodeBlock, QIcon, QTable } from "$lib";
   import { QDocs, QDocsSection } from "$docs";
@@ -291,6 +293,20 @@
             </td>
           {/snippet}
         </QTable>
+      </QDocsSection>
+
+      <QDocsSection title="Localization" noCode>
+        {#snippet sectionDescription()}
+          Choose a language to translate pagination and sorting announcements. Column headings and
+          row content remain your own. See <a href={resolve("/utils/quaff#language", {})}
+            >all available locales</a
+          >
+          for more languages and setup instructions.
+        {/snippet}
+
+        <QLanguageExample>
+          <QTable {columns} rows={rows.slice(0, 12)} />
+        </QLanguageExample>
       </QDocsSection>
 
       <QDocsSection title="Interactive Tables">

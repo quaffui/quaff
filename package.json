@@ -33,6 +33,10 @@
       "svelte": "./dist/components/*"
     },
     "./css/*": "./dist/css/*",
+    "./locales/*": {
+      "types": "./dist/locales/*.d.ts",
+      "default": "./dist/locales/*.js"
+    },
     "./plugins/css": {
       "types": "./dist/plugins/css.d.ts",
       "default": "./dist/plugins/css.js"

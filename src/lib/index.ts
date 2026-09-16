@@ -3,6 +3,7 @@ import QTheme from "./classes/QTheme.svelte.js";
 import QScrollObserver from "./classes/QScrollObserver.svelte";
 import Notify from "./classes/Notify.js";
 
+export type { QuaffLanguage, QuaffTranslations } from "./locales/types.js";
 export type { QuaffConfig } from "./internal/quaffConfig.js";
 export type { NotifyDefaults, NotifyDismiss, NotifyOptions } from "./classes/Notify.js";
 export type {

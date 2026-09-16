@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onDestroy, untrack } from "svelte";
   import { innerHeight, innerWidth } from "svelte/reactivity/window";
+  import { useI18n } from "$internal/i18n.svelte";
   import Quaff from "$classes/Quaff.svelte";
   import QIconBtn from "$components/button/QIconBtn.svelte";
   import QDialog from "$components/dialog/QDialog.svelte";
@@ -21,6 +22,7 @@
   const verticalPickerMinHeight = 536;
   const autoApplyCloseDelay = 400;
 
+  const i18n = useI18n("time");
   const componentId = $props.id();
   const generatedInputId = `q-time-input-${componentId}`;
   const triggerButtonId = `q-time-trigger-${componentId}`;
@@ -33,17 +35,17 @@
     open = $bindable(false),
     validationMessage = $bindable(""),
     variant = "modal",
-    locale = "en-US",
+    locale: providedLocale,
     format24h,
     defaultMode = "dial",
     showModeToggle = true,
     autoApply = false,
     readonly = false,
     disabled = false,
-    title = "Select time",
-    inputTitle = "Enter time",
-    confirmLabel = "OK",
-    cancelLabel = "Cancel",
+    title: providedTitle,
+    inputTitle: providedInputTitle,
+    confirmLabel: providedConfirmLabel,
+    cancelLabel: providedCancelLabel,
     labels,
     id: providedInputId,
     ...fieldProps
@@ -52,6 +54,11 @@
   let wasOpen = false;
   let pendingClose: ReturnType<typeof setTimeout> | undefined;
 
+  const locale = $derived(providedLocale ?? i18n.locale);
+  const title = $derived(providedTitle ?? i18n.labels.title);
+  const inputTitle = $derived(providedInputTitle ?? i18n.labels.inputTitle);
+  const confirmLabel = $derived(providedConfirmLabel ?? i18n.labels.confirmLabel);
+  const cancelLabel = $derived(providedCancelLabel ?? i18n.labels.cancelLabel);
   const inputId = $derived(providedInputId ?? generatedInputId);
   const composed = $derived(variant !== "modal");
   const compact = $derived(Quaff.breakpoints.isLessThan("sm"));
@@ -74,7 +81,7 @@
     value: () => value,
     locale: () => locale,
     format24h: () => format24h,
-    labels: () => labels,
+    labels: () => ({ ...i18n.labels, ...labels }),
     defaultMode: () => defaultMode,
     docked: () => docked,
     autoApply: () => autoApply,

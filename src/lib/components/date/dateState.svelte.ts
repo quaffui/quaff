@@ -35,6 +35,7 @@ export default class QDateState {
   private source!: QDateStateSource;
   private synchronizedExternalValue: QDateValue = null;
   private synchronizedMask = "";
+  private inputValidationKey = $state<"invalidDate" | "unavailableDate" | null>(null);
 
   today = $state<QCalendarDate>(fallbackCalendarDate);
   displayMode = $state<QDateDisplayMode>("calendar");
@@ -45,12 +46,14 @@ export default class QDateState {
   focusedYear = $state(fallbackCalendarDate.year);
   focusedMonth = $state(fallbackCalendarDate.month);
   draftInput = $state("");
-  inputValidationMessage = $state("");
   monthMotionDirection = $state<1 | -1>(1);
   animatePickerChanges = $state(false);
   isRtl = $state(false);
 
   resolvedLabels = $derived({ ...defaultDateLabels, ...this.source.labels() });
+  inputValidationMessage = $derived(
+    this.inputValidationKey ? this.resolvedLabels[this.inputValidationKey] : ""
+  );
   constraints = $derived(
     getDateConstraints(
       this.source.min(),
@@ -129,7 +132,7 @@ export default class QDateState {
     this.isRtl = isRtl;
     this.displayMode = this.source.docked() ? "calendar" : this.source.defaultMode();
     this.calendarView = "calendar";
-    this.inputValidationMessage = "";
+    this.inputValidationKey = null;
     this.synchronizedExternalValue = this.source.value();
     this.synchronizedMask = this.source.mask();
 
@@ -159,11 +162,7 @@ export default class QDateState {
     if (!parsed || !this.isSelectable(parsed)) {
       this.draftDate = null;
       this.draftInput = parsed ? formatDateValue(parsed, this.dateInputMask) : (currentValue ?? "");
-      this.inputValidationMessage = parsed
-        ? this.resolvedLabels.unavailableDate
-        : currentValue
-          ? this.resolvedLabels.invalidDate
-          : "";
+      this.inputValidationKey = parsed ? "unavailableDate" : currentValue ? "invalidDate" : null;
       return;
     }
 
@@ -175,18 +174,18 @@ export default class QDateState {
       this.draftDate = null;
       this.focusedDate = null;
       this.calendarView = "calendar";
-      this.inputValidationMessage = this.source.value() ? this.resolvedLabels.unavailableDate : "";
+      this.inputValidationKey = this.source.value() ? "unavailableDate" : null;
       return;
     }
 
     if (this.draftDate && !this.isSelectable(this.draftDate)) {
       this.draftDate = null;
-      this.inputValidationMessage = this.resolvedLabels.unavailableDate;
+      this.inputValidationKey = "unavailableDate";
     } else if (this.draftDate) {
       this.draftInput = formatDateValue(this.draftDate, this.dateInputMask);
-      this.inputValidationMessage = "";
+      this.inputValidationKey = null;
     } else if (
-      this.inputValidationMessage === this.resolvedLabels.unavailableDate &&
+      this.inputValidationKey === "unavailableDate" &&
       this.committedDate &&
       this.isSelectable(this.committedDate)
     ) {
@@ -306,14 +305,13 @@ export default class QDateState {
 
     if (!parsed) {
       this.draftDate = null;
-      this.inputValidationMessage =
-        input.replaceAll(/\D/g, "").length >= 8 ? this.resolvedLabels.invalidDate : "";
+      this.inputValidationKey = input.replaceAll(/\D/g, "").length >= 8 ? "invalidDate" : null;
       return;
     }
 
     if (!this.isSelectable(parsed)) {
       this.draftDate = null;
-      this.inputValidationMessage = this.resolvedLabels.unavailableDate;
+      this.inputValidationKey = "unavailableDate";
       return;
     }
 
@@ -323,8 +321,8 @@ export default class QDateState {
   validateDraftInput() {
     if (this.draftDate) {
       this.draftInput = formatDateValue(this.draftDate, this.dateInputMask);
-    } else if (this.draftInput && !this.inputValidationMessage) {
-      this.inputValidationMessage = this.resolvedLabels.invalidDate;
+    } else if (this.draftInput && !this.inputValidationKey) {
+      this.inputValidationKey = "invalidDate";
     }
   }
 
@@ -342,7 +340,7 @@ export default class QDateState {
     if (this.displayMode === "calendar") {
       this.displayMode = "input";
       this.draftInput = formatDateValue(this.draftDate, this.dateInputMask);
-      this.inputValidationMessage = "";
+      this.inputValidationKey = null;
     } else {
       this.displayMode = "calendar";
       this.displayedMonth = startOfMonth(this.draftDate ?? this.focusedDate ?? this.today);
@@ -373,7 +371,7 @@ export default class QDateState {
     this.draftDate = date;
     this.focusedDate = date;
     this.draftInput = formatDateValue(date, this.dateInputMask);
-    this.inputValidationMessage = "";
+    this.inputValidationKey = null;
 
     if (updateMonth) {
       this.setDisplayedMonth(startOfMonth(date), date.day);

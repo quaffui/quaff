@@ -22,7 +22,12 @@ export const defaultTimeLabels = {
   timeInput: "Time",
   invalidTime: "Enter a valid time",
 };
-export type QTimeLabels = typeof defaultTimeLabels;
+export type QTimeLabels = typeof defaultTimeLabels & {
+  /** Formats a clock dial hour announcement. */
+  hourOption?: (value: number, total: number) => string;
+  /** Formats a clock dial minute announcement. */
+  minuteOption?: (value: number, total: number) => string;
+};
 
 export type QTimeInputProps = Pick<
   QInputProps,
@@ -54,7 +59,7 @@ export interface QTimeProps extends OptionalModel<QTimeValue>, Disableable, QTim
   /** Validation message for the bound value. This property is bindable. */
   validationMessage?: string;
 
-  /** BCP 47 locale used for time formatting and the default hour cycle. */
+  /** BCP 47 locale for time formatting and the hour cycle. Defaults to Quaff.init() locale. */
   locale?: string;
 
   /** Uses a 24-hour clock. By default, the hour cycle is derived from the locale. */
@@ -84,6 +89,6 @@ export interface QTimeProps extends OptionalModel<QTimeValue>, Disableable, QTim
   /** Commits and closes after minute selection is completed. */
   autoApply?: boolean;
 
-  /** Overrides accessible labels and validation messages. */
+  /** Overrides the shared translations for accessible labels and validation messages. */
   labels?: Partial<QTimeLabels>;
 }

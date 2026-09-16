@@ -1,6 +1,8 @@
 <script lang="ts">
+  import { resolve } from "$app/paths";
   import { QTimeDocs } from "$components/time/docs";
   import { docsCtx } from "$docs/QDocs.svelte";
+  import QLanguageExample from "$docs/QLanguageExample.svelte";
   import { pageTitle } from "$helpers/pageTitle";
   import { QBtn, QInput, QTime } from "$lib";
   import { QDocs, QDocsSection } from "$docs";
@@ -161,6 +163,19 @@
             outlined
           />
         </div>
+      </QDocsSection>
+
+      <QDocsSection title="Localization" noCode>
+        {#snippet sectionDescription()}
+          Switch languages to see translated picker labels, buttons, and validation messages. The
+          displayed time and default hour cycle follow the selected language's locale. See
+          <a href={resolve("/utils/quaff#language", {})}>all available locales</a> for more languages
+          and setup instructions.
+        {/snippet}
+
+        <QLanguageExample>
+          <QTime value="14:30" outlined style="max-width: 20rem" />
+        </QLanguageExample>
       </QDocsSection>
 
       <QDocsSection title="Drafts and Validation" noCode>
