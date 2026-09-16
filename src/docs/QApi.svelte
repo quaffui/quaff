@@ -36,11 +36,7 @@
 
   // #region:    --- Reactive variables
   let activeApiTabs: TabableDocsKey[] = $state(componentDocs.map(() => "props"));
-  let tooltipGeneration = 0;
   let apiElements: (HTMLElement | undefined)[] = $state([]);
-  // Lifecycle ownership only; making this reactive would retrigger the effect while it attaches.
-  // eslint-disable-next-line svelte/prefer-svelte-reactivity
-  const tooltipTeardowns = new Map<number, TooltipTeardown[]>();
   // #endregion: --- Reactive variables
 
   // #region:    --- Effects
@@ -48,20 +44,22 @@
     // Doesn't rerun if we don't use JSON.stringify
     JSON.stringify(activeApiTabs);
 
-    const generation = ++tooltipGeneration;
-    cleanupTooltips();
+    let isCancelled = false;
+    const teardowns: TooltipTeardown[] = [];
 
-    void attachTooltips(generation, Quaff.darkMode.isActive).catch((error: unknown) => {
-      cleanupTooltips(generation);
+    void attachTooltips(Quaff.darkMode.isActive, teardowns, () => isCancelled).catch(
+      (error: unknown) => {
+        cleanupTooltips(teardowns);
 
-      if (generation === tooltipGeneration) {
-        console.error("Error while attaching QApi tooltips", error);
+        if (!isCancelled) {
+          console.error("Error while attaching QApi tooltips", error);
+        }
       }
-    });
+    );
 
     return () => {
-      ++tooltipGeneration;
-      cleanupTooltips(generation);
+      isCancelled = true;
+      cleanupTooltips(teardowns);
     };
   });
   // #endregion: --- Effects
@@ -83,7 +81,7 @@
   }
 
   function prepareHeaderForGenericsAndConstraints(name: string, docs: QComponentDocs["docs"]) {
-    let content = `<pre>`;
+    let content = `<div class="q-api__doc-heading"><pre>`;
 
     content += inTypeSpan(`interface ${name}Props`);
 
@@ -116,39 +114,33 @@
       content += docs.domAttributesConstraint;
     }
 
-    content += `</pre>`;
+    content += `</pre></div>`;
 
     return content;
   }
 
-  function cleanupTooltips(generation?: number) {
-    const generations = generation === undefined ? [...tooltipTeardowns.keys()] : [generation];
-
-    for (const generationToClean of generations) {
-      const teardowns = tooltipTeardowns.get(generationToClean) || [];
-      tooltipTeardowns.delete(generationToClean);
-
-      for (const teardown of teardowns) {
-        try {
-          void Promise.resolve(teardown()).catch((error: unknown) => {
-            console.error("Error while detaching a QApi tooltip", error);
-          });
-        } catch (error) {
+  function cleanupTooltips(teardowns: TooltipTeardown[]) {
+    for (const teardown of teardowns.splice(0)) {
+      try {
+        void Promise.resolve(teardown()).catch((error: unknown) => {
           console.error("Error while detaching a QApi tooltip", error);
-        }
+        });
+      } catch (error) {
+        console.error("Error while detaching a QApi tooltip", error);
       }
     }
   }
 
-  async function attachTooltips(generation: number, darkMode: boolean) {
+  async function attachTooltips(
+    darkMode: boolean,
+    teardowns: TooltipTeardown[],
+    isCancelled: () => boolean
+  ) {
     await tick();
 
-    if (generation !== tooltipGeneration) {
+    if (isCancelled()) {
       return;
     }
-
-    const teardowns: TooltipTeardown[] = [];
-    tooltipTeardowns.set(generation, teardowns);
 
     for (const apiElement of apiElements) {
       apiElement?.querySelectorAll<HTMLElement>("a.link[href]").forEach((el) => {
@@ -158,38 +150,11 @@
           return;
         }
 
-        const tooltipContent = createRawSnippet(() => ({
-          render() {
-            return `<span class="flex items-center"></span>`;
-          },
-          setup(target) {
-            const icon = mount(QIcon, {
-              target,
-              props: {
-                name: "open_in_browser",
-              },
-            });
-
-            const textNode = document.createElement("span");
-            textNode.textContent = "Open in a new tab";
-            textNode.classList.add("q-ml-xs");
-
-            target.append(textNode);
-
-            return () => {
-              void unmount(icon).catch((error: unknown) => {
-                console.error("Error while detaching a QApi tooltip icon", error);
-              });
-              textNode.remove();
-            };
-          },
-        }));
-
         const tooltip = mount(QTooltip, {
           target: el.parentElement,
           props: {
             target: el,
-            children: tooltipContent,
+            children: externalLinkTooltip,
           },
         });
 
@@ -197,16 +162,10 @@
       });
     }
 
-    if (generation !== tooltipGeneration) {
-      cleanupTooltips(generation);
-      return;
-    }
-
     const theme = darkMode ? quaffShikiDarkTheme : quaffShikiLightTheme;
     const highlighter = await getQuaffHighlighter("typescript", theme);
 
-    if (generation !== tooltipGeneration) {
-      cleanupTooltips(generation);
+    if (isCancelled()) {
       return;
     }
 
@@ -235,10 +194,6 @@
           ],
         });
 
-        if (generation !== tooltipGeneration) {
-          return;
-        }
-
         const snip = createRawSnippet(() => ({
           render: () => html,
         }));
@@ -247,6 +202,7 @@
           props: {
             target: el,
             class: "q-pa-none transparent",
+            style: "max-width: calc(100vw - 1rem)",
             children: snip,
           },
         });
@@ -257,6 +213,13 @@
   }
   // #endregion: --- Functions
 </script>
+
+{#snippet externalLinkTooltip()}
+  <span class="flex items-center">
+    <QIcon name="open_in_browser" />
+    <span class="q-ml-xs">Open in a new tab</span>
+  </span>
+{/snippet}
 
 {#each componentDocs as QDocument, index (QDocument)}
   <div bind:this={apiElements[index]} class="q-api">
@@ -277,7 +240,7 @@
         </QTabs>
       </div>
       <QCardSection class="q-px-md q-pb-md" style="max-height: 416px; overflow-y: auto">
-        <QList separator bordered>
+        <QList separator bordered preserveTabOrder>
           {@const docs = QDocument.docs}
           {#if activeApiTabs[index] === "props" && (docs.generics.length || docs.domAttributesConstraint)}
             <QItem>

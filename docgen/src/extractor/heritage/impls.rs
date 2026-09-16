@@ -1,8 +1,10 @@
 use oxc::allocator::Vec as OxcVec;
-use oxc::ast::ast::{TSInterfaceHeritage, TSTypeAliasDeclaration, TSTypeName};
+use oxc::ast::ast::{TSInterfaceHeritage, TSTypeName};
 use oxc_semantic::Semantic;
 
-use crate::parser::types::interfaces::{InterfaceProperty, InterfacePropertyKey};
+use crate::parser::types::interfaces::{
+    InterfaceProperty, InterfacePropertyFlags, InterfacePropertyKey,
+};
 use crate::parser::types::ts_utilities::UtilityKVKind;
 use crate::{
     Result, SpanDisplay,
@@ -33,7 +35,8 @@ pub(super) fn parse_heritage(
 
     for clause in heritage {
         let whole_clause = clause.span.display(semantic);
-        if let Some(external) = ExternalType::maybe_new(whole_clause) {
+        if let Some(mut external) = ExternalType::maybe_new(whole_clause.clone()) {
+            external.name = whole_clause;
             dom = Some(ParsedType::External(external));
 
             continue;
@@ -59,6 +62,31 @@ pub(super) fn parse_heritage(
             .transpose()?
             .unwrap_or_default();
 
+        let utility = match ident.name.as_str() {
+            "Pick" => Some(UtilityKVKind::Pick),
+            "Omit" => Some(UtilityKVKind::Omit),
+            _ => None,
+        };
+
+        if let Some(kind) = utility {
+            let [k, v] = type_args.as_slice() else {
+                return Err(format!("{} heritage requires two type arguments", ident.name).into());
+            };
+            let (properties, dom_heritage) = inherited_properties(ParsedType::UtilityKV {
+                kind,
+                k: Box::new(k.clone()),
+                v: Box::new(v.clone()),
+            })?;
+
+            if let Some(dom_heritage) = dom_heritage {
+                dom = Some(*dom_heritage);
+            }
+
+            registry.record_properties_dependencies_for_current_owner(&properties);
+            herited_props.extend(properties);
+            continue;
+        }
+
         ident.resolve(semantic, resolver, &mut |resolved, scope_resolver| {
                 match resolved {
                     ResolvedReference::TSInterfaceDeclaration(decl, sem) => {
@@ -75,7 +103,7 @@ pub(super) fn parse_heritage(
                             decl.span.start,
                             DefinitionKind::Interface,
                         );
-                        let resolving = registry.is_resolving(&definition_id);
+                        let is_resolving = registry.is_resolving(&definition_id);
                         registry.ensure_definition(definition_id, |registry| -> Result<TypeDefinition> {
                             let declaration_bindings = decl
                                 .type_parameters
@@ -92,7 +120,7 @@ pub(super) fn parse_heritage(
                             Ok(TypeDefinition::Interface(interface))
                         })?;
 
-                        if resolving {
+                        if is_resolving {
                             return Ok(());
                         }
 
@@ -133,7 +161,7 @@ pub(super) fn parse_heritage(
                             decl.span.start,
                             DefinitionKind::TypeAlias,
                         );
-                        let resolving = registry.is_resolving(&definition_id);
+                        let is_resolving = registry.is_resolving(&definition_id);
                         registry.ensure_definition(definition_id, |registry| -> Result<TypeDefinition> {
                             let generics = decl
                                 .type_parameters
@@ -160,7 +188,7 @@ pub(super) fn parse_heritage(
                             })
                         })?;
 
-                        if resolving {
+                        if is_resolving {
                             return Ok(());
                         }
 
@@ -183,71 +211,14 @@ pub(super) fn parse_heritage(
                             &callee_bindings,
                             registry,
                         )?;
-                        if let ParsedType::UtilityKV { kind, k, v } = parsed {
-                            match kind {
-                                UtilityKVKind::Pick => {
-                                    let (all_props, props_to_pick, dom_heritage) =
-                                        parse_utility_reference(*k, *v, decl, sem)?;
-                                    let filtered: Vec<InterfaceProperty> = all_props
-                                        .into_iter()
-                                        .filter(|p| {
-                                            matches!(
-                                                &p.key,
-                                                InterfacePropertyKey::Identifier(name)
-                                                    if props_to_pick.contains(name)
-                                            )
-                                        })
-                                        .collect();
+                        let (properties, dom_heritage) = inherited_properties(parsed)?;
 
-                                    if let Some(dom_heritage) = dom_heritage {
-                                        dom = Some(*dom_heritage);
-                                    }
-
-                                    registry.record_properties_dependencies_for_current_owner(&filtered);
-                                    herited_props.extend(filtered);
-                                },
-                                UtilityKVKind::Omit => {
-                                    let (all_props, props_to_omit, dom_heritage) =
-                                        parse_utility_reference(*k, *v, decl, sem)?;
-                                    let filtered: Vec<InterfaceProperty> = all_props
-                                        .into_iter()
-                                        .filter(|p| {
-                                            matches!(
-                                                &p.key,
-                                                InterfacePropertyKey::Identifier(name)
-                                                    if !props_to_omit.contains(name)
-                                            )
-                                        })
-                                        .collect();
-
-                                    if let Some(dom_heritage) = dom_heritage {
-                                        dom = Some(*dom_heritage);
-                                    }
-
-                                    registry.record_properties_dependencies_for_current_owner(&filtered);
-                                    herited_props.extend(filtered);
-                                },
-                                _ => {
-                                    return Err(format!("Unsupported utility type used as heritage. Parsing: {:#?}", decl.span.display(sem)).into())
-                                }
-                            }
-                        } else if let ParsedType::Interface(interface) = &parsed {
-                            if let Some(dom_heritage) = &interface.dom_props_heritage {
-                                dom = Some(*dom_heritage.clone());
-                            }
-
-                            registry.record_interface_dependencies_for_current_owner(interface);
-                            herited_props.extend(interface.properties.clone());
-                        } else if let ParsedType::Reference(ref_type) = &parsed
-                            && let ParsedType::Interface(interface) = ref_type.parsed.as_ref()
-                        {
-                            if let Some(dom_heritage) = &interface.dom_props_heritage {
-                                dom = Some(*dom_heritage.clone());
-                            }
-
-                            registry.record_interface_dependencies_for_current_owner(interface);
-                            herited_props.extend(interface.properties.clone());
+                        if let Some(dom_heritage) = dom_heritage {
+                            dom = Some(*dom_heritage);
                         }
+
+                        registry.record_properties_dependencies_for_current_owner(&properties);
+                        herited_props.extend(properties);
                     },
                     _ => {
                         return Err(format!(
@@ -267,54 +238,113 @@ pub(super) fn parse_heritage(
     Ok(HeritageInfo { dom, herited_props })
 }
 
-type ParsedUtilityReference = (Vec<InterfaceProperty>, Vec<String>, Option<Box<ParsedType>>);
+type InheritedProperties = (Vec<InterfaceProperty>, Option<Box<ParsedType>>);
 
-fn parse_utility_reference(
-    k: ParsedType,
-    v: ParsedType,
-    decl: &TSTypeAliasDeclaration,
-    semantic: &Semantic,
-) -> Result<ParsedUtilityReference> {
-    let ParsedType::Reference(reference) = k else {
-        return Err(format!(
-            "Expected a type reference as the first argument of Pick. Parsing: {}",
-            decl.span.display(semantic)
-        )
-        .into());
-    };
+fn inherited_properties(parsed: ParsedType) -> Result<InheritedProperties> {
+    match parsed {
+        ParsedType::Interface(interface) => {
+            Ok((interface.properties, interface.dom_props_heritage))
+        }
+        ParsedType::TypeLiteral(properties) => Ok((properties, None)),
+        ParsedType::External(external) => {
+            Ok((Vec::new(), Some(Box::new(ParsedType::External(external)))))
+        }
+        ParsedType::Intersection(types) => {
+            let mut properties: Vec<InterfaceProperty> = Vec::new();
+            let mut dom = None;
 
-    let ParsedType::Union(union) = v else {
-        return Err(format!(
-            "Expected a type union as the second argument of Pick. Found: {:?}",
-            v
-        )
-        .into());
-    };
+            for parsed in types {
+                let (inherited, inherited_dom) = inherited_properties(parsed)?;
 
-    let ParsedType::Interface(interface_ref) = *reference.parsed else {
-        return Err(format!(
-            "Expected the first argument of Pick to be a reference to an interface, found: {:?}",
-            reference
-        )
-        .into());
-    };
+                for property in inherited {
+                    if let Some(existing) = properties
+                        .iter_mut()
+                        .find(|existing| existing.key.doc_name() == property.key.doc_name())
+                    {
+                        existing.type_annotation = ParsedType::Intersection(vec![
+                            existing.type_annotation.clone(),
+                            property.type_annotation,
+                        ]);
 
-    let union_props = union
-        .iter()
-        .map(|prop| {
-            let ParsedType::Standard(StandardType { name }) = prop else {
-                panic!(
-                    "Expected the second argument of Pick to be a union of strings, found: {:?}",
-                    prop
-                )
-            };
-            name.trim_matches('"').to_string()
-        })
-        .collect::<Vec<String>>();
+                        if !property.flags.contains(InterfacePropertyFlags::Optional) {
+                            existing.flags.remove(InterfacePropertyFlags::Optional);
+                        }
 
-    Ok((
-        interface_ref.properties,
-        union_props,
-        interface_ref.dom_props_heritage,
-    ))
+                        existing.comment = existing.comment.take().or(property.comment);
+                    } else {
+                        properties.push(property);
+                    }
+                }
+
+                dom = inherited_dom.or(dom);
+            }
+
+            Ok((properties, dom))
+        }
+        ParsedType::Reference(reference) => inherited_properties(*reference.parsed),
+        ParsedType::UtilityKV {
+            kind: kind @ (UtilityKVKind::Pick | UtilityKVKind::Omit),
+            k,
+            v,
+        } => {
+            let (mut properties, dom) = inherited_properties(*k)?;
+            let mut keys = property_keys(*v.clone())?;
+            properties.retain(|property| {
+                let is_selected = matches!(&property.key,
+                    InterfacePropertyKey::Identifier(name) if keys.contains(name));
+
+                is_selected == (kind == UtilityKVKind::Pick)
+            });
+            let dom = dom.and_then(|dom| {
+                let keys = if kind == UtilityKVKind::Pick {
+                    keys.retain(|key| {
+                        !properties
+                            .iter()
+                            .any(|property| property.key.doc_name() == *key)
+                    });
+
+                    if keys.is_empty() {
+                        return None;
+                    }
+
+                    Box::new(ParsedType::Union(
+                        keys.into_iter()
+                            .map(|key| ParsedType::Standard(StandardType::new(format!("{key:?}"))))
+                            .collect(),
+                    ))
+                } else {
+                    v
+                };
+
+                Some(Box::new(ParsedType::UtilityKV {
+                    kind,
+                    k: dom,
+                    v: keys,
+                }))
+            });
+
+            Ok((properties, dom))
+        }
+        other => Err(format!("Unsupported interface heritage type: {other:?}").into()),
+    }
+}
+
+fn property_keys(parsed: ParsedType) -> Result<Vec<String>> {
+    match parsed {
+        ParsedType::Reference(reference) => property_keys(*reference.parsed),
+        ParsedType::Union(types) => types.into_iter().try_fold(Vec::new(), |mut keys, item| {
+            keys.extend(property_keys(item)?);
+            Ok(keys)
+        }),
+        ParsedType::Standard(StandardType { name }) if name == "never" => Ok(Vec::new()),
+        ParsedType::Standard(StandardType { name })
+            if (name.starts_with('"') && name.ends_with('"'))
+                || (name.starts_with('\'') && name.ends_with('\'')) =>
+        {
+            Ok(vec![name[1..name.len() - 1].to_string()])
+        }
+        other => {
+            Err(format!("Expected string literal keys in Pick or Omit, found: {other:?}").into())
+        }
+    }
 }

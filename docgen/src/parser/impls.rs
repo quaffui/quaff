@@ -250,4 +250,82 @@ mod tests {
 
         Ok(())
     }
+
+    #[test]
+    fn renamed_module_types_do_not_emit_colliding_unused_declarations() -> crate::Result<()> {
+        let fixture = FixtureDir::new();
+        fixture.write("left.ts", "export type Value = string;");
+        fixture.write("right.ts", "export type Value = number;");
+        let props = fixture.write(
+            "props.ts",
+            r#"
+            import type { Value as LeftValue } from "./left";
+            import type { Value as RightValue } from "./right";
+            type Pair = [LeftValue, RightValue];
+            export interface Props { value: Pair }
+        "#,
+        );
+        let parsed = parse_path(&props)?;
+        assert_eq!(
+            parsed["Props"].type_definitions["Pair"],
+            "type LeftValue = string;\ntype RightValue = number;\n\ntype Pair = [LeftValue, RightValue];"
+        );
+
+        Ok(())
+    }
+
+    #[test]
+    fn renamed_recursive_types_keep_canonical_references_in_transitive_definitions()
+    -> crate::Result<()> {
+        let fixture = FixtureDir::new();
+        fixture.write("node.ts", "export type TreeNode = { next?: TreeNode };");
+        fixture.write(
+            "wrapper.ts",
+            r#"
+            import type { TreeNode as ChildNode } from "./node";
+            export type Wrapper = { value: ChildNode };
+        "#,
+        );
+        let props = fixture.write(
+            "props.ts",
+            r#"
+            import type { Wrapper as LocalWrapper } from "./wrapper";
+            export interface Props { value: LocalWrapper }
+        "#,
+        );
+        let parsed = parse_path(&props)?;
+        let definition = &parsed["Props"].type_definitions["LocalWrapper"];
+        assert!(definition.contains("type TreeNode = {\n  next?: TreeNode;\n};"));
+        assert!(definition.contains("type ChildNode = {\n  next?: TreeNode;\n};"));
+        assert!(definition.contains("type LocalWrapper = {\n  value: ChildNode;\n};"));
+        assert!(!definition.contains("type Wrapper ="));
+
+        Ok(())
+    }
+
+    #[test]
+    fn renamed_typeof_dependencies_preserve_the_original_value_declaration() -> crate::Result<()> {
+        let fixture = FixtureDir::new();
+        fixture.write(
+            "labels.ts",
+            r#"export const defaultLabels = { open: "Open", close: "Close" };"#,
+        );
+        let props = fixture.write(
+            "props.ts",
+            r#"
+            import { defaultLabels as labels } from "./labels";
+            type Labels = typeof labels;
+            export interface Props { labels: Labels }
+        "#,
+        );
+        let parsed = parse_path(&props)?;
+        assert_eq!(
+            parsed["Props"].type_definitions["Labels"],
+            r#"const labels = { open: "Open", close: "Close" };
+
+type Labels = typeof labels;"#
+        );
+
+        Ok(())
+    }
 }

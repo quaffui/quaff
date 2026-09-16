@@ -39,11 +39,7 @@ impl<'a> SvelteParser<'a> for &'a [BindingProperty<'a>] {
                 let mut parsed = ParsedSvelteProp::default();
 
                 match &prop.value {
-                    BindingPattern::BindingIdentifier(_) => {
-                        // Case: const { name } = $props();
-                        // => The prop has no default
-                        res.insert(name, parsed);
-                    }
+                    BindingPattern::BindingIdentifier(_) => {}
                     BindingPattern::AssignmentPattern(pattern) => match &pattern.right {
                         Expression::CallExpression(expr) => {
                             if expr.callee_name() == Some("$bindable") {
@@ -52,12 +48,10 @@ impl<'a> SvelteParser<'a> for &'a [BindingProperty<'a>] {
                                 parsed.default =
                                     SpanDisplay::display_option(expr.arguments.first(), semantic);
                                 parsed.bindable = true;
-                                res.insert(name, parsed);
                             } else {
                                 // Case: const { name = someFunction() } = $props();
                                 // => The default is the function call, we don't try to resolve it (maybe TODO later)
                                 parsed.default = Some(expr.display(semantic));
-                                res.insert(name, parsed);
                             }
                         }
                         Expression::Identifier(ident) => {
@@ -74,13 +68,11 @@ impl<'a> SvelteParser<'a> for &'a [BindingProperty<'a>] {
                                 Ok(())
                             })?;
 
-                            parsed.default = init;
-                            res.insert(name, parsed);
+                            parsed.default = init.or_else(|| Some(ident.display(semantic)));
                         }
                         _ => {
                             // Case: const { name = ... } = $props(); where ... is neither an Identifier nor a "$bindable" CallExpression
                             parsed.default = Some(pattern.right.display(semantic));
-                            res.insert(name, parsed);
                         }
                     },
                     _ => {
@@ -91,9 +83,67 @@ impl<'a> SvelteParser<'a> for &'a [BindingProperty<'a>] {
                         .into());
                     }
                 }
+
+                res.insert(name, parsed);
             }
         }
 
         Ok(res)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use std::path::Path;
+
+    use crate::parser::source::ParseSource;
+
+    use super::*;
+
+    #[test]
+    fn preserves_defaults_without_a_resolvable_initializer() -> Result<()> {
+        let resolver = PathResolver(Path::new("/virtual/Fixture.svelte"));
+        let mut props = HashMap::new();
+        r#"
+            import { importedDefault } from "fixture-package";
+            declare const declaredDefault: string;
+            const localDefault = "local";
+            let {
+                nan = NaN,
+                infinity = Infinity,
+                empty = undefined,
+                imported = importedDefault,
+                declared = declaredDefault,
+                local = localDefault,
+                bound = $bindable(localDefault),
+                computed = createDefault(),
+                unset,
+            } = $props();
+        "#
+        .to_string()
+        .parse_source(|node, semantic| {
+            if let Some(mut bindings) = <&[BindingProperty]>::extract(node) {
+                props.extend(bindings.parse(semantic, &resolver)?);
+            }
+
+            Ok(false)
+        })?;
+
+        for (name, expected) in [
+            ("nan", "NaN"),
+            ("infinity", "Infinity"),
+            ("empty", "undefined"),
+            ("imported", "importedDefault"),
+            ("declared", "declaredDefault"),
+            ("local", "\"local\""),
+            ("bound", "localDefault"),
+            ("computed", "createDefault()"),
+        ] {
+            assert_eq!(props[name].default.as_deref(), Some(expected), "{name}");
+        }
+
+        assert!(props["bound"].bindable);
+        assert!(props["unset"].default.is_none());
+        Ok(())
     }
 }

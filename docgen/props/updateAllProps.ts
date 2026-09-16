@@ -3,14 +3,12 @@ import path from "path";
 import { fileURLToPath } from "url";
 import getComponentDirs from "../helpers/getComponentDirs.js";
 import pathExists from "../helpers/pathExists.js";
+import extractHash from "../helpers/extractHash.js";
+import createPropsHasher from "./cache.js";
 import { replaceGeneratedFiles, withGeneratedFilesLock } from "./generatedFiles.js";
 import renderDocsProps from "./renderDocsProps.js";
 import runRustDocgen from "./rustClient.js";
-import {
-  DOCGEN_PROTOCOL_VERSION,
-  isPropsInterfaceName,
-  type DocgenComponentInput,
-} from "./types.js";
+import { DOCGEN_PROTOCOL_VERSION, type DocgenComponentInput } from "./types.js";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.resolve(dirname, "../../src/lib/components");
@@ -136,7 +134,20 @@ function validateResponse(inputs: DocgenComponentInput[], responsePaths: string[
 async function updateAllPropsLocked(targets?: string[] | string) {
   const allDirs = await getComponentDirs(rootDir);
   const targetDirs = resolveTargetDirs(allDirs, targets);
-  const { inputs, orphanedOutputs } = await collectInputs(allDirs, targetDirs);
+  const { inputs: requestedInputs, orphanedOutputs } = await collectInputs(allDirs, targetDirs);
+  const getHash = await createPropsHasher(path.resolve(rootDir, "../../.."));
+  const hashes = new Map<string, string>();
+  const inputs: DocgenComponentInput[] = [];
+
+  for (const input of requestedInputs) {
+    const hash = await getHash(input);
+    const output = path.join(path.dirname(input.propsFile), "docs.props.ts");
+    hashes.set(input.propsFile, hash);
+
+    if (!(await pathExists(output)) || extractHash(await readFile(output, "utf8")) !== hash) {
+      inputs.push(input);
+    }
+  }
 
   if (inputs.length === 0) {
     if (orphanedOutputs.length > 0) {
@@ -165,12 +176,6 @@ async function updateAllPropsLocked(targets?: string[] | string) {
       const interfaceNames = new Set<string>();
 
       for (const parsedInterface of interfaces) {
-        if (!isPropsInterfaceName(parsedInterface.name)) {
-          throw new Error(
-            `Rust docgen returned an invalid props interface: ${parsedInterface.name}.`
-          );
-        }
-
         if (interfaceNames.has(parsedInterface.name)) {
           throw new Error(`Rust docgen returned ${parsedInterface.name} more than once.`);
         }
@@ -179,13 +184,24 @@ async function updateAllPropsLocked(targets?: string[] | string) {
       }
 
       const destination = path.resolve(path.dirname(propsFile), "docs.props.ts");
-      const contents = await renderDocsProps(interfaces);
+      const contents = await renderDocsProps(interfaces, hashes.get(propsFile));
 
       return { destination, contents };
     })
   );
 
-  await replaceGeneratedFiles(rendered, orphanedOutputs);
+  const changed = [];
+
+  for (const output of rendered) {
+    if (
+      !(await pathExists(output.destination)) ||
+      (await readFile(output.destination, "utf8")) !== output.contents
+    ) {
+      changed.push(output);
+    }
+  }
+
+  await replaceGeneratedFiles(changed, orphanedOutputs);
 }
 
 export default async function updateAllProps(targets?: string[] | string) {

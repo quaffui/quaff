@@ -81,7 +81,11 @@ impl ToTs for HashMap<String, ParsedType> {
 
 impl ToTs for TupleElement {
     fn to_ts(&self) -> String {
-        let parsed = self.type_annotation.to_ts();
+        let parsed = if self.optional && self.label.is_none() {
+            self.type_annotation.to_ts_nested(TsPrecedence::Array)
+        } else {
+            self.type_annotation.to_ts()
+        };
 
         match &self.label {
             Some(label) => format!(
@@ -120,7 +124,7 @@ impl ToTs for InterfaceProperty {
                     format!(
                         "{}: {} | undefined;",
                         self.key.to_ts(),
-                        self.type_annotation.to_ts()
+                        self.type_annotation.to_ts_nested(TsPrecedence::Union)
                     )
                 } else {
                     format!("{}: {};", self.key.to_ts(), self.type_annotation.to_ts())
@@ -231,8 +235,8 @@ impl ToTs for ParsedType {
                 false_type,
             } => format!(
                 "{} extends {} ? {} : {}",
-                check.to_ts_nested(TsPrecedence::Function),
-                extends.to_ts_nested(TsPrecedence::Function),
+                check.to_ts_nested(TsPrecedence::Union),
+                extends.to_ts_nested(TsPrecedence::Union),
                 true_type.to_ts_nested(TsPrecedence::Conditional),
                 false_type.to_ts_nested(TsPrecedence::Conditional)
             ),
@@ -281,6 +285,11 @@ impl ToTsDefinition for TypeDefinition {
                 value.to_ts()
             ),
             Self::Interface(interface) => render_interface(interface, name),
+            Self::Variable {
+                kind, declarator, ..
+            } => {
+                format!("{kind} {};", declarator.replacen(self.name(), name, 1))
+            }
         }
     }
 }
@@ -573,6 +582,46 @@ mod tests {
         assert_eq!(
             definition.to_ts_definition_as("LocalDictionary"),
             "interface LocalDictionary<T> extends Base {\n  selected?: T;\n  [key: string]: T;\n  [optionalKey: number]: T | undefined;\n}"
+        );
+    }
+
+    #[test]
+    fn preserves_optional_tuple_index_and_conditional_grouping() {
+        let function = || {
+            ParsedType::Function(Box::new(FunctionType {
+                params: Vec::new(),
+                return_type: standard("string"),
+                generics: Vec::new(),
+            }))
+        };
+        let tuple = ParsedType::Tuple(vec![TupleElement {
+            label: None,
+            type_annotation: ParsedType::Union(vec![standard("string"), standard("number")]),
+            optional: true,
+            rest: false,
+        }]);
+        assert_eq!(tuple.to_ts(), "[(string | number)?]");
+
+        let index = InterfaceProperty {
+            key: InterfacePropertyKey::IndexSignature {
+                name: "key".to_string(),
+                type_annotation: standard("string"),
+            },
+            type_annotation: function(),
+            flags: InterfacePropertyFlags::Optional,
+            comment: None,
+        };
+        assert_eq!(index.to_ts(), "[key: string]: (() => string) | undefined;");
+
+        let conditional = ParsedType::Conditional {
+            check: Box::new(function()),
+            extends: Box::new(function()),
+            true_type: Box::new(standard("true")),
+            false_type: Box::new(standard("false")),
+        };
+        assert_eq!(
+            conditional.to_ts(),
+            "(() => string) extends (() => string) ? true : false"
         );
     }
 }

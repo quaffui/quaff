@@ -1,10 +1,14 @@
 use std::{collections::HashMap, str::FromStr};
 
 use oxc::{
-    ast::ast::{
-        TSArrayType, TSConditionalType, TSIndexedAccessType, TSIntersectionType, TSLiteral,
-        TSLiteralType, TSParenthesizedType, TSTemplateLiteralType, TSTupleElement, TSTupleType,
-        TSType, TSTypeName, TSTypeOperator, TSTypeOperatorOperator, TSTypeReference, TSUnionType,
+    ast::{
+        AstKind,
+        ast::{
+            BindingPattern, TSArrayType, TSConditionalType, TSIndexedAccessType,
+            TSIntersectionType, TSLiteral, TSLiteralType, TSMappedType, TSParenthesizedType,
+            TSTemplateLiteralType, TSTupleElement, TSTupleType, TSType, TSTypeName, TSTypeOperator,
+            TSTypeOperatorOperator, TSTypeQuery, TSTypeQueryExprName, TSTypeReference, TSUnionType,
+        },
     },
     span::GetSpan,
 };
@@ -14,9 +18,8 @@ use crate::{
     Result, SpanDisplay,
     extractor::{
         Extractor,
-        generics::{GenericBindings, GenericBindingsParser},
+        generics::{GenericBindings, GenericBindingsParser, GenericInfo},
     },
-    parser::types::interfaces::InterfacePropertyKey,
     resolver::{
         PathResolver, ReferenceResolver, ResolvedReference,
         dependency::{DefinitionKind, TypeDefinition, TypeRegistry},
@@ -52,19 +55,6 @@ impl ExternalType {
         }
 
         None
-    }
-}
-
-impl IntoIterator for ParsedType {
-    type Item = Self;
-
-    type IntoIter = std::vec::IntoIter<Self>;
-
-    fn into_iter(self) -> Self::IntoIter {
-        match self {
-            Self::Union(types) | Self::Intersection(types) => types.into_iter(),
-            _ => panic!("Called into_iter() on a non-union/non-intersection ParsedType"),
-        }
     }
 }
 
@@ -467,25 +457,7 @@ impl TypeParser for TSTypeReference<'_> {
                 let parsed: HashMap<String, ParsedType> = literal
                     .parse_body(semantic, resolver, generic_bindings, registry)?
                     .into_iter()
-                    .map(|prop| {
-                        let name = match prop.key {
-                            InterfacePropertyKey::Identifier(name) => name,
-                            InterfacePropertyKey::IndexSignature {
-                                name,
-                                type_annotation,
-                            } => {
-                                let ParsedType::Standard(StandardType { name: index_type }) =
-                                    type_annotation
-                                else {
-                                    panic!("Invalid index type: {:?}", type_annotation)
-                                };
-
-                                format!("[{}: {}]", name, index_type)
-                            }
-                        };
-
-                        (name, prop.type_annotation)
-                    })
+                    .map(|prop| (prop.key.to_ts(), prop.type_annotation))
                     .collect();
 
                 snippet_args = Some(parsed);
@@ -554,7 +526,7 @@ impl TypeParser for TSTypeReference<'_> {
                         additional_dependencies,
                     )?;
 
-                    let resolving = registry.is_resolving(&definition_id);
+                    let is_resolving = registry.is_resolving(&definition_id);
                     registry.ensure_definition(
                         definition_id.clone(),
                         |registry| -> Result<TypeDefinition> {
@@ -584,7 +556,7 @@ impl TypeParser for TSTypeReference<'_> {
                         },
                     )?;
 
-                    if resolving {
+                    if is_resolving {
                         reference_type = Some(parsed_reference);
                         return Ok(());
                     }
@@ -602,9 +574,8 @@ impl TypeParser for TSTypeReference<'_> {
                         })
                         .transpose()?
                         .unwrap_or_else(GenericBindings::default);
-                    let expansion_key = format!("{definition_id:?}:{lookup_name}");
 
-                    if let Some(parsed) = registry.expand_reference(expansion_key, |registry| {
+                    if let Some(parsed) = registry.expand_reference(definition_id, |registry| {
                         decl.type_annotation.parse_type(
                             semantic,
                             scope_resolver,
@@ -639,7 +610,7 @@ impl TypeParser for TSTypeReference<'_> {
                         additional_dependencies,
                     )?;
 
-                    let resolving = registry.is_resolving(&definition_id);
+                    let is_resolving = registry.is_resolving(&definition_id);
                     registry.ensure_definition(
                         definition_id.clone(),
                         |registry| -> Result<TypeDefinition> {
@@ -659,7 +630,7 @@ impl TypeParser for TSTypeReference<'_> {
                         },
                     )?;
 
-                    if resolving {
+                    if is_resolving {
                         reference_type = Some(parsed_reference);
                         return Ok(());
                     }
@@ -677,9 +648,8 @@ impl TypeParser for TSTypeReference<'_> {
                         })
                         .transpose()?
                         .unwrap_or_else(GenericBindings::default);
-                    let expansion_key = format!("{definition_id:?}:{lookup_name}");
 
-                    if let Some(parsed) = registry.expand_reference(expansion_key, |registry| {
+                    if let Some(parsed) = registry.expand_reference(definition_id, |registry| {
                         decl.parse(semantic, scope_resolver, &callee_bindings, registry)
                             .map(ParsedType::Interface)
                     })? {
@@ -714,6 +684,95 @@ impl TypeParser for TSTypeReference<'_> {
         };
 
         Ok(parsed_type)
+    }
+}
+
+impl TypeParser for TSTypeQuery<'_> {
+    fn parse_type(
+        &self,
+        semantic: &Semantic,
+        resolver: &PathResolver,
+        _generic_bindings: &GenericBindings,
+        registry: &mut TypeRegistry,
+    ) -> Result<ParsedType> {
+        if let TSTypeQueryExprName::IdentifierReference(ident) = &self.expr_name {
+            ident.resolve(semantic, resolver, &mut |resolved, scope_resolver| {
+                let ResolvedReference::VariableDeclarator(declaration, semantic) = resolved else {
+                    return Ok(());
+                };
+                let BindingPattern::BindingIdentifier(binding) = &declaration.id else {
+                    return Ok(());
+                };
+                let kind = semantic
+                    .nodes()
+                    .ancestors(declaration.node_id.get())
+                    .find_map(|node| {
+                        if let AstKind::VariableDeclaration(declaration) = node.kind() {
+                            Some(declaration.kind.as_str())
+                        } else {
+                            None
+                        }
+                    })
+                    .ok_or("Expected a variable declaration for typeof dependency")?;
+                let definition_id = registry.definition_id(
+                    scope_resolver.0,
+                    declaration.span.start,
+                    DefinitionKind::Variable,
+                );
+
+                registry.ensure_definition(
+                    definition_id.clone(),
+                    |_| -> Result<TypeDefinition> {
+                        Ok(TypeDefinition::Variable {
+                            name: binding.name.to_string(),
+                            kind: kind.to_string(),
+                            declarator: declaration.span.display(semantic),
+                        })
+                    },
+                )?;
+                registry.register_reference_with_dependencies(
+                    ident.name.to_string(),
+                    ident.name.to_string(),
+                    definition_id,
+                    std::iter::empty(),
+                )?;
+
+                Ok(())
+            })?;
+        }
+
+        Ok(ParsedType::Standard(StandardType::new(
+            self.span.display(semantic),
+        )))
+    }
+}
+
+impl TypeParser for TSMappedType<'_> {
+    fn parse_type(
+        &self,
+        semantic: &Semantic,
+        resolver: &PathResolver,
+        generic_bindings: &GenericBindings,
+        registry: &mut TypeRegistry,
+    ) -> Result<ParsedType> {
+        self.constraint
+            .parse_type(semantic, resolver, generic_bindings, registry)?;
+        let bindings = generic_bindings.with_shadowed_generics(&[GenericInfo {
+            name: self.key.name.to_string(),
+            constraint: None,
+            default: None,
+        }]);
+
+        for annotation in [&self.name_type, &self.type_annotation]
+            .into_iter()
+            .flatten()
+        {
+            annotation.parse_type(semantic, resolver, &bindings, registry)?;
+        }
+
+        Ok(ParsedType::Standard(StandardType::new(
+            self.span.display(semantic),
+        )))
     }
 }
 
@@ -764,6 +823,12 @@ impl TypeParser for TSType<'_> {
             }
             Self::TSConditionalType(conditional) => {
                 conditional.parse_type(semantic, resolver, generic_bindings, registry)
+            }
+            Self::TSTypeQuery(query) => {
+                query.parse_type(semantic, resolver, generic_bindings, registry)
+            }
+            Self::TSMappedType(mapped) => {
+                mapped.parse_type(semantic, resolver, generic_bindings, registry)
             }
             _ => {
                 let def = self.span().display(semantic);

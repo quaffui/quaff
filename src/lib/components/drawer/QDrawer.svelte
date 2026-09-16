@@ -160,6 +160,7 @@
   // #endregion: --- Effects
 
   // #region:    --- Methods
+  /** Opens the drawer. */
   export const show = (e?: MouseEvent) => {
     if (!value) {
       value = true;
@@ -167,12 +168,14 @@
     }
   };
 
+  /** Closes the drawer. */
   export const hide = () => {
     if (value) {
       value = false;
     }
   };
 
+  /** Toggles the drawer. */
   export const toggle = (e?: MouseEvent) => {
     value = !value;
     e?.stopPropagation();
