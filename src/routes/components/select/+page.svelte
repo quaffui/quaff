@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { resolve } from "$app/paths";
+  import QLanguageExample from "$docs/QLanguageExample.svelte";
   import { QSelectDocs } from "$components/select/docs";
   import { pageTitle } from "$helpers/pageTitle";
   import { QBtn, QCard, QCardActions, QCardSection, QIcon, QSelect } from "$lib";
@@ -422,6 +424,25 @@
             </QCardActions>
           </QCard>
         </div>
+      </QDocsSection>
+
+      <QDocsSection title="Localization" noCode>
+        {#snippet sectionDescription()}
+          Choose a language, then open the empty select to see its translated message. See
+          <a href={resolve("/utils/quaff#language", {})}>all available locales</a> for more
+          languages and setup instructions.
+          <code>noOptionText</code> overrides the message for an individual select.
+        {/snippet}
+
+        <QLanguageExample>
+          <QSelect
+            value=""
+            options={[]}
+            label="Available options"
+            outlined
+            style="max-width: 20rem"
+          />
+        </QLanguageExample>
       </QDocsSection>
 
       <QDocsSection title="Responsive Design">

@@ -1,6 +1,7 @@
 import { onMount } from "svelte";
 import { innerWidth } from "svelte/reactivity/window";
 import { version } from "$helpers";
+import { initI18n } from "$internal/i18n.svelte";
 import { quaffConfig, type QuaffConfig } from "$internal/quaffConfig";
 import { page } from "$app/state";
 
@@ -65,6 +66,7 @@ class Quaff {
 
   public init(config: Partial<QuaffConfig> = {}) {
     quaffConfig.expressive = config.expressive ?? false;
+    initI18n(config);
 
     onMount(() => {
       this.applyDisplayMode(this.getCurrentDisplayMode(), false);

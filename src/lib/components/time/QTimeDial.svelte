@@ -122,9 +122,17 @@
   }
 
   function optionLabel(option: QTimeDialOption) {
-    return option.part === "hour"
-      ? `${picker.resolvedLabels.hour} ${option.spokenValue} ${picker.resolvedLabels.of} ${picker.format24h ? 24 : 12}`
-      : `${picker.resolvedLabels.minute} ${option.spokenValue} ${picker.resolvedLabels.of} 60`;
+    const labels = picker.resolvedLabels;
+    const isHour = option.part === "hour";
+    const hourCount = picker.format24h ? 24 : 12;
+    const total = isHour ? hourCount : 60;
+    const format = isHour ? labels.hourOption : labels.minuteOption;
+
+    if (format) {
+      return format(option.spokenValue, total);
+    }
+
+    return `${isHour ? labels.hour : labels.minute} ${option.spokenValue} ${labels.of} ${total}`;
   }
 
   function selectOption(option: QTimeDialOption, complete: boolean) {

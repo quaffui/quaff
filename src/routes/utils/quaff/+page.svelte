@@ -32,6 +32,54 @@
         />
       </QDocsSection>
 
+      <QDocsSection title="Language">
+        {#snippet sectionDescription()}
+          <p>
+            Import a language pack and pass it to <code>Quaff.init()</code> in your root layout. It
+            supplies the UI text for QTable, QDate, QTime, and QSelect, along with the locale for
+            date and time formatting, the calendar's first weekday, the clock's hour cycle, and
+            table sorting. English (<code>en-US</code>) is the default.
+          </p>
+        {/snippet}
+
+        <QCodeBlock
+          language="ts"
+          code={`import { Quaff } from "@quaffui/quaff";
+import frFR from "@quaffui/quaff/locales/fr-FR";
+
+Quaff.init({ language: frFR });`}
+        />
+
+        <p>
+          Each pack is a separate import, so unused languages stay out of your bundle. Available BCP
+          47 locales are <code>ar-SA</code>, <code>bn-BD</code>, <code>cs-CZ</code>,
+          <code>da-DK</code>, <code>de-DE</code>, <code>el-GR</code>, <code>en-US</code>,
+          <code>es-ES</code>, <code>fa-IR</code>, <code>fi-FI</code>, <code>fil-PH</code>,
+          <code>fr-FR</code>, <code>he-IL</code>, <code>hi-IN</code>, <code>hu-HU</code>,
+          <code>id-ID</code>, <code>it-IT</code>, <code>ja-JP</code>, <code>ko-KR</code>,
+          <code>mr-IN</code>, <code>ms-MY</code>, <code>nb-NO</code>, <code>nl-NL</code>,
+          <code>pl-PL</code>, <code>pt-BR</code>, <code>pt-PT</code>, <code>ro-RO</code>,
+          <code>ru-RU</code>, <code>sv-SE</code>, <code>sw-KE</code>, <code>ta-IN</code>,
+          <code>te-IN</code>, <code>th-TH</code>, <code>tr-TR</code>, <code>uk-UA</code>,
+          <code>ur-PK</code>, <code>vi-VN</code>, <code>zh-CN</code>, and <code>zh-TW</code>.
+        </p>
+        <p>
+          Use <code>locale</code> to override regional formatting, or <code>translations</code>
+          for optional wording changes; omitted entries keep the selected pack's text. Existing component
+          props such as <code>locale</code>, <code>labels</code>, <code>cancelLabel</code>, and
+          <code>noOptionText</code>
+          take precedence. Custom packs use the exported
+          <code>QuaffLanguage</code> type.
+        </p>
+        <p>
+          For language switching, pass a <code>$state</code> configuration object to
+          <code>Quaff.init()</code> once, then update its <code>language</code> property. When
+          configuration comes from props, use getters so it stays current. Keep the same initial
+          configuration for server rendering and hydration, and set your page's <code>lang</code>
+          and <code>dir</code> attributes to match your application.
+        </p>
+      </QDocsSection>
+
       <QDocsSection title="Framework version">
         {#snippet sectionDescription()}
           You can easily check the current version of the Quaff framework using the <code>

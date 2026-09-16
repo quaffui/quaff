@@ -1,0 +1,72 @@
+import type { QuaffLanguage } from "./types.js";
+
+const te = {
+  locale: "te-IN",
+  translations: {
+    table: {
+      label: "పట్టిక",
+      recordsPerPage: "పేజీకి రికార్డులు",
+      previousPage: "మునుపటి పేజీ",
+      nextPage: "తదుపరి పేజీ",
+      pagination: (from, to, total) => `${total}లో ${from}–${to}`,
+      sortBy: (label) => `${label} ఆధారంగా క్రమబద్ధీకరించండి`,
+      sortedBy: (label, isDescending) =>
+        `${label} ఆధారంగా ${isDescending ? "అవరోహణ" : "ఆరోహణ"} క్రమంలో క్రమబద్ధీకరించబడింది`,
+      unsorted: "క్రమబద్ధీకరించబడలేదు",
+    },
+    date: {
+      chooseDate: "తేదీని ఎంచుకోండి",
+      changeDate: "తేదీని మార్చండి",
+      previousMonth: "మునుపటి నెల",
+      nextMonth: "తదుపరి నెల",
+      previousYear: "మునుపటి సంవత్సరం",
+      nextYear: "తదుపరి సంవత్సరం",
+      selectMonth: "నెలను ఎంచుకోండి",
+      selectYear: "సంవత్సరాన్ని ఎంచుకోండి",
+      switchToInput: "తేదీని టైప్ చేసే విధానానికి మారండి",
+      switchToCalendar: "క్యాలెండర్‌లో తేదీని ఎంచుకునే విధానానికి మారండి",
+      calendar: "క్యాలెండర్",
+      yearSelection: "ఒక సంవత్సరాన్ని ఎంచుకోండి",
+      monthSelection: "ఒక నెలను ఎంచుకోండి",
+      closePicker: "తేదీ ఎంపిక ప్యానెల్‌ను మూసివేయండి",
+      selectedDate: "ఎంచుకున్న తేదీ",
+      dateInput: "తేదీ",
+      expectedFormat: "ఆశించిన ఆకృతి",
+      invalidDate: "చెల్లుబాటు అయ్యే తేదీని నమోదు చేయండి",
+      unavailableDate: "ఈ తేదీ అందుబాటులో లేదు",
+      title: "తేదీని ఎంచుకోండి",
+      inputTitle: "తేదీని నమోదు చేయండి",
+      confirmLabel: "సరే",
+      cancelLabel: "రద్దు చేయండి",
+      saveLabel: "భద్రపరచండి",
+    },
+    time: {
+      chooseTime: "సమయాన్ని ఎంచుకోండి",
+      changeTime: "సమయాన్ని మార్చండి",
+      selectHour: "గంటను ఎంచుకోండి",
+      selectMinute: "నిమిషాన్ని ఎంచుకోండి",
+      hour: "గంట",
+      minute: "నిమిషం",
+      hourOption: (value, total) =>
+        `${value} ${value === 1 ? "గంట" : "గంటలు"} (${total} గంటల ఆకృతి)`,
+      minuteOption: (value) => `${value} ${value === 1 ? "నిమిషం" : "నిమిషాలు"}`,
+      of: "/",
+      am: "AM",
+      pm: "PM",
+      switchToInput: "సమయాన్ని టైప్ చేసే విధానానికి మారండి",
+      switchToDial: "గడియారంలో సమయాన్ని ఎంచుకునే విధానానికి మారండి",
+      clock: "సమయ ఎంపిక ప్యానెల్",
+      timeInput: "సమయం",
+      invalidTime: "చెల్లుబాటు అయ్యే సమయాన్ని నమోదు చేయండి",
+      title: "సమయాన్ని ఎంచుకోండి",
+      inputTitle: "సమయాన్ని నమోదు చేయండి",
+      confirmLabel: "సరే",
+      cancelLabel: "రద్దు చేయండి",
+    },
+    select: {
+      noOptionText: "ఎంపికలు లేవు",
+    },
+  },
+} satisfies QuaffLanguage;
+
+export default te;

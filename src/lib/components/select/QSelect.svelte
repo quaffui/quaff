@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onDestroy, tick } from "svelte";
+  import { useI18n } from "$internal/i18n.svelte";
   import { isActivationKey, type QEvent } from "$utils";
   import QIcon from "$components/icon/QIcon.svelte";
   import QItem from "$components/list/QItem.svelte";
@@ -20,6 +21,8 @@
 
   type QSelectEvent<T extends Event> = QEvent<T, HTMLDivElement>;
 
+  const i18n = useI18n("select");
+
   // #region:    --- Props
   let {
     options,
@@ -38,7 +41,7 @@
     useInput = false,
     filterable = false,
     inputDebounce = 300,
-    noOptionText = "No options",
+    noOptionText: providedNoOptionText,
     onFilter,
     before,
     prepend,
@@ -75,6 +78,7 @@
   });
 
   // #region:    --- Derived values
+  const noOptionText = $derived(providedNoOptionText ?? i18n.labels.noOptionText);
   const currentDisplayValue = $derived(getDisplayValue(value, options, multiple, displayValue));
 
   const hasDisplayValue = $derived(currentDisplayValue !== "" && currentDisplayValue !== undefined);

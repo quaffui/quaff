@@ -39,6 +39,7 @@ export default class QTimeState {
   private source!: QTimeStateSource;
   private synchronizedExternalValue: QTimeValue = null;
   private synchronizedFormat24h = false;
+  private inputValidationKey = $state<"invalidTime" | null>(null);
 
   displayMode = $state<QTimeDisplayMode>("dial");
   activePart = $state<QTimeActivePart>("hour");
@@ -46,13 +47,15 @@ export default class QTimeState {
   draftHourInput = $state("");
   draftMinuteInput = $state("");
   period = $state<QTimePeriod>("am");
-  inputValidationMessage = $state("");
   hourInputTouched = $state(false);
   minuteInputTouched = $state(false);
   animatePickerChanges = $state(false);
   isRtl = $state(false);
 
   resolvedLabels = $derived({ ...defaultTimeLabels, ...this.source.labels() });
+  inputValidationMessage = $derived(
+    this.inputValidationKey ? this.resolvedLabels[this.inputValidationKey] : ""
+  );
   format24h = $derived(this.source.format24h() ?? getLocaleUses24Hour(this.source.locale()));
   committedTime = $derived(parseTimeValue(this.source.value()));
   formatters = $derived(createTimeFormatters(this.source.locale(), this.format24h));
@@ -64,10 +67,10 @@ export default class QTimeState {
   );
   minuteInputValid = $derived(parseTimeMinuteInput(this.draftMinuteInput) !== null);
   hourInputInvalid = $derived(
-    !this.hourInputValid && (this.hourInputTouched || !!this.inputValidationMessage)
+    !this.hourInputValid && (this.hourInputTouched || !!this.inputValidationKey)
   );
   minuteInputInvalid = $derived(
-    !this.minuteInputValid && (this.minuteInputTouched || !!this.inputValidationMessage)
+    !this.minuteInputValid && (this.minuteInputTouched || !!this.inputValidationKey)
   );
   fieldDisplayValue = $derived(this.formatters.display(this.committedTime));
   spokenTime = $derived(this.formatters.spoken(this.draftTime));
@@ -94,7 +97,7 @@ export default class QTimeState {
     this.isRtl = isRtl;
     this.displayMode = this.source.docked() ? "dial" : this.source.defaultMode();
     this.activePart = "hour";
-    this.inputValidationMessage = "";
+    this.inputValidationKey = null;
     this.hourInputTouched = false;
     this.minuteInputTouched = false;
     const sourceValue = this.source.value();
@@ -131,7 +134,7 @@ export default class QTimeState {
     if (!currentValue) {
       this.draftTime = getLocalTime();
       this.setDraftInputs(this.draftTime);
-      this.inputValidationMessage = "";
+      this.inputValidationKey = null;
       return;
     }
 
@@ -204,7 +207,7 @@ export default class QTimeState {
       this.draftTime = { ...this.draftTime, hour };
       this.clearValidInputError();
     } else if (input.length === 2) {
-      this.inputValidationMessage = this.resolvedLabels.invalidTime;
+      this.inputValidationKey = "invalidTime";
     }
   }
 
@@ -217,7 +220,7 @@ export default class QTimeState {
       this.draftTime = { ...this.draftTime, minute };
       this.clearValidInputError();
     } else if (input.length === 2) {
-      this.inputValidationMessage = this.resolvedLabels.invalidTime;
+      this.inputValidationKey = "invalidTime";
     }
   }
 
@@ -226,7 +229,7 @@ export default class QTimeState {
     this.minuteInputTouched = true;
 
     if (!this.inputTime) {
-      this.inputValidationMessage = this.resolvedLabels.invalidTime;
+      this.inputValidationKey = "invalidTime";
       return false;
     }
 
@@ -272,7 +275,7 @@ export default class QTimeState {
   private setDraft(time: QTime) {
     this.draftTime = time;
     this.setDraftInputs(time);
-    this.inputValidationMessage = "";
+    this.inputValidationKey = null;
     this.hourInputTouched = false;
     this.minuteInputTouched = false;
   }
@@ -287,14 +290,14 @@ export default class QTimeState {
     const separatorIndex = value.indexOf(":");
     this.draftHourInput = separatorIndex < 0 ? value : value.slice(0, separatorIndex);
     this.draftMinuteInput = separatorIndex < 0 ? "" : value.slice(separatorIndex + 1);
-    this.inputValidationMessage = this.resolvedLabels.invalidTime;
+    this.inputValidationKey = "invalidTime";
     this.hourInputTouched = true;
     this.minuteInputTouched = true;
   }
 
   private clearValidInputError() {
     if (this.inputTime) {
-      this.inputValidationMessage = "";
+      this.inputValidationKey = null;
     }
   }
 }

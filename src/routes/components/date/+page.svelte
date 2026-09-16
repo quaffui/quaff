@@ -1,6 +1,8 @@
 <script lang="ts">
+  import { resolve } from "$app/paths";
   import { QDateDocs } from "$components/date/docs";
   import { docsCtx } from "$docs/QDocs.svelte";
+  import QLanguageExample from "$docs/QLanguageExample.svelte";
   import { pageTitle } from "$helpers/pageTitle";
   import { QBtn, QDate, QInput } from "$lib";
   import { QDocs, QDocsSection } from "$docs";
@@ -142,17 +144,30 @@
 
       <h4 class="q-mb-xl">Features</h4>
 
-      <QDocsSection title="Formatting and Localization" noCode>
+      <QDocsSection title="Formatting" noCode>
         {#snippet sectionDescription()}
           <p>
             The QDate <code>mask</code> formats its model. In a composed picker, QInput uses its own input
             mask, so both masks must describe the same date order.
           </p>
           <p>
-            <code>locale</code> controls date labels and the default first weekday;
+            <code>locale</code> controls date formatting and the default first weekday;
             <code>firstDayOfWeek</code> overrides it with Sunday as <code>0</code>.
           </p>
         {/snippet}
+      </QDocsSection>
+
+      <QDocsSection title="Localization" noCode>
+        {#snippet sectionDescription()}
+          Switch languages to see translated picker labels, buttons, and validation messages. Date
+          formatting and the first weekday follow the selected language's locale. See
+          <a href={resolve("/utils/quaff#language", {})}>all available locales</a> for more languages
+          and setup instructions.
+        {/snippet}
+
+        <QLanguageExample>
+          <QDate value="2026-09-16" outlined style="max-width: 20rem" />
+        </QLanguageExample>
       </QDocsSection>
 
       <QDocsSection title="Date Constraints">

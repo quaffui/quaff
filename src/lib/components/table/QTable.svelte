@@ -1,9 +1,12 @@
 <script lang="ts">
+  import { useI18n } from "$internal/i18n.svelte";
   import QBtn from "$components/button/QBtn.svelte";
   import QIcon from "$components/icon/QIcon.svelte";
   import QSelect from "$components/select/QSelect.svelte";
   import { capitalize } from "$utils";
   import type { QTableProps, QTableColumn, QTableRow } from "./props";
+
+  const i18n = useI18n("table");
 
   // #region:    --- Props
   let {
@@ -80,7 +83,7 @@
       return valueA - valueB;
     }
 
-    return String(valueA).localeCompare(String(valueB));
+    return String(valueA).localeCompare(String(valueB), i18n.locale);
   }
 
   function getCellStyle(column: QTableColumn) {
@@ -109,7 +112,7 @@
   <div
     class="q-table__scroll"
     role="region"
-    aria-label={ariaLabel ?? "Table"}
+    aria-label={ariaLabel ?? i18n.labels.label}
     aria-labelledby={ariaLabelledby}
     tabindex="0"
   >
@@ -132,7 +135,7 @@
                 <button
                   class="q-table__sort-button"
                   type="button"
-                  aria-label={`Sort by ${column.label}`}
+                  aria-label={i18n.labels.sortBy(column.label)}
                   style:justify-content={column.align ?? "flex-start"}
                   onclick={() => setSort(column)}
                 >
@@ -172,7 +175,7 @@
   </div>
   <div class="q-table__footer">
     <div class="q-table__pagination">
-      Records per page:
+      {i18n.labels.recordsPerPage}:
       <QSelect
         class="q-table__footer-select"
         dense
@@ -185,30 +188,32 @@
             page = 1;
           }
         }
-        aria-label="Records per page"
+        aria-label={i18n.labels.recordsPerPage}
       />
     </div>
     <div class="q-table__pagination">
-      <span aria-live="polite" aria-atomic="true">{numberFrom}-{numberTo} of {rows.length}</span>
+      <span aria-live="polite" aria-atomic="true"
+        >{i18n.labels.pagination(numberFrom, numberTo, rows.length)}</span
+      >
       {#if lastPage > 1}
         <QBtn
           icon="chevron_left"
           variant="flat"
           disabled={page === 1}
-          aria-label="Previous page"
+          aria-label={i18n.labels.previousPage}
           onclick={() => page--}
         />
         <QBtn
           icon="chevron_right"
           variant="flat"
           disabled={page === lastPage}
-          aria-label="Next page"
+          aria-label={i18n.labels.nextPage}
           onclick={() => page++}
         />
       {/if}
     </div>
   </div>
   <span class="q-table__announcement" aria-live="polite" aria-atomic="true">
-    {sortColumn ? `Sorted by ${sortColumn.label}, ${sortDirection}` : "Unsorted"}
+    {sortColumn ? i18n.labels.sortedBy(sortColumn.label, isDescending) : i18n.labels.unsorted}
   </span>
 </div>

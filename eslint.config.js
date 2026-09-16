@@ -124,6 +124,10 @@ export default [
       ],
     },
   },
+  {
+    files: ["src/lib/locales/*-*.ts"],
+    rules: { "unicorn/filename-case": "off" },
+  },
   // adjustments for .svelte files
   {
     files: ["**/*.svelte"],

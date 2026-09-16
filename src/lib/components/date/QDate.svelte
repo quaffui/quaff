@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onDestroy, untrack } from "svelte";
+  import { useI18n } from "$internal/i18n.svelte";
   import Quaff from "$classes/Quaff.svelte";
   import QDialog from "$components/dialog/QDialog.svelte";
   import QMenu from "$components/menu/QMenu.svelte";
@@ -14,6 +15,7 @@
 
   type DialogEvent<T extends Event> = QEvent<T, HTMLDialogElement>;
 
+  const i18n = useI18n("date");
   const componentId = $props.id();
   const generatedInputId = `q-date-input-${componentId}`;
   const triggerButtonId = `q-date-trigger-${componentId}`;
@@ -31,18 +33,18 @@
     max,
     yearRange = [1900, 2100],
     disabledDates,
-    locale = "en-US",
+    locale: providedLocale,
     firstDayOfWeek,
     defaultMode = "calendar",
     showModeToggle = true,
     autoApply = false,
     readonly = false,
     disabled = false,
-    title = "Select date",
-    inputTitle = "Enter date",
-    confirmLabel = "OK",
-    cancelLabel = "Cancel",
-    saveLabel = "Save",
+    title: providedTitle,
+    inputTitle: providedInputTitle,
+    confirmLabel: providedConfirmLabel,
+    cancelLabel: providedCancelLabel,
+    saveLabel: providedSaveLabel,
     labels,
     id: providedInputId,
     ...fieldProps
@@ -50,6 +52,12 @@
 
   let wasOpen = false;
 
+  const locale = $derived(providedLocale ?? i18n.locale);
+  const title = $derived(providedTitle ?? i18n.labels.title);
+  const inputTitle = $derived(providedInputTitle ?? i18n.labels.inputTitle);
+  const confirmLabel = $derived(providedConfirmLabel ?? i18n.labels.confirmLabel);
+  const cancelLabel = $derived(providedCancelLabel ?? i18n.labels.cancelLabel);
+  const saveLabel = $derived(providedSaveLabel ?? i18n.labels.saveLabel);
   const inputId = $derived(providedInputId ?? generatedInputId);
   const modelMask = $derived(isValidDateMask(mask) ? mask : defaultDateMask);
   const composed = $derived(variant !== "modal");
@@ -67,7 +75,7 @@
     disabledDates: () => disabledDates,
     locale: () => locale,
     firstDayOfWeek: () => firstDayOfWeek,
-    labels: () => labels,
+    labels: () => ({ ...i18n.labels, ...labels }),
     inputTitle: () => inputTitle,
     defaultMode: () => defaultMode,
     docked: () => docked,
