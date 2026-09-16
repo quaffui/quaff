@@ -53,15 +53,15 @@
       --state-layer-opacity: 8%;
     }
 
-    &:is(:focus, :active):not([aria-disabled]) {
+    &:is(:focus-within, :active):not([aria-disabled]) {
       --state-layer-opacity: 10%;
     }
 
-    &:focus:not([aria-disabled]) {
+    &:focus-within:not([aria-disabled]) {
       --chip-outline-color: var(--chip-focus-outline-color);
     }
 
-    &:focus-visible:not([aria-disabled]) {
+    &:is(:focus-visible, :has(> .q-chip__primary:focus-visible)):not([aria-disabled]) {
       outline: 3px solid var(--secondary);
       outline-offset: 2px;
     }
@@ -78,7 +78,7 @@
       height: 3rem;
     }
 
-    & > .q-avatar.q-chip__avatar {
+    & .q-avatar.q-chip__avatar {
       --size: var(--chip-avatar-size);
     }
 
@@ -91,7 +91,7 @@
         box-shadow: var(--elevate2);
       }
 
-      &:is(:focus, :active):not([aria-disabled]) {
+      &:is(:focus-within, :active):not([aria-disabled]) {
         box-shadow: var(--elevate1);
       }
 
@@ -117,7 +117,7 @@
         background-color: var(--secondary-container);
         color: var(--on-secondary-container);
 
-        & > .q-icon {
+        & :is(.q-chip__leading-icon, .q-chip__trailing-icon) {
           color: var(--on-secondary-container);
         }
 
@@ -129,43 +129,27 @@
           box-shadow: var(--elevate1);
         }
 
-        &:not(.q-chip--elevated):is(:focus, :active):not([aria-disabled]) {
+        &:not(.q-chip--elevated):is(:focus-within, :active):not([aria-disabled]) {
           box-shadow: var(--elevate0);
         }
       }
     }
 
     &.q-chip--input {
-      &:has(> .q-chip__avatar) {
+      &:has(.q-chip__avatar) {
         border-radius: 1rem;
       }
 
-      & > .q-icon {
+      & :is(.q-chip__leading-icon, .q-chip__trailing-icon) {
         color: var(--on-surface-variant);
       }
 
-      &:is(:hover, :focus, :active):not([aria-disabled]) > .q-chip__leading-icon {
+      &:is(:hover, :focus-within, :active):not([aria-disabled]) .q-chip__leading-icon {
         color: var(--primary);
-      }
-
-      &.q-chip--selected {
-        --chip-outline-width: 0px;
-        --state-layer-color: var(--on-secondary-container);
-
-        background-color: var(--secondary-container);
-        color: var(--on-secondary-container);
-
-        & > .q-chip__leading-icon {
-          color: var(--primary);
-        }
-
-        & > .q-chip__trailing-icon {
-          color: var(--on-secondary-container);
-        }
       }
     }
 
-    &:has(> .q-chip__trailing-icon) {
+    &:has(.q-chip__trailing-icon) {
       min-width: 5.5rem;
     }
   }
@@ -200,35 +184,75 @@
     font: inherit;
   }
 
-  .q-chip > .q-chip__leading-icon {
+  .q-chip .q-chip__leading-icon {
     color: var(--primary);
   }
 
-  .q-chip > .q-chip__trailing-icon {
+  .q-chip .q-chip__trailing-icon {
     color: var(--on-surface-variant);
+  }
+
+  .q-chip:has(> .q-chip__primary) {
+    padding: 0;
+    gap: 0;
+  }
+
+  .q-chip__primary,
+  .q-chip__trailing-action {
+    display: inline-flex;
+    align-items: center;
+    height: 100%;
+    padding: 0;
+    border: 0;
+    border-radius: inherit;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    letter-spacing: inherit;
+    text-align: inherit;
+    cursor: inherit;
+  }
+
+  .q-chip__primary {
+    justify-content: start;
+    min-width: 0;
+    gap: 0.5rem;
+    padding-inline-start: 1rem;
+    outline: none;
+  }
+
+  .q-chip__trailing-action {
+    flex-shrink: 0;
+    margin-inline-start: 0.5rem;
+    padding-inline-end: 0.5rem;
 
     &::after {
       content: "";
       position: absolute;
       top: 50%;
-      left: 50%;
+      inset-inline-start: -0.5rem;
       width: 3rem;
       height: 3rem;
-      transform: translate(-50%, -50%);
+      transform: translateY(-50%);
+    }
+
+    &:focus-visible {
+      outline: 3px solid var(--secondary);
+      outline-offset: 2px;
     }
   }
 
-  .q-chip > :is(.q-icon.q-chip__leading-icon, .q-avatar.q-chip__avatar) {
-    margin-left: -0.5rem;
+  .q-chip :is(.q-icon.q-chip__leading-icon, .q-avatar.q-chip__avatar) {
+    margin-inline-start: -0.5rem;
   }
 
   .q-chip > .q-icon.q-chip__trailing-icon {
-    margin-right: -0.5rem;
+    margin-inline-end: -0.5rem;
   }
 
-  .q-chip.q-chip--input > .q-avatar.q-chip__avatar {
+  .q-chip.q-chip--input .q-avatar.q-chip__avatar {
     --size: 1.5rem;
-    margin-left: -0.75rem;
+    margin-inline-start: -0.75rem;
   }
 }
 

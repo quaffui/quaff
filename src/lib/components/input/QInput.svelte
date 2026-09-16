@@ -47,7 +47,12 @@
   }: QInputProps = $props();
   // #endregion: --- Props
 
+  // #region:    --- Non-reactive variables
+  const id = $props.id();
+  // #endregion: --- Non-reactive variables
+
   // #region:    --- Derived values
+  const inputId = $derived(inputProps.id ?? `q-input-${id}`);
   const nativeValue = $derived(value ?? "");
   const displayValue = $derived(
     mask ? maskValue(String(nativeValue), mask, fillMask) : nativeValue
@@ -182,7 +187,7 @@
   {/if}
 
   <div class="q-field__inner">
-    <label class="q-field__wrapper">
+    <label for={inputId} class="q-field__wrapper">
       {#if prepend}
         <div class="q-field__snippet-prepend" bind:clientWidth={snippetPrependWidth}>
           {@render prepend()}
@@ -190,6 +195,7 @@
       {/if}
       <input
         {...inputProps}
+        id={inputId}
         class="q-field__input"
         value={displayValue}
         {placeholder}

@@ -10,14 +10,15 @@
   docsCtx.set({ snippets, componentDocs: QChipDocs });
 
   let selectedValue = $state(false);
-  let kindInputValue = $state("Input");
-  let inputValue = $state("example@email.com");
-  let contactValue = $state("Ada Lovelace <ada@example.com>");
-  let importantValue = $state("Important");
-  let avatarValue = $state("Cocktail");
+  let kindInputValue = $state<string | undefined>("Input");
+  let inputValue = $state<string | undefined>("example@email.com");
+  let contactValue = $state<string | undefined>("Ada Lovelace <ada@example.com>");
+  let importantValue = $state<string | undefined>("Important");
+  let avatarValue = $state<string | undefined>("Cocktail");
+  let hasSavedInput = $state(true);
   let eventInputValue = $state("Input chip");
 
-  const contactLabel = $derived(contactValue.split("<", 1)[0].trim());
+  const contactLabel = $derived(contactValue?.split("<", 1)[0].trim());
 </script>
 
 <svelte:head>
@@ -41,7 +42,15 @@
         <div class="flex q-gap-lg items-center q-ma-sm">
           <QChip icon="map" label="Assist (default)" />
           <QChip kind="filter" icon="filter_list" label="Filter" bind:selected={selectedValue} />
-          <QChip kind="input" icon="person" trailingIcon="close" bind:value={kindInputValue} />
+          {#if kindInputValue !== undefined}
+            <QChip
+              kind="input"
+              icon="person"
+              trailingIcon="close"
+              bind:value={kindInputValue}
+              onTrailingIconClick={() => (kindInputValue = undefined)}
+            />
+          {/if}
           <QChip kind="suggestion" icon="lightbulb" label="Suggestion" />
         </div>
       </QDocsSection>
@@ -75,23 +84,52 @@
 
       <QDocsSection title="Input Chips">
         {#snippet sectionDescription()}
-          Input chips represent user-entered information. When activated, they become editable text.
-          Bind their <code>value</code> to store that text. With keyboard focus, Backspace selects the
-          whole chip and a second press activates its trailing action.
+          Input chips represent user-entered information. Bind their <code>value</code> to make the text
+          editable. Use Tab to move between editing and removal actions, or press Backspace or Delete
+          on a focused chip to remove it. The Saved chip only supports removal, so its label and close
+          icon share one focus stop.
         {/snippet}
 
         <div class="flex q-gap-lg items-center q-ma-sm">
-          <QChip kind="input" icon="mail" bind:value={inputValue} trailingIcon="close" />
-          <QChip
-            kind="input"
-            icon="person"
-            label={contactLabel}
-            bind:value={contactValue}
-            trailingIcon="close"
-          />
-          <QChip kind="input" icon="tag" bind:value={importantValue} trailingIcon="close" />
+          {#if inputValue !== undefined}
+            <QChip
+              kind="input"
+              icon="mail"
+              bind:value={inputValue}
+              trailingIcon="close"
+              onTrailingIconClick={() => (inputValue = undefined)}
+            />
+          {/if}
+          {#if contactValue !== undefined}
+            <QChip
+              kind="input"
+              icon="person"
+              label={contactLabel}
+              bind:value={contactValue}
+              trailingIcon="close"
+              onTrailingIconClick={() => (contactValue = undefined)}
+            />
+          {/if}
+          {#if importantValue !== undefined}
+            <QChip
+              kind="input"
+              icon="tag"
+              bind:value={importantValue}
+              trailingIcon="close"
+              onTrailingIconClick={() => (importantValue = undefined)}
+            />
+          {/if}
+          {#if hasSavedInput}
+            <QChip
+              kind="input"
+              icon="bookmark"
+              label="Saved"
+              trailingIcon="close"
+              onTrailingIconClick={() => (hasSavedInput = false)}
+            />
+          {/if}
         </div>
-        <div>Value: {inputValue}</div>
+        <div>Value: {inputValue ?? "Removed"}</div>
       </QDocsSection>
 
       <QDocsSection title="Suggestion Chips">
@@ -127,12 +165,15 @@
         {/snippet}
 
         <div class="flex q-gap-lg items-center q-ma-sm">
-          <QChip
-            kind="input"
-            icon="img:/cocktail.jpg"
-            bind:value={avatarValue}
-            trailingIcon="close"
-          />
+          {#if avatarValue !== undefined}
+            <QChip
+              kind="input"
+              icon="img:/cocktail.jpg"
+              bind:value={avatarValue}
+              trailingIcon="close"
+              onTrailingIconClick={() => (avatarValue = undefined)}
+            />
+          {/if}
         </div>
       </QDocsSection>
 
@@ -165,8 +206,9 @@
 
       <QDocsSection title="Accessibility">
         {#snippet sectionDescription()}
-          QChips are keyboard-accessible, function as buttons, and can be activated with Space or
-          Enter keys.
+          Use Tab to focus chip actions and Space or Enter to activate them. Input chips also
+          support Backspace and Delete for removal. Use <code>trailingIconLabel</code> to customize a
+          trailing action's accessible name.
         {/snippet}
 
         <p>Focus the chips below using Tab and activate with Space or Enter:</p>
@@ -191,6 +233,7 @@
             icon="person"
             bind:value={eventInputValue}
             trailingIcon="close"
+            trailingIconLabel="Show input chip notification"
             onTrailingIconClick={() => alert("Trailing icon clicked!")}
           />
         </div>

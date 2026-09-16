@@ -58,6 +58,7 @@
 
   // #region:    --- Non-reactive variables
   const id = $props.id();
+  const inputId = `q-select__input-${id}`;
   const listboxId = `q-select__listbox-${id}`;
   // #endregion: --- Non-reactive variables
 
@@ -347,7 +348,7 @@
   {/if}
 
   <div class="q-field__inner">
-    <label bind:this={menuTarget} class="q-field__wrapper">
+    <label bind:this={menuTarget} for={inputId} class="q-field__wrapper">
       {#if prepend}
         <div class="q-field__snippet-prepend" bind:clientWidth={snippetPrependWidth}>
           {@render prepend()}
@@ -355,6 +356,7 @@
       {/if}
 
       <input
+        id={inputId}
         class="q-field__input"
         value={inputValue}
         placeholder=""
