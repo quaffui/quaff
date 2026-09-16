@@ -9,15 +9,18 @@
   <body data-sveltekit-preload-data="hover">
     <script>
       // prevents a white flash on load for dark mode users
-      const savedDisplayMode = localStorage.getItem("displayMode");
-      let currentDisplayMode;
+      let currentDisplayMode = window.matchMedia("(prefers-color-scheme: dark)").matches
+        ? "dark"
+        : "light";
 
-      if (savedDisplayMode === "dark" || savedDisplayMode === "light") {
-        currentDisplayMode = savedDisplayMode;
-      } else if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-        currentDisplayMode = "dark";
-      } else {
-        currentDisplayMode = "light";
+      try {
+        const savedDisplayMode = localStorage.getItem("displayMode");
+
+        if (savedDisplayMode === "dark" || savedDisplayMode === "light") {
+          currentDisplayMode = savedDisplayMode;
+        }
+      } catch {
+        // Use the system preference when storage is unavailable.
       }
 
       document.documentElement.style.colorScheme = currentDisplayMode;
