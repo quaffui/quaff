@@ -16,6 +16,7 @@
     label,
     icon,
     trailingIcon,
+    trailingIconLabel,
     disabled = false,
     elevated,
     noRipple = false,
@@ -26,16 +27,39 @@
   }: QChipProps = $props();
   // #endregion: --- Props
 
+  // #region:    --- Non-reactive variables
+  const id = $props.id();
+  // #endregion: --- Non-reactive variables
+
   // #region:    --- Reactive variables
-  let editing = $state(false);
+  let isEditing = $state(false);
   let editInput = $state<HTMLInputElement>();
-  let inputSelected = $state(false);
   let qChip = $state<HTMLDivElement>();
+  let primaryAction = $state<HTMLButtonElement>();
+  let trailingAction = $state<HTMLButtonElement>();
   // #endregion: --- Reactive variables
 
   // #region:    --- Derived values
   const trailing = $derived(kind === "filter" || kind === "input" ? trailingIcon : undefined);
-  const chipSelected = $derived(kind === "filter" ? selected : inputSelected);
+  const hasTrailingAction = $derived(!!trailing && !!onTrailingIconClick);
+  const isRemoveOnly = $derived(
+    kind === "input" && hasTrailingAction && value === undefined && !props.onclick
+  );
+  const hasSecondaryAction = $derived(hasTrailingAction && !isRemoveOnly);
+  const trailingLabel = $derived(
+    trailingIconLabel || (isRemoveOnly ? props["aria-label"] : undefined)
+  );
+  const trailingLabelledby = $derived.by(() => {
+    if (trailingIconLabel) {
+      return undefined;
+    }
+
+    if (isRemoveOnly && props["aria-labelledby"]) {
+      return props["aria-labelledby"];
+    }
+
+    return trailingLabel ? undefined : `${id}-action ${id}-label`;
+  });
 
   const tabindex = $derived(disabled ? -1 : (props.tabindex ?? 0));
   const hasElevation = $derived(elevated && kind !== "input");
@@ -62,7 +86,7 @@
   // #endregion: --- Effects
 
   // #region:    --- Functions
-  async function handleClick(e: QChipMouseEvent, iconClick = false) {
+  async function handleClick(e: QChipMouseEvent, isTrailingAction = false) {
     if (disabled) {
       e.preventDefault();
       e.stopImmediatePropagation();
@@ -71,7 +95,7 @@
 
     e.stopPropagation();
 
-    if (iconClick) {
+    if (isTrailingAction) {
       onTrailingIconClick?.(e);
     } else {
       props.onclick?.(e as QEvent<MouseEvent, HTMLDivElement>);
@@ -81,16 +105,13 @@
       return;
     }
 
-    if (kind === "input" && iconClick) {
-      inputSelected = false;
-    } else if (kind === "filter" && !iconClick) {
+    if (kind === "filter" && !isTrailingAction) {
       selected = !selected;
-    } else if (kind === "input" && !iconClick && value !== undefined) {
-      inputSelected = false;
-      editing = true;
+    } else if (kind === "input" && !isTrailingAction && value !== undefined) {
+      isEditing = true;
     }
 
-    if (editing) {
+    if (isEditing) {
       await tick();
       editInput?.focus();
       editInput?.select();
@@ -104,28 +125,37 @@
 
     props.onkeydown?.(e);
 
-    if (e.defaultPrevented || e.target !== e.currentTarget) {
+    if (
+      e.defaultPrevented ||
+      (e.target !== qChip && e.target !== primaryAction && e.target !== trailingAction)
+    ) {
       return;
     }
 
-    if (kind === "input" && e.key === "Backspace") {
+    if (kind === "input" && hasTrailingAction && (e.key === "Backspace" || e.key === "Delete")) {
       e.preventDefault();
 
-      if (inputSelected) {
-        qChip?.querySelector<HTMLElement>(".q-chip__trailing-icon")?.click();
-      } else {
-        inputSelected = true;
+      if (!e.repeat) {
+        (isRemoveOnly ? qChip : trailingAction)?.click();
       }
+
       return;
     }
 
     if (e.key === "Escape") {
-      inputSelected = false;
-      qChip?.blur();
+      (e.target as HTMLElement).blur();
       return;
     }
 
     handleActivationKeydown(e);
+  }
+
+  function handleFocusCapture(e: QEvent<FocusEvent, HTMLDivElement>, type: "focus" | "blur") {
+    props[`on${type}capture`]?.(e);
+
+    if (!e.cancelBubble && (e.target === primaryAction || e.target === trailingAction)) {
+      props[`on${type}`]?.(e);
+    }
   }
 
   async function onInputKeydown(e: KeyboardEvent) {
@@ -133,15 +163,10 @@
 
     if (e.key === "Enter" || e.key === "Escape") {
       e.preventDefault();
-      editing = false;
+      isEditing = false;
       await tick();
-      qChip?.focus();
+      (primaryAction ?? qChip)?.focus();
     }
-  }
-
-  function onblur(e: QEvent<FocusEvent, HTMLDivElement>) {
-    inputSelected = false;
-    props.onblur?.(e);
   }
   // #endregion: --- Functions
 
@@ -149,67 +174,113 @@
     bemClasses: {
       [kind]: true,
       [size]: true,
-      selected: chipSelected,
+      selected: kind === "filter" && selected,
       elevated: hasElevation,
     },
     classes: [props.class],
   });
 </script>
 
-{#if editing}
+{#if isEditing}
   <input
     bind:this={editInput}
     class={["q-chip__edit", props.class]}
     bind:value
     size={Math.max(value?.length ?? 0, 1)}
     aria-label={label ?? value}
-    onblur={() => (editing = false)}
+    onblur={() => (isEditing = false)}
     onkeydown={onInputKeydown}
   />
 {:else}
+  <!-- svelte-ignore a11y_no_noninteractive_tabindex (only the button role receives a tabindex) -->
   <div
     bind:this={qChip}
     {@attach ripple({ disabled: noRipple || disabled })}
     {...props}
     class="q-chip"
     aria-disabled={disabled || undefined}
-    aria-pressed={kind === "filter" || kind === "input" ? chipSelected : undefined}
-    {tabindex}
-    role="button"
-    onclick={handleClick}
+    aria-pressed={!hasSecondaryAction && kind === "filter" ? selected : undefined}
+    aria-label={isRemoveOnly ? trailingLabel : props["aria-label"]}
+    aria-labelledby={isRemoveOnly ? trailingLabelledby : props["aria-labelledby"]}
+    tabindex={hasSecondaryAction ? undefined : tabindex}
+    role={hasSecondaryAction ? "group" : "button"}
+    onclick={(e) => handleClick(e, isRemoveOnly)}
     {onkeydown}
-    {onblur}
+    onfocuscapture={(e) => handleFocusCapture(e, "focus")}
+    onblurcapture={(e) => handleFocusCapture(e, "blur")}
     data-quaff
   >
-    <span class="q-chip__touch-target" aria-hidden="true"></span>
+    {#snippet content()}
+      <QIconSnippet
+        class="q-chip__leading-icon"
+        icon={kind === "filter" && selected ? "check" : icon || undefined}
+        size={iconSize}
+        aria-hidden="true"
+      >
+        {#snippet image(src)}
+          <QAvatar class="q-chip__avatar" {src} aria-hidden="true" />
+        {/snippet}
+      </QIconSnippet>
 
-    <QIconSnippet
-      class="q-chip__leading-icon"
-      icon={kind === "filter" && selected ? "check" : icon || undefined}
-      size={iconSize}
-    >
-      {#snippet image(src)}
-        <QAvatar class="q-chip__avatar" {src} />
-      {/snippet}
-    </QIconSnippet>
+      <span id={`${id}-label`} class="q-chip__label">
+        {#if label}
+          {label}
+        {:else if kind === "input" && value !== undefined}
+          {value}
+        {:else}
+          {@render children?.()}
+        {/if}
+      </span>
+    {/snippet}
 
-    <div class="q-chip__label">
-      {#if label}
-        {label}
-      {:else if kind === "input" && value !== undefined}
-        {value}
-      {:else}
-        {@render children?.()}
-      {/if}
-    </div>
-
-    {#if trailing}
+    {#if hasSecondaryAction}
+      <button
+        bind:this={primaryAction}
+        class="q-chip__primary"
+        type="button"
+        {disabled}
+        {tabindex}
+        aria-label={props["aria-label"]}
+        aria-labelledby={props["aria-labelledby"]}
+        aria-describedby={props["aria-describedby"]}
+        aria-haspopup={props["aria-haspopup"]}
+        aria-expanded={props["aria-expanded"]}
+        aria-controls={props["aria-controls"]}
+        aria-pressed={kind === "filter" ? selected : undefined}
+      >
+        <span class="q-chip__touch-target" aria-hidden="true"></span>
+        {@render content()}
+      </button>
+      <button
+        bind:this={trailingAction}
+        class="q-chip__trailing-action"
+        type="button"
+        {disabled}
+        {tabindex}
+        aria-label={trailingIconLabel}
+        aria-labelledby={trailingLabelledby}
+        onclick={(e) => handleClick(e, true)}
+      >
+        <QIconSnippet
+          class="q-chip__trailing-icon"
+          icon={trailing}
+          size={iconSize}
+          aria-hidden="true"
+        />
+      </button>
+    {:else}
+      <span class="q-chip__touch-target" aria-hidden="true"></span>
+      {@render content()}
       <QIconSnippet
         class="q-chip__trailing-icon"
-        icon={trailing}
+        icon={trailing || undefined}
         size={iconSize}
-        onclick={(e) => handleClick(e, true)}
+        aria-hidden="true"
       />
+    {/if}
+
+    {#if hasTrailingAction && !trailingIconLabel}
+      <span id={`${id}-action`} hidden>{kind === "input" ? "Remove" : "Options for"}</span>
     {/if}
   </div>
 {/if}

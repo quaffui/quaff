@@ -20,8 +20,16 @@ export interface QChipProps
 
   /**
    * Only for filter and input chips. Name of the trailing icon to use for the chip.
+   * Provide onTrailingIconClick to make the icon actionable.
    */
   trailingIcon?: MaterialSymbol | `img:${string}`;
+
+  /**
+   * Accessible name for the trailing action. Defaults to "Remove" followed by the chip label for
+   * input chips, or "Options for" followed by the label for filter chips.
+   * Remove-only chips also honor an existing aria-label or aria-labelledby before using this default.
+   */
+  trailingIconLabel?: string;
 
   /**
    * Editable text for input chips. This property is bindable and independent of the displayed label.
@@ -45,7 +53,9 @@ export interface QChipProps
   noRipple?: boolean;
 
   /**
-   * Click event handler for the trailing icon of the chip. This can be useful with input chips to clear them.
+   * Click event handler for the trailing action. For input chips with a trailing icon, also called
+   * on Backspace or Delete.
+   * An input chip without a value or onclick handler uses the entire chip as its removal action.
    */
   onTrailingIconClick?: MouseEventHandler<HTMLElement>;
 }
