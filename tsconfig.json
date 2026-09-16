@@ -16,5 +16,11 @@
     "verbatimModuleSyntax": false
   },
   "exclude": ["./dist/**/*", "./plugins/dist/**/*"],
-  "include": ["./docgen/**/*", "./scripts/**/*", "./src/**/*", "./plugins/**/*"]
+  "include": [
+    "./.svelte-kit/ambient.d.ts",
+    "./docgen/**/*",
+    "./scripts/**/*",
+    "./src/**/*",
+    "./plugins/**/*"
+  ]
 }

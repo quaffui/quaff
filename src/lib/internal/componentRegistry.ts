@@ -1,227 +1,110 @@
-export const Components = {
-  QAvatar: "QAvatar",
-  QBreadcrumbs: "QBreadcrumbs",
-  QBreadcrumbsEl: "QBreadcrumbsEl",
-  QBtn: "QBtn",
-  QIconBtn: "QIconBtn",
-  QCard: "QCard",
-  QCardSection: "QCardSection",
-  QCardActions: "QCardActions",
-  QCheckbox: "QCheckbox",
-  QChip: "QChip",
-  QCircularProgress: "QCircularProgress",
-  QCodeBlock: "QCodeBlock",
-  QDate: "QDate",
-  QDialog: "QDialog",
-  QDrawer: "QDrawer",
-  QExpansionItem: "QExpansionItem",
-  QFooter: "QFooter",
-  QHeader: "QHeader",
-  QHeaderTitle: "QHeaderTitle",
-  QIcon: "QIcon",
-  QInput: "QInput",
-  QSelect: "QSelect",
-  QRange: "QRange",
-  QSlider: "QSlider",
-  QSnackbar: "QSnackbar",
-  QLayout: "QLayout",
-  QList: "QList",
-  QItem: "QItem",
-  QItemSection: "QItemSection",
-  QLinearProgress: "QLinearProgress",
-  QMenu: "QMenu",
-  QNavbar: "QNavbar",
-  QNavItem: "QNavItem",
-  QRadio: "QRadio",
-  QRailbar: "QRailbar",
-  QSeparator: "QSeparator",
-  QTabs: "QTabs",
-  QTab: "QTab",
-  QTable: "QTable",
-  QSwitch: "QSwitch",
-  QTime: "QTime",
-  QTooltip: "QTooltip",
+const buttonCss = ["button", "icon", "progress"] as const;
+const listCss = ["list", "separator"] as const;
+const pickerCss = ["field", "dialog", "menu", ...buttonCss] as const;
+const selectCss = ["field", "select", "icon", "list", "menu"] as const;
+const sliderCss = ["slider", "icon"] as const;
+
+// Order determines the CSS cascade. Each group declares its stylesheet and component dependencies.
+const registry = {
+  avatar: { css: "components/avatar", components: { QAvatar: ["avatar"] } },
+  breadcrumbs: {
+    css: "components/breadcrumbs",
+    components: { QBreadcrumbs: ["breadcrumbs"], QBreadcrumbsEl: ["breadcrumbs", "icon"] },
+  },
+  button: { css: "components/button", components: { QBtn: buttonCss, QIconBtn: buttonCss } },
+  card: {
+    css: "components/card",
+    components: { QCard: ["card"], QCardSection: ["card"], QCardActions: ["card"] },
+  },
+  checkbox: { css: "components/checkbox", components: { QCheckbox: ["checkbox"] } },
+  chip: { css: "components/chip", components: { QChip: ["chip", "avatar", "icon"] } },
+  codeBlock: { components: { QCodeBlock: buttonCss } },
+  date: { css: "components/date", components: { QDate: ["date", ...pickerCss] } },
+  dialog: { css: "components/dialog", components: { QDialog: ["dialog"] } },
+  drawer: { css: "components/drawer", components: { QDrawer: ["drawer"] } },
+  "expansion-item": {
+    css: "components/expansion-item",
+    components: { QExpansionItem: ["expansion-item", "button", "icon", ...listCss, "progress"] },
+  },
+  field: { css: "shared/field" },
+  footer: { css: "components/footer", components: { QFooter: ["footer"] } },
+  header: {
+    css: "components/header",
+    components: { QHeader: ["header"], QHeaderTitle: ["header"] },
+  },
+  icon: { css: "components/icon", components: { QIcon: ["icon"] } },
+  input: { css: "components/input", components: { QInput: ["field"] } },
+  layout: { css: "components/layout", components: { QLayout: ["layout"] } },
+  list: {
+    css: "components/list",
+    components: { QList: listCss, QItem: listCss, QItemSection: ["list"] },
+  },
+  menu: { css: "components/menu", components: { QMenu: ["menu"] } },
+  navbar: {
+    css: "components/navbar",
+    components: { QNavbar: ["navbar"], QNavItem: ["navbar", "icon"] },
+  },
+  progress: {
+    css: "components/progress",
+    components: { QCircularProgress: ["progress"], QLinearProgress: ["progress"] },
+  },
+  radio: { css: "components/radio", components: { QRadio: ["radio"] } },
+  railbar: { css: "components/railbar", components: { QRailbar: ["railbar"] } },
+  select: { css: "components/select", components: { QSelect: selectCss } },
+  slider: { css: "components/slider", components: { QRange: sliderCss, QSlider: sliderCss } },
+  snackbar: { css: "components/snackbar", components: { QSnackbar: ["snackbar", ...buttonCss] } },
+  separator: { css: "components/separator", components: { QSeparator: ["separator"] } },
+  switch: { css: "components/switch", components: { QSwitch: ["switch", "icon"] } },
+  table: { css: "components/table", components: { QTable: ["table", ...buttonCss, ...selectCss] } },
+  tabs: { css: "components/tabs", components: { QTabs: ["tabs"], QTab: ["tabs", "icon"] } },
+  time: { css: "components/time", components: { QTime: ["time", ...pickerCss] } },
+  tooltip: { css: "components/tooltip", components: { QTooltip: ["tooltip"] } },
 } as const;
 
-export const ComponentPaths = {
-  Avatar: "avatar",
-  Breadcrumbs: "breadcrumbs",
-  Button: "button",
-  Card: "card",
-  Checkbox: "checkbox",
-  Chip: "chip",
-  CodeBlock: "codeBlock",
-  Date: "date",
-  Dialog: "dialog",
-  Drawer: "drawer",
-  ExpansionItem: "expansion-item",
-  Footer: "footer",
-  Header: "header",
-  Icon: "icon",
-  Input: "input",
-  Layout: "layout",
-  List: "list",
-  Menu: "menu",
-  Navbar: "navbar",
-  Progress: "progress",
-  Radio: "radio",
-  Railbar: "railbar",
-  Select: "select",
-  Slider: "slider",
-  Snackbar: "snackbar",
-  Separator: "separator",
-  Switch: "switch",
-  Table: "table",
-  Tabs: "tabs",
-  Time: "time",
-  Tooltip: "tooltip",
-} as const;
+type Registry = typeof registry;
+type RegistryKeysWith<Property extends string> = {
+  [Key in keyof Registry]: Registry[Key] extends Record<Property, unknown> ? Key : never;
+}[keyof Registry];
+type CssKey = RegistryKeysWith<"css">;
+type ComponentPath = RegistryKeysWith<"components">;
+type ComponentName = {
+  [Path in ComponentPath]: keyof Registry[Path]["components"];
+}[ComponentPath];
 
-export const ComponentCss = {
-  Avatar: "components/avatar",
-  Breadcrumbs: "components/breadcrumbs",
-  Button: "components/button",
-  Card: "components/card",
-  Checkbox: "components/checkbox",
-  Chip: "components/chip",
-  Date: "components/date",
-  Dialog: "components/dialog",
-  Drawer: "components/drawer",
-  ExpansionItem: "components/expansion-item",
-  Field: "shared/field",
-  Footer: "components/footer",
-  Header: "components/header",
-  Icon: "components/icon",
-  Input: "components/input",
-  Layout: "components/layout",
-  List: "components/list",
-  Menu: "components/menu",
-  Navbar: "components/navbar",
-  Progress: "components/progress",
-  Radio: "components/radio",
-  Railbar: "components/railbar",
-  Select: "components/select",
-  Slider: "components/slider",
-  Snackbar: "components/snackbar",
-  Separator: "components/separator",
-  Switch: "components/switch",
-  Table: "components/table",
-  Tabs: "components/tabs",
-  Time: "components/time",
-  Tooltip: "components/tooltip",
-} as const;
+export type ComponentCssName = Registry[CssKey]["css"];
 
-export type ComponentCssName = (typeof ComponentCss)[keyof typeof ComponentCss];
+const entries: Record<
+  string,
+  { css?: ComponentCssName; components?: Record<string, readonly CssKey[]> }
+> = registry;
 
-const buttonCss = [ComponentCss.Button, ComponentCss.Icon, ComponentCss.Progress];
-const chipCss = [ComponentCss.Chip, ComponentCss.Avatar, ComponentCss.Icon];
-const pickerCss = [ComponentCss.Field, ComponentCss.Dialog, ComponentCss.Menu, ...buttonCss];
-const dateCss = [ComponentCss.Date, ...pickerCss];
-const listCss = [ComponentCss.List, ComponentCss.Separator];
-const expansionItemCss = [
-  ComponentCss.ExpansionItem,
-  ComponentCss.Button,
-  ComponentCss.Icon,
-  ...listCss,
-  ComponentCss.Progress,
-];
-const fieldCss = [ComponentCss.Field];
-const navbarCss = [ComponentCss.Navbar, ComponentCss.Icon];
-const selectCss = [
-  ComponentCss.Field,
-  ComponentCss.Select,
-  ComponentCss.Icon,
-  ComponentCss.List,
-  ComponentCss.Menu,
-];
-const snackbarCss = [ComponentCss.Snackbar, ...buttonCss];
-const switchCss = [ComponentCss.Switch, ComponentCss.Icon];
-const tabsCss = [ComponentCss.Tabs, ComponentCss.Icon];
-const tableCss = [ComponentCss.Table, ...buttonCss, ...selectCss];
-const timeCss = [ComponentCss.Time, ...pickerCss];
+export const ComponentCss = Object.fromEntries(
+  Object.entries(entries).flatMap(([key, { css }]) => (css ? [[key, css]] : []))
+) as Record<CssKey, ComponentCssName>;
 
-export const ComponentCssDependencies = {
-  [Components.QAvatar]: [ComponentCss.Avatar],
-  [Components.QBreadcrumbs]: [ComponentCss.Breadcrumbs],
-  [Components.QBreadcrumbsEl]: [ComponentCss.Breadcrumbs, ComponentCss.Icon],
-  [Components.QBtn]: buttonCss,
-  [Components.QIconBtn]: buttonCss,
-  [Components.QCard]: [ComponentCss.Card],
-  [Components.QCardSection]: [ComponentCss.Card],
-  [Components.QCardActions]: [ComponentCss.Card],
-  [Components.QCheckbox]: [ComponentCss.Checkbox],
-  [Components.QChip]: chipCss,
-  [Components.QCircularProgress]: [ComponentCss.Progress],
-  [Components.QCodeBlock]: buttonCss,
-  [Components.QDate]: dateCss,
-  [Components.QDialog]: [ComponentCss.Dialog],
-  [Components.QDrawer]: [ComponentCss.Drawer],
-  [Components.QExpansionItem]: expansionItemCss,
-  [Components.QFooter]: [ComponentCss.Footer],
-  [Components.QHeader]: [ComponentCss.Header],
-  [Components.QHeaderTitle]: [ComponentCss.Header],
-  [Components.QIcon]: [ComponentCss.Icon],
-  [Components.QInput]: fieldCss,
-  [Components.QSelect]: selectCss,
-  [Components.QRange]: [ComponentCss.Slider, ComponentCss.Icon],
-  [Components.QSlider]: [ComponentCss.Slider, ComponentCss.Icon],
-  [Components.QSnackbar]: snackbarCss,
-  [Components.QLayout]: [ComponentCss.Layout],
-  [Components.QList]: listCss,
-  [Components.QItem]: listCss,
-  [Components.QItemSection]: [ComponentCss.List],
-  [Components.QLinearProgress]: [ComponentCss.Progress],
-  [Components.QMenu]: [ComponentCss.Menu],
-  [Components.QNavbar]: [ComponentCss.Navbar],
-  [Components.QNavItem]: navbarCss,
-  [Components.QRadio]: [ComponentCss.Radio],
-  [Components.QRailbar]: [ComponentCss.Railbar],
-  [Components.QSeparator]: [ComponentCss.Separator],
-  [Components.QTabs]: [ComponentCss.Tabs],
-  [Components.QTab]: tabsCss,
-  [Components.QTable]: tableCss,
-  [Components.QSwitch]: switchCss,
-  [Components.QTime]: timeCss,
-  [Components.QTooltip]: [ComponentCss.Tooltip],
-} satisfies Record<(typeof Components)[keyof typeof Components], readonly ComponentCssName[]>;
+export const ComponentCssDependencies = Object.fromEntries(
+  Object.values(entries).flatMap(({ components }) =>
+    Object.entries(components ?? {}).map(([name, css]) => [
+      name,
+      css.map((key) => ComponentCss[key]),
+    ])
+  )
+) as Record<ComponentName, ComponentCssName[]>;
 
-export const ComponentPathCssDependencies = {
-  [ComponentPaths.Avatar]: [ComponentCss.Avatar],
-  [ComponentPaths.Breadcrumbs]: [ComponentCss.Breadcrumbs, ComponentCss.Icon],
-  [ComponentPaths.Button]: buttonCss,
-  [ComponentPaths.Card]: [ComponentCss.Card],
-  [ComponentPaths.Checkbox]: [ComponentCss.Checkbox],
-  [ComponentPaths.Chip]: chipCss,
-  [ComponentPaths.CodeBlock]: buttonCss,
-  [ComponentPaths.Date]: dateCss,
-  [ComponentPaths.Dialog]: [ComponentCss.Dialog],
-  [ComponentPaths.Drawer]: [ComponentCss.Drawer],
-  [ComponentPaths.ExpansionItem]: expansionItemCss,
-  [ComponentPaths.Footer]: [ComponentCss.Footer],
-  [ComponentPaths.Header]: [ComponentCss.Header],
-  [ComponentPaths.Icon]: [ComponentCss.Icon],
-  [ComponentPaths.Input]: fieldCss,
-  [ComponentPaths.Layout]: [ComponentCss.Layout],
-  [ComponentPaths.List]: listCss,
-  [ComponentPaths.Menu]: [ComponentCss.Menu],
-  [ComponentPaths.Navbar]: navbarCss,
-  [ComponentPaths.Progress]: [ComponentCss.Progress],
-  [ComponentPaths.Radio]: [ComponentCss.Radio],
-  [ComponentPaths.Railbar]: [ComponentCss.Railbar],
-  [ComponentPaths.Select]: selectCss,
-  [ComponentPaths.Slider]: [ComponentCss.Slider, ComponentCss.Icon],
-  [ComponentPaths.Snackbar]: snackbarCss,
-  [ComponentPaths.Separator]: [ComponentCss.Separator],
-  [ComponentPaths.Switch]: switchCss,
-  [ComponentPaths.Table]: tableCss,
-  [ComponentPaths.Tabs]: tabsCss,
-  [ComponentPaths.Time]: timeCss,
-  [ComponentPaths.Tooltip]: [ComponentCss.Tooltip],
-} satisfies Record<
-  (typeof ComponentPaths)[keyof typeof ComponentPaths],
-  readonly ComponentCssName[]
->;
+export const ComponentPathCssDependencies = Object.fromEntries(
+  Object.entries(entries).flatMap(([path, { components }]) => {
+    if (!components) {
+      return [];
+    }
+
+    const css = Object.keys(components).flatMap(
+      (name) => ComponentCssDependencies[name as ComponentName]
+    );
+
+    return [[path, [...new Set(css)]]];
+  })
+) as Record<ComponentPath, ComponentCssName[]>;
 
 export const UtilityCssDependencies = {
-  Notify: snackbarCss,
+  Notify: ComponentCssDependencies.QSnackbar,
 } satisfies Record<string, readonly ComponentCssName[]>;

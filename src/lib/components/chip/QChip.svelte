@@ -1,10 +1,9 @@
 <script lang="ts">
   import { tick } from "svelte";
   import QAvatar from "$components/avatar/QAvatar.svelte";
-  import QIcon from "$components/icon/QIcon.svelte";
+  import QIconSnippet from "$internal/QIconSnippet.svelte";
   import { ripple } from "$helpers";
-  import { extractImgSrc, isActivationKey, type QEvent } from "$utils";
-  import type { MaterialSymbol } from "material-symbols";
+  import { handleActivationKeydown, type QEvent } from "$utils";
   import type { QChipProps } from "./props";
 
   type QChipMouseEvent = QEvent<MouseEvent, HTMLElement>;
@@ -41,8 +40,6 @@
   const tabindex = $derived(disabled ? -1 : (props.tabindex ?? 0));
   const hasElevation = $derived(elevated && kind !== "input");
 
-  const avatar = $derived(extractImgSrc(icon));
-  const trailingImage = $derived(extractImgSrc(trailing));
   const iconSize = $derived(size === "sm" ? 18 : size === "md" ? 22.5 : 27);
   // #endregion: --- Derived values
 
@@ -100,14 +97,14 @@
     }
   }
 
-  async function onkeydown(e: KeyboardEvent) {
+  function onkeydown(e: QEvent<KeyboardEvent, HTMLDivElement>) {
     if (disabled) {
       return;
     }
 
-    props.onkeydown?.(e as QEvent<KeyboardEvent, HTMLDivElement>);
+    props.onkeydown?.(e);
 
-    if (e.defaultPrevented) {
+    if (e.defaultPrevented || e.target !== e.currentTarget) {
       return;
     }
 
@@ -128,14 +125,7 @@
       return;
     }
 
-    if (!isActivationKey(e)) {
-      return;
-    }
-
-    e.preventDefault();
-
-    const click = new MouseEvent("click", { relatedTarget: qChip }) as QChipMouseEvent;
-    await handleClick(click);
+    handleActivationKeydown(e);
   }
 
   async function onInputKeydown(e: KeyboardEvent) {
@@ -193,13 +183,15 @@
   >
     <span class="q-chip__touch-target" aria-hidden="true"></span>
 
-    {#if kind === "filter" && selected}
-      <QIcon class="q-chip__leading-icon" name="check" size={iconSize} />
-    {:else if icon && !avatar}
-      <QIcon class="q-chip__leading-icon" name={icon as MaterialSymbol} size={iconSize} />
-    {:else if avatar}
-      <QAvatar class="q-chip__avatar" src={avatar} />
-    {/if}
+    <QIconSnippet
+      class="q-chip__leading-icon"
+      icon={kind === "filter" && selected ? "check" : icon || undefined}
+      size={iconSize}
+    >
+      {#snippet image(src)}
+        <QAvatar class="q-chip__avatar" {src} />
+      {/snippet}
+    </QIconSnippet>
 
     <div class="q-chip__label">
       {#if label}
@@ -212,10 +204,9 @@
     </div>
 
     {#if trailing}
-      <QIcon
+      <QIconSnippet
         class="q-chip__trailing-icon"
-        name={trailingImage ? undefined : (trailing as MaterialSymbol)}
-        img={trailingImage}
+        icon={trailing}
         size={iconSize}
         onclick={(e) => handleClick(e, true)}
       />
