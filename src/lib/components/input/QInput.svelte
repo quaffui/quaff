@@ -5,12 +5,14 @@
 
   type QInputFocusEvent = QEvent<FocusEvent, HTMLInputElement>;
   type QInputInputEvent = QEvent<Event, HTMLInputElement>;
-  type QInputKeyboardEvent = QEvent<KeyboardEvent, HTMLInputElement>;
+  type QInputBeforeInputEvent = QEvent<InputEvent, HTMLInputElement>;
 
   // #region:    --- Reactive variables
   let focus = $state(false);
 
   let snippetPrependWidth = $state(0);
+  let pendingDeletion:
+    { event: InputEvent; result: NonNullable<ReturnType<typeof deleteMaskedToken>> } | undefined;
   // #endregion: --- Reactive variables
 
   // #region:    --- Props
@@ -40,7 +42,7 @@
     fillMask,
     unmaskedValue = false,
     oninput,
-    onkeydown,
+    onbeforeinput,
     ...inputProps
   }: QInputProps = $props();
   // #endregion: --- Props
@@ -69,8 +71,10 @@
     }
   }
 
-  function onInput(e: QInputInputEvent) {
-    const input = e.currentTarget;
+  function onInput(event: QInputInputEvent) {
+    const input = event.currentTarget;
+    const deletion = pendingDeletion?.event.defaultPrevented ? undefined : pendingDeletion?.result;
+    pendingDeletion = undefined;
 
     if (!mask) {
       if (type === "number" || type === "range") {
@@ -78,56 +82,58 @@
       } else {
         value = input.value;
       }
-      oninput?.(e);
+      oninput?.(event);
       return;
     }
 
     const cursor = input.selectionStart ?? input.value.length;
     const previousDisplayLength = String(displayValue).length;
-    const masked = maskValue(input.value, mask, fillMask);
-    const unmasked = unmaskValue(masked, mask, fillMask);
+    const masked = deletion?.masked ?? maskValue(input.value, mask, fillMask);
+    const unmasked = deletion?.unmasked ?? unmaskValue(masked, mask, fillMask);
     const tokenCount =
       fillMask !== undefined && fillMask !== false && cursor > previousDisplayLength
         ? unmasked.length
         : unmaskValue(input.value.slice(0, cursor), mask, fillMask).length;
-    const nextCaret = maskCaretPosition(tokenCount, mask, masked.length);
+    const nextCaret = deletion?.caret ?? maskCaretPosition(tokenCount, mask, masked.length);
 
     input.value = masked;
     value = unmaskedValue ? unmasked : masked;
     setCaret(input, nextCaret);
     queueMicrotask(() => setCaret(input, nextCaret));
-    oninput?.(e);
+    oninput?.(event);
   }
 
-  function onKeydown(e: QInputKeyboardEvent) {
-    onkeydown?.(e);
-    if (e.defaultPrevented || !mask || (e.key !== "Backspace" && e.key !== "Delete")) {
+  function onBeforeInput(event: QInputBeforeInputEvent) {
+    pendingDeletion = undefined;
+    onbeforeinput?.(event);
+
+    if (
+      event.defaultPrevented ||
+      !mask ||
+      (event.inputType !== "deleteContentBackward" && event.inputType !== "deleteContentForward")
+    ) {
       return;
     }
 
-    const input = e.currentTarget;
+    const input = event.currentTarget;
     const start = input.selectionStart;
     const end = input.selectionEnd;
-    if (start === null || end === null || start !== end) {
+
+    if (input.readOnly || start === null || end === null || start !== end) {
       return;
     }
 
-    const next = deleteMaskedToken(
+    const deletion = deleteMaskedToken(
       input.value,
       mask,
       start,
-      e.key === "Backspace" ? "backward" : "forward",
+      event.inputType === "deleteContentBackward" ? "backward" : "forward",
       fillMask
     );
-    if (!next) {
-      return;
-    }
 
-    e.preventDefault();
-    input.value = next.masked;
-    value = next[unmaskedValue ? "unmasked" : "masked"];
-    setCaret(input, next.caret);
-    queueMicrotask(() => setCaret(input, next.caret));
+    if (deletion) {
+      pendingDeletion = { event, result: deletion };
+    }
   }
 
   function onFocus(e: QInputFocusEvent) {
@@ -189,7 +195,7 @@
         {placeholder}
         type={inputType}
         oninput={onInput}
-        onkeydown={onKeydown}
+        onbeforeinput={onBeforeInput}
         onfocus={onFocus}
         onblur={onBlur}
         {disabled}
