@@ -8,7 +8,7 @@ $icon: "#{$root}__icon";
 
 $checked: "[aria-checked=true]";
 $unchecked: "[aria-checked=false]";
-$position-motion: 250ms cubic-bezier(0.2, 0, 0, 1);
+$position-motion: mixins.duration(medium1) mixins.easing(standard);
 
 @layer q-switch {
   .q-switch {
@@ -245,7 +245,7 @@ $position-motion: 250ms cubic-bezier(0.2, 0, 0, 1);
       transition:
         color 67ms linear,
         opacity 33ms linear,
-        transform 167ms cubic-bezier(0.2, 0, 0, 1);
+        transform 167ms mixins.easing(standard);
     }
 
     &#{$checked} #{$icon}--checked,

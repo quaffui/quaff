@@ -1,0 +1,140 @@
+@use "sass:list";
+@use "sass:map";
+
+// Material 3 duration and easing tokens:
+// https://m3.material.io/styles/motion/easing-and-duration/tokens-specs
+$-durations: (
+  short1: 50ms,
+  short2: 100ms,
+  short3: 150ms,
+  short4: 200ms,
+  medium1: 250ms,
+  medium2: 300ms,
+  medium3: 350ms,
+  medium4: 400ms,
+  long1: 450ms,
+  long2: 500ms,
+  long3: 550ms,
+  long4: 600ms,
+  extra-long1: 700ms,
+  extra-long2: 800ms,
+  extra-long3: 900ms,
+  extra-long4: 1000ms,
+);
+
+$-easings: (
+  standard: cubic-bezier(0.2, 0, 0, 1),
+  standard-accelerate: cubic-bezier(0.3, 0, 1, 1),
+  standard-decelerate: cubic-bezier(0, 0, 0, 1),
+  // Material specifies standard as the CSS fallback for the compound emphasized curve.
+  emphasized: cubic-bezier(0.2, 0, 0, 1),
+  emphasized-accelerate: cubic-bezier(0.3, 0, 0.8, 0.15),
+  emphasized-decelerate: cubic-bezier(0.05, 0.7, 0.1, 1),
+  legacy: cubic-bezier(0.4, 0, 0.2, 1),
+  legacy-accelerate: cubic-bezier(0.4, 0, 1, 1),
+  legacy-decelerate: cubic-bezier(0, 0, 0.2, 1),
+  linear: linear,
+);
+
+// Material's CSS spring approximations, stored as duration/easing pairs.
+// https://m3.material.io/styles/motion/overview/specs
+$-effects: (
+  fast: (
+    150ms,
+    cubic-bezier(0.31, 0.94, 0.34, 1),
+  ),
+  default: (
+    200ms,
+    cubic-bezier(0.34, 0.8, 0.34, 1),
+  ),
+  slow: (
+    300ms,
+    cubic-bezier(0.34, 0.88, 0.34, 1),
+  ),
+);
+
+$-springs: (
+  standard: (
+    spatial: (
+      fast: (
+        350ms,
+        cubic-bezier(0.27, 1.06, 0.18, 1),
+      ),
+      default: (
+        500ms,
+        cubic-bezier(0.27, 1.06, 0.18, 1),
+      ),
+      slow: (
+        750ms,
+        cubic-bezier(0.27, 1.06, 0.18, 1),
+      ),
+    ),
+    effects: $-effects,
+  ),
+  expressive: (
+    spatial: (
+      fast: (
+        350ms,
+        cubic-bezier(0.42, 1.67, 0.21, 0.9),
+      ),
+      default: (
+        500ms,
+        cubic-bezier(0.38, 1.21, 0.22, 1),
+      ),
+      slow: (
+        650ms,
+        cubic-bezier(0.39, 1.29, 0.35, 0.98),
+      ),
+    ),
+    effects: $-effects,
+  ),
+);
+
+@function duration($name) {
+  @if not map.has-key($-durations, $name) {
+    @error "Unknown motion duration: #{$name}. Use one of #{map.keys($-durations)}.";
+  }
+
+  @return map.get($-durations, $name);
+}
+
+@function easing($name: standard) {
+  @if not map.has-key($-easings, $name) {
+    @error "Unknown motion easing: #{$name}. Use one of #{map.keys($-easings)}.";
+  }
+
+  @return map.get($-easings, $name);
+}
+
+@function -spring($type, $speed, $scheme) {
+  @if not map.has-key($-springs, $scheme, $type, $speed) {
+    @error "Unknown motion spring: #{$scheme}/#{$type}/#{$speed}. Use standard or expressive, spatial or effects, and fast, default or slow.";
+  }
+
+  @return map.get($-springs, $scheme, $type, $speed);
+}
+
+@function spring-duration($type, $speed: default, $scheme: standard) {
+  @return list.nth(-spring($type, $speed, $scheme), 1);
+}
+
+@function spring-easing($type, $speed: default, $scheme: standard) {
+  @return list.nth(-spring($type, $speed, $scheme), 2);
+}
+
+// Set transition-property separately; mixed transitions and animations can use the functions.
+// Example: @include mixins.spring(spatial, fast, expressive);
+// Example: transition: opacity mixins.duration(short4) mixins.easing(standard);
+// Components remain responsible for their reduced-motion overrides.
+@mixin spring($type, $speed: default, $scheme: standard) {
+  transition-duration: spring-duration($type, $speed, $scheme);
+  transition-timing-function: spring-easing($type, $speed, $scheme);
+}
+
+@mixin duration($name) {
+  transition-duration: duration($name);
+}
+
+@mixin easing($name: standard) {
+  transition-timing-function: easing($name);
+}

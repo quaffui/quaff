@@ -8,7 +8,7 @@
     --q-slider-end-stop-inset: 0.375rem;
     --q-slider-outer-radius: 0.5rem;
     --q-slider-motion-duration: 200ms;
-    --q-slider-motion-easing: cubic-bezier(0.2, 0, 0, 1);
+    --q-slider-motion-easing: #{mixins.easing(standard)};
     --q-slider-axis-center: 50%;
 
     position: relative;

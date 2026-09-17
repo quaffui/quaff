@@ -83,8 +83,7 @@
 
     &--expressive {
       transition-property: color, background-color, border-radius, width;
-      transition-duration: 0.35s;
-      transition-timing-function: cubic-bezier(0.42, 1.67, 0.21, 0.9);
+      @include mixins.spring(spatial, fast, expressive);
 
       &.q-btn--xs {
         --q-btn-height: 2rem;

@@ -1,3 +1,5 @@
+@use "$css/mixins";
+
 @property --q-linear-progress-head {
   syntax: "<length>";
   inherits: false;
@@ -80,7 +82,7 @@
 @keyframes q-linear-progress-first-head {
   0% {
     --q-linear-progress-head: 0px;
-    animation-timing-function: cubic-bezier(0.3, 0, 0.8, 0.15);
+    animation-timing-function: mixins.easing(emphasized-accelerate);
   }
 
   // 1000ms
@@ -98,7 +100,7 @@
   // 250ms
   14.2857% {
     --q-linear-progress-tail: 0px;
-    animation-timing-function: cubic-bezier(0.3, 0, 0.8, 0.15);
+    animation-timing-function: mixins.easing(emphasized-accelerate);
   }
 
   // 1250ms
@@ -116,7 +118,7 @@
   // 650ms
   37.1429% {
     --q-linear-progress-head: 0px;
-    animation-timing-function: cubic-bezier(0.3, 0, 0.8, 0.15);
+    animation-timing-function: mixins.easing(emphasized-accelerate);
   }
 
   // 1500ms
@@ -134,7 +136,7 @@
   // 900ms
   51.4286% {
     --q-linear-progress-tail: 0px;
-    animation-timing-function: cubic-bezier(0.3, 0, 0.8, 0.15);
+    animation-timing-function: mixins.easing(emphasized-accelerate);
   }
 
   100% {

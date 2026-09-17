@@ -31,7 +31,7 @@
     transform: translateY(-50%);
 
     &:checked + .q-radio__control .q-radio__icon::after {
-      animation: q-radio-select 0.3s cubic-bezier(0.05, 0.7, 0.1, 1);
+      animation: q-radio-select mixins.duration(medium2) mixins.easing(emphasized-decelerate);
       opacity: 1;
       transform: scale(1);
     }
