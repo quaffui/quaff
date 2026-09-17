@@ -1,28 +1,15 @@
 import type { Direction } from "./events";
-import type { Action } from "svelte/action";
+import type { Attachment } from "svelte/attachments";
 
 export type PortalTarget = ParentNode | undefined;
 
-function resolvePortalTarget(target: PortalTarget): ParentNode {
-  return target ?? document.body;
-}
+export function portal(target?: PortalTarget): Attachment<HTMLElement> {
+  return (element) => {
+    (target ?? document.body).appendChild(element);
 
-export const usePortal: Action<HTMLElement, PortalTarget> = (node, target) => {
-  resolvePortalTarget(target).appendChild(node);
-
-  return {
-    update(newTarget) {
-      const parent = resolvePortalTarget(newTarget);
-      if (node.parentNode !== parent) {
-        node.remove();
-        parent.appendChild(node);
-      }
-    },
-    destroy() {
-      node.remove();
-    },
+    return () => element.remove();
   };
-};
+}
 
 export function getDialogOverlayRoot(dialog: HTMLDialogElement): ParentNode {
   return dialog.querySelector<HTMLElement>("[data-quaff-overlay-root]") ?? dialog;

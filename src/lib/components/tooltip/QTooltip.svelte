@@ -2,7 +2,7 @@
   import { onMount } from "svelte";
   import { on } from "svelte/events";
   import { type Attachment, createAttachmentKey } from "svelte/attachments";
-  import { getOverlayPortalTarget, usePortal } from "$utils";
+  import { getOverlayPortalTarget, portal } from "$utils";
   import type { QTooltipProps } from "./props";
 
   // #region:    --- Props
@@ -273,7 +273,7 @@
 {#if value && realTarget}
   <div
     bind:this={tooltipEl}
-    use:usePortal={getOverlayPortalTarget(realTarget)}
+    {@attach portal(getOverlayPortalTarget(realTarget))}
     {...props}
     {id}
     {role}

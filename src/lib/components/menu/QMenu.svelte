@@ -4,7 +4,7 @@
   import { innerHeight, innerWidth } from "svelte/reactivity/window";
   import { browser } from "$app/environment";
   import { quaffConfig } from "$internal/quaffConfig";
-  import { doesOverlayUsePopover, getOverlayPortalTarget, usePortal, type QEvent } from "$utils";
+  import { doesOverlayUsePopover, getOverlayPortalTarget, portal, type QEvent } from "$utils";
   import type { QMenuAnchor, QMenuProps } from "./props";
 
   // #region:    --- Props
@@ -302,7 +302,7 @@
 {#if value}
   <div
     bind:this={menuEl}
-    use:usePortal={portalTarget}
+    {@attach portal(portalTarget)}
     popover={doesOverlayUsePopover(anchorEl) ? "manual" : undefined}
     data-quaff
     data-quaff-overlay
