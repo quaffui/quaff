@@ -102,7 +102,8 @@
   border-radius: var(--q-item-container-shape);
   background-color: var(--surface);
   transition:
-    border-radius var(--q-item-shape-duration, 0.35s) cubic-bezier(0.42, 1.67, 0.21, 0.9),
+    border-radius var(--q-item-shape-duration, mixins.spring-duration(spatial, fast, expressive))
+      mixins.spring-easing(spatial, fast, expressive),
     background-color variables.$speed2,
     box-shadow variables.$speed2;
 

@@ -1,3 +1,5 @@
+@use "mixins";
+
 .q-ripple {
   background-color: var(--ripple-color, var(--outline));
   opacity: 0.1;
@@ -6,8 +8,8 @@
   pointer-events: none;
   -webkit-transition: 0.6s;
   transition: 0.6s;
-  -webkit-animation: ripple var(--ripple-duration, 0.4s) cubic-bezier(0.4, 0, 0.2, 1);
-  animation: ripple var(--ripple-duration, 0.4s) cubic-bezier(0.4, 0, 0.2, 1);
+  -webkit-animation: ripple var(--ripple-duration, 0.4s) mixins.easing(legacy);
+  animation: ripple var(--ripple-duration, 0.4s) mixins.easing(legacy);
 
   &--center .q-ripple {
     top: 50% !important;

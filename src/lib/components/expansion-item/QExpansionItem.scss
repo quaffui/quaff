@@ -12,7 +12,7 @@
   --q-expansion-toggle-width: 2.5rem;
   --q-expansion-toggle-height: 2.5rem;
   --q-expansion-inner-shape: 0;
-  --q-expansion-shape-easing: cubic-bezier(0.2, 0, 0, 1);
+  --q-expansion-shape-easing: #{mixins.easing(standard)};
   --q-expansion-container-color: var(--surface);
 
   width: 100%;
@@ -26,7 +26,7 @@
   &--expressive {
     --q-expansion-toggle-width: 2rem;
     --q-expansion-inner-shape: 0.25rem;
-    --q-expansion-shape-easing: cubic-bezier(0.42, 1.67, 0.21, 0.9);
+    --q-expansion-shape-easing: #{mixins.spring-easing(spatial, fast, expressive)};
     border-radius: 1rem;
     background-color: transparent;
   }
@@ -215,7 +215,7 @@
     }
 
     &-glyph {
-      transition: transform var(--q-expansion-duration) cubic-bezier(0.2, 0, 0, 1);
+      transition: transform var(--q-expansion-duration) mixins.easing(standard);
     }
 
     &--rotate &-glyph {

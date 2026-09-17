@@ -1,3 +1,5 @@
+@use "$css/mixins";
+
 @property --q-circular-progress-sweep {
   syntax: "<number>";
   inherits: false;
@@ -49,7 +51,7 @@
 
     .q-circular-progress__active,
     .q-circular-progress__track {
-      animation: q-circular-progress-sweep 6s cubic-bezier(0.2, 0, 0, 1) infinite;
+      animation: q-circular-progress-sweep 6s mixins.easing(standard) infinite;
     }
 
     .q-circular-progress__active {

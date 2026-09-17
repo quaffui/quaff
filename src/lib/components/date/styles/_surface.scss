@@ -84,7 +84,7 @@
     border-radius: 0;
 
     &--motion-ready {
-      transition: height variables.$speed3 cubic-bezier(0.2, 0, 0, 1);
+      transition: height variables.$speed3 mixins.easing(standard);
     }
 
     &--selection {

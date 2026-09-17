@@ -75,7 +75,7 @@
     opacity: 0;
     transform: scaleX(0);
     translate: -50%;
-    transition: variables.$speed2 cubic-bezier(0.2, 0, 0, 1);
+    transition: variables.$speed2 mixins.easing(standard);
     transition-property: transform, opacity;
     pointer-events: none;
   }
@@ -93,7 +93,7 @@
     line-height: 1;
 
     & > .q-icon {
-      transition: font-variation-settings variables.$speed2 cubic-bezier(0.2, 0, 0, 1);
+      transition: font-variation-settings variables.$speed2 mixins.easing(standard);
     }
   }
 
