@@ -5,7 +5,7 @@
 
   let {
     width = "default",
-    expressive = false,
+    expressive,
     selected = $bindable(),
     icon,
     children,

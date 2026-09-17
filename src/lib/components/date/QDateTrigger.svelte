@@ -86,6 +86,7 @@
       id={triggerButtonId}
       icon="calendar_month"
       flat
+      expressive={false}
       size="lg"
       type="button"
       aria-label={ariaLabel}

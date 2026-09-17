@@ -41,7 +41,7 @@
         @include mixins.typography("label-large");
       }
 
-      &.q-item--active {
+      &.q-item--active:not([aria-disabled]) {
         background-color: var(--secondary-container);
         color: var(--on-secondary-container);
 
@@ -65,13 +65,14 @@
         gap: 0.75rem;
         border-radius: 0.25rem;
 
-        .q-item__section--icon {
+        .q-item__section:is(.q-item__section--icon, .q-item__section--trailingIcon) {
           width: 1.25rem;
           height: 1.25rem;
+        }
 
-          .q-icon--md {
-            --size: 1.25rem;
-          }
+        :is(.q-item__section--icon, .q-item__section--trailingIcon) .q-icon--md,
+        .q-item__section--side > .q-icon--md {
+          --size: 1.25rem;
         }
 
         &:first-child {
@@ -84,7 +85,7 @@
           border-bottom-left-radius: 0.75rem;
         }
 
-        &.q-item--active {
+        &.q-item--active:not([aria-disabled]) {
           border-radius: 0.75rem;
           background-color: var(--tertiary-container);
           color: var(--on-tertiary-container);

@@ -4,7 +4,7 @@ import type { HTMLAttributes } from "svelte/elements";
 export interface QLinearProgressProps
   extends OptionalModel<number>, CssSizeable, HTMLAttributes<HTMLDivElement> {
   /**
-   * Uses the Material 3 Expressive wavy indicator.
+   * Uses the Material 3 Expressive wavy indicator. When omitted, inherits the `Quaff.init()` setting (false by default). Set true or false to override it.
    */
   expressive?: boolean;
 
@@ -52,7 +52,7 @@ export interface QLinearProgressProps
 export interface QCircularProgressProps
   extends OptionalModel<number>, CssSizeable, HTMLAttributes<HTMLDivElement> {
   /**
-   * Uses the Material 3 Expressive wavy indicator.
+   * Uses the Material 3 Expressive wavy indicator. When omitted, inherits the `Quaff.init()` setting (false by default). Set true or false to override it.
    */
   expressive?: boolean;
 

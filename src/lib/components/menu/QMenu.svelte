@@ -4,6 +4,7 @@
   import { innerHeight, innerWidth } from "svelte/reactivity/window";
   import { browser } from "$app/environment";
   import { quaffConfig } from "$internal/quaffConfig";
+  import { menuCtx } from "$internal/menuContext";
   import { doesOverlayUsePopover, getOverlayPortalTarget, portal, type QEvent } from "$utils";
   import type { QMenuAnchor, QMenuProps } from "./props";
 
@@ -14,7 +15,7 @@
     anchor = "bottom left",
     self = "top left",
     fit = false,
-    expressive = false,
+    expressive,
     persistent = false,
     autoClose = true,
     children,
@@ -43,6 +44,10 @@
   const isExpressive = $derived(expressive ?? quaffConfig.expressive);
   const portalTarget = $derived(browser ? getOverlayPortalTarget(anchorEl) : undefined);
   // #endregion: --- Derived values
+
+  // #region:    --- Context
+  menuCtx.set(true);
+  // #endregion: --- Context
 
   // #region:    --- Effects
   $effect(() => {

@@ -163,6 +163,7 @@
     class="q-date__navigation-arrow"
     {icon}
     flat
+    expressive={false}
     size="lg"
     type="button"
     aria-label={label}

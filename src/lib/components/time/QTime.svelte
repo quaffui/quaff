@@ -252,6 +252,7 @@
     id={composed ? triggerButtonId : undefined}
     icon="schedule"
     flat
+    expressive={composed ? false : undefined}
     size={composed ? "lg" : undefined}
     type="button"
     {tabindex}

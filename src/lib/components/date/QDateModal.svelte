@@ -137,6 +137,7 @@
           class="q-date__navigation-arrow"
           icon="chevron_left"
           flat
+          expressive={false}
           size="lg"
           type="button"
           aria-label={state.resolvedLabels.previousMonth}
@@ -147,6 +148,7 @@
           class="q-date__navigation-arrow"
           icon="chevron_right"
           flat
+          expressive={false}
           size="lg"
           type="button"
           aria-label={state.resolvedLabels.nextMonth}
@@ -197,6 +199,7 @@
         class="q-date__close"
         icon="close"
         flat
+        expressive={false}
         size="lg"
         type="button"
         aria-label={state.resolvedLabels.closePicker}
@@ -228,6 +231,7 @@
         class="q-date__mode-toggle"
         icon={state.displayMode === "calendar" ? "edit" : "calendar_month"}
         flat
+        expressive={false}
         size="lg"
         type="button"
         aria-label={state.displayMode === "calendar"

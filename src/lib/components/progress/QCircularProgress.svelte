@@ -23,7 +23,7 @@
     instantFeedback = false,
     animationSpeed = 600,
     showValue = false,
-    expressive = false,
+    expressive,
     children = fallback,
     ...props
   }: QCircularProgressProps = $props();
