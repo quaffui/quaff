@@ -9,6 +9,7 @@
     height: number;
     collapsed: boolean;
     ready: boolean;
+    ownerId?: string;
   }
 
   interface DrawerContext {
@@ -111,13 +112,18 @@
   // #endregion: --- Derived values
 
   // #region:    --- Context
+  // Cleanup must read the latest owner, not an older reactive snapshot.
+  const barOwnerIds = { header: "", footer: "" };
+
   headerCtx.set({
+    ownerId: barOwnerIds.header,
     view,
     height: headerInfo.height,
     collapsed: headerInfo.collapsed,
     ready: headerInfo.ready,
   });
   footerCtx.set({
+    ownerId: barOwnerIds.footer,
     view,
     height: footerInfo.height,
     collapsed: footerInfo.collapsed,

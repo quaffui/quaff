@@ -151,10 +151,12 @@
       return;
     }
 
-    Object.assign(context, { takesSpace: !!value && !isModal, width, ready: true });
+    const contextApi = side === "left" ? leftDrawerCtx : rightDrawerCtx;
+
+    contextApi.updateEntries(context, { takesSpace: !!value && !isModal, width, ready: true });
 
     return () => {
-      Object.assign(context, { takesSpace: false, width: 0, ready: false });
+      contextApi.updateEntries(context, { takesSpace: false, width: 0, ready: false });
     };
   });
   // #endregion: --- Effects

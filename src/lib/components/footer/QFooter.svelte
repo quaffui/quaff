@@ -50,7 +50,12 @@
 
   // #region:    --- Effects
   $effect.pre(() => {
-    footerCtx.updateEntries({
+    // Track readiness so a resumed bar can reclaim layout state.
+    if (!footerContext.ready || footerContext.ownerId !== uid) {
+      footerCtx.updateEntry(footerContext, "ownerId", uid);
+    }
+
+    footerCtx.updateEntries(footerContext, {
       height,
       collapsed: isCollapsed,
       ready: true,
@@ -92,7 +97,14 @@
 
   // #region:    --- Lifecycle
   onMount(() => () => {
-    footerCtx.updateEntries({ height: 0, collapsed: false, ready: false });
+    if (footerContext.ownerId === uid) {
+      footerCtx.updateEntries(footerContext, {
+        ownerId: "",
+        height: 0,
+        collapsed: false,
+        ready: false,
+      });
+    }
   });
   // #endregion: --- Lifecycle
 

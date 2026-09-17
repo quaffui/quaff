@@ -87,7 +87,7 @@
 
   function onfocus(e: QTabEvent<FocusEvent>) {
     props.onfocus?.(e);
-    ctx.focused = name;
+    tabsCtx.updateEntry(ctx, "focused", name);
   }
   // #endregion: --- Functions
 

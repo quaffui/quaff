@@ -1,18 +1,19 @@
 import { getContext, hasContext, setContext } from "svelte";
 
 /**
- * This function allows to manipulate contexts more easily.
- * Coupled with the class preprocessor, it avoids having to bother with reactivity as it automatically creates getters and setters from a typed interface.
+ * Typed helpers for Svelte contexts.
+ * Capture contexts during component initialization and pass them to updates in effects and callbacks.
+ * The context preprocessor creates reactive getters and setters from typed interfaces.
  */
 export function QContext<T>(name: string) {
-  const sym = Symbol(name);
+  const symbol = Symbol(name);
 
   return {
     /**
      * The inner symbol used to identify the context.
      */
     get symbol() {
-      return sym;
+      return symbol;
     },
 
     /**
@@ -20,24 +21,24 @@ export function QContext<T>(name: string) {
      * @returns The context value or undefined if not found.
      */
     get() {
-      return getContext<T | undefined>(sym);
+      return getContext<T | undefined>(symbol);
     },
 
     /**
      * Get the context value or throw an error if not found.
      *
-     * @param errorMsg Optional error message to throw if context is not found.
+     * @param errorMessage Optional error message to throw if context is not found.
      * @returns The context value.
      * @throws Error if context is not found.
      */
-    assertGet(errorMsg?: string) {
-      const ctx = getContext<T | undefined>(sym);
+    assertGet(errorMessage?: string) {
+      const context = getContext<T | undefined>(symbol);
 
-      if (!ctx) {
-        throw new Error(errorMsg || `Context "${name}" not found`);
+      if (!context) {
+        throw new Error(errorMessage || `Context "${name}" not found`);
       }
 
-      return ctx;
+      return context;
     },
 
     /**
@@ -45,14 +46,14 @@ export function QContext<T>(name: string) {
      * @param context The context value to set.
      */
     set(context: T) {
-      setContext(sym, context);
+      setContext(symbol, context);
     },
 
     /**
      * Reset the context value.
      */
     reset() {
-      setContext(sym, undefined);
+      setContext(symbol, undefined);
     },
 
     /**
@@ -60,18 +61,13 @@ export function QContext<T>(name: string) {
      * @returns True if the context exists, false otherwise.
      */
     exists() {
-      return hasContext(sym);
+      return hasContext(symbol);
     },
 
     /**
-     * Update one entry of the context.
-     *
-     * @param key The key of the entry to update.
-     * @param value The new value for the entry.
+     * Update one entry of a captured context, if present.
      */
-    updateEntry(key: keyof T, value: NonNullable<T>[keyof T]) {
-      const ctx = getContext<T | undefined>(sym);
-
+    updateEntry(ctx: T | undefined, key: keyof T, value: NonNullable<T>[keyof T]) {
       if (!ctx) {
         return;
       }
@@ -80,13 +76,9 @@ export function QContext<T>(name: string) {
     },
 
     /**
-     * Update multiple entries of the context.
-     *
-     * @param updates The key/value pairs to update in the context.
+     * Update multiple entries of a captured context, if present.
      */
-    updateEntries(updates: Partial<T>) {
-      const ctx = getContext<T | undefined>(sym);
-
+    updateEntries(ctx: T | undefined, updates: Partial<T>) {
       if (!ctx) {
         return;
       }
