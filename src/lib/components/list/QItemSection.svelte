@@ -26,7 +26,7 @@
   // #region:    --- Effects
   $effect(() => {
     if (type === "content") {
-      ctx.lineCount = [headline, line1, line2, line3].filter(Boolean).length;
+      itemCtx.updateEntry(ctx, "lineCount", [headline, line1, line2, line3].filter(Boolean).length);
     }
   });
   // #endregion: --- Effects

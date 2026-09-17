@@ -63,7 +63,12 @@
       return;
     }
 
-    headerCtx.updateEntries({
+    // Track readiness so a resumed bar can reclaim layout state.
+    if (!headerContext.ready || headerContext.ownerId !== uid) {
+      headerCtx.updateEntry(headerContext, "ownerId", uid);
+    }
+
+    headerCtx.updateEntries(headerContext, {
       height,
       collapsed: isCollapsed,
       ready: true,
@@ -73,11 +78,14 @@
 
   // #region:    --- Lifecycle
   onMount(() => () => {
-    headerCtx.updateEntries({
-      height: 0,
-      collapsed: false,
-      ready: false,
-    });
+    if (headerContext?.ownerId === uid) {
+      headerCtx.updateEntries(headerContext, {
+        ownerId: "",
+        height: 0,
+        collapsed: false,
+        ready: false,
+      });
+    }
   });
   // #endregion: --- Lifecycle
 

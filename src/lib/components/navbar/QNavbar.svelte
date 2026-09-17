@@ -31,8 +31,10 @@
     }
 
     const updateLayout = () => {
-      layoutContext.height = navbarEl?.getBoundingClientRect().height ?? 0;
-      layoutContext.ready = true;
+      navbarCtx.updateEntries(layoutContext, {
+        height: navbarEl?.getBoundingClientRect().height ?? 0,
+        ready: true,
+      });
     };
     const resizeObserver = new ResizeObserver(updateLayout);
 
@@ -41,8 +43,7 @@
 
     return () => {
       resizeObserver.disconnect();
-      layoutContext.height = 0;
-      layoutContext.ready = false;
+      navbarCtx.updateEntries(layoutContext, { height: 0, ready: false });
     };
   });
   // #endregion: --- Lifecycle

@@ -39,6 +39,8 @@
       return;
     }
 
+    const contextApi = side === "left" ? leftRailbarCtx : rightRailbarCtx;
+
     const updateLayout = () => {
       const style = getComputedStyle(element);
       let measuredWidth = element.offsetWidth;
@@ -47,7 +49,11 @@
         measuredWidth = style.width.endsWith("px") ? parseFloat(style.width) : configuredWidth;
       }
 
-      Object.assign(context, { width: measuredWidth, takesSpace: measuredWidth > 0, ready: true });
+      contextApi.updateEntries(context, {
+        width: measuredWidth,
+        takesSpace: measuredWidth > 0,
+        ready: true,
+      });
     };
     const observer = new ResizeObserver(updateLayout);
     updateLayout();
@@ -55,7 +61,7 @@
 
     return () => {
       observer.disconnect();
-      Object.assign(context, { width: 0, takesSpace: false, ready: false });
+      contextApi.updateEntries(context, { width: 0, takesSpace: false, ready: false });
     };
   });
 
