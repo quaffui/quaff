@@ -17,7 +17,7 @@
     tonal = false,
     outlined = false,
     flat = false,
-    expressive = false,
+    expressive,
     icon,
     label,
     loading = false,
@@ -173,6 +173,7 @@
 >
   {#if loading}
     <QCircularProgress
+      expressive={isExpressive}
       indeterminate
       trackColor="transparent"
       {color}

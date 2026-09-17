@@ -40,7 +40,7 @@
     reverse = false,
     readonly = false,
     disabled = false,
-    expressive = false,
+    expressive,
     size = "xs",
     color = "primary",
     trackColor = "secondary-container",

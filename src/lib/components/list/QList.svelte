@@ -20,6 +20,7 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import { quaffConfig } from "$internal/quaffConfig";
+  import { menuCtx } from "$internal/menuContext";
   import { getDirection, isArrowKey } from "$utils";
 
   // #region:    --- Props
@@ -27,7 +28,7 @@
     bordered = false,
     noRound = false,
     dense = false,
-    expressive = false,
+    expressive,
     segmented = false,
     selection,
     preserveTabOrder = false,
@@ -50,7 +51,8 @@
   // #endregion: --- Reactive variables
 
   // #region:    --- Derived values
-  const isExpressive = $derived(expressive ?? quaffConfig.expressive);
+  const isInMenu = menuCtx.get() ?? false;
+  const isExpressive = $derived(expressive ?? (!isInMenu && quaffConfig.expressive));
   const role = $derived(props.role ?? (selection ? "listbox" : undefined));
   // #endregion: --- Derived values
 

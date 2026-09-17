@@ -22,7 +22,7 @@ export interface QListProps extends WithActiveAttrs, HTMLAttributes<HTMLElement>
   dense?: boolean;
 
   /**
-   * Applies Material 3 Expressive list styling.
+   * Applies Material 3 Expressive list styling. When omitted, inherits the `Quaff.init()` setting (false by default). Inside QMenu, uses the menu styling instead. Set true or false to override it.
    */
   expressive?: boolean;
 

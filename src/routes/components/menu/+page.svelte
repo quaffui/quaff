@@ -79,8 +79,10 @@
       <QDocsSection title="Expressive Menu">
         {#snippet sectionDescription()}
           Enable <code>expressive</code> for one menu, or pass
-          <code>{`{ expressive: true }`}</code> to <code>Quaff.init()</code> to use Material 3 Expressive
-          components globally, including menus.
+          <code>{`{ expressive: true }`}</code> to <code>Quaff.init()</code> to use Material 3
+          Expressive components globally, including menus. Use <code>{`expressive={false}`}</code> to
+          keep an individual menu standard. Lists inside a menu follow its row styling by default; they
+          do not add the shapes and spacing of standalone expressive lists.
         {/snippet}
 
         <QBtn label="Open expressive menu" onclick={() => (isExpressiveMenuOpen = true)}>

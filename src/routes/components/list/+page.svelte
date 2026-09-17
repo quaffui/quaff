@@ -253,8 +253,10 @@
           <code>segmented</code> for separated item containers. Native <code>draggable</code> items
           apply the dragged state automatically; set <code>dragged</code> directly when using custom
           pointer or touch reordering. Pass
-          <code>{`{ expressive: true }`}</code> to <code>Quaff.init()</code> to enable expressive styling
-          globally.
+          <code>{`{ expressive: true }`}</code> to <code>Quaff.init()</code> to enable expressive
+          styling globally. Use <code>{`expressive={false}`}</code> to keep an individual list
+          standard. Inside <code>QMenu</code>, lists use the menu's row styling unless you
+          explicitly set their <code>expressive</code> prop.
         {/snippet}
 
         <div class="row q-col-gutter-md q-my-md">

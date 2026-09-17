@@ -20,8 +20,11 @@
     {#snippet usage()}
       <QDocsSection title="Configuration">
         {#snippet sectionDescription()}
-          Configure framework-wide defaults when initializing Quaff. Vite apps can map an
-          environment variable at this boundary without coupling Quaff to Vite.
+          Configure framework-wide defaults when initializing Quaff. Expressive styling is off by
+          default. Set <code>expressive: true</code> to enable it for supported components; each
+          component can override this with <code>{`expressive={true}`}</code> or
+          <code>{`expressive={false}`}</code>. The example below reads a Vite environment variable
+          in your root layout and passes the resulting boolean to <code>Quaff.init()</code>.
         {/snippet}
 
         <QCodeBlock

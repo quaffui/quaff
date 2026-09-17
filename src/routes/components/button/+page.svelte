@@ -124,8 +124,10 @@
         {#snippet sectionDescription()}
           Enable <code>expressive</code> for one button, or pass
           <code>{`{ expressive: true }`}</code>
-          to <code>Quaff.init()</code> to use the Material 3 Expressive styles globally. Expressive buttons
-          default to the sm size.
+          to <code>Quaff.init()</code> to use the Material 3 Expressive styles globally. Use
+          <code>{`expressive={false}`}</code> to keep an individual button standard. Both modes
+          default to 2.5rem high, but named sizes differ: <code>md</code> is 2.5rem standard and
+          3.5rem expressive; <code>lg</code> is 3rem standard and 6rem expressive.
         {/snippet}
 
         <QBtn class="q-ma-sm" expressive size="xs" label="Extra Small" filled />

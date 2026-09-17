@@ -23,7 +23,7 @@
     instantFeedback = false,
     trackColor = "secondary-container",
     indeterminate = false,
-    expressive = false,
+    expressive,
     ...props
   }: QLinearProgressProps = $props();
   // #endregion: --- Props

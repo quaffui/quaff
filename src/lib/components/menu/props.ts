@@ -35,9 +35,7 @@ export interface QMenuProps extends OptionalModel<boolean>, HTMLAttributes<HTMLD
   fit?: boolean;
 
   /**
-   * Uses the Material 3 Expressive menu shapes and colors. Expressive mode can also be enabled globally through `Quaff.init()`.
-   *
-   * @default false
+   * Uses the Material 3 Expressive menu shapes and colors. When omitted, inherits the `Quaff.init()` setting (false by default). Set true or false to override it.
    */
   expressive?: boolean;
 

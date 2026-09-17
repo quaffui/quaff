@@ -43,11 +43,6 @@
       transform: translate(-50%, -50%);
     }
 
-    &:not(:has(> .q-btn__label)) {
-      width: var(--q-btn-height, 2.5rem);
-      padding-inline: 0;
-    }
-
     &:not(.q-btn--expressive):has(> :is(.q-btn__icon, .q-btn__loader)):has(> .q-btn__label) {
       padding-inline-start: 1rem;
     }
@@ -153,6 +148,11 @@
           border-radius: 1rem;
         }
       }
+    }
+
+    &:not(:has(> .q-btn__label)) {
+      width: var(--q-btn-height, 2.5rem);
+      padding-inline: 0;
     }
 
     &--elevated,
