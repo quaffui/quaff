@@ -20,6 +20,15 @@ export interface QMenuProps extends OptionalModel<boolean>, HTMLAttributes<HTMLD
   target?: HTMLElement;
 
   /**
+   * Offset in pixels. Positive values move the menu right/down, negative values left/up.
+   * The vertical offset reverses when the menu flips.
+   */
+  offset?: { x?: number; y?: number };
+
+  /** Flips a top/bottom anchored menu when the opposite side has more room. */
+  flip?: boolean;
+
+  /**
    * Anchor point on the target element.
    */
   anchor?: QMenuAnchor;

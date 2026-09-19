@@ -192,7 +192,7 @@
       expressive={isExpressive}
       indeterminate
       trackColor="transparent"
-      {color}
+      color={color ?? "currentColor"}
       size={iconSize}
       class="q-btn__loader"
     />

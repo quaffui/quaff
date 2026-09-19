@@ -8,6 +8,7 @@
     QBreadcrumbsEl,
     QBtn,
     QBtnToggle,
+    QSplitBtn,
     QCard,
     QCardActions,
     QCardSection,
@@ -92,6 +93,12 @@
       description: "Group related actions or select options with QBtnGroup and QBtnToggle.",
       href: "/components/button-group",
       snippet: buttonGroup,
+    },
+    {
+      name: "QSplitBtn",
+      description: "Pair a primary action with a menu of related choices.",
+      href: "/components/split-button",
+      snippet: splitButton,
     },
     {
       name: "QIconBtn",
@@ -429,6 +436,16 @@
     variant="filled"
     aria-label="Calendar view"
   />
+{/snippet}
+
+{#snippet splitButton()}
+  <QSplitBtn label="Send" icon="send" menuLabel="More send options">
+    <QList role="presentation">
+      <QItem clickable role="menuitem">
+        <QItemSection>Schedule send</QItemSection>
+      </QItem>
+    </QList>
+  </QSplitBtn>
 {/snippet}
 
 {#snippet buttonIcon()}
