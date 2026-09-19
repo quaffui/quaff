@@ -6,6 +6,7 @@
     QBreadcrumbs,
     QBreadcrumbsEl,
     QBtn,
+    QBtnToggle,
     QCard,
     QCardActions,
     QCardSection,
@@ -76,6 +77,12 @@
       description: "Enable user interactions with versatile and stylish buttons.",
       href: "/components/button",
       snippet: button,
+    },
+    {
+      name: "Button groups",
+      description: "Group related actions or select options with QBtnGroup and QBtnToggle.",
+      href: "/components/button-group",
+      snippet: buttonGroup,
     },
     {
       name: "QIconBtn",
@@ -370,6 +377,20 @@
 
 {#snippet button()}
   <QBtn label="Add to cart" icon="shopping_cart" variant="filled" />
+{/snippet}
+
+{#snippet buttonGroup()}
+  <QBtnToggle
+    expressive
+    options={[
+      { label: "Day", value: "day" },
+      { label: "Week", value: "week" },
+      { label: "Month", value: "month" },
+    ]}
+    value="week"
+    variant="filled"
+    aria-label="Calendar view"
+  />
 {/snippet}
 
 {#snippet buttonIcon()}

@@ -12,6 +12,13 @@ const registry = {
     components: { QBreadcrumbs: ["breadcrumbs"], QBreadcrumbsEl: ["breadcrumbs", "icon"] },
   },
   button: { css: "components/button", components: { QBtn: buttonCss, QIconBtn: buttonCss } },
+  "button-group": {
+    css: "components/button-group",
+    components: {
+      QBtnGroup: ["button-group", ...buttonCss],
+      QBtnToggle: ["button-group", ...buttonCss],
+    },
+  },
   card: {
     css: "components/card",
     components: { QCard: ["card"], QCardSection: ["card"], QCardActions: ["card"] },
