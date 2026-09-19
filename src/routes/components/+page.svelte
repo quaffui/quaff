@@ -4,6 +4,7 @@
   import {
     QAvatar,
     QBadge,
+    QBottomSheet,
     QBreadcrumbs,
     QBreadcrumbsEl,
     QBtn,
@@ -78,6 +79,12 @@
       description: "Show notifications, counts, or short status labels.",
       href: "/components/badge",
       snippet: badge,
+    },
+    {
+      name: "QBottomSheet",
+      description: "Show supporting content and actions in an expandable bottom sheet.",
+      href: "/components/bottom-sheet",
+      snippet: bottomSheet,
     },
     {
       name: "QBreadcrumbs",
@@ -428,6 +435,17 @@
       <QIcon name="inbox" />
       <QBadge floating label={1200} />
     </span>
+  </div>
+{/snippet}
+
+{#snippet bottomSheet()}
+  <div
+    class="surface"
+    style="position: relative; width: 100%; height: 12rem; border-radius: 1rem; overflow: hidden;"
+  >
+    <QBottomSheet value aria-label="Place details" style="transition: none">
+      <p class="title-medium q-mb-none">Riverside Café</p>
+    </QBottomSheet>
   </div>
 {/snippet}
 
