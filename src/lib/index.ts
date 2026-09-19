@@ -5,6 +5,7 @@ import Notify from "./classes/Notify.js";
 
 export type { QuaffLanguage, QuaffTranslations } from "./locales/types.js";
 export type { QuaffConfig } from "./internal/quaffConfig.js";
+export type { QSplitBtnProps } from "./components/split-button/props.js";
 export type {
   QBtnGroupProps,
   QBtnToggleOption,

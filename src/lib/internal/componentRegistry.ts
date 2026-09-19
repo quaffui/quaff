@@ -20,6 +20,10 @@ const registry = {
       QBtnToggle: ["button-group", ...buttonCss],
     },
   },
+  "split-button": {
+    css: "components/split-button",
+    components: { QSplitBtn: ["split-button", ...buttonCss, "menu"] },
+  },
   card: {
     css: "components/card",
     components: { QCard: ["card"], QCardSection: ["card"], QCardActions: ["card"] },

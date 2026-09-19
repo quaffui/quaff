@@ -12,6 +12,8 @@
   let {
     value = $bindable(false),
     target,
+    offset = {},
+    flip = false,
     anchor = "bottom left",
     self = "top left",
     fit = false,
@@ -221,8 +223,20 @@
     const measured = menuEl.getBoundingClientRect();
     const measuredWidth = fit ? Math.min(rect.width, maxViewportWidth) : measured.width;
 
-    const top = baseTop - measured.height * selfY;
-    const left = baseLeft - measuredWidth * selfX;
+    let top = baseTop - measured.height * selfY + (offset.y ?? 0);
+    const left = baseLeft - measuredWidth * selfX + (offset.x ?? 0);
+    const canFlip = flip && anchorY !== 0.5 && selfY === 1 - anchorY;
+    const isClipped = top < margin || top + measured.height > viewportHeight - margin;
+
+    if (canFlip && isClipped) {
+      const spaceAbove = rect.top;
+      const spaceBelow = viewportHeight - rect.bottom;
+      const hasMoreRoom = anchorY === 1 ? spaceAbove > spaceBelow : spaceBelow > spaceAbove;
+
+      if (hasMoreRoom) {
+        top = rect.top + rect.height * selfY - measured.height * anchorY - (offset.y ?? 0);
+      }
+    }
 
     menuWidth = fit ? `${rect.width}px` : undefined;
     menuMaxWidth = fit ? `${maxViewportWidth}px` : undefined;

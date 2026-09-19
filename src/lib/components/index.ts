@@ -5,6 +5,7 @@ import QBreadcrumbsEl from "./breadcrumbs/QBreadcrumbsEl.svelte";
 import QBtn from "./button/QBtn.svelte";
 import QBtnGroup from "./button-group/QBtnGroup.svelte";
 import QBtnToggle from "./button-group/QBtnToggle.svelte";
+import QSplitBtn from "./split-button/QSplitBtn.svelte";
 import QIconBtn from "./button/QIconBtn.svelte";
 import QCard from "./card/QCard.svelte";
 import QCardSection from "./card/QCardSection.svelte";
@@ -55,6 +56,7 @@ export {
   QBtn,
   QBtnGroup,
   QBtnToggle,
+  QSplitBtn,
   QIconBtn,
   QCard,
   QCardSection,

@@ -82,6 +82,10 @@
       to: "/components/button-group",
     },
     {
+      name: "Split Button",
+      to: "/components/split-button",
+    },
+    {
       name: "Icon Button",
       to: "/components/button-icon",
     },
