@@ -189,6 +189,10 @@
 
   const quaffUtils: Item[] = [
     {
+      name: "Meta",
+      to: "/utils/meta",
+    },
+    {
       name: "Notify",
       to: "/utils/notify",
     },

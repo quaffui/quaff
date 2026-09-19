@@ -40,6 +40,7 @@ const registry = {
     components: { QList: listCss, QItem: listCss, QItemSection: ["list"] },
   },
   menu: { css: "components/menu", components: { QMenu: ["menu"] } },
+  meta: { components: { QMeta: [] } },
   navbar: {
     css: "components/navbar",
     components: { QNavbar: ["navbar"], QNavItem: ["navbar", "icon"] },

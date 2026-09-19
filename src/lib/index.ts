@@ -16,3 +16,6 @@ export type {
 export * from "$components";
 
 export { Quaff, QTheme, QScrollObserver, Notify };
+
+export { useMeta } from "./composables/useMeta.js";
+export type { MetaOptions, MetaSource, MetaTag, QMetaProps } from "./components/meta/props.js";

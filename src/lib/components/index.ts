@@ -28,6 +28,7 @@ import QList from "./list/QList.svelte";
 import QItem from "./list/QItem.svelte";
 import QItemSection from "./list/QItemSection.svelte";
 import QLinearProgress from "./progress/QLinearProgress.svelte";
+import QMeta from "./meta/QMeta.svelte";
 import QMenu from "./menu/QMenu.svelte";
 import QNavbar from "./navbar/QNavbar.svelte";
 import QNavItem from "./navbar/QNavItem.svelte";
@@ -73,6 +74,7 @@ export {
   QItemSection,
   QLinearProgress,
   QMenu,
+  QMeta,
   QNavbar,
   QNavItem,
   QRadio,
