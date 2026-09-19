@@ -1,5 +1,6 @@
 import QAvatar from "./avatar/QAvatar.svelte";
 import QBadge from "./badge/QBadge.svelte";
+import QBottomSheet from "./bottom-sheet/QBottomSheet.svelte";
 import QBreadcrumbs from "./breadcrumbs/QBreadcrumbs.svelte";
 import QBreadcrumbsEl from "./breadcrumbs/QBreadcrumbsEl.svelte";
 import QBtn from "./button/QBtn.svelte";
@@ -54,6 +55,7 @@ import QTime from "./time/QTime.svelte";
 export {
   QAvatar,
   QBadge,
+  QBottomSheet,
   QBreadcrumbs,
   QBreadcrumbsEl,
   QBtn,

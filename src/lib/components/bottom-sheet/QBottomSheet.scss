@@ -1,0 +1,169 @@
+@use "$css/mixins";
+
+.q-bottom-sheet {
+  --q-bottom-sheet-top-margin: 4.5rem;
+  --q-bottom-sheet-available-height: calc(100dvh - var(--q-bottom-sheet-top-margin));
+
+  @include mixins.typography(body-large);
+  display: none;
+  position: fixed;
+  inset: auto 0 0;
+  z-index: 1000;
+  flex-direction: column;
+  margin: 0 auto;
+  padding: 0;
+  border: none;
+  border-radius: 1.75rem 1.75rem 0 0;
+  width: 100%;
+  max-width: 40rem;
+  height: var(--q-bottom-sheet-drag-height, auto);
+  max-height: min(50dvh, var(--q-bottom-sheet-available-height));
+  overflow: visible;
+  color: var(--on-surface);
+  background-color: var(--surface-container-low);
+  box-shadow: var(--elevate1);
+  translate: 0 100%;
+  transition: translate mixins.duration(medium4) mixins.easing(emphasized-decelerate);
+  transition:
+    translate mixins.duration(medium4) mixins.easing(emphasized-decelerate),
+    display mixins.duration(medium4) allow-discrete,
+    overlay mixins.duration(medium4) allow-discrete;
+
+  &--standard {
+    --q-bottom-sheet-available-height: calc(100% - var(--q-bottom-sheet-top-margin));
+    position: absolute;
+    z-index: 5;
+    max-height: min(50%, var(--q-bottom-sheet-available-height));
+  }
+
+  &[open],
+  &--standard:not([hidden]) {
+    display: flex;
+    translate: 0;
+
+    @starting-style {
+      translate: 0 100%;
+    }
+  }
+
+  &--expanded,
+  &--dragging {
+    max-height: var(--q-bottom-sheet-available-height);
+  }
+
+  &--expanded {
+    height: var(--q-bottom-sheet-drag-height, var(--q-bottom-sheet-available-height));
+  }
+
+  &::backdrop {
+    background-color: mixins.with-alpha(var(--scrim), 32%);
+    opacity: 0;
+    transition: opacity mixins.duration(medium4) mixins.easing(standard);
+    transition:
+      opacity mixins.duration(medium4) mixins.easing(standard),
+      display mixins.duration(medium4) allow-discrete,
+      overlay mixins.duration(medium4) allow-discrete;
+  }
+
+  &[open]::backdrop {
+    opacity: 1;
+
+    @starting-style {
+      opacity: 0;
+    }
+  }
+
+  &.q-bottom-sheet--closing {
+    translate: 0 100%;
+
+    &::backdrop {
+      opacity: 0;
+    }
+  }
+
+  &__handle {
+    display: flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    width: 100%;
+    height: 3rem;
+    border: none;
+    border-radius: inherit;
+    background: transparent;
+    touch-action: none;
+    cursor: grab;
+    user-select: none;
+
+    span {
+      display: block;
+      width: 2rem;
+      height: 0.25rem;
+      border-radius: 50rem;
+      background-color: var(--on-surface-variant);
+    }
+
+    &:active {
+      cursor: grabbing;
+    }
+
+    &:focus-visible::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      margin: auto;
+      width: 2.5rem;
+      height: 1.5rem;
+      border-radius: 0.5rem;
+      outline: 0.1875rem solid var(--secondary);
+      outline-offset: 0.125rem;
+    }
+  }
+
+  &__content {
+    min-height: 0;
+    overflow: auto;
+    overscroll-behavior: contain;
+    padding: 0 1.5rem max(1.5rem, env(safe-area-inset-bottom));
+  }
+
+  &__overlay-root {
+    position: absolute;
+    inset: 0;
+    z-index: 10001;
+    pointer-events: none;
+
+    > * {
+      pointer-events: auto;
+    }
+  }
+
+  @media (width > 640px) {
+    --q-bottom-sheet-top-margin: 3.5rem;
+    width: calc(100% - 7rem);
+  }
+}
+
+:root:has(.q-bottom-sheet:modal),
+body:has(.q-bottom-sheet:modal) {
+  overflow: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .q-bottom-sheet,
+  .q-bottom-sheet::backdrop {
+    transition: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .q-bottom-sheet {
+    border: 0.0625rem solid CanvasText;
+
+    &__handle span {
+      background-color: ButtonText;
+      forced-color-adjust: none;
+    }
+  }
+}

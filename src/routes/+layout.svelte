@@ -70,6 +70,10 @@
       to: "/components/badge",
     },
     {
+      name: "Bottom Sheet",
+      to: "/components/bottom-sheet",
+    },
+    {
       name: "Breadcrumbs",
       to: "/components/breadcrumbs",
     },

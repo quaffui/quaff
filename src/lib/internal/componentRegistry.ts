@@ -8,6 +8,10 @@ const sliderCss = ["slider", "icon"] as const;
 const registry = {
   avatar: { css: "components/avatar", components: { QAvatar: ["avatar"] } },
   badge: { css: "components/badge", components: { QBadge: ["badge"] } },
+  "bottom-sheet": {
+    css: "components/bottom-sheet",
+    components: { QBottomSheet: ["bottom-sheet"] },
+  },
   breadcrumbs: {
     css: "components/breadcrumbs",
     components: { QBreadcrumbs: ["breadcrumbs"], QBreadcrumbsEl: ["breadcrumbs", "icon"] },
