@@ -48,7 +48,7 @@ export function getAllChildren(el: HTMLElement) {
 
 // Focus utils
 const focusableElements =
-  ':is(a, button, input, [tabindex]:not([tabindex="-1"])):not([disabled], [aria-disabled="true"])';
+  ':is(a, button, input, select, textarea, summary, [tabindex]:not([tabindex="-1"])):not([disabled], [aria-disabled="true"])';
 
 export function isFocusable(el: HTMLElement) {
   return (

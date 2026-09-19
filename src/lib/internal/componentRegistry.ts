@@ -16,6 +16,7 @@ const registry = {
     css: "components/card",
     components: { QCard: ["card"], QCardSection: ["card"], QCardActions: ["card"] },
   },
+  carousel: { css: "components/carousel", components: { QCarousel: ["carousel", ...buttonCss] } },
   checkbox: { css: "components/checkbox", components: { QCheckbox: ["checkbox"] } },
   chip: { css: "components/chip", components: { QChip: ["chip", "avatar", "icon"] } },
   codeBlock: { components: { QCodeBlock: buttonCss } },
