@@ -1,0 +1,134 @@
+@use "sass:list";
+@use "sass:math";
+@use "shapes";
+
+$morph-duration: 650ms;
+
+// Sample Material's loading spring at build time, keeping the full settling motion.
+// Stiffness 200 and damping 0.6; shape progress stays within its two outlines.
+@function -spring-easing($isClamped: false) {
+  $frequency: math.sqrt(200);
+  $damping: 0.6;
+  $oscillation: $frequency * math.sqrt(1 - $damping * $damping);
+  $samples: ();
+  $sample-count: math.div($morph-duration, 10ms);
+
+  @for $step from 0 through $sample-count {
+    $time: math.div($step * 10ms, 1s);
+    $decay: math.pow(math.$e, -$damping * $frequency * $time);
+    $phase: $oscillation * $time;
+    $progress: 1 -
+      $decay *
+      (math.cos($phase) + math.div($damping * $frequency, $oscillation) * math.sin($phase));
+
+    @if $step == $sample-count {
+      $progress: 1;
+    } @else if $isClamped {
+      $progress: math.clamp(0, $progress, 1);
+    }
+
+    $samples: list.append($samples, math.div(math.round($progress * 10000), 10000), comma);
+  }
+
+  @return linear($samples);
+}
+
+.q-loading-indicator {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--q-loading-indicator-size, 3rem);
+  height: min-content;
+  aspect-ratio: 1;
+  vertical-align: middle;
+  color: var(--q-loading-indicator-color, var(--primary));
+
+  &--contained {
+    border-radius: 50%;
+    background-color: var(--q-loading-indicator-container-color, var(--primary-container));
+  }
+
+  &[hidden] {
+    display: none;
+  }
+
+  &__rotation {
+    display: grid;
+    place-items: center;
+    width: calc(100% * 38 / 48);
+    height: calc(100% * 38 / 48);
+    animation: q-loading-indicator-rotation 4666ms linear infinite;
+  }
+
+  &__shape {
+    // Keep a visible rotating shape in browsers without shape() support.
+    clip-path: ellipse(43% 28%);
+    @include shapes.shape;
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-color: currentColor;
+    rotate: 90deg;
+    animation:
+      q-loading-indicator-morph ($morph-duration * shapes.$shape-count) -spring-easing(true)
+        infinite,
+      q-loading-indicator-turn ($morph-duration * 4) -spring-easing() infinite,
+      q-loading-indicator-bounce $morph-duration ease-in-out infinite;
+  }
+}
+
+// Resize the outline to keep the bounce sharp instead of scaling a cached clip mask.
+@keyframes q-loading-indicator-bounce {
+  0%,
+  15%,
+  100% {
+    width: 100%;
+    height: 100%;
+  }
+  40% {
+    width: 106%;
+    height: 106%;
+  }
+  65% {
+    width: 99%;
+    height: 99%;
+  }
+  82% {
+    width: 100.5%;
+    height: 100.5%;
+  }
+}
+
+// Four spring-driven quarter turns repeat independently of the seven-shape cycle.
+@keyframes q-loading-indicator-turn {
+  @for $step from 0 through 4 {
+    #{$step * 25%} {
+      rotate: #{90 + $step * 90}deg;
+    }
+  }
+}
+
+@keyframes q-loading-indicator-rotation {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .q-loading-indicator__rotation,
+  .q-loading-indicator__shape {
+    animation: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .q-loading-indicator {
+    color: CanvasText;
+    forced-color-adjust: none;
+
+    &--contained {
+      background-color: Canvas;
+    }
+  }
+}
