@@ -5,7 +5,5 @@
 @layer Quaff {
   @layer components {
     @include meta.load-css("../../components/badge/QBadge.scss");
-    @include meta.load-css("../../components/navbar/QNavbar.scss");
-    @include meta.load-css("../../components/navbar/QNavItem.scss");
   }
 }

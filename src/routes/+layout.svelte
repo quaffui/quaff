@@ -66,6 +66,10 @@
       to: "/components/avatar",
     },
     {
+      name: "Badge",
+      to: "/components/badge",
+    },
+    {
       name: "Breadcrumbs",
       to: "/components/breadcrumbs",
     },

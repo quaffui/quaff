@@ -3,6 +3,7 @@
   import { resolve } from "$app/paths";
   import {
     QAvatar,
+    QBadge,
     QBreadcrumbs,
     QBreadcrumbsEl,
     QBtn,
@@ -64,6 +65,12 @@
       description: "Display user profiles or visual identities with customizable avatars.",
       href: "/components/avatar",
       snippet: avatar,
+    },
+    {
+      name: "QBadge",
+      description: "Show notifications, counts, or short status labels.",
+      href: "/components/badge",
+      snippet: badge,
     },
     {
       name: "QBreadcrumbs",
@@ -356,6 +363,23 @@
       </QItemSection>
     </QItem>
   </QList>
+{/snippet}
+
+{#snippet badge()}
+  <div class="flex items-center q-gap-xl" aria-hidden="true">
+    <span style="position: relative; display: inline-flex;">
+      <QIcon name="notifications" />
+      <QBadge floating />
+    </span>
+    <span style="position: relative; display: inline-flex;">
+      <QIcon name="mail" />
+      <QBadge floating label={8} />
+    </span>
+    <span style="position: relative; display: inline-flex;">
+      <QIcon name="inbox" />
+      <QBadge floating label={1200} />
+    </span>
+  </div>
 {/snippet}
 
 {#snippet breadcrumbs()}
