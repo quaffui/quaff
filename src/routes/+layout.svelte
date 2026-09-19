@@ -90,6 +90,10 @@
       to: "/components/split-button",
     },
     {
+      name: "FABs",
+      to: "/components/fab",
+    },
+    {
       name: "Icon Button",
       to: "/components/button-icon",
     },
