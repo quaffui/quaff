@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { buttonGroupCtx } from "$components/button-group/QBtnGroup.svelte";
   import { quaffConfig } from "$internal/quaffConfig";
   import QBtn from "./QBtn.svelte";
   import type { QIconBtnProps } from "./props";
@@ -12,7 +13,8 @@
     ...props
   }: QIconBtnProps = $props();
 
-  const isExpressive = $derived(expressive ?? quaffConfig.expressive);
+  const group = buttonGroupCtx.get();
+  const isExpressive = $derived(expressive ?? group?.isExpressive ?? quaffConfig.expressive);
   const resolvedIcon = $derived(icon ?? children);
 
   Q.classes("q-icon-btn", {
