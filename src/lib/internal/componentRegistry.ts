@@ -7,6 +7,7 @@ const sliderCss = ["slider", "icon"] as const;
 // Order determines the CSS cascade. Each group declares its stylesheet and component dependencies.
 const registry = {
   avatar: { css: "components/avatar", components: { QAvatar: ["avatar"] } },
+  badge: { css: "components/badge", components: { QBadge: ["badge"] } },
   breadcrumbs: {
     css: "components/breadcrumbs",
     components: { QBreadcrumbs: ["breadcrumbs"], QBreadcrumbsEl: ["breadcrumbs", "icon"] },
