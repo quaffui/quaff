@@ -1,0 +1,138 @@
+@use "$css/mixins";
+
+.q-fab {
+  --q-fab-height: 3.5rem;
+  --q-fab-icon-size: 1.5rem;
+  --q-fab-corner: 1rem;
+  --q-fab-gap: 0.75rem;
+  --q-fab-leading: 1rem;
+  --q-fab-trailing: 1.25rem;
+
+  height: var(--q-fab-height);
+  min-width: var(--q-fab-height);
+  padding-inline: calc((var(--q-fab-height) - var(--q-fab-icon-size)) / 2);
+  gap: 0;
+  flex: none;
+  border-radius: var(--q-fab-corner);
+  box-shadow: var(--elevate3);
+  white-space: nowrap;
+  vertical-align: middle;
+  transition-property: padding-inline, gap, box-shadow, color, background-color;
+  @include mixins.spring(spatial, fast);
+
+  @each $color in primary, secondary, tertiary, primary-container, secondary-container,
+    tertiary-container
+  {
+    &--#{$color} {
+      background-color: var(--#{$color});
+      --ripple-color: var(--on-#{$color});
+    }
+  }
+
+  &--surface {
+    background-color: var(--surface-container-high);
+    --ripple-color: var(--primary);
+  }
+
+  &--sm:not(&--expressive, &--extended) {
+    --q-fab-height: 2.5rem;
+    --q-fab-corner: 0.75rem;
+  }
+
+  &--lg:not(&--extended),
+  &--expressive.q-fab--lg {
+    --q-fab-height: 6rem;
+    --q-fab-icon-size: 2.25rem;
+    --q-fab-corner: 1.75rem;
+  }
+
+  &--expressive {
+    --q-fab-gap: 0.5rem;
+    --q-fab-trailing: 1rem;
+    @include mixins.typography(title-medium);
+    @include mixins.spring(spatial, fast, expressive);
+
+    &.q-fab--md {
+      --q-fab-height: 5rem;
+      --q-fab-icon-size: 1.75rem;
+      --q-fab-corner: 1.25rem;
+      --q-fab-leading: 1.625rem;
+      --q-fab-trailing: 1.625rem;
+      --q-fab-gap: 0.75rem;
+      @include mixins.typography(title-large);
+    }
+
+    &.q-fab--lg {
+      --q-fab-leading: 1.75rem;
+      --q-fab-trailing: 1.75rem;
+      --q-fab-gap: 1rem;
+      @include mixins.typography(headline-small);
+    }
+  }
+
+  > :is(.q-btn__icon, .q-btn__img) {
+    width: var(--q-fab-icon-size);
+    height: var(--q-fab-icon-size);
+    font-size: var(--q-fab-icon-size);
+  }
+
+  > .q-btn__label {
+    display: grid;
+    grid-template-columns: 1fr;
+    transition: inherit;
+    transition-property: grid-template-columns;
+  }
+
+  &__label {
+    min-width: 0;
+    overflow: hidden;
+    opacity: 1;
+    transition-property: opacity;
+    @include mixins.spring(effects, fast);
+  }
+
+  &:not(&--extended) > .q-btn__label {
+    display: none;
+  }
+
+  &--extended:not(&--collapsed) {
+    padding-inline: var(--q-fab-leading) var(--q-fab-trailing);
+    gap: var(--q-fab-gap);
+
+    &:not(.q-fab--with-icon) {
+      padding-inline: var(--q-fab-trailing);
+    }
+  }
+
+  &--extended:not(&--expressive, &--collapsed) {
+    min-width: 5rem;
+  }
+
+  &--collapsed {
+    > .q-btn__label {
+      grid-template-columns: 0fr;
+    }
+
+    .q-fab__label {
+      opacity: 0;
+    }
+  }
+
+  @media (hover: hover) {
+    &:hover {
+      box-shadow: var(--elevate4);
+    }
+  }
+
+  &:is(:active, :focus-visible) {
+    box-shadow: var(--elevate3);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &,
+    > .q-btn__label,
+    .q-fab__label {
+      transition: none;
+    }
+  }
+}

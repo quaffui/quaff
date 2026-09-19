@@ -20,6 +20,9 @@ import QDate from "./date/QDate.svelte";
 import QDialog from "./dialog/QDialog.svelte";
 import QDrawer from "./drawer/QDrawer.svelte";
 import QExpansionItem from "./expansion-item/QExpansionItem.svelte";
+import QFab from "./fab/QFab.svelte";
+import QExtendedFab from "./fab/QExtendedFab.svelte";
+import QFabMenu from "./fab/QFabMenu.svelte";
 import QFooter from "./footer/QFooter.svelte";
 import QHeader from "./header/QHeader.svelte";
 import QHeaderTitle from "./header/QHeaderTitle.svelte";
@@ -75,6 +78,9 @@ export {
   QDialog,
   QDrawer,
   QExpansionItem,
+  QFab,
+  QExtendedFab,
+  QFabMenu,
   QFooter,
   QHeader,
   QHeaderTitle,

@@ -1,4 +1,5 @@
 const buttonCss = ["button", "icon", "progress"] as const;
+const fabCss = ["fab", ...buttonCss, "tooltip"] as const;
 const listCss = ["list", "separator"] as const;
 const pickerCss = ["field", "dialog", "menu", ...buttonCss] as const;
 const selectCss = ["field", "select", "icon", "list", "menu"] as const;
@@ -42,6 +43,10 @@ const registry = {
   "expansion-item": {
     css: "components/expansion-item",
     components: { QExpansionItem: ["expansion-item", "button", "icon", ...listCss, "progress"] },
+  },
+  fab: {
+    css: "components/fab",
+    components: { QFab: fabCss, QExtendedFab: fabCss, QFabMenu: [...fabCss, "menu"] },
   },
   field: { css: "shared/field" },
   footer: { css: "components/footer", components: { QFooter: ["footer"] } },

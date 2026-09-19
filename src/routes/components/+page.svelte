@@ -20,6 +20,7 @@
     QDate,
     QDrawer,
     QExpansionItem,
+    QExtendedFab,
     QFooter,
     QHeader,
     QHeaderTitle,
@@ -109,6 +110,12 @@
       description: "Pair a primary action with a menu of related choices.",
       href: "/components/split-button",
       snippet: splitButton,
+    },
+    {
+      name: "Floating action buttons",
+      description: "Highlight a primary action with a FAB, a label, or related menu actions.",
+      href: "/components/fab",
+      snippet: floatingActionButton,
     },
     {
       name: "QIconBtn",
@@ -485,6 +492,10 @@
       </QItem>
     </QList>
   </QSplitBtn>
+{/snippet}
+
+{#snippet floatingActionButton()}
+  <QExtendedFab expressive label="Create" icon="edit" />
 {/snippet}
 
 {#snippet buttonIcon()}

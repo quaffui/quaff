@@ -240,9 +240,13 @@
   function resetTabStop() {
     restoreTabIndexes([...originalTabIndexes.keys()].filter((action) => !listEl?.contains(action)));
     const actions = getActions();
-    const focused = actions.find((action) => action.contains(document.activeElement));
-    const selected = actions.find((action) => action.closest(".q-item--active"));
-    setTabStop(actions, focused ?? selected ?? actions[0]);
+    const visibleActions = actions.filter((action) =>
+      action.checkVisibility({ visibilityProperty: true })
+    );
+    const tabStopCandidates = visibleActions.length ? visibleActions : actions;
+    const focused = tabStopCandidates.find((action) => action.contains(document.activeElement));
+    const selected = tabStopCandidates.find((action) => action.closest(".q-item--active"));
+    setTabStop(actions, focused ?? selected ?? tabStopCandidates[0]);
   }
 
   function handleFocusin(event: FocusEvent) {
@@ -278,7 +282,9 @@
       return;
     }
 
-    const actions = getActions();
+    const actions = getActions().filter((action) =>
+      action.checkVisibility({ visibilityProperty: true })
+    );
     const eventTarget = event.target as HTMLElement;
     const current = actions.findIndex(
       (action) => action === eventTarget || action.contains(eventTarget)
