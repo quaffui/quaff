@@ -1,0 +1,76 @@
+@use "shapes";
+
+.q-loading-indicator {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--q-loading-indicator-size, 3rem);
+  height: min-content;
+  aspect-ratio: 1;
+  vertical-align: middle;
+  color: var(--q-loading-indicator-color, var(--primary));
+
+  &--contained {
+    border-radius: 50%;
+    background-color: var(--q-loading-indicator-container-color, var(--primary-container));
+  }
+
+  &[hidden] {
+    display: none;
+  }
+
+  &__rotation {
+    width: calc(100% * 38 / 48);
+    height: calc(100% * 38 / 48);
+    animation: q-loading-indicator-rotation 4666ms linear infinite;
+  }
+
+  &__shape {
+    // Keep a visible rotating shape in browsers without shape() support.
+    clip-path: ellipse(43% 28%);
+    @include shapes.shape;
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-color: currentColor;
+    rotate: 90deg;
+    animation:
+      q-loading-indicator-morph 4550ms infinite,
+      q-loading-indicator-turn 2600ms infinite;
+    animation-timing-function: shapes.$spring;
+  }
+}
+
+// Four spring-driven quarter turns repeat independently of the seven-shape cycle.
+@keyframes q-loading-indicator-turn {
+  @for $step from 0 through 4 {
+    #{$step * 25%} {
+      rotate: #{90 + $step * 90}deg;
+    }
+  }
+}
+
+@keyframes q-loading-indicator-rotation {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .q-loading-indicator__rotation,
+  .q-loading-indicator__shape {
+    animation: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .q-loading-indicator {
+    color: CanvasText;
+    forced-color-adjust: none;
+
+    &--contained {
+      background-color: Canvas;
+    }
+  }
+}
