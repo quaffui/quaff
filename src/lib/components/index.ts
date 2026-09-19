@@ -9,6 +9,7 @@ import QIconBtn from "./button/QIconBtn.svelte";
 import QCard from "./card/QCard.svelte";
 import QCardSection from "./card/QCardSection.svelte";
 import QCardActions from "./card/QCardActions.svelte";
+import QCarousel from "./carousel/QCarousel.svelte";
 import QCheckbox from "./checkbox/QCheckbox.svelte";
 import QChip from "./chip/QChip.svelte";
 import QCircularProgress from "./progress/QCircularProgress.svelte";
@@ -57,6 +58,7 @@ export {
   QCard,
   QCardSection,
   QCardActions,
+  QCarousel,
   QCheckbox,
   QChip,
   QCircularProgress,
