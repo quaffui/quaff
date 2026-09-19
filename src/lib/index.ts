@@ -5,6 +5,12 @@ import Notify from "./classes/Notify.js";
 
 export type { QuaffLanguage, QuaffTranslations } from "./locales/types.js";
 export type { QuaffConfig } from "./internal/quaffConfig.js";
+export type {
+  QBtnGroupProps,
+  QBtnToggleOption,
+  QBtnToggleProps,
+  QBtnToggleValue,
+} from "./components/button-group/props.js";
 export type { NotifyDefaults, NotifyDismiss, NotifyOptions } from "./classes/Notify.js";
 export type {
   QSnackbarAction,
