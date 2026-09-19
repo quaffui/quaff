@@ -74,6 +74,10 @@
       to: "/components/button",
     },
     {
+      name: "Button Groups",
+      to: "/components/button-group",
+    },
+    {
       name: "Icon Button",
       to: "/components/button-icon",
     },
