@@ -32,6 +32,10 @@
       "types": "./dist/components/*.d.ts",
       "svelte": "./dist/components/*"
     },
+    "./meta": {
+      "types": "./dist/meta.d.ts",
+      "svelte": "./dist/meta.js"
+    },
     "./css/*": "./dist/css/*",
     "./locales/*": {
       "types": "./dist/locales/*.d.ts",

@@ -6,6 +6,12 @@
 
   const utils = [
     {
+      name: "Meta",
+      description: "Manage page titles, SEO metadata, and canonical links.",
+      href: "/utils/meta",
+      hovered: false,
+    },
+    {
       name: "Notify",
       description: "Create and queue Material Design snackbar notifications programmatically.",
       href: "/utils/notify",
