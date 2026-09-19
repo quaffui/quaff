@@ -1,4 +1,5 @@
 <script lang="ts">
+  import QBadge from "$components/badge/QBadge.svelte";
   import QIconSnippet from "$internal/QIconSnippet.svelte";
   import { ripple } from "$helpers";
   import { getRouterInfo, handleActivationKeydown, type QEvent } from "$utils";
@@ -123,9 +124,9 @@
       <QIconSnippet {icon} size={24} filled={isActive} />
 
       {#if badge}
-        <span id={visualBadgeId} class="q-nav-item__badge" aria-hidden="true">
+        <QBadge id={visualBadgeId} class="q-nav-item__badge" floating aria-hidden="true">
           {@render badge()}
-        </span>
+        </QBadge>
       {/if}
     </span>
 
