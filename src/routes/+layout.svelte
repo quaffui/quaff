@@ -82,6 +82,10 @@
       to: "/components/card",
     },
     {
+      name: "Carousel",
+      to: "/components/carousel",
+    },
+    {
       name: "Checkbox",
       to: "/components/checkbox",
     },

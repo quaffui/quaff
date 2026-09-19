@@ -9,6 +9,7 @@
     QCard,
     QCardActions,
     QCardSection,
+    QCarousel,
     QCheckbox,
     QChip,
     QCircularProgress,
@@ -88,6 +89,12 @@
       description: "Organize and present content elegantly using flexible card layouts.",
       href: "/components/card",
       snippet: card,
+    },
+    {
+      name: "QCarousel",
+      description: "Browse visual collections with responsive Material 3 carousel layouts.",
+      href: "/components/carousel",
+      snippet: carousel,
     },
     {
       name: "QCheckbox",
@@ -385,6 +392,20 @@
       <QBtn label="Book now" flat />
     </QCardActions>
   </QCard>
+{/snippet}
+
+{#snippet carousel()}
+  <QCarousel
+    items={["/cocktail.jpg", "/cocktail-close-up.jpg", "/cocktail-close-up-2.jpg"]}
+    height="10rem"
+    itemWidth={180}
+    controls={false}
+    aria-label="Drink photos"
+  >
+    {#snippet children({ item: src })}
+      <img {src} alt="Drink" style="width: 100%; height: 100%; object-fit: cover;" />
+    {/snippet}
+  </QCarousel>
 {/snippet}
 
 {#snippet checkbox()}
