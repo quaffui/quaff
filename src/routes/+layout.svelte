@@ -130,6 +130,10 @@
       to: "/components/list",
     },
     {
+      name: "Loading Indicator",
+      to: "/components/loading-indicator",
+    },
+    {
       name: "Menu",
       to: "/components/menu",
     },

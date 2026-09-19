@@ -26,6 +26,7 @@
     QLayout,
     QLinearProgress,
     QList,
+    QLoadingIndicator,
     QNavbar,
     QNavItem,
     QRadio,
@@ -160,6 +161,12 @@
       description: "Present ordered or unordered collections of items clearly.",
       href: "/components/list",
       snippet: list,
+    },
+    {
+      name: "QLoadingIndicator",
+      description: "Show that content is loading during short waits with animated shapes.",
+      href: "/components/loading-indicator",
+      snippet: loadingIndicator,
     },
     {
       name: "QMenu",
@@ -590,6 +597,10 @@
       </QItemSection>
     </QItem>
   </QList>
+{/snippet}
+
+{#snippet loadingIndicator()}
+  <QLoadingIndicator contained size={96} aria-label="Loading content" />
 {/snippet}
 
 {#snippet progress()}

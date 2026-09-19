@@ -39,6 +39,10 @@ const registry = {
     css: "components/list",
     components: { QList: listCss, QItem: listCss, QItemSection: ["list"] },
   },
+  "loading-indicator": {
+    css: "components/loading-indicator",
+    components: { QLoadingIndicator: ["loading-indicator"] },
+  },
   menu: { css: "components/menu", components: { QMenu: ["menu"] } },
   meta: { components: { QMeta: [] } },
   navbar: {
