@@ -66,6 +66,13 @@ const te = {
     select: {
       noOptionText: "ఎంపికలు లేవు",
     },
+    search: {
+      placeholder: "వెతకండి",
+      back: "వెనుకకు",
+      clear: "శోధనను క్లియర్ చేయండి",
+      results: "శోధన ఫలితాలు",
+      searching: "శోధిస్తోంది",
+    },
   },
 } satisfies QuaffLanguage;
 

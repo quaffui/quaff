@@ -65,6 +65,13 @@ const bn = {
     select: {
       noOptionText: "কোনো বিকল্প নেই",
     },
+    search: {
+      placeholder: "অনুসন্ধান",
+      back: "ফিরে যান",
+      clear: "অনুসন্ধান মুছুন",
+      results: "অনুসন্ধানের ফলাফল",
+      searching: "অনুসন্ধান চলছে",
+    },
   },
 } satisfies QuaffLanguage;
 

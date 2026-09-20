@@ -65,6 +65,13 @@ const ur = {
     select: {
       noOptionText: "کوئی اختیار دستیاب نہیں",
     },
+    search: {
+      placeholder: "تلاش کریں",
+      back: "واپس",
+      clear: "تلاش صاف کریں",
+      results: "تلاش کے نتائج",
+      searching: "تلاش جاری ہے",
+    },
   },
 } satisfies QuaffLanguage;
 

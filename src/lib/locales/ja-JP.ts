@@ -65,6 +65,13 @@ const ja = {
     select: {
       noOptionText: "選択肢がありません",
     },
+    search: {
+      placeholder: "検索",
+      back: "戻る",
+      clear: "検索をクリア",
+      results: "検索結果",
+      searching: "検索中",
+    },
   },
 } satisfies QuaffLanguage;
 

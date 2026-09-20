@@ -24,6 +24,7 @@ import QHeader from "./header/QHeader.svelte";
 import QHeaderTitle from "./header/QHeaderTitle.svelte";
 import QIcon from "./icon/QIcon.svelte";
 import QInput from "./input/QInput.svelte";
+import QSearch from "./search/QSearch.svelte";
 import QSelect from "./select/QSelect.svelte";
 import QRange from "./slider/QRange.svelte";
 import QSlider from "./slider/QSlider.svelte";
@@ -76,6 +77,7 @@ export {
   QHeaderTitle,
   QIcon,
   QInput,
+  QSearch,
   QSelect,
   QRange,
   QSlider,

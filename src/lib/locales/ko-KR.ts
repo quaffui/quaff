@@ -65,6 +65,13 @@ const ko = {
     select: {
       noOptionText: "선택 항목이 없습니다",
     },
+    search: {
+      placeholder: "검색",
+      back: "뒤로",
+      clear: "검색 지우기",
+      results: "검색 결과",
+      searching: "검색 중",
+    },
   },
 } satisfies QuaffLanguage;
 

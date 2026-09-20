@@ -63,6 +63,13 @@ const he = {
     select: {
       noOptionText: "אין אפשרויות",
     },
+    search: {
+      placeholder: "חיפוש",
+      back: "חזרה",
+      clear: "ניקוי החיפוש",
+      results: "תוצאות חיפוש",
+      searching: "החיפוש מתבצע",
+    },
   },
 } satisfies QuaffLanguage;
 

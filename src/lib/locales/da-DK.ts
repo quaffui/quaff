@@ -63,6 +63,13 @@ const da = {
     select: {
       noOptionText: "Ingen valgmuligheder",
     },
+    search: {
+      placeholder: "Søg",
+      back: "Tilbage",
+      clear: "Ryd søgning",
+      results: "Søgeresultater",
+      searching: "Søger",
+    },
   },
 } satisfies QuaffLanguage;
 

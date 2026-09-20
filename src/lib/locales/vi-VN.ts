@@ -65,6 +65,13 @@ const vi = {
     select: {
       noOptionText: "Không có lựa chọn",
     },
+    search: {
+      placeholder: "Tìm kiếm",
+      back: "Quay lại",
+      clear: "Xóa tìm kiếm",
+      results: "Kết quả tìm kiếm",
+      searching: "Đang tìm kiếm",
+    },
   },
 } satisfies QuaffLanguage;
 

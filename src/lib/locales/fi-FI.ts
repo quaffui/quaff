@@ -63,6 +63,13 @@ const fi = {
     select: {
       noOptionText: "Ei vaihtoehtoja",
     },
+    search: {
+      placeholder: "Hae",
+      back: "Takaisin",
+      clear: "Tyhjennä haku",
+      results: "Hakutulokset",
+      searching: "Haetaan",
+    },
   },
 } satisfies QuaffLanguage;
 

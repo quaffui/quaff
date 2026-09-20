@@ -68,6 +68,10 @@ const registry = {
   },
   radio: { css: "components/radio", components: { QRadio: ["radio"] } },
   railbar: { css: "components/railbar", components: { QRailbar: ["railbar"] } },
+  search: {
+    css: "components/search",
+    components: { QSearch: ["field", "dialog", ...buttonCss, "search"] },
+  },
   select: { css: "components/select", components: { QSelect: selectCss } },
   slider: { css: "components/slider", components: { QRange: sliderCss, QSlider: sliderCss } },
   snackbar: { css: "components/snackbar", components: { QSnackbar: ["snackbar", ...buttonCss] } },

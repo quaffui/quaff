@@ -63,6 +63,13 @@ const ro = {
     select: {
       noOptionText: "Nicio opțiune",
     },
+    search: {
+      placeholder: "Caută",
+      back: "Înapoi",
+      clear: "Șterge căutarea",
+      results: "Rezultatele căutării",
+      searching: "Se caută",
+    },
   },
 } satisfies QuaffLanguage;
 

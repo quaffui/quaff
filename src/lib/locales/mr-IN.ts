@@ -65,6 +65,13 @@ const mr = {
     select: {
       noOptionText: "कोणतेही पर्याय नाहीत",
     },
+    search: {
+      placeholder: "शोधा",
+      back: "मागे",
+      clear: "शोध साफ करा",
+      results: "शोध परिणाम",
+      searching: "शोध सुरू आहे",
+    },
   },
 } satisfies QuaffLanguage;
 

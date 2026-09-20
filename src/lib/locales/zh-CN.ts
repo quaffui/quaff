@@ -64,6 +64,13 @@ const zhCN = {
     select: {
       noOptionText: "无可选项",
     },
+    search: {
+      placeholder: "搜索",
+      back: "返回",
+      clear: "清除搜索",
+      results: "搜索结果",
+      searching: "正在搜索",
+    },
   },
 } satisfies QuaffLanguage;
 

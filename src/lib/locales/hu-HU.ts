@@ -65,6 +65,13 @@ const hu = {
     select: {
       noOptionText: "Nincs választható lehetőség",
     },
+    search: {
+      placeholder: "Keresés",
+      back: "Vissza",
+      clear: "Keresés törlése",
+      results: "Keresési eredmények",
+      searching: "Keresés folyamatban",
+    },
   },
 } satisfies QuaffLanguage;
 

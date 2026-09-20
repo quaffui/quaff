@@ -63,6 +63,13 @@ const it = {
     select: {
       noOptionText: "Nessuna opzione",
     },
+    search: {
+      placeholder: "Cerca",
+      back: "Indietro",
+      clear: "Cancella ricerca",
+      results: "Risultati di ricerca",
+      searching: "Ricerca in corso",
+    },
   },
 } satisfies QuaffLanguage;
 

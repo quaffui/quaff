@@ -63,6 +63,13 @@ const ms = {
     select: {
       noOptionText: "Tiada pilihan",
     },
+    search: {
+      placeholder: "Cari",
+      back: "Kembali",
+      clear: "Kosongkan carian",
+      results: "Hasil carian",
+      searching: "Sedang mencari",
+    },
   },
 } satisfies QuaffLanguage;
 

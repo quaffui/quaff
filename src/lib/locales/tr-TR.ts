@@ -65,6 +65,13 @@ const tr = {
     select: {
       noOptionText: "Seçenek yok",
     },
+    search: {
+      placeholder: "Ara",
+      back: "Geri",
+      clear: "Aramayı temizle",
+      results: "Arama sonuçları",
+      searching: "Aranıyor",
+    },
   },
 } satisfies QuaffLanguage;
 

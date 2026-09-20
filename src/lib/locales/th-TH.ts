@@ -65,6 +65,13 @@ const th = {
     select: {
       noOptionText: "ไม่มีตัวเลือก",
     },
+    search: {
+      placeholder: "ค้นหา",
+      back: "ย้อนกลับ",
+      clear: "ล้างการค้นหา",
+      results: "ผลการค้นหา",
+      searching: "กำลังค้นหา",
+    },
   },
 } satisfies QuaffLanguage;
 

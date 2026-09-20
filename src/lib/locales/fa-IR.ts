@@ -63,6 +63,13 @@ const fa = {
     select: {
       noOptionText: "گزینه‌ای وجود ندارد",
     },
+    search: {
+      placeholder: "جستجو",
+      back: "بازگشت",
+      clear: "پاک کردن جستجو",
+      results: "نتایج جستجو",
+      searching: "در حال جستجو",
+    },
   },
 } satisfies QuaffLanguage;
 

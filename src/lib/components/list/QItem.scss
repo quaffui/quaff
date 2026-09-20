@@ -3,6 +3,9 @@
 @use "$css/variables";
 
 .q-item {
+  --ripple-color: var(--on-surface);
+  --q-item-end-padding: 1.5rem;
+
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -13,7 +16,7 @@
   max-width: 100%;
   min-height: 3.5rem;
   padding-block: 0.5rem;
-  padding-inline: 1rem 1.5rem;
+  padding-inline: 1rem var(--q-item-end-padding);
 
   border-radius: 0;
 
@@ -28,6 +31,14 @@
     padding-inline-start: 0;
   }
 
+  &:has(> .q-item__section--content.q-item__section--action:only-child) {
+    padding-inline-end: 0;
+
+    > .q-item__section {
+      padding-inline-end: var(--q-item-end-padding);
+    }
+  }
+
   &[aria-disabled] {
     @include disabled.base();
     --q-item-color: #{disabled.font-color()};
@@ -37,7 +48,9 @@
     }
   }
 
-  &:is(.q-link, &--clickable:not(label), &--dragged) {
+  &:is(.q-link, &--clickable:not(label), &--dragged),
+  &:not([aria-disabled], .q-link, &--clickable:not(label), &--dragged)
+    > .q-item__section--action:not(:disabled, [aria-disabled="true"]) {
     &::after {
       content: "";
       position: absolute;
@@ -48,15 +61,15 @@
       pointer-events: none;
     }
 
-    &:hover:not([aria-disabled], .q-item--dragged)::after {
+    &:hover:not([aria-disabled="true"], .q-item--dragged)::after {
       opacity: 0.08;
     }
 
-    &:is(:focus-visible, :active):not([aria-disabled], .q-item--dragged)::after {
+    &:is(:focus-visible, :active):not([aria-disabled="true"], .q-item--dragged)::after {
       opacity: 0.1;
     }
 
-    &:focus-visible:not([aria-disabled]) {
+    &:focus-visible:not([aria-disabled="true"]) {
       outline: 0.1875rem solid var(--secondary);
       outline-offset: -0.1875rem;
     }
@@ -93,6 +106,7 @@
 }
 
 .q-item--expressive {
+  --q-item-end-padding: 1rem;
   --q-item-container-shape: 0.25rem;
   --q-item-hover-shape: 0.75rem;
   --q-item-active-shape: 1rem;

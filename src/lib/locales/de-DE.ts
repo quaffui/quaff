@@ -63,6 +63,13 @@ const de = {
     select: {
       noOptionText: "Keine Optionen",
     },
+    search: {
+      placeholder: "Suchen",
+      back: "Zurück",
+      clear: "Suche löschen",
+      results: "Suchergebnisse",
+      searching: "Suche läuft",
+    },
   },
 } satisfies QuaffLanguage;
 

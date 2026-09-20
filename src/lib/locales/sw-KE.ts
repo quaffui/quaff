@@ -63,6 +63,13 @@ const sw = {
     select: {
       noOptionText: "Hakuna chaguo",
     },
+    search: {
+      placeholder: "Tafuta",
+      back: "Rudi",
+      clear: "Futa utafutaji",
+      results: "Matokeo ya utafutaji",
+      searching: "Inatafuta",
+    },
   },
 } satisfies QuaffLanguage;
 

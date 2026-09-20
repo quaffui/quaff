@@ -63,6 +63,13 @@ const ar = {
     select: {
       noOptionText: "لا توجد خيارات",
     },
+    search: {
+      placeholder: "بحث",
+      back: "رجوع",
+      clear: "مسح البحث",
+      results: "نتائج البحث",
+      searching: "جارٍ البحث",
+    },
   },
 } satisfies QuaffLanguage;
 

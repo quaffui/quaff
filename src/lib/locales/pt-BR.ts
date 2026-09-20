@@ -63,6 +63,13 @@ const ptBR = {
     select: {
       noOptionText: "Nenhuma opção",
     },
+    search: {
+      placeholder: "Pesquisar",
+      back: "Voltar",
+      clear: "Limpar pesquisa",
+      results: "Resultados da pesquisa",
+      searching: "Pesquisando",
+    },
   },
 } satisfies QuaffLanguage;
 

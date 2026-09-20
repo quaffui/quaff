@@ -160,8 +160,10 @@
         {#snippet sectionDescription()}
           In a multi-action item, the content section is the primary action and trailing controls
           provide independent secondary actions. Add <code>action</code> to the content section to
-          render it as a native button, and use <code>leading</code> to include its leading visual in
-          the same target.
+          render it as a native button, and use <code>leading</code> to include its leading visual
+          in the same target. When conditionally adding or removing an action, include its
+          <code>QItemSection</code> in the conditional block so the list can update keyboard navigation
+          when the section mounts or unmounts.
         {/snippet}
 
         <QList bordered class="q-my-md">

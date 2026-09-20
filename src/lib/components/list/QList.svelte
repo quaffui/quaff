@@ -10,6 +10,7 @@
     readonly noRound: boolean;
     readonly selection: QListProps["selection"];
     readonly separatorOptions: QListProps["separatorOptions"];
+    readonly refreshTabStop: () => void;
     readonly claimInitialExpansion: (name: string) => boolean;
     readonly openExpansion: (name: string, current: () => void) => () => void;
   }
@@ -18,7 +19,7 @@
 </script>
 
 <script lang="ts">
-  import { onMount } from "svelte";
+  import { onMount, tick } from "svelte";
   import { quaffConfig } from "$internal/quaffConfig";
   import { menuCtx } from "$internal/menuContext";
   import { getDirection, isArrowKey } from "$utils";
@@ -58,6 +59,8 @@
 
   // #region:    --- Non-reactive variables
   let hasMounted = false;
+  let navigationActive = false;
+  let refreshPending = false;
   // eslint-disable-next-line svelte/prefer-svelte-reactivity
   const originalTabIndexes = new Map<HTMLElement, string | null>();
   // This registry must stay non-reactive so registration effects cannot invalidate themselves.
@@ -76,6 +79,7 @@
     noRound,
     selection,
     separatorOptions: separator ? separatorOptions : undefined,
+    refreshTabStop,
     claimInitialExpansion,
     openExpansion,
   });
@@ -87,8 +91,13 @@
       return;
     }
 
-    resetTabStop();
-    return restoreTabIndexes;
+    navigationActive = true;
+    refreshTabStop();
+
+    return () => {
+      navigationActive = false;
+      restoreTabIndexes();
+    };
   });
   // #endregion: --- Effects
 
@@ -100,6 +109,25 @@
   // #endregion: --- Lifecycle
 
   // #region:    --- Functions
+  function refreshTabStop() {
+    if (!navigationActive || refreshPending) {
+      return;
+    }
+
+    // Batch item notifications until Svelte has finished updating the list.
+    refreshPending = true;
+    void resetTabStopAfterUpdate();
+  }
+
+  async function resetTabStopAfterUpdate() {
+    await tick();
+    refreshPending = false;
+
+    if (navigationActive) {
+      resetTabStop();
+    }
+  }
+
   function claimInitialExpansion(name: string) {
     if (hasMounted) {
       return true;
@@ -167,29 +195,40 @@
 
         return [...(headerItem ? getItemActions(headerItem) : []), ...(toggle ? [toggle] : [])];
       })
-      .filter(
-        (action) => !action.matches(":disabled, [aria-disabled='true'], [aria-disabled='true'] *")
-      );
+      .filter((action) => {
+        if (!action.matches(":disabled, [aria-disabled='true'], [aria-disabled='true'] *")) {
+          return true;
+        }
+
+        setTabIndex(action, -1);
+        return false;
+      });
   }
 
   function setTabIndex(action: HTMLElement, tabIndex: number) {
+    const currentTabIndex = action.getAttribute("tabindex");
+
     if (!originalTabIndexes.has(action)) {
-      originalTabIndexes.set(action, action.getAttribute("tabindex"));
+      originalTabIndexes.set(action, currentTabIndex);
     }
 
-    action.tabIndex = tabIndex;
+    if (currentTabIndex !== String(tabIndex)) {
+      action.tabIndex = tabIndex;
+    }
   }
 
-  function restoreTabIndexes() {
-    for (const [action, tabIndex] of originalTabIndexes) {
+  function restoreTabIndexes(actions: Iterable<HTMLElement> = originalTabIndexes.keys()) {
+    for (const action of actions) {
+      const tabIndex = originalTabIndexes.get(action) ?? null;
+
       if (tabIndex === null) {
         action.removeAttribute("tabindex");
       } else {
         action.setAttribute("tabindex", tabIndex);
       }
-    }
 
-    originalTabIndexes.clear();
+      originalTabIndexes.delete(action);
+    }
   }
 
   function setTabStop(actions: HTMLElement[], target?: HTMLElement) {
@@ -199,9 +238,11 @@
   }
 
   function resetTabStop() {
+    restoreTabIndexes([...originalTabIndexes.keys()].filter((action) => !listEl?.contains(action)));
     const actions = getActions();
+    const focused = actions.find((action) => action.contains(document.activeElement));
     const selected = actions.find((action) => action.closest(".q-item--active"));
-    setTabStop(actions, selected ?? actions[0]);
+    setTabStop(actions, focused ?? selected ?? actions[0]);
   }
 
   function handleFocusin(event: FocusEvent) {

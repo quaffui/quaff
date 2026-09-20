@@ -63,6 +63,13 @@ const es = {
     select: {
       noOptionText: "No hay opciones",
     },
+    search: {
+      placeholder: "Buscar",
+      back: "Volver",
+      clear: "Borrar búsqueda",
+      results: "Resultados de búsqueda",
+      searching: "Buscando",
+    },
   },
 } satisfies QuaffLanguage;
 

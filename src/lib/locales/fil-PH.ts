@@ -63,6 +63,13 @@ const fil = {
     select: {
       noOptionText: "Walang pagpipilian",
     },
+    search: {
+      placeholder: "Maghanap",
+      back: "Bumalik",
+      clear: "I-clear ang paghahanap",
+      results: "Mga resulta ng paghahanap",
+      searching: "Naghahanap",
+    },
   },
 } satisfies QuaffLanguage;
 

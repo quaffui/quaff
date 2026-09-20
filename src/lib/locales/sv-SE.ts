@@ -63,6 +63,13 @@ const sv = {
     select: {
       noOptionText: "Inga alternativ",
     },
+    search: {
+      placeholder: "Sök",
+      back: "Tillbaka",
+      clear: "Rensa sökning",
+      results: "Sökresultat",
+      searching: "Söker",
+    },
   },
 } satisfies QuaffLanguage;
 
