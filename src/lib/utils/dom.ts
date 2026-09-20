@@ -12,7 +12,7 @@ export function portal(target?: PortalTarget): Attachment<HTMLElement> {
 }
 
 export function getDialogOverlayRoot(dialog: HTMLDialogElement): ParentNode {
-  return dialog.querySelector<HTMLElement>("[data-quaff-overlay-root]") ?? dialog;
+  return dialog.querySelector<HTMLElement>(":scope > [data-quaff-overlay-root]") ?? dialog;
 }
 
 export function doesOverlayUsePopover(from: HTMLElement | null | undefined): boolean {

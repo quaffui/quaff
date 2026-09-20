@@ -38,6 +38,7 @@
     QSearch,
     QSelect,
     QSeparator,
+    QSideSheet,
     QSlider,
     QSwitch,
     QTab,
@@ -239,6 +240,12 @@
       description: "Offer users a dropdown list for making single or multiple selections.",
       href: "/components/select",
       snippet: select,
+    },
+    {
+      name: "QSideSheet",
+      description: "Show supporting details alongside your main content.",
+      href: "/components/side-sheet",
+      snippet: sideSheet,
     },
     {
       name: "QSlider",
@@ -943,6 +950,16 @@
     <QIconBtn expressive icon="format_italic" aria-label="Italic" />
     <QIconBtn expressive icon="format_underlined" aria-label="Underline" />
   </QToolbar>
+{/snippet}
+
+{#snippet sideSheet()}
+  <div
+    style="display: flex; justify-content: flex-end; height: 100%; width: 100%; overflow: hidden; background: var(--surface-container);"
+  >
+    <QSideSheet value headline="Details" width="12rem" bordered>
+      <div class="text-body-medium">A little more context, right where you need it.</div>
+    </QSideSheet>
+  </div>
 {/snippet}
 
 <style lang="scss">

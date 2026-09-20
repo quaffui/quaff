@@ -178,6 +178,10 @@
       to: "/components/select",
     },
     {
+      name: "Side Sheet",
+      to: "/components/side-sheet",
+    },
+    {
       name: "Slider",
       to: "/components/slider",
     },

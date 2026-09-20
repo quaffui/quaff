@@ -27,6 +27,7 @@ import QInput from "./input/QInput.svelte";
 import QSearch from "./search/QSearch.svelte";
 import QSelect from "./select/QSelect.svelte";
 import QRange from "./slider/QRange.svelte";
+import QSideSheet from "./side-sheet/QSideSheet.svelte";
 import QSlider from "./slider/QSlider.svelte";
 import QSnackbar from "./snackbar/QSnackbar.svelte";
 import QLayout from "./layout/QLayout.svelte";
@@ -80,6 +81,7 @@ export {
   QSearch,
   QSelect,
   QRange,
+  QSideSheet,
   QSlider,
   QSnackbar,
   QLayout,

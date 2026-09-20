@@ -1,0 +1,204 @@
+@use "$css/mixins";
+
+@mixin -closed {
+  translate: var(--q-side-sheet-offset) 0;
+
+  &.q-side-sheet--standard {
+    translate: none;
+    margin-inline-end: var(--q-side-sheet-hidden-margin);
+
+    &.q-side-sheet--start {
+      margin-inline-start: var(--q-side-sheet-hidden-margin);
+      margin-inline-end: var(--q-side-sheet-inset);
+    }
+  }
+}
+
+.q-side-sheet {
+  @include mixins.typography(body-medium);
+
+  --q-side-sheet-offset: 100%;
+  --q-side-sheet-inset: 0rem;
+
+  position: fixed;
+  inset-block: 0;
+  inset-inline: auto 0;
+  display: none;
+  flex-direction: column;
+  box-sizing: border-box;
+  width: var(--q-side-sheet-width, 16rem);
+  max-width: min(25rem, calc(100% - 2 * var(--q-side-sheet-inset)));
+  height: calc(100dvh - 2 * var(--q-side-sheet-inset));
+  max-height: calc(100% - 2 * var(--q-side-sheet-inset));
+  margin: var(--q-side-sheet-inset);
+  padding: 0;
+  border: 0;
+  border-start-start-radius: 1rem;
+  border-end-start-radius: 1rem;
+  background: var(--surface-container-low);
+  color: var(--on-surface);
+  box-shadow: var(--elevate1);
+  overflow: visible;
+  translate: 0;
+  transition: translate mixins.duration(medium2) mixins.easing(emphasized-decelerate);
+
+  &[open] {
+    display: flex;
+  }
+
+  &--closing[open] {
+    @include -closed;
+
+    transition-duration: mixins.duration(short4);
+    transition-timing-function: mixins.easing(emphasized-accelerate);
+
+    &::backdrop {
+      opacity: 0;
+    }
+  }
+
+  @starting-style {
+    &[open] {
+      @include -closed;
+    }
+
+    &[open]::backdrop {
+      opacity: 0;
+    }
+  }
+
+  &::backdrop {
+    background: mixins.with-alpha(var(--scrim), 32%);
+    opacity: 1;
+    transition: inherit;
+    transition-property: opacity;
+  }
+
+  &--start {
+    inset-inline: 0 auto;
+    border-radius: 0;
+    border-start-end-radius: 1rem;
+    border-end-end-radius: 1rem;
+  }
+
+  &--standard {
+    // Move the sheet and resize the page without reflowing the sheet's contents.
+    --q-side-sheet-hidden-margin: calc(
+      -1 *
+        (
+          min(var(--q-side-sheet-width, 16rem), 25rem, 100% - 2 * var(--q-side-sheet-inset)) +
+            var(--q-side-sheet-inset)
+        )
+    );
+
+    position: relative;
+    inset: auto;
+    flex: none;
+    order: 1;
+    align-self: stretch;
+    height: auto;
+    min-height: 0;
+    border-radius: 0;
+    background: var(--surface);
+    box-shadow: none;
+    transition-property: margin-inline-start, margin-inline-end;
+
+    &.q-side-sheet--start {
+      order: -1;
+    }
+  }
+
+  &--bordered {
+    border-inline-start: 0.0625rem solid var(--outline-variant);
+
+    &.q-side-sheet--start {
+      border-inline-start: 0;
+      border-inline-end: 0.0625rem solid var(--outline-variant);
+    }
+  }
+
+  &--detached {
+    --q-side-sheet-inset: 1rem;
+
+    border-radius: 1rem;
+  }
+
+  &__container {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-height: 0;
+    border-radius: inherit;
+    overflow: hidden auto;
+    overscroll-behavior: contain;
+  }
+
+  &__header {
+    display: flex;
+    flex: none;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1.5rem;
+    color: var(--on-surface-variant);
+  }
+
+  &__headline {
+    @include mixins.typography(title-large);
+
+    flex: 1;
+    min-width: 0;
+    margin: 0;
+    overflow-wrap: anywhere;
+  }
+
+  &__close {
+    flex: none;
+    margin-inline-start: auto;
+  }
+
+  &__content {
+    flex: 1;
+    padding: 0 1.5rem 1.5rem;
+    overflow-wrap: anywhere;
+  }
+
+  &__actions {
+    display: flex;
+    flex: none;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    box-sizing: border-box;
+    min-height: 4.5rem;
+    padding: 1rem 1.5rem 1.5rem;
+  }
+
+  &__overlay-root {
+    @include mixins.overlay-root;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &,
+    &::backdrop {
+      transition: none;
+    }
+  }
+
+  @media (forced-colors: active) {
+    border: 0.0625rem solid CanvasText;
+  }
+
+  &--start,
+  &:dir(rtl) {
+    --q-side-sheet-offset: -100%;
+  }
+
+  &--start:dir(rtl) {
+    --q-side-sheet-offset: 100%;
+  }
+}
+
+html:has(.q-side-sheet:modal),
+body:has(.q-side-sheet:modal) {
+  overflow: hidden;
+}

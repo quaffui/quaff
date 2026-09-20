@@ -73,6 +73,10 @@ const registry = {
     components: { QSearch: ["field", "dialog", ...buttonCss, "search"] },
   },
   select: { css: "components/select", components: { QSelect: selectCss } },
+  "side-sheet": {
+    css: "components/side-sheet",
+    components: { QSideSheet: ["side-sheet", ...buttonCss] },
+  },
   slider: { css: "components/slider", components: { QRange: sliderCss, QSlider: sliderCss } },
   snackbar: { css: "components/snackbar", components: { QSnackbar: ["snackbar", ...buttonCss] } },
   separator: { css: "components/separator", components: { QSeparator: ["separator"] } },

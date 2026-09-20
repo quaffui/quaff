@@ -21,6 +21,7 @@
     onclick,
     onkeydown,
     oncancel,
+    onclose,
     ...props
   }: QDialogProps = $props();
   // #endregion: --- Props
@@ -133,6 +134,13 @@
     }
   }
 
+  function handleClose(event: QDialogEvent<Event>) {
+    if (event.target === dialogEl && !dialogEl?.open) {
+      value = false;
+      onclose?.(event);
+    }
+  }
+
   function tryCancel(e: Event) {
     const topModal = modalDialogs.findLast((dialog) => dialog.open);
     const blockedByModal =
@@ -144,7 +152,9 @@
 
     const target = e.target;
 
-    if (target instanceof Element && target.closest("[data-quaff-overlay]")) {
+    const overlay = target instanceof Element ? target.closest("[data-quaff-overlay]") : null;
+
+    if (overlay && (!dialogEl || !overlay.contains(dialogEl))) {
       return;
     }
 
@@ -181,6 +191,7 @@
   class="q-dialog"
   onclick={handleClickInside}
   oncancel={handleCancel}
+  onclose={handleClose}
   onkeydown={handleKeydown}
   aria-hidden={!value || undefined}
   data-quaff
