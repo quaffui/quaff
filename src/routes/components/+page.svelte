@@ -43,6 +43,7 @@
     QTable,
     QTabs,
     QTime,
+    QToolbar,
   } from "$components";
   import QDocs from "$docs/QDocs.svelte";
   import { pageTitle } from "$helpers/pageTitle";
@@ -267,6 +268,12 @@
       description: "Select times with accessible Material 3 dial and input modes.",
       href: "/components/time",
       snippet: time,
+    },
+    {
+      name: "QToolbar",
+      description: "Keep frequently used actions close to your content.",
+      href: "/components/toolbar",
+      snippet: toolbar,
     },
     {
       name: "QTooltip",
@@ -917,6 +924,14 @@
   </QCard>
 
   <QBtn class="q-mt-sm" label="Tooltip" variant="filled" />
+{/snippet}
+
+{#snippet toolbar()}
+  <QToolbar floating vibrant unelevated aria-label="Text formatting">
+    <QIconBtn expressive icon="format_bold" aria-label="Bold" selected />
+    <QIconBtn expressive icon="format_italic" aria-label="Italic" />
+    <QIconBtn expressive icon="format_underlined" aria-label="Underline" />
+  </QToolbar>
 {/snippet}
 
 <style lang="scss">

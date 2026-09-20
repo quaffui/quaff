@@ -245,6 +245,10 @@
       width: calc(var(--q-btn-height, 2.5rem) - 0.5rem);
       height: calc(var(--q-btn-height, 2.5rem) - 0.5rem);
     }
+
+    @media (prefers-reduced-motion: reduce) {
+      transition: none;
+    }
   }
 }
 

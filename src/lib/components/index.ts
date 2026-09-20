@@ -45,6 +45,7 @@ import QTabs from "./tabs/QTabs.svelte";
 import QTab from "./tabs/QTab.svelte";
 import QTable from "./table/QTable.svelte";
 import QSwitch from "./switch/QSwitch.svelte";
+import QToolbar from "./toolbar/QToolbar.svelte";
 import QTooltip from "./tooltip/QTooltip.svelte";
 import QTime from "./time/QTime.svelte";
 
@@ -97,5 +98,6 @@ export {
   QTable,
   QSwitch,
   QTime,
+  QToolbar,
   QTooltip,
 };
