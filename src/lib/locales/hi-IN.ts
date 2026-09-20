@@ -65,6 +65,13 @@ const hi = {
     select: {
       noOptionText: "कोई विकल्प नहीं है",
     },
+    search: {
+      placeholder: "खोजें",
+      back: "वापस",
+      clear: "खोज साफ़ करें",
+      results: "खोज परिणाम",
+      searching: "खोज जारी है",
+    },
   },
 } satisfies QuaffLanguage;
 

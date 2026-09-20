@@ -1,6 +1,7 @@
 <script lang="ts">
   import { ripple } from "$helpers";
   import { itemCtx } from "./QItem.svelte";
+  import { listCtx } from "./QList.svelte";
   import type { Snippet } from "svelte";
   import type { QItemSectionProps } from "./props";
 
@@ -21,6 +22,7 @@
 
   // #region:    --- Reactive variables
   const ctx = itemCtx.assertGet();
+  const list = listCtx.assertGet();
   // #endregion: --- Reactive variables
 
   // #region:    --- Effects
@@ -28,6 +30,24 @@
     if (type === "content") {
       itemCtx.updateEntry(ctx, "lineCount", [headline, line1, line2, line3].filter(Boolean).length);
     }
+  });
+
+  $effect(() => {
+    void [
+      action,
+      type,
+      leading,
+      headline,
+      line1,
+      line2,
+      line3,
+      children,
+      props.tabindex,
+      props["aria-disabled"],
+    ];
+    list.refreshTabStop();
+
+    return list.refreshTabStop;
   });
   // #endregion: --- Effects
 

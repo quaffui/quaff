@@ -64,6 +64,13 @@ const zhTW = {
     select: {
       noOptionText: "沒有可用選項",
     },
+    search: {
+      placeholder: "搜尋",
+      back: "返回",
+      clear: "清除搜尋",
+      results: "搜尋結果",
+      searching: "正在搜尋",
+    },
   },
 } satisfies QuaffLanguage;
 

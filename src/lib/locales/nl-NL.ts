@@ -63,6 +63,13 @@ const nl = {
     select: {
       noOptionText: "Geen opties",
     },
+    search: {
+      placeholder: "Zoeken",
+      back: "Terug",
+      clear: "Zoekopdracht wissen",
+      results: "Zoekresultaten",
+      searching: "Bezig met zoeken",
+    },
   },
 } satisfies QuaffLanguage;
 

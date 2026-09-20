@@ -170,6 +170,10 @@
       to: "/components/railbar",
     },
     {
+      name: "Search",
+      to: "/components/search",
+    },
+    {
       name: "Select",
       to: "/components/select",
     },

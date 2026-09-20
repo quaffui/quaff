@@ -63,6 +63,13 @@ const uk = {
     select: {
       noOptionText: "Немає варіантів",
     },
+    search: {
+      placeholder: "Пошук",
+      back: "Назад",
+      clear: "Очистити пошук",
+      results: "Результати пошуку",
+      searching: "Триває пошук",
+    },
   },
 } satisfies QuaffLanguage;
 

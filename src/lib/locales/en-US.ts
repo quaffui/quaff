@@ -35,6 +35,13 @@ const en: QuaffLanguage = {
     select: {
       noOptionText: "No options",
     },
+    search: {
+      placeholder: "Search",
+      back: "Back",
+      clear: "Clear search",
+      results: "Search results",
+      searching: "Searching",
+    },
   },
 };
 

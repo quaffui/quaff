@@ -63,6 +63,13 @@ const cs = {
     select: {
       noOptionText: "Žádné možnosti",
     },
+    search: {
+      placeholder: "Hledat",
+      back: "Zpět",
+      clear: "Vymazat hledání",
+      results: "Výsledky hledání",
+      searching: "Probíhá hledání",
+    },
   },
 } satisfies QuaffLanguage;
 

@@ -290,7 +290,22 @@
   }
 
   function handleDocumentKeydown(event: KeyboardEvent) {
-    if (!value || event.defaultPrevented || event.key !== "Escape") {
+    const target = event.target;
+
+    if (
+      !value ||
+      event.defaultPrevented ||
+      event.isComposing ||
+      event.keyCode === 229 ||
+      event.key !== "Escape"
+    ) {
+      return;
+    }
+
+    if (
+      target instanceof Element &&
+      target.closest("dialog:modal") !== anchorEl?.closest("dialog:modal")
+    ) {
       return;
     }
 

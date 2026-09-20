@@ -85,6 +85,16 @@
   );
   // #endregion: --- Derived values
 
+  // #region:    --- Effects
+  $effect(() => {
+    // Refresh when the item replaces its content or changes keyboard behavior.
+    void [isClickable, disabled, isActive, tag, routerInfo.hasLink, tabindex, children];
+    ctx.refreshTabStop();
+
+    return ctx.refreshTabStop;
+  });
+  // #endregion: --- Effects
+
   // #region:    --- Context
   itemCtx.set({
     lineCount,

@@ -63,6 +63,13 @@ const el = {
     select: {
       noOptionText: "Δεν υπάρχουν επιλογές",
     },
+    search: {
+      placeholder: "Αναζήτηση",
+      back: "Πίσω",
+      clear: "Εκκαθάριση αναζήτησης",
+      results: "Αποτελέσματα αναζήτησης",
+      searching: "Γίνεται αναζήτηση",
+    },
   },
 } satisfies QuaffLanguage;
 

@@ -63,6 +63,13 @@ const ru = {
     select: {
       noOptionText: "Нет вариантов",
     },
+    search: {
+      placeholder: "Поиск",
+      back: "Назад",
+      clear: "Очистить поиск",
+      results: "Результаты поиска",
+      searching: "Идёт поиск",
+    },
   },
 } satisfies QuaffLanguage;
 

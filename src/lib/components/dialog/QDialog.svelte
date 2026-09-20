@@ -1,3 +1,8 @@
+<script lang="ts" module>
+  const modalDialogs: HTMLDialogElement[] = [];
+  const dismissedEvents = new WeakSet<Event>();
+</script>
+
 <script lang="ts">
   import { on } from "svelte/events";
   import type { QEvent } from "$utils";
@@ -37,6 +42,12 @@
 
     dialogEl?.[modal ? "showModal" : "show"]();
 
+    const currentDialog = dialogEl;
+
+    if (modal && currentDialog) {
+      modalDialogs.push(currentDialog);
+    }
+
     let removeClickListener: (() => void) | undefined;
 
     const timeoutId = setTimeout(() => {
@@ -46,6 +57,12 @@
     return () => {
       clearTimeout(timeoutId);
       removeClickListener?.();
+
+      const index = currentDialog ? modalDialogs.indexOf(currentDialog) : -1;
+
+      if (index !== -1) {
+        modalDialogs.splice(index, 1);
+      }
     };
   });
   // #endregion: --- Effects
@@ -99,7 +116,11 @@
   function handleKeydown(e: QDialogEvent<KeyboardEvent>) {
     onkeydown?.(e);
 
-    if (!e.defaultPrevented && e.key === "Escape") {
+    if (
+      !e.defaultPrevented &&
+      e.key === "Escape" &&
+      !dialogEl?.querySelector("[data-quaff-menu]")
+    ) {
       tryCancel(e);
     }
   }
@@ -113,7 +134,11 @@
   }
 
   function tryCancel(e: Event) {
-    if (e.defaultPrevented) {
+    const topModal = modalDialogs.findLast((dialog) => dialog.open);
+    const blockedByModal =
+      topModal && topModal !== dialogEl && (modal || !topModal.contains(dialogEl ?? null));
+
+    if (e.defaultPrevented || dismissedEvents.has(e) || blockedByModal) {
       return;
     }
 
@@ -121,6 +146,13 @@
 
     if (target instanceof Element && target.closest("[data-quaff-overlay]")) {
       return;
+    }
+
+    dismissedEvents.add(e);
+
+    if (e instanceof KeyboardEvent) {
+      e.preventDefault();
+      e.stopPropagation();
     }
 
     if (canHide) {

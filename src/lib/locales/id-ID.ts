@@ -63,6 +63,13 @@ const id = {
     select: {
       noOptionText: "Tidak ada pilihan",
     },
+    search: {
+      placeholder: "Cari",
+      back: "Kembali",
+      clear: "Hapus pencarian",
+      results: "Hasil pencarian",
+      searching: "Sedang mencari",
+    },
   },
 } satisfies QuaffLanguage;
 

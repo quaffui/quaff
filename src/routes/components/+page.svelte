@@ -35,6 +35,7 @@
     QNavItem,
     QRadio,
     QRailbar,
+    QSearch,
     QSelect,
     QSeparator,
     QSlider,
@@ -226,6 +227,12 @@
       description: "Navigate between primary destinations from a fixed side rail.",
       href: "/components/railbar",
       snippet: railbar,
+    },
+    {
+      name: "QSearch",
+      description: "Find places, documents, and more with adaptable search views.",
+      href: "/components/search",
+      snippet: search,
     },
     {
       name: "QSelect",
@@ -787,6 +794,10 @@
       </QRailbar>
     {/snippet}
   </QLayout>
+{/snippet}
+
+{#snippet search()}
+  <QSearch placeholder="Find your next discovery" expressive />
 {/snippet}
 
 {#snippet select()}

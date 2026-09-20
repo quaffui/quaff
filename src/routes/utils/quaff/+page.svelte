@@ -39,9 +39,9 @@
         {#snippet sectionDescription()}
           <p>
             Import a language pack and pass it to <code>Quaff.init()</code> in your root layout. It
-            supplies the UI text for QTable, QDate, QTime, and QSelect, along with the locale for
-            date and time formatting, the calendar's first weekday, the clock's hour cycle, and
-            table sorting. English (<code>en-US</code>) is the default.
+            supplies the UI text for QTable, QDate, QTime, QSelect, and QSearch, along with the
+            locale for date and time formatting, the calendar's first weekday, the clock's hour
+            cycle, and table sorting. English (<code>en-US</code>) is the default.
           </p>
         {/snippet}
 

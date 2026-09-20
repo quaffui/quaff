@@ -65,6 +65,13 @@ const ta = {
     select: {
       noOptionText: "விருப்பங்கள் இல்லை",
     },
+    search: {
+      placeholder: "தேடு",
+      back: "பின்செல்",
+      clear: "தேடலை அழி",
+      results: "தேடல் முடிவுகள்",
+      searching: "தேடுகிறது",
+    },
   },
 } satisfies QuaffLanguage;
 

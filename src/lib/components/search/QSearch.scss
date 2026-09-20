@@ -1,0 +1,367 @@
+@use "$css/mixins";
+
+.q-search {
+  --q-search-elevation:
+    0 1px 3px 0 #{mixins.with-alpha(var(--shadow), 30%)},
+    0 4px 8px 3px #{mixins.with-alpha(var(--shadow), 15%)};
+
+  width: 100%;
+  max-width: 45rem;
+
+  &:has(> .q-search__view[open]) > .q-search__bar {
+    opacity: 0;
+  }
+
+  &--expressive {
+    width: calc(100% - 3rem);
+    margin-inline: 1.5rem;
+  }
+
+  &__bar,
+  &__header {
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.25rem;
+    color: var(--on-surface);
+    background-color: var(--surface-container-high);
+  }
+
+  &__bar {
+    isolation: isolate;
+    width: 100%;
+    border-radius: 2rem;
+    box-shadow: var(--q-search-elevation);
+  }
+
+  &__trigger {
+    @include mixins.reset-form-element;
+    @include mixins.typography(body-large);
+
+    position: static;
+    display: flex;
+    align-items: center;
+    flex: 1;
+    justify-content: flex-start;
+    gap: 0.25rem;
+    min-width: 0;
+    height: 100%;
+    padding-inline-end: 0;
+    border-radius: inherit;
+    color: inherit;
+    text-align: start;
+    cursor: pointer;
+
+    &:last-child {
+      padding-inline-end: 0.75rem;
+    }
+
+    // Include the pill's padding in the target; accessories remain independent.
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+    }
+
+    &:is(:hover, :focus-visible, :active) .q-search__state {
+      background-color: mixins.with-alpha(var(--on-surface), 8%);
+    }
+  }
+
+  &__state {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    pointer-events: none;
+  }
+
+  &__bar:has(> .q-search__trigger:focus-visible) {
+    outline: 0.1875rem solid var(--secondary);
+    outline-offset: 0.125rem;
+  }
+
+  &__icon {
+    display: grid;
+    place-items: center;
+    flex: 0 0 3rem;
+    height: 3rem;
+  }
+
+  &__text {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+
+    &--placeholder {
+      color: var(--on-surface-variant);
+    }
+  }
+
+  &__accessory {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    color: var(--on-surface-variant);
+  }
+
+  &__header {
+    z-index: 1;
+    flex-shrink: 0;
+
+    .q-field__input {
+      align-self: stretch;
+      height: auto;
+      padding-inline: 0;
+      caret-color: var(--primary);
+
+      &:last-child {
+        padding-inline-end: 0.75rem;
+      }
+
+      &::-webkit-search-cancel-button,
+      &::-webkit-search-decoration {
+        appearance: none;
+      }
+    }
+  }
+
+  &__divider {
+    position: absolute;
+    inset: auto 0 0;
+    height: 1px;
+    border-radius: 0;
+    background-color: var(--outline);
+    pointer-events: none;
+  }
+
+  &__header .q-icon-btn,
+  &__accessory .q-icon-btn {
+    --q-btn-height: 3rem;
+
+    flex-shrink: 0;
+    color: var(--on-surface-variant);
+  }
+
+  &__accessory:first-child,
+  &__accessory:first-child .q-icon-btn {
+    color: var(--on-surface);
+  }
+
+  &__header .q-search__back {
+    color: var(--on-surface);
+
+    &::after,
+    .q-ripple__effect {
+      transition: opacity mixins.duration(short3) linear;
+    }
+
+    &:dir(rtl) .q-search__back-glyph {
+      transform: scaleX(-1);
+    }
+  }
+
+  &__search-glyph {
+    position: absolute;
+    opacity: 0;
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    min-height: min(15rem, 66.6667dvh, calc(100dvh - 1.5rem));
+    max-height: var(--q-search-height, min(66.6667dvh, calc(100dvh - 1.5rem)));
+  }
+
+  &__panel {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+  }
+
+  &__progress {
+    position: absolute;
+    inset: 0 0 auto;
+    z-index: 1;
+  }
+
+  &__results {
+    flex: 1;
+    min-height: 0;
+    padding-block: 0.25rem 1rem;
+    overflow: auto;
+    overscroll-behavior: contain;
+
+    // This programmatic focus destination is not an interactive result.
+    outline: none;
+  }
+
+  &__results-content {
+    display: flow-root;
+  }
+
+  &__status {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}
+
+dialog.q-dialog.q-search__view {
+  --q-search-motion-duration: #{mixins.duration(medium3)};
+  --q-search-motion-easing: #{mixins.easing(emphasized-decelerate)};
+
+  inset: var(--q-search-top) auto auto var(--q-search-left);
+  width: var(--q-search-width);
+  height: auto;
+  min-width: 0;
+  max-width: calc(100% - 1.5rem);
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  overflow: visible;
+  border-radius: 1.75rem;
+  background-color: var(--surface-container-high);
+  box-shadow: var(--q-search-elevation);
+  translate: none;
+  transition: none;
+
+  &::backdrop {
+    opacity: 0;
+    transition: opacity mixins.duration(short3) linear;
+  }
+
+  &--expanded::backdrop {
+    opacity: 1;
+
+    @starting-style {
+      opacity: 0;
+    }
+  }
+
+  &:not(.q-search__view--expanded) .q-search__back {
+    outline: none;
+
+    &::after,
+    .q-ripple__effect {
+      opacity: 0;
+    }
+  }
+
+  &:not(.q-search__view--expanded) .q-field__input {
+    caret-color: transparent;
+
+    &::selection {
+      color: var(--on-surface);
+      background: transparent;
+    }
+  }
+
+  .q-search__header {
+    border-radius: 0;
+    border-start-start-radius: inherit;
+    border-start-end-radius: inherit;
+  }
+
+  .q-search__content {
+    border-radius: inherit;
+  }
+
+  .q-search__panel,
+  .q-search__results {
+    border-radius: 0;
+    border-end-start-radius: inherit;
+    border-end-end-radius: inherit;
+  }
+
+  &--expressive {
+    --q-search-motion-duration: #{mixins.spring-duration(spatial, fast, expressive)};
+    --q-search-motion-easing: #{mixins.spring-easing(spatial, fast, expressive)};
+
+    background: transparent;
+    box-shadow: none;
+
+    .q-search__content {
+      gap: 0.125rem;
+    }
+
+    .q-search__header {
+      border-radius: 2rem;
+      box-shadow: var(--q-search-elevation);
+    }
+
+    .q-search__divider {
+      display: none;
+    }
+
+    .q-search__panel {
+      border-radius: 0.75rem;
+      background-color: var(--surface-container-high);
+      box-shadow: var(--q-search-elevation);
+    }
+
+    .q-search__results {
+      padding: 0.25rem;
+      border-radius: inherit;
+    }
+  }
+
+  &.q-dialog--fullscreen {
+    --q-search-motion-easing: #{mixins.easing(emphasized-decelerate)};
+
+    inset: 0;
+    width: 100%;
+    height: 100dvh;
+    max-width: none;
+    border-radius: 0;
+    box-shadow: none;
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom)
+      env(safe-area-inset-left);
+
+    .q-search__content {
+      min-height: 0;
+      max-height: none;
+      height: 100%;
+    }
+
+    .q-search__header {
+      height: 4.5rem;
+    }
+
+    &.q-search__view--expressive {
+      background-color: var(--surface-container-low);
+
+      .q-search__header {
+        height: 3.5rem;
+        margin: 0.75rem 0.75rem 0;
+        box-shadow: none;
+      }
+
+      .q-search__results {
+        padding-inline: 0;
+      }
+
+      .q-search__panel {
+        background-color: var(--surface-container-low);
+        border-radius: 0;
+        box-shadow: none;
+      }
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &::backdrop,
+    .q-search__back::after,
+    .q-search__back .q-ripple__effect {
+      transition: none;
+    }
+  }
+}

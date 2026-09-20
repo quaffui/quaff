@@ -63,6 +63,13 @@ const nb = {
     select: {
       noOptionText: "Ingen alternativer",
     },
+    search: {
+      placeholder: "Søk",
+      back: "Tilbake",
+      clear: "Tøm søk",
+      results: "Søkeresultater",
+      searching: "Søker",
+    },
   },
 } satisfies QuaffLanguage;
 
