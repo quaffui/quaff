@@ -186,15 +186,7 @@
   }
 
   &__overlay-root {
-    position: absolute;
-    inset: 0;
-    overflow: visible;
-    z-index: 10001;
-    pointer-events: none;
-
-    > * {
-      pointer-events: auto;
-    }
+    @include mixins.overlay-root;
   }
 }
 

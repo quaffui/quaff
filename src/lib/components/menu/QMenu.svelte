@@ -23,6 +23,7 @@
     children,
     class: userClass,
     onclick,
+    ontoggle,
     ...props
   }: QMenuProps = $props();
   // #endregion: --- Props
@@ -314,6 +315,18 @@
     hide();
   }
 
+  function handlePopoverToggle(event: QEvent<ToggleEvent, HTMLDivElement>) {
+    ontoggle?.(event);
+
+    if (
+      event.currentTarget === menuEl &&
+      event.newState === "closed" &&
+      !menuEl.matches(":popover-open")
+    ) {
+      hide();
+    }
+  }
+
   function handleMenuClick(event: QEvent<MouseEvent, HTMLDivElement>) {
     onclick?.(event);
 
@@ -351,6 +364,7 @@
     style:width={menuWidth}
     style:max-width={menuMaxWidth}
     onclick={handleMenuClick}
+    ontoggle={handlePopoverToggle}
   >
     {@render children?.()}
   </div>
