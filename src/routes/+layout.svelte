@@ -202,6 +202,10 @@
       to: "/components/time",
     },
     {
+      name: "Toolbar",
+      to: "/components/toolbar",
+    },
+    {
       name: "Tooltip",
       to: "/components/tooltip",
     },

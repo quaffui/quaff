@@ -1,0 +1,67 @@
+@use "$css/mixins";
+
+.q-toolbar {
+  --q-toolbar-color: var(--on-surface-variant);
+  --q-toolbar-selected-color: var(--on-secondary-container);
+  --q-toolbar-selected-background: var(--secondary-container);
+
+  display: grid;
+  grid-auto-flow: column;
+  // Keep each control's touch target separate without changing its visible size.
+  grid-auto-columns: minmax(3rem, max-content);
+  grid-auto-rows: minmax(3rem, max-content);
+  place-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 4rem;
+  padding: 0.5rem 1rem;
+  gap: 2rem;
+  border-radius: 0;
+  background-color: var(--surface-container);
+  color: var(--q-toolbar-color);
+
+  &:not(&--floating) {
+    justify-content: safe center;
+    overflow-x: auto;
+  }
+
+  &--floating {
+    display: inline-grid;
+    width: max-content;
+    padding: 0.5rem;
+    gap: 0.25rem;
+    border-radius: 999rem;
+
+    // Floating toolbars keep selected icon buttons round at rest.
+    > .q-btn--selected:not(:active):not(:has(> .q-btn__label)) {
+      border-radius: calc(var(--q-btn-height, 2.5rem) / 2);
+    }
+
+    &:not(.q-toolbar--unelevated) {
+      @include mixins.elevate(3);
+    }
+  }
+
+  &--vertical {
+    grid-auto-flow: row;
+    min-width: 4rem;
+    width: max-content;
+  }
+
+  &--vibrant {
+    --q-toolbar-color: var(--on-primary-container);
+    --q-toolbar-selected-color: var(--on-surface);
+    --q-toolbar-selected-background: var(--surface-container);
+    background-color: var(--primary-container);
+  }
+
+  > .q-btn:is(.q-btn--flat, .q-btn--tonal[aria-pressed]):not([disabled], [aria-disabled="true"]) {
+    --ripple-color: var(--q-toolbar-color);
+    background-color: transparent;
+
+    &.q-btn--selected {
+      --ripple-color: var(--q-toolbar-selected-color);
+      background-color: var(--q-toolbar-selected-background);
+    }
+  }
+}

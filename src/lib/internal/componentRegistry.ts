@@ -76,6 +76,7 @@ const registry = {
   table: { css: "components/table", components: { QTable: ["table", ...buttonCss, ...selectCss] } },
   tabs: { css: "components/tabs", components: { QTabs: ["tabs"], QTab: ["tabs", "icon"] } },
   time: { css: "components/time", components: { QTime: ["time", ...pickerCss] } },
+  toolbar: { css: "components/toolbar", components: { QToolbar: ["toolbar"] } },
   tooltip: { css: "components/tooltip", components: { QTooltip: ["tooltip"] } },
 } as const;
 
