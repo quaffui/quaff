@@ -59,10 +59,22 @@
 >
   <div class="q-docs__hero row q-gutter-lg" style="min-height: 25rem">
     <QCard
-      class="q-docs__heading col-sm-12 col-xs-12 col-lg-6"
+      class="q-docs__heading primary-container col-sm-12 col-xs-12 col-lg-6"
+      style="min-height: 25rem; align-content: center;"
+    >
+      <h1 class={["justify-center", Quaff.breakpoints.isMoreThan("sm", true) ? "large" : "small"]}>
+        {docName || principalDocument?.name}
+      </h1>
+      <QCardSection class="q-docs__description flex flex-center">
+        <h3 class="q-docs__description-text">
+          {docDescription || principalDocument?.description}
+        </h3>
+      </QCardSection>
+    </QCard>
+    <QCard
+      class="q-docs__preview col-sm-12 col-xs-12 col-lg-6 q-mt-none q-pa-none"
       fill="primary"
-      style="--q-docs-heading-color: {QTheme.themeColors
-        .primaryLight}; min-height: 25rem; align-content: center;"
+      style="min-height: 25rem; --q-docs-heading-color: {QTheme.themeColors.primaryLight};"
     >
       <div
         class="q-docs__art"
@@ -72,14 +84,14 @@
         <span class="q-docs__citrus"></span>
         <span class="q-docs__bubbles"></span>
       </div>
-      <h1 class={["justify-center", Quaff.breakpoints.isMoreThan("sm", true) ? "large" : "small"]}>
-        {docName || principalDocument?.name}
-      </h1>
-      <QCardSection class="q-docs__description flex flex-center">
-        <h3 class="q-docs__description-text">
-          {docDescription || principalDocument?.description}
-        </h3>
+
+      <QCardSection
+        class="flex flex-center column q-pa-lg"
+        style="position: absolute; height: 100%; width: 100%; z-index: 1; overflow: hidden;"
+      >
+        {@render display?.()}
       </QCardSection>
+
       <QIconBtn
         class="q-docs__motion"
         icon={isBackgroundPaused ? "play_arrow" : "pause"}
@@ -88,25 +100,6 @@
         expressive={false}
         onclick={() => (isBackgroundPaused = !isBackgroundPaused)}
       />
-    </QCard>
-    <QCard
-      class="q-docs__preview col-sm-12 col-xs-12 col-lg-6 q-mt-none q-pa-none"
-      fill="secondary"
-      style="min-height: 25rem"
-    >
-      <QCardSection class="q-pa-none">
-        <div
-          class="flex flex-center column q-pa-lg"
-          style="position: absolute; height: 100%; width: 100%; z-index: 1; overflow: hidden;"
-        >
-          {@render display?.()}
-        </div>
-        <img
-          class="q-docs__image"
-          src="/cocktail-close-up.jpg"
-          alt="Close-up of the content of a cocktail"
-        />
-      </QCardSection>
     </QCard>
   </div>
 
@@ -142,7 +135,7 @@
       }
     }
 
-    :global(.q-docs__heading) {
+    :global(.q-docs__preview) {
       position: relative;
       isolation: isolate;
       overflow: hidden;
@@ -241,6 +234,7 @@
       position: absolute;
       inset-inline-end: 0.5rem;
       inset-block-end: 0.5rem;
+      z-index: 2;
     }
 
     :global(.q-docs__motion:focus-visible) {
@@ -280,13 +274,6 @@
       background-color: var(--surface-container);
       padding: 0.25rem 0.5rem;
       border-radius: 0.25rem;
-    }
-
-    &__image {
-      width: 100%;
-      height: 25rem;
-      object-fit: cover;
-      filter: hue-rotate(var(--q-hue-rotate)) brightness(var(--q-brightness));
     }
 
     :global(.q-docs__preview) {

@@ -124,6 +124,12 @@ export const ComponentPathCssDependencies = Object.fromEntries(
   })
 ) as Record<ComponentPath, ComponentCssName[]>;
 
+export const ComponentParentFolder = Object.fromEntries(
+  Object.values(entries).flatMap(({ components, css }) =>
+    Object.entries(components ?? {}).map(([name]) => [name, css])
+  )
+) as Record<ComponentName, ComponentCssName>;
+
 export const UtilityCssDependencies = {
   Notify: ComponentCssDependencies.QSnackbar,
 } satisfies Record<string, readonly ComponentCssName[]>;
