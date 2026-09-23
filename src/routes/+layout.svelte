@@ -9,17 +9,18 @@
     QDrawer,
     QHeader,
     QHeaderTitle,
-    QIcon,
-    QItem,
-    QItemSection,
     QLayout,
-    QList,
     QNavItem,
+    QNavbar,
     QRailbar,
     QTheme,
     Quaff,
   } from "$lib";
   import { isRouteActive } from "$utils";
+  import QDocsNavigation, {
+    getNavigationLinks,
+    type NavigationItem,
+  } from "$docs/QDocsNavigation.svelte";
   import type { MaterialSymbol } from "material-symbols";
 
   type Item = {
@@ -33,7 +34,7 @@
 
   let chosenColor = $state(0);
 
-  const pages: { name: string; icon: MaterialSymbol; to: string }[] = [
+  const PAGES: { name: string; icon: MaterialSymbol; to: string }[] = [
     {
       name: "Home",
       icon: "home",
@@ -60,7 +61,7 @@
       to: "/utils",
     },
   ];
-  const components: Item[] = [
+  const COMPONENTS: NavigationItem[] = [
     {
       name: "Avatar",
       to: "/components/avatar",
@@ -70,32 +71,33 @@
       to: "/components/badge",
     },
     {
-      name: "Bottom Sheet",
-      to: "/components/bottom-sheet",
-    },
-    {
       name: "Breadcrumbs",
       to: "/components/breadcrumbs",
     },
     {
-      name: "Button",
-      to: "/components/button",
-    },
-    {
-      name: "Button Groups",
-      to: "/components/button-group",
-    },
-    {
-      name: "Split Button",
-      to: "/components/split-button",
-    },
-    {
-      name: "FABs",
-      to: "/components/fab",
-    },
-    {
-      name: "Icon Button",
-      to: "/components/button-icon",
+      name: "Buttons",
+      children: [
+        {
+          name: "Button",
+          to: "/components/button",
+        },
+        {
+          name: "Button Groups",
+          to: "/components/button-group",
+        },
+        {
+          name: "FABs",
+          to: "/components/fab",
+        },
+        {
+          name: "Icon Button",
+          to: "/components/button-icon",
+        },
+        {
+          name: "Split Button",
+          to: "/components/split-button",
+        },
+      ],
     },
     {
       name: "Card",
@@ -114,16 +116,21 @@
       to: "/components/chip",
     },
     {
-      name: "Date",
-      to: "/components/date",
+      name: "Date & Time",
+      children: [
+        {
+          name: "Date",
+          to: "/components/date",
+        },
+        {
+          name: "Time",
+          to: "/components/time",
+        },
+      ],
     },
     {
       name: "Dialog",
       to: "/components/dialog",
-    },
-    {
-      name: "Drawer",
-      to: "/components/drawer",
     },
     {
       name: "Expansion Item",
@@ -154,28 +161,42 @@
       to: "/components/list",
     },
     {
-      name: "Loading Indicator",
-      to: "/components/loading-indicator",
+      name: "Loading & Progress",
+      children: [
+        {
+          name: "Loading Indicator",
+          to: "/components/loading-indicator",
+        },
+        {
+          name: "Progress",
+          to: "/components/progress",
+        },
+      ],
     },
     {
       name: "Menu",
       to: "/components/menu",
     },
     {
-      name: "Navbar",
-      to: "/components/navbar",
-    },
-    {
-      name: "Progress",
-      to: "/components/progress",
+      name: "Navigation",
+      children: [
+        {
+          name: "Drawer",
+          to: "/components/drawer",
+        },
+        {
+          name: "Navbar",
+          to: "/components/navbar",
+        },
+        {
+          name: "Railbar",
+          to: "/components/railbar",
+        },
+      ],
     },
     {
       name: "Radio",
       to: "/components/radio",
-    },
-    {
-      name: "Railbar",
-      to: "/components/railbar",
     },
     {
       name: "Search",
@@ -186,8 +207,17 @@
       to: "/components/select",
     },
     {
-      name: "Side Sheet",
-      to: "/components/side-sheet",
+      name: "Sheets",
+      children: [
+        {
+          name: "Bottom Sheet",
+          to: "/components/bottom-sheet",
+        },
+        {
+          name: "Side Sheet",
+          to: "/components/side-sheet",
+        },
+      ],
     },
     {
       name: "Slider",
@@ -214,10 +244,6 @@
       to: "/components/tabs",
     },
     {
-      name: "Time",
-      to: "/components/time",
-    },
-    {
       name: "Toolbar",
       to: "/components/toolbar",
     },
@@ -227,7 +253,7 @@
     },
   ];
 
-  const quaffUtils: Item[] = [
+  const QUAFF_UTILS: Item[] = [
     {
       name: "CSS Tree Shaking",
       to: "/utils/css",
@@ -254,7 +280,7 @@
     },
   ];
 
-  const layoutPages: Item[] = [
+  const LAYOUT_PAGES: Item[] = [
     {
       name: "Pages",
       to: "/layout/pages",
@@ -284,31 +310,19 @@
   let drawerLeftEl = $state<ReturnType<typeof QDrawer>>();
   let drawerRightEl = $state<ReturnType<typeof QDrawer>>();
 
-  const selectedRailbarItem = $derived(getSelectedRailbarItem());
+  const selectedSection = $derived(getSelectedSection());
 
   const previousItem = $derived(
-    prepareItem(selectedRailbarItem, Quaff.router.url.pathname, "previous")
+    prepareItem(selectedSection, Quaff.router.url.pathname, "previous")
   );
-  const nextItem = $derived(prepareItem(selectedRailbarItem, Quaff.router.url.pathname, "next"));
+  const nextItem = $derived(prepareItem(selectedSection, Quaff.router.url.pathname, "next"));
 
-  $effect(() => {
-    if (Quaff.breakpoints.isLessThan("md")) {
-      return;
-    }
-
-    if (selectedRailbarItem !== null) {
-      drawerLeftEl?.show();
-    } else {
-      drawerLeftEl?.hide();
-    }
-  });
-
-  const drawerContent = $derived(getDrawerItems(selectedRailbarItem));
-
-  const drawerLeft = $derived(Quaff.breakpoints.isLessThan("md") ? mobileDrawer : desktopDrawer);
+  const drawerContent = $derived(getDrawerItems(selectedSection));
+  const isMobile = $derived(Quaff.breakpoints.isLessThan("md"));
+  const primaryNav = $derived(isMobile ? { navbar } : { railbarLeft });
 
   function prepareItem(selected: string | null, route: string, kind: "previous" | "next") {
-    const path = getDrawerItems(selected);
+    const path = getNavigationLinks(getDrawerItems(selected));
 
     if (!path.length || Quaff.breakpoints.isMoreThan("md", true)) {
       return null;
@@ -329,7 +343,7 @@
     return null;
   }
 
-  function getSelectedRailbarItem() {
+  function getSelectedSection() {
     if (isRouteActive("/components")) {
       return "/components";
     }
@@ -346,25 +360,31 @@
   }
 
   function getDrawerItems(selected: string | null) {
-    const map = {
-      "/components": components,
-      "/layout": layoutPages,
-      "/utils": quaffUtils,
+    const ITEMS_BY_SECTION = {
+      "/components": COMPONENTS,
+      "/layout": LAYOUT_PAGES,
+      "/utils": QUAFF_UTILS,
     };
 
-    if (map[selected as keyof typeof map]) {
-      return map[selected as keyof typeof map];
+    if (ITEMS_BY_SECTION[selected as keyof typeof ITEMS_BY_SECTION]) {
+      return ITEMS_BY_SECTION[selected as keyof typeof ITEMS_BY_SECTION];
     }
 
     return [];
   }
 </script>
 
-<QLayout view="hhr lpr fff" {drawerLeft}>
+<QLayout view="hhr lpr fff" {drawerLeft} {...primaryNav}>
   {#snippet header()}
     <QHeader class="elevate-2">
-      {#if Quaff.breakpoints.isLessThan("md")}
-        <QIconBtn icon="menu" variant="flat" onclick={drawerLeftEl?.toggle} />
+      {#if isMobile}
+        <QIconBtn
+          icon="menu"
+          variant="flat"
+          aria-label="Open section navigation"
+          disabled={!drawerContent.length}
+          onclick={drawerLeftEl?.toggle}
+        />
       {/if}
 
       <QHeaderTitle>Quaff</QHeaderTitle>
@@ -375,12 +395,6 @@
       />
       <QIconBtn icon="palette" variant="flat" onclick={drawerRightEl?.toggle} />
     </QHeader>
-  {/snippet}
-
-  {#snippet railbarLeft()}
-    {#if Quaff.breakpoints.isMoreThan("md", true)}
-      {@render railbar()}
-    {/if}
   {/snippet}
 
   {#snippet drawerRight()}
@@ -429,44 +443,46 @@
   {/snippet}
 </QLayout>
 
-{#snippet mainRoutesList()}
-  <QList>
-    {#each pages as { name, icon, to } (`${name}-${icon}-${to}`)}
-      <QItem {to} noRipple>
-        <QIcon name={icon} />
-        <QItemSection>{name}</QItemSection>
-      </QItem>
-    {/each}
-  </QList>
+{#snippet primaryNavigationItems(noRipple = false)}
+  {#each PAGES as { name, icon, to } (`${name}-${icon}-${to}`)}
+    <QNavItem
+      {icon}
+      label={name}
+      {to}
+      active={to === "/layout/pages" ? isRouteActive("/layout") : undefined}
+      {noRipple}
+    />
+  {/each}
 {/snippet}
 
-{#snippet railbar()}
+{#snippet railbarLeft()}
   <QRailbar class="surface" bordered width={120}>
-    {#each pages as { name, icon, to } (`${name}-${icon}-${to}`)}
-      <QNavItem {icon} label={name} {to} noRipple />
-    {/each}
+    {@render primaryNavigationItems(true)}
   </QRailbar>
 {/snippet}
 
-{#snippet mobileDrawer()}
-  <QDrawer bind:this={drawerLeftEl} overlay bordered>
-    {@render mainRoutesList()}
-  </QDrawer>
+{#snippet navbar()}
+  <QNavbar>
+    {@render primaryNavigationItems()}
+  </QNavbar>
 {/snippet}
 
-{#snippet desktopDrawer()}
-  <QDrawer persistent bind:this={drawerLeftEl} width={180} bordered>
-    <QList dense>
-      {#each drawerContent as { name, to } (`${name}-${to}`)}
-        <QItem
-          {to}
-          onclick={() => contentEl?.scrollTo({ top: 0, behavior: "smooth" })}
-          activeClass="text-primary"
-        >
-          {name}
-        </QItem>
-      {/each}
-    </QList>
+{#snippet drawerLeft()}
+  <QDrawer
+    value={!isMobile && !!drawerContent.length}
+    persistent={!isMobile}
+    behavior={isMobile ? "mobile" : "desktop"}
+    noSwipe={!drawerContent.length}
+    bind:this={drawerLeftEl}
+    width={220}
+    bordered
+  >
+    <QDocsNavigation
+      items={drawerContent}
+      label="Section navigation"
+      dense
+      onclick={() => contentEl?.scrollTo({ top: 0, behavior: "smooth" })}
+    />
   </QDrawer>
 {/snippet}
 
