@@ -72,7 +72,7 @@ export interface QItemProps
   tag?: string;
 
   /**
-   * Indicates if the item is currently active.
+   * Overrides the active state. When omitted, follows the current route.
    */
   active?: boolean;
 

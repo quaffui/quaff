@@ -38,6 +38,7 @@
   let isSwiping = false;
   let startX = 0;
   let dragOffset = 0;
+  let swipeWidth = 0;
   // #endregion: --- Non-reactive variables
 
   // #region:    --- Reactive variables
@@ -238,11 +239,12 @@
 
     let swipeAllowed;
     startX = e.clientX;
+    swipeWidth = drawerRect.width;
 
     if (!value) {
       swipeAllowed = true;
 
-      const baseWidth = side === "left" ? -width : width;
+      const baseWidth = side === "left" ? -swipeWidth : swipeWidth;
 
       dragOffset = baseWidth + (side === "left" ? PEEK_THRESHOLD : -PEEK_THRESHOLD);
 
@@ -296,16 +298,16 @@
 
     if (side === "left") {
       // For a left-side drawer, dragOffset is between -width (fully closed) and 0 (fully open).
-      basePosition = value ? 0 : PEEK_THRESHOLD - width;
+      basePosition = value ? 0 : PEEK_THRESHOLD - swipeWidth;
       newPosition = basePosition + deltaX;
       // Clamp newPosition to be within [-width, 0]
-      dragOffset = Math.max(-width, Math.min(0, newPosition));
+      dragOffset = Math.max(-swipeWidth, Math.min(0, newPosition));
     } else {
       // For a right-side drawer, dragOffset is between width (fully closed) and 0 (fully open).
-      basePosition = value ? 0 : width - PEEK_THRESHOLD;
+      basePosition = value ? 0 : swipeWidth - PEEK_THRESHOLD;
       newPosition = basePosition + deltaX;
       // Clamp newPosition to be within [0, width]
-      dragOffset = Math.max(0, Math.min(width, newPosition));
+      dragOffset = Math.max(0, Math.min(swipeWidth, newPosition));
     }
 
     drawerEl.style.transform = `translateX(${dragOffset}px)`;
@@ -326,10 +328,10 @@
 
     swipeAreaEl?.style.removeProperty("width"); // Reset swipe area width
 
-    const thresholdWidth = (width * parseInt(swipeThreshold.replace("%", ""))) / 100;
-    const realThreshold = value ? width - thresholdWidth : thresholdWidth;
+    const thresholdWidth = (swipeWidth * parseInt(swipeThreshold.replace("%", ""))) / 100;
+    const realThreshold = value ? swipeWidth - thresholdWidth : thresholdWidth;
 
-    const swiped = width + (side === "left" ? dragOffset : -dragOffset);
+    const swiped = swipeWidth + (side === "left" ? dragOffset : -dragOffset);
 
     if (swiped >= realThreshold) {
       if (!value) {
@@ -380,7 +382,14 @@
   ></button>
 {/if}
 
-<div bind:this={drawerEl} {...props} class="q-drawer" {style} data-quaff>
+<div
+  bind:this={drawerEl}
+  {...props}
+  class="q-drawer"
+  {style}
+  inert={!value || props.inert}
+  data-quaff
+>
   {@render children?.()}
 </div>
 

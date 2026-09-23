@@ -19,7 +19,7 @@
   // #region:    --- Props
   let {
     tag = "div",
-    active = false,
+    active,
     clickable = false,
     dense = false,
     tabindex = 0,
@@ -48,7 +48,7 @@
   // #region:    --- Derived values
   const routerInfo = $derived(getRouterInfo(props));
 
-  const isActive = $derived(routerInfo.isActive || active);
+  const isActive = $derived(active ?? routerInfo.isActive ?? false);
   const isDense = $derived(dense || ctx.dense);
   const isExpressive = $derived(ctx.expressive);
 

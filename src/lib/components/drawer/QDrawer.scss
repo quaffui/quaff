@@ -20,6 +20,7 @@
 
   &.q-drawer--overlay {
     z-index: 6;
+    max-width: 100%;
 
     background-color: var(--surface-container-low);
     box-shadow: var(--elevate1);
@@ -92,15 +93,20 @@
     transform: translate(0);
   }
 
-  & .q-list > .q-item:is(.q-link, .q-item--clickable) {
+  & .q-list .q-item:is(.q-link, .q-item--clickable) {
     --ripple-color: var(--on-surface);
+    --q-item-container-shape: 1.75rem;
+    --q-item-hover-shape: 1.75rem;
+    --q-item-active-shape: 1.75rem;
 
     @include mixins.typography("label-large");
     gap: 0.75rem;
     height: 3.5rem;
+    min-height: 3.5rem;
     padding: 0 1rem;
+    background-color: transparent;
 
-    color: var(--on-surface-variant);
+    color: var(--q-item-color, var(--on-surface-variant));
     border-radius: 1.75rem;
     overflow: hidden;
 
@@ -131,11 +137,11 @@
       transition: font-variation-settings variables.$speed2;
     }
 
-    &:is(:hover, :focus, :active):not([aria-disabled]) {
+    &:is(:hover, :focus-visible, :active):not([aria-disabled]) {
       color: var(--on-surface);
     }
 
-    &:focus:not([aria-disabled])::after {
+    &:focus-visible:not([aria-disabled])::after {
       opacity: 0.1;
     }
 
@@ -144,7 +150,7 @@
       outline-offset: -0.1875rem;
     }
 
-    &.q-item--active {
+    &.q-item--active:not([aria-disabled]) {
       --ripple-color: var(--on-secondary-container);
 
       color: var(--on-secondary-container);
@@ -159,15 +165,47 @@
         font-variation-settings: "FILL" 1;
       }
 
-      &:is(:hover, :focus):not([aria-disabled])::after {
+      &:is(:hover, :focus-visible):not([aria-disabled])::after {
         background-color: var(--on-secondary-container);
       }
     }
   }
 
-  & .q-list--dense > .q-item:is(.q-link, .q-item--clickable) {
+  & .q-list .q-item--dense:is(.q-link, .q-item--clickable) {
     height: 2.75rem;
+    min-height: 2.75rem;
     padding-block: 0;
+  }
+
+  & .q-list .q-expansion-item {
+    --q-expansion-container-color: transparent;
+    --q-expansion-inner-shape: 1.75rem;
+    --q-expansion-toggle-width: 1.5rem;
+    --q-expansion-toggle-height: 1.5rem;
+    border-radius: 1.75rem;
+
+    &.q-expansion-item--dense {
+      --q-expansion-inner-shape: 1.375rem;
+      border-radius: 1.375rem;
+    }
+
+    &:has([aria-current="page"]):not(.q-expansion-item--disabled)
+      > :is(.q-expansion-item__item, .q-expansion-item__header) {
+      background-color: color-mix(in srgb, var(--on-surface-variant) 8%, transparent);
+
+      &:hover:not(:focus-visible, :active)::after,
+      > .q-expansion-item__item:hover:not(:focus-visible, :active)::after {
+        opacity: 0;
+      }
+    }
+  }
+
+  & .q-expansion-item__content:has(> .q-list:only-child) {
+    padding-inline-start: 1rem;
+  }
+
+  & .q-expansion-item__toggle-icon:not(.q-btn) {
+    background-color: transparent;
   }
 }
 

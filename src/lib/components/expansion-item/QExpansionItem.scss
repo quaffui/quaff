@@ -302,8 +302,7 @@
       background-color: transparent;
     }
 
-    &--regular#{&}--expressive
-      > .q-list.q-list--expressive:only-child
+    :where(&--regular#{&}--expressive > .q-list.q-list--expressive:only-child)
       > .q-item:not(.q-item--multiline, .q-item--dense) {
       min-height: 3.75rem;
     }

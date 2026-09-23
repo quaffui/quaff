@@ -6,6 +6,7 @@
     QBtn,
     QIconBtn,
     QDrawer,
+    QExpansionItem,
     QFooter,
     QHeader,
     QIcon,
@@ -22,6 +23,8 @@
 
   let displayDrawerOpen = $state(false);
   let basicDrawerOpen = $state(false);
+  let isNavigationDrawerOpen = $state(true);
+  let navigationDestination = $state("Website");
 
   let leftDrawerOpen = $state(false);
   let rightDrawerOpen = $state(false);
@@ -33,6 +36,19 @@
   let layoutDrawerOpen = $state(false);
 
   let drawerRef = $state<QDrawer>();
+
+  function getNavigationProps(destination: string) {
+    const isCurrent = navigationDestination === destination;
+
+    return {
+      active: isCurrent,
+      "aria-current": isCurrent ? ("page" as const) : undefined,
+      onclick: () => {
+        navigationDestination = destination;
+        isNavigationDrawerOpen = false;
+      },
+    };
+  }
 </script>
 
 <svelte:head>
@@ -112,6 +128,76 @@
           <div class="q-pa-md">
             <p class="q-mb-md">Click the menu button to toggle the drawer:</p>
             <QBtn label="Toggle Drawer" onclick={() => (basicDrawerOpen = !basicDrawerOpen)} />
+          </div>
+        </QLayout>
+      </QDocsSection>
+
+      <QDocsSection title="Expandable navigation">
+        {#snippet sectionDescription()}
+          Group related pages under an expandable heading. Expand Projects to choose a workspace, or
+          collapse it to keep the navigation compact.
+        {/snippet}
+
+        <QLayout
+          view="hHh LpR fFf"
+          style="height: 26rem; width: 100%; border: 0.0625rem solid var(--outline);"
+        >
+          {#snippet header()}
+            <QHeader>
+              <QIconBtn
+                flat
+                icon="menu"
+                aria-label="Toggle workspace navigation"
+                aria-expanded={isNavigationDrawerOpen}
+                aria-controls="expandable-navigation-drawer"
+                onclick={() => (isNavigationDrawerOpen = !isNavigationDrawerOpen)}
+              />
+              <h6 class="q-ml-sm q-my-none">Workspace</h6>
+            </QHeader>
+          {/snippet}
+
+          {#snippet drawerLeft()}
+            <QDrawer
+              id="expandable-navigation-drawer"
+              bind:value={isNavigationDrawerOpen}
+              behavior="desktop"
+              overlay
+              inert={!isNavigationDrawerOpen}
+              style="max-width: 100%;"
+            >
+              <div class="flex items-center justify-between">
+                <h6 class="q-drawer__headline">Workspace</h6>
+                <QIconBtn
+                  flat
+                  icon="close"
+                  aria-label="Close workspace navigation"
+                  onclick={() => (isNavigationDrawerOpen = false)}
+                />
+              </div>
+              <QList tag="nav" aria-label="Workspace" expressive={false} preserveTabOrder>
+                <QItem clickable {...getNavigationProps("Overview")}>
+                  <QItemSection>Overview</QItemSection>
+                </QItem>
+                <QExpansionItem label="Projects" expandIcon="arrow_drop_down" defaultOpened>
+                  <QList expressive={false} preserveTabOrder>
+                    {#each ["Website", "Mobile app"] as destination (destination)}
+                      <QItem clickable {...getNavigationProps(destination)}>
+                        <QItemSection>{destination}</QItemSection>
+                      </QItem>
+                    {/each}
+                  </QList>
+                </QExpansionItem>
+                <QItem clickable {...getNavigationProps("Settings")}>
+                  <QItemSection>Settings</QItemSection>
+                </QItem>
+              </QList>
+            </QDrawer>
+          {/snippet}
+
+          <div class="q-pa-md" aria-live="polite">
+            <h6>{navigationDestination}</h6>
+            <p class="q-my-md">Open the navigation to switch between workspace pages.</p>
+            <QBtn label="Open navigation" onclick={() => (isNavigationDrawerOpen = true)} />
           </div>
         </QLayout>
       </QDocsSection>
