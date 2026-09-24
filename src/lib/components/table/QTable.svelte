@@ -1,3 +1,8 @@
+<!--
+@component
+Tables allow for a clear presentation of data sets.
+-->
+
 <script lang="ts">
   import { useI18n } from "$internal/i18n.svelte";
   import QBtn from "$components/button/QBtn.svelte";

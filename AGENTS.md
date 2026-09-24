@@ -6,6 +6,7 @@
 - Use `SCREAMING_SNAKE_CASE` for immutable constants, including fixed values, patterns and lookup tables. Keep runtime-derived locals and mutable state in `camelCase`; a `const` binding alone does not make an object immutable.
 - Quaff is Svelte 5 only. Use runes-style component code (`$props`, `$state`, `$derived`, snippets) and avoid adding legacy Svelte 4 patterns.
 - Use `bun run check` and `bun run build` for full validation. `bun run format` currently also sees untracked local files, so verify the worktree before trusting a format failure.
+- Component API `docs.ts` files are generated and ignored by Git. Edit descriptions in Svelte `@component` comments and props in `props.ts`; run `bun run docgen-props` to regenerate descriptions, inherited defaults, snippets, and methods.
 - Internal library code must not import components through `$lib` or the public package barrel. Use direct aliases such as `$components`, `$classes`, `$utils`, and `$internal`.
 - Public package exports should stay intentionally small: root exports for convenience, `components/*` for direct component imports, `css/*` for built CSS, and documented plugins.
 - Tree-shaking compatibility depends on internal imports staying direct and static. Avoid adding generated re-export chains or public-barrel imports inside `src/lib`.

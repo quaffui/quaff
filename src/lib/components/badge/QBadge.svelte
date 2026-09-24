@@ -1,3 +1,8 @@
+<!--
+@component
+Badges show notifications, counts, or short status labels alongside other content.
+-->
+
 <script lang="ts">
   import type { QBadgeProps } from "./props";
 

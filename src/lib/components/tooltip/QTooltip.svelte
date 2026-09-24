@@ -1,3 +1,8 @@
+<!--
+@component
+The Tooltip component displays informative text on hover or focus, providing additional context.
+-->
+
 <script lang="ts" generics="T extends HTMLElement | string">
   import { onMount } from "svelte";
   import { on } from "svelte/events";

@@ -1,4 +1,4 @@
-import { stat, utimes } from "fs/promises";
+import { readFile, rm, stat, utimes, writeFile } from "fs/promises";
 import path from "path";
 import { fileURLToPath } from "url";
 import { describe, expect, it } from "vitest";
@@ -56,12 +56,26 @@ describe("targeted updateAllProps", () => {
   it("generates a target without replacing unchanged documentation", async () => {
     await updateAllProps(["button"]);
 
-    const generatedFile = path.resolve(componentsDir, "button/docs.props.ts");
-    expect(await pathExists(generatedFile)).toBe(true);
-
+    const generatedFile = path.resolve(componentsDir, "button/docs.ts");
+    const legacyFile = path.resolve(componentsDir, "button/docs.props.ts");
     const previousTime = new Date("2020-01-01T00:00:00Z");
+    const originalDocs = await readFile(generatedFile, "utf8");
+    expect(originalDocs).toContain("Buttons help users take action");
+    expect(originalDocs).not.toContain("events:");
+    expect(originalDocs).not.toContain("./docs.props");
+    expect(await pathExists(legacyFile)).toBe(false);
+
     await utimes(generatedFile, previousTime, previousTime);
     await updateAllProps(["button"]);
     expect((await stat(generatedFile)).mtimeMs).toBe(previousTime.getTime());
+
+    await writeFile(legacyFile, "// AUTO GENERATED FILE - DO NOT MODIFY OR DELETE\nold output");
+    await updateAllProps(["button"]);
+    expect(await pathExists(legacyFile)).toBe(false);
+    expect((await stat(generatedFile)).mtimeMs).toBe(previousTime.getTime());
+
+    await rm(generatedFile);
+    await updateAllProps(["button"]);
+    expect(await readFile(generatedFile, "utf8")).toBe(originalDocs);
   }, 60_000);
 });

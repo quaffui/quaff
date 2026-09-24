@@ -1,3 +1,8 @@
+<!--
+@component
+Breadcrumbs are mostly used as a navigation aid. They allow users to keep track of their location within the page.
+-->
+
 <script lang="ts" module>
   import { QContext } from "$utils/context";
   import type { QBreadcrumbsProps } from "./props";

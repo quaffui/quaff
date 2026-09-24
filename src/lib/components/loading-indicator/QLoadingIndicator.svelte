@@ -1,3 +1,8 @@
+<!--
+@component
+Show that content is loading during short waits with animated shapes.
+-->
+
 <script lang="ts">
   import { useColor, useSize } from "$composables";
   import type { QLoadingIndicatorProps } from "./props";

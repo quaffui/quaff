@@ -1,3 +1,8 @@
+<!--
+@component
+QSwitch controls a standalone binary setting that takes effect immediately. It supports labels, optional state icons, and configurable label positioning.
+-->
+
 <script lang="ts">
   import { ripple } from "$helpers";
   import QIconSnippet from "$internal/QIconSnippet.svelte";

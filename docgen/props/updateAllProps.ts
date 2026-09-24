@@ -6,7 +6,7 @@ import pathExists from "../helpers/pathExists.js";
 import extractHash from "../helpers/extractHash.js";
 import createPropsHasher from "./cache.js";
 import { replaceGeneratedFiles, withGeneratedFilesLock } from "./generatedFiles.js";
-import renderDocsProps from "./renderDocsProps.js";
+import renderDocs from "./renderDocs.js";
 import runRustDocgen from "./rustClient.js";
 import { DOCGEN_PROTOCOL_VERSION, type DocgenComponentInput } from "./types.js";
 
@@ -82,8 +82,11 @@ async function collectInputs(allDirs: string[], targetDirs?: Set<string>) {
     const componentDir = path.resolve(rootDir, dir);
     const propsFile = path.resolve(componentDir, "props.ts");
 
-    if (!(await pathExists(propsFile))) {
-      const generatedFile = path.resolve(componentDir, "docs.props.ts");
+    const hasProps = await pathExists(propsFile);
+
+    // Remove the obsolete intermediate output as components migrate to complete docs.ts files.
+    for (const name of hasProps ? ["docs.props.ts"] : ["docs.props.ts", "docs.ts"]) {
+      const generatedFile = path.resolve(componentDir, name);
 
       if (
         (await pathExists(generatedFile)) &&
@@ -91,7 +94,9 @@ async function collectInputs(allDirs: string[], targetDirs?: Set<string>) {
       ) {
         orphanedOutputs.push(generatedFile);
       }
+    }
 
+    if (!hasProps) {
       continue;
     }
 
@@ -141,7 +146,7 @@ async function updateAllPropsLocked(targets?: string[] | string) {
 
   for (const input of requestedInputs) {
     const hash = await getHash(input);
-    const output = path.join(path.dirname(input.propsFile), "docs.props.ts");
+    const output = path.join(path.dirname(input.propsFile), "docs.ts");
     hashes.set(input.propsFile, hash);
 
     if (!(await pathExists(output)) || extractHash(await readFile(output, "utf8")) !== hash) {
@@ -183,8 +188,8 @@ async function updateAllPropsLocked(targets?: string[] | string) {
         interfaceNames.add(parsedInterface.name);
       }
 
-      const destination = path.resolve(path.dirname(propsFile), "docs.props.ts");
-      const contents = await renderDocsProps(interfaces, hashes.get(propsFile));
+      const destination = path.resolve(path.dirname(propsFile), "docs.ts");
+      const contents = await renderDocs(interfaces, hashes.get(propsFile));
 
       return { destination, contents };
     })

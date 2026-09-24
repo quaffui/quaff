@@ -1,3 +1,8 @@
+<!--
+@component
+Railbars are used to provide navigation between different sections or views within an application.
+-->
+
 <script lang="ts">
   import { navigationCtx } from "$internal/navigationContext";
 

@@ -1,3 +1,8 @@
+<!--
+@component
+Group related buttons with Material 3 standard or connected layouts and shared sizing.
+-->
+
 <script module lang="ts">
   import { QContext } from "$utils/context";
   import type { QBtnSizeOptions } from "$components/button/props";

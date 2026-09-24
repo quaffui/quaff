@@ -1,3 +1,8 @@
+<!--
+@component
+QRange selects a lower and upper value from the same range with two independently accessible handles.
+-->
+
 <script lang="ts">
   import QSliderBase from "./QSliderBase.svelte";
   import type { QRangeProps, QRangeValue } from "./props";

@@ -19,6 +19,8 @@ export interface DocgenRequest {
 
 export interface DocgenInterface {
   name: string;
+  componentName?: string;
+  description?: string;
   generics: QApiGeneric[];
   domAttributesConstraint?: string;
   props: QApiEntry[];

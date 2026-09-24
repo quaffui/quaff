@@ -1,3 +1,8 @@
+<!--
+@component
+The QItemSection component is used inside QItem to separate different types of information.
+-->
+
 <script lang="ts">
   import { ripple } from "$helpers";
   import { itemCtx } from "./QItem.svelte";

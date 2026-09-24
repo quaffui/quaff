@@ -1,3 +1,8 @@
+<!--
+@component
+Cards provide a clean, flexible, and convenient means of displaying a wide variety of content.
+-->
+
 <script lang="ts">
   import type { QCardProps } from "./props";
 

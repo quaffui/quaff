@@ -1,3 +1,8 @@
+<!--
+@component
+Navigation drawers provide ergonomic access to destinations in an app
+-->
+
 <script lang="ts">
   import { onMount, untrack } from "svelte";
   import { on } from "svelte/events";

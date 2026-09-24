@@ -1,3 +1,8 @@
+<!--
+@component
+Side sheets show supporting content beside the main page.
+-->
+
 <script lang="ts">
   import { tick } from "svelte";
   import { on } from "svelte/events";

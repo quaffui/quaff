@@ -1,3 +1,8 @@
+<!--
+@component
+QHeaderTitle positions a title or central control within QHeader.
+-->
+
 <script lang="ts">
   import type { QHeaderTitleProps } from "./props";
 

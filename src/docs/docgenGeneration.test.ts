@@ -1,11 +1,12 @@
 import { describe, expect, it } from "vitest";
 import ts from "typescript";
-import renderDocsProps from "../../docgen/props/renderDocsProps";
+import renderDocs from "../../docgen/props/renderDocs";
 import { validateDocgenResponse } from "../../docgen/props/rustClient";
+import type { QComponentDocs } from "./types";
 
 describe("Rust docgen integration", () => {
   it("renders the stable generated export names", async () => {
-    const output = await renderDocsProps([
+    const output = await renderDocs([
       {
         name: "QExampleProps",
         generics: [{ name: "T", constraint: "<span>string</span>" }],
@@ -21,10 +22,8 @@ describe("Rust docgen integration", () => {
       },
     ]);
 
-    expect(output).toContain("export const QExampleDocsProps: QApiEntry[]");
-    expect(output).toContain("export const QExampleDocsGenerics: QApiGeneric[]");
-    expect(output).toContain("export const QExampleDocsMethods: QApiEntry[]");
-    expect(output).toContain("export const QExampleDocsTypeDependencies: Record<string, string>");
+    expect(output).toContain("export const QExampleDocs: QComponentDocs");
+    expect(output).not.toContain("./docs.props");
     expect(output).toContain('header: "<div>value: T</div>"');
     expect(output).toContain('header: "<div>focus()</div>"');
     expect(output).toContain('| "alpha"');
@@ -35,7 +34,7 @@ describe("Rust docgen integration", () => {
       ["__proto__", "type __proto__ = string;"],
       ["constructor", "type constructor = number;"],
     ]);
-    const output = await renderDocsProps([
+    const output = await renderDocs([
       {
         name: "QExampleProps",
         generics: [],
@@ -50,7 +49,7 @@ describe("Rust docgen integration", () => {
     });
     const generatedExports: Record<string, unknown> = {};
     new Function("exports", outputText)(generatedExports);
-    const definitions = generatedExports.QExampleDocsTypeDependencies as Record<string, string>;
+    const definitions = (generatedExports.QExampleDocs as QComponentDocs).docs.typeDependencies;
 
     expect(Object.hasOwn(definitions, "__proto__")).toBe(true);
     expect(definitions.__proto__).toBe(typeDependencies.__proto__);
@@ -97,7 +96,7 @@ describe("Rust docgen integration", () => {
         components: [{ propsFile: "/component/props.ts", interfaces: [invalidInterface] }],
       })
     ).toThrow("invalid interface record");
-    await expect(renderDocsProps([invalidInterface])).rejects.toThrow(
+    await expect(renderDocs([invalidInterface])).rejects.toThrow(
       "Cannot render invalid props interface name"
     );
   });

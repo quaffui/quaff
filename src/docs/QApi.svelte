@@ -15,7 +15,7 @@
     Quaff,
   } from "$lib";
   import { capitalize, escape } from "$utils";
-  import type { QApiEntry, QComponentDocs, QComponentEvent, QComponentMethod } from "$docs";
+  import type { QComponentDocs } from "$docs";
   import {
     getQuaffHighlighter,
     quaffShikiDarkTheme,
@@ -72,10 +72,6 @@
       ([name]) =>
         name !== "generics" && name !== "domAttributesConstraint" && name !== "typeDependencies"
     ) as [TabableDocsKey, QComponentDocs["docs"][TabableDocsKey]][];
-  }
-
-  function isGeneratedEntry(doc: QApiEntry | QComponentEvent | QComponentMethod): doc is QApiEntry {
-    return "header" in doc;
   }
 
   function inTypeSpan(content: string) {
@@ -224,7 +220,8 @@
 {/snippet}
 
 {#each componentDocs as QDocument, index (QDocument)}
-  {@const path = COMPONENT_PARENT_FOLDER[QDocument.name as keyof typeof COMPONENT_PARENT_FOLDER]}
+  {@const componentName = QDocument.componentName ?? QDocument.name}
+  {@const path = COMPONENT_PARENT_FOLDER[componentName as keyof typeof COMPONENT_PARENT_FOLDER]}
 
   <div bind:this={apiElements[index]} class="q-api">
     <QCard class="q-px-none q-pb-none q-mt-lg">
@@ -238,7 +235,7 @@
               outlined
               rectangle
               size="xs"
-              href="https://github.com/quaffui/quaff/tree/main/src/lib/{path}/{QDocument.name}.svelte"
+              href="https://github.com/quaffui/quaff/tree/main/src/lib/{path}/{componentName}.svelte"
             >
               {#snippet icon()}
                 <svg
@@ -282,18 +279,7 @@
             <QItem>
               <QItemSection type="content">
                 {#snippet headline()}
-                  {#if isGeneratedEntry(doc)}
-                    {@html doc.header}
-                  {:else}
-                    <div class="q-api__doc-heading q-my-sm">
-                      <span class="q-docs-code q-mr-xs">
-                        <b>{doc.name}</b>
-                      </span>
-                      <span class="prop-type">
-                        {activeApiTabs[index] === "events" ? `: ${doc.type}` : doc.type}
-                      </span>
-                    </div>
-                  {/if}
+                  {@html doc.header}
                 {/snippet}
                 {#snippet line1()}
                   <div class="q-mt-sm prop-description" style="white-space: normal;">

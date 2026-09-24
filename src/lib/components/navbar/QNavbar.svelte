@@ -1,3 +1,8 @@
+<!--
+@component
+Navigation bars provide access to three to five primary destinations from the bottom of a layout.
+-->
+
 <script lang="ts">
   import { onMount } from "svelte";
   import { navigationCtx } from "$internal/navigationContext";

@@ -1,3 +1,8 @@
+<!--
+@component
+QExpansionItem adds an accessible expand/collapse disclosure to a list item while preserving QList density and expressive styling.
+-->
+
 <script lang="ts">
   import { untrack } from "svelte";
   import QIconBtn from "$components/button/QIconBtn.svelte";

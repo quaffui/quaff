@@ -1,3 +1,8 @@
+<!--
+@component
+The QList component is used to display a list of items with options for adding text, icons and actions.
+-->
+
 <script lang="ts" module>
   import { QContext } from "$utils/context";
   import type { QListProps } from "./props";

@@ -5,7 +5,10 @@ use crate::{
     extractor::{
         Extractor, comments::CommentInfo, generics::GenericBindings, heritage::HeritageParser,
     },
-    parser::types::{ParsedType, StandardType, TypeParser, interfaces::InterfacePropertyKey},
+    parser::{
+        svelte::parse_svelte_props_file,
+        types::{ParsedType, StandardType, TypeParser, interfaces::InterfacePropertyKey},
+    },
     prelude::*,
     resolver::{PathResolver, dependency::TypeRegistry},
     transformer::typescript::ToTs,
@@ -114,6 +117,8 @@ impl InterfaceParser for TSInterfaceDeclaration<'_> {
             }
         }
 
+        apply_component_defaults(&name, &mut properties, resolver)?;
+
         Ok(Interface {
             name,
             properties,
@@ -157,6 +162,40 @@ impl InterfaceParser for TSTypeLiteral<'_> {
             registry,
         )
     }
+}
+
+// Defaults travel with their properties so Pick/Omit and local declarations keep
+// the same filtering and precedence as interface inheritance itself.
+fn apply_component_defaults(
+    interface_name: &str,
+    properties: &mut [InterfaceProperty],
+    resolver: &PathResolver,
+) -> Result<()> {
+    let Some(component_name) = interface_name.strip_suffix("Props") else {
+        return Ok(());
+    };
+    let svelte_file = resolver
+        .0
+        .with_file_name(format!("{component_name}.svelte"));
+
+    if !svelte_file.is_file() {
+        return Ok(());
+    }
+
+    let defaults = parse_svelte_props_file(&svelte_file)?;
+
+    for property in properties {
+        if let InterfacePropertyKey::Identifier(name) = &property.key
+            && let Some(default) = defaults.get(name).and_then(|prop| prop.default.as_ref())
+        {
+            property
+                .comment
+                .get_or_insert_with(CommentInfo::default)
+                .default = Some(default.clone());
+        }
+    }
+
+    Ok(())
 }
 
 fn parse_members(

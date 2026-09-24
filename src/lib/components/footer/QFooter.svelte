@@ -1,3 +1,8 @@
+<!--
+@component
+Footers can be used to display navigation and key actions at the bottom of the screen.
+-->
+
 <script lang="ts">
   import { onMount } from "svelte";
   import { on } from "svelte/events";

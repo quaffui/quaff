@@ -1,3 +1,8 @@
+<!--
+@component
+QTime is a Material 3 component for selecting or entering a time. It supports dial and text-input modes, modal, docked, and adaptive presentations, 12- and 24-hour clocks, localization, validation, and composition with QInput.
+-->
+
 <script lang="ts">
   import { onDestroy, untrack } from "svelte";
   import { innerHeight, innerWidth } from "svelte/reactivity/window";

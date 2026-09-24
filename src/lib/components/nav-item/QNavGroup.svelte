@@ -1,3 +1,8 @@
+<!--
+@component
+Collapsible groups of navigation destinations inside a drawer.
+-->
+
 <script lang="ts">
   import QExpansionItem from "$components/expansion-item/QExpansionItem.svelte";
   import QList, { listCtx } from "$components/list/QList.svelte";

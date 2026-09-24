@@ -1,3 +1,8 @@
+<!--
+@component
+A single breadcrumb element to be used within a QBreadcrumbs container.
+-->
+
 <script lang="ts">
   import { page } from "$app/state";
   import { getRouterInfo } from "$utils/router";
