@@ -2,7 +2,17 @@
   import { docsCtx } from "$docs/QDocs.svelte";
   import { QSwitchDocs } from "$components/switch/docs";
   import { pageTitle } from "$helpers/pageTitle";
-  import { QBtn, QCard, QCardSection, QIcon, QItem, QItemSection, QList, QSwitch } from "$lib";
+  import {
+    Notify,
+    QBtn,
+    QCard,
+    QCardSection,
+    QIcon,
+    QItem,
+    QItemSection,
+    QList,
+    QSwitch,
+  } from "$lib";
   import { QDocs, QDocsSection } from "$docs";
   import snippets from "./docs.snippets";
 
@@ -256,7 +266,7 @@
             label="Click me"
             onclick={() => console.log("Switch clicked")}
             oninput={() => console.log("Switch input")}
-            onchange={() => alert(`Switch value changed to: ${toggle ? "On" : "Off"}`)}
+            onchange={() => Notify.create(`Switch value changed to: ${toggle ? "On" : "Off"}`)}
           />
         </div>
       </QDocsSection>

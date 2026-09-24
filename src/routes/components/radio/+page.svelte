@@ -2,7 +2,7 @@
   import { docsCtx } from "$docs/QDocs.svelte";
   import { QRadioDocs } from "$components/radio/docs";
   import { pageTitle } from "$helpers/pageTitle";
-  import { QBtn, QCard, QCardSection, QItem, QItemSection, QList, QRadio } from "$lib";
+  import { Notify, QBtn, QCard, QCardSection, QItem, QItemSection, QList, QRadio } from "$lib";
   import { QDocs, QDocsSection } from "$docs";
   import snippets from "./docs.snippets";
 
@@ -284,7 +284,7 @@
             value="event-option1"
             bind:selected={eventSelectedValue}
             label="Option with event handler"
-            onchange={() => alert(`Changed to: ${eventSelectedValue}`)}
+            onchange={() => Notify.create(`Changed to: ${eventSelectedValue}`)}
           />
           <QRadio
             class="q-ma-sm"
@@ -292,7 +292,7 @@
             value="event-option2"
             bind:selected={eventSelectedValue}
             label="Another option"
-            onchange={() => alert(`Changed to: ${eventSelectedValue}`)}
+            onchange={() => Notify.create(`Changed to: ${eventSelectedValue}`)}
           />
         </div>
       </QDocsSection>

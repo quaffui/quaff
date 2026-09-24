@@ -2,7 +2,7 @@
   import { QChipDocs } from "$components/chip/docs";
   import { docsCtx } from "$docs/QDocs.svelte";
   import { pageTitle } from "$helpers/pageTitle";
-  import { QChip } from "$lib";
+  import { Notify, QChip } from "$lib";
   import { QDocs, QDocsSection } from "$docs";
 
   import snippets from "./docs.snippets";
@@ -227,14 +227,18 @@
         {/snippet}
 
         <div class="flex q-gap-lg items-center q-ma-sm">
-          <QChip label="Click me" icon="notifications" onclick={() => alert("Chip clicked!")} />
+          <QChip
+            label="Click me"
+            icon="notifications"
+            onclick={() => Notify.create("Chip clicked!")}
+          />
           <QChip
             kind="input"
             icon="person"
             bind:value={eventInputValue}
             trailingIcon="close"
             trailingIconLabel="Show input chip notification"
-            onTrailingIconClick={() => alert("Trailing icon clicked!")}
+            onTrailingIconClick={() => Notify.create("Trailing icon clicked!")}
           />
         </div>
       </QDocsSection>
