@@ -1,3 +1,8 @@
+<!--
+@component
+Chips help people enter information, make selections, filter content, or trigger actions. They represent options in a specific context, unlike buttons, which are persistent.
+-->
+
 <script lang="ts">
   import { tick } from "svelte";
   import QAvatar from "$components/avatar/QAvatar.svelte";

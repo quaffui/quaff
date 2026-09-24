@@ -1,3 +1,8 @@
+<!--
+@component
+Buttons help users take action, such as sending an email, sharing a document, or liking a comment.
+-->
+
 <script lang="ts">
   import { useColor, useSize } from "$composables";
   import { ripple } from "$helpers";

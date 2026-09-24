@@ -1,3 +1,8 @@
+<!--
+@component
+Browse visual collections with responsive Material 3 carousels, keyboard navigation, and accessible controls.
+-->
+
 <script lang="ts" generics="T">
   import { untrack } from "svelte";
   import QIconBtn from "$components/button/QIconBtn.svelte";

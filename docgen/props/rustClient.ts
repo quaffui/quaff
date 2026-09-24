@@ -69,6 +69,8 @@ export function validateDocgenResponse(value: unknown): DocgenResponse {
       }
 
       if (
+        !isOptionalString(parsedInterface.componentName) ||
+        !isOptionalString(parsedInterface.description) ||
         !isOptionalString(parsedInterface.domAttributesConstraint) ||
         !Array.isArray(parsedInterface.generics) ||
         !parsedInterface.generics.every(isApiGeneric) ||

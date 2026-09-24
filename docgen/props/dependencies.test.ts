@@ -64,7 +64,7 @@ describe("docgen source dependencies", () => {
       "components/time/QTime.svelte":
         '<script lang="ts">import type { Shared } from "../../index.ts";</script>',
       "components/button/props.ts":
-        'import "./style.css"; import "./docs.props.ts"; import type { External } from "external";',
+        'import "./style.css"; import "./docs.ts"; import "./docs.props.ts"; import "./docs.snippets.ts"; import type { External } from "external";',
       "components/button/style.css": "invalid TypeScript but harmless CSS",
       "components/button/QButton.svelte": '<script lang="ts">const = ;</script>',
     };
@@ -126,5 +126,46 @@ describe("docgen source dependencies", () => {
     expect(await getAffectedDocgenComponents(changedSource, components, resolveImport)).toEqual([
       path.join(components, "button"),
     ]);
+  });
+
+  it("tracks inherited component sources without explicit Svelte imports or guessed names", async () => {
+    const root = await mkdtemp(path.join(tmpdir(), "quaff-docgen-inherited-dependencies-"));
+    directories.push(root);
+    const files: Record<string, string> = {
+      "internal/base/props.ts":
+        "export interface QBaseProps { disabled?: boolean; } export interface CommonProps {}",
+      "internal/base/QBase.svelte":
+        '<script lang="ts">import type { QBaseProps } from "./props.ts"; let { disabled = true }: QBaseProps = $props();</script>',
+      "internal/base/QCommon.svelte": "<p>Do not guess a Q prefix.</p>",
+      "internal/base/index.ts": 'export type { QBaseProps } from "./props.ts";',
+      "components/child/props.ts":
+        'import type { QBaseProps } from "../../internal/base/index.ts"; export interface QChildProps extends QBaseProps {}',
+      "components/child/QChild.svelte": "<p>Child</p>",
+      "components/unrelated/props.ts": "export interface QUnrelatedProps {}",
+    };
+
+    for (const [name, contents] of Object.entries(files)) {
+      const file = path.join(root, name);
+      await mkdir(path.dirname(file), { recursive: true });
+      await writeFile(file, contents);
+    }
+
+    const resolveImport = async (source: string, importer: string) =>
+      path.resolve(path.dirname(importer), source);
+    const childProps = path.join(root, "components/child/props.ts");
+    const baseComponent = path.join(root, "internal/base/QBase.svelte");
+    const sources = await createDocgenSourceReader(resolveImport)([childProps]);
+    expect(sources).toEqual(
+      [
+        childProps,
+        path.join(root, "components/child/QChild.svelte"),
+        path.join(root, "internal/base/index.ts"),
+        path.join(root, "internal/base/props.ts"),
+        baseComponent,
+      ].sort()
+    );
+    expect(
+      await getAffectedDocgenComponents(baseComponent, path.join(root, "components"), resolveImport)
+    ).toEqual([path.join(root, "components/child")]);
   });
 });

@@ -1,3 +1,8 @@
+<!--
+@component
+QSelect is a form component that allows users to choose from multiple options in a dropdown list. It supports single and multiple selection, as well as different visual styles such as filled, outlined, and rounded.
+-->
+
 <script lang="ts">
   import { onDestroy, tick } from "svelte";
   import { useI18n } from "$internal/i18n.svelte";

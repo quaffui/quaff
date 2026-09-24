@@ -1,3 +1,8 @@
+<!--
+@component
+The QLinearProgress component is used to display a progress bar, indicating the completion status of a task or process.
+-->
+
 <script lang="ts">
   import { onMount } from "svelte";
   import { useColor, useSize } from "$composables";

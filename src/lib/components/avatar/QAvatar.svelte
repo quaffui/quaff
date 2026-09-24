@@ -1,3 +1,8 @@
+<!--
+@component
+Avatars can be used in many different ways as with icons or for user profile images/videos, for example. They can have many different shapes, the default one being a circle.
+-->
+
 <script lang="ts">
   import { useSize } from "$composables/useSize";
   import type { QEvent } from "$utils/types/quaff";

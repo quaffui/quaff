@@ -1,3 +1,8 @@
+<!--
+@component
+Combine a primary action with a menu of related actions using a Material 3 Expressive split button.
+-->
+
 <script lang="ts">
   import QBtn from "$components/button/QBtn.svelte";
   import QIconBtn from "$components/button/QIconBtn.svelte";

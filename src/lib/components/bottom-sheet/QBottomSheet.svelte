@@ -1,3 +1,8 @@
+<!--
+@component
+Bottom sheets show supporting content and actions at the bottom of a screen.
+-->
+
 <script lang="ts">
   import { getAbortSignal, tick, untrack } from "svelte";
   import { on } from "svelte/events";

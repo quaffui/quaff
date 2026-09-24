@@ -1,3 +1,8 @@
+<!--
+@component
+Sections are used to group similar content within a card.
+-->
+
 <script lang="ts">
   import type { QCardSectionProps } from "./props";
 

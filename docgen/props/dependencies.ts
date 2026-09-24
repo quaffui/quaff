@@ -1,13 +1,13 @@
-import { readFile, readdir } from "fs/promises";
+import { readFile, readdir, realpath, stat } from "fs/promises";
 import path from "path";
 import { preprocess } from "svelte/compiler";
-import { preProcessFile } from "typescript";
+import { createSourceFile, isInterfaceDeclaration, preProcessFile, ScriptTarget } from "typescript";
 
 export type ResolveDocgenImport = (source: string, importer: string) => Promise<string | undefined>;
 
 export function isDocgenSourceFile(file: string) {
   return (
-    !/^docs\.(?:props|snippets)\.ts$/.test(path.basename(file)) &&
+    !/^docs(?:\.(?:props|snippets))?\.ts$/.test(path.basename(file)) &&
     /\.(?:[cm]?[jt]s|svelte)$/.test(file)
   );
 }
@@ -30,6 +30,45 @@ export async function getDocgenImports(source: string, file: string) {
   );
 }
 
+async function getComponentSources(source: string, file: string) {
+  if (!/\.[cm]?ts$/.test(file)) {
+    return [];
+  }
+
+  const parsed = createSourceFile(file, source, ScriptTarget.Latest);
+  const components: string[] = [];
+
+  for (const statement of parsed.statements) {
+    if (!isInterfaceDeclaration(statement) || !statement.name.text.endsWith("Props")) {
+      continue;
+    }
+
+    const componentName = statement.name.text.slice(0, -"Props".length);
+
+    if (!componentName) {
+      continue;
+    }
+
+    const component = path.join(path.dirname(file), `${componentName}.svelte`);
+
+    try {
+      if ((await stat(component)).isFile()) {
+        components.push(await realpath(component));
+      }
+    } catch (error) {
+      if (
+        !(error instanceof Error) ||
+        !("code" in error) ||
+        (error.code !== "ENOENT" && error.code !== "ENOTDIR")
+      ) {
+        throw error;
+      }
+    }
+  }
+
+  return components;
+}
+
 export function createDocgenSourceReader(resolveImport: ResolveDocgenImport) {
   const dependencies = new Map<string, Promise<string[]>>();
 
@@ -45,9 +84,13 @@ export function createDocgenSourceReader(resolveImport: ResolveDocgenImport) {
             .map((name) => resolveImport(name, file))
         );
 
-        return resolved.filter(
-          (dependency): dependency is string => !!dependency && isDocgenSourceFile(dependency)
-        );
+        const components = await getComponentSources(source, file);
+        return [
+          ...resolved.filter(
+            (dependency): dependency is string => !!dependency && isDocgenSourceFile(dependency)
+          ),
+          ...components,
+        ];
       })();
       dependencies.set(file, pending);
     }

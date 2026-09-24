@@ -1,3 +1,8 @@
+<!--
+@component
+This component allows you to insert icons within elements of the page. Supported icons are Material Symbols icons.
+-->
+
 <script lang="ts">
   import { useSize, useColor } from "$composables";
   import type { QIconProps } from "./props";

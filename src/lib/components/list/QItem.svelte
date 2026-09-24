@@ -1,3 +1,8 @@
+<!--
+@component
+The QItem component is generally used inside lists to display related pieces of information.
+-->
+
 <script lang="ts" module>
   import { QContext } from "$utils/context";
 

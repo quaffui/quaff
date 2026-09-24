@@ -1,3 +1,8 @@
+<!--
+@component
+Separators can be used to create a dividing line or space between elements within a layout, offering visual separation and organization.
+-->
+
 <script lang="ts">
   import { useColor, useSize } from "$composables";
   import type { QSeparatorProps } from "./props";

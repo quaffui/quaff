@@ -1,3 +1,8 @@
+<!--
+@component
+Tabs allow creating navigational tabs, enabling users to switch between different views or functional aspects.
+-->
+
 <script lang="ts">
   import { ripple } from "$helpers";
   import { getRouterInfo, handleActivationKeydown, type QEvent } from "$utils";

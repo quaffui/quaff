@@ -1,3 +1,8 @@
+<!--
+@component
+The QCircularProgress component is used to display a circular progress bar, indicating the completion status of a task or process.
+-->
+
 <script lang="ts">
   import { useColor, useSize } from "$composables";
   import { quaffConfig } from "$internal/quaffConfig";

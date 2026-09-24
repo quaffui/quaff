@@ -1,3 +1,8 @@
+<!--
+@component
+Keep frequently used actions close to your content with docked or floating toolbars.
+-->
+
 <script lang="ts">
   import { toolbarKeyboard } from "./keyboard";
   import type { QToolbarProps } from "./props";

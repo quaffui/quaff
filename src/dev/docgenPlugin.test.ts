@@ -106,6 +106,7 @@ it("regenerates added and removed sources once and ignores generated files", asy
 
   for (const type of ["create", "update", "delete"] as const) {
     await update(type, "docs.props.ts");
+    await update(type, "docs.ts");
   }
 
   await vi.advanceTimersByTimeAsync(75);
@@ -189,6 +190,7 @@ it("ignores generated build sources while preserving local dependencies outside 
     "plugins/dist/index.js",
     "docgen/target/generated.js",
     "src/lib/components/fixture/docs.props.ts",
+    "src/lib/components/fixture/docs.ts",
     "src/routes/example/docs.snippets.ts",
   ]) {
     for (const type of ["create", "update", "delete"] as const) {

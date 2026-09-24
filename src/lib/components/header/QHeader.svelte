@@ -1,3 +1,8 @@
+<!--
+@component
+QHeader is a top app bar for titles, navigation, and actions. It can be used independently or integrated with QLayout.
+-->
+
 <script lang="ts">
   import { onMount } from "svelte";
   import { useRevealScrollObserver } from "$composables";

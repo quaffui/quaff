@@ -1,3 +1,8 @@
+<!--
+@component
+Dialogs provide important prompts in a user flow.
+-->
+
 <script lang="ts" module>
   const modalDialogs: HTMLDialogElement[] = [];
   const dismissedEvents = new WeakSet<Event>();

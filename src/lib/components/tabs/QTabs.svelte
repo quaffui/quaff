@@ -1,3 +1,8 @@
+<!--
+@component
+Tabs allow creating navigational tabs, enabling users to switch between different views or functional aspects.
+-->
+
 <script module lang="ts">
   import { QContext } from "$utils/context";
   import type { QTabsProps } from "./props";

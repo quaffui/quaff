@@ -1,3 +1,8 @@
+<!--
+@component
+Choose one or several values with connected or standard button groups, including baseline segmented buttons.
+-->
+
 <script lang="ts">
   import { quaffConfig } from "$internal/quaffConfig";
   import QBtn from "$components/button/QBtn.svelte";

@@ -1,3 +1,8 @@
+<!--
+@component
+Navigation destinations for drawers, navigation bars, and railbars.
+-->
+
 <script lang="ts">
   import { navigationCtx } from "$internal/navigationContext";
   import { listCtx } from "$components/list/QList.svelte";

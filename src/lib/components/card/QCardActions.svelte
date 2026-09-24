@@ -1,3 +1,8 @@
+<!--
+@component
+Actions hold actionable items like buttons within a card.
+-->
+
 <script lang="ts">
   import { useAlign } from "$composables";
   import type { QCardActionsProps } from "./props";

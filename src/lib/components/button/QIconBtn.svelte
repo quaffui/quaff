@@ -1,3 +1,8 @@
+<!--
+@component
+Icon buttons are buttons that contain only icons (no text labels) and are typically used in toolbars, navigation bars, or as action buttons.
+-->
+
 <script lang="ts">
   import { buttonGroupCtx } from "$components/button-group/QBtnGroup.svelte";
   import { quaffConfig } from "$internal/quaffConfig";

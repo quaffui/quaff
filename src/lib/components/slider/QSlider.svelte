@@ -1,3 +1,8 @@
+<!--
+@component
+QSlider selects one value from a continuous or stepped range, with standard and centered Material 3 configurations.
+-->
+
 <script lang="ts">
   import QSliderBase from "./QSliderBase.svelte";
   import type { QSliderProps } from "./props";

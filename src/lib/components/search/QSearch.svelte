@@ -1,3 +1,8 @@
+<!--
+@component
+Search bars expand into a focused space for suggestions, filters, and results.
+-->
+
 <script lang="ts">
   import { onDestroy, tick, untrack } from "svelte";
   import { on } from "svelte/events";

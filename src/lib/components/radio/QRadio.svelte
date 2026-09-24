@@ -1,3 +1,8 @@
+<!--
+@component
+Radio buttons allow the user to select one option from a set.
+-->
+
 <script lang="ts">
   import { ripple } from "$helpers";
   import type { QRadioProps } from "./props";

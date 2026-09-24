@@ -26,7 +26,11 @@ it("invalidates component, transitive dependency and generator changes independe
     "src/lib/types/shared.ts":
       'import type { Outside } from "../../outside.d.ts"; export type Shared = string | Outside;',
     "src/outside.d.ts": 'export type Outside = "before";',
-    "src/lib/components/first/props.ts": 'import type { Shared } from "$types";',
+    "src/lib/internal/base/props.ts": "export interface QBaseProps { disabled?: boolean; }",
+    "src/lib/internal/base/QBase.svelte":
+      '<script lang="ts">let { disabled = false } = $props();</script>',
+    "src/lib/components/first/props.ts":
+      'import type { Shared } from "$types"; import type { QBaseProps } from "$internal/base/props"; export interface FirstProps extends QBaseProps {}',
     "src/lib/components/first/Example.svelte": '<script lang="ts">let value = 1;</script>',
     "src/lib/components/second/props.ts": 'import type { Shared } from "../first/props";',
     "src/lib/components/linked/props.ts": 'import type { Shared } from "./shared";',
@@ -56,7 +60,7 @@ it("invalidates component, transitive dependency and generator changes independe
   const original = await hashes();
   expect(await hashes()).toEqual(original);
 
-  await writeFile(path.join(root, "src/lib/components/first/docs.props.ts"), "generated output");
+  await writeFile(path.join(root, "src/lib/components/first/docs.ts"), "generated output");
   expect(await hashes()).toEqual(original);
 
   await writeFile(path.join(root, "src/outside.d.ts"), 'export type Outside = "after";');
@@ -72,10 +76,19 @@ it("invalidates component, transitive dependency and generator changes independe
   expect(sharedChange[1]).not.toBe(original[1]);
   expect(sharedChange[2]).toBe(original[2]);
 
+  await writeFile(
+    path.join(root, "src/lib/internal/base/QBase.svelte"),
+    '<script lang="ts">let { disabled = true } = $props();</script>'
+  );
+  const inheritedDefaultChange = await hashes();
+  expect(inheritedDefaultChange[0]).not.toBe(sharedChange[0]);
+  expect(inheritedDefaultChange[1]).not.toBe(sharedChange[1]);
+  expect(inheritedDefaultChange[2]).toBe(sharedChange[2]);
+
   await writeFile(path.join(root, "src/lib/components/first/Example.svelte"), "<p>Changed</p>");
   const componentChange = await hashes();
-  expect(componentChange[0]).not.toBe(sharedChange[0]);
-  expect(componentChange.slice(1)).toEqual(sharedChange.slice(1));
+  expect(componentChange[0]).not.toBe(inheritedDefaultChange[0]);
+  expect(componentChange.slice(1)).toEqual(inheritedDefaultChange.slice(1));
 
   await writeFile(path.join(root, "docgen/src/main.rs"), "fn main() { /* updated */ }");
   const generatorChange = await hashes();

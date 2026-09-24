@@ -1,3 +1,8 @@
+<!--
+@component
+QInput is a form component that allows users to input text. It supports different visual styles such as filled, outlined, and rounded, and it can also display hint text and custom error messages.
+-->
+
 <script lang="ts">
   import { type QEvent } from "$utils";
   import { deleteMaskedToken, maskCaretPosition, maskValue, unmaskValue } from "./mask";

@@ -106,7 +106,7 @@ export interface QBtnProps
   color?: string;
 }
 
-export interface QIconBtnProps extends QBtnCommonProps, Omit<HTMLButtonAttributes, "disabled"> {
+export interface QIconBtnProps extends Omit<QBtnProps, "label"> {
   /**
    * Sets the color of the button.
    */

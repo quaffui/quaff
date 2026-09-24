@@ -1,3 +1,8 @@
+<!--
+@component
+QMenu displays anchored popup content. It handles positioning, outside-click dismissal, Escape dismissal, and native dialog layering.
+-->
+
 <script lang="ts">
   import { onMount, tick, untrack } from "svelte";
   import { on } from "svelte/events";

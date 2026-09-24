@@ -1,3 +1,8 @@
+<!--
+@component
+Open a menu of related actions from a floating action button.
+-->
+
 <script lang="ts">
   import QMenu from "$components/menu/QMenu.svelte";
   import QFabBase from "$internal/QFabBase.svelte";

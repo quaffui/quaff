@@ -1,3 +1,8 @@
+<!--
+@component
+Snackbars briefly show updates without interrupting the user.
+-->
+
 <script lang="ts">
   import { fly } from "svelte/transition";
   import { browser } from "$app/environment";

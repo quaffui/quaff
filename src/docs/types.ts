@@ -24,6 +24,8 @@ export interface QApiGeneric {
 
 export interface QComponentDocs {
   name: string;
+  /** Component source name when several props interfaces describe the same component. */
+  componentName?: string;
   description: string;
   docs: {
     generics: QApiGeneric[];
@@ -31,8 +33,7 @@ export interface QComponentDocs {
     domAttributesConstraint: QApiTrustedHtml | undefined;
     props: QApiEntry[];
     snippets: QApiEntry[];
-    methods: (QApiEntry | QComponentMethod)[];
-    events: QComponentEvent[];
+    methods: QApiEntry[];
     /** Complete, self-contained TypeScript definitions keyed by the referenced type name. */
     typeDependencies: Record<string, string>;
   };
@@ -41,18 +42,4 @@ export interface QComponentDocs {
 export interface QComponentType {
   name: string;
   description: string;
-}
-
-export interface QComponentEvent {
-  name: string;
-  type: string;
-  /** Trusted, source-controlled documentation that may intentionally contain HTML. */
-  description: QApiTrustedHtml;
-}
-
-export interface QComponentMethod {
-  name: string;
-  type: string;
-  /** Trusted, source-controlled documentation that may intentionally contain HTML. */
-  description: QApiTrustedHtml;
 }

@@ -9,7 +9,9 @@ use crate::{
     extractor::comments::CommentInfo,
     parser::{
         ParsedPropsInterface, TSPropsParser,
-        svelte::{ParsedSvelteMethods, ParsedSvelteProps, parse_svelte_file},
+        svelte::{
+            ParsedSvelteMethods, ParsedSvelteProps, parse_component_description, parse_svelte_file,
+        },
         types::{
             interfaces::{Interface, InterfacePropertyFlags, InterfacePropertyKey},
             snippets::Snippet,
@@ -155,12 +157,14 @@ fn generate_component(component: DocgenComponentInput) -> Result<DocgenComponent
             .get(&svelte_file)
             .expect("parsed Svelte file was inserted above");
 
-        interfaces.push(generate_interface(
-            interface,
-            svelte_props,
-            svelte_methods,
-            type_definitions,
-        )?);
+        let mut docs =
+            generate_interface(interface, svelte_props, svelte_methods, type_definitions)?;
+        docs.component_name = svelte_file
+            .file_stem()
+            .and_then(|name| name.to_str())
+            .map(str::to_owned);
+        docs.description = parse_component_description(&svelte_file)?;
+        interfaces.push(docs);
     }
 
     interfaces.sort_by(|left, right| left.name.cmp(&right.name));
@@ -280,6 +284,8 @@ fn generate_interface(
 
     Ok(DocgenInterface {
         name,
+        component_name: None,
+        description: None,
         generics,
         dom_attributes_constraint,
         props,
@@ -590,5 +596,75 @@ mod tests {
                 .contains("<b>bodyCell{string}</b>")
         );
         assert!(generated.snippets[0].header.contains("?.({ row:"));
+    }
+
+    #[test]
+    fn renders_inherited_defaults_with_local_overrides_and_local_bindability() -> Result<()> {
+        let root = std::env::temp_dir().join(format!(
+            "quaff-docgen-inherited-default-ipc-{}",
+            std::process::id()
+        ));
+        let props = fixture_file(&root, "props.ts");
+        let button = fixture_file(&root, "QBtn.svelte");
+        let icon = fixture_file(&root, "QIconBtn.svelte");
+        std::fs::write(
+            &props,
+            r#"
+            export interface QBtnProps {
+                flat?: boolean;
+                selected?: boolean;
+                disabled?: boolean;
+                cleared?: boolean;
+                label?: string;
+            }
+            export interface QIconBtnProps extends Omit<QBtnProps, "label"> {
+                /** @default true */
+                disabled?: boolean;
+            }
+        "#,
+        )?;
+        std::fs::write(
+            &button,
+            r#"<script lang="ts">
+            import type { QBtnProps } from "./props";
+            let { flat = false, selected = $bindable(false), disabled = false, cleared = true } = $props();
+            export function update(props: QBtnProps) {}
+        </script>"#,
+        )?;
+        std::fs::write(
+            &icon,
+            r#"<script lang="ts">let { cleared = undefined } = $props();</script>"#,
+        )?;
+        let response = generate_response(DocgenRequest {
+            version: PROTOCOL_VERSION,
+            components: vec![DocgenComponentInput {
+                props_file: props,
+                svelte_files: vec![button, icon],
+            }],
+        })?;
+        let interfaces = &response.components[0].interfaces;
+        let button = interfaces
+            .iter()
+            .find(|interface| interface.name == "QBtnProps")
+            .unwrap();
+        let icon = interfaces
+            .iter()
+            .find(|interface| interface.name == "QIconBtnProps")
+            .unwrap();
+        let props = icon
+            .props
+            .iter()
+            .map(|prop| (prop.name.as_str(), prop))
+            .collect::<HashMap<_, _>>();
+
+        assert!(props["flat"].header.contains("false"));
+        assert!(props["selected"].header.contains("false"));
+        assert!(!props["selected"].header.contains("$bindable"));
+        assert!(props["disabled"].header.contains("true"));
+        assert!(props["cleared"].header.contains("undefined"));
+        assert!(!props.contains_key("label"));
+        assert_eq!(button.methods[0].name, "update");
+        std::fs::remove_dir_all(root)?;
+        Ok(())
     }
 }

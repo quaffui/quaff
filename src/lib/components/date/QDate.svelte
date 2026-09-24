@@ -1,3 +1,8 @@
+<!--
+@component
+QDate is a Material 3 component for selecting or entering dates. It supports modal, docked, and adaptive presentations, custom masks, localization, date constraints, and composition with QInput.
+-->
+
 <script lang="ts">
   import { onDestroy, untrack } from "svelte";
   import { useI18n } from "$internal/i18n.svelte";
