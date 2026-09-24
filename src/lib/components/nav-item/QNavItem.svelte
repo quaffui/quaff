@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { navigationCtx } from "$internal/navigationContext";
+  import { listCtx } from "$components/list/QList.svelte";
   import QBadge from "$components/badge/QBadge.svelte";
   import QIconSnippet from "$internal/QIconSnippet.svelte";
   import { ripple } from "$helpers";
@@ -11,6 +13,7 @@
   // #region:    --- Props
   let {
     active,
+    dense,
     activeClass,
     activeStyle,
     icon,
@@ -35,9 +38,17 @@
 
   // #region:    --- Non-reactive variables
   const uid = $props.id();
+  const isInDrawer = navigationCtx.get() === "drawer";
+  const list = listCtx.get();
   // #endregion: --- Non-reactive variables
 
+  // #region:    --- Reactive variables
+  let itemEl = $state<QNavItemElement>();
+  // #endregion: --- Reactive variables
+
   // #region:    --- Derived values
+  const resolvedTabIndex = $derived(disabled ? -1 : (tabindex ?? 0));
+  const isDense = $derived(dense ?? list?.dense ?? false);
   const routerInfo = $derived(getRouterInfo({ href, to, replace }));
   const tag = $derived(routerInfo.hasLink ? "a" : "button");
   const isActive = $derived(active ?? !!routerInfo.isActive);
@@ -54,9 +65,20 @@
   // #endregion: --- Derived values
 
   // #region:    --- Effects
+  $effect(() => {
+    void [isActive, disabled, to, href];
+    list?.refreshTabStop(itemEl, resolvedTabIndex);
+
+    return list?.refreshTabStop;
+  });
+
   $effect.pre(() => {
     if (label === undefined && !children) {
       console.warn("QNavItem should have a visible label supplied by `label` or `children`.");
+    }
+
+    if (!isInDrawer && !icon) {
+      console.warn("QNavItem needs an icon inside QNavbar and QRailbar.");
     }
   });
   // #endregion: --- Effects
@@ -86,6 +108,8 @@
   Q.classes("q-nav-item", {
     bemClasses: {
       active: isActive,
+      drawer: isInDrawer,
+      dense: isInDrawer && isDense,
       "no-ripple": noRipple,
     },
     classes: [routerInfo.linkClass, isActive && activeClass, props.class],
@@ -95,6 +119,7 @@
 <!-- eslint-disable svelte/no-navigation-without-resolve -- Link attributes are normalized by getRouterInfo. -->
 <svelte:element
   this={tag}
+  bind:this={itemEl}
   {...props}
   class="q-nav-item"
   style={itemStyle}
@@ -105,7 +130,7 @@
   aria-disabled={disabled || undefined}
   aria-current={isActive ? (props["aria-current"] ?? "page") : props["aria-current"]}
   aria-describedby={ariaDescribedby}
-  tabindex={disabled ? -1 : tabindex}
+  tabindex={resolvedTabIndex}
   {target}
   onclick={handleClick}
   onkeydown={handleKeydown}
@@ -120,15 +145,15 @@
   <span class="q-nav-item__target">
     <span class="q-nav-item__indicator" aria-hidden="true"></span>
 
-    <span class="q-nav-item__icon" aria-hidden="true">
-      <QIconSnippet {icon} size={24} filled={isActive} />
+    {#if icon}
+      <span class="q-nav-item__icon" aria-hidden="true">
+        <QIconSnippet {icon} size="1.5rem" filled={isActive} />
 
-      {#if badge}
-        <QBadge id={visualBadgeId} class="q-nav-item__badge" floating aria-hidden="true">
-          {@render badge()}
-        </QBadge>
-      {/if}
-    </span>
+        {#if badge && !isInDrawer}
+          {@render badgeContent(true)}
+        {/if}
+      </span>
+    {/if}
 
     <span class="q-nav-item__label">
       {#if label !== undefined}
@@ -137,6 +162,10 @@
         {@render children?.()}
       {/if}
     </span>
+
+    {#if badge && isInDrawer}
+      {@render badgeContent(false)}
+    {/if}
   </span>
 
   {#if badge && badgeAriaLabel}
@@ -144,3 +173,9 @@
   {/if}
 </svelte:element>
 <!-- eslint-enable svelte/no-navigation-without-resolve -->
+
+{#snippet badgeContent(floating: boolean)}
+  <QBadge id={visualBadgeId} class="q-nav-item__badge" {floating} aria-hidden="true">
+    {@render badge?.()}
+  </QBadge>
+{/snippet}

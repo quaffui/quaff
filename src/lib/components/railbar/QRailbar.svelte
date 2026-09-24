@@ -1,7 +1,11 @@
 <script lang="ts">
+  import { navigationCtx } from "$internal/navigationContext";
+
   import { useColor } from "$composables";
   import { leftRailbarCtx, rightRailbarCtx } from "../layout/QLayout.svelte";
   import type { QRailbarProps } from "./props";
+
+  navigationCtx.set("bar");
 
   // #region:    --- Props
   let {

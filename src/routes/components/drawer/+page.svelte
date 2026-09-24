@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { resolve } from "$app/paths";
   import { QDrawerDocs } from "$components/drawer/docs";
   import { docsCtx } from "$docs/QDocs.svelte";
   import { pageTitle } from "$helpers/pageTitle";
@@ -6,7 +7,6 @@
     QBtn,
     QIconBtn,
     QDrawer,
-    QExpansionItem,
     QFooter,
     QHeader,
     QIcon,
@@ -14,6 +14,8 @@
     QItemSection,
     QLayout,
     QList,
+    QNavGroup,
+    QNavItem,
   } from "$lib";
   import { QDocs, QDocsSection } from "$docs";
 
@@ -42,7 +44,6 @@
 
     return {
       active: isCurrent,
-      "aria-current": isCurrent ? ("page" as const) : undefined,
       onclick: () => {
         navigationDestination = destination;
         isNavigationDrawerOpen = false;
@@ -135,7 +136,11 @@
       <QDocsSection title="Expandable navigation">
         {#snippet sectionDescription()}
           Group related pages under an expandable heading. Expand Projects to choose a workspace, or
-          collapse it to keep the navigation compact.
+          collapse it to keep the navigation compact. See <a
+            href={resolve("/components/nav-item", {})}
+          >
+            QNavItem and QNavGroup
+          </a> for navigation options.
         {/snippet}
 
         <QLayout
@@ -175,21 +180,13 @@
                 />
               </div>
               <QList tag="nav" aria-label="Workspace" expressive={false} preserveTabOrder>
-                <QItem clickable {...getNavigationProps("Overview")}>
-                  <QItemSection>Overview</QItemSection>
-                </QItem>
-                <QExpansionItem label="Projects" expandIcon="arrow_drop_down" defaultOpened>
-                  <QList expressive={false} preserveTabOrder>
-                    {#each ["Website", "Mobile app"] as destination (destination)}
-                      <QItem clickable {...getNavigationProps(destination)}>
-                        <QItemSection>{destination}</QItemSection>
-                      </QItem>
-                    {/each}
-                  </QList>
-                </QExpansionItem>
-                <QItem clickable {...getNavigationProps("Settings")}>
-                  <QItemSection>Settings</QItemSection>
-                </QItem>
+                <QNavItem label="Overview" {...getNavigationProps("Overview")} />
+                <QNavGroup label="Projects" defaultOpened>
+                  {#each ["Website", "Mobile app"] as destination (destination)}
+                    <QNavItem label={destination} {...getNavigationProps(destination)} />
+                  {/each}
+                </QNavGroup>
+                <QNavItem label="Settings" {...getNavigationProps("Settings")} />
               </QList>
             </QDrawer>
           {/snippet}

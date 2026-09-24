@@ -185,6 +185,10 @@
           to: "/components/drawer",
         },
         {
+          name: "Navigation Items",
+          to: "/components/nav-item",
+        },
+        {
           name: "Navbar",
           to: "/components/navbar",
         },

@@ -371,11 +371,13 @@ function createCssSelection(
 }
 
 function getImportedComponents(importPath: string) {
-  const component =
-    COMPONENT_NAMES_BY_IMPORT_PATH[importPath] ??
-    COMPONENT_NAMES_BY_IMPORT_PATH[`${importPath}.svelte`];
+  // Package exports can redirect an older folder to the same component.
+  const component = importPath
+    .split("/")
+    .at(-1)
+    ?.replace(/\.svelte$/, "");
 
-  if (component) {
+  if (component && isComponentName(component)) {
     return [component];
   }
 
