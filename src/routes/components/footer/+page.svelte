@@ -2,45 +2,116 @@
   import { QFooterDocs } from "$components/footer/docs";
   import { docsCtx } from "$docs/QDocs.svelte";
   import { pageTitle } from "$helpers/pageTitle";
-  import { QFooter, QLayout } from "$lib";
+  import { QBtn, QCard, QFooter, QIcon, QIconBtn, QLayout, QSwitch } from "$lib";
   import { QDocs, QDocsSection } from "$docs";
-
   import snippets from "./docs.snippets";
 
   docsCtx.set({ snippets, componentDocs: QFooterDocs });
 
-  const lorem = `Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolores tempora itaque nulla tenetur distinctio reiciendis quidem. Enim illum dolorum pariatur consequuntur, est aperiam atque quasi dolor quam ratione dicta nostrum.
-            Minus tenetur quam doloremque vel tempore saepe veniam fuga animi nostrum error consequuntur suscipit amet culpa, blanditiis optio quasi. Sit, sint. At facilis fugiat cumque. Velit esse officia aspernatur qui?
-            Recusandae cum, sit sint animi veniam voluptatem. Nemo, animi deserunt unde libero reprehenderit nulla accusamus iusto iure, fugiat eius sequi nesciunt doloribus quo a. Dicta eius provident autem animi labore.
-            Quos quisquam quod commodi architecto. Unde, iusto sint dolor nostrum magnam modi maxime nihil commodi aliquid eligendi reprehenderit, molestias nobis quod voluptates, temporibus odit laboriosam numquam labore mollitia quo ea!
-            Labore sequi ipsum quidem natus excepturi alias porro molestias rerum accusamus ipsa repudiandae nisi nam libero, nostrum facilis vel illum possimus fuga suscipit consequuntur error, aliquam earum. Ratione, quo sed.
-            Temporibus magnam odit libero dolorum suscipit, exercitationem illo animi nihil assumenda in incidunt nostrum quisquam vero voluptatem sit. Fuga nam eos saepe quasi maiores hic iste ipsum laudantium in vero!
-            Corrupti repellat veniam id quos facilis quae at accusantium! Dolorem, vel inventore aliquid, autem iusto necessitatibus molestias soluta officia culpa voluptatibus illum asperiores. Ex voluptatibus in cum illum nesciunt nostrum!
-            Excepturi, esse officia inventore quisquam eaque molestias? Aperiam totam inventore repellendus itaque beatae, unde voluptas eius cupiditate alias commodi voluptatem eum sequi! Distinctio, inventore? Odit modi impedit culpa ipsum voluptatem?
-            Praesentium ea, non veritatis aliquid ad explicabo? Tempora accusamus nobis corporis. Itaque ipsa dicta possimus quaerat dolores quibusdam dolor! Dolores, nesciunt mollitia. Reprehenderit molestias aspernatur unde non, enim incidunt totam.
-            Accusamus odio ullam debitis similique quae! Id rem laborum dolorem eveniet voluptates, nostrum pariatur alias perferendis. Laboriosam voluptates vitae facilis asperiores labore temporibus officia enim voluptatem animi sunt, eos accusamus.
-            Dolor necessitatibus in distinctio omnis molestiae sapiente possimus? Est, repellat in harum numquam eius accusantium aperiam magnam architecto animi omnis saepe deserunt. Deleniti facere nemo mollitia sunt, quisquam quidem quibusdam.
-            Tempora enim obcaecati officiis fugiat nulla nostrum nobis quos, placeat vero quasi natus ea sequi provident aspernatur alias consequatur, praesentium laborum culpa dignissimos? Voluptatibus rem recusandae ipsum dolorem culpa facere?
-            Iure fuga necessitatibus maiores recusandae sed maxime nostrum ratione ab nesciunt praesentium accusamus facere optio ullam, deleniti suscipit eos, temporibus mollitia repellendus autem dolor, rem nihil. Neque repellat at debitis.
-            Odit aspernatur, alias aliquam explicabo velit repudiandae placeat repellat numquam cupiditate dolorum? Quos ipsam doloremque perspiciatis, illum reprehenderit iusto? Error, esse adipisci dolor iste maiores quibusdam atque libero quos beatae?
-            Ea tempore voluptate, sunt exercitationem nihil sed repellendus quaerat repellat doloribus omnis temporibus dolorem ipsum architecto voluptates inventore ratione velit natus nulla tempora, aperiam expedita aliquam eum provident. Rerum, explicabo.
-            Iure quasi perferendis possimus? Vitae nobis quisquam vel, necessitatibus eum amet cum quam, eaque illum hic veritatis, quod asperiores harum nostrum! Fugiat, repudiandae incidunt. Sint, aliquid voluptas! Sed, incidunt facilis!
-            Est, totam? Rerum dolores culpa, dignissimos quis eligendi modi aliquam at porro nemo impedit fuga accusantium distinctio sunt harum perspiciatis quo in numquam delectus ea quod. Error officia praesentium dignissimos!
-            Corporis ipsum eos necessitatibus veniam labore eligendi, exercitationem magnam, quasi quod praesentium officiis esse, quos nemo perspiciatis harum laborum sit animi nulla impedit modi. Doloremque quae veritatis quia. Exercitationem, perferendis.
-            Odit corporis explicabo labore nisi officiis illum a. Provident repellat vitae pariatur molestias quae hic molestiae, neque eaque at velit quidem deserunt error architecto. Non a tenetur nihil eveniet inventore.
-            Voluptas, molestiae consequatur vero sunt id hic modi expedita pariatur ullam vel, magni excepturi libero minus maxime perspiciatis voluptatibus enim amet, error optio fugit maiores debitis ab. Assumenda, veritatis ad.`;
+  const JOURNAL_PAGES = [
+    {
+      title: "Take the slow road",
+      text: "A little fresh air. A turn you have never taken. No rush to get home.",
+      icon: "landscape",
+      color: "primary-container",
+    },
+    {
+      title: "Find your quiet corner",
+      text: "A shady spot, a good book, and the whole afternoon ahead of you.",
+      icon: "park",
+      color: "tertiary-container",
+    },
+    {
+      title: "Stay for the sunset",
+      text: "The best part of the day might be the part you did not plan.",
+      icon: "wb_twilight",
+      color: "secondary-container",
+    },
+  ] as const;
+  const STOPS = [
+    {
+      time: "09:00",
+      title: "Coffee first",
+      text: "A flat white and a seat by the window.",
+      icon: "local_cafe",
+    },
+    {
+      time: "10:00",
+      title: "The riverside path",
+      text: "Follow the water past the old boathouse.",
+      icon: "water",
+    },
+    {
+      time: "11:30",
+      title: "Market morning",
+      text: "Pick up fresh bread and something sweet.",
+      icon: "storefront",
+    },
+    {
+      time: "13:00",
+      title: "Lunch on the lawn",
+      text: "Find a sunny patch and unpack your picnic.",
+      icon: "park",
+    },
+    {
+      time: "15:00",
+      title: "A small detour",
+      text: "Browse the bookshop around the corner.",
+      icon: "auto_stories",
+    },
+    {
+      time: "17:00",
+      title: "The long way home",
+      text: "One last loop around the lake.",
+      icon: "directions_walk",
+    },
+  ] as const;
+
+  let journalPageIndex = $state(0);
+  let isStudioFooterVisible = $state(true);
+  let hasStudioFooterBorder = $state(true);
+  let isStayReserved = $state(false);
+
+  const journalPage = $derived(JOURNAL_PAGES[journalPageIndex]);
 </script>
 
 <svelte:head>
   <title>{pageTitle("QFooter")}</title>
 </svelte:head>
 
-<QDocs>
+<QDocs
+  docDescription="Keep helpful links and actions within reach with a footer that stays visible or follows the scroll."
+>
   {#snippet display()}
-    <QLayout class="surface" style="height: 100%; width: 75%; min-width: unset; min-height: unset">
+    <QLayout class="footer-layout footer-preview surface">
+      {#snippet content()}
+        <div class="q-pa-md" aria-live="polite">
+          <div class="label-medium text-on-surface-variant">WEEKEND JOURNAL</div>
+          <div class="journal-art {journalPage.color}" aria-hidden="true">
+            <QIcon name={journalPage.icon} size="3rem" />
+          </div>
+          <h2 class="title-large q-mb-sm">{journalPage.title}</h2>
+          <p class="body-medium q-mb-none">{journalPage.text}</p>
+        </div>
+      {/snippet}
       {#snippet footer()}
-        <QFooter bordered>
-          <h5>Hello world</h5>
+        <QFooter bordered class="justify-between">
+          <span class="label-large">{journalPageIndex + 1} / {JOURNAL_PAGES.length}</span>
+          <div class="flex q-gap-sm">
+            <QIconBtn
+              icon="arrow_back"
+              aria-label="Previous journal page"
+              disabled={journalPageIndex === 0}
+              onclick={() => journalPageIndex--}
+            />
+            <QIconBtn
+              icon="arrow_forward"
+              variant="tonal"
+              aria-label="Next journal page"
+              disabled={journalPageIndex === JOURNAL_PAGES.length - 1}
+              onclick={() => journalPageIndex++}
+            />
+          </div>
         </QFooter>
       {/snippet}
     </QLayout>
@@ -48,65 +119,160 @@
 
   {#snippet usage()}
     <div>
-      <QDocsSection title="Basic Footer">
+      <QDocsSection title="Links and Visibility">
         {#snippet sectionDescription()}
-          <p>
-            The <code>QFooter</code> component is used to create a footer for your layout. It supports
-            various customization options such as visibility, borders, and reveal behavior.
-          </p>
-          <p>
-            You can easily add a separation between the footer and the content above it by using the
-            <code>bordered</code> prop. This will add a border to the top of the footer.
-          </p>
+          Place <code>QFooter</code> in a layout's <code>footer</code> snippet for links, credits,
+          or actions. Use <code>value</code> to show or hide it and <code>bordered</code> to add a top
+          border.
         {/snippet}
 
-        <QLayout style="border: 1px solid var(--outline-variant)">
-          <div class="q-pa-md" style="max-height: 10rem">
-            {lorem}
-          </div>
-
+        <div class="flex q-gap-lg q-mb-md">
+          <QSwitch label="Show footer" bind:value={isStudioFooterVisible} />
+          <QSwitch label="Footer border" bind:value={hasStudioFooterBorder} />
+        </div>
+        <QLayout class="footer-layout surface">
+          {#snippet content()}
+            <div class="studio-content q-pa-md">
+              <section id="acme-about">
+                <div class="studio-art q-mb-sm" aria-hidden="true">
+                  <span class="primary-container"><QIcon name="interests" size="2rem" /></span>
+                  <span class="secondary-container"><QIcon name="palette" size="2rem" /></span>
+                  <span class="tertiary-container"><QIcon name="code" size="2rem" /></span>
+                </div>
+                <h6 class="q-mb-sm">Small studio. Big ideas.</h6>
+                <p class="body-medium q-mb-none">
+                  Friendly design for ambitious ideas, from first sketch to launch.
+                </p>
+              </section>
+              <section id="acme-work">
+                <div class="label-medium text-tertiary">OUR WORK</div>
+                <h6 class="q-mb-sm">A fresh look for a local favorite</h6>
+                <p class="body-medium q-mb-none">
+                  A new identity and a cheerful little website for the neighborhood bakery.
+                </p>
+              </section>
+              <section id="acme-contact">
+                <div class="label-medium text-tertiary">SAY HELLO</div>
+                <h6 class="q-mb-sm">Good things start with a conversation.</h6>
+                <p class="body-medium q-mb-none">
+                  Visit our studio Monday to Friday, 9–5. There is always room for one more at the
+                  table.
+                </p>
+              </section>
+            </div>
+          {/snippet}
           {#snippet footer()}
-            <QFooter bordered height={60}>
-              <span>Basic Footer Content</span>
+            <QFooter
+              value={isStudioFooterVisible}
+              bordered={hasStudioFooterBorder}
+              height={128}
+              class="studio-footer"
+            >
+              <div class="studio-footer-main">
+                <div class="flex items-center q-gap-sm">
+                  <span class="studio-mark secondary" aria-hidden="true">
+                    <QIcon name="interests" />
+                  </span>
+                  <div>
+                    <div class="title-medium">Acme Studio</div>
+                    <div class="body-small">Good ideas, made real.</div>
+                  </div>
+                </div>
+                <nav class="studio-links label-large" aria-label="Acme Studio footer">
+                  <a href="#acme-about">About</a>
+                  <a href="#acme-work">Work</a>
+                  <a href="#acme-contact">Contact</a>
+                </nav>
+              </div>
+              <div class="studio-fine-print body-small">
+                <span>© Acme Studio</span>
+                <span>Made with care.</span>
+              </div>
             </QFooter>
           {/snippet}
         </QLayout>
       </QDocsSection>
 
-      <QDocsSection title="Reveal Footer">
+      <QDocsSection title="Custom Height">
         {#snippet sectionDescription()}
-          The <code>reveal</code> prop allows the footer to hide when scrolling down and reappear
-          when scrolling up. It also reappears near the bottom of the content. The
-          <code>revealOffset</code> prop sets this distance from the bottom in pixels.
+          The default height is 80px. Pass a number to <code>height</code> to set it in pixels, for example
+          when the footer needs a summary and an action.
         {/snippet}
 
-        <QLayout style="border: 1px solid var(--outline-variant); height: 15rem">
-          <div class="q-pa-md" style="max-height: 10rem">
-            {lorem}
-          </div>
-
+        <QLayout class="footer-layout booking-layout surface">
+          {#snippet content()}
+            <div class="q-pa-md">
+              <QCard fill="tertiary" class="flex items-center q-gap-md q-mb-md">
+                <QIcon name="cabin" size="3rem" aria-hidden="true" />
+                <div class="stay-copy">
+                  <h6 class="q-mb-none">Woodland Cabin</h6>
+                </div>
+              </QCard>
+              <div class="flex q-gap-md body-medium">
+                <span class="flex items-center q-gap-sm">
+                  <QIcon name="bed" aria-hidden="true" /> 2 guests
+                </span>
+                <span class="flex items-center q-gap-sm">
+                  <QIcon name="forest" aria-hidden="true" /> Forest views
+                </span>
+              </div>
+              <p class="q-mt-md q-mb-none body-medium" aria-live="polite">
+                {isStayReserved
+                  ? "Demo stay reserved. Time to pack a good book."
+                  : "Two nights away, with breakfast and no alarm clock."}
+              </p>
+            </div>
+          {/snippet}
           {#snippet footer()}
-            <QFooter reveal revealOffset={100} bordered>
-              <span>Reveal Footer Content</span>
+            <QFooter height={112} bordered class="justify-between">
+              <div>
+                <div class="title-large">€180</div>
+                <div class="body-small text-on-surface-variant">2 nights · total</div>
+              </div>
+              <QBtn
+                variant="tonal"
+                label={isStayReserved ? "Cancel" : "Reserve"}
+                onclick={() => (isStayReserved = !isStayReserved)}
+              />
             </QFooter>
           {/snippet}
         </QLayout>
       </QDocsSection>
 
-      <QDocsSection title="Custom Height Footer">
+      <QDocsSection title="Reveal on Scroll">
         {#snippet sectionDescription()}
-          You can specify the height of the footer using the <code>height</code> prop. As of now, the
-          height can only be set in pixels (passing a number). The default height is 80px.
+          <code>reveal</code> hides the footer while scrolling down and shows it when scrolling up.
+          It also returns near the bottom; <code>revealOffset</code> sets that distance in pixels. Scroll
+          through the day below to try it.
         {/snippet}
 
-        <QLayout style="border: 1px solid var(--outline-variant)">
-          <div class="q-pa-md" style="max-height: 10rem">
-            {lorem}
-          </div>
-
+        <QLayout class="footer-layout surface">
+          {#snippet content()}
+            <div class="q-pa-lg">
+              <div class="label-medium text-tertiary">ONE DAY, NO RUSH</div>
+              <h6 id="trailmark-top" class="q-mb-lg">A day by the water</h6>
+              <ol class="itinerary">
+                {#each STOPS as stop (stop.time)}
+                  <li class="flex q-gap-md">
+                    <div class="stop-icon secondary-container" aria-hidden="true">
+                      <QIcon name={stop.icon} />
+                    </div>
+                    <div>
+                      <div class="label-medium text-on-surface-variant">{stop.time}</div>
+                      <div class="title-medium">{stop.title}</div>
+                      <p class="body-medium q-mt-xs q-mb-none">{stop.text}</p>
+                    </div>
+                  </li>
+                {/each}
+              </ol>
+            </div>
+          {/snippet}
           {#snippet footer()}
-            <QFooter height={100} bordered>
-              <span>Custom Height Footer Content</span>
+            <QFooter reveal revealOffset={96} bordered class="justify-between primary-container">
+              <span class="flex items-center q-gap-sm title-medium">
+                <QIcon name="landscape" aria-hidden="true" /> Trailmark
+              </span>
+              <a class="footer-link label-large" href="#trailmark-top">Back to top</a>
             </QFooter>
           {/snippet}
         </QLayout>
@@ -114,3 +280,113 @@
     </div>
   {/snippet}
 </QDocs>
+
+<style>
+  :global(.footer-layout) {
+    max-width: 50rem;
+    height: 22rem;
+    border: 0.0625rem solid var(--outline-variant);
+    border-radius: 1.5rem;
+  }
+
+  :global(.footer-preview) {
+    max-width: 24rem;
+    height: 100%;
+  }
+
+  .journal-art {
+    display: grid;
+    place-items: center;
+    width: 5.5rem;
+    height: 3.5rem;
+    margin-block: 0.5rem;
+    border-radius: 3.5rem 3.5rem 1rem 1rem;
+  }
+
+  .studio-content {
+    display: grid;
+    gap: 3rem;
+  }
+
+  .studio-art {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .studio-art span {
+    display: grid;
+    width: 3rem;
+    height: 3rem;
+    place-items: center;
+    border-radius: 1rem;
+  }
+
+  :global(.studio-footer) {
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
+    gap: 0.5rem;
+    padding-block: 0.75rem;
+    white-space: normal;
+  }
+
+  .studio-footer-main,
+  .studio-fine-print {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem 1rem;
+  }
+
+  .studio-mark {
+    display: grid;
+    width: 2.25rem;
+    height: 2.25rem;
+    place-items: center;
+    border-radius: 0.75rem;
+  }
+
+  .studio-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .studio-links a,
+  .footer-link {
+    color: inherit;
+    text-underline-offset: 0.1875rem;
+  }
+
+  .studio-fine-print {
+    padding-top: 0.5rem;
+    border-top: 0.0625rem solid color-mix(in srgb, currentColor 20%, transparent);
+  }
+
+  :global(.booking-layout) {
+    height: 25rem;
+  }
+
+  .stay-copy {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .itinerary {
+    display: grid;
+    gap: 2.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .stop-icon {
+    display: grid;
+    flex: none;
+    width: 3rem;
+    height: 3rem;
+    place-items: center;
+    border-radius: 50%;
+  }
+</style>
