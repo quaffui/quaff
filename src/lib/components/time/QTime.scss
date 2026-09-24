@@ -29,8 +29,8 @@
 
   &:focus-visible {
     z-index: 4;
-    outline: 0.1875rem solid var(--secondary);
-    outline-offset: 0.125rem;
+    outline: 3px solid var(--secondary);
+    outline-offset: 2px;
   }
 
   &:disabled {
@@ -50,7 +50,7 @@
   }
 
   .q-field__snippet-append {
-    gap: 0.5rem;
+    gap: 8px;
   }
 
   &__field-icon,
@@ -66,29 +66,29 @@
   }
 
   &__dialog.q-dialog:not(.q-dialog--fullscreen) {
-    width: min(20.5rem, calc(100dvw - 1rem));
+    width: min(328px, calc(100dvw - 16px));
     min-width: 0;
     min-height: 0;
-    max-width: 20.5rem;
-    max-height: calc(100dvh - 1rem);
+    max-width: 328px;
+    max-height: calc(100dvh - 16px);
     padding: 0;
-    overflow: visible;
+    overflow: auto;
     color: var(--on-surface);
   }
 
   &__dialog.q-dialog:not(.q-dialog--fullscreen):has(&__picker--horizontal:not(&__picker--input)) {
-    width: min(35.75rem, calc(100dvw - 1rem));
-    max-width: 35.75rem;
+    width: min(572px, calc(100dvw - 16px));
+    max-width: 572px;
   }
 
   &__docked.q-menu {
-    width: min(20.5rem, calc(100dvw - 1rem));
-    max-width: 20.5rem;
-    max-height: calc(100dvh - 1rem);
-    margin-block-start: 0.5rem;
+    width: min(328px, calc(100dvw - 16px));
+    max-width: 328px;
+    max-height: calc(100dvh - 16px);
+    margin-block-start: 8px;
     overflow: auto;
     overscroll-behavior: contain;
-    border-radius: 1rem;
+    border-radius: 16px;
     background-color: var(--surface-container-high);
     color: var(--on-surface);
     box-shadow: var(--elevate3);
@@ -100,24 +100,24 @@
       "title"
       "page"
       "footer";
-    width: min(20.5rem, calc(100dvw - 1rem));
+    width: min(328px, calc(100dvw - 16px));
     min-width: 0;
-    padding: 1.5rem;
-    padding-inline: clamp(0rem, calc((100dvw - 18.5rem) / 2), 1.5rem);
-    border-radius: 1.75rem;
+    padding: 24px;
+    padding-inline: clamp(0px, calc((100dvw - 296px) / 2), 24px);
+    border-radius: 28px;
     background-color: var(--surface-container-high);
     color: var(--on-surface);
   }
 
   &__picker--docked {
-    border-radius: 1rem;
+    border-radius: 16px;
   }
 
   &__title {
     @include mixins.typography("label-medium");
 
     grid-area: title;
-    height: 1rem;
+    min-height: 16px;
     color: var(--on-surface-variant);
   }
 
@@ -134,7 +134,7 @@
     flex-direction: column;
     align-items: center;
     width: 100%;
-    margin-block-start: 1.25rem;
+    margin-block-start: 20px;
   }
 
   &__controls {
@@ -144,17 +144,16 @@
     justify-content: center;
     width: 100%;
     min-width: 0;
-    gap: 0.75rem;
+    gap: 12px;
   }
 
   &__controls--input {
-    display: grid;
-    grid-template-columns: 13.5rem 3.25rem;
-    row-gap: 0;
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: 8px;
   }
 
   &__picker--input#{&}__picker--24h &__controls--input {
-    grid-template-columns: 13.5rem;
     justify-content: center;
   }
 
@@ -162,9 +161,12 @@
   &__input-fields {
     display: grid;
     flex: 0 0 auto;
-    grid-template-columns: 6rem 1.5rem 6rem;
+    grid-template-columns: minmax(96px, max-content) minmax(24px, max-content) minmax(
+        96px,
+        max-content
+      );
     align-items: start;
-    width: 13.5rem;
+    width: max-content;
     direction: ltr;
   }
 
@@ -176,9 +178,9 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 6rem;
-    height: 5rem;
-    border-radius: 0.5rem;
+    min-width: 96px;
+    min-height: 80px;
+    border-radius: 8px;
     background-color: var(--surface-container-highest);
     color: var(--on-surface);
     font-variant-numeric: tabular-nums;
@@ -196,12 +198,14 @@
   }
 
   &__picker--24h:not(&__picker--horizontal) &__time-selectors {
-    grid-template-columns: 7.125rem 1.5rem 7.125rem;
-    width: 15.75rem;
+    grid-template-columns: minmax(114px, max-content) minmax(24px, max-content) minmax(
+        114px,
+        max-content
+      );
   }
 
   &__picker--24h:not(&__picker--horizontal) &__time-selector {
-    width: 7.125rem;
+    min-width: 114px;
   }
 
   &__separator {
@@ -210,20 +214,20 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 1.5rem;
-    height: 5rem;
+    min-width: 24px;
+    min-height: 80px;
     color: var(--on-surface);
     font-variant-numeric: tabular-nums;
   }
 
   &__period {
     display: grid;
-    flex: 0 0 3.25rem;
+    flex: 0 0 auto;
     grid-template-rows: repeat(2, minmax(0, 1fr));
-    width: 3.25rem;
-    height: 5rem;
-    border: 0.0625rem solid var(--outline);
-    border-radius: 0.5rem;
+    min-width: 52px;
+    min-height: 80px;
+    border: 1px solid var(--outline);
+    border-radius: 8px;
     direction: ltr;
   }
 
@@ -234,7 +238,9 @@
 
     width: 100%;
     min-width: 0;
-    height: 100%;
+    min-height: 0;
+    padding-inline: 4px;
+    overflow-wrap: anywhere;
     color: var(--on-surface-variant);
     cursor: pointer;
     transition:
@@ -242,14 +248,14 @@
       color variables.$speed2 linear;
 
     &:first-child {
-      border-start-start-radius: 0.4375rem;
-      border-start-end-radius: 0.4375rem;
+      border-start-start-radius: 7px;
+      border-start-end-radius: 7px;
     }
 
     &:last-child {
-      border-end-start-radius: 0.4375rem;
-      border-end-end-radius: 0.4375rem;
-      border-block-start: 0.0625rem solid var(--outline);
+      border-end-start-radius: 7px;
+      border-end-end-radius: 7px;
+      border-block-start: 1px solid var(--outline);
     }
 
     &--selected {
@@ -262,15 +268,15 @@
 
   &__content {
     flex: 0 0 auto;
-    width: 16rem;
-    height: 16rem;
-    margin-block: 2.25rem 1.5rem;
+    width: 256px;
+    height: 256px;
+    margin-block: 36px 24px;
   }
 
   &__dial {
     position: relative;
-    width: 16rem;
-    height: 16rem;
+    width: 256px;
+    height: 256px;
     overflow: visible;
     border-radius: 50%;
     background-color: transparent;
@@ -285,11 +291,11 @@
     @include state-layer;
 
     position: absolute;
-    inset-block-start: calc(50% - 1.5rem);
-    inset-inline-start: calc(50% - 1.5rem);
+    inset-block-start: calc(50% - 24px);
+    inset-inline-start: calc(50% - 24px);
     z-index: 3;
-    width: 3rem;
-    height: 3rem;
+    width: 48px;
+    height: 48px;
     border-radius: 50%;
     color: var(--on-surface);
     font-variant-numeric: tabular-nums;
@@ -308,9 +314,9 @@
   &__track {
     position: absolute;
     inset-block-start: calc(50% - var(--hand-length));
-    inset-inline-start: calc(50% - 0.0625rem);
+    inset-inline-start: calc(50% - 1px);
     z-index: 1;
-    width: 0.125rem;
+    width: 2px;
     height: var(--hand-length);
     background-color: var(--primary);
     pointer-events: none;
@@ -325,11 +331,11 @@
 
   &__hand {
     position: absolute;
-    inset-block-start: calc(50% - 1.5rem);
-    inset-inline-start: calc(50% - 1.5rem);
+    inset-block-start: calc(50% - 24px);
+    inset-inline-start: calc(50% - 24px);
     z-index: 2;
-    width: 3rem;
-    height: 3rem;
+    width: 48px;
+    height: 48px;
     border-radius: 50%;
     background-color: var(--primary);
     pointer-events: none;
@@ -340,11 +346,11 @@
 
   &__center {
     position: absolute;
-    inset-block-start: calc(50% - 0.25rem);
-    inset-inline-start: calc(50% - 0.25rem);
+    inset-block-start: calc(50% - 4px);
+    inset-inline-start: calc(50% - 4px);
     z-index: 2;
-    width: 0.5rem;
-    height: 0.5rem;
+    width: 8px;
+    height: 8px;
     border-radius: 50%;
     background-color: var(--primary);
     pointer-events: none;
@@ -353,20 +359,21 @@
   &__input-field {
     display: flex;
     flex-direction: column;
-    width: 6rem;
-    min-width: 0;
-    gap: 0.4375rem;
+    width: min-content;
+    min-width: 96px;
+    gap: 7px;
   }
 
   &__input-control {
     @include mixins.typography("display-medium");
 
     appearance: textfield;
-    width: 6rem;
-    height: 4.5rem;
+    width: max(96px, calc(2ch + 8px));
+    min-height: 72px;
+    height: calc(1lh + 4px);
     padding: 0;
-    border: 0.0625rem solid transparent;
-    border-radius: 0.5rem;
+    border: 1px solid transparent;
+    border-radius: 8px;
     outline: 0;
     background-color: var(--surface-container-highest);
     color: var(--on-surface);
@@ -388,7 +395,7 @@
     }
 
     &:focus {
-      border-width: 0.125rem;
+      border-width: 2px;
       border-color: var(--primary);
       background-color: var(--primary-container);
       color: var(--on-primary-container);
@@ -404,15 +411,16 @@
   &__input-error {
     @include mixins.typography("body-small");
 
-    min-height: 1rem;
+    min-height: 16px;
   }
 
   &__input-label {
+    overflow-wrap: anywhere;
     color: var(--on-surface-variant);
   }
 
   &__input-error {
-    grid-column: 1 / -1;
+    flex-basis: 100%;
     color: var(--error);
 
     &:empty {
@@ -421,7 +429,7 @@
   }
 
   &__input-field--selected &__input-control {
-    border-width: 0.125rem;
+    border-width: 2px;
     border-color: var(--primary);
     background-color: var(--primary-container);
     color: var(--on-primary-container);
@@ -458,19 +466,19 @@
 
   &__picker--input &__separator,
   &__picker--input &__period {
-    height: 4.5rem;
+    min-height: 72px;
   }
 
   &__picker--input &__main {
-    padding-block-end: 1.5rem;
+    padding-block-end: 24px;
   }
 
   &__announcement {
     position: absolute;
-    width: 0.0625rem;
-    height: 0.0625rem;
+    width: 1px;
+    height: 1px;
     padding: 0;
-    margin: -0.0625rem;
+    margin: -1px;
     overflow: hidden;
     clip: rect(0, 0, 0, 0);
     white-space: nowrap;
@@ -483,7 +491,8 @@
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    height: 2.5rem;
+    min-height: 40px;
+    flex-wrap: wrap;
   }
 
   &__mode-toggle {
@@ -493,10 +502,11 @@
 
   &__actions {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: flex-end;
     margin-inline-start: auto;
-    gap: 0.5rem;
+    gap: 8px;
 
     .q-btn {
       color: var(--primary);
@@ -504,57 +514,57 @@
   }
 
   &__picker--horizontal:not(&__picker--input) {
-    width: 35.75rem;
-    height: 24rem;
+    width: 572px;
+    min-height: 384px;
   }
 
   &__picker--horizontal:not(&__picker--input) &__main {
     flex-direction: row;
     align-items: flex-start;
-    width: 32.75rem;
-    height: 17.5rem;
+    width: 524px;
+    min-height: 280px;
     margin-block-start: 0;
-    padding-block-end: 1.5rem;
-    gap: 3.25rem;
+    padding-block-end: 24px;
+    gap: 52px;
   }
 
   &__picker--horizontal:not(&__picker--input) &__controls {
     flex-direction: column;
     align-items: stretch;
     justify-content: flex-start;
-    width: 13.5rem;
-    height: 16rem;
-    padding-block-start: 4.5rem;
-    gap: 1rem;
+    width: 216px;
+    min-height: 256px;
+    padding-block-start: 72px;
+    gap: 16px;
   }
 
   &__picker--horizontal:not(&__picker--input) &__period {
     flex-basis: auto;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     grid-template-rows: none;
-    width: 13.5rem;
-    height: 2.375rem;
+    width: 216px;
+    min-height: 38px;
   }
 
   &__picker--horizontal:not(&__picker--input) &__period-option {
     &:first-child {
       border-radius: 0;
-      border-start-start-radius: 0.4375rem;
-      border-end-start-radius: 0.4375rem;
+      border-start-start-radius: 7px;
+      border-end-start-radius: 7px;
     }
 
     &:last-child {
       border: 0;
       border-radius: 0;
-      border-inline-start: 0.0625rem solid var(--outline);
-      border-start-end-radius: 0.4375rem;
-      border-end-end-radius: 0.4375rem;
+      border-inline-start: 1px solid var(--outline);
+      border-start-end-radius: 7px;
+      border-end-end-radius: 7px;
     }
   }
 
   &__picker--horizontal:not(&__picker--input) &__content {
-    width: 16rem;
-    height: 16rem;
+    width: 256px;
+    height: 256px;
     margin: 0;
   }
 }

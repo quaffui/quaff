@@ -3,10 +3,10 @@
 .q-carousel {
   width: 100%;
   min-width: 0;
-  padding-block: 0.5rem;
+  padding-block: 8px;
 
   &__viewport {
-    margin-inline: 1rem;
+    margin-inline: 16px;
     overflow: auto hidden;
     overscroll-behavior-x: contain;
     scrollbar-width: none;
@@ -49,7 +49,7 @@
     overflow: hidden;
     border: 0;
     padding: 0;
-    border-radius: 1.75rem;
+    border-radius: 28px;
     background: var(--surface);
     color: var(--on-surface);
     text-align: start;
@@ -72,7 +72,7 @@
     }
 
     &:active {
-      border-radius: 1.5rem;
+      border-radius: 24px;
       box-shadow: none;
     }
 
@@ -115,8 +115,8 @@
   &__controls {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    padding: 0.25rem 1rem;
+    gap: 8px;
+    padding: 4px 16px;
   }
 
   &__status {

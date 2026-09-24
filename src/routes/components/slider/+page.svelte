@@ -27,7 +27,7 @@
   docDescription="Select single values or ranges with accessible Material 3 sliders."
 >
   {#snippet display()}
-    <QCard class="flex column q-gap-lg" style="width: min(28rem, 80%);">
+    <QCard class="flex column q-gap-lg" style="width: min(448px, 80%);">
       <QSlider value={64} aria-label="Preview value" />
       <QRange value={[20, 78]} minAriaLabel="Preview minimum" maxAriaLabel="Preview maximum" />
     </QCard>
@@ -113,7 +113,7 @@
         <div class="flex column q-gap-lg">
           {#each sizes as size (size)}
             <div class="flex items-center q-gap-md">
-              <span class="label-large" style="width: 2rem;">{size.toUpperCase()}</span>
+              <span class="label-large" style="width: 32px;">{size.toUpperCase()}</span>
               <QSlider
                 value={60}
                 expressive
@@ -124,7 +124,7 @@
             </div>
           {/each}
 
-          <div class="flex items-center q-gap-xl" style="min-height: 14rem;">
+          <div class="flex items-center q-gap-xl" style="min-height: 224px;">
             <QSlider
               bind:value={volume}
               expressive
@@ -147,18 +147,18 @@
 
         <div style="display: grid; max-width: 36rem;">
           <div class="flex items-center q-gap-md">
-            <span id="reversed-slider-label" class="label-large" style="width: 6rem;">Reversed</span
+            <span id="reversed-slider-label" class="label-large" style="width: 96px;">Reversed</span
             >
             <QSlider value={30} reverse aria-labelledby="reversed-slider-label" />
           </div>
           <div class="flex items-center q-gap-md">
-            <span id="readonly-slider-label" class="label-large" style="width: 6rem;"
+            <span id="readonly-slider-label" class="label-large" style="width: 96px;"
               >Read-only</span
             >
             <QSlider value={55} readonly aria-labelledby="readonly-slider-label" />
           </div>
           <div class="flex items-center q-gap-md">
-            <span id="disabled-slider-label" class="label-large" style="width: 6rem;">Disabled</span
+            <span id="disabled-slider-label" class="label-large" style="width: 96px;">Disabled</span
             >
             <QSlider value={70} disabled aria-labelledby="disabled-slider-label" />
           </div>

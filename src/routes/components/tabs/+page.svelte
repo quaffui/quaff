@@ -110,7 +110,7 @@
           class="media-panel"
         >
           <div class="media-art {category.color}" aria-hidden="true">
-            <QIcon name={category.icon} size="3rem" />
+            <QIcon name={category.icon} size="48px" />
           </div>
           <h3 class="title-large q-mt-md q-mb-xs">{category.title}</h3>
           <p class="body-medium q-ma-none">{category.detail}</p>
@@ -135,7 +135,7 @@
         </div>
         <div class="example-frame surface">
           <div class="example-heading">
-            <QIcon name="sports_esports" class="text-tertiary" size="2rem" aria-hidden="true" />
+            <QIcon name="sports_esports" class="text-tertiary" size="32px" aria-hidden="true" />
             <div>
               <h6 class="title-large">Orbit Racer</h6>
               <div class="body-medium text-on-surface-variant">Project assets</div>
@@ -225,7 +225,7 @@
             class="example-panel"
           >
             <div class="delivery-banner tertiary-container">
-              <QIcon name="delivery_truck_speed" size="2.5rem" aria-hidden="true" />
+              <QIcon name="delivery_truck_speed" size="40px" aria-hidden="true" />
               <div>
                 <h6 class="title-large">On its way</h6>
                 <div class="body-medium">Arriving Friday, 18:00–21:00</div>
@@ -363,21 +363,21 @@
   .media-library {
     width: 100%;
     max-width: 24rem;
-    border-radius: 1.5rem;
+    border-radius: 24px;
     overflow: hidden;
   }
 
   .media-panel,
   .example-panel {
-    padding: 1rem;
+    padding: 16px;
   }
 
   .media-art {
     position: relative;
     display: grid;
     place-items: center;
-    height: 5rem;
-    border-radius: 0.75rem;
+    height: 80px;
+    border-radius: 12px;
     overflow: hidden;
   }
 
@@ -385,32 +385,32 @@
   .media-art::after {
     content: "";
     position: absolute;
-    width: 8rem;
-    height: 8rem;
-    border: 1rem solid currentColor;
+    width: 128px;
+    height: 128px;
+    border: 16px solid currentColor;
     border-radius: 50%;
     opacity: 0.1;
   }
 
   .media-art::before {
-    inset-inline-start: -3rem;
+    inset-inline-start: -48px;
   }
 
   .media-art::after {
-    inset-inline-end: -3rem;
+    inset-inline-end: -48px;
   }
 
   .example-controls {
     display: flex;
     flex-wrap: wrap;
-    gap: 1rem 1.5rem;
-    margin-bottom: 1rem;
+    gap: 16px 24px;
+    margin-bottom: 16px;
   }
 
   .example-frame {
     max-width: 42rem;
-    border: 0.0625rem solid var(--outline-variant);
-    border-radius: 1rem;
+    border: 1px solid var(--outline-variant);
+    border-radius: 16px;
     overflow: hidden;
   }
 
@@ -420,16 +420,16 @@
   .delivery-banner {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 16px;
   }
 
   .example-heading {
-    padding: 1rem;
+    padding: 16px;
   }
 
   .asset-list {
     display: grid;
-    gap: 1rem;
+    gap: 16px;
     padding: 0;
     margin: 0;
     list-style: none;
@@ -437,13 +437,13 @@
 
   .delivery-banner {
     flex-wrap: wrap;
-    padding: 1rem;
-    border-radius: 0.75rem;
+    padding: 16px;
+    border-radius: 12px;
   }
 
   .order-details {
     display: grid;
-    gap: 1rem;
+    gap: 16px;
     margin: 0;
   }
 
@@ -451,7 +451,7 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    gap: 0.5rem 1rem;
+    gap: 8px 16px;
   }
 
   .order-details dd {
@@ -465,7 +465,7 @@
   }
 
   .settings-panels {
-    min-height: 11rem;
+    min-height: 176px;
   }
 
   .profile-preview {
@@ -475,6 +475,6 @@
 
   .settings-options {
     display: grid;
-    gap: 1rem;
+    gap: 16px;
   }
 </style>

@@ -126,7 +126,7 @@
           <QSeparator text="Default Size" />
           <QSeparator text="2px Thick (number)" size={2} class="q-my-md" />
           <QSeparator text="3px Thick" size="3px" class="q-my-md" />
-          <QSeparator text="0.25rem Thick" size="0.25rem" class="q-my-md" />
+          <QSeparator text="4px Thick" size="4px" class="q-my-md" />
         </div>
       </QDocsSection>
 
@@ -135,7 +135,7 @@
           Use <code>inset</code> to add 16px of space on the left, right, or both sides.
         {/snippet}
 
-        <div class="q-my-md" style="border: 1px dashed var(--outline-variant); padding: 1rem;">
+        <div class="q-my-md" style="border: 1px dashed var(--outline-variant); padding: 16px;">
           <p>Full-width</p>
           <QSeparator />
           <p class="q-mt-md">Left inset</p>

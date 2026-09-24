@@ -2,7 +2,7 @@
 
 .q-card {
   display: block;
-  border-radius: 0.75rem;
+  border-radius: 12px;
 
   background-color: var(--surface-container-low);
   color: var(--on-surface);
@@ -24,7 +24,7 @@
   }
 
   &--rounded {
-    border-radius: 2rem;
+    border-radius: 32px;
   }
 
   &--fill {

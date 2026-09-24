@@ -21,7 +21,7 @@ export interface QSplitBtnProps
   label?: string;
   /** Button style. Defaults to filled. */
   variant?: Exclude<QBtnVariantOptions, "flat">;
-  /** Expressive size, from xs to xl. Defaults to sm (2.5rem). */
+  /** Expressive size, from xs to xl. Defaults to sm (40px minimum height). */
   size?: QBtnProps["size"];
   /** Accessible name for the menu button, such as "More send options". */
   menuLabel: string;

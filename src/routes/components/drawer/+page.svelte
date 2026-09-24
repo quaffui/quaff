@@ -145,7 +145,7 @@
 
         <QLayout
           view="hHh LpR fFf"
-          style="height: 26rem; width: 100%; border: 0.0625rem solid var(--outline);"
+          style="height: 416px; width: 100%; border: 1px solid var(--outline);"
         >
           {#snippet header()}
             <QHeader>

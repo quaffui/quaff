@@ -21,8 +21,8 @@
   docsCtx.set({ snippets, componentDocs: [QFabDocs, QExtendedFabDocs, QFabMenuDocs] });
 
   const sizes = ["sm", "md", "lg"] as const;
-  const baselineHeights = { sm: 2.5, md: 3.5, lg: 6 };
-  const expressiveHeights = { sm: 3.5, md: 5, lg: 6 };
+  const BASELINE_HEIGHTS = { sm: 40, md: 56, lg: 96 };
+  const EXPRESSIVE_HEIGHTS = { sm: 56, md: 80, lg: 96 };
   const colors = [
     "primary-container",
     "secondary-container",
@@ -107,7 +107,7 @@
         <span>Just for you</span>
       </div>
       <div class="fab-note-preview">
-        <QIcon name="wb_sunny" size="2rem" aria-hidden="true" />
+        <QIcon name="wb_sunny" size="32px" aria-hidden="true" />
         <h5>Make room for a slow weekend</h5>
         <p>{savedNote ? "Saved to your notebook." : "Small plans, good days."}</p>
       </div>
@@ -131,8 +131,8 @@
           <code>expressive</code> inherits the global Quaff setting unless specified.
         </p>
         <p>
-          Baseline sizes are 2.5, 3.5, and 6rem; expressive sizes are 3.5, 5, and 6rem. Both modes
-          default to 3.5rem. The 5rem expressive FAB suits most layouts; the 2.5rem baseline size
+          Baseline sizes are 40, 56, and 96px; expressive sizes are 56, 80, and 96px. Both modes
+          default to 56px. The 80px expressive FAB suits most layouts; the 40px baseline size
           remains available for compatibility.
         </p>
       {/snippet}
@@ -149,7 +149,7 @@
                 aria-label="Compose"
                 onclick={() => (fabStatus = `Draft created with ${size} FAB`)}
               />
-              <span>{size} · {(expressive ? expressiveHeights : baselineHeights)[size]}rem</span>
+              <span>{size} · {(expressive ? EXPRESSIVE_HEIGHTS : BASELINE_HEIGHTS)[size]}px</span>
             </div>
           {/each}
         </div>
@@ -185,8 +185,8 @@
       {#snippet sectionDescription()}
         <p>
           <code>QExtendedFab</code> requires a short <code>label</code>; its <code>icon</code> is optional.
-          Baseline extended FABs are always 3.5rem high. Expressive sizes match the FAB's 3.5, 5, and
-          6rem heights, with width determined by the label.
+          Baseline extended FABs have a minimum height of 56px. Expressive minimums are 56, 80, and 96px.
+          The label determines their width, and larger text can increase their height.
         </p>
         <p>
           Set <code>collapsed</code> to show only the icon while keeping the accessible name. Without
@@ -208,7 +208,7 @@
               collapsed={isCollapsed}
               onclick={() => (extendedStatus = `Draft created with ${size} extended FAB`)}
             />
-            <span>{size} · {expressiveHeights[size]}rem</span>
+            <span>{size} · {EXPRESSIVE_HEIGHTS[size]}px</span>
           </div>
         {/each}
       </div>
@@ -293,7 +293,7 @@
 
     <QDocsSection title="Stationary Placement">
       {#snippet sectionDescription()}
-        Keep the primary FAB in place while content scrolls. This notebook places it 1rem from the
+        Keep the primary FAB in place while content scrolls. This notebook places it 16px from the
         bottom and trailing edges. Scroll the notes, then use the FAB to write your own.
       {/snippet}
 
@@ -390,21 +390,21 @@
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 1.5rem;
+    gap: 24px;
   }
 
   .fab-example {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
+    gap: 12px;
   }
 
   .fab-placement {
     position: relative;
-    height: 20rem;
+    height: 320px;
     overflow: hidden;
-    border: 0.0625rem solid var(--outline-variant);
-    border-radius: 1.5rem;
+    border: 1px solid var(--outline-variant);
+    border-radius: 24px;
     background: var(--surface-container-low);
     color: var(--on-surface);
   }
@@ -412,32 +412,32 @@
   .fab-scroll {
     height: 100%;
     overflow: auto;
-    padding: 1.25rem 1.25rem 6rem;
+    padding: 20px 20px 96px;
   }
 
   .fab-scroll:focus-visible {
-    outline: 0.1875rem solid var(--secondary);
-    outline-offset: -0.1875rem;
+    outline: 3px solid var(--secondary);
+    outline-offset: -3px;
   }
 
   .fab-placement :global(.fab-placement-action) {
     position: absolute;
-    inset-block-end: 1rem;
-    inset-inline-end: 1rem;
+    inset-block-end: 16px;
+    inset-inline-end: 16px;
   }
 
   .fab-notebook {
     width: 100%;
     max-width: 25rem;
-    padding: 1.25rem;
+    padding: 20px;
   }
 
   .fab-demo-heading {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 0.5rem;
-    margin-bottom: 1.25rem;
+    gap: 8px;
+    margin-bottom: 20px;
   }
 
   .fab-demo-heading > span {
@@ -447,15 +447,15 @@
   }
 
   .fab-note-preview {
-    padding: 1.25rem;
-    border-radius: 0.5rem 1.5rem 1.5rem 1.5rem;
+    padding: 20px;
+    border-radius: 8px 24px 24px 24px;
     background: var(--primary-container);
     color: var(--on-primary-container);
     overflow-wrap: anywhere;
   }
 
   .fab-note-preview h5 {
-    margin-block: 0.75rem 0.5rem;
+    margin-block: 12px 8px;
   }
 
   .fab-note-preview p,
@@ -465,23 +465,23 @@
 
   .fab-workspace {
     height: auto;
-    min-height: 20rem;
-    padding: 1.25rem 1.25rem 6rem;
+    min-height: 320px;
+    padding: 20px 20px 96px;
   }
 
   .fab-file-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 9rem), 1fr));
-    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 144px), 1fr));
+    gap: 16px;
   }
 
   .fab-file {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 0.75rem;
-    padding: 1rem;
-    border-radius: 1rem;
+    gap: 12px;
+    padding: 16px;
+    border-radius: 16px;
     background: var(--surface-container-highest);
   }
 
@@ -496,9 +496,9 @@
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    width: 2.75rem;
-    height: 2.75rem;
-    border-radius: 0.875rem;
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
     background: var(--primary-container);
     color: var(--on-primary-container);
   }
@@ -517,23 +517,23 @@
   .fab-note-list li {
     display: flex;
     align-items: center;
-    gap: 1rem;
-    padding-block: 1rem;
-    border-bottom: 0.0625rem solid var(--outline-variant);
+    gap: 16px;
+    padding-block: 16px;
+    border-bottom: 1px solid var(--outline-variant);
     border-radius: 0;
     overflow-wrap: anywhere;
   }
 
   .fab-note-form {
     display: grid;
-    gap: 1.5rem;
-    width: 26rem;
+    gap: 24px;
+    width: 416px;
     max-width: 100%;
   }
 
   .fab-form-actions {
     display: flex;
     justify-content: flex-end;
-    gap: 0.5rem;
+    gap: 8px;
   }
 </style>

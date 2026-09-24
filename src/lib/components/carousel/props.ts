@@ -27,7 +27,7 @@ export interface QCarouselProps<T> extends Omit<
   value?: number;
   /** Preferred maximum large item width in pixels; fixed width for uncontained items. @default 360 */
   itemWidth?: number;
-  /** CSS height of the items. Full-screen defaults to 100svh; other layouts to 15rem. */
+  /** CSS height of the items. Full-screen defaults to 100svh; other layouts to 240px. */
   height?: string;
   /** Width/height ratio for each uncontained-multi-aspect item, clamped to 9:16–16:9. */
   aspectRatio?: (item: T, index: number) => number;

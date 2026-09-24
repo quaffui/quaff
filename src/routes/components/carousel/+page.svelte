@@ -27,7 +27,7 @@
 
 <QDocs>
   {#snippet display()}
-    <QCarousel {items} height="14rem" itemWidth={200} aria-label="Drink photo preview">
+    <QCarousel {items} height="224px" itemWidth={200} aria-label="Drink photo preview">
       {#snippet children({ item })}
         <img class="carousel-image" src={item.src} alt={item.title} />
       {/snippet}
@@ -100,7 +100,7 @@
           {items}
           variant="hero"
           itemWidth={640}
-          height="20rem"
+          height="320px"
           style="max-width: 40rem;"
           aria-label="Featured drink photos"
         >
@@ -121,7 +121,7 @@
           variant="centered-hero"
           value={1}
           itemWidth={640}
-          height="20rem"
+          height="320px"
           style="max-width: 40rem;"
           aria-label="Centered featured drink photos"
         >
@@ -136,14 +136,14 @@
           Present one item at a time with vertical scrolling and mandatory snapping. Use this layout
           for portrait screens; choose another variant for landscape layouts. The default height is <code
             >100svh</code
-          >, reduced to <code>28rem</code> in this embedded example.
+          >, reduced to <code>448px</code> in this embedded example.
         {/snippet}
 
         <div style="max-width: 20rem; margin-inline: auto;">
           <QCarousel
             {items}
             variant="full-screen"
-            height="28rem"
+            height="448px"
             aria-label="Full-screen drink photos"
           >
             {#snippet children({ item })}

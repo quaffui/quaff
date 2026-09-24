@@ -192,7 +192,7 @@
   >
     <span>{months ? state.monthLabel : state.formatters.year(state.displayedMonth.year)}</span>
     {#if state.calendarView !== (months ? "years" : "months")}
-      <QIcon class="q-date__dropdown-icon" name="arrow_drop_down" size="1.125rem" />
+      <QIcon class="q-date__dropdown-icon" name="arrow_drop_down" size={18} />
     {/if}
   </QBtn>
 {/snippet}

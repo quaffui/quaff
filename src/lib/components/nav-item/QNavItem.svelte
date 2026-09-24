@@ -152,7 +152,7 @@ Navigation destinations for drawers, navigation bars, and railbars.
 
     {#if icon}
       <span class="q-nav-item__icon" aria-hidden="true">
-        <QIconSnippet {icon} size="1.5rem" filled={isActive} />
+        <QIconSnippet {icon} size="24px" filled={isActive} />
 
         {#if badge && !isInDrawer}
           {@render badgeContent(true)}

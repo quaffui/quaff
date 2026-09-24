@@ -195,7 +195,7 @@
               onclick={() => (isPersistentMenuOpen = !isPersistentMenuOpen)}
             >
               <QMenu bind:value={isPersistentMenuOpen} persistent autoClose={false}>
-                <QCard style="width: min(18rem, calc(100vw - 2rem));">
+                <QCard style="width: min(288px, calc(100vw - 32px));">
                   <QCardSection>
                     <h6 class="q-mb-sm">Menu panel</h6>
                     <p class="q-mb-none">This menu stays open when you click outside.</p>
@@ -246,7 +246,7 @@
 <style lang="scss">
   :global(.q-menu-docs__action) {
     box-sizing: border-box;
-    width: calc(100% - 1rem);
+    width: calc(100% - 16px);
     max-width: 100%;
   }
 </style>

@@ -492,8 +492,8 @@
 <style>
   .search-demo {
     max-width: 42rem;
-    padding: clamp(1rem, 4vw, 2rem);
-    border-radius: 1.75rem;
+    padding: clamp(16px, 4vw, 32px);
+    border-radius: 28px;
     color: var(--on-surface);
     background: var(--surface-container-low);
   }
@@ -506,6 +506,6 @@
   .search-detail {
     display: flex;
     align-items: flex-start;
-    gap: 1rem;
+    gap: 16px;
   }
 </style>

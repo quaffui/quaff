@@ -16,7 +16,7 @@ h5,
 h6 {
   display: flex;
   align-items: center;
-  margin-bottom: 0.5rem;
+  margin-bottom: 8px;
 }
 
 * + h1,
@@ -25,7 +25,7 @@ h6 {
 * + h4,
 * + h5,
 * + h6 {
-  margin-top: 1rem;
+  margin-top: 16px;
 }
 
 @each $heading, $role in typography-scale.$heading-scale {
@@ -83,5 +83,5 @@ h6.large {
 }
 
 p {
-  margin: 0.5rem 0;
+  margin: 8px 0;
 }

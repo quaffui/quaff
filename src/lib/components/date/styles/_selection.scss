@@ -2,13 +2,13 @@
 
 .q-date {
   &__selection-list {
-    height: 100%;
+    height: 344px;
     min-height: 0;
     overflow-x: hidden;
     overflow-y: auto;
     overscroll-behavior: contain;
     scrollbar-gutter: stable;
-    scroll-padding-block: 1rem;
+    scroll-padding-block: 16px;
   }
 
   &__selection-option {
@@ -20,12 +20,12 @@
 
     appearance: none;
     display: grid;
-    grid-template-columns: 3rem minmax(0, 1fr);
+    grid-template-columns: 48px minmax(0, 1fr);
     align-items: center;
     width: 100%;
-    height: 3rem;
+    min-height: 48px;
     padding-block: 0;
-    padding-inline: 0 1rem;
+    padding-inline: 0 16px;
     border: 0;
     outline: 0;
     background:
@@ -48,8 +48,8 @@
     }
 
     &:focus-visible {
-      outline: 0.1875rem solid var(--secondary);
-      outline-offset: -0.1875rem;
+      outline: 3px solid var(--secondary);
+      outline-offset: -3px;
     }
 
     &--selected {
@@ -66,15 +66,14 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 3rem;
-    height: 3rem;
+    width: 48px;
+    height: 48px;
   }
 
   &__input-mode {
-    flex: 1 1 auto;
+    flex: 1 0 auto;
     position: relative;
-    height: 100%;
-    padding: 0.625rem 1.5rem 1rem;
+    padding: 10px 24px 16px;
 
     .q-field {
       width: 100%;
@@ -83,13 +82,14 @@
 
   &__actions {
     display: flex;
-    flex: 0 0 3.75rem;
+    flex: 0 0 auto;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: flex-end;
-    gap: 0.5rem;
+    gap: 8px;
     z-index: 2;
-    min-height: 3.75rem;
-    padding: 0.5rem 0.5rem 0.75rem;
+    min-height: 60px;
+    padding: 8px 8px 12px;
     background-color: var(--surface-container-high);
 
     .q-btn {
@@ -99,19 +99,20 @@
 
   &__picker--fullscreen {
     height: 100%;
+    overflow: auto;
     padding-block-end: env(safe-area-inset-bottom);
   }
 
   &__picker--fullscreen &__header {
-    padding-inline-start: max(1.5rem, env(safe-area-inset-left));
-    padding-inline-end: max(4rem, calc(3.25rem + env(safe-area-inset-right)));
+    padding-inline-start: max(24px, env(safe-area-inset-left));
+    padding-inline-end: max(64px, calc(52px + env(safe-area-inset-right)));
   }
 
   &__picker--fullscreen &__month-navigation,
   &__picker--fullscreen &__calendar-viewport,
   &__picker--fullscreen &__years,
   &__picker--fullscreen &__input-mode {
-    width: min(100%, 22.5rem);
+    width: min(100%, 360px);
     margin-inline: auto;
   }
 }

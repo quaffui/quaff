@@ -180,7 +180,7 @@
         <QBtn label="Generate new HEX color" onclick={() => (hexColor = getRandomHexColor())} />
         {#if hexColor}
           <span
-            style="background: {hexColor}; height: 1rem; width: 2rem; border-radius: 5px; border: 1px solid var(--outline)"
+            style="background: {hexColor}; height: 16px; width: 32px; border-radius: 5px; border: 1px solid var(--outline)"
           ></span>
           <span>{hexColor}</span>
         {:else}
@@ -227,7 +227,7 @@
           onclick={() => (customPrimary = getRandomHexColor())}
         />
         <span
-          style="background: {customPrimary}; height: 1rem; width: 2rem; border-radius: 5px; border: 1px solid var(--outline)"
+          style="background: {customPrimary}; height: 16px; width: 32px; border-radius: 5px; border: 1px solid var(--outline)"
         ></span>
         <span>{customPrimary}</span>
       </div>
@@ -253,6 +253,6 @@
 
 <style>
   .with-code-block {
-    border-radius: 0.5rem;
+    border-radius: 8px;
   }
 </style>

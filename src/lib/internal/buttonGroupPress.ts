@@ -1,7 +1,7 @@
 import { on } from "svelte/events";
 import { shouldReduceMotion } from "$utils/dom";
 
-type ButtonWidth = { element: HTMLElement; width: number };
+type ButtonWidth = { element: HTMLElement; width: number; labelWidth?: number };
 type PressEvent = PointerEvent | KeyboardEvent;
 
 export function buttonGroupPress(group: HTMLElement) {
@@ -18,6 +18,7 @@ export function buttonGroupPress(group: HTMLElement) {
     for (const { element } of buttons) {
       element.removeAttribute("data-q-btn-group-resizing");
       element.style.removeProperty("--q-btn-group-width");
+      element.style.removeProperty("--q-btn-group-label-width");
     }
 
     buttons = [];
@@ -34,7 +35,13 @@ export function buttonGroupPress(group: HTMLElement) {
 
     reset();
     const measuredButtons = Array.from(group.querySelectorAll<HTMLElement>(":scope > .q-btn"))
-      .map((element) => ({ element, width: element.getBoundingClientRect().width }))
+      .map((element) => ({
+        element,
+        width: element.getBoundingClientRect().width,
+        labelWidth: element
+          .querySelector<HTMLElement>(":scope > .q-btn__label")
+          ?.getBoundingClientRect().width,
+      }))
       .filter(({ width }) => width > 0);
     const buttonIndex = measuredButtons.findIndex(({ element }) => element === button);
     const pressedButton = measuredButtons[buttonIndex];
@@ -68,8 +75,13 @@ export function buttonGroupPress(group: HTMLElement) {
     neighbors: ButtonWidth[],
     widthReduction: number
   ) {
-    for (const { element, width } of buttons) {
+    for (const { element, width, labelWidth } of buttons) {
       setButtonWidth(element, width);
+
+      if (labelWidth !== undefined) {
+        element.style.setProperty("--q-btn-group-label-width", `${labelWidth}px`);
+      }
+
       element.setAttribute("data-q-btn-group-resizing", "");
     }
 

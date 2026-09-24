@@ -1,5 +1,5 @@
 .q-icon {
-  --size: 1.5rem;
+  --size: 24px;
   overflow: visible;
   font-family: var(--font, "Material Symbols Outlined");
   font-weight: normal;
@@ -38,19 +38,19 @@
   }
 
   &--xs {
-    --size: 1rem;
+    --size: 16px;
   }
 
   &--sm {
-    --size: 1.25rem;
+    --size: 20px;
   }
 
   &--lg {
-    --size: 1.75rem;
+    --size: 28px;
   }
 
   &--xl {
-    --size: 2rem;
+    --size: 32px;
   }
 
   > :is(img, svg) {

@@ -16,16 +16,16 @@ QTime is a Material 3 component for selecting or entering a time. It supports di
   import createTimeFocus from "./timeFocus";
   import QTimePicker from "./QTimePicker.svelte";
   import QTimeState, { type QTimeStateSource } from "./timeState.svelte";
+  import type { QTimeDialMeasurement } from "./timeFit";
   import type { QTimeProps, QTimeValue } from "./props";
 
   type InputEvent<T extends Event> = QEvent<T, HTMLInputElement>;
   type ButtonEvent = QEvent<MouseEvent, HTMLButtonElement>;
 
-  // These thresholds come from the measured M3 picker geometry plus an 8px viewport margin.
-  const horizontalPickerMinWidth = 588;
-  const horizontalPickerMinHeight = 400;
-  const verticalPickerMinHeight = 536;
-  const autoApplyCloseDelay = 400;
+  // Choose the baseline orientation, then measure the rendered dial for available space.
+  const HORIZONTAL_PICKER_MIN_WIDTH = 588;
+  const VIEWPORT_MARGIN = 8;
+  const AUTO_APPLY_CLOSE_DELAY = 400;
 
   const i18n = useI18n("time");
   const componentId = $props.id();
@@ -57,6 +57,7 @@ QTime is a Material 3 component for selecting or entering a time. It supports di
   }: QTimeProps = $props();
 
   let wasOpen = false;
+  let dialMeasurement = $state<QTimeDialMeasurement | null>(null);
   let pendingClose: ReturnType<typeof setTimeout> | undefined;
 
   const locale = $derived(providedLocale ?? i18n.locale);
@@ -74,13 +75,15 @@ QTime is a Material 3 component for selecting or entering a time. It supports di
   const landscape = $derived(
     viewportWidth > 0 && viewportHeight > 0 && viewportHeight < viewportWidth
   );
-  const canUseHorizontalDial = $derived(
-    viewportWidth >= horizontalPickerMinWidth && viewportHeight >= horizontalPickerMinHeight
+  const isHorizontalLayout = $derived(
+    !docked && landscape && viewportWidth >= HORIZONTAL_PICKER_MIN_WIDTH
   );
   const dialUnavailable = $derived(
-    !docked &&
-      viewportHeight > 0 &&
-      (landscape ? !canUseHorizontalDial : viewportHeight < verticalPickerMinHeight)
+    dialMeasurement !== null &&
+      dialMeasurement.isHorizontal === isHorizontalLayout &&
+      (!dialMeasurement.doesContentFit ||
+        dialMeasurement.width > viewportWidth - VIEWPORT_MARGIN * 2 ||
+        dialMeasurement.height > viewportHeight - VIEWPORT_MARGIN * 2)
   );
   const source: QTimeStateSource = {
     value: () => value,
@@ -88,14 +91,11 @@ QTime is a Material 3 component for selecting or entering a time. It supports di
     format24h: () => format24h,
     labels: () => ({ ...i18n.labels, ...labels }),
     defaultMode: () => defaultMode,
-    docked: () => docked,
     autoApply: () => autoApply,
     commit,
   };
   const picker = new QTimeState(source);
-  const horizontal = $derived(
-    !docked && picker.displayMode === "dial" && landscape && canUseHorizontalDial
-  );
+  const horizontal = $derived(picker.displayMode === "dial" && isHorizontalLayout);
   const focus = createTimeFocus({
     open: () => open,
     overlayId: () => overlayId,
@@ -126,6 +126,7 @@ QTime is a Material 3 component for selecting or entering a time. It supports di
     wasOpen = open;
 
     if (open) {
+      dialMeasurement = null;
       focus.capture();
       picker.beginSession(focus.direction());
     } else {
@@ -154,7 +155,6 @@ QTime is a Material 3 component for selecting or entering a time. It supports di
     untrack(() => {
       picker.isRtl = focus.direction();
       picker.synchronizeExternalValue(config.value);
-      picker.reconcileOpenSession();
     });
 
     if (refocus) {
@@ -215,7 +215,7 @@ QTime is a Material 3 component for selecting or entering a time. It supports di
     pendingClose = setTimeout(() => {
       pendingClose = undefined;
       open = false;
-    }, autoApplyCloseDelay);
+    }, AUTO_APPLY_CLOSE_DELAY);
   }
 
   function clearPendingClose() {
@@ -310,6 +310,8 @@ QTime is a Material 3 component for selecting or entering a time. It supports di
   >
     <QTimePicker
       state={picker}
+      {open}
+      onDialMeasure={(measurement) => (dialMeasurement = measurement)}
       {focus}
       {docked}
       {horizontal}
@@ -333,6 +335,8 @@ QTime is a Material 3 component for selecting or entering a time. It supports di
   >
     <QTimePicker
       state={picker}
+      {open}
+      onDialMeasure={(measurement) => (dialMeasurement = measurement)}
       {focus}
       {docked}
       {horizontal}

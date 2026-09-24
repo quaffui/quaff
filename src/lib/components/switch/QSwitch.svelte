@@ -136,7 +136,7 @@ QSwitch controls a standalone binary setting that takes effect immediately. It s
     <QIconSnippet
       icon={type === "unchecked" ? uncheckedIcon : checkedIcon}
       defaultIcon={type === "unchecked" ? "close" : "check"}
-      size="1rem"
+      size="16px"
     />
   </span>
 {/snippet}

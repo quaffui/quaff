@@ -416,8 +416,8 @@
             >
               <QAvatar
                 class={chosenColor === index ? "chosen" : ""}
-                size="2.5rem"
-                style="background-color:{color}; border: solid 0.0625rem var(--outline)"
+                size="40px"
+                style="background-color:{color}; border: solid 1px var(--outline)"
               />
             </QIconBtn>
           {/each}
@@ -431,7 +431,7 @@
       {@render children?.()}
 
       {#if Quaff.breakpoints.isLessThan("md") && (nextItem || previousItem)}
-        <div class="q-px-md flex justify-center q-gap-md" style="padding-bottom: 4rem;">
+        <div class="q-px-md flex justify-center q-gap-md" style="padding-bottom: 64px;">
           {#if previousItem}
             <QBtn icon="arrow_back" label={previousItem.name} to={previousItem.to} filled />
           {/if}
@@ -512,8 +512,8 @@
     display: inline-flex;
     align-items: center;
     max-width: 100%;
-    padding: 0.25rem 0.5rem;
-    border-radius: 0.5rem;
+    padding: 4px 8px;
+    border-radius: 8px;
     background-color: var(--surface-container);
     color: inherit;
     vertical-align: baseline;
@@ -528,7 +528,7 @@
   .privacy-policy {
     margin-top: auto;
     text-align: center;
-    padding: 3rem 1rem 1rem;
+    padding: 48px 16px 16px;
     font-size: 0.8rem;
   }
 </style>

@@ -1,5 +1,5 @@
 .q-icon-btn {
-  width: var(--q-btn-height, 2.5rem);
+  width: var(--q-btn-height, 40px);
   min-width: 0;
   padding: 0;
   gap: 0;
@@ -7,45 +7,45 @@
   &.q-btn--expressive {
     &.q-icon-btn--narrow {
       &.q-btn--xs {
-        width: 1.75rem;
+        width: 28px;
       }
 
       &.q-btn--sm {
-        width: 2rem;
+        width: 32px;
       }
 
       &.q-btn--md {
-        width: 3rem;
+        width: 48px;
       }
 
       &.q-btn--lg {
-        width: 4rem;
+        width: 64px;
       }
 
       &.q-btn--xl {
-        width: 6.5rem;
+        width: 104px;
       }
     }
 
     &.q-icon-btn--wide {
       &.q-btn--xs {
-        width: 2.5rem;
+        width: 40px;
       }
 
       &.q-btn--sm {
-        width: 3.25rem;
+        width: 52px;
       }
 
       &.q-btn--md {
-        width: 4.5rem;
+        width: 72px;
       }
 
       &.q-btn--lg {
-        width: 8rem;
+        width: 128px;
       }
 
       &.q-btn--xl {
-        width: 11.5rem;
+        width: 184px;
       }
     }
   }

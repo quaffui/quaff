@@ -100,23 +100,23 @@ Buttons help users take action, such as sending an email, sharing a document, or
 
   const iconSize = $derived.by(() => {
     if (isBaselineGroup) {
-      return "1.125rem";
+      return "18px";
     }
 
     const standardSizes = {
-      xs: "1rem",
-      sm: "1.25rem",
-      md: hasContent ? "1.25rem" : "1.5rem",
-      lg: "1.75rem",
-      xl: "2rem",
+      xs: "16px",
+      sm: "20px",
+      md: hasContent ? "20px" : "24px",
+      lg: "28px",
+      xl: "32px",
     } as const;
     const expressiveSizes = {
       ...standardSizes,
-      xs: "1.25rem",
-      sm: hasContent ? "1.25rem" : "1.5rem",
-      md: "1.5rem",
-      lg: "2rem",
-      xl: "2.5rem",
+      xs: "20px",
+      sm: hasContent ? "20px" : "24px",
+      md: "24px",
+      lg: "32px",
+      xl: "40px",
     } as const;
 
     return (isExpressive ? expressiveSizes : standardSizes)[resolvedSize];

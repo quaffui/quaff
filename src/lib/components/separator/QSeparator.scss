@@ -5,15 +5,15 @@
   align-items: center;
 
   &--inset-left {
-    padding-left: 1rem;
+    padding-left: 16px;
   }
 
   &--inset-right {
-    padding-right: 1rem;
+    padding-right: 16px;
   }
 
   &--inset-both {
-    padding-inline: 1rem;
+    padding-inline: 16px;
   }
 
   &--vertical {
@@ -21,17 +21,17 @@
     flex-direction: column;
 
     &.q-separator__wrapper--inset-left {
-      padding-block-start: 1rem;
+      padding-block-start: 16px;
       padding-left: 0;
     }
 
     &.q-separator__wrapper--inset-right {
-      padding-block-end: 1rem;
+      padding-block-end: 16px;
       padding-right: 0;
     }
 
     &.q-separator__wrapper--inset-both {
-      padding-block: 1rem;
+      padding-block: 16px;
       padding-inline: 0;
     }
   }
@@ -49,7 +49,7 @@
   margin: 0;
 
   &--vertical {
-    width: var(--q-separator-size, 0.0625rem);
+    width: var(--q-separator-size, 1px);
 
     @each $space, $val in variables.$spaces {
       @if $space != "none" and $space != "auto" {
@@ -61,7 +61,7 @@
   }
 
   &:not(&--vertical) {
-    height: var(--q-separator-size, 0.0625rem);
+    height: var(--q-separator-size, 1px);
 
     @each $space, $val in variables.$spaces {
       @if $space != "none" and $space != "auto" {

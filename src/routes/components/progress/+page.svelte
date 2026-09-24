@@ -31,7 +31,7 @@
 >
   {#snippet display()}
     <QCard class="flex column q-gap-lg" style="width: 75%">
-      <QLinearProgress value={75} color="primary" trackColor="secondary" size="0.5rem" />
+      <QLinearProgress value={75} color="primary" trackColor="secondary" size="8px" />
       <QCircularProgress
         style="align-self: center;"
         value={75}
@@ -132,8 +132,8 @@
         <div class="q-my-md flex column q-gap-md" style="max-width: 400px;">
           <QLinearProgress value={50} />
           <QLinearProgress value={50} expressive />
-          <QLinearProgress value={50} size="0.5rem" />
-          <QLinearProgress value={50} size="0.5rem" noRound />
+          <QLinearProgress value={50} size="8px" />
+          <QLinearProgress value={50} size="8px" noRound />
         </div>
       </QDocsSection>
 
@@ -412,7 +412,7 @@
         {/snippet}
 
         <div class="q-my-md flex q-gap-lg">
-          <QCard style="width: 18rem;">
+          <QCard style="width: 288px;">
             <QCardSection>
               <div class="text-h6">File Upload</div>
               <div class="text-subtitle2">3 of 5 files completed</div>
@@ -432,7 +432,7 @@
             </QCardActions>
           </QCard>
 
-          <QCard class="flex column justify-center" style="width: 18rem;">
+          <QCard class="flex column justify-center" style="width: 288px;">
             <div class="flex items-center justify-center q-mb-md">
               <QCircularProgress value={75} size="5em" showValue color="tertiary" />
             </div>

@@ -4,21 +4,25 @@
 @layer q-chip {
   .q-chip {
     --chip-focus-outline-color: var(--on-surface);
-    --chip-avatar-size: 1.125rem;
+    --chip-avatar-size: 18px;
+    --chip-height: 32px;
+    --chip-padding-block: calc((var(--chip-height) - var(--chip-content-size, 20px)) / 2);
     --chip-outline-color: var(--outline-variant);
     --chip-outline-width: 1px;
     --state-layer-color: var(--on-surface);
     --state-layer-opacity: 0%;
     --ripple-color: var(--state-layer-color);
 
-    padding-inline: 1rem;
-    border-radius: 0.5rem;
+    padding: var(--chip-padding-block) 16px;
+    border-radius: 8px;
 
     display: inline-flex;
     align-items: center;
     justify-content: start;
-    gap: 0.5rem;
-    height: 2rem;
+    gap: 8px;
+    height: fit-content;
+    min-height: var(--chip-height);
+    min-width: 0;
     max-width: 100%;
 
     background-color: transparent;
@@ -67,15 +71,23 @@
     }
 
     &.q-chip--md {
-      --chip-avatar-size: 1.40625rem;
+      --chip-avatar-size: 22.5px;
 
-      height: 2.5rem;
+      --chip-height: 40px;
     }
 
     &.q-chip--lg {
-      --chip-avatar-size: 1.6875rem;
+      --chip-avatar-size: 27px;
 
-      height: 3rem;
+      --chip-height: 48px;
+    }
+
+    &:has(.q-chip__avatar, .q-chip__leading-icon, .q-chip__trailing-icon) {
+      --chip-content-size: max(20px, var(--chip-avatar-size));
+    }
+
+    &.q-chip--input:has(.q-chip__avatar) {
+      --chip-content-size: max(24px, var(--chip-avatar-size));
     }
 
     & .q-avatar.q-chip__avatar {
@@ -137,7 +149,7 @@
 
     &.q-chip--input {
       &:has(.q-chip__avatar) {
-        border-radius: 1rem;
+        border-radius: 16px;
       }
 
       & :is(.q-chip__leading-icon, .q-chip__trailing-icon) {
@@ -150,7 +162,7 @@
     }
 
     &:has(.q-chip__trailing-icon) {
-      min-width: 5.5rem;
+      min-width: 88px;
     }
   }
 
@@ -159,16 +171,15 @@
     top: 50%;
     left: 50%;
     width: 100%;
-    min-width: 3rem;
-    height: 3rem;
+    min-width: 48px;
+    height: 48px;
     transform: translate(-50%, -50%);
   }
 
   .q-chip__label {
     min-width: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    overflow-wrap: break-word;
+    white-space: normal;
   }
 
   .q-chip__edit {
@@ -201,7 +212,7 @@
   .q-chip__trailing-action {
     display: inline-flex;
     align-items: center;
-    height: 100%;
+    align-self: stretch;
     padding: 0;
     border: 0;
     border-radius: inherit;
@@ -216,23 +227,24 @@
   .q-chip__primary {
     justify-content: start;
     min-width: 0;
-    gap: 0.5rem;
-    padding-inline-start: 1rem;
+    gap: 8px;
+    padding-block: var(--chip-padding-block);
+    padding-inline-start: 16px;
     outline: none;
   }
 
   .q-chip__trailing-action {
     flex-shrink: 0;
-    margin-inline-start: 0.5rem;
-    padding-inline-end: 0.5rem;
+    margin-inline-start: 8px;
+    padding-inline-end: 8px;
 
     &::after {
       content: "";
       position: absolute;
       top: 50%;
-      inset-inline-start: -0.5rem;
-      width: 3rem;
-      height: 3rem;
+      inset-inline-start: -8px;
+      width: 48px;
+      height: 48px;
       transform: translateY(-50%);
     }
 
@@ -243,16 +255,16 @@
   }
 
   .q-chip :is(.q-icon.q-chip__leading-icon, .q-avatar.q-chip__avatar) {
-    margin-inline-start: -0.5rem;
+    margin-inline-start: -8px;
   }
 
   .q-chip > .q-icon.q-chip__trailing-icon {
-    margin-inline-end: -0.5rem;
+    margin-inline-end: -8px;
   }
 
   .q-chip.q-chip--input .q-avatar.q-chip__avatar {
-    --size: 1.5rem;
-    margin-inline-start: -0.75rem;
+    --size: 24px;
+    margin-inline-start: -12px;
   }
 }
 

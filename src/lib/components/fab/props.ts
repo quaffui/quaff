@@ -19,8 +19,8 @@ interface QFabCommonProps extends Pick<
   /** Uses Material 3 Expressive sizing. Inherits the Quaff.init() setting when omitted. */
   expressive?: boolean;
   /**
-   * Size of the FAB. Baseline sizes are 2.5, 3.5, and 6rem; expressive sizes are 3.5, 5, and 6rem.
-   * Defaults to 3.5rem (md for baseline, sm for expressive). Baseline extended FABs always use 3.5rem.
+   * Size of the FAB. Baseline sizes are 40, 56, and 96px; expressive sizes are 56, 80, and 96px.
+   * Defaults to 56px (md for baseline, sm for expressive). Extended FABs use these as minimum heights; the baseline minimum is always 56px.
    */
   size?: QFabSize;
   /** Color role for the container and its matching content. Surface is a legacy color style.

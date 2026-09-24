@@ -128,7 +128,7 @@
       onclick={toggleYearView}
     >
       {state.monthYearLabel}
-      <QIcon class="q-date__dropdown-icon" name="arrow_drop_down" size="1.125rem" />
+      <QIcon class="q-date__dropdown-icon" name="arrow_drop_down" size={18} />
     </QBtn>
 
     {#if state.calendarView === "calendar"}

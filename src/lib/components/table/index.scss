@@ -1,10 +1,10 @@
 @use "$css/mixins";
 
 .q-table {
-  --q-table-header-height: 3.5rem;
-  --q-table-row-height: 3.25rem;
+  --q-table-header-height: 56px;
+  --q-table-row-height: 52px;
   @include mixins.typography("body-medium");
-  border-radius: 0.25rem;
+  border-radius: 4px;
   background-color: var(--surface);
   color: var(--on-surface);
   box-shadow: var(--elevate1);
@@ -19,11 +19,11 @@
   }
 
   &--dense {
-    --q-table-header-height: 2.5rem;
-    --q-table-row-height: 2.25rem;
+    --q-table-header-height: 40px;
+    --q-table-row-height: 36px;
 
     > .q-table__scroll > table > tbody > tr > td {
-      padding-block: 0.25rem;
+      padding-block: 4px;
     }
   }
 
@@ -44,7 +44,7 @@
     text-align: start;
 
     > :is(thead, tbody) > tr > :is(th, td) {
-      padding: 0.5rem 1rem;
+      padding: 8px 16px;
       border-bottom: 1px solid var(--outline-variant);
       text-align: inherit;
     }
@@ -71,10 +71,10 @@
   &__sort-button {
     display: flex;
     align-items: center;
-    gap: 0.25rem;
+    gap: 4px;
     width: 100%;
     min-height: calc(var(--q-table-header-height) - 1px);
-    padding: 0.25rem 1rem;
+    padding: 4px 16px;
     background: transparent;
     border-radius: 0;
     font: inherit;
@@ -92,9 +92,9 @@
     justify-content: flex-end;
     flex-wrap: wrap;
     align-items: center;
-    gap: 0.5rem 1rem;
-    min-height: 3.25rem;
-    padding: 0.25rem 1rem;
+    gap: 8px 16px;
+    min-height: 52px;
+    padding: 4px 16px;
     color: var(--on-surface-variant);
   }
 
@@ -103,12 +103,19 @@
     flex-wrap: wrap;
     justify-content: flex-end;
     align-items: center;
-    gap: 0.5rem;
+    gap: 8px;
   }
 
   &__footer &__footer-select {
-    width: 5rem;
+    width: auto;
+    min-width: 80px;
     margin: 0;
+
+    .q-field__input {
+      // Reserve two digits, their letter spacing, and the input padding.
+      width: calc(2ch + 19px + 2 * var(--typescale-body-large-letter-spacing));
+      padding-inline-end: 4px;
+    }
   }
 
   &__announcement {

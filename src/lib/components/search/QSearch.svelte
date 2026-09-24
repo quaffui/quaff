@@ -363,7 +363,7 @@ Search bars expand into a focused space for suggestions, filters, and results.
     >
       <span class="q-search__state" aria-hidden="true"></span>
       {#if !leading}
-        <span class="q-search__icon"><QIcon name="search" size="1.5rem" /></span>
+        <span class="q-search__icon"><QIcon name="search" size="24px" /></span>
       {/if}
       <span id={`${id}-query`} class="q-search__text" class:q-search__text--placeholder={!value}
         >{value || placeholder}</span

@@ -6,22 +6,22 @@
     0 4px 8px 3px #{mixins.with-alpha(var(--shadow), 15%)};
 
   width: 100%;
-  max-width: 45rem;
+  max-width: 720px;
 
   &:has(> .q-search__view[open]) > .q-search__bar {
     opacity: 0;
   }
 
   &--expressive {
-    width: calc(100% - 3rem);
-    margin-inline: 1.5rem;
+    width: calc(100% - 48px);
+    margin-inline: 24px;
   }
 
   &__bar,
   &__header {
     align-items: center;
-    gap: 0.25rem;
-    padding: 0.25rem;
+    gap: 4px;
+    padding: 4px;
     color: var(--on-surface);
     background-color: var(--surface-container-high);
   }
@@ -29,7 +29,7 @@
   &__bar {
     isolation: isolate;
     width: 100%;
-    border-radius: 2rem;
+    border-radius: 32px;
     box-shadow: var(--q-search-elevation);
   }
 
@@ -42,9 +42,9 @@
     align-items: center;
     flex: 1;
     justify-content: flex-start;
-    gap: 0.25rem;
+    gap: 4px;
     min-width: 0;
-    height: 100%;
+    align-self: stretch;
     padding-inline-end: 0;
     border-radius: inherit;
     color: inherit;
@@ -52,7 +52,7 @@
     cursor: pointer;
 
     &:last-child {
-      padding-inline-end: 0.75rem;
+      padding-inline-end: 12px;
     }
 
     // Include the pill's padding in the target; accessories remain independent.
@@ -77,15 +77,15 @@
   }
 
   &__bar:has(> .q-search__trigger:focus-visible) {
-    outline: 0.1875rem solid var(--secondary);
-    outline-offset: 0.125rem;
+    outline: 3px solid var(--secondary);
+    outline-offset: 2px;
   }
 
   &__icon {
     display: grid;
     place-items: center;
-    flex: 0 0 3rem;
-    height: 3rem;
+    flex: 0 0 48px;
+    height: 48px;
   }
 
   &__text {
@@ -118,7 +118,7 @@
       caret-color: var(--primary);
 
       &:last-child {
-        padding-inline-end: 0.75rem;
+        padding-inline-end: 12px;
       }
 
       &::-webkit-search-cancel-button,
@@ -139,7 +139,7 @@
 
   &__header .q-icon-btn,
   &__accessory .q-icon-btn {
-    --q-btn-height: 3rem;
+    --q-btn-height: 48px;
 
     flex-shrink: 0;
     color: var(--on-surface-variant);
@@ -171,8 +171,8 @@
   &__content {
     display: flex;
     flex-direction: column;
-    min-height: min(15rem, 66.6667dvh, calc(100dvh - 1.5rem));
-    max-height: var(--q-search-height, min(66.6667dvh, calc(100dvh - 1.5rem)));
+    min-height: min(240px, 66.6667dvh, calc(100dvh - 24px));
+    max-height: var(--q-search-height, min(66.6667dvh, calc(100dvh - 24px)));
   }
 
   &__panel {
@@ -193,7 +193,7 @@
   &__results {
     flex: 1;
     min-height: 0;
-    padding-block: 0.25rem 1rem;
+    padding-block: 4px 16px;
     overflow: auto;
     overscroll-behavior: contain;
 
@@ -223,12 +223,12 @@ dialog.q-dialog.q-search__view {
   width: var(--q-search-width);
   height: auto;
   min-width: 0;
-  max-width: calc(100% - 1.5rem);
+  max-width: calc(100% - 24px);
   max-height: none;
   margin: 0;
   padding: 0;
   overflow: visible;
-  border-radius: 1.75rem;
+  border-radius: 28px;
   background-color: var(--surface-container-high);
   box-shadow: var(--q-search-elevation);
   translate: none;
@@ -290,11 +290,11 @@ dialog.q-dialog.q-search__view {
     box-shadow: none;
 
     .q-search__content {
-      gap: 0.125rem;
+      gap: 2px;
     }
 
     .q-search__header {
-      border-radius: 2rem;
+      border-radius: 32px;
       box-shadow: var(--q-search-elevation);
     }
 
@@ -303,13 +303,13 @@ dialog.q-dialog.q-search__view {
     }
 
     .q-search__panel {
-      border-radius: 0.75rem;
+      border-radius: 12px;
       background-color: var(--surface-container-high);
       box-shadow: var(--q-search-elevation);
     }
 
     .q-search__results {
-      padding: 0.25rem;
+      padding: 4px;
       border-radius: inherit;
     }
   }
@@ -333,15 +333,15 @@ dialog.q-dialog.q-search__view {
     }
 
     .q-search__header {
-      height: 4.5rem;
+      min-height: 72px;
     }
 
     &.q-search__view--expressive {
       background-color: var(--surface-container-low);
 
       .q-search__header {
-        height: 3.5rem;
-        margin: 0.75rem 0.75rem 0;
+        min-height: 56px;
+        margin: 12px 12px 0;
         box-shadow: none;
       }
 

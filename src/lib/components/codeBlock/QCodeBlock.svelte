@@ -102,6 +102,7 @@
       {/if}
       <QBtn
         class="border-{copyButton.color} text-{copyButton.color}"
+        style="flex-shrink: 0"
         size="sm"
         icon="content_copy"
         variant="outlined"
@@ -125,14 +126,15 @@
 
     :global(pre) {
       text-align: left;
-      padding: 1rem;
+      padding: 16px;
       overflow: auto;
     }
   }
 
   .q-code-block__title-section {
     display: flex;
-    gap: 0.5rem;
+    flex-wrap: wrap;
+    gap: 8px;
   }
 
   @include mixins.up-to-sm {

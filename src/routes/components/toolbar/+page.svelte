@@ -30,7 +30,7 @@
     <div
       class="q-toolbar-docs__call flex column items-center q-gap-md q-pa-lg text-center tertiary-container"
     >
-      <QAvatar size="4rem" class="tertiary">AM</QAvatar>
+      <QAvatar size="64px" class="tertiary">AM</QAvatar>
       <span class="title-large">Design catch-up</span>
       <QToolbar floating vibrant aria-label="Call preview controls">
         <QIconBtn
@@ -66,7 +66,7 @@
     <QDocsSection title="Floating Toolbar">
       {#snippet sectionDescription()}
         Use <code>floating</code> for a compact group of actions and <code>vibrant</code> for a stronger
-        color. Position the toolbar within your content, leaving at least 1rem from screen edges. Use
+        color. Position the toolbar within your content, leaving at least 16px from screen edges. Use
         buttons or links for toolbar actions. Tab enters or leaves the group; arrow keys along the toolbar's
         orientation move between enabled, visible actions. Home and End move to the first and last action.
         The last focused action is remembered. Other controls, such as text inputs, keep their usual Tab
@@ -77,7 +77,7 @@
       <div
         class="q-toolbar-docs__call flex column items-center q-gap-md q-pa-lg text-center secondary-container"
       >
-        <QAvatar size="4rem" class="tertiary">AM</QAvatar>
+        <QAvatar size="64px" class="tertiary">AM</QAvatar>
         <span class="title-medium">Alex Morgan</span>
         <QToolbar floating vibrant={isVibrant} aria-label="Call controls">
           <QIconBtn
@@ -158,7 +158,7 @@
     <QDocsSection title="Vertical Toolbar">
       {#snippet sectionDescription()}
         <code>vertical</code> uses the floating layout automatically and grows wider to fit larger
-        controls. Leave at least 1.5rem from screen edges and give each toolbar an accessible name
+        controls. Leave at least 24px from screen edges and give each toolbar an accessible name
         with
         <code>aria-label</code>.
       {/snippet}
@@ -205,17 +205,17 @@
     &__call {
       width: 100%;
       max-width: 24rem;
-      border-radius: 1.5rem;
+      border-radius: 24px;
     }
 
     &__viewer {
       max-width: 30rem;
       overflow: hidden;
-      border-radius: 1rem;
+      border-radius: 16px;
     }
 
     &__photo {
-      height: 15rem;
+      height: 240px;
       overflow: hidden;
 
       img {
@@ -227,7 +227,7 @@
 
     &__editor {
       max-width: 30rem;
-      border-radius: 1.5rem;
+      border-radius: 24px;
 
       p {
         flex: 1;

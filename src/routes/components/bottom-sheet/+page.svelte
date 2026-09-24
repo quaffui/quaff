@@ -291,25 +291,25 @@
     width: 100%;
     max-width: 40rem;
     overflow: hidden;
-    border-radius: 1rem;
+    border-radius: 16px;
   }
 
   .q-bottom-sheet-preview {
-    height: 20rem;
-    padding: 1rem;
+    height: 320px;
+    padding: 16px;
   }
 
   .q-bottom-sheet-example {
-    height: 32rem;
+    height: 512px;
   }
 
   .q-bottom-sheet-destination-copy {
     flex: 1;
   }
 
-  @media (width <= 40rem) {
+  @media (width <= 640px) {
     .q-bottom-sheet-example {
-      height: 36rem;
+      height: 576px;
     }
   }
 </style>

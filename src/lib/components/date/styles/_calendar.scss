@@ -19,7 +19,7 @@
 
   &::before {
     z-index: -2;
-    border: 0.0625rem solid transparent;
+    border: 1px solid transparent;
     background-color: var(--q-date-container-color);
     transition:
       background-color variables.$speed2 linear,
@@ -45,8 +45,8 @@
   }
 
   &:focus-visible::before {
-    outline: 0.1875rem solid var(--secondary);
-    outline-offset: 0.125rem;
+    outline: 3px solid var(--secondary);
+    outline-offset: 2px;
   }
 }
 
@@ -55,15 +55,15 @@
     position: relative;
     width: 100%;
     min-height: 0;
-    padding-inline: 0.75rem;
+    padding-inline: 12px;
   }
 
   &__month-announcement {
     position: absolute;
-    width: 0.0625rem;
-    height: 0.0625rem;
+    width: 1px;
+    height: 1px;
     padding: 0;
-    margin: -0.0625rem;
+    margin: -1px;
     overflow: hidden;
     clip: rect(0, 0, 0, 0);
     white-space: nowrap;
@@ -77,7 +77,7 @@
   }
 
   &__weekdays {
-    height: 3rem;
+    min-height: 48px;
     background-color: var(--surface-container-high);
   }
 
@@ -91,12 +91,12 @@
   }
 
   &__week {
-    height: 3rem;
+    min-height: 48px;
   }
 
   &__day {
     @include mixins.typography("body-large");
-    @include selection-state-layer(2.5rem, 2.5rem, 50%);
+    @include selection-state-layer(40px, 40px, 50%);
 
     appearance: none;
     display: flex;
@@ -104,7 +104,7 @@
     justify-content: center;
     position: relative;
     width: 100%;
-    height: 3rem;
+    min-height: 48px;
     margin: 0;
     padding: 0;
     border: 0;
@@ -152,25 +152,25 @@
     grid-template-columns: repeat(3, minmax(0, 1fr));
     align-content: start;
     z-index: 1;
-    height: 100%;
-    min-height: 0;
-    padding: 1rem 0.75rem;
+    height: 0;
+    min-height: 100%;
+    padding: 16px 12px;
     overflow-y: auto;
     overscroll-behavior: contain;
     scrollbar-gutter: stable;
-    scroll-padding-block: 1rem;
+    scroll-padding-block: 16px;
     background-color: var(--surface-container-high);
   }
 
   &__year {
     @include mixins.typography("body-large");
-    @include selection-state-layer(4.5rem, 2.25rem, 999rem);
+    @include selection-state-layer(72px, 36px, 9999px);
 
     appearance: none;
     justify-self: center;
     position: relative;
-    width: 4.5rem;
-    height: 3rem;
+    width: 72px;
+    min-height: 48px;
     padding: 0;
     border: 0;
     outline: 0;

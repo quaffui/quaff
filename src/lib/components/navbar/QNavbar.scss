@@ -9,7 +9,7 @@
   display: flex;
   justify-content: center;
 
-  min-height: calc(var(--q-navbar-min-height, 4rem) + env(safe-area-inset-bottom, 0px));
+  min-height: calc(var(--q-navbar-min-height, 64px) + env(safe-area-inset-bottom, 0px));
   padding: 0 env(safe-area-inset-right, 0px) env(safe-area-inset-bottom, 0px)
     env(safe-area-inset-left, 0px);
 

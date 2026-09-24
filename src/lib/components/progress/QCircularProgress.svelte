@@ -37,7 +37,17 @@ The QCircularProgress component is used to display a circular progress bar, indi
   // #region:    --- Derived values
   const id = $props.id();
   const isExpressive = $derived(expressive ?? quaffConfig.expressive);
-  const resolvedSize = $derived(size ?? (isExpressive ? "3rem" : "2.5rem"));
+  const resolvedSize = $derived.by(() => {
+    if (size != null) {
+      return size;
+    }
+
+    if (showValue) {
+      return isExpressive ? "3rem" : "2.5rem";
+    }
+
+    return isExpressive ? "48px" : "40px";
+  });
   const resolvedThickness = $derived(thickness ?? (isExpressive ? 1 / 6 : 0.2));
   const resolvedTrackColor = $derived(
     trackColor ?? (indeterminate && !isExpressive ? "transparent" : "secondary-container")

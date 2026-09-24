@@ -88,7 +88,7 @@
         <div class="q-pa-md" aria-live="polite">
           <div class="label-medium text-on-surface-variant">WEEKEND JOURNAL</div>
           <div class="journal-art {journalPage.color}" aria-hidden="true">
-            <QIcon name={journalPage.icon} size="3rem" />
+            <QIcon name={journalPage.icon} size="48px" />
           </div>
           <h2 class="title-large q-mb-sm">{journalPage.title}</h2>
           <p class="body-medium q-mb-none">{journalPage.text}</p>
@@ -135,9 +135,9 @@
             <div class="studio-content q-pa-md">
               <section id="acme-about">
                 <div class="studio-art q-mb-sm" aria-hidden="true">
-                  <span class="primary-container"><QIcon name="interests" size="2rem" /></span>
-                  <span class="secondary-container"><QIcon name="palette" size="2rem" /></span>
-                  <span class="tertiary-container"><QIcon name="code" size="2rem" /></span>
+                  <span class="primary-container"><QIcon name="interests" size="32px" /></span>
+                  <span class="secondary-container"><QIcon name="palette" size="32px" /></span>
+                  <span class="tertiary-container"><QIcon name="code" size="32px" /></span>
                 </div>
                 <h6 class="q-mb-sm">Small studio. Big ideas.</h6>
                 <p class="body-medium q-mb-none">
@@ -203,7 +203,7 @@
           {#snippet content()}
             <div class="q-pa-md">
               <QCard fill="tertiary" class="flex items-center q-gap-md q-mb-md">
-                <QIcon name="cabin" size="3rem" aria-hidden="true" />
+                <QIcon name="cabin" size="48px" aria-hidden="true" />
                 <div class="stay-copy">
                   <h6 class="q-mb-none">Woodland Cabin</h6>
                 </div>
@@ -284,9 +284,9 @@
 <style>
   :global(.footer-layout) {
     max-width: 50rem;
-    height: 22rem;
-    border: 0.0625rem solid var(--outline-variant);
-    border-radius: 1.5rem;
+    height: 352px;
+    border: 1px solid var(--outline-variant);
+    border-radius: 24px;
   }
 
   :global(.footer-preview) {
@@ -297,36 +297,36 @@
   .journal-art {
     display: grid;
     place-items: center;
-    width: 5.5rem;
-    height: 3.5rem;
-    margin-block: 0.5rem;
-    border-radius: 3.5rem 3.5rem 1rem 1rem;
+    width: 88px;
+    height: 56px;
+    margin-block: 8px;
+    border-radius: 56px 56px 16px 16px;
   }
 
   .studio-content {
     display: grid;
-    gap: 3rem;
+    gap: 48px;
   }
 
   .studio-art {
     display: flex;
-    gap: 0.5rem;
+    gap: 8px;
   }
 
   .studio-art span {
     display: grid;
-    width: 3rem;
-    height: 3rem;
+    width: 48px;
+    height: 48px;
     place-items: center;
-    border-radius: 1rem;
+    border-radius: 16px;
   }
 
   :global(.studio-footer) {
     flex-direction: column;
     align-items: stretch;
     justify-content: center;
-    gap: 0.5rem;
-    padding-block: 0.75rem;
+    gap: 8px;
+    padding-block: 12px;
     white-space: normal;
   }
 
@@ -336,21 +336,21 @@
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
-    gap: 0.5rem 1rem;
+    gap: 8px 16px;
   }
 
   .studio-mark {
     display: grid;
-    width: 2.25rem;
-    height: 2.25rem;
+    width: 36px;
+    height: 36px;
     place-items: center;
-    border-radius: 0.75rem;
+    border-radius: 12px;
   }
 
   .studio-links {
     display: flex;
     flex-wrap: wrap;
-    gap: 1rem;
+    gap: 16px;
   }
 
   .studio-links a,
@@ -360,12 +360,12 @@
   }
 
   .studio-fine-print {
-    padding-top: 0.5rem;
-    border-top: 0.0625rem solid color-mix(in srgb, currentColor 20%, transparent);
+    padding-top: 8px;
+    border-top: 1px solid color-mix(in srgb, currentColor 20%, transparent);
   }
 
   :global(.booking-layout) {
-    height: 25rem;
+    height: 400px;
   }
 
   .stay-copy {
@@ -375,7 +375,7 @@
 
   .itinerary {
     display: grid;
-    gap: 2.5rem;
+    gap: 40px;
     margin: 0;
     padding: 0;
     list-style: none;
@@ -384,8 +384,8 @@
   .stop-icon {
     display: grid;
     flex: none;
-    width: 3rem;
-    height: 3rem;
+    width: 48px;
+    height: 48px;
     place-items: center;
     border-radius: 50%;
   }

@@ -46,7 +46,7 @@
   docDescription="Group related actions or choose options with Material 3 button groups and segmented buttons."
 >
   {#snippet display()}
-    <div style="width: min(28rem, 100%);">
+    <div style="width: min(448px, 100%);">
       <QBtnToggle expressive options={periods} value="week" aria-label="Preview period" />
     </div>
   {/snippet}
@@ -270,6 +270,6 @@
   .group-example-scroll {
     max-width: 100%;
     overflow-x: auto;
-    padding: 0.5rem;
+    padding: 8px;
   }
 </style>

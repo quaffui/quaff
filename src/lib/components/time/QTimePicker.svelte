@@ -1,7 +1,9 @@
 <script lang="ts">
+  import { untrack } from "svelte";
   import QBtn from "$components/button/QBtn.svelte";
   import QIconBtn from "$components/button/QIconBtn.svelte";
   import type { QEvent } from "$utils";
+  import { measureTimeDial, type QTimeDialMeasurement } from "./timeFit";
   import QTimeDial from "./QTimeDial.svelte";
   import type { QTimeFocus } from "./timeFocus";
   import type QTimeState from "./timeState.svelte";
@@ -10,10 +12,12 @@
 
   type TimeInputEvent<T extends Event> = QEvent<T, HTMLInputElement>;
   type PeriodButtonEvent = QEvent<KeyboardEvent, HTMLButtonElement>;
-  const periods: readonly QTimePeriod[] = ["am", "pm"];
+  const PERIODS: readonly QTimePeriod[] = ["am", "pm"];
 
   let {
     state,
+    open,
+    onDialMeasure,
     focus,
     docked,
     horizontal,
@@ -26,6 +30,8 @@
     cancel,
   }: {
     state: QTimeState;
+    open: boolean;
+    onDialMeasure: (measurement: QTimeDialMeasurement | null) => void;
     focus: QTimeFocus;
     docked: boolean;
     horizontal: boolean;
@@ -37,6 +43,63 @@
     titleId: string;
     cancel: () => void;
   } = $props();
+
+  let pickerEl: HTMLDivElement;
+  let scheduleDialMeasurement: (() => void) | undefined;
+
+  $effect(() => {
+    if (!open) {
+      return;
+    }
+
+    let frame = 0;
+    const measure = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        if (state.displayMode === "dial" && pickerEl.checkVisibility()) {
+          onDialMeasure(measureTimeDial(pickerEl));
+        }
+      });
+    };
+    const handleFontsLoaded = () => {
+      onDialMeasure(null);
+      measure();
+    };
+
+    scheduleDialMeasurement = measure;
+    measure();
+    window.addEventListener("resize", measure);
+    document.fonts.addEventListener("loadingdone", handleFontsLoaded);
+
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("resize", measure);
+      document.fonts.removeEventListener("loadingdone", handleFontsLoaded);
+      scheduleDialMeasurement = undefined;
+    };
+  });
+
+  $effect(() => {
+    // These can change dial requirements while only the input layout is mounted.
+    void [
+      title,
+      confirmLabel,
+      cancelLabel,
+      state.format24h,
+      state.resolvedLabels.am,
+      state.resolvedLabels.pm,
+      state.showActions,
+    ];
+    untrack(() => {
+      onDialMeasure(null);
+      scheduleDialMeasurement?.();
+    });
+  });
+
+  $effect(() => {
+    void [state.displayMode, state.activePart, horizontal, showModeToggle];
+    untrack(() => scheduleDialMeasurement?.());
+  });
 
   let previousActivePart: QTimeActivePart | undefined;
 
@@ -136,7 +199,7 @@
       role="radiogroup"
       aria-label={`${state.resolvedLabels.am} / ${state.resolvedLabels.pm}`}
     >
-      {#each periods as period (period)}
+      {#each PERIODS as period (period)}
         {@const selected = state.period === period}
         <button
           class={["q-time__period-option", selected && "q-time__period-option--selected"]}
@@ -250,7 +313,7 @@
   </div>
 {/snippet}
 
-<div class="q-time__picker">
+<div class="q-time__picker" bind:this={pickerEl}>
   <span class="q-time__title" id={titleId}>
     {state.displayMode === "input" ? inputTitle : title}
   </span>

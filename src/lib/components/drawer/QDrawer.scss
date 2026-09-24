@@ -10,7 +10,7 @@
   left: auto;
 
   height: auto;
-  padding: 0.75rem;
+  padding: 12px;
   border-radius: 0;
 
   background-color: var(--surface);
@@ -28,8 +28,8 @@
 
   &__headline {
     @include mixins.typography("label-large");
-    margin-block: 0.5rem;
-    padding-inline: 1rem;
+    margin-block: 8px;
+    padding-inline: 16px;
     color: var(--on-surface-variant);
   }
 
@@ -74,11 +74,11 @@
       @each $position in ("top", "bottom") {
         @if $side == "left" {
           &.q-drawer--offset-#{$position}:not(.q-drawer--bordered) {
-            border-#{$position}-right-radius: 1rem;
+            border-#{$position}-right-radius: 16px;
           }
         } @else {
           &.q-drawer--offset-#{$position}:not(.q-drawer--bordered) {
-            border-#{$position}-left-radius: 1rem;
+            border-#{$position}-left-radius: 16px;
           }
         }
       }
@@ -95,19 +95,18 @@
 
   & .q-list .q-item:is(.q-link, .q-item--clickable) {
     --ripple-color: var(--on-surface);
-    --q-item-container-shape: 1.75rem;
-    --q-item-hover-shape: 1.75rem;
-    --q-item-active-shape: 1.75rem;
+    --q-item-container-shape: 28px;
+    --q-item-hover-shape: 28px;
+    --q-item-active-shape: 28px;
 
     @include mixins.typography("label-large");
-    gap: 0.75rem;
-    height: 3.5rem;
-    min-height: 3.5rem;
-    padding: 0 1rem;
+    gap: 12px;
+    min-height: 56px;
+    padding: 0 16px;
     background-color: transparent;
 
     color: var(--q-item-color, var(--on-surface-variant));
-    border-radius: 1.75rem;
+    border-radius: 28px;
     overflow: hidden;
 
     &::before {
@@ -133,6 +132,10 @@
       color: inherit;
     }
 
+    & > .q-item__section--content {
+      padding-block: 16px;
+    }
+
     & > .q-item__section .q-icon {
       transition: font-variation-settings variables.$speed2;
     }
@@ -146,8 +149,8 @@
     }
 
     &:focus-visible {
-      outline: 0.1875rem solid var(--secondary);
-      outline-offset: -0.1875rem;
+      outline: 3px solid var(--secondary);
+      outline-offset: -3px;
     }
 
     &.q-item--active:not([aria-disabled]) {
@@ -172,21 +175,24 @@
   }
 
   & .q-list .q-item--dense:is(.q-link, .q-item--clickable) {
-    height: 2.75rem;
-    min-height: 2.75rem;
+    min-height: 44px;
     padding-block: 0;
+
+    & > .q-item__section--content {
+      padding-block: 10px;
+    }
   }
 
   & .q-list .q-expansion-item {
     --q-expansion-container-color: transparent;
-    --q-expansion-inner-shape: 1.75rem;
-    --q-expansion-toggle-width: 1.5rem;
-    --q-expansion-toggle-height: 1.5rem;
-    border-radius: 1.75rem;
+    --q-expansion-inner-shape: 28px;
+    --q-expansion-toggle-width: 24px;
+    --q-expansion-toggle-height: 24px;
+    border-radius: 28px;
 
     &.q-expansion-item--dense {
-      --q-expansion-inner-shape: 1.375rem;
-      border-radius: 1.375rem;
+      --q-expansion-inner-shape: 22px;
+      border-radius: 22px;
     }
 
     &:has([aria-current="page"]):not(.q-expansion-item--disabled)
@@ -201,7 +207,7 @@
   }
 
   & .q-expansion-item__content:has(> .q-list:only-child) {
-    padding-inline-start: 1rem;
+    padding-inline-start: 16px;
   }
 
   & .q-expansion-item__toggle-icon:not(.q-btn) {
@@ -212,6 +218,6 @@
 @each $side in ("left", "right") {
   .q-drawer__swipearea--#{$side} {
     #{$side}: 0;
-    width: 1.25rem;
+    width: 20px;
   }
 }

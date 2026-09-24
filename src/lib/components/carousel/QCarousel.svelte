@@ -54,7 +54,7 @@ Browse visual collections with responsive Material 3 carousels, keyboard navigat
   const uncontained = $derived(variant.startsWith("uncontained") || reducedMotion);
   const leading = $derived(!vertical && uncontained ? 16 : 0);
   const snapping = $derived(vertical || (snap ?? !variant.startsWith("uncontained")));
-  const defaultHeight = $derived(vertical ? "100svh" : "15rem");
+  const defaultHeight = $derived(vertical ? "100svh" : "240px");
   const previousHorizontalIcon = $derived(rtl ? "arrow_forward" : "arrow_back");
   const nextHorizontalIcon = $derived(rtl ? "arrow_back" : "arrow_forward");
   const text = $derived({

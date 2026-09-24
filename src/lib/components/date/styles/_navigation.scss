@@ -1,12 +1,12 @@
 .q-date {
   &__month-navigation {
     display: flex;
-    flex: 0 0 3.5rem;
+    flex: 0 0 auto;
     align-items: center;
     justify-content: space-between;
     z-index: 2;
-    height: 3.5rem;
-    padding-inline: 0.75rem;
+    min-height: 56px;
+    padding-inline: 12px;
     background-color: var(--surface-container-high);
   }
 
@@ -17,10 +17,9 @@
     .q-btn__label {
       display: flex;
       align-items: center;
-      gap: 0.25rem;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+      gap: 4px;
+      flex-wrap: wrap;
+      white-space: normal;
     }
   }
 
@@ -35,7 +34,7 @@
   &__month-actions {
     display: flex;
     align-items: center;
-    gap: 0.25rem;
+    gap: 4px;
 
     .q-btn {
       color: var(--on-surface-variant);
@@ -46,7 +45,7 @@
     color: var(--on-surface-variant);
 
     .q-icon {
-      --size: 1.5rem !important;
+      --size: 24px !important;
     }
 
     &:dir(rtl) .q-icon {
@@ -56,11 +55,11 @@
 
   &__docked-navigation {
     display: grid;
-    flex: 0 0 4rem;
-    grid-template-columns: 3rem minmax(0, 4.5rem) 3rem 3rem minmax(0, 4.5rem) 3rem;
+    flex: 0 0 auto;
+    grid-template-columns: 48px minmax(0, 72px) 48px 48px minmax(0, 72px) 48px;
     align-items: center;
-    height: 4rem;
-    padding-inline: 0.75rem;
+    min-height: 64px;
+    padding-inline: 12px;
 
     > .q-btn {
       justify-self: center;
@@ -68,7 +67,7 @@
 
     &--selection {
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      border-block-end: 0.0625rem solid var(--outline-variant);
+      border-block-end: 1px solid var(--outline-variant);
     }
   }
 
@@ -85,12 +84,12 @@
       justify-content: center;
       width: 100%;
       min-width: 0;
-      gap: 0.125rem;
+      gap: 2px;
+      flex-wrap: wrap;
 
       > span {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
+        overflow-wrap: anywhere;
+        white-space: normal;
       }
     }
   }
@@ -101,26 +100,23 @@
 
   &__docked-body {
     display: flex;
-    flex: 1 1 auto;
+    flex: 1 0 auto;
     flex-direction: column;
     min-height: 0;
-    overflow: hidden;
     background-color: var(--surface-container-high);
   }
 
   &__modal-calendar-body {
     display: grid;
-    flex: 1 1 auto;
-    height: 21rem;
-    min-height: 0;
-    overflow: hidden;
+    flex: 1 0 auto;
+    min-height: 336px;
   }
 
   &__calendar-viewport {
     display: grid;
     grid-area: 1 / 1;
     width: 100%;
-    min-height: 0;
+    min-height: 336px;
     overflow: hidden;
     touch-action: pan-y;
   }

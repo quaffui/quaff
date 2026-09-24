@@ -159,7 +159,7 @@
           Select a file to edit its details alongside the list. Place the sheet in a flex row with a
           flexible main area, and bind <code>value</code> to control visibility. The default width
           is
-          <code>16rem</code>; this example uses <code>20rem</code>.
+          <code>256px</code>; this example uses <code>320px</code>.
         {/snippet}
 
         <div class="workspace" class:sheet-open={isFileSheetOpen}>
@@ -205,10 +205,10 @@
             </p>
           </div>
 
-          <QSideSheet bind:value={isFileSheetOpen} headline="File details" width="20rem" bordered>
+          <QSideSheet bind:value={isFileSheetOpen} headline="File details" width="320px" bordered>
             <div class="sheet-content">
               <div class={["file-summary", selectedFile.color]}>
-                <QIcon name={selectedFile.icon} size="2.5rem" aria-hidden="true" />
+                <QIcon name={selectedFile.icon} size="40px" aria-hidden="true" />
                 <span class="label-large">{selectedFile.type}</span>
               </div>
               <QInput bind:value={selectedFile.name} label="File name" outlined />
@@ -274,7 +274,7 @@
           </QList>
         </QCard>
 
-        <QSideSheet bind:value={isFilterSheetOpen} headline="Find a workshop" modal width="22rem">
+        <QSideSheet bind:value={isFilterSheetOpen} headline="Find a workshop" modal width="352px">
           <div class="sheet-content">
             <p class="body-medium text-on-surface-variant">
               A small creative break for your weekend.
@@ -328,7 +328,7 @@
           dir={isRightToLeft ? "rtl" : "ltr"}
         >
           <div class="placement-main">
-            <QIcon name="auto_stories" size="2rem" class="text-primary" aria-hidden="true" />
+            <QIcon name="auto_stories" size="32px" class="text-primary" aria-hidden="true" />
             <h2 class="title-large">Your reading space</h2>
             <p class="body-medium text-on-surface-variant">Make yourself comfortable.</p>
             <QBtn
@@ -361,14 +361,14 @@
     display: flex;
     width: 100%;
     overflow: hidden;
-    border: 0.0625rem solid var(--outline-variant);
-    border-radius: 1rem;
+    border: 1px solid var(--outline-variant);
+    border-radius: 16px;
     background: var(--surface-container-low);
     color: var(--on-surface);
   }
 
   .preview-frame {
-    height: 20rem;
+    height: 320px;
     max-width: 42rem;
   }
 
@@ -383,8 +383,8 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: 0.875rem;
-    padding: 1.25rem;
+    gap: 14px;
+    padding: 20px;
   }
 
   .preview-main h2,
@@ -397,14 +397,14 @@
   .sheet-content {
     display: flex;
     flex-direction: column;
-    gap: 1.25rem;
+    gap: 20px;
   }
 
   .identity-row,
   .workspace-heading {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
+    gap: 12px;
   }
 
   .identity-row > div {
@@ -414,32 +414,32 @@
   .checklist {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 8px;
   }
 
   .workspace {
-    height: 30rem;
+    height: 480px;
   }
 
   .workspace-main {
-    padding: 1.5rem;
+    padding: 24px;
   }
 
   .workspace-heading {
-    margin-bottom: 1.5rem;
+    margin-bottom: 24px;
   }
 
   .file-summary {
     display: flex;
     align-items: center;
-    gap: 1rem;
-    padding: 1.25rem;
-    border-radius: 0.75rem;
+    gap: 16px;
+    padding: 20px;
+    border-radius: 12px;
   }
 
   :global(.workshops-card) {
     max-width: 48rem;
-    padding: 1.5rem;
+    padding: 24px;
   }
 
   .workshops-heading {
@@ -447,16 +447,16 @@
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
+    gap: 16px;
+    margin-bottom: 24px;
   }
 
   .workshops-heading h2 {
-    margin-block: 0.5rem;
+    margin-block: 8px;
   }
 
   .placement-demo {
-    min-height: 19rem;
+    min-height: 304px;
   }
 
   .placement-main {
@@ -464,8 +464,8 @@
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
-    gap: 0.75rem;
-    padding: 2rem;
+    gap: 12px;
+    padding: 32px;
   }
 
   @media (max-width: 40rem) {
@@ -480,7 +480,7 @@
     }
 
     .workspace-main {
-      padding: 1rem;
+      padding: 16px;
     }
   }
 </style>

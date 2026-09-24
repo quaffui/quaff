@@ -6,14 +6,14 @@
 
   display: inline-flex;
   width: fit-content;
+  max-width: 100%;
   align-items: center;
   flex-wrap: nowrap;
   vertical-align: middle;
   gap: var(--q-btn-group-gap, 0px);
 
   > .q-btn {
-    flex: none;
-    white-space: nowrap;
+    flex: 0 1 auto;
   }
 
   &--spread {
@@ -26,28 +26,28 @@
   }
 
   &--expressive {
-    --q-btn-group-gap: 0.5rem;
-    --q-btn-group-corner: 0.5rem;
-    --q-btn-group-pressed-corner: 0.25rem;
+    --q-btn-group-gap: 8px;
+    --q-btn-group-corner: 8px;
+    --q-btn-group-pressed-corner: 4px;
 
     &.q-btn-group--xs {
-      --q-btn-group-gap: 1.125rem;
+      --q-btn-group-gap: 18px;
       // The official measurement diagram specifies 4dp for XS connected corners.
-      --q-btn-group-corner: 0.25rem;
+      --q-btn-group-corner: 4px;
     }
 
     &.q-btn-group--sm {
-      --q-btn-group-gap: 0.75rem;
+      --q-btn-group-gap: 12px;
     }
 
     &.q-btn-group--lg {
-      --q-btn-group-corner: 1rem;
-      --q-btn-group-pressed-corner: 0.75rem;
+      --q-btn-group-corner: 16px;
+      --q-btn-group-pressed-corner: 12px;
     }
 
     &.q-btn-group--xl {
-      --q-btn-group-corner: 1.25rem;
-      --q-btn-group-pressed-corner: 1rem;
+      --q-btn-group-corner: 20px;
+      --q-btn-group-pressed-corner: 16px;
     }
 
     > .q-btn[data-q-btn-group-resizing] {
@@ -56,23 +56,39 @@
       flex: none;
       transition-property: width, border-radius;
       @include mixins.spring(spatial, fast, expressive);
+
+      > .q-btn__label {
+        // Preserve existing line breaks while neighboring buttons compress their padding.
+        flex: 0 0 var(--q-btn-group-label-width, auto);
+      }
     }
 
     &.q-btn-group--connected {
-      --q-btn-group-gap: 0.125rem;
+      align-items: stretch;
+
+      --q-btn-group-gap: 2px;
 
       > .q-btn {
-        min-width: 3rem;
+        height: auto;
+        min-height: var(--q-btn-height, 40px);
+        min-width: 48px;
         border-radius: var(--q-btn-group-inner-corner);
         --q-btn-group-inner-corner: var(--q-btn-group-corner);
-        --q-btn-group-outer-corner: calc(var(--q-btn-height) / 2);
+        --q-btn-group-full-corner: calc(var(--q-btn-height, 40px) / 2);
+        --q-btn-group-rounded-corner: min(
+          var(--q-btn-group-full-corner),
+          calc(100% - var(--q-btn-group-inner-corner))
+        );
+        --q-btn-group-outer-corner: var(--q-btn-group-rounded-corner);
 
         &[aria-pressed="true"] {
-          --q-btn-group-inner-corner: calc(var(--q-btn-height) / 2);
+          --q-btn-group-inner-corner: var(--q-btn-group-full-corner);
+          --q-btn-group-outer-corner: var(--q-btn-group-full-corner);
         }
 
         &:active:not([aria-disabled]) {
           --q-btn-group-inner-corner: var(--q-btn-group-pressed-corner);
+          --q-btn-group-outer-corner: var(--q-btn-group-rounded-corner);
         }
 
         &:first-child {
@@ -98,26 +114,31 @@
   &:not(&--expressive) {
     display: inline-grid;
     grid-auto-flow: column;
-    grid-auto-columns: 1fr;
+    grid-auto-columns: minmax(0, 1fr);
+    align-items: stretch;
 
     > .q-btn {
+      --q-btn-border-width: 1px;
+
       width: auto;
-      min-width: 3rem;
-      padding-inline: 0.75rem;
-      gap: 0.5rem;
+      height: auto;
+      min-height: var(--q-btn-height, 40px);
+      min-width: 48px;
+      padding-inline: 12px;
+      gap: 8px;
       @include mixins.border(var(--outline));
       border-radius: 0;
       box-shadow: none;
       background: transparent;
 
       &:first-child {
-        border-start-start-radius: 1.25rem;
-        border-end-start-radius: 1.25rem;
+        border-start-start-radius: 9999px;
+        border-end-start-radius: 9999px;
       }
 
       &:last-child {
-        border-start-end-radius: 1.25rem;
-        border-end-end-radius: 1.25rem;
+        border-start-end-radius: 9999px;
+        border-end-end-radius: 9999px;
       }
 
       + .q-btn {

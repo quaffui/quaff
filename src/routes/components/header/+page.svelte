@@ -89,10 +89,9 @@
       {#snippet content()}
         <div class="workout-content">
           <div class="workout-art" aria-hidden="true">
-            <span class="primary-container"><QIcon name="directions_run" size="2.5rem" /></span>
-            <span class="tertiary-container"><QIcon name="fitness_center" size="3rem" /></span>
-            <span class="secondary-container"><QIcon name="sports_gymnastics" size="2.5rem" /></span
-            >
+            <span class="primary-container"><QIcon name="directions_run" size="40px" /></span>
+            <span class="tertiary-container"><QIcon name="fitness_center" size="48px" /></span>
+            <span class="secondary-container"><QIcon name="sports_gymnastics" size="40px" /></span>
           </div>
           <div class="label-medium text-on-surface-variant q-mt-md">TONIGHT'S CLASS</div>
           <h2 class="headline-small q-my-sm">Strength circuit</h2>
@@ -136,8 +135,8 @@
             />
           </QHeader>
           <div class="note-preview" aria-live="polite">
-            <QAvatar size="4rem" class={currentNote.color} aria-hidden="true">
-              <QIcon name={currentNote.icon} size="2rem" />
+            <QAvatar size="64px" class={currentNote.color} aria-hidden="true">
+              <QIcon name={currentNote.icon} size="32px" />
             </QAvatar>
             <div>
               <div class="label-medium text-on-surface-variant">
@@ -159,7 +158,7 @@
         <QLayout class="header-frame sauna-layout">
           {#snippet header()}
             <QHeader height={96} class="tertiary-container">
-              <QIcon name="hot_tub" size="2rem" class="q-ml-md" aria-hidden="true" />
+              <QIcon name="hot_tub" size="32px" class="q-ml-md" aria-hidden="true" />
               <QHeaderTitle class="justify-start">
                 <div>
                   <div class="label-medium">NORTH BATHS</div>
@@ -296,48 +295,48 @@
   :global(.header-preview) {
     width: 100%;
     max-width: 28rem;
-    height: 21.5rem;
-    border-radius: 1.5rem;
+    height: 344px;
+    border-radius: 24px;
   }
 
   .workout-content,
   .sauna-content {
-    padding: 1rem;
+    padding: 16px;
   }
 
   .workout-art {
     display: flex;
     align-items: flex-end;
     justify-content: center;
-    gap: 0.75rem;
-    height: 6rem;
+    gap: 12px;
+    height: 96px;
   }
 
   .workout-art span {
     display: grid;
     place-items: center;
     flex: 1;
-    height: 4.5rem;
-    max-width: 5.5rem;
-    border-radius: 1.25rem;
+    height: 72px;
+    max-width: 88px;
+    border-radius: 20px;
   }
 
   .workout-art span:nth-child(2) {
-    height: 6rem;
+    height: 96px;
   }
 
   .example-controls {
     display: flex;
     flex-wrap: wrap;
-    gap: 1rem 1.5rem;
-    margin-bottom: 1rem;
+    gap: 16px 24px;
+    margin-bottom: 16px;
   }
 
   :global(.header-frame) {
     max-width: 48rem;
     background-color: var(--surface-container-low);
     color: var(--on-surface);
-    border-radius: 1rem;
+    border-radius: 16px;
     overflow: hidden;
   }
 
@@ -345,47 +344,47 @@
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 1.5rem;
-    padding: 1.5rem;
+    gap: 24px;
+    padding: 24px;
   }
 
   :global(.sauna-layout) {
-    height: 22rem;
+    height: 352px;
   }
 
   .session-row {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 1rem;
-    padding-block: 0.5rem;
+    gap: 16px;
+    padding-block: 8px;
   }
 
   :global(.reader-layout) {
-    height: 22rem;
+    height: 352px;
   }
 
   .journal-content {
     max-width: 40rem;
     margin-inline: auto;
-    padding: 1.5rem;
+    padding: 24px;
   }
 
   .journal-content article + article {
-    border-top: 0.0625rem solid var(--outline-variant);
-    margin-top: 2rem;
-    padding-top: 2rem;
+    border-top: 1px solid var(--outline-variant);
+    margin-top: 32px;
+    padding-top: 32px;
   }
 
   .search-results {
     display: grid;
-    gap: 1.25rem;
-    padding: 1.25rem;
+    gap: 20px;
+    padding: 20px;
   }
 
   .search-result {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 16px;
   }
 </style>

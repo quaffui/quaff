@@ -73,7 +73,6 @@ QSelect is a form component that allows users to choose from multiple options in
   let menuTarget = $state<HTMLLabelElement>();
   let isMenuOpen = $state(false);
   let focusedOptionIndex = $state(-1);
-  let snippetPrependWidth = $state(0);
   let searchValue = $state("");
   let isSearching = $state(false);
   // #endregion: --- Reactive variables
@@ -145,6 +144,12 @@ QSelect is a form component that allows users to choose from multiple options in
       hideMenu();
     } else {
       void showMenu();
+    }
+  }
+
+  function handleWrapperMousedown(event: QEvent<MouseEvent, HTMLLabelElement>) {
+    if (event.target === event.currentTarget) {
+      handleMousedown();
     }
   }
 
@@ -345,7 +350,7 @@ QSelect is a form component that allows users to choose from multiple options in
   });
 </script>
 
-<div {...props} class="q-field" style:--snippet-prepend-width="{snippetPrependWidth}px" data-quaff>
+<div {...props} class="q-field" data-quaff>
   {#if before}
     <div class="q-field__snippet-before">
       {@render before()}
@@ -353,9 +358,15 @@ QSelect is a form component that allows users to choose from multiple options in
   {/if}
 
   <div class="q-field__inner">
-    <label bind:this={menuTarget} for={inputId} class="q-field__wrapper">
+    <!-- svelte-ignore a11y_no_noninteractive_element_interactions (The associated input provides keyboard interaction.) -->
+    <label
+      bind:this={menuTarget}
+      for={inputId}
+      class="q-field__wrapper"
+      onmousedown={handleWrapperMousedown}
+    >
       {#if prepend}
-        <div class="q-field__snippet-prepend" bind:clientWidth={snippetPrependWidth}>
+        <div class="q-field__snippet-prepend">
           {@render prepend()}
         </div>
       {/if}

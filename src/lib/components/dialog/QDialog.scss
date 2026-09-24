@@ -10,11 +10,12 @@
   box-shadow: var(--elevate2);
   color: var(--on-surface);
   background-color: var(--surface);
-  padding: 1rem;
+  padding: 16px;
   z-index: 1000;
   left: 50%;
+  right: auto;
   top: 10%;
-  min-width: 20rem;
+  min-width: 320px;
   max-width: 100%;
   max-height: 80%;
   overflow-x: hidden;
@@ -27,7 +28,7 @@
   transition:
     variables.$speed3 all,
     0s background-color;
-  translate: -50% -4rem;
+  translate: -50% -64px;
   transform-origin: center;
   animation-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
 
@@ -41,16 +42,16 @@
     top: 50%;
     width: fit-content;
     height: fit-content;
-    min-width: 17.5rem;
-    min-height: 8.75rem;
-    max-width: min(35rem, calc(100% - 3rem));
-    max-height: min(35rem, calc(100% - 3rem));
-    padding: 1.5rem;
-    border-radius: 1.75rem;
+    min-width: 280px;
+    min-height: 140px;
+    max-width: min(560px, calc(100% - 48px));
+    max-height: min(560px, calc(100% - 48px));
+    padding: 24px;
+    border-radius: 28px;
     box-shadow: var(--elevate3);
     background-color: var(--surface-container-high);
     color: var(--on-surface-variant);
-    translate: -50% calc(-50% - 4rem);
+    translate: -50% calc(-50% - 64px);
 
     :where(h1, h2, h3, h4, h5, h6) {
       color: var(--on-surface);
@@ -145,31 +146,31 @@
     padding: 0;
     border-radius: 0;
     box-shadow: none;
-    translate: 0 4rem;
+    translate: 0 64px;
   }
 
   &--small:is(&--left, &--right) {
-    width: 20rem;
+    width: 320px;
   }
 
   &--medium:is(&--left, &--right) {
-    width: 32rem;
+    width: 512px;
   }
 
   &--large:is(&--left, &--right) {
-    width: 44rem;
+    width: 704px;
   }
 
   &--small:is(&--top, &--bottom) {
-    height: 16rem;
+    height: 256px;
   }
 
   &--medium:is(&--top, &--bottom) {
-    height: 24rem;
+    height: 384px;
   }
 
   &--large:is(&--top, &--bottom) {
-    height: 32rem;
+    height: 512px;
   }
 
   &:is(&--left, &--right, &--top, &--bottom) {
