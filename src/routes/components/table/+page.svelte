@@ -2,7 +2,7 @@
   import { resolve } from "$app/paths";
   import QLanguageExample from "$docs/QLanguageExample.svelte";
   import { QTableDocs } from "$components/table/docs";
-  import { QBtn, QCard, QCardSection, QCodeBlock, QIcon, QTable } from "$lib";
+  import { Notify, QBtn, QCard, QCardSection, QCodeBlock, QIcon, QTable } from "$lib";
   import { QDocs, QDocsSection } from "$docs";
   import type { QTableColumn, QTableRow } from "$components/table/props";
   import { pageTitle } from "$helpers/pageTitle";
@@ -336,7 +336,7 @@
                     <QBtn
                       flat
                       style="padding-inline: 0.75rem; margin-inline: -0.75rem"
-                      onclick={() => alert(`Selected: ${row.title}`)}
+                      onclick={() => Notify.create(`Selected: ${row.title}`)}
                     >
                       {row.title}
                     </QBtn>

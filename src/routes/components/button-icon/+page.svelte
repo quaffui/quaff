@@ -2,7 +2,7 @@
   import { QIconBtnDocs } from "$components/button/docs";
   import { docsCtx } from "$docs/QDocs.svelte";
   import { pageTitle } from "$helpers/pageTitle";
-  import { QIconBtn } from "$lib";
+  import { Notify, QIconBtn } from "$lib";
   import { QDocs, QDocsSection } from "$docs";
 
   import snippets from "./docs.snippets";
@@ -73,7 +73,7 @@
           icon="close"
           aria-label="Close"
           disabled
-          onclick={() => alert("What's this sorcery?!")}
+          onclick={() => Notify.create("Icon button clicked")}
         />
       </QDocsSection>
 
@@ -184,13 +184,13 @@
           class="q-ma-sm"
           icon="touch_app"
           aria-label="Activate"
-          onclick={() => alert("Omg you did it")}
+          onclick={() => Notify.create("Icon button clicked")}
         />
         <QIconBtn
           class="q-ma-sm"
           icon="touch_app"
           aria-label="Activate"
-          onclick={() => alert("Omg you did it")}
+          onclick={() => Notify.create("Icon button clicked")}
           disabled
         />
       </QDocsSection>

@@ -3,7 +3,7 @@
   import { QCheckboxDocs } from "$components/checkbox/docs";
   import { docsCtx } from "$docs/QDocs.svelte";
   import { pageTitle } from "$helpers/pageTitle";
-  import { QBtn, QCheckbox, QIcon, QItem, QItemSection, QList } from "$lib";
+  import { Notify, QBtn, QCheckbox, QIcon, QItem, QItemSection, QList } from "$lib";
   import { QDocs, QDocsSection } from "$docs";
 
   import snippets from "./docs.snippets";
@@ -114,7 +114,7 @@
           class="q-ma-sm"
           label="Click me"
           bind:value={value3}
-          onchange={() => alert(`Checkbox is now ${value3 ? "checked" : "unchecked"}`)}
+          onchange={() => Notify.create(`Checkbox is now ${value3 ? "checked" : "unchecked"}`)}
         />
       </QDocsSection>
     </div>

@@ -2,7 +2,7 @@
   import { QBtnDocs } from "$components/button/docs";
   import { docsCtx } from "$docs/QDocs.svelte";
   import { pageTitle } from "$helpers/pageTitle";
-  import { QBtn } from "$lib";
+  import { Notify, QBtn } from "$lib";
   import { QDocs, QDocsSection } from "$docs";
 
   import snippets from "./docs.snippets";
@@ -74,7 +74,7 @@
           class="q-ma-sm"
           label="Click me"
           disabled
-          onclick={() => alert("What's this sorcery?!")}
+          onclick={() => Notify.create("Button clicked")}
         />
       </QDocsSection>
 
@@ -176,8 +176,13 @@
           when the button is disabled.
         {/snippet}
 
-        <QBtn class="q-ma-sm" label="Click me" onclick={() => alert("Omg you did it")} />
-        <QBtn class="q-ma-sm" label="Click me" onclick={() => alert("Omg you did it")} disabled />
+        <QBtn class="q-ma-sm" label="Click me" onclick={() => Notify.create("Button clicked")} />
+        <QBtn
+          class="q-ma-sm"
+          label="Click me"
+          onclick={() => Notify.create("Button clicked")}
+          disabled
+        />
       </QDocsSection>
 
       <QDocsSection title="Shape Variations">

@@ -2,7 +2,7 @@
   import { QInputDocs } from "$components/input/docs";
   import { docsCtx } from "$docs/QDocs.svelte";
   import { pageTitle } from "$helpers/pageTitle";
-  import { QBtn, QIcon, QInput } from "$lib";
+  import { Notify, QBtn, QIcon, QInput } from "$lib";
   import { QDocs, QDocsSection } from "$docs";
   import snippets from "./docs.snippets";
 
@@ -208,7 +208,12 @@
         </QInput>
         <QInput bind:value={afterValue} label="After Slot" class="q-mt-md" filled>
           {#snippet after()}
-            <QBtn outlined class="q-ml-sm" onclick={() => alert("Button clicked!")}>Go</QBtn>
+            <QBtn
+              outlined
+              class="q-ml-sm"
+              label="Go"
+              onclick={() => Notify.create("Button clicked!")}
+            />
           {/snippet}
         </QInput>
         <QInput bind:value={combinedValue} label="Combined Slots" class="q-mt-md" rounded>
