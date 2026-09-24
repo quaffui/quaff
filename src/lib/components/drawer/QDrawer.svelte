@@ -2,6 +2,7 @@
   import { onMount, untrack } from "svelte";
   import { on } from "svelte/events";
   import { innerWidth } from "svelte/reactivity/window";
+  import { navigationCtx } from "$internal/navigationContext";
   import { navigating } from "$app/state";
   import { useSize } from "$composables";
   import { leftDrawerCtx, rightDrawerCtx } from "../layout/QLayout.svelte";
@@ -23,6 +24,8 @@
   }: QDrawerProps = $props();
   // #endregion: --- Props
   import type { QDrawerProps } from "./props";
+
+  navigationCtx.set("drawer");
 
   // #region:    --- Non-reactive variables
   const PEEK_THRESHOLD = 30; // How far the drawer peeks out when cursor is near the edge

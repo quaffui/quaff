@@ -10,7 +10,7 @@
     readonly noRound: boolean;
     readonly selection: QListProps["selection"];
     readonly separatorOptions: QListProps["separatorOptions"];
-    readonly refreshTabStop: () => void;
+    readonly refreshTabStop: (action?: HTMLElement, tabIndex?: number) => void;
     readonly claimInitialExpansion: (name: string) => boolean;
     readonly openExpansion: (name: string, current: () => void) => () => void;
   }
@@ -109,7 +109,11 @@
   // #endregion: --- Lifecycle
 
   // #region:    --- Functions
-  function refreshTabStop() {
+  function refreshTabStop(action?: HTMLElement, tabIndex?: number) {
+    if (action && originalTabIndexes.has(action) && tabIndex !== undefined) {
+      originalTabIndexes.set(action, String(tabIndex));
+    }
+
     if (!navigationActive || refreshPending) {
       return;
     }
@@ -176,6 +180,10 @@
       .flatMap((child) => {
         if (!(child instanceof HTMLElement)) {
           return [];
+        }
+
+        if (child.matches(".q-nav-item")) {
+          return [child];
         }
 
         if (child.matches(".q-item")) {
@@ -245,7 +253,9 @@
     );
     const tabStopCandidates = visibleActions.length ? visibleActions : actions;
     const focused = tabStopCandidates.find((action) => action.contains(document.activeElement));
-    const selected = tabStopCandidates.find((action) => action.closest(".q-item--active"));
+    const selected = tabStopCandidates.find((action) =>
+      action.closest(".q-item--active, .q-nav-item--active")
+    );
     setTabStop(actions, focused ?? selected ?? tabStopCandidates[0]);
   }
 

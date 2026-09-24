@@ -45,6 +45,10 @@
     "./plugins/css": {
       "types": "./dist/plugins/css.d.ts",
       "default": "./dist/plugins/css.js"
+    },
+    "./components/navbar/QNavItem.svelte": {
+      "types": "./dist/components/nav-item/QNavItem.svelte.d.ts",
+      "svelte": "./dist/components/nav-item/QNavItem.svelte"
     }
   },
   "sideEffects": [

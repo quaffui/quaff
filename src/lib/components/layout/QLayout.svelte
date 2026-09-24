@@ -1,5 +1,6 @@
 <script module lang="ts">
   import { onMount } from "svelte";
+  import { navigationCtx } from "$internal/navigationContext";
   import ContextResetter from "$internal/ContextResetter.svelte";
   import { QContext } from "$utils/context";
   import type { QLayoutProps } from "./props";
@@ -219,6 +220,7 @@
 
   <ContextResetter
     keys={[
+      navigationCtx.symbol,
       headerCtx.symbol,
       footerCtx.symbol,
       navbarCtx.symbol,

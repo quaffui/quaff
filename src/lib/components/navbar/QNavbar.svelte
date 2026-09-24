@@ -1,8 +1,12 @@
 <script lang="ts">
   import { onMount } from "svelte";
+  import { navigationCtx } from "$internal/navigationContext";
+
   import { useColor } from "$composables";
   import { navbarCtx } from "../layout/QLayout.svelte";
   import type { QNavbarProps } from "./props";
+
+  navigationCtx.set("bar");
 
   // #region:    --- Props
   let {

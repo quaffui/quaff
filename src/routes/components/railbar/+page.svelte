@@ -1,6 +1,7 @@
 <script lang="ts">
+  import { resolve } from "$app/paths";
   import { docsCtx } from "$docs/QDocs.svelte";
-  import { QNavItemDocs } from "$components/navbar/docs";
+  import { QNavItemDocs } from "$components/nav-item/docs";
   import { QRailbarDocs } from "$components/railbar/docs";
   import { pageTitle } from "$helpers/pageTitle";
   import {
@@ -69,7 +70,9 @@
           QRailbar provides access to primary destinations from a fixed position at the side of a
           layout. It is intended for three to seven destinations on medium and large screens. Place
           QNavItem components directly inside it so navigation styling stays scoped to navigation
-          items rather than QList and QItem.
+          items rather than QList and QItem. See
+          <a href={resolve("/components/nav-item", {})}> QNavItem </a>
+          for drawer destinations and expandable groups.
         {/snippet}
 
         <div style="height: 300px; border: 1px solid var(--outline-variant);">

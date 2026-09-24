@@ -34,4 +34,6 @@ export { Quaff, QTheme, QScrollObserver, Notify };
 export { useMeta } from "./composables/useMeta.js";
 export type { MetaOptions, MetaSource, MetaTag, QMetaProps } from "./components/meta/props.js";
 
+export type { QNavItemProps, QNavGroupProps } from "./components/nav-item/props.js";
+
 export type { QSearchProps, QSearchScope, QSearchLabels } from "./components/search/props.js";

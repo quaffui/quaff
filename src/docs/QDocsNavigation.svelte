@@ -14,7 +14,7 @@
 
 <script lang="ts">
   import { untrack } from "svelte";
-  import { QExpansionItem, QIcon, QItem, QItemSection, QList, Quaff } from "$lib";
+  import { QList, QNavGroup, QNavItem, Quaff } from "$lib";
 
   let {
     items,
@@ -65,31 +65,17 @@
 {#snippet navigationItems(entries: NavigationItem[])}
   {#each entries as item (item.name)}
     {#if "children" in item}
-      <QExpansionItem
+      <QNavGroup
         label={item.name}
         icon={item.icon}
-        expandIcon="arrow_drop_down"
         bind:value={
           () => expandedGroups[item.name] ?? false, (value) => (expandedGroups[item.name] = value)
         }
       >
-        <QList {dense} expressive={false} preserveTabOrder>
-          {@render navigationItems(item.children)}
-        </QList>
-      </QExpansionItem>
+        {@render navigationItems(item.children)}
+      </QNavGroup>
     {:else}
-      {@const isCurrent = pathname === item.to}
-      <QItem
-        to={item.to}
-        active={isCurrent}
-        aria-current={isCurrent ? "page" : undefined}
-        {onclick}
-      >
-        {#if item.icon}
-          <QItemSection type="icon"><QIcon name={item.icon} /></QItemSection>
-        {/if}
-        <QItemSection>{item.name}</QItemSection>
-      </QItem>
+      <QNavItem to={item.to} label={item.name} icon={item.icon} {onclick} />
     {/if}
   {/each}
 {/snippet}

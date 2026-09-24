@@ -43,7 +43,8 @@ import QLoadingIndicator from "./loading-indicator/QLoadingIndicator.svelte";
 import QMeta from "./meta/QMeta.svelte";
 import QMenu from "./menu/QMenu.svelte";
 import QNavbar from "./navbar/QNavbar.svelte";
-import QNavItem from "./navbar/QNavItem.svelte";
+import QNavItem from "./nav-item/QNavItem.svelte";
+import QNavGroup from "./nav-item/QNavGroup.svelte";
 import QRadio from "./radio/QRadio.svelte";
 import QRailbar from "./railbar/QRailbar.svelte";
 import QSeparator from "./separator/QSeparator.svelte";
@@ -102,6 +103,7 @@ export {
   QMeta,
   QNavbar,
   QNavItem,
+  QNavGroup,
   QRadio,
   QRailbar,
   QSeparator,

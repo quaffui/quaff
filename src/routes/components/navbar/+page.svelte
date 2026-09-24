@@ -1,5 +1,7 @@
 <script lang="ts">
-  import { QNavbarDocs, QNavItemDocs } from "$components/navbar/docs";
+  import { resolve } from "$app/paths";
+  import { QNavbarDocs } from "$components/navbar/docs";
+  import { QNavItemDocs } from "$components/nav-item/docs";
   import { QDocs, QDocsSection } from "$docs";
   import { docsCtx } from "$docs/QDocs.svelte";
   import { pageTitle } from "$helpers/pageTitle";
@@ -54,10 +56,12 @@
     <div>
       <QDocsSection title="QLayout Integration">
         {#snippet sectionDescription()}
-          Place QNavbar in QLayout's <code>navbar</code> snippet. QLayout reserves space at the bottom
-          of its content for the bar, while QNavItem represents each primary destination. Use three to
-          five stable, equal-priority top-level destinations, keep exactly one active, and always show
-          concise one- or two-word labels.
+          Place QNavbar in QLayout's <code>navbar</code> snippet. QLayout reserves space at the
+          bottom of its content for the bar, while QNavItem represents each primary destination. Use
+          three to five stable, equal-priority top-level destinations, keep exactly one active, and
+          always show concise one- or two-word labels. See
+          <a href={resolve("/components/nav-item", {})}>QNavItem</a>
+          for drawer destinations and expandable groups.
         {/snippet}
 
         <div style="height: 300px; border: 1px solid var(--outline-variant);">
@@ -208,7 +212,8 @@
 
       <QDocsSection title="Custom Icons and Labels">
         {#snippet sectionDescription()}
-          The required <code>icon</code> prop accepts a Material Symbol name or a snippet. Supply a
+          Provide an <code>icon</code> for every bar destination; it accepts a Material Symbol name
+          or a snippet. Supply a
           <code>label</code>, or use the default children snippet as its fallback. Keep visible
           labels concise, and add an <code>aria-label</code> when a destination needs a fuller
           accessible name. Custom icon content inherits the 24px icon size; when it has distinct

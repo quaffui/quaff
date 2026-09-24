@@ -35,6 +35,7 @@
     QLoadingIndicator,
     QNavbar,
     QNavItem,
+    QNavGroup,
     QRadio,
     QRailbar,
     QSearch,
@@ -218,6 +219,12 @@
       description: "Display anchored popup content with reliable overlay behavior.",
       href: "/components/menu",
       snippet: menu,
+    },
+    {
+      name: "Navigation items",
+      description: "Link destinations and organize drawer navigation into expandable groups.",
+      href: "/components/nav-item",
+      snippet: navigationItems,
     },
     {
       name: "QNavbar",
@@ -598,6 +605,22 @@
             </QItemSection>
             <QItemSection type="content">Favorites</QItemSection>
           </QItem>
+        </QList>
+      </QDrawer>
+    {/snippet}
+  </QLayout>
+{/snippet}
+
+{#snippet navigationItems()}
+  <QLayout style="height: 100%; max-width: 18rem; border-radius: 1rem;">
+    {#snippet drawerLeft()}
+      <QDrawer value={true} width={288} behavior="desktop" persistent style="max-width: 100%;">
+        <QList tag="nav" aria-label="Navigation preview" dense expressive={false} preserveTabOrder>
+          <QNavItem icon="home" label="Overview" />
+          <QNavGroup label="Studio" defaultOpened>
+            <QNavItem label="Bookings" active />
+            <QNavItem label="Classes" />
+          </QNavGroup>
         </QList>
       </QDrawer>
     {/snippet}

@@ -107,8 +107,9 @@ const COMPONENT_REGISTRY = {
   }),
   menu: group("components/menu", { QMenu: component("q-menu") }),
   meta: group(undefined, { QMeta: component([]) }),
-  navbar: group("components/navbar", {
-    QNavbar: component("q-navbar"),
+  navbar: group("components/navbar", { QNavbar: component("q-navbar") }),
+  "nav-item": group("components/nav-item", {
+    QNavGroup: component([], { renders: ["QExpansionItem", "QList"] }),
     QNavItem: component("q-nav-item", {
       renders: ["QIcon", "QBadge"],
       selectorBlocks: ["q-ripple"],
