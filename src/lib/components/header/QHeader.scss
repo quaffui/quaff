@@ -11,7 +11,7 @@
   height: var(--header-height);
   width: 100%;
 
-  padding-inline: 0.25rem;
+  padding-inline: 4px;
 
   border-radius: 0;
 
@@ -23,9 +23,9 @@
   }
 
   > .q-btn--round {
-    width: 3rem;
-    min-width: 3rem;
-    height: 3rem;
+    width: 48px;
+    min-width: 48px;
+    height: 48px;
   }
 
   &--layout {
@@ -38,7 +38,7 @@
   }
 
   &--inset {
-    padding-left: 3.625rem;
+    padding-left: 58px;
   }
 
   &.q-header--elevated {
@@ -50,11 +50,11 @@
   }
 
   &.q-header--dense {
-    --header-height: 3rem;
+    --header-height: 48px;
   }
 
   &.q-header--prominent {
-    --header-height: 7rem;
+    --header-height: 112px;
   }
 
   &.q-header--collapsed {
@@ -73,7 +73,7 @@
   display: flex;
   flex: 1 1 auto;
   min-width: 0;
-  padding-inline: 0.5rem;
+  padding-inline: 8px;
   justify-content: center;
 
   @include mixins.typography("title-large");

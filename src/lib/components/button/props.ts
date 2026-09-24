@@ -83,7 +83,7 @@ interface QBtnCommonProps extends Clickable, Linkable, QBtnVariantProps {
   shape?: "round" | "squared";
 
   /**
-   * Size of the button. Defaults to 2.5rem in both modes (`md` for standard, `sm` for expressive). Explicit size names use the scale for the selected mode.
+   * Size of the button. Defaults to a 40px minimum height in both modes (`md` for standard, `sm` for expressive). Explicit size names use the scale for the selected mode.
    */
   size?: QBtnSizeOptions;
 

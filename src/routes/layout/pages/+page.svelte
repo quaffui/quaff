@@ -51,6 +51,20 @@
 
   <QCodeBlock class="q-my-lg" language="svelte" code={layoutPage} />
 
+  <h2 class="q-my-lg" id="sizing-and-units">Sizing and Units</h2>
+
+  <p>
+    Text follows your browser's font size. Spacing and icons keep their size, while controls grow to
+    fit larger text. Changing the root <code class="q-docs-code">--size</code> adjusts text without scaling
+    the whole layout.
+  </p>
+
+  <p>
+    Use <code class="q-docs-code">rem</code> for text and <code class="q-docs-code">em</code> for sizes
+    that follow nearby text. Keep design spacing in pixels, or use Quaff's spacing classes. Numeric sizing
+    props use pixels; props that accept CSS lengths keep the unit you provide.
+  </p>
+
   <h2 class="q-my-lg">Page Grid</h2>
 
   <p>

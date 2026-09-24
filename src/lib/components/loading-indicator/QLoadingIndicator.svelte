@@ -9,7 +9,7 @@ Show that content is loading during short waits with animated shapes.
 
   // #region:    --- Props
   let {
-    size = "3rem",
+    size = "48px",
     contained = false,
     color,
     containerColor = "primary-container",

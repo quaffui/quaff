@@ -65,10 +65,10 @@ export interface QTimeProps extends OptionalModel<QTimeValue>, Disableable, QTim
   /** Uses a 24-hour clock. By default, the hour cycle is derived from the locale. */
   format24h?: boolean;
 
-  /** Mode shown when a modal picker opens. */
+  /** Preferred opening mode. The dial falls back to input when it cannot fit. */
   defaultMode?: QTimeDisplayMode;
 
-  /** Shows the modal dial/text-input toggle. */
+  /** Shows the modal dial/text-input toggle when the dial fits. */
   showModeToggle?: boolean;
 
   /** Prevents the picker from opening. */

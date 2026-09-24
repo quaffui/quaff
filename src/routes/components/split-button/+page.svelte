@@ -10,7 +10,7 @@
 
   const variants = ["filled", "tonal", "elevated", "outlined"] as const;
   const sizes = ["xs", "sm", "md", "lg", "xl"] as const;
-  const heights = { xs: 2, sm: 2.5, md: 3.5, lg: 6, xl: 8.5 };
+  const HEIGHTS = { xs: 32, sm: 40, md: 56, lg: 96, xl: 136 };
   let isMenuExpanded = $state(false);
   let previewStatus = $state("Ready to send");
   let actionStatus = $state("Ready to save");
@@ -111,16 +111,16 @@
 
     <QDocsSection title="Sizes">
       {#snippet sectionDescription()}
-        Five expressive sizes set both buttons' height: <code>xs</code> (2rem),
-        <code>sm</code> (2.5rem), <code>md</code> (3.5rem), <code>lg</code> (6rem), and
-        <code>xl</code> (8.5rem). Small sizes retain a larger interaction target. Large examples can be
+        Five expressive sizes set both buttons' minimum height: <code>xs</code> (32px),
+        <code>sm</code> (40px), <code>md</code> (56px), <code>lg</code> (96px), and
+        <code>xl</code> (136px). Small sizes retain a larger interaction target. Large examples can be
         scrolled horizontally.
       {/snippet}
 
       <div class="flex column q-gap-lg">
         {#each sizes as size (size)}
           <div class="split-size-example">
-            <p class="q-mb-sm">{size.toUpperCase()} · {heights[size]}rem</p>
+            <p class="q-mb-sm">{size.toUpperCase()} · {HEIGHTS[size]}px</p>
             <div class="split-example-scroll">
               <QSplitBtn
                 {size}
@@ -220,6 +220,6 @@
 
   .split-example-scroll {
     overflow-x: auto;
-    padding: 0.5rem;
+    padding: 8px;
   }
 </style>

@@ -60,7 +60,7 @@
   .palette {
     font-size: 1rem;
     text-align: center;
-    border-radius: 1.25rem;
+    border-radius: 20px;
     overflow: hidden;
 
     .heading {

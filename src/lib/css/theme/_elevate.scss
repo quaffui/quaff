@@ -2,11 +2,11 @@
 
 :root {
   --elevate0: 0 0 0 0 rgb(0 0 0 / 0);
-  --elevate1: 0 0.0625rem 0.0625rem 0 rgb(0 0 0 / 0.2); /* 1dp */
-  --elevate2: 0 0.125rem 0.125rem 0 rgb(0 0 0 / 0.32); /* 3dp */
-  --elevate3: 0 0.25rem 0.25rem 0 rgb(0 0 0 / 0.4); /* 6dp */
-  --elevate4: 0 0.375rem 0.375rem 0 rgb(0 0 0 / 0.48); /* 8dp */
-  --elevate5: 0 0.5rem 0.5rem 0 rgb(0 0 0 / 0.56); /* 12dp */
+  --elevate1: 0 1px 1px 0 rgb(0 0 0 / 0.2); /* 1dp */
+  --elevate2: 0 2px 2px 0 rgb(0 0 0 / 0.32); /* 3dp */
+  --elevate3: 0 4px 4px 0 rgb(0 0 0 / 0.4); /* 6dp */
+  --elevate4: 0 6px 6px 0 rgb(0 0 0 / 0.48); /* 8dp */
+  --elevate5: 0 8px 8px 0 rgb(0 0 0 / 0.56); /* 12dp */
 }
 
 .elevate-0 {

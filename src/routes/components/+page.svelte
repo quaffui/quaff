@@ -56,10 +56,10 @@
   import type { Snippet } from "svelte";
 
   const logos = {
-    facebook: `<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="1.5rem" height="1.5rem" viewBox="0 0 24 24" fill="currentColor"><path d="M12,2C6.477,2,2,6.477,2,12c0,5.013,3.693,9.153,8.505,9.876V14.65H8.031v-2.629h2.474v-1.749 c0-2.896,1.411-4.167,3.818-4.167c1.153,0,1.762,0.085,2.051,0.124v2.294h-1.642c-1.022,0-1.379,0.969-1.379,2.061v1.437h2.995 l-0.406,2.629h-2.588v7.247C18.235,21.236,22,17.062,22,12C22,6.477,17.523,2,12,2z"></path></svg>`,
-    x: `<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="1.5rem" height="1.5rem" viewBox="0 0 24 24" fill="currentColor"><path d="M 4.0351562 3 C 3.7431562 3.57 3.6894375 3.6741406 3.3984375 4.2441406 L 9.5253906 12.726562 L 2.6523438 21 L 4.6015625 21 L 10.431641 13.980469 L 15.5 21 L 20.119141 21 C 20.381141 20.488 20.429406 20.393859 20.691406 19.880859 L 13.673828 10.164062 L 19.671875 3 L 17.714844 3 L 12.767578 8.9082031 L 8.5 3 L 4.0351562 3 z M 5.4335938 4.5 L 7.7324219 4.5 L 18.566406 19.5 L 16.267578 19.5 L 5.4335938 4.5 z"></path></svg>`,
-    instagram: `<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="1.5rem" height="1.5rem" viewBox="0 0 24 24" fill="currentColor"><path d="M 8 3 C 5.239 3 3 5.239 3 8 L 3 16 C 3 18.761 5.239 21 8 21 L 16 21 C 18.761 21 21 18.761 21 16 L 21 8 C 21 5.239 18.761 3 16 3 L 8 3 z M 18 5 C 18.552 5 19 5.448 19 6 C 19 6.552 18.552 7 18 7 C 17.448 7 17 6.552 17 6 C 17 5.448 17.448 5 18 5 z M 12 7 C 14.761 7 17 9.239 17 12 C 17 14.761 14.761 17 12 17 C 9.239 17 7 14.761 7 12 C 7 9.239 9.239 7 12 7 z M 12 9 A 3 3 0 0 0 9 12 A 3 3 0 0 0 12 15 A 3 3 0 0 0 15 12 A 3 3 0 0 0 12 9 z"></path></svg>`,
-    linkedin: `<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="1.5rem" height="1.5rem" viewBox="0 0 24 24" fill="currentColor"><path d="M19,3H5C3.895,3,3,3.895,3,5v14c0,1.105,0.895,2,2,2h14c1.105,0,2-0.895,2-2V5C21,3.895,20.105,3,19,3z M9,17H6.477v-7H9 V17z M7.694,8.717c-0.771,0-1.286-0.514-1.286-1.2s0.514-1.2,1.371-1.2c0.771,0,1.286,0.514,1.286,1.2S8.551,8.717,7.694,8.717z M18,17h-2.442v-3.826c0-1.058-0.651-1.302-0.895-1.302s-1.058,0.163-1.058,1.302c0,0.163,0,3.826,0,3.826h-2.523v-7h2.523v0.977 C13.93,10.407,14.581,10,15.802,10C17.023,10,18,10.977,18,13.174V17z"></path></svg>`,
+    facebook: `<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="24px" height="24px" viewBox="0 0 24 24" fill="currentColor"><path d="M12,2C6.477,2,2,6.477,2,12c0,5.013,3.693,9.153,8.505,9.876V14.65H8.031v-2.629h2.474v-1.749 c0-2.896,1.411-4.167,3.818-4.167c1.153,0,1.762,0.085,2.051,0.124v2.294h-1.642c-1.022,0-1.379,0.969-1.379,2.061v1.437h2.995 l-0.406,2.629h-2.588v7.247C18.235,21.236,22,17.062,22,12C22,6.477,17.523,2,12,2z"></path></svg>`,
+    x: `<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="24px" height="24px" viewBox="0 0 24 24" fill="currentColor"><path d="M 4.0351562 3 C 3.7431562 3.57 3.6894375 3.6741406 3.3984375 4.2441406 L 9.5253906 12.726562 L 2.6523438 21 L 4.6015625 21 L 10.431641 13.980469 L 15.5 21 L 20.119141 21 C 20.381141 20.488 20.429406 20.393859 20.691406 19.880859 L 13.673828 10.164062 L 19.671875 3 L 17.714844 3 L 12.767578 8.9082031 L 8.5 3 L 4.0351562 3 z M 5.4335938 4.5 L 7.7324219 4.5 L 18.566406 19.5 L 16.267578 19.5 L 5.4335938 4.5 z"></path></svg>`,
+    instagram: `<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="24px" height="24px" viewBox="0 0 24 24" fill="currentColor"><path d="M 8 3 C 5.239 3 3 5.239 3 8 L 3 16 C 3 18.761 5.239 21 8 21 L 16 21 C 18.761 21 21 18.761 21 16 L 21 8 C 21 5.239 18.761 3 16 3 L 8 3 z M 18 5 C 18.552 5 19 5.448 19 6 C 19 6.552 18.552 7 18 7 C 17.448 7 17 6.552 17 6 C 17 5.448 17.448 5 18 5 z M 12 7 C 14.761 7 17 9.239 17 12 C 17 14.761 14.761 17 12 17 C 9.239 17 7 14.761 7 12 C 7 9.239 9.239 7 12 7 z M 12 9 A 3 3 0 0 0 9 12 A 3 3 0 0 0 12 15 A 3 3 0 0 0 15 12 A 3 3 0 0 0 12 9 z"></path></svg>`,
+    linkedin: `<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="24px" height="24px" viewBox="0 0 24 24" fill="currentColor"><path d="M19,3H5C3.895,3,3,3.895,3,5v14c0,1.105,0.895,2,2,2h14c1.105,0,2-0.895,2-2V5C21,3.895,20.105,3,19,3z M9,17H6.477v-7H9 V17z M7.694,8.717c-0.771,0-1.286-0.514-1.286-1.2s0.514-1.2,1.371-1.2c0.771,0,1.286,0.514,1.286,1.2S8.551,8.717,7.694,8.717z M18,17h-2.442v-3.826c0-1.058-0.651-1.302-0.895-1.302s-1.058,0.163-1.058,1.302c0,0.163,0,3.826,0,3.826h-2.523v-7h2.523v0.977 C13.93,10.407,14.581,10,15.802,10C17.023,10,18,10.977,18,13.174V17z"></path></svg>`,
   };
 
   type Component = {
@@ -378,7 +378,7 @@
       {#if Quaff.breakpoints.isMoreThan("sm")}
         <QChip label="Hey!" icon="waving_hand" class="col-3 surface" />
       {/if}
-      <QTabs value="home" class="col-12 col-sm-9" style="border-radius: 0.5rem;">
+      <QTabs value="home" class="col-12 col-sm-9" style="border-radius: 8px;">
         <QTab name="home" icon="home">Home</QTab>
         <QTab name="about" icon="info">About</QTab>
         <QTab name="account" icon="person">Account</QTab>
@@ -404,7 +404,7 @@
         <QCard class="q-pa-none" style="height: 100%; transition: all 0.3s; overflow: hidden;">
           <div
             class="q-component-card__display q-pa-md flex flex-center secondary-container"
-            style="height: 14rem;"
+            style="height: 224px;"
             inert
           >
             {@render component.snippet()}
@@ -455,7 +455,7 @@
 {#snippet bottomSheet()}
   <div
     class="surface"
-    style="position: relative; width: 100%; height: 12rem; border-radius: 1rem; overflow: hidden;"
+    style="position: relative; width: 100%; height: 192px; border-radius: 16px; overflow: hidden;"
   >
     <QBottomSheet value aria-label="Place details" style="transition: none">
       <p class="title-medium q-mb-none">Riverside Café</p>
@@ -523,7 +523,7 @@
 {#snippet carousel()}
   <QCarousel
     items={["/cocktail.jpg", "/cocktail-close-up.jpg", "/cocktail-close-up-2.jpg"]}
-    height="10rem"
+    height="160px"
     itemWidth={180}
     controls={false}
     aria-label="Drink photos"
@@ -612,7 +612,7 @@
 {/snippet}
 
 {#snippet navigationItems()}
-  <QLayout style="height: 100%; max-width: 18rem; border-radius: 1rem;">
+  <QLayout style="height: 100%; max-width: 18rem; border-radius: 16px;">
     {#snippet drawerLeft()}
       <QDrawer value={true} width={288} behavior="desktop" persistent style="max-width: 100%;">
         <QList tag="nav" aria-label="Navigation preview" dense expressive={false} preserveTabOrder>
@@ -643,7 +643,7 @@
 {/snippet}
 
 {#snippet footer()}
-  <QLayout style="width: 150%; position: absolute; left: 1rem; bottom: 1rem;">
+  <QLayout style="width: 150%; position: absolute; left: 16px; bottom: 16px;">
     {#snippet footer()}
       <QFooter class="flex">
         <div class="flex column label-large">
@@ -662,7 +662,7 @@
 {/snippet}
 
 {#snippet header()}
-  <QHeader style="position: absolute; left: 1rem; top: 1rem; width: 150%;">
+  <QHeader style="position: absolute; left: 16px; top: 16px; width: 150%;">
     <QBtn icon="menu" flat aria-label="Menu" />
     <QHeaderTitle shrink>Quaff</QHeaderTitle>
   </QHeader>
@@ -670,13 +670,13 @@
 
 {#snippet icons()}
   <div class="flex flex-center q-gap-sm">
-    <QCard class="flex q-gap-lg q-px-lg" style="border-radius: 50rem;">
+    <QCard class="flex q-gap-lg q-px-lg" style="border-radius: 800px;">
       <QIcon name="search" />
       <QIcon name="delete" />
       <QIcon name="archive" />
       <QIcon name="forward" />
     </QCard>
-    <QCard class="flex primary" style="border-radius: 50rem;">
+    <QCard class="flex primary" style="border-radius: 800px;">
       <QIcon name="add" />
     </QCard>
   </div>
@@ -760,7 +760,7 @@
 {/snippet}
 
 {#snippet progress()}
-  <QCard class="q-pa-none" style="position: absolute; bottom: 1rem; left: 1rem; right: 1rem;">
+  <QCard class="q-pa-none" style="position: absolute; bottom: 16px; left: 16px; right: 16px;">
     <div class="q-py-lg q-px-xl q-mx-auto" style="width: 100%;">
       <img
         src="/cocktail.jpg"
@@ -953,7 +953,7 @@
     { id: 5, title: "The Catcher in the Rye", author: "J.D. Salinger" },
   ]}
 
-  <QCard class="surface" style="position: absolute; left: 1rem; top: 1rem; min-width: 110%">
+  <QCard class="surface" style="position: absolute; left: 16px; top: 16px; min-width: 110%">
     <QTable {columns} {rows} bordered dense />
   </QCard>
 {/snippet}
@@ -1008,7 +1008,7 @@
   <div
     style="display: flex; justify-content: flex-end; height: 100%; width: 100%; overflow: hidden; background: var(--surface-container);"
   >
-    <QSideSheet value headline="Details" width="12rem" bordered>
+    <QSideSheet value headline="Details" width="192px" bordered>
       <div class="text-body-medium">A little more context, right where you need it.</div>
     </QSideSheet>
   </div>
@@ -1024,7 +1024,7 @@
       transition: all 0.3s;
 
       width: 100%;
-      min-height: 14rem;
+      min-height: 224px;
       pointer-events: none;
 
       &::before {

@@ -169,7 +169,7 @@
         </QLayout>
         <section class="studio-summary" aria-live="polite">
           <span class="label-large">TEMPO STUDIO</span>
-          <QIcon name={selectedPage.icon} size="3rem" aria-hidden="true" />
+          <QIcon name={selectedPage.icon} size="48px" aria-hidden="true" />
           <h5>{destination}</h5>
           <p>{selectedPage.detail}</p>
           <div class="studio-stat title-medium">{selectedPage.summary}</div>
@@ -185,51 +185,51 @@
   :global(.mail-preview),
   :global(.linked-drawer),
   :global(.studio-navigation) {
-    border-radius: 1rem;
-    border: 0.0625rem solid var(--outline-variant);
+    border-radius: 16px;
+    border: 1px solid var(--outline-variant);
   }
 
   :global(.mail-preview) {
-    height: 19rem;
+    height: 304px;
     max-width: 18rem;
   }
 
   .mail-brand {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
-    padding: 0.5rem 1rem 1rem;
+    gap: 12px;
+    padding: 8px 16px 16px;
   }
 
   .mail-mark {
     display: grid;
     place-items: center;
-    width: 2.5rem;
-    height: 2.5rem;
-    border-radius: 0.875rem;
+    width: 40px;
+    height: 40px;
+    border-radius: 14px;
     background: var(--tertiary-container);
     color: var(--on-tertiary-container);
   }
 
   .mail-status {
-    margin: 1rem 1rem 0;
+    margin: 16px 16px 0;
     color: var(--on-surface-variant);
   }
 
   :global(.linked-drawer) {
-    height: 19rem;
+    height: 304px;
     max-width: 20rem;
   }
 
   .studio-example {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
-    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 272px), 1fr));
+    gap: 16px;
     max-width: 44rem;
   }
 
   :global(.studio-navigation) {
-    height: 23rem;
+    height: 368px;
     max-width: 20rem;
   }
 
@@ -238,9 +238,9 @@
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
-    gap: 1rem;
-    padding: 1.5rem;
-    border-radius: 1rem;
+    gap: 16px;
+    padding: 24px;
+    border-radius: 16px;
     background: var(--tertiary-container);
     color: var(--on-tertiary-container);
 
@@ -251,8 +251,8 @@
   }
 
   .studio-stat {
-    padding: 1rem;
-    border-radius: 0.75rem;
+    padding: 16px;
+    border-radius: 12px;
     background: var(--surface);
     color: var(--on-surface);
   }

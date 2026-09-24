@@ -186,7 +186,7 @@
           transformers: [
             {
               pre(node) {
-                node.properties.style += ";padding: 1rem; text-align: left;";
+                node.properties.style += ";padding: 16px; text-align: left;";
               },
             },
           ],
@@ -200,7 +200,7 @@
           props: {
             target: el,
             class: "q-pa-none transparent",
-            style: "max-width: calc(100vw - 1rem)",
+            style: "max-width: calc(100vw - 16px)",
             children: snip,
           },
         });
@@ -310,7 +310,7 @@
   :global(.q-api .prop-type) {
     opacity: 0.75;
     width: 100%;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.03125rem;
   }
 
   :global(.q-api .prop-type.clickable) {
@@ -345,6 +345,11 @@
   }
 
   :global(.q-api .q-api__tabs .q-tab) {
+    flex: 1 0 auto;
     background-color: transparent;
+  }
+
+  :global(.q-api .q-api__tabs .q-tab__content) {
+    padding-block: 8px;
   }
 </style>

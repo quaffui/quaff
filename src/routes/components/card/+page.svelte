@@ -61,9 +61,9 @@
   {#snippet display()}
     <QCard class="workshop-card">
       <div class="print-art secondary-container" aria-hidden="true">
-        <span class="print-sheet secondary"><QIcon name="filter_vintage" size="3rem" /></span>
-        <span class="print-sheet primary"><QIcon name="wb_sunny" size="3rem" /></span>
-        <span class="print-sheet tertiary"><QIcon name="waves" size="3rem" /></span>
+        <span class="print-sheet secondary"><QIcon name="filter_vintage" size="48px" /></span>
+        <span class="print-sheet primary"><QIcon name="wb_sunny" size="48px" /></span>
+        <span class="print-sheet tertiary"><QIcon name="waves" size="48px" /></span>
       </div>
       <QCardSection>
         <div class="label-medium text-on-surface-variant">THE LITTLE PRINT CLUB</div>
@@ -99,7 +99,7 @@
                 <div class="display-small q-mt-sm">21°</div>
               </div>
               <div class="sun-shape primary-container" aria-hidden="true">
-                <QIcon name="light_mode" size="2.5rem" />
+                <QIcon name="light_mode" size="40px" />
               </div>
             </QCardSection>
             <p class="body-medium text-on-surface-variant q-ma-none">
@@ -110,15 +110,15 @@
           <QCard class="example-card" bordered>
             <div class="label-medium text-on-surface-variant">BORDERED</div>
             <QCardSection class="q-my-lg">
-              <QIcon name="backpack" class="text-tertiary q-mb-sm" size="2rem" aria-hidden="true" />
+              <QIcon name="backpack" class="text-tertiary q-mb-sm" size="32px" aria-hidden="true" />
               <h6 class="title-large">Travel light</h6>
               <p class="body-medium text-on-surface-variant q-mt-xs q-mb-none">
                 The essentials for a day away.
               </p>
             </QCardSection>
             <div class="packing-list body-medium">
-              <span><QIcon name="check" size="1.125rem" aria-hidden="true" /> Water bottle</span>
-              <span><QIcon name="check" size="1.125rem" aria-hidden="true" /> A good book</span>
+              <span><QIcon name="check" size="18px" aria-hidden="true" /> Water bottle</span>
+              <span><QIcon name="check" size="18px" aria-hidden="true" /> A good book</span>
             </div>
           </QCard>
 
@@ -165,10 +165,10 @@
               </p>
               <div class="flex items-center q-gap-lg q-my-lg body-medium">
                 <span class="flex items-center q-gap-xs"
-                  ><QIcon name="schedule" size="1.25rem" aria-hidden="true" /> 5 minutes</span
+                  ><QIcon name="schedule" size="20px" aria-hidden="true" /> 5 minutes</span
                 >
                 <span class="flex items-center q-gap-xs"
-                  ><QIcon name="local_bar" size="1.25rem" aria-hidden="true" /> Serves one</span
+                  ><QIcon name="local_bar" size="20px" aria-hidden="true" /> Serves one</span
                 >
               </div>
               <QBtn
@@ -207,7 +207,7 @@
               <div class="title-medium">Maya Lee</div>
               <div class="body-small">The balcony journal · 2 min read</div>
             </div>
-            <QIcon name="potted_plant" size="2.5rem" aria-hidden="true" />
+            <QIcon name="potted_plant" size="40px" aria-hidden="true" />
           </QCardSection>
           <QCardSection class="q-my-lg">
             <h6 class="headline-small q-mb-sm">A tiny garden, five floors up</h6>
@@ -228,7 +228,7 @@
                   name="favorite"
                   filled={isStoryLiked}
                   class="q-btn__icon"
-                  size="1.25rem"
+                  size="20px"
                   aria-hidden="true"
                 />
               {/snippet}
@@ -280,7 +280,7 @@
           <QCard class="bag-card" rounded={hasRoundedCorners}>
             <QCardSection class="flex items-center q-gap-lg">
               <div class="bag-art tertiary-container" aria-hidden="true">
-                <QIcon name="backpack" size="3.5rem" />
+                <QIcon name="backpack" size="56px" />
               </div>
               <div>
                 <div class="label-medium text-on-surface-variant">PACK LESS. WANDER MORE.</div>
@@ -320,8 +320,8 @@
 <style>
   .card-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
-    gap: 1.25rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 224px), 1fr));
+    gap: 20px;
   }
 
   :global(.workshop-card) {
@@ -333,24 +333,24 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 6.5rem;
+    height: 104px;
     overflow: hidden;
-    border-radius: 0.5rem;
-    margin-bottom: 1rem;
+    border-radius: 8px;
+    margin-bottom: 16px;
   }
 
   .print-sheet {
     display: grid;
     place-items: center;
-    width: 4.5rem;
-    height: 5.5rem;
+    width: 72px;
+    height: 88px;
     flex: none;
-    border-radius: 0.25rem;
+    border-radius: 4px;
     rotate: -12deg;
   }
 
   .print-sheet + .print-sheet {
-    margin-inline-start: -0.75rem;
+    margin-inline-start: -12px;
     rotate: 8deg;
   }
 
@@ -366,35 +366,35 @@
     display: grid;
     place-items: center;
     flex: none;
-    width: 4.5rem;
-    height: 4.5rem;
+    width: 72px;
+    height: 72px;
     border-radius: 50%;
   }
 
   .packing-list {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem 1rem;
+    gap: 8px 16px;
   }
 
   .packing-list span {
     display: flex;
     align-items: center;
-    gap: 0.25rem;
+    gap: 4px;
   }
 
   .book-spines {
     display: flex;
     align-items: flex-end;
-    gap: 0.25rem;
-    height: 4.5rem;
+    gap: 4px;
+    height: 72px;
   }
 
   .book-spines span {
-    width: 1.25rem;
+    width: 20px;
     height: 100%;
-    border-radius: 0.25rem;
-    border-block: 0.375rem solid currentColor;
+    border-radius: 4px;
+    border-block: 6px solid currentColor;
   }
 
   .book-spines span:nth-child(2) {
@@ -409,17 +409,17 @@
   .recipe-image {
     display: block;
     width: 100%;
-    height: 15rem;
+    height: 240px;
     object-fit: cover;
-    border-radius: 0.5rem;
+    border-radius: 8px;
   }
 
   .recipe-steps {
-    padding-inline-start: 1.25rem;
+    padding-inline-start: 20px;
   }
 
   .recipe-steps li + li {
-    margin-top: 0.5rem;
+    margin-top: 8px;
   }
 
   :global(.story-card) {
@@ -430,27 +430,27 @@
     display: grid;
     grid-template-columns: auto minmax(0, 1fr) auto;
     align-items: center;
-    gap: 1rem;
+    gap: 16px;
   }
 
   .actions-example {
     display: flex;
     flex-wrap: wrap;
     align-items: flex-start;
-    gap: 1.5rem;
+    gap: 24px;
     max-width: 60rem;
   }
 
   .action-controls {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
-    flex: 1 1 14rem;
+    gap: 16px;
+    flex: 1 1 224px;
     min-width: 0;
   }
 
   :global(.bag-card) {
-    flex: 2 1 24rem;
+    flex: 2 1 384px;
     min-width: 0;
   }
 
@@ -458,8 +458,8 @@
     display: grid;
     place-items: center;
     flex: none;
-    width: 5rem;
-    height: 6rem;
-    border-radius: 1.5rem 1.5rem 0.5rem 0.5rem;
+    width: 80px;
+    height: 96px;
+    border-radius: 24px 24px 8px 8px;
   }
 </style>

@@ -1,7 +1,7 @@
 @use "$css/mixins";
 
 .q-bottom-sheet {
-  --q-bottom-sheet-top-margin: 4.5rem;
+  --q-bottom-sheet-top-margin: 72px;
   --q-bottom-sheet-available-height: calc(100dvh - var(--q-bottom-sheet-top-margin));
 
   @include mixins.typography(body-large);
@@ -13,9 +13,9 @@
   margin: 0 auto;
   padding: 0;
   border: none;
-  border-radius: 1.75rem 1.75rem 0 0;
+  border-radius: 28px 28px 0 0;
   width: 100%;
-  max-width: 40rem;
+  max-width: 640px;
   height: var(--q-bottom-sheet-drag-height, auto);
   max-height: min(50dvh, var(--q-bottom-sheet-available-height));
   overflow: visible;
@@ -88,7 +88,7 @@
     justify-content: center;
     padding: 0;
     width: 100%;
-    height: 3rem;
+    height: 48px;
     border: none;
     border-radius: inherit;
     background: transparent;
@@ -98,9 +98,9 @@
 
     span {
       display: block;
-      width: 2rem;
-      height: 0.25rem;
-      border-radius: 50rem;
+      width: 32px;
+      height: 4px;
+      border-radius: 800px;
       background-color: var(--on-surface-variant);
     }
 
@@ -113,11 +113,11 @@
       position: absolute;
       inset: 0;
       margin: auto;
-      width: 2.5rem;
-      height: 1.5rem;
-      border-radius: 0.5rem;
-      outline: 0.1875rem solid var(--secondary);
-      outline-offset: 0.125rem;
+      width: 40px;
+      height: 24px;
+      border-radius: 8px;
+      outline: 3px solid var(--secondary);
+      outline-offset: 2px;
     }
   }
 
@@ -125,7 +125,7 @@
     min-height: 0;
     overflow: auto;
     overscroll-behavior: contain;
-    padding: 0 1.5rem max(1.5rem, env(safe-area-inset-bottom));
+    padding: 0 24px max(24px, env(safe-area-inset-bottom));
   }
 
   &__overlay-root {
@@ -140,8 +140,8 @@
   }
 
   @media (width > 640px) {
-    --q-bottom-sheet-top-margin: 3.5rem;
-    width: calc(100% - 7rem);
+    --q-bottom-sheet-top-margin: 56px;
+    width: calc(100% - 112px);
   }
 }
 
@@ -159,7 +159,7 @@ body:has(.q-bottom-sheet:modal) {
 
 @media (forced-colors: active) {
   .q-bottom-sheet {
-    border: 0.0625rem solid CanvasText;
+    border: 1px solid CanvasText;
 
     &__handle span {
       background-color: ButtonText;

@@ -2,21 +2,21 @@
 
 @layer q-slider {
   .q-slider {
-    --q-slider-track-height: 1rem;
-    --q-slider-handle-height: 2.75rem;
-    --q-slider-handle-track-offset: 0.375rem;
-    --q-slider-end-stop-inset: 0.375rem;
-    --q-slider-outer-radius: 0.5rem;
+    --q-slider-track-height: 16px;
+    --q-slider-handle-height: 44px;
+    --q-slider-handle-track-offset: 6px;
+    --q-slider-end-stop-inset: 6px;
+    --q-slider-outer-radius: 8px;
     --q-slider-motion-duration: 200ms;
     --q-slider-motion-easing: #{mixins.easing(standard)};
     --q-slider-axis-center: 50%;
 
     position: relative;
     display: inline-block;
-    flex: 1 1 12rem;
+    flex: 1 1 192px;
     inline-size: 100%;
-    min-inline-size: 6rem;
-    block-size: max(3rem, var(--q-slider-handle-height));
+    min-inline-size: 96px;
+    block-size: max(48px, var(--q-slider-handle-height));
     color: var(--q-slider-active-color);
     cursor: pointer;
     isolation: isolate;
@@ -24,28 +24,28 @@
     user-select: none;
 
     &--sm {
-      --q-slider-track-height: 1.5rem;
+      --q-slider-track-height: 24px;
     }
 
     &--md {
-      --q-slider-track-height: 2.5rem;
-      --q-slider-handle-height: 3.25rem;
-      --q-slider-outer-radius: 0.75rem;
-      --q-slider-icon-padding: 0.375rem;
+      --q-slider-track-height: 40px;
+      --q-slider-handle-height: 52px;
+      --q-slider-outer-radius: 12px;
+      --q-slider-icon-padding: 6px;
     }
 
     &--lg {
-      --q-slider-track-height: 3.5rem;
-      --q-slider-handle-height: 4.25rem;
-      --q-slider-outer-radius: 1rem;
-      --q-slider-icon-padding: 0.375rem;
+      --q-slider-track-height: 56px;
+      --q-slider-handle-height: 68px;
+      --q-slider-outer-radius: 16px;
+      --q-slider-icon-padding: 6px;
     }
 
     &--xl {
-      --q-slider-track-height: 6rem;
-      --q-slider-handle-height: 6.75rem;
-      --q-slider-outer-radius: 1.75rem;
-      --q-slider-icon-padding: 0.5rem;
+      --q-slider-track-height: 96px;
+      --q-slider-handle-height: 108px;
+      --q-slider-outer-radius: 28px;
+      --q-slider-icon-padding: 8px;
     }
 
     &--expressive {
@@ -54,16 +54,17 @@
 
     &--vertical {
       flex: 0 0 auto;
-      inline-size: max(3rem, var(--q-slider-handle-height));
+      inline-size: max(48px, var(--q-slider-handle-height));
       min-inline-size: 0;
-      block-size: 12rem;
-      min-block-size: 6rem;
+      block-size: 192px;
+      min-block-size: 96px;
     }
 
     &--with-label:not(&--vertical) {
-      --q-slider-axis-center: calc(50% + 1.75rem);
+      --q-slider-label-space: calc(max(20px, var(--typescale-label-large-line-height)) + 36px);
+      --q-slider-axis-center: calc(50% + var(--q-slider-label-space) / 2);
 
-      block-size: calc(max(3rem, var(--q-slider-handle-height)) + 3.5rem);
+      block-size: calc(max(48px, var(--q-slider-handle-height)) + var(--q-slider-label-space));
     }
 
     &--disabled,
@@ -79,8 +80,8 @@
       position: absolute;
       inset-block-start: var(--q-slider-axis-center);
       inset-inline-start: var(--q-slider-position);
-      inline-size: 3rem;
-      block-size: max(3rem, var(--q-slider-handle-height));
+      inline-size: 48px;
+      block-size: max(48px, var(--q-slider-handle-height));
       margin: 0;
       outline: none;
       opacity: 0;
@@ -116,7 +117,7 @@
             )
         )
       );
-      border-radius: 0.125rem;
+      border-radius: 2px;
       background: var(--q-slider-inactive-color);
       &.active {
         background: currentColor;
@@ -146,8 +147,8 @@
       z-index: 1;
       inset-block-start: 50%;
       inset-inline-start: var(--q-slider-position);
-      inline-size: 0.25rem;
-      block-size: 0.25rem;
+      inline-size: 4px;
+      block-size: 4px;
       border-radius: 50%;
       background: var(--on-secondary-container);
       translate: -50% -50%;
@@ -174,7 +175,7 @@
       z-index: 2;
       inset-block-start: var(--q-slider-axis-center);
       inset-inline-start: var(--q-slider-position);
-      inline-size: 2.5rem;
+      inline-size: 40px;
       block-size: var(--q-slider-handle-height);
       translate: -50% -50%;
       isolation: isolate;
@@ -189,8 +190,8 @@
         position: absolute;
         inset-block: 0;
         inset-inline-start: 50%;
-        inline-size: 0.25rem;
-        border-radius: 0.125rem;
+        inline-size: 4px;
+        border-radius: 2px;
         background: currentColor;
         box-shadow: var(--elevate1);
         translate: -50%;
@@ -204,19 +205,19 @@
 
       &.overlap::before {
         box-shadow:
-          0 0 0 0.0625rem var(--on-primary),
+          0 0 0 1px var(--on-primary),
           var(--elevate1);
       }
 
       &.focus-visible {
-        border-radius: 1.25rem;
-        outline: 0.1875rem solid var(--secondary);
-        outline-offset: 0.125rem;
+        border-radius: 20px;
+        outline: 3px solid var(--secondary);
+        outline-offset: 2px;
       }
 
       &.active {
         &::before {
-          inline-size: 0.125rem;
+          inline-size: 2px;
         }
       }
     }
@@ -229,20 +230,20 @@
 
       position: absolute;
       z-index: 3;
-      inset-block-end: calc(100% + 0.25rem);
+      inset-block-end: calc(100% + 4px);
       inset-inline-start: 50%;
       display: grid;
       place-items: center;
-      min-inline-size: 3rem;
-      block-size: 2.75rem;
-      padding-inline: 1rem;
-      border-radius: 1.375rem;
+      min-inline-size: 48px;
+      min-block-size: 44px;
+      padding: 12px 16px;
+      border-radius: 9999px;
       background: var(--inverse-surface);
       color: var(--inverse-on-surface);
       opacity: 0;
       scale: 0.7;
       translate: -50%;
-      transform-origin: 50% calc(100% + 0.25rem);
+      transform-origin: 50% calc(100% + 4px);
       transition:
         opacity 100ms linear,
         scale var(--q-slider-motion-duration) var(--q-slider-motion-easing);
@@ -288,8 +289,8 @@
         inset-block-start: auto;
         inset-block-end: var(--q-slider-position);
         inset-inline: 0;
-        inline-size: max(3rem, var(--q-slider-handle-height));
-        block-size: 3rem;
+        inline-size: max(48px, var(--q-slider-handle-height));
+        block-size: 48px;
         margin-inline: auto;
         translate: 0 50%;
 
@@ -321,11 +322,11 @@
           )
         );
         &.at-start:not(.gap-start) {
-          border-radius: 0.125rem 0.125rem var(--q-slider-outer-radius) var(--q-slider-outer-radius);
+          border-radius: 2px 2px var(--q-slider-outer-radius) var(--q-slider-outer-radius);
         }
 
         &.at-end:not(.gap-end) {
-          border-radius: var(--q-slider-outer-radius) var(--q-slider-outer-radius) 0.125rem 0.125rem;
+          border-radius: var(--q-slider-outer-radius) var(--q-slider-outer-radius) 2px 2px;
         }
       }
 
@@ -350,7 +351,7 @@
         inset-block-end: var(--q-slider-position);
         inset-inline: 0;
         inline-size: var(--q-slider-handle-height);
-        block-size: 2.5rem;
+        block-size: 40px;
         margin-inline: auto;
         translate: 0 50%;
         transition-property: inset-block-end;
@@ -359,26 +360,26 @@
           inset-block-start: 50%;
           inset-inline: 0;
           inline-size: auto;
-          block-size: 0.25rem;
+          block-size: 4px;
           translate: 0 -50%;
           transition: block-size 100ms linear;
         }
 
         &.active::before {
           inline-size: auto;
-          block-size: 0.125rem;
+          block-size: 2px;
         }
       }
 
       .q-slider__label {
         inset-block-start: 50%;
         inset-block-end: auto;
-        inset-inline-start: calc(100% + 0.25rem);
+        inset-inline-start: calc(100% + 4px);
         translate: 0 -50%;
-        transform-origin: -0.25rem 50%;
+        transform-origin: -4px 50%;
 
         &:dir(rtl) {
-          transform-origin: calc(100% + 0.25rem) 50%;
+          transform-origin: calc(100% + 4px) 50%;
         }
       }
 
@@ -440,8 +441,8 @@
 
       &__segment {
         background: Canvas;
-        outline: 0.0625rem solid CanvasText;
-        outline-offset: -0.0625rem;
+        outline: 1px solid CanvasText;
+        outline-offset: -1px;
 
         &.active {
           background: Highlight;

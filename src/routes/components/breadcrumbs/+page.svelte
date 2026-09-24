@@ -109,7 +109,7 @@
         <div class="q-mb-md">
           <QBreadcrumbs
             activeClass="primary q-px-sm"
-            activeStyle="border-radius: 0.25rem"
+            activeStyle="border-radius: 4px"
             separator="icon:chevron_right"
           >
             <QBreadcrumbsEl to="/" label="Home" />

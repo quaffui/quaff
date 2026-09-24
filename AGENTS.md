@@ -3,6 +3,7 @@
 - Keep changes small and component-local. Do not stage unrelated work such as experimental components unless the task explicitly asks for it.
 - Keep every diff justified by the requested behavior: fix a reproduced bug, implement an explicitly requested feature, or make the code clearly simpler or faster. Avoid speculative changes and unrelated cleanup.
 - Add a blank line before and after control-flow blocks such as `if`, `for`, `while`, `switch`, and `try`/`catch` when they sit next to other statements. Omit it when the block is first or last in its enclosing scope, and keep paired clauses such as `else`, `catch`, and `finally` together.
+- Keep typography relative and design geometry stable. Read [Sizing and text scaling](docs/development/sizing.md) before changing component sizing; it defines the unit policy, official M3 sources, and checks to preserve text scaling.
 - Use `SCREAMING_SNAKE_CASE` for immutable constants, including fixed values, patterns and lookup tables. Keep runtime-derived locals and mutable state in `camelCase`; a `const` binding alone does not make an object immutable.
 - Quaff is Svelte 5 only. Use runes-style component code (`$props`, `$state`, `$derived`, snippets) and avoid adding legacy Svelte 4 patterns.
 - Use `bun run check` and `bun run build` for full validation. `bun run format` currently also sees untracked local files, so verify the worktree before trusting a format failure.

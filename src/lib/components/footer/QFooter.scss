@@ -13,8 +13,8 @@
 
   @include mixins.typography("body-medium");
 
-  padding-inline: 1rem;
-  gap: 0.5rem;
+  padding-inline: 16px;
+  gap: 8px;
 
   min-height: unset;
   height: var(--footer-height);

@@ -44,9 +44,9 @@
   {#snippet display()}
     <QCard
       class="flex column flex-center q-gap-md text-center"
-      style="width: 75%; min-height: 15rem"
+      style="width: 75%; min-height: 240px"
     >
-      <QLoadingIndicator contained size="6rem" aria-label="Loading your library" />
+      <QLoadingIndicator contained size="96px" aria-label="Loading your library" />
       <span class="title-large">Loading your library</span>
     </QCard>
   {/snippet}
@@ -77,19 +77,19 @@
 
     <QDocsSection title="Sizes and Colors">
       {#snippet sectionDescription()}
-        The default size is <code>3rem</code>. Use <code>size</code> for sizes between
-        <code>1.5rem</code> and <code>15rem</code> at the default root font size. Customize
+        The default size is <code>48px</code>. Use <code>size</code> for sizes between
+        <code>24px</code> and <code>240px</code>. Customize
         <code>color</code>
         and <code>containerColor</code> with theme names or CSS colors. Keep at least 3:1 contrast between
         the indicator and its background.
       {/snippet}
 
       <div class="flex items-center q-gap-lg q-my-md">
-        <QLoadingIndicator size="1.5rem" aria-label="Loading suggestions" />
-        <QLoadingIndicator size="3rem" color="tertiary" aria-label="Loading playlists" />
+        <QLoadingIndicator size="24px" aria-label="Loading suggestions" />
+        <QLoadingIndicator size="48px" color="tertiary" aria-label="Loading playlists" />
         <QLoadingIndicator
           contained
-          size="6rem"
+          size="96px"
           color="on-tertiary-container"
           containerColor="tertiary-container"
           aria-label="Loading albums"
@@ -105,15 +105,16 @@
         <QBtn
           type="button"
           variant="tonal"
+          style="--q-btn-content-height: 24px"
           disabled={isSaving}
           aria-busy={isSaving}
           onclick={saveChanges}
         >
           <span class="flex items-center q-gap-sm">
             {#if isSaving}
-              <QLoadingIndicator size="1.5rem" color="primary" aria-hidden="true" />
+              <QLoadingIndicator size="24px" color="primary" aria-hidden="true" />
             {:else}
-              <QIcon name="save" size="1.5rem" aria-hidden="true" />
+              <QIcon name="save" size="24px" aria-hidden="true" />
             {/if}
             <span>Save changes</span>
           </span>
@@ -147,11 +148,11 @@
           />
         </QCardSection>
         <QCardSection class="flex column items-center q-gap-md q-mt-lg">
-          <div class="flex flex-center" style="height: 5rem" aria-busy={isRefreshing}>
+          <div class="flex flex-center" style="height: 80px" aria-busy={isRefreshing}>
             {#if isRefreshing}
               <QLoadingIndicator contained aria-label="Loading your library" />
             {:else}
-              <QIcon name="library_books" size="3rem" color="primary" aria-hidden="true" />
+              <QIcon name="library_books" size="48px" color="primary" aria-hidden="true" />
             {/if}
           </div>
           <span role="status">

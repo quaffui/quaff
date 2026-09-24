@@ -12,8 +12,8 @@
   flex: 1 1 0;
 
   min-width: 0;
-  min-height: 4rem;
-  padding: 0.375rem 0;
+  min-height: 64px;
+  padding: 6px 0;
 
   overflow: visible;
   border: 0;
@@ -33,28 +33,28 @@
   &__target {
     position: relative;
     display: grid;
-    grid-template-rows: 2rem minmax(1rem, auto);
+    grid-template-rows: 32px minmax(16px, auto);
     place-items: center;
     justify-self: stretch;
-    gap: 0.25rem;
+    gap: 4px;
 
-    min-height: 3.25rem;
+    min-height: 52px;
 
     &::before,
     &::after {
       content: "";
       position: absolute;
       inset: 0 auto auto 50%;
-      width: 3.5rem;
-      height: 2rem;
-      border-radius: 2rem;
+      width: 56px;
+      height: 32px;
+      border-radius: 32px;
       translate: -50%;
       pointer-events: none;
     }
 
     &::before {
       z-index: 4;
-      outline-offset: -0.1875rem;
+      outline-offset: -3px;
     }
 
     &::after {
@@ -68,9 +68,9 @@
     z-index: 0;
     position: absolute;
     inset: 0 auto auto 50%;
-    width: 3.5rem;
-    height: 2rem;
-    border-radius: 2rem;
+    width: 56px;
+    height: 32px;
+    border-radius: 32px;
     background-color: var(--q-nav-item-active-indicator-color, var(--secondary-container));
     opacity: 0;
     transform: scaleX(0);
@@ -87,9 +87,9 @@
     grid-row: 1;
     align-items: center;
     justify-content: center;
-    width: 1.5rem;
-    height: 1.5rem;
-    font-size: 1.5rem;
+    width: 24px;
+    height: 24px;
+    font-size: 24px;
     line-height: 1;
 
     & > .q-icon {
@@ -101,6 +101,7 @@
     z-index: 2;
     grid-row: 2;
     min-width: 0;
+    overflow-wrap: anywhere;
     white-space: normal;
 
     @include mixins.typography("label-medium");
@@ -113,9 +114,9 @@
   &__target > .q-ripple__effect {
     z-index: 1;
     inset: 0 auto auto 50%;
-    width: 3.5rem;
-    height: 2rem;
-    border-radius: 2rem;
+    width: 56px;
+    height: 32px;
+    border-radius: 32px;
     translate: -50%;
   }
 
@@ -129,7 +130,7 @@
   }
 
   &:focus-visible:not([aria-disabled="true"]) &__target::before {
-    outline: 0.1875rem solid var(--secondary);
+    outline: 3px solid var(--secondary);
   }
 
   &.q-nav-item--active {
@@ -156,14 +157,14 @@
 
 .q-navbar--horizontal > .q-nav-item {
   flex: 0 1 auto;
-  min-width: 5rem;
-  padding-block: 0.75rem;
+  min-width: 80px;
+  padding-block: 12px;
 
   & > .q-nav-item__target {
     display: flex;
     justify-self: center;
-    min-height: 2.5rem;
-    padding-inline: 1rem;
+    min-height: 40px;
+    padding-inline: 16px;
   }
 
   & > .q-nav-item__target::before,
@@ -173,11 +174,12 @@
     inset: 0;
     width: auto;
     height: auto;
+    border-radius: 9999px;
     translate: none;
   }
 
   & .q-nav-item__badge {
-    inset-inline: auto -0.25rem;
+    inset-inline: auto -4px;
 
     &:empty {
       inset-inline-end: 0;
@@ -203,33 +205,37 @@
 .q-railbar > .q-nav-item {
   flex: 0 0 auto;
   width: 100%;
-  min-height: 3.5rem;
-  padding-block: 0.125rem;
+  min-height: 56px;
+  padding-block: 2px;
 }
 
 .q-nav-item--drawer {
   --q-nav-item-state-layer-color: var(--on-surface);
   flex: 0 0 auto;
   width: 100%;
-  min-height: 3.5rem;
+  min-height: 56px;
   padding: 0;
-  border-radius: 1.75rem;
+  border-radius: 28px;
   text-align: start;
 
   @include mixins.typography("label-large");
 
   &.q-nav-item--dense {
-    min-height: 2.75rem;
-    border-radius: 1.375rem;
+    min-height: 44px;
+    border-radius: 22px;
   }
 
   & > .q-nav-item__target {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
+    gap: 12px;
     min-height: inherit;
-    padding-inline: 1rem;
+    padding: 16px;
     border-radius: inherit;
+  }
+
+  &.q-nav-item--dense > .q-nav-item__target {
+    padding-block: 10px;
   }
 
   & .q-nav-item__target::before,

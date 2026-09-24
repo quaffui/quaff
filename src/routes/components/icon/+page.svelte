@@ -61,7 +61,7 @@
             >xs</code
           >,
           <code>sm</code>, <code>md</code>, <code>lg</code>, <code>xl</code>), numbers (interpreted
-          as pixels), or any valid CSS size value (e.g., "3rem", "2em").
+          as pixels), or any valid CSS size value (e.g., "48px", "2em").
         {/snippet}
         <div class="flex q-gap-lg items-center">
           <QIcon name="check" size="xs" />
@@ -70,7 +70,7 @@
           <QIcon name="check" size="lg" />
           <QIcon name="check" size="xl" />
           <QIcon name="check" size={48} />
-          <QIcon name="check" size="3rem" />
+          <QIcon name="check" size="48px" />
         </div>
       </QDocsSection>
 

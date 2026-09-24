@@ -13,10 +13,10 @@ export interface QSideSheetProps
   /** The logical side of the container, mirrored in right-to-left layouts. */
   side?: "start" | "end";
 
-  /** The width, up to 25rem. Numbers use pixels; CSS units are also accepted. */
+  /** The width, up to 400px. Numbers use pixels; CSS units are also accepted. */
   width?: string | number;
 
-  /** Insets the sheet by 1rem and rounds all corners. */
+  /** Insets the sheet by 16px and rounds all corners. */
   detached?: boolean;
 
   /** Accessible label for the close button. */

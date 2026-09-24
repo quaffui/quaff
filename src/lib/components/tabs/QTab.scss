@@ -3,8 +3,8 @@
 .q-tab {
   position: relative;
   box-sizing: border-box;
-  min-height: 3rem;
-  height: 3rem;
+  min-height: 48px;
+  padding-block: 0;
   min-width: max-content;
   display: flex;
   align-items: center;
@@ -25,14 +25,14 @@
     content: "";
     position: absolute;
     inset: 0;
-    border: 0.1875rem solid var(--secondary);
-    border-radius: 0.5rem;
+    border: 3px solid var(--secondary);
+    border-radius: 8px;
     pointer-events: none;
     z-index: 2;
   }
 
   &.q-tab--active:focus-visible::before {
-    bottom: 0.25rem;
+    bottom: 4px;
   }
 
   &.q-tab--active {
@@ -59,11 +59,16 @@
 
   & .q-tab__content {
     position: relative;
-    height: 100%;
+    align-self: stretch;
+    padding-block: 14px;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.5rem;
+    gap: 8px;
+  }
+
+  &:has(.q-tab__icon) .q-tab__content {
+    padding-block: 12px;
   }
 
   & .q-tab__indicator {
@@ -71,8 +76,8 @@
     box-sizing: border-box;
     transform-origin: bottom left;
     background: var(--primary);
-    border-radius: 0.1875rem 0.1875rem 0 0;
-    height: 0.1875rem;
+    border-radius: 3px 3px 0 0;
+    height: 3px;
     inset: auto 0 0 0;
     // hidden unless the tab is selected
     opacity: 0;
@@ -96,17 +101,18 @@
 
 .q-tabs--primary .q-tab__indicator {
   inset: auto auto 0 50%;
-  width: calc(100% - 0.25rem);
-  min-width: 1.5rem;
+  width: calc(100% - 4px);
+  min-width: 24px;
   translate: -50%;
 }
 
 .q-tabs--primary .q-tab--stacked {
-  height: 4rem;
+  min-height: 64px;
 
   .q-tab__content {
     flex-direction: column;
-    gap: 0.125rem;
+    padding-block: 9px;
+    gap: 2px;
   }
 }
 
@@ -119,10 +125,10 @@
 }
 
 .q-tabs--secondary .q-tab--active:focus-visible::before {
-  bottom: 0.1875rem;
+  bottom: 3px;
 }
 
 .q-tabs--vertical .q-tab--active:focus-visible::before {
-  right: 0.1875rem;
+  right: 3px;
   bottom: 0;
 }

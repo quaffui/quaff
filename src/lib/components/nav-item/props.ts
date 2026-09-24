@@ -16,7 +16,7 @@ export interface QNavItemProps
   dense?: boolean;
 
   /**
-   * Optional in drawers; required in navigation bars and railbars. Icons are displayed at 1.5rem.
+   * Optional in drawers; required in navigation bars and railbars. Icons are displayed at 24px.
    * Material Symbols fill automatically when active; custom snippets should provide their own
    * active-state treatment when needed.
    */

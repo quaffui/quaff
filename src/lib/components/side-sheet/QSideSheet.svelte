@@ -17,7 +17,7 @@ Side sheets show supporting content beside the main page.
     modal = false,
     headline,
     side = "end",
-    width = "16rem",
+    width = "256px",
     detached = false,
     bordered = false,
     closeLabel = "Close sheet",

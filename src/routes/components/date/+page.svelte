@@ -45,7 +45,7 @@
       error={Boolean(basicValidationMessage)}
       errorMessage={basicValidationMessage}
       filled
-      style="width: min(22rem, 100%)"
+      style="width: min(352px, 100%)"
     >
       {#snippet append()}
         <QDate

@@ -25,22 +25,22 @@
   &::after {
     content: "";
     position: absolute;
-    height: inherit;
-    aspect-ratio: 1 / 2;
-    border: 0.0625rem solid transparent;
+    bottom: -1px;
+    width: 28px;
+    border: 1px solid transparent;
     border-top-color: var(--decorator-color);
     border-radius: inherit;
     box-sizing: border-box;
   }
 
   &::before {
-    top: -0.0625rem;
-    left: -0.0625rem;
+    top: -1px;
+    left: -1px;
     border-top-right-radius: 0px;
     border-bottom-right-radius: 0px;
 
     @if $variant == "outlined" {
-      @include clip-border(0.75rem, 0.25rem);
+      @include clip-border(12px, 4px);
     } @else {
       border-right-width: 0;
       border-left-color: var(--decorator-color);
@@ -49,8 +49,8 @@
   }
 
   &::after {
-    top: -0.0625rem;
-    right: -0.0625rem;
+    top: -1px;
+    right: -1px;
     border-top-left-radius: 0px;
     border-bottom-left-radius: 0px;
 
@@ -58,6 +58,20 @@
       border-left-width: 0;
       border-right-color: var(--decorator-color);
       border-bottom-color: var(--decorator-color);
+    }
+  }
+
+  &:dir(rtl) {
+    &::before {
+      right: -1px;
+      left: auto;
+      transform: scaleX(-1);
+    }
+
+    &::after {
+      right: auto;
+      left: -1px;
+      transform: scaleX(-1);
     }
   }
 }

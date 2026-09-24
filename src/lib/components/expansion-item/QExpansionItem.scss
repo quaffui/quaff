@@ -9,8 +9,8 @@
 }
 
 .q-expansion-item {
-  --q-expansion-toggle-width: 2.5rem;
-  --q-expansion-toggle-height: 2.5rem;
+  --q-expansion-toggle-width: 40px;
+  --q-expansion-toggle-height: 40px;
   --q-expansion-inner-shape: 0;
   --q-expansion-shape-easing: #{mixins.easing(standard)};
   --q-expansion-container-color: var(--surface);
@@ -24,10 +24,10 @@
   transition: border-radius var(--q-expansion-duration) var(--q-expansion-shape-easing);
 
   &--expressive {
-    --q-expansion-toggle-width: 2rem;
-    --q-expansion-inner-shape: 0.25rem;
+    --q-expansion-toggle-width: 32px;
+    --q-expansion-inner-shape: 4px;
     --q-expansion-shape-easing: #{mixins.spring-easing(spatial, fast, expressive)};
-    border-radius: 1rem;
+    border-radius: 16px;
     background-color: transparent;
   }
 
@@ -80,7 +80,7 @@
   }
 
   &--expanded:not(.q-expansion-item--no-round) {
-    border-radius: 1rem;
+    border-radius: 16px;
   }
 
   &:where(:first-child),
@@ -104,7 +104,7 @@
   }
 
   & > &__item--whole {
-    padding-inline-end: 1rem;
+    padding-inline-end: 16px;
     border-start-start-radius: inherit;
     border-start-end-radius: inherit;
     background-color: var(--q-expansion-container-color);
@@ -125,8 +125,8 @@
   &__header {
     display: flex;
     align-items: center;
-    gap: 1rem;
-    padding-inline-end: 1rem;
+    gap: 16px;
+    padding-inline-end: 16px;
     overflow: clip;
     border-radius: inherit;
     background-color: var(--q-expansion-container-color);
@@ -142,7 +142,7 @@
   }
 
   &--expressive:not(.q-expansion-item--expanded, .q-expansion-item--no-round) > &__header {
-    border-radius: 0.25rem;
+    border-radius: 4px;
 
     &:has(
       > .q-expansion-item__item:is(.q-link, .q-item--clickable):hover:not(
@@ -151,19 +151,19 @@
           .q-item--dragged
         )
     ) {
-      border-radius: 0.75rem;
+      border-radius: 12px;
     }
 
     &:has(
       > .q-expansion-item__item:is(:focus-visible, :active):not([aria-disabled]),
       > .q-expansion-item__item.q-item--active
     ) {
-      border-radius: 1rem;
+      border-radius: 16px;
     }
   }
 
   &--expressive:not(.q-expansion-item--dense) > &__header {
-    gap: 0.75rem;
+    gap: 12px;
   }
 
   &--expanded > &__header {
@@ -298,24 +298,24 @@
     }
 
     &--regular#{&}--expressive:has(> .q-list.q-list--segmented:only-child) {
-      padding-block-start: 0.125rem;
+      padding-block-start: 2px;
       background-color: transparent;
     }
 
     :where(&--regular#{&}--expressive > .q-list.q-list--expressive:only-child)
       > .q-item:not(.q-item--multiline, .q-item--dense) {
-      min-height: 3.75rem;
+      min-height: 60px;
     }
   }
 
   &--dense {
     > .q-expansion-item__header {
-      min-height: 3rem;
+      min-height: 48px;
     }
 
     > .q-expansion-item__item,
     > .q-expansion-item__header > .q-expansion-item__item {
-      padding-block: 0.25rem;
+      padding-block: 4px;
     }
   }
 }
@@ -331,7 +331,7 @@
 }
 
 .q-list--bordered:not(.q-list--expressive, .q-list--no-round) > .q-expansion-item:last-child {
-  --q-expansion-collapsed-end-shape: 1rem;
+  --q-expansion-collapsed-end-shape: 16px;
 }
 
 .q-list--bordered > .q-expansion-item--expressive.q-expansion-item--measured:last-child {

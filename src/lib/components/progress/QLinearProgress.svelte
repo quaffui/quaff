@@ -64,9 +64,7 @@ The QLinearProgress component is used to display a progress bar, indicating the 
   // #region:    --- Derived values
   const id = $props.id();
   const isExpressive = $derived(expressive ?? quaffConfig.expressive);
-  const qSize = $derived(
-    useSize(size ?? (isExpressive ? "0.625rem" : "0.25rem"), "q-linear-progress")
-  );
+  const qSize = $derived(useSize(size ?? (isExpressive ? "10px" : "4px"), "q-linear-progress"));
   const parsedColor = $derived(useColor(color));
   const parsedTrackColor = $derived(useColor(trackColor));
 

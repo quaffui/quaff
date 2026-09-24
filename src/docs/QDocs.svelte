@@ -57,10 +57,10 @@
   style="--q-hue-rotate: {hueRotate}deg; --q-brightness: {brightness}; max-width: {Quaff.breakpoints
     .lg}px; width: 100%; margin-inline: auto;"
 >
-  <div class="q-docs__hero row q-gutter-lg" style="min-height: 25rem">
+  <div class="q-docs__hero row q-gutter-lg" style="min-height: 400px">
     <QCard
       class="q-docs__heading primary-container col-sm-12 col-xs-12 col-lg-6"
-      style="min-height: 25rem; align-content: center;"
+      style="min-height: 400px; align-content: center;"
     >
       <h1 class={["justify-center", Quaff.breakpoints.isMoreThan("sm", true) ? "large" : "small"]}>
         {docName || principalDocument?.name}
@@ -74,7 +74,7 @@
     <QCard
       class="q-docs__preview col-sm-12 col-xs-12 col-lg-6 q-mt-none q-pa-none"
       fill="primary"
-      style="min-height: 25rem; --q-docs-heading-color: {QTheme.themeColors.primaryLight};"
+      style="min-height: 400px; --q-docs-heading-color: {QTheme.themeColors.primaryLight};"
     >
       <div
         class="q-docs__art"
@@ -127,7 +127,7 @@
 <style lang="scss">
   .q-docs {
     &__hero {
-      padding: 1rem;
+      padding: 16px;
 
       h1 {
         overflow-wrap: anywhere;
@@ -139,7 +139,7 @@
       position: relative;
       isolation: isolate;
       overflow: hidden;
-      padding-bottom: 3rem;
+      padding-bottom: 48px;
       color: #f4f9ff;
       background: linear-gradient(
         135deg,
@@ -158,27 +158,27 @@
       &::after {
         content: "";
         position: absolute;
-        width: min(13rem, 40%);
+        width: min(208px, 40%);
         aspect-ratio: 13 / 11;
         opacity: 0.45;
-        border: 0.125rem solid #8ceeff66;
+        border: 2px solid #8ceeff66;
         border-radius: 32% 40% 30% 35%;
         background: linear-gradient(145deg, #28e4df55, #007cff22);
-        box-shadow: inset 0.75rem 0.5rem 0 #72e9ff22;
+        box-shadow: inset 12px 8px 0 #72e9ff22;
         animation: heading-drift 18s ease-in-out infinite alternate;
         animation-play-state: inherit;
       }
 
       &::before {
-        inset-block-start: -4rem;
-        inset-inline-start: -5rem;
+        inset-block-start: -64px;
+        inset-inline-start: -80px;
         rotate: 25deg;
         animation-delay: -5s;
       }
 
       &::after {
-        inset-block-end: -4.5rem;
-        inset-inline-end: -3rem;
+        inset-block-end: -72px;
+        inset-inline-end: -48px;
         rotate: -20deg;
         animation-delay: -14s;
         animation-direction: alternate-reverse;
@@ -193,12 +193,12 @@
     }
 
     &__citrus {
-      width: 7rem;
-      height: 3.5rem;
-      inset-block-end: -2.5rem;
-      inset-inline-start: 1.5rem;
-      border: 0.1875rem solid #ffe7a0;
-      border-radius: 0 0 7rem 7rem;
+      width: 112px;
+      height: 56px;
+      inset-block-end: -40px;
+      inset-inline-start: 24px;
+      border: 3px solid #ffe7a0;
+      border-radius: 0 0 112px 112px;
       background: repeating-conic-gradient(
         from 90deg at 50% 0,
         #ffb94a 0deg 27deg,
@@ -212,28 +212,18 @@
       inset: 0;
       opacity: 0.6;
       background:
-        radial-gradient(
-          circle at 12% 72%,
-          transparent 0.4375rem,
-          #70e9ff77 0.5rem 0.5625rem,
-          transparent 0.625rem
-        ),
-        radial-gradient(circle at 7% 85%, #59dfff66 0.1875rem, transparent 0.25rem),
-        radial-gradient(
-          circle at 88% 28%,
-          transparent 0.3125rem,
-          #70e9ff66 0.375rem 0.4375rem,
-          transparent 0.5rem
-        ),
-        radial-gradient(circle at 80% 16%, #59dfff66 0.125rem, transparent 0.1875rem);
+        radial-gradient(circle at 12% 72%, transparent 7px, #70e9ff77 8px 9px, transparent 10px),
+        radial-gradient(circle at 7% 85%, #59dfff66 3px, transparent 4px),
+        radial-gradient(circle at 88% 28%, transparent 5px, #70e9ff66 6px 7px, transparent 8px),
+        radial-gradient(circle at 80% 16%, #59dfff66 2px, transparent 3px);
       animation-duration: 14s;
       animation-delay: -4s;
     }
 
     :global(.q-docs__motion) {
       position: absolute;
-      inset-inline-end: 0.5rem;
-      inset-block-end: 0.5rem;
+      inset-inline-end: 8px;
+      inset-block-end: 8px;
       z-index: 2;
     }
 
@@ -272,8 +262,8 @@
 
     :global(code:not(pre > code)) {
       background-color: var(--surface-container);
-      padding: 0.25rem 0.5rem;
-      border-radius: 0.25rem;
+      padding: 4px 8px;
+      border-radius: 4px;
     }
 
     :global(.q-docs__preview) {
@@ -294,17 +284,17 @@
     }
 
     .q-page {
-      padding-top: 0.5rem;
+      padding-top: 8px;
     }
   }
 
   @keyframes heading-drift {
     from {
-      transform: translate(0, -0.5rem) rotate(-4deg);
+      transform: translate(0, -8px) rotate(-4deg);
     }
 
     to {
-      transform: translate(0.75rem, 0.75rem) rotate(5deg);
+      transform: translate(12px, 12px) rotate(5deg);
     }
   }
 

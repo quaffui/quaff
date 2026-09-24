@@ -17,7 +17,7 @@
 
 <QDocs>
   {#snippet display()}
-    <QAvatar src="/cocktail.jpg" size="5rem" />
+    <QAvatar src="/cocktail.jpg" size="80px" />
   {/snippet}
 
   {#snippet usage()}
@@ -39,9 +39,10 @@
 
       <QDocsSection title="Avatar Sizes">
         {#snippet sectionDescription()}
-          The default is <code>sm</code> (2.5rem), matching the Material 3 list avatar. Quaff also
-          provides <code>xs</code> (2rem), <code>md</code> (3rem), <code>lg</code> (3.5rem), and
-          <code>xl</code> (4rem). These measurements use rem units and scale with the root font.
+          The default is <code>sm</code> (40px), matching the Material 3 list avatar. Quaff also
+          provides <code>xs</code> (32px), <code>md</code> (48px), <code>lg</code> (56px), and
+          <code>xl</code> (64px). Media and icons keep these pixel dimensions; named-size initials can
+          grow with the root font size.
         {/snippet}
 
         <div class="flex q-gap-lg items-center">
@@ -57,14 +58,14 @@
         {#snippet sectionDescription()}
           You can also set a custom size for the avatar component by using the size prop. The size
           can be set using standard CSS units like rem, em, px, etc. If no unit is provided, the
-          value will be treated as px. Material 3 input chips use a 1.5rem avatar; use <code
-            >size="1.5rem"</code
+          value will be treated as px. Material 3 input chips use a 24px avatar; use <code
+            >size="24px"</code
           > for that context.
         {/snippet}
 
         <div class="flex q-gap-lg items-center">
-          <QAvatar src="/cocktail.jpg" size="1.5rem" />
-          <QAvatar src="/cocktail.jpg" size="5rem" />
+          <QAvatar src="/cocktail.jpg" size="24px" />
+          <QAvatar src="/cocktail.jpg" size="80px" />
         </div>
       </QDocsSection>
 

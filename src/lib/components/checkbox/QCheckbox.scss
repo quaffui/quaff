@@ -13,20 +13,21 @@
 
   position: relative;
   display: inline-flex;
-  min-height: 1.5rem;
+  min-height: 24px;
+  max-width: 100%;
   align-items: center;
-  gap: 0.9375rem;
+  gap: 15px;
   vertical-align: middle;
   color: var(--on-surface);
   cursor: pointer;
-  white-space: nowrap;
+  white-space: normal;
 
   > input {
-    width: 3rem;
-    height: 3rem;
+    width: 48px;
+    height: 48px;
     position: absolute;
     inset-block-start: 50%;
-    inset-inline-start: -0.9375rem;
+    inset-inline-start: -15px;
     z-index: 1;
     margin: 0;
     opacity: 0;
@@ -49,8 +50,8 @@
 
     &:focus-visible + .q-checkbox__control {
       &::before {
-        outline: 0.1875rem solid var(--secondary);
-        outline-offset: 0.125rem;
+        outline: 3px solid var(--secondary);
+        outline-offset: 2px;
       }
     }
   }
@@ -68,9 +69,9 @@
 
   > .q-ripple__effect {
     inset-block: 50% auto;
-    inset-inline: -0.6875rem auto;
-    width: 2.5rem;
-    height: 2.5rem;
+    inset-inline: -11px auto;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     transform: translateY(-50%);
 
@@ -84,16 +85,16 @@
   &__control {
     position: relative;
     display: grid;
-    width: 1.125rem;
-    height: 1.125rem;
+    width: 18px;
+    height: 18px;
     flex: none;
     place-items: center;
 
     &::before {
       content: "";
       position: absolute;
-      width: 2.5rem;
-      height: 2.5rem;
+      width: 40px;
+      height: 40px;
       border-radius: 50%;
       background-color: mixins.with-alpha(
         var(--q-checkbox-state-color),
@@ -107,20 +108,22 @@
       position: absolute;
       display: grid;
       box-sizing: border-box;
-      width: 1.125rem;
-      height: 1.125rem;
+      width: 18px;
+      height: 18px;
       place-items: center;
-      border: 0.125rem solid var(--q-checkbox-unselected-color);
-      border-radius: 0.125rem;
+      border: 2px solid var(--q-checkbox-unselected-color);
+      border-radius: 2px;
       color: var(--q-checkbox-icon-color);
       font-family: var(--font-icon);
-      font-size: 1.125rem;
+      font-size: 18px;
       font-variation-settings: "wght" 700;
       line-height: 1;
     }
   }
 
   &__label {
+    min-width: 0;
+    overflow-wrap: anywhere;
     @include mixins.typography(body-large);
   }
 

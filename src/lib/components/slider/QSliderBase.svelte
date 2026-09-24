@@ -730,7 +730,7 @@
         class:q-slider__icon--start={!iconAtEnd}
         class="q-slider__icon"
       >
-        <QIconSnippet {icon} size={resolvedSize === "xl" ? "2rem" : "1.5rem"} />
+        <QIconSnippet {icon} size={resolvedSize === "xl" ? "32px" : "24px"} />
       </span>
     {/if}
   </div>

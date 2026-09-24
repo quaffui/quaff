@@ -14,50 +14,50 @@
   @include spaces.margin("x-auto");
 
   @if $parent != null {
-    width: 2.5rem;
-    border: 0.25rem solid transparent;
+    width: 40px;
+    border: 4px solid transparent;
   }
 }
 
 @mixin btn-image($parent: "btn") {
   &.q-#{$parent}--sm > .q-#{$parent}__img--responsive {
-    height: 2rem;
-    width: 2rem;
+    height: 32px;
+    width: 32px;
   }
 
   &.q-#{$parent}--lg > .q-#{$parent}__img--responsive {
-    height: 3rem;
-    width: 3rem;
+    height: 48px;
+    width: 48px;
   }
 
   &.q-#{$parent}--xl > .q-#{$parent}__img--responsive {
-    height: 3.5rem;
-    width: 3.5rem;
+    height: 56px;
+    width: 56px;
   }
 
   & > .q-#{$parent}__img {
-    margin-inline: -0.5rem;
+    margin-inline: -8px;
   }
 
   & > .q-#{$parent}__img:not(.q-#{$parent}__img--responsive) {
-    min-width: 1.5rem;
-    max-width: 1.5rem;
-    min-height: 1.5rem;
-    max-height: 1.5rem;
+    min-width: 24px;
+    max-width: 24px;
+    min-height: 24px;
+    max-height: 24px;
   }
 
   & > .q-#{$parent}__img.q-#{$parent}__img--responsive {
     @include responsive($parent);
 
-    $marginSize: -1.5rem;
+    $marginSize: -24px;
     @if $parent == "chip" {
-      $marginSize: -1rem;
+      $marginSize: -16px;
     }
 
     margin-left: $marginSize !important;
 
     &.q-#{$parent}__img--trailing {
-      margin-left: -0.5rem;
+      margin-left: -8px;
       margin-right: $marginSize;
     }
   }

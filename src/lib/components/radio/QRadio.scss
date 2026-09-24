@@ -10,20 +10,21 @@
 
   position: relative;
   display: inline-flex;
-  min-height: 1.5rem;
+  min-height: 24px;
+  max-width: 100%;
   align-items: center;
-  gap: 0.875rem;
+  gap: 14px;
   vertical-align: middle;
   color: var(--on-surface);
   cursor: pointer;
-  white-space: nowrap;
+  white-space: normal;
 
   > input {
-    width: 3rem;
-    height: 3rem;
+    width: 48px;
+    height: 48px;
     position: absolute;
     inset-block-start: 50%;
-    inset-inline-start: -0.875rem;
+    inset-inline-start: -14px;
     z-index: 1;
     margin: 0;
     opacity: 0;
@@ -37,8 +38,8 @@
     }
 
     &:focus-visible + .q-radio__control::before {
-      outline: 0.1875rem solid var(--secondary);
-      outline-offset: 0.125rem;
+      outline: 3px solid var(--secondary);
+      outline-offset: 2px;
     }
   }
 
@@ -55,9 +56,9 @@
 
   > .q-ripple__effect {
     inset-block: 50% auto;
-    inset-inline: -0.625rem auto;
-    width: 2.5rem;
-    height: 2.5rem;
+    inset-inline: -10px auto;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     transform: translateY(-50%);
 
@@ -70,16 +71,16 @@
   &__control {
     position: relative;
     display: grid;
-    width: 1.25rem;
-    height: 1.25rem;
+    width: 20px;
+    height: 20px;
     flex: none;
     place-items: center;
 
     &::before {
       content: "";
       position: absolute;
-      width: 2.5rem;
-      height: 2.5rem;
+      width: 40px;
+      height: 40px;
       border-radius: 50%;
       background-color: mixins.with-alpha(var(--q-radio-state-color), var(--q-radio-state-opacity));
       transition: background-color variables.$speed1;
@@ -88,8 +89,8 @@
 
   &__icon {
     position: relative;
-    width: 1.25rem;
-    height: 1.25rem;
+    width: 20px;
+    height: 20px;
 
     &::before,
     &::after {
@@ -100,12 +101,12 @@
 
     &::before {
       inset: 0;
-      border: 0.125rem solid var(--q-radio-icon-color);
+      border: 2px solid var(--q-radio-icon-color);
       transition: border-color 0.05s linear;
     }
 
     &::after {
-      inset: 0.3125rem;
+      inset: 5px;
       background-color: var(--q-radio-icon-color);
       opacity: 0;
       transform: scale(0);
@@ -114,6 +115,8 @@
   }
 
   &__label {
+    min-width: 0;
+    overflow-wrap: anywhere;
     @include mixins.typography(body-large);
   }
 

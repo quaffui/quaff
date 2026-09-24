@@ -1,62 +1,66 @@
 @use "$css/mixins";
 
 .q-split-btn {
-  --q-split-btn-corner: 0.25rem;
-  --q-split-btn-active-corner: 0.75rem;
-  --q-split-btn-icon-size: 1.375rem;
-  --q-split-btn-icon-offset: 0.0625rem;
+  --q-split-btn-corner: 4px;
+  --q-split-btn-active-corner: 12px;
+  --q-split-btn-icon-size: 22px;
+  --q-split-btn-icon-offset: 1px;
   --q-split-btn-direction: 1;
 
   display: inline-flex;
   width: fit-content;
-  align-items: center;
+  max-width: 100%;
+  align-items: stretch;
   vertical-align: middle;
-  gap: 0.125rem;
+  gap: 2px;
 
   &:dir(rtl) {
     --q-split-btn-direction: -1;
   }
 
   &--xs {
-    --q-split-btn-active-corner: 0.5rem;
-    --q-split-btn-leading-padding-end: 0.625rem;
+    --q-split-btn-active-corner: 8px;
+    --q-split-btn-leading-padding-end: 10px;
   }
 
   &--sm {
-    --q-split-btn-leading-padding-end: 0.75rem;
+    --q-split-btn-leading-padding-end: 12px;
 
     > .q-split-btn__leading > :is(.q-btn__icon, .q-btn__img, .q-btn__loader) {
-      width: 1.25rem;
-      height: 1.25rem;
-      font-size: 1.25rem;
+      width: 20px;
+      height: 20px;
+      font-size: 20px;
     }
   }
 
   &--md {
-    --q-split-btn-icon-size: 1.625rem;
-    --q-split-btn-icon-offset: 0.125rem;
+    --q-split-btn-icon-size: 26px;
+    --q-split-btn-icon-offset: 2px;
   }
 
   &--lg {
-    --q-split-btn-corner: 0.5rem;
-    --q-split-btn-active-corner: 1.25rem;
-    --q-split-btn-icon-size: 2.375rem;
-    --q-split-btn-icon-offset: 0.1875rem;
+    --q-split-btn-corner: 8px;
+    --q-split-btn-active-corner: 20px;
+    --q-split-btn-icon-size: 38px;
+    --q-split-btn-icon-offset: 3px;
   }
 
   &--xl {
-    --q-split-btn-corner: 0.75rem;
-    --q-split-btn-active-corner: 1.25rem;
-    --q-split-btn-icon-size: 3.125rem;
-    --q-split-btn-icon-offset: 0.375rem;
+    --q-split-btn-corner: 12px;
+    --q-split-btn-active-corner: 20px;
+    --q-split-btn-icon-size: 50px;
+    --q-split-btn-icon-offset: 6px;
   }
 
   > .q-btn {
     --q-split-btn-inner-corner: var(--q-split-btn-corner);
+    --q-split-btn-outer-corner: min(
+      calc(var(--q-btn-height, 40px) / 2),
+      calc(100% - var(--q-split-btn-inner-corner))
+    );
 
-    min-width: 3rem;
+    min-width: 48px;
     flex: none;
-    white-space: nowrap;
     border-radius: var(--q-split-btn-inner-corner);
 
     &:not([aria-disabled], [disabled]) {
@@ -67,15 +71,20 @@
 
   > .q-split-btn__leading {
     width: auto;
+    height: auto;
+    flex: 0 1 auto;
     padding-inline: var(--q-btn-padding-inline);
     padding-inline-end: var(--q-split-btn-leading-padding-end, var(--q-btn-padding-inline));
-    border-start-start-radius: calc(var(--q-btn-height) / 2);
-    border-end-start-radius: calc(var(--q-btn-height) / 2);
+    border-start-start-radius: var(--q-split-btn-outer-corner);
+    border-end-start-radius: var(--q-split-btn-outer-corner);
   }
 
   > .q-split-btn__trailing {
-    border-start-end-radius: calc(var(--q-btn-height) / 2);
-    border-end-end-radius: calc(var(--q-btn-height) / 2);
+    height: auto;
+    min-height: var(--q-btn-height);
+
+    border-start-end-radius: var(--q-split-btn-outer-corner);
+    border-end-end-radius: var(--q-split-btn-outer-corner);
 
     > .q-btn__icon {
       --size: var(--q-split-btn-icon-size);
@@ -87,9 +96,13 @@
     }
 
     &[aria-expanded="true"] {
-      --q-split-btn-inner-corner: calc(var(--q-btn-height) / 2);
-      --q-split-btn-icon-offset: 0rem;
+      --q-split-btn-inner-corner: calc(var(--q-btn-height, 40px) / 2);
+      --q-split-btn-icon-offset: 0px;
       --q-split-btn-icon-rotation: 180deg;
+
+      &:not(:active) {
+        --q-split-btn-outer-corner: var(--q-split-btn-inner-corner);
+      }
 
       &:not([aria-disabled], [disabled])::after {
         @include mixins.overlay(var(--ripple-color), 0.1);

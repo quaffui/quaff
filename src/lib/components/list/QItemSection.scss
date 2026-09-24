@@ -17,39 +17,44 @@
   }
 
   &--video {
-    padding-block: 0.25rem;
+    padding-block: 4px;
 
     & video {
-      width: 7.125rem;
-      height: 4rem;
+      width: 114px;
+      height: 64px;
       object-fit: cover;
-      border-radius: 0.5rem;
+      border-radius: 8px;
     }
   }
 
-  & .q-avatar,
-  &--avatar {
-    width: 2.5rem;
-    height: 2.5rem;
+  & .q-avatar {
+    width: 40px;
+    height: 40px;
+  }
+
+  & .q-avatar:is(.q-avatar--xs, .q-avatar--sm, .q-avatar--md, .q-avatar--lg, .q-avatar--xl) {
+    --q-avatar-text-min-size: 2.5rem;
   }
 
   &--avatar {
-    flex: 0 0 2.5rem;
+    flex: 0 0 auto;
+    min-width: 40px;
+    min-height: 40px;
     align-items: center;
     justify-content: center;
   }
 
   &--icon {
-    height: 1.5rem;
-    width: 1.5rem;
+    height: 24px;
+    width: 24px;
   }
 
   &--thumbnail {
     border-radius: 0;
 
     img {
-      width: 3.5rem;
-      height: 3.5rem;
+      width: 56px;
+      height: 56px;
       object-fit: cover;
     }
   }
@@ -74,8 +79,8 @@
     cursor: pointer;
 
     &:focus-visible {
-      outline: 0.1875rem solid var(--secondary);
-      outline-offset: -0.1875rem;
+      outline: 3px solid var(--secondary);
+      outline-offset: -3px;
     }
 
     &:first-child {
@@ -100,14 +105,14 @@
 
   &--content#{&}--action {
     align-self: stretch;
-    padding-block: 0.5rem;
-    padding-inline-start: 1rem;
+    padding-block: 8px;
+    padding-inline-start: 16px;
   }
 
   &--content#{&}--action#{&}--has-leading {
     flex-direction: row;
     align-items: center;
-    gap: 1rem;
+    gap: 16px;
   }
 
   &--action-leading {

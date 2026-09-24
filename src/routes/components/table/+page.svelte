@@ -335,7 +335,7 @@
                   {#if column.field === "title"}
                     <QBtn
                       flat
-                      style="padding-inline: 0.75rem; margin-inline: -0.75rem"
+                      style="padding-inline: 12px; margin-inline: -12px"
                       onclick={() => Notify.create(`Selected: ${row.title}`)}
                     >
                       {row.title}

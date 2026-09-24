@@ -3,7 +3,7 @@
 
 .q-page {
   width: 100%;
-  max-width: 75rem;
+  max-width: 1200px;
   margin-inline: auto;
   padding-block: variables.$space-lg;
   padding-inline: variables.$space-md;
@@ -14,6 +14,6 @@
   }
 
   @media only screen and (min-width: #{map.get(variables.$breakpoints, lg)}) {
-    padding-block: 2rem;
+    padding-block: 32px;
   }
 }

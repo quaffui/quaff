@@ -34,6 +34,7 @@
 
   function captureTrigger(element: HTMLElement) {
     triggerEl = element;
+
     return () => {
       triggerEl = undefined;
     };

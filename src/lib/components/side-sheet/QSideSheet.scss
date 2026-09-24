@@ -18,7 +18,7 @@
   @include mixins.typography(body-medium);
 
   --q-side-sheet-offset: 100%;
-  --q-side-sheet-inset: 0rem;
+  --q-side-sheet-inset: 0px;
 
   position: fixed;
   inset-block: 0;
@@ -26,15 +26,15 @@
   display: none;
   flex-direction: column;
   box-sizing: border-box;
-  width: var(--q-side-sheet-width, 16rem);
-  max-width: min(25rem, calc(100% - 2 * var(--q-side-sheet-inset)));
+  width: var(--q-side-sheet-width, 256px);
+  max-width: min(400px, calc(100% - 2 * var(--q-side-sheet-inset)));
   height: calc(100dvh - 2 * var(--q-side-sheet-inset));
   max-height: calc(100% - 2 * var(--q-side-sheet-inset));
   margin: var(--q-side-sheet-inset);
   padding: 0;
   border: 0;
-  border-start-start-radius: 1rem;
-  border-end-start-radius: 1rem;
+  border-start-start-radius: 16px;
+  border-end-start-radius: 16px;
   background: var(--surface-container-low);
   color: var(--on-surface);
   box-shadow: var(--elevate1);
@@ -77,8 +77,8 @@
   &--start {
     inset-inline: 0 auto;
     border-radius: 0;
-    border-start-end-radius: 1rem;
-    border-end-end-radius: 1rem;
+    border-start-end-radius: 16px;
+    border-end-end-radius: 16px;
   }
 
   &--standard {
@@ -86,7 +86,7 @@
     --q-side-sheet-hidden-margin: calc(
       -1 *
         (
-          min(var(--q-side-sheet-width, 16rem), 25rem, 100% - 2 * var(--q-side-sheet-inset)) +
+          min(var(--q-side-sheet-width, 256px), 400px, 100% - 2 * var(--q-side-sheet-inset)) +
             var(--q-side-sheet-inset)
         )
     );
@@ -109,18 +109,18 @@
   }
 
   &--bordered {
-    border-inline-start: 0.0625rem solid var(--outline-variant);
+    border-inline-start: 1px solid var(--outline-variant);
 
     &.q-side-sheet--start {
       border-inline-start: 0;
-      border-inline-end: 0.0625rem solid var(--outline-variant);
+      border-inline-end: 1px solid var(--outline-variant);
     }
   }
 
   &--detached {
-    --q-side-sheet-inset: 1rem;
+    --q-side-sheet-inset: 16px;
 
-    border-radius: 1rem;
+    border-radius: 16px;
   }
 
   &__container {
@@ -137,8 +137,8 @@
     display: flex;
     flex: none;
     align-items: center;
-    gap: 0.75rem;
-    padding: 1.5rem;
+    gap: 12px;
+    padding: 24px;
     color: var(--on-surface-variant);
   }
 
@@ -158,7 +158,7 @@
 
   &__content {
     flex: 1;
-    padding: 0 1.5rem 1.5rem;
+    padding: 0 24px 24px;
     overflow-wrap: anywhere;
   }
 
@@ -167,10 +167,10 @@
     flex: none;
     flex-wrap: wrap;
     align-items: center;
-    gap: 0.5rem;
+    gap: 8px;
     box-sizing: border-box;
-    min-height: 4.5rem;
-    padding: 1rem 1.5rem 1.5rem;
+    min-height: 72px;
+    padding: 16px 24px 24px;
   }
 
   &__overlay-root {
@@ -185,7 +185,7 @@
   }
 
   @media (forced-colors: active) {
-    border: 0.0625rem solid CanvasText;
+    border: 1px solid CanvasText;
   }
 
   &--start,

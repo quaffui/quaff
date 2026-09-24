@@ -30,7 +30,6 @@ export interface QTimeStateSource {
   format24h: () => boolean | undefined;
   labels: () => Partial<QTimeLabels> | undefined;
   defaultMode: () => QTimeDisplayMode;
-  docked: () => boolean;
   autoApply: () => boolean;
   commit: (value: string) => void;
 }
@@ -95,7 +94,7 @@ export default class QTimeState {
   beginSession(isRtl = false) {
     this.animatePickerChanges = false;
     this.isRtl = isRtl;
-    this.displayMode = this.source.docked() ? "dial" : this.source.defaultMode();
+    this.displayMode = this.source.defaultMode();
     this.activePart = "hour";
     this.inputValidationKey = null;
     this.hourInputTouched = false;
@@ -139,17 +138,6 @@ export default class QTimeState {
     }
 
     this.setInvalidExternalInput(currentValue);
-  }
-
-  reconcileOpenSession() {
-    if (this.source.docked() && this.displayMode !== "dial") {
-      this.displayMode = "dial";
-    }
-
-    if (this.format24h !== this.synchronizedFormat24h) {
-      this.synchronizedFormat24h = this.format24h;
-      this.setDraftInputs(this.draftTime);
-    }
   }
 
   selectHour(hour24: number, advance = true) {

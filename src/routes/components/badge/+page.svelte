@@ -30,7 +30,7 @@
   {#snippet display()}
     <QCard class="q-pa-lg" aria-hidden="true">
       <QCardSection class="title-large q-pa-none q-mb-lg">Your inbox</QCardSection>
-      <div class="flex items-center q-gap-xl" style="padding-inline-end: 1.5rem;">
+      <div class="flex items-center q-gap-xl" style="padding-inline-end: 24px;">
         <span style="position: relative; display: inline-flex;">
           <QIcon name="notifications" />
           <QBadge floating />
@@ -129,7 +129,7 @@
         Badges can also sit at the end of a row. Keep them separate from the label to avoid overlap.
       {/snippet}
 
-      <QList bordered separator style="width: min(24rem, 100%);">
+      <QList bordered separator style="width: min(384px, 100%);">
         <QItem>
           <QItemSection type="content">Inbox</QItemSection>
           <QItemSection type="side">

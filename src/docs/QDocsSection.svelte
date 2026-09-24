@@ -59,7 +59,7 @@
   .q-docs-section__header {
     display: flex;
     align-items: flex-start;
-    gap: 1rem;
+    gap: 16px;
   }
 
   .q-docs-section__header h5 {

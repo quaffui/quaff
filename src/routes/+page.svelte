@@ -56,10 +56,10 @@
     }
 
     &__logo {
-      max-width: 15.75rem;
+      max-width: 252px;
       margin: 0 auto;
       margin-top: 10%;
-      margin-bottom: 1.75rem;
+      margin-bottom: 28px;
     }
 
     &__teaser {

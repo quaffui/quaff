@@ -1,7 +1,10 @@
+@use "sass:math";
 @use "$css/mixins/typography";
 
 @layer q-avatar {
   .q-avatar {
+    --q-avatar-text-min-size: 0px;
+
     width: var(--size);
     height: var(--size);
     flex-shrink: 0;
@@ -17,6 +20,11 @@
 
     @include typography.typography(title-medium);
 
+    &:not(:empty, :has(img, video, svg, .q-icon)) {
+      min-width: var(--q-avatar-text-min-size);
+      min-height: var(--q-avatar-text-min-size);
+    }
+
     > :is(img, video) {
       width: 100%;
       height: 100%;
@@ -24,9 +32,10 @@
     }
 
     // Preserve Quaff's additional sizes and shapes.
-    @each $size, $value in (xs: 2rem, sm: 2.5rem, md: 3rem, lg: 3.5rem, xl: 4rem) {
+    @each $size, $value in (xs: 32px, sm: 40px, md: 48px, lg: 56px, xl: 64px) {
       &--#{$size} {
         --size: #{$value};
+        --q-avatar-text-min-size: #{math.div($value, 16px)}rem;
       }
     }
 
@@ -40,7 +49,7 @@
       top-right-round: 50% 50% 50% 0,
       bottom-left-round: 50% 0 50% 50%,
       bottom-right-round: 0 50% 50% 50%,
-      round: 0.5rem,
+      round: 8px,
     );
 
     @each $shape, $radius in $shapes {

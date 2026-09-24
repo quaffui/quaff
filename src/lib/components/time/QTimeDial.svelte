@@ -16,17 +16,17 @@
     label: string;
     spokenValue: number;
     angle: number;
-    radius: 4.3125 | 6.3125;
+    radius: 69 | 101;
     selected: boolean;
     roving: boolean;
   }
 
-  const fullTurn = Math.PI * 2;
-  const outerRadius = 6.3125;
-  const innerRadius = 4.3125;
-  const ringThresholdRatio = (outerRadius + innerRadius) / 2 / 16;
-  const dragThreshold = 8;
-  const handMotionDuration = 500;
+  const FULL_TURN = Math.PI * 2;
+  const OUTER_RADIUS = 101;
+  const INNER_RADIUS = 69;
+  const RING_THRESHOLD_RATIO = (OUTER_RADIUS + INNER_RADIUS) / 2 / 256;
+  const DRAG_THRESHOLD = 8;
+  const HAND_MOTION_DURATION = 500;
 
   let { state: picker }: { state: QTimeState } = $props();
 
@@ -55,11 +55,11 @@
   );
   const handLength = $derived(
     picker.activePart === "hour" && picker.format24h && picker.draftTime.hour >= 12
-      ? innerRadius
-      : outerRadius
+      ? INNER_RADIUS
+      : OUTER_RADIUS
   );
   const motionDuration = $derived(
-    pointerId === undefined ? picker.pickerMotionDuration(handMotionDuration) : 0
+    pointerId === undefined ? picker.pickerMotionDuration(HAND_MOTION_DURATION) : 0
   );
 
   $effect(() => {
@@ -80,7 +80,7 @@
           label: value === 0 ? "00" : String(value),
           spokenValue: value,
           angle: index * 30,
-          radius: value >= 12 ? innerRadius : outerRadius,
+          radius: value >= 12 ? INNER_RADIUS : OUTER_RADIUS,
           selected: value === hour,
           roving: value === hour,
         };
@@ -97,7 +97,7 @@
         label: String(displayHour),
         spokenValue: displayHour,
         angle: index * 30,
-        radius: outerRadius,
+        radius: OUTER_RADIUS,
         selected: displayHour === selectedHour,
         roving: displayHour === selectedHour,
       };
@@ -114,7 +114,7 @@
         label: String(value).padStart(2, "0"),
         spokenValue: value,
         angle: value * 6,
-        radius: outerRadius,
+        radius: OUTER_RADIUS,
         selected: value === minute,
         roving: value === rovingMinute,
       };
@@ -193,7 +193,7 @@
 
     if (
       !pointerDragged &&
-      Math.hypot(event.clientX - pointerStartX, event.clientY - pointerStartY) >= dragThreshold
+      Math.hypot(event.clientX - pointerStartX, event.clientY - pointerStartY) >= DRAG_THRESHOLD
     ) {
       pointerDragged = true;
     }
@@ -227,14 +227,14 @@
     const rect = event.currentTarget.getBoundingClientRect();
     const x = event.clientX - (rect.left + rect.width / 2);
     const y = event.clientY - (rect.top + rect.height / 2);
-    const turn = (Math.atan2(x, -y) + fullTurn) % fullTurn;
+    const turn = (Math.atan2(x, -y) + FULL_TURN) % FULL_TURN;
 
     if (part === "hour") {
-      const hour = Math.round((turn / fullTurn) * 12) % 12;
+      const hour = Math.round((turn / FULL_TURN) * 12) % 12;
 
       if (picker.format24h) {
         const distance = Math.hypot(x, y);
-        picker.selectHour(hour + (distance < rect.width * ringThresholdRatio ? 12 : 0), complete);
+        picker.selectHour(hour + (distance < rect.width * RING_THRESHOLD_RATIO ? 12 : 0), complete);
       } else {
         const periodOffset = picker.draftTime.hour >= 12 ? 12 : 0;
         picker.selectHour(hour + periodOffset, complete);
@@ -243,7 +243,7 @@
     }
 
     const divisions = preciseMinute ? 60 : 12;
-    const division = Math.round((turn / fullTurn) * divisions) % divisions;
+    const division = Math.round((turn / FULL_TURN) * divisions) % divisions;
     picker.selectMinute(preciseMinute ? division : division * 5, complete);
   }
 
@@ -274,12 +274,12 @@
   <span
     class="q-time__track"
     aria-hidden="true"
-    style={`--angle: ${visualAngle}deg; --hand-length: ${handLength}rem;`}
+    style={`--angle: ${visualAngle}deg; --hand-length: ${handLength}px;`}
   ></span>
   <span
     class="q-time__hand"
     aria-hidden="true"
-    style={`--angle: ${visualAngle}deg; --hand-length: ${handLength}rem;`}
+    style={`--angle: ${visualAngle}deg; --hand-length: ${handLength}px;`}
   ></span>
   <span class="q-time__center" aria-hidden="true"></span>
 
@@ -294,13 +294,13 @@
       tabindex={option.part === picker.activePart && option.roving ? 0 : -1}
       data-hour={option.part === "hour" ? option.value : undefined}
       data-minute={option.part === "minute" ? option.value : undefined}
-      style={`--angle: ${option.angle}deg; --radius: ${option.radius}rem;`}
+      style={`--angle: ${option.angle}deg; --radius: ${option.radius}px;`}
       in:fade={{
-        duration: picker.pickerMotionDuration(handMotionDuration),
+        duration: picker.pickerMotionDuration(HAND_MOTION_DURATION),
         easing: sineInOut,
       }}
       out:fade={{
-        duration: picker.pickerMotionDuration(handMotionDuration),
+        duration: picker.pickerMotionDuration(HAND_MOTION_DURATION),
         easing: sineInOut,
       }}
       onclick={(event) => handleOptionClick(event, option)}

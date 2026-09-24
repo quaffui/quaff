@@ -170,7 +170,7 @@
 
         <QDialog bind:value={fullscreenDialogOpen} fullscreen>
           <div class="column">
-            <div class="q-px-sm flex items-center q-gap-sm" style="height: 3.5rem;">
+            <div class="q-px-sm flex items-center q-gap-sm" style="height: 56px;">
               <QIconBtn flat icon="close" onclick={() => (fullscreenDialogOpen = false)} />
               <div class="title-large" style="flex: 1;">Fullscreen Dialog</div>
               <QBtn flat label="Save" onclick={() => (fullscreenDialogOpen = false)} />

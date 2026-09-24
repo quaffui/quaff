@@ -20,8 +20,8 @@
 
 .q-linear-progress {
   flex-grow: 1;
-  min-width: 2.5rem;
-  height: var(--q-progress-size, 0.25rem);
+  min-width: 40px;
+  height: var(--q-progress-size, 4px);
   overflow: hidden;
 
   &:dir(rtl),
