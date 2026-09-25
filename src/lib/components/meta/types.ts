@@ -1,4 +1,3 @@
-import type { Snippet } from "svelte";
 import type { HTMLLinkAttributes, HTMLMetaAttributes } from "svelte/elements";
 
 export type MetaTag = HTMLMetaAttributes & {
@@ -15,9 +14,3 @@ export interface MetaOptions {
 }
 
 export type MetaSource = MetaOptions | (() => MetaOptions);
-
-export interface QMetaProps {
-  /** App defaults, overridden by descendant useMeta calls. */
-  metadata?: MetaSource;
-  children?: Snippet;
-}

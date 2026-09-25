@@ -1,10 +1,10 @@
 import { createContext } from "svelte";
-import type { MetaOptions, MetaSource } from "../components/meta/props.js";
+import type { MetaOptions, MetaSource } from "../components/meta/types.js";
 
 export const [getMetaContext, setMetaContext] =
   createContext<ReturnType<typeof createMetaContext>>();
 
-export function createMetaContext(defaults: () => MetaSource) {
+export function createMetaContext(defaults: MetaSource) {
   let entries = $state.raw<{ source: MetaSource }[]>([]);
 
   return {
@@ -25,7 +25,7 @@ export function createMetaContext(defaults: () => MetaSource) {
         link: Object.create(null),
       };
 
-      for (const source of [defaults(), ...entries.map((entry) => entry.source)]) {
+      for (const source of [defaults, ...entries.map((entry) => entry.source)]) {
         const metadata = typeof source === "function" ? source() : source;
 
         if (metadata.title !== undefined) {

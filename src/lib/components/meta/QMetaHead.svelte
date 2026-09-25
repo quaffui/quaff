@@ -1,8 +1,8 @@
 <script lang="ts">
-  import type { createMetaContext } from "./metaContext.svelte.js";
-  import type { MetaTag } from "../components/meta/props.js";
+  import { getMetaContext } from "../../internal/metaContext.svelte.js";
+  import type { MetaTag } from "./types.js";
 
-  let { context }: { context: ReturnType<typeof createMetaContext> } = $props();
+  const context = getMetaContext();
   const metadata = $derived(context.resolve());
 
   function getMetaAttributes({ template, ...attributes }: MetaTag) {
