@@ -31,8 +31,9 @@ export * from "$components";
 
 export { Quaff, QTheme, QScrollObserver, Notify };
 
+export { initMeta } from "./composables/initMeta.js";
 export { useMeta } from "./composables/useMeta.js";
-export type { MetaOptions, MetaSource, MetaTag, QMetaProps } from "./components/meta/props.js";
+export type { MetaOptions, MetaSource, MetaTag } from "./components/meta/types.js";
 
 export type { QNavItemProps, QNavGroupProps } from "./components/nav-item/props.js";
 

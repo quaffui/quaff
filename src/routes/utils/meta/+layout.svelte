@@ -1,22 +1,21 @@
 <script lang="ts">
-  import { QMeta } from "$lib/meta";
+  import { initMeta, QMetaHead } from "$lib/meta";
   import { pageTitle } from "$helpers/pageTitle";
   import type { Snippet } from "svelte";
 
   let { children }: { children: Snippet } = $props();
-</script>
 
-<QMeta
-  metadata={{
+  initMeta({
     title: "Meta",
     titleTemplate: pageTitle,
     meta: {
       description: {
         name: "description",
-        content: "Manage page titles and SEO metadata with Quaff.",
+        content: "Manage page titles and descriptions with Quaff.",
       },
     },
-  }}
->
-  {@render children()}
-</QMeta>
+  });
+</script>
+
+{@render children()}
+<QMetaHead />

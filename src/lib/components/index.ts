@@ -40,7 +40,7 @@ import QItem from "./list/QItem.svelte";
 import QItemSection from "./list/QItemSection.svelte";
 import QLinearProgress from "./progress/QLinearProgress.svelte";
 import QLoadingIndicator from "./loading-indicator/QLoadingIndicator.svelte";
-import QMeta from "./meta/QMeta.svelte";
+import QMetaHead from "./meta/QMetaHead.svelte";
 import QMenu from "./menu/QMenu.svelte";
 import QNavbar from "./navbar/QNavbar.svelte";
 import QNavItem from "./nav-item/QNavItem.svelte";
@@ -100,7 +100,7 @@ export {
   QLinearProgress,
   QLoadingIndicator,
   QMenu,
-  QMeta,
+  QMetaHead,
   QNavbar,
   QNavItem,
   QNavGroup,

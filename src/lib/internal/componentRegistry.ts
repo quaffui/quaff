@@ -106,7 +106,7 @@ const COMPONENT_REGISTRY = {
     QLoadingIndicator: component("q-loading-indicator"),
   }),
   menu: group("components/menu", { QMenu: component("q-menu") }),
-  meta: group(undefined, { QMeta: component([]) }),
+  meta: group(undefined, { QMetaHead: component([]) }),
   navbar: group("components/navbar", { QNavbar: component("q-navbar") }),
   "nav-item": group("components/nav-item", {
     QNavGroup: component([], { renders: ["QExpansionItem", "QList"] }),
