@@ -15,6 +15,18 @@ export function getDialogOverlayRoot(dialog: HTMLDialogElement): ParentNode {
   return dialog.querySelector<HTMLElement>(":scope > [data-quaff-overlay-root]") ?? dialog;
 }
 
+export function closeNestedOverlays(element: HTMLElement) {
+  for (const popover of element.querySelectorAll<HTMLElement>("[popover]")) {
+    popover.hidePopover?.();
+  }
+
+  for (const dialog of Array.from(
+    element.querySelectorAll<HTMLDialogElement>("dialog[open]")
+  ).reverse()) {
+    dialog.close();
+  }
+}
+
 export function doesOverlayUsePopover(from: HTMLElement | null | undefined): boolean {
   return (
     typeof HTMLElement !== "undefined" &&
