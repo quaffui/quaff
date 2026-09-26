@@ -12,6 +12,12 @@
       hovered: false,
     },
     {
+      name: "Typography",
+      description: "Create clear hierarchies with baseline and emphasized text styles.",
+      href: "/utils/typography",
+      hovered: false,
+    },
+    {
       name: "Meta",
       description: "Manage page titles, SEO metadata, and canonical links.",
       href: "/utils/meta",

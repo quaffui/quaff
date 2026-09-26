@@ -1,0 +1,9 @@
+@use "../theme/typography-scale";
+
+@each $role, $typeface, $weight, $size, $line-height,
+  $letter-spacing in typography-scale.$emphasized-type-scale
+{
+  .#{$role} {
+    @include typography-scale.typography($role);
+  }
+}

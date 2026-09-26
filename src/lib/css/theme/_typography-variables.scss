@@ -1,3 +1,4 @@
+@use "sass:list";
 @use "typography-scale";
 
 :root {
@@ -5,7 +6,8 @@
   --typescale-font-family-plain: var(--font);
 
   @each $role, $typeface, $weight, $size, $line-height,
-    $letter-spacing in typography-scale.$type-scale
+    $letter-spacing
+      in list.join(typography-scale.$type-scale, typography-scale.$emphasized-type-scale)
   {
     --typescale-#{$role}-font-family-name: var(--typescale-font-family-#{$typeface});
     --typescale-#{$role}-font-family-style: normal;
