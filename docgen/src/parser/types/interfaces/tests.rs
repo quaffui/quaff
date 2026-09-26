@@ -1,50 +1,18 @@
-use std::{
-    collections::BTreeMap,
-    fs::{create_dir_all, remove_dir_all, write},
-    path::PathBuf,
-    time::{SystemTime, UNIX_EPOCH},
-};
+use std::collections::BTreeMap;
 
 use crate::{
     Result,
     parser::{ParsedPropsInterface, TSPropsParser},
     resolver::PathResolver,
+    test_support::Fixture,
 };
 
 use super::InterfacePropertyFlags;
 
-struct FixtureDir(PathBuf);
-
-impl FixtureDir {
-    fn new() -> Self {
-        let nonce = SystemTime::now()
-            .duration_since(UNIX_EPOCH)
-            .unwrap()
-            .as_nanos();
-        let path = std::env::temp_dir().join(format!(
-            "quaff-docgen-defaults-{}-{nonce}",
-            std::process::id()
-        ));
-        create_dir_all(&path).unwrap();
-        Self(path)
-    }
-
-    fn write(&self, name: &str, source: &str) -> PathBuf {
-        let path = self.0.join(name);
-        create_dir_all(path.parent().unwrap()).unwrap();
-        write(&path, source).unwrap();
-        path
-    }
-
+impl Fixture {
     fn parse(&self, name: &str) -> Result<BTreeMap<String, ParsedPropsInterface>> {
         let path = self.0.join(name);
         path.parse_props(&PathResolver(&path))
-    }
-}
-
-impl Drop for FixtureDir {
-    fn drop(&mut self) {
-        let _ = remove_dir_all(&self.0);
     }
 }
 
@@ -67,7 +35,7 @@ fn defaults(interface: &ParsedPropsInterface) -> BTreeMap<String, Option<&str>> 
 
 #[test]
 fn inherits_button_defaults_without_inheriting_bindability() -> Result<()> {
-    let fixture = FixtureDir::new();
+    let fixture = Fixture::new();
     fixture.write(
         "props.ts",
         r#"
@@ -102,7 +70,7 @@ fn inherits_button_defaults_without_inheriting_bindability() -> Result<()> {
 
 #[test]
 fn inherits_transitive_cross_file_defaults_through_aliases_and_filtered_types() -> Result<()> {
-    let fixture = FixtureDir::new();
+    let fixture = Fixture::new();
     fixture.write(
         "base/props.ts",
         r#"export interface BaseProps { flat?: boolean; disabled?: boolean; removed?: boolean; }"#,
@@ -142,7 +110,7 @@ fn inherits_transitive_cross_file_defaults_through_aliases_and_filtered_types() 
 
 #[test]
 fn local_declarations_jsdoc_and_explicit_undefined_override_ancestor_defaults() -> Result<()> {
-    let fixture = FixtureDir::new();
+    let fixture = Fixture::new();
     fixture.write(
         "props.ts",
         r#"
@@ -181,7 +149,7 @@ fn local_declarations_jsdoc_and_explicit_undefined_override_ancestor_defaults() 
 
 #[test]
 fn does_not_guess_svelte_files_for_shared_prop_interfaces() -> Result<()> {
-    let fixture = FixtureDir::new();
+    let fixture = Fixture::new();
     fixture.write(
         "props.ts",
         r#"

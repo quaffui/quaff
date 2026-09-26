@@ -102,121 +102,116 @@ fn resolve_export(
         return Ok(false);
     }
 
-    let mut has_found = false;
+    let file = resolver.resolve(source)?;
+    let mut has_matching_export = false;
 
-    resolver.resolve(source, |file| {
-        if !visited.insert((file.clone(), target.to_string())) {
-            return Ok(false);
-        }
+    if !visited.insert((file.clone(), target.to_string())) {
+        return Ok(false);
+    }
 
-        let resolver = PathResolver(&file);
-        let mut star_exports = Vec::new();
+    let resolver = PathResolver(&file);
+    let mut star_exports = Vec::new();
 
-        SourceType::TS(&file).parse_source(|node, semantic| {
-            let is_module_export =
-                |id| matches!(semantic.nodes().parent_kind(id), AstKind::Program(_));
+    SourceType::TS(&file).parse_source(|node, semantic| {
+        let is_module_export = |id| matches!(semantic.nodes().parent_kind(id), AstKind::Program(_));
 
-            match node.kind() {
-                AstKind::ExportFromDeclaration(export) if is_module_export(node.id()) => {
-                    if let Some(specifier) = export
-                        .specifiers
-                        .iter()
-                        .find(|specifier| specifier.exported.name() == target)
-                    {
-                        has_found = resolve_export(
-                            &export.source.value,
-                            specifier.local.name().as_str(),
-                            &resolver,
-                            visited,
-                            callback,
-                        )?;
-                    }
-                }
-                AstKind::ExportNamedDeclaration(export) if is_module_export(node.id()) => {
-                    if let Some(specifier) = export
-                        .specifiers
-                        .iter()
-                        .find(|specifier| specifier.exported.name() == target)
-                        && let ModuleExportName::IdentifierReference(identifier) = &specifier.local
-                    {
-                        let reference = semantic.scoping().get_reference(identifier.reference_id());
-
-                        if let Some(symbol) = reference.symbol_id() {
-                            let declaration = semantic.symbol_declaration(symbol);
-
-                            if let AstKind::ImportSpecifier(specifier) = declaration.kind() {
-                                for ancestor in semantic.nodes().ancestors(declaration.id()) {
-                                    if let AstKind::ImportDeclaration(import) = ancestor.kind() {
-                                        has_found = resolve_export(
-                                            &import.source.value,
-                                            specifier.imported.name().as_str(),
-                                            &resolver,
-                                            visited,
-                                            callback,
-                                        )?;
-                                        break;
-                                    }
-                                }
-                            } else {
-                                has_found = declaration.resolve_matching_node(
-                                    identifier.name.as_str(),
-                                    semantic,
-                                    &resolver,
-                                    &mut |resolved, resolver| callback(resolved, resolver),
-                                )?;
-                            }
-                        }
-                    }
-                }
-                AstKind::ExportAllDeclaration(export)
-                    if export.exported.is_none() && is_module_export(node.id()) =>
+        match node.kind() {
+            AstKind::ExportFromDeclaration(export) if is_module_export(node.id()) => {
+                if let Some(specifier) = export
+                    .specifiers
+                    .iter()
+                    .find(|specifier| specifier.exported.name() == target)
                 {
-                    star_exports.push(export.source.value.to_string());
+                    has_matching_export = resolve_export(
+                        &export.source.value,
+                        specifier.local.name().as_str(),
+                        &resolver,
+                        visited,
+                        callback,
+                    )?;
                 }
-                _ => {
-                    let is_exported = match semantic.nodes().parent_kind(node.id()) {
-                        AstKind::ExportDeclaration(export) => {
-                            is_module_export(export.node_id.get())
-                        }
-                        AstKind::VariableDeclaration(declaration) => {
-                            match semantic.nodes().parent_kind(declaration.node_id()) {
-                                AstKind::ExportDeclaration(export) => {
-                                    is_module_export(export.node_id.get())
-                                }
-                                _ => false,
-                            }
-                        }
-                        _ => false,
-                    };
+            }
+            AstKind::ExportNamedDeclaration(export) if is_module_export(node.id()) => {
+                if let Some(specifier) = export
+                    .specifiers
+                    .iter()
+                    .find(|specifier| specifier.exported.name() == target)
+                    && let ModuleExportName::IdentifierReference(identifier) = &specifier.local
+                {
+                    let reference = semantic.scoping().get_reference(identifier.reference_id());
 
-                    if is_exported {
-                        has_found = node.resolve_matching_node(
-                            target,
-                            semantic,
-                            &resolver,
-                            &mut |resolved, resolver| callback(resolved, resolver),
-                        )?;
+                    if let Some(symbol) = reference.symbol_id() {
+                        let declaration = semantic.symbol_declaration(symbol);
+
+                        if let AstKind::ImportSpecifier(specifier) = declaration.kind() {
+                            for ancestor in semantic.nodes().ancestors(declaration.id()) {
+                                if let AstKind::ImportDeclaration(import) = ancestor.kind() {
+                                    has_matching_export = resolve_export(
+                                        &import.source.value,
+                                        specifier.imported.name().as_str(),
+                                        &resolver,
+                                        visited,
+                                        callback,
+                                    )?;
+                                    break;
+                                }
+                            }
+                        } else {
+                            has_matching_export = declaration.resolve_matching_node(
+                                identifier.name.as_str(),
+                                semantic,
+                                &resolver,
+                                &mut |resolved, resolver| callback(resolved, resolver),
+                            )?;
+                        }
                     }
                 }
             }
+            AstKind::ExportAllDeclaration(export)
+                if export.exported.is_none() && is_module_export(node.id()) =>
+            {
+                star_exports.push(export.source.value.to_string());
+            }
+            _ => {
+                let is_exported = match semantic.nodes().parent_kind(node.id()) {
+                    AstKind::ExportDeclaration(export) => is_module_export(export.node_id.get()),
+                    AstKind::VariableDeclaration(declaration) => {
+                        match semantic.nodes().parent_kind(declaration.node_id()) {
+                            AstKind::ExportDeclaration(export) => {
+                                is_module_export(export.node_id.get())
+                            }
+                            _ => false,
+                        }
+                    }
+                    _ => false,
+                };
 
-            Ok(has_found)
-        })?;
-
-        // Explicit exports take precedence over export-star declarations regardless of source order.
-        if !has_found {
-            for source in star_exports {
-                if resolve_export(&source, target, &resolver, visited, callback)? {
-                    has_found = true;
-                    break;
+                if is_exported {
+                    has_matching_export = node.resolve_matching_node(
+                        target,
+                        semantic,
+                        &resolver,
+                        &mut |resolved, resolver| callback(resolved, resolver),
+                    )?;
                 }
             }
         }
 
-        Ok(has_found)
+        Ok(has_matching_export)
     })?;
 
-    Ok(has_found)
+    // Explicit exports take precedence over export-star declarations regardless of source order.
+    if has_matching_export {
+        return Ok(true);
+    }
+
+    for source in star_exports {
+        if resolve_export(&source, target, &resolver, visited, callback)? {
+            return Ok(true);
+        }
+    }
+
+    Ok(false)
 }
 
 impl ReferenceNodeMatcher for AstNode<'_> {
@@ -275,41 +270,7 @@ impl ReferenceNodeMatcher for AstNode<'_> {
 
 #[cfg(test)]
 mod tests {
-    use std::{
-        fs,
-        path::PathBuf,
-        time::{SystemTime, UNIX_EPOCH},
-    };
-
-    use crate::{parser::TSPropsParser, resolver::PathResolver};
-
-    struct Fixture(PathBuf);
-
-    impl Fixture {
-        fn new() -> Self {
-            let nonce = SystemTime::now()
-                .duration_since(UNIX_EPOCH)
-                .unwrap()
-                .as_nanos();
-            Self(std::env::temp_dir().join(format!(
-                "quaff-docgen-import-{}-{nonce}",
-                std::process::id()
-            )))
-        }
-
-        fn write(&self, name: &str, source: &str) -> PathBuf {
-            let path = self.0.join(name);
-            fs::create_dir_all(path.parent().unwrap()).unwrap();
-            fs::write(&path, source).unwrap();
-            path
-        }
-    }
-
-    impl Drop for Fixture {
-        fn drop(&mut self) {
-            let _ = fs::remove_dir_all(&self.0);
-        }
-    }
+    use crate::{parser::TSPropsParser, resolver::PathResolver, test_support::Fixture};
 
     #[test]
     fn imports_resolve_module_exports_without_namespace_members() -> crate::Result<()> {

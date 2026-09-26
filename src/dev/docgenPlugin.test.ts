@@ -1,31 +1,25 @@
-import { spawn } from "child_process";
-import { EventEmitter } from "events";
 import path from "path";
-import { afterEach, expect, it, vi } from "vitest";
-import { getAffectedDocgenComponents } from "../../docgen/props/dependencies.js";
+import { afterEach, beforeEach, expect, it, vi } from "vitest";
+import runDocgen from "../../docgen/run.js";
+import updateAllSnippets from "../../docgen/snippets/updateAllSnippets.js";
 import docgenPlugin from "./docgenPlugin.js";
-import type { HotUpdateOptions } from "vite";
+import type { HotUpdateOptions, ResolvedConfig } from "vite";
 
-vi.mock("child_process", () => ({ spawn: vi.fn() }));
-vi.mock("../../docgen/props/dependencies.js", async (importOriginal) => ({
-  ...(await importOriginal<typeof import("../../docgen/props/dependencies.js")>()),
-  getAffectedDocgenComponents: vi.fn(async (file: string) => [path.dirname(file)]),
-}));
+vi.mock("../../docgen/run.js", () => ({ default: vi.fn() }));
+vi.mock("../../docgen/snippets/getSnippetPagePaths.js", () => ({ default: vi.fn(async () => []) }));
+vi.mock("../../docgen/snippets/updateAllSnippets.js", () => ({ default: vi.fn(async () => {}) }));
 
+beforeEach(() => vi.useFakeTimers());
 afterEach(() => {
-  vi.restoreAllMocks();
+  vi.clearAllMocks();
   vi.useRealTimers();
 });
 
-it("retries failed targets together with edits queued during the failed generation", async () => {
-  vi.useFakeTimers();
-
-  const children: EventEmitter[] = [];
-  vi.mocked(spawn).mockImplementation(() => {
-    const child = new EventEmitter();
-    children.push(child);
-    return child as ReturnType<typeof spawn>;
-  });
+function createHarness() {
+  const runs: { resolve(): void; reject(error: Error): void }[] = [];
+  vi.mocked(runDocgen).mockImplementation(
+    () => new Promise<void>((resolve, reject) => runs.push({ resolve, reject }))
+  );
   const plugin = docgenPlugin();
   const hook = plugin.hotUpdate;
 
@@ -34,153 +28,57 @@ it("retries failed targets together with edits queued during the failed generati
   }
 
   const logger = { info: vi.fn(), error: vi.fn(), clearScreen: vi.fn() };
-  const update = (component: string) =>
-    hook.call(
-      { environment: { name: "client" } } as ThisParameterType<typeof hook>,
-      {
-        type: "update",
-        file: path.resolve(`src/lib/components/${component}/props.ts`),
-        server: { config: { logger } },
-      } as unknown as HotUpdateOptions
-    );
-  const first = update("input");
-  await vi.advanceTimersByTimeAsync(75);
-  expect(children).toHaveLength(1);
-
-  const second = update("time");
-  await vi.advanceTimersByTimeAsync(0);
-  children[0].emit("exit", 1, null);
-  await vi.advanceTimersByTimeAsync(75);
-  expect(children).toHaveLength(2);
-  expect(vi.mocked(spawn).mock.calls[1][1]).toEqual([
-    "scripts/docgenProps.ts",
-    path.resolve("src/lib/components/time"),
-    path.resolve("src/lib/components/input"),
-  ]);
-
-  children[1].emit("exit", 0, null);
-  await Promise.all([first, second]);
-  expect(logger.error).not.toHaveBeenCalled();
-
-  const third = update("input");
-  await vi.advanceTimersByTimeAsync(75);
-  children[2].emit("exit", 1, null);
-  await third;
-  expect(logger.error).toHaveBeenCalledWith(expect.stringContaining("exit code 1"));
-});
-
-it("regenerates added and removed sources once and ignores generated files", async () => {
-  vi.useFakeTimers();
-
-  const children: EventEmitter[] = [];
-  vi.mocked(spawn).mockImplementation(() => {
-    const child = new EventEmitter();
-    children.push(child);
-    return child as ReturnType<typeof spawn>;
-  });
-  const hook = docgenPlugin().hotUpdate;
-
-  if (typeof hook !== "function") {
-    throw new Error("Expected the docgen hot update hook");
-  }
-
-  const logger = { info: vi.fn(), error: vi.fn(), clearScreen: vi.fn() };
-  const update = (type: HotUpdateOptions["type"], file: string, environment = "client") =>
+  const resolveId = vi.fn();
+  const update = (
+    file: string,
+    type: HotUpdateOptions["type"] = "update",
+    environment = "client"
+  ) =>
     hook.call(
       { environment: { name: environment } } as ThisParameterType<typeof hook>,
       {
         type,
-        file: path.resolve(`src/lib/components/input/${file}`),
-        server: { config: { logger } },
-      } as unknown as HotUpdateOptions
-    );
-
-  for (const type of ["create", "delete"] as const) {
-    await update(type, "QInput.svelte", "ssr");
-    const pending = update(type, "QInput.svelte");
-    await vi.advanceTimersByTimeAsync(75);
-    expect(vi.mocked(spawn).mock.lastCall?.[1]).toEqual(["scripts/docgenProps.ts"]);
-    children.at(-1)?.emit("exit", 0, null);
-    await pending;
-  }
-
-  for (const type of ["create", "update", "delete"] as const) {
-    await update(type, "docs.props.ts");
-    await update(type, "docs.ts");
-  }
-
-  await vi.advanceTimersByTimeAsync(75);
-  expect(children).toHaveLength(2);
-  expect(logger.error).not.toHaveBeenCalled();
-});
-
-it("runs edits queued while the previous generation finishes", async () => {
-  vi.useFakeTimers();
-
-  const children: EventEmitter[] = [];
-  vi.mocked(spawn).mockImplementation(() => {
-    const child = new EventEmitter();
-    children.push(child);
-    return child as ReturnType<typeof spawn>;
-  });
-  const hook = docgenPlugin().hotUpdate;
-
-  if (typeof hook !== "function") {
-    throw new Error("Expected the docgen hot update hook");
-  }
-
-  const logger = { info: vi.fn(), error: vi.fn(), clearScreen: vi.fn() };
-  const update = (file: string) =>
-    hook.call(
-      { environment: { name: "client" } } as ThisParameterType<typeof hook>,
-      {
-        type: "update",
         file: path.resolve(file),
-        server: { config: { logger } },
+        server: { config: { logger }, pluginContainer: { resolveId } },
       } as unknown as HotUpdateOptions
     );
-  const first = update("src/lib/components/fixture/props.ts");
-  await vi.advanceTimersByTimeAsync(75);
-  children[0].emit("exit", 0, null);
+  return { plugin, runs, logger, update, resolveId };
+}
 
-  // The next handler resumes before the completed queue's promise handlers run.
-  const second = update("src/shared.d.ts");
+it("retries failed changed files together with edits queued during generation", async () => {
+  const { runs, logger, update } = createHarness();
+  const first = update("src/lib/components/input/props.ts");
   await vi.advanceTimersByTimeAsync(75);
-  expect(children).toHaveLength(2);
-  expect(vi.mocked(spawn).mock.lastCall?.[1]).toEqual([
-    "scripts/docgenProps.ts",
-    path.resolve("src"),
+  const second = update("src/lib/components/time/props.ts");
+  runs[0].reject(new Error("first generation failed"));
+  await vi.advanceTimersByTimeAsync(75);
+  expect(vi.mocked(runDocgen).mock.lastCall?.[0]?.changedFiles).toEqual([
+    path.resolve("src/lib/components/time/props.ts"),
+    path.resolve("src/lib/components/input/props.ts"),
   ]);
-  children[1].emit("exit", 0, null);
+  runs[1].resolve();
   await Promise.all([first, second]);
   expect(logger.error).not.toHaveBeenCalled();
+
+  const third = update("src/lib/components/input/props.ts");
+  await vi.advanceTimersByTimeAsync(75);
+  runs[2].reject(new Error("final generation failed"));
+  await third;
+  expect(logger.error).toHaveBeenCalledWith(expect.stringContaining("final generation failed"));
 });
 
-it("ignores generated build sources while preserving local dependencies outside src", async () => {
-  vi.useFakeTimers();
+it("gives create/delete full runs precedence and ignores server and generated updates", async () => {
+  const { runs, update } = createHarness();
 
-  const children: EventEmitter[] = [];
-  vi.mocked(spawn).mockImplementation(() => {
-    const child = new EventEmitter();
-    children.push(child);
-    return child as ReturnType<typeof spawn>;
-  });
-  const hook = docgenPlugin().hotUpdate;
-
-  if (typeof hook !== "function") {
-    throw new Error("Expected the docgen hot update hook");
+  for (const type of ["create", "delete"] as const) {
+    await update("src/lib/components/input/QInput.svelte", type, "ssr");
+    const edit = update("src/shared.ts");
+    const full = update("src/lib/components/input/QInput.svelte", type);
+    await vi.advanceTimersByTimeAsync(75);
+    expect(vi.mocked(runDocgen).mock.lastCall?.[0]?.changedFiles).toBeUndefined();
+    runs.at(-1)?.resolve();
+    await Promise.all([edit, full]);
   }
-
-  const logger = { info: vi.fn(), error: vi.fn(), clearScreen: vi.fn() };
-  const update = (type: HotUpdateOptions["type"], file: string) =>
-    hook.call(
-      { environment: { name: "client" } } as ThisParameterType<typeof hook>,
-      {
-        type,
-        file: path.resolve(file),
-        server: { config: { logger } },
-      } as unknown as HotUpdateOptions
-    );
 
   for (const file of [
     "build/app/chunk.js",
@@ -189,32 +87,61 @@ it("ignores generated build sources while preserving local dependencies outside 
     "package/index.js",
     "plugins/dist/index.js",
     "docgen/target/generated.js",
-    "src/lib/components/fixture/docs.props.ts",
-    "src/lib/components/fixture/docs.ts",
+    "src/lib/components/input/docs.props.ts",
+    "src/lib/components/input/docs.ts",
     "src/routes/example/docs.snippets.ts",
   ]) {
     for (const type of ["create", "update", "delete"] as const) {
-      await update(type, file);
+      await update(file, type);
     }
   }
 
-  vi.mocked(getAffectedDocgenComponents).mockResolvedValueOnce([]);
-  await update("update", "src/unused.ts");
   await vi.advanceTimersByTimeAsync(75);
-  expect(children).toHaveLength(0);
-  expect(logger.info).not.toHaveBeenCalled();
+  expect(runs).toHaveLength(2);
+});
 
-  for (const file of ["shared/types.d.ts", "dist-helpers/types.ts"]) {
-    const pending = update("update", file);
-    await vi.advanceTimersByTimeAsync(75);
-    expect(vi.mocked(spawn).mock.lastCall?.[1]).toEqual([
-      "scripts/docgenProps.ts",
-      path.resolve(path.dirname(file)),
-    ]);
-    children.at(-1)?.emit("exit", 0, null);
-    await pending;
+it("preserves edits queued as a generation finishes and delegates Vite resolution", async () => {
+  const { runs, update, resolveId, logger } = createHarness();
+  const first = update("src/lib/components/fixture/props.ts");
+  await vi.advanceTimersByTimeAsync(75);
+  runs[0].resolve();
+  const second = update("shared/types.d.ts");
+  await vi.advanceTimersByTimeAsync(75);
+  expect(runs).toHaveLength(2);
+  const options = vi.mocked(runDocgen).mock.lastCall?.[0];
+  expect(options?.changedFiles).toEqual([path.resolve("shared/types.d.ts")]);
+  resolveId.mockResolvedValueOnce({ id: "/resolved/types.ts?import" });
+  expect(await options?.resolveImport?.("$types", "/props.ts")).toBe("/resolved/types.ts");
+  expect(resolveId).toHaveBeenCalledWith("$types", "/props.ts");
+  resolveId.mockResolvedValueOnce({ id: "external-package", external: true });
+  expect(await options?.resolveImport?.("external-package", "/props.ts")).toBeUndefined();
+  runs[1].resolve();
+  await Promise.all([first, second]);
+  expect(logger.error).not.toHaveBeenCalled();
+});
+
+it("keeps startup generation and snippets limited to a development server", async () => {
+  const { plugin, runs, logger } = createHarness();
+  const hook = plugin.configResolved;
+
+  if (typeof hook !== "function") {
+    throw new Error("Expected the config resolved hook");
   }
 
-  expect(children).toHaveLength(2);
-  expect(logger.error).not.toHaveBeenCalled();
+  const configure = (command: ResolvedConfig["command"], mode: string) =>
+    hook.call(
+      {} as ThisParameterType<typeof hook>,
+      { command, mode, logger } as unknown as ResolvedConfig
+    );
+
+  await configure("build", "production");
+  await configure("serve", "test");
+  expect(runs).toHaveLength(0);
+  const start = configure("serve", "development");
+  await vi.advanceTimersByTimeAsync(75);
+  expect(runs).toHaveLength(1);
+  expect(updateAllSnippets).toHaveBeenCalledOnce();
+  expect(vi.mocked(runDocgen).mock.lastCall?.[0]?.changedFiles).toBeUndefined();
+  runs[0].resolve();
+  await start;
 });

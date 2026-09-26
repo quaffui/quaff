@@ -60,51 +60,15 @@ impl TSPropsParser for Path {
 
 #[cfg(test)]
 mod tests {
-    use std::{
-        fs::{create_dir_all, remove_dir_all, write},
-        path::{Path, PathBuf},
-        time::{SystemTime, UNIX_EPOCH},
-    };
+    use std::path::Path;
 
-    use crate::{parser::TSPropsParser, resolver::PathResolver};
-
-    struct FixtureDir(PathBuf);
-
-    impl FixtureDir {
-        fn new() -> Self {
-            let nonce = SystemTime::now()
-                .duration_since(UNIX_EPOCH)
-                .expect("system clock should be after the Unix epoch")
-                .as_nanos();
-            let path = std::env::temp_dir().join(format!(
-                "quaff-docgen-parser-{}-{nonce}",
-                std::process::id()
-            ));
-            create_dir_all(&path).expect("fixture directory should be created");
-
-            Self(path)
-        }
-
-        fn write(&self, name: &str, source: &str) -> PathBuf {
-            let path = self.0.join(name);
-            create_dir_all(path.parent().expect("fixture file should have a parent"))
-                .expect("fixture parent directory should be created");
-            write(&path, source).expect("fixture source should be written");
-            path
-        }
-    }
-
-    impl Drop for FixtureDir {
-        fn drop(&mut self) {
-            let _ = remove_dir_all(&self.0);
-        }
-    }
+    use crate::{parser::TSPropsParser, resolver::PathResolver, test_support::Fixture};
 
     fn parse_fixture(
         source: &str,
     ) -> crate::Result<std::collections::BTreeMap<String, crate::parser::ParsedPropsInterface>>
     {
-        let fixture = FixtureDir::new();
+        let fixture = Fixture::new();
         let path = fixture.write("props.ts", source);
         let resolver = PathResolver(Path::new(&path));
 
@@ -200,7 +164,7 @@ mod tests {
 
     #[test]
     fn resolves_imported_transitive_definitions_from_a_stable_lib_root() -> crate::Result<()> {
-        let fixture = FixtureDir::new();
+        let fixture = Fixture::new();
         fixture.write(
             "lib/utils/index.ts",
             r#"
@@ -253,7 +217,7 @@ mod tests {
 
     #[test]
     fn renamed_module_types_do_not_emit_colliding_unused_declarations() -> crate::Result<()> {
-        let fixture = FixtureDir::new();
+        let fixture = Fixture::new();
         fixture.write("left.ts", "export type Value = string;");
         fixture.write("right.ts", "export type Value = number;");
         let props = fixture.write(
@@ -277,7 +241,7 @@ mod tests {
     #[test]
     fn renamed_recursive_types_keep_canonical_references_in_transitive_definitions()
     -> crate::Result<()> {
-        let fixture = FixtureDir::new();
+        let fixture = Fixture::new();
         fixture.write("node.ts", "export type TreeNode = { next?: TreeNode };");
         fixture.write(
             "wrapper.ts",
@@ -305,7 +269,7 @@ mod tests {
 
     #[test]
     fn renamed_typeof_dependencies_preserve_the_original_value_declaration() -> crate::Result<()> {
-        let fixture = FixtureDir::new();
+        let fixture = Fixture::new();
         fixture.write(
             "labels.ts",
             r#"export const defaultLabels = { open: "Open", close: "Close" };"#,

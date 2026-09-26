@@ -1,5 +1,3 @@
-import updateAllProps from "../docgen/props/updateAllProps.js";
+import runDocgen from "../docgen/run.js";
 
-const targets = process.argv.slice(2);
-
-await updateAllProps(targets.length ? targets : undefined);
+await runDocgen({ targets: process.argv.slice(2) });
