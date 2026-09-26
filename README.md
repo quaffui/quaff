@@ -56,6 +56,13 @@ Common commands:
 - `bun run build` builds the package and its CSS bundles
 - `bun run build:docs` generates and builds the documentation site
 
+The test suite includes browser integration tests. Install Chromium once before running it:
+
+```sh
+bunx playwright install chromium --only-shell
+bun run test:unit --run
+```
+
 ## Repository Layout
 
 - `src/lib/components` contains the public UI components

@@ -3,12 +3,18 @@ import type { Snippet } from "svelte";
 import type { HTMLAttributes } from "svelte/elements";
 
 export type QMenuAnchor =
+  | "top start"
+  | "top end"
   | "top left"
   | "top middle"
   | "top right"
+  | "center start"
+  | "center end"
   | "center left"
   | "center middle"
   | "center right"
+  | "bottom start"
+  | "bottom end"
   | "bottom left"
   | "bottom middle"
   | "bottom right";
@@ -29,12 +35,12 @@ export interface QMenuProps extends OptionalModel<boolean>, HTMLAttributes<HTMLD
   flip?: boolean;
 
   /**
-   * Anchor point on the target element.
+   * Anchor point on the target. Start/end follow the menu direction; left/right stay physical.
    */
   anchor?: QMenuAnchor;
 
   /**
-   * Anchor point on the menu element.
+   * Anchor point on the menu. Start/end follow the menu direction; left/right stay physical.
    */
   self?: QMenuAnchor;
 

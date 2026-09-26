@@ -14,7 +14,7 @@ export interface QLinearProgressProps
   buffer?: number;
 
   /**
-   * Reverses the progress bar direction from right-to-left.
+   * Reverses the normal fill direction. RTL fills from the right, except Hebrew (lang="he"), which fills from the left.
    */
   reverse?: boolean;
 

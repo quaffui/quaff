@@ -4,7 +4,7 @@ import QScrollObserver from "./classes/QScrollObserver.svelte";
 import Notify from "./classes/Notify.js";
 
 export type { QuaffLanguage, QuaffTranslations } from "./locales/types.js";
-export type { QuaffConfig } from "./internal/quaffConfig.js";
+export type { QuaffConfig } from "./internal/quaffConfig.svelte.js";
 export type {
   QFabProps,
   QExtendedFabProps,

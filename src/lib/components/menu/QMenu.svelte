@@ -8,8 +8,9 @@ QMenu displays anchored popup content. It handles positioning, outside-click dis
   import { on } from "svelte/events";
   import { innerHeight, innerWidth } from "svelte/reactivity/window";
   import { browser } from "$app/environment";
-  import { quaffConfig } from "$internal/quaffConfig";
+  import { useQuaffConfig } from "$internal/quaffConfig.svelte";
   import { menuCtx } from "$internal/menuContext";
+  import { syncOverlayDirection } from "$internal/overlayDirection";
   import { doesOverlayUsePopover, getOverlayPortalTarget, portal, type QEvent } from "$utils";
   import type { QMenuAnchor, QMenuProps } from "./props";
 
@@ -19,8 +20,8 @@ QMenu displays anchored popup content. It handles positioning, outside-click dis
     target,
     offset = {},
     flip = false,
-    anchor = "bottom left",
-    self = "top left",
+    anchor = "bottom start",
+    self = "top start",
     fit = false,
     expressive,
     persistent = false,
@@ -42,13 +43,13 @@ QMenu displays anchored popup content. It handles positioning, outside-click dis
   let menuWidth = $state<string | undefined>();
   let menuMaxWidth = $state<string | undefined>();
   let menuPosition = $state<"fixed" | "absolute">("fixed");
+  let menuTranslateX = $state("0px");
   let wasMenuOpen = false;
   let positionFrame: number | undefined;
   // #endregion: --- Reactive variables
 
   // #region:    --- Derived values
-  const [anchorX, anchorY] = $derived(parseAnchor(anchor));
-  const [selfX, selfY] = $derived(parseAnchor(self));
+  const quaffConfig = useQuaffConfig();
   const isExpressive = $derived(expressive ?? quaffConfig.expressive);
   const portalTarget = $derived(browser ? getOverlayPortalTarget(anchorEl) : undefined);
   // #endregion: --- Derived values
@@ -93,6 +94,8 @@ QMenu displays anchored popup content. It handles positioning, outside-click dis
       return;
     }
 
+    // Track global changes; the root pre-effect has already applied direction.
+    void quaffConfig.rtl;
     const viewportWidth = innerWidth.current;
     const viewportHeight = innerHeight.current;
     const syncCurrentPosition = () => schedulePositionSync(viewportWidth, viewportHeight);
@@ -163,7 +166,7 @@ QMenu displays anchored popup content. It handles positioning, outside-click dis
     return el.parentElement;
   }
 
-  function parseAnchor(anchorValue: QMenuAnchor): [number, number] {
+  function parseAnchor(anchorValue: QMenuAnchor, direction: "ltr" | "rtl"): [number, number] {
     const [vertical, horizontal] = anchorValue.split(" ") as [string, string];
     const verticalMap: Record<string, number> = {
       top: 0,
@@ -171,6 +174,8 @@ QMenu displays anchored popup content. It handles positioning, outside-click dis
       bottom: 1,
     };
     const horizontalMap: Record<string, number> = {
+      start: direction === "rtl" ? 1 : 0,
+      end: direction === "rtl" ? 0 : 1,
       left: 0,
       middle: 0.5,
       right: 1,
@@ -218,6 +223,9 @@ QMenu displays anchored popup content. It handles positioning, outside-click dis
       return;
     }
 
+    const resolvedDirection = syncOverlayDirection(menuEl, anchorEl, props.dir, props.lang);
+    const [anchorX, anchorY] = parseAnchor(anchor, resolvedDirection);
+    const [selfX, selfY] = parseAnchor(self, resolvedDirection);
     const rect = anchorEl.getBoundingClientRect();
     const dialog = anchorEl.closest("dialog");
     const shouldUsePopover = doesOverlayUsePopover(anchorEl);
@@ -225,12 +233,10 @@ QMenu displays anchored popup content. It handles positioning, outside-click dis
     const margin = 8;
     const maxViewportWidth = viewportWidth - margin * 2;
     const baseTop = rect.top + rect.height * anchorY;
-    const baseLeft = rect.left + rect.width * anchorX;
+    const baseLeft = rect.left + rect.width * anchorX + (offset.x ?? 0);
     const measured = menuEl.getBoundingClientRect();
-    const measuredWidth = fit ? Math.min(rect.width, maxViewportWidth) : measured.width;
 
     let top = baseTop - measured.height * selfY + (offset.y ?? 0);
-    const left = baseLeft - measuredWidth * selfX + (offset.x ?? 0);
     const canFlip = flip && anchorY !== 0.5 && selfY === 1 - anchorY;
     const isClipped = top < margin || top + measured.height > viewportHeight - margin;
 
@@ -250,13 +256,16 @@ QMenu displays anchored popup content. It handles positioning, outside-click dis
     if (dialogRect) {
       menuPosition = "absolute";
       menuTop = top - dialogRect.top;
-      menuLeft = left - dialogRect.left;
+      menuLeft = baseLeft - dialogRect.left;
+      menuTranslateX = `${-selfX * 100}%`;
       return;
     }
 
     menuPosition = "fixed";
     menuTop = Math.max(margin, Math.min(top, viewportHeight - measured.height - margin));
-    menuLeft = Math.max(margin, Math.min(left, viewportWidth - measuredWidth - margin));
+    menuLeft = baseLeft;
+    // Percentages follow the popup's own width, including content loaded after opening.
+    menuTranslateX = `clamp(${margin - baseLeft}px, ${-selfX * 100}%, calc(100vw - ${margin + baseLeft}px - 100%))`;
   }
 
   function schedulePositionSync(
@@ -366,6 +375,7 @@ QMenu displays anchored popup content. It handles positioning, outside-click dis
     style:position={menuPosition}
     style:top="{menuTop}px"
     style:left="{menuLeft}px"
+    style:translate="{menuTranslateX} 0"
     style:width={menuWidth}
     style:max-width={menuMaxWidth}
     onclick={handleMenuClick}

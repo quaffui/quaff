@@ -106,6 +106,10 @@
     gap: 8px;
   }
 
+  &__page-button:dir(rtl) .q-icon {
+    transform: scaleX(-1);
+  }
+
   &__footer &__footer-select {
     width: auto;
     min-width: 80px;

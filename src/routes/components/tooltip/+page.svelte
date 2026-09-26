@@ -32,7 +32,8 @@
       <QDocsSection title="Basic Tooltip">
         {#snippet sectionDescription()}
           QTooltip provides additional information when hovering over or focusing an element. Use
-          the trigger snippet to attach it to a button or another element.
+          the trigger snippet to attach it to a button or another element. Tooltips inherit the
+          target's direction and language; use <code>dir</code> or <code>lang</code> to override them.
         {/snippet}
 
         <div class="flex q-gap-md q-ma-sm">

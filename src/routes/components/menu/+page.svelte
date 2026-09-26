@@ -136,8 +136,10 @@
 
       <QDocsSection title="Anchoring and Fit">
         {#snippet sectionDescription()}
-          Use <code>anchor</code>, <code>self</code>, and <code>fit</code> to control alignment and width
-          relative to the target.
+          Use <code>anchor</code>, <code>self</code>, and <code>fit</code> to control alignment and
+          width relative to the target. Start/end follow the menu direction; left/right stay
+          physical. Menus inherit direction and language from their target. Use <code>dir</code> or
+          <code>lang</code> to override them.
         {/snippet}
 
         <div class="row q-gutter-md items-start">
@@ -172,7 +174,7 @@
                     <QItemSection>Same width as target</QItemSection>
                   </QItem>
                   <QItem clickable>
-                    <QItemSection>Bottom left</QItemSection>
+                    <QItemSection>Aligned to start</QItemSection>
                   </QItem>
                 </QList>
               </QMenu>
