@@ -5,7 +5,7 @@ The QCircularProgress component is used to display a circular progress bar, indi
 
 <script lang="ts">
   import { useColor, useSize } from "$composables";
-  import { quaffConfig } from "$internal/quaffConfig";
+  import { useQuaffConfig } from "$internal/quaffConfig.svelte";
   import { between } from "$utils";
   import { circularWavePath } from "./waves";
   import type { QCircularProgressProps } from "./props";
@@ -36,6 +36,7 @@ The QCircularProgress component is used to display a circular progress bar, indi
 
   // #region:    --- Derived values
   const id = $props.id();
+  const quaffConfig = useQuaffConfig();
   const isExpressive = $derived(expressive ?? quaffConfig.expressive);
   const resolvedSize = $derived.by(() => {
     if (size != null) {

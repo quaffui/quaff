@@ -19,7 +19,6 @@ The QLayout component is designed to be the skeleton of the entire page, with na
   }
 
   interface DrawerContext {
-    readonly view: string;
     width: number;
     takesSpace: boolean;
     ready: boolean;
@@ -34,6 +33,11 @@ The QLayout component is designed to be the skeleton of the entire page, with na
   export const footerCtx = QContext<AppbarContext>("QFooter");
   export const navbarCtx = QContext<NavbarContext>("QNavbar");
 
+  export const startRailbarCtx = QContext<DrawerContext>("QRailbarStart");
+  export const endRailbarCtx = QContext<DrawerContext>("QRailbarEnd");
+  export const startDrawerCtx = QContext<DrawerContext>("QDrawerStart");
+  export const endDrawerCtx = QContext<DrawerContext>("QDrawerEnd");
+
   export const leftRailbarCtx = QContext<DrawerContext>("QRailbarLeft");
   export const rightRailbarCtx = QContext<DrawerContext>("QRailbarRight");
   export const leftDrawerCtx = QContext<DrawerContext>("QDrawerLeft");
@@ -45,6 +49,10 @@ The QLayout component is designed to be the skeleton of the entire page, with na
   let {
     view = "hhh lpr fff",
     content,
+    railbarStart,
+    railbarEnd,
+    drawerStart,
+    drawerEnd,
     railbarLeft,
     railbarRight,
     drawerLeft,
@@ -76,6 +84,26 @@ The QLayout component is designed to be the skeleton of the entire page, with na
     height: 0,
     ready: false,
   });
+  const startRailbarInfo = $state({
+    width: 0,
+    takesSpace: false,
+    ready: false,
+  });
+  const startDrawerInfo = $state({
+    width: 0,
+    takesSpace: false,
+    ready: false,
+  });
+  const endRailbarInfo = $state({
+    width: 0,
+    takesSpace: false,
+    ready: false,
+  });
+  const endDrawerInfo = $state({
+    width: 0,
+    takesSpace: false,
+    ready: false,
+  });
   const leftRailbarInfo = $state({
     width: 0,
     takesSpace: false,
@@ -103,16 +131,22 @@ The QLayout component is designed to be the skeleton of the entire page, with na
   const footerOffset = $derived(!footer || footerInfo.collapsed ? 0 : footerInfo.height);
   const navbarOffset = $derived(!navbar || !navbarInfo.ready ? 0 : navbarInfo.height);
   const bottomOffset = $derived(footerOffset + navbarOffset);
+  const hasRailbar = $derived(railbarStart ?? railbarEnd ?? railbarLeft ?? railbarRight);
+  const hasDrawer = $derived(drawerStart ?? drawerEnd ?? drawerLeft ?? drawerRight);
   const leftOffset = $derived(occupiedWidth(leftRailbarInfo) + occupiedWidth(leftDrawerInfo));
   const rightOffset = $derived(occupiedWidth(rightRailbarInfo) + occupiedWidth(rightDrawerInfo));
 
   const isReady = $derived(
     isLayoutPartReady(header, headerInfo, "q-header") &&
       isLayoutPartReady(footer, footerInfo, "q-footer") &&
-      isLayoutPartReady(railbarLeft, leftRailbarInfo, "q-railbar--left") &&
-      isLayoutPartReady(railbarRight, rightRailbarInfo, "q-railbar--right") &&
-      isLayoutPartReady(drawerLeft, leftDrawerInfo, "q-drawer--left") &&
-      isLayoutPartReady(drawerRight, rightDrawerInfo, "q-drawer--right") &&
+      isLayoutPartReady(hasRailbar, leftRailbarInfo, "q-railbar--left") &&
+      isLayoutPartReady(hasRailbar, rightRailbarInfo, "q-railbar--right") &&
+      isLayoutPartReady(hasDrawer, leftDrawerInfo, "q-drawer--left") &&
+      isLayoutPartReady(hasDrawer, rightDrawerInfo, "q-drawer--right") &&
+      isLayoutPartReady(hasRailbar, startRailbarInfo, "q-railbar--start") &&
+      isLayoutPartReady(hasDrawer, startDrawerInfo, "q-drawer--start") &&
+      isLayoutPartReady(hasRailbar, endRailbarInfo, "q-railbar--end") &&
+      isLayoutPartReady(hasDrawer, endDrawerInfo, "q-drawer--end") &&
       isLayoutPartReady(navbar, navbarInfo, "q-navbar")
   );
   // #endregion: --- Derived values
@@ -140,27 +174,44 @@ The QLayout component is designed to be the skeleton of the entire page, with na
     ready: navbarInfo.ready,
   });
 
+  startRailbarCtx.set({
+    width: startRailbarInfo.width,
+    takesSpace: startRailbarInfo.takesSpace,
+    ready: startRailbarInfo.ready,
+  });
+  startDrawerCtx.set({
+    width: startDrawerInfo.width,
+    takesSpace: startDrawerInfo.takesSpace,
+    ready: startDrawerInfo.ready,
+  });
+  endRailbarCtx.set({
+    width: endRailbarInfo.width,
+    takesSpace: endRailbarInfo.takesSpace,
+    ready: endRailbarInfo.ready,
+  });
+  endDrawerCtx.set({
+    width: endDrawerInfo.width,
+    takesSpace: endDrawerInfo.takesSpace,
+    ready: endDrawerInfo.ready,
+  });
+
   leftRailbarCtx.set({
-    view,
     width: leftRailbarInfo.width,
     takesSpace: leftRailbarInfo.takesSpace,
     ready: leftRailbarInfo.ready,
   });
   rightRailbarCtx.set({
-    view,
     width: rightRailbarInfo.width,
     takesSpace: rightRailbarInfo.takesSpace,
     ready: rightRailbarInfo.ready,
   });
 
   leftDrawerCtx.set({
-    view,
     width: leftDrawerInfo.width,
     takesSpace: leftDrawerInfo.takesSpace,
     ready: leftDrawerInfo.ready,
   });
   rightDrawerCtx.set({
-    view,
     width: rightDrawerInfo.width,
     takesSpace: rightDrawerInfo.takesSpace,
     ready: rightDrawerInfo.ready,
@@ -168,7 +219,7 @@ The QLayout component is designed to be the skeleton of the entire page, with na
   // #endregion: --- Context
 
   // #region:    --- Functions
-  function occupiedWidth(info: Omit<DrawerContext, "view">) {
+  function occupiedWidth(info: DrawerContext) {
     return info.takesSpace ? info.width : 0;
   }
 
@@ -205,16 +256,38 @@ The QLayout component is designed to be the skeleton of the entire page, with na
   bind:this={layoutEl}
   {...props}
   class="q-layout"
-  style:--left-drawer-width={`${leftDrawerInfo.width}px`}
-  style:--right-drawer-width={`${rightDrawerInfo.width}px`}
-  style:--left-railbar-width={`${occupiedWidth(leftRailbarInfo)}px`}
-  style:--right-railbar-width={`${occupiedWidth(rightRailbarInfo)}px`}
+  style:--physical-left-railbar-width={`${occupiedWidth(leftRailbarInfo)}px`}
+  style:--physical-right-railbar-width={`${occupiedWidth(rightRailbarInfo)}px`}
+  style:--start-railbar-space={`${occupiedWidth(startRailbarInfo)}px`}
+  style:--start-drawer-space={`${occupiedWidth(startDrawerInfo)}px`}
+  style:--end-railbar-space={`${occupiedWidth(endRailbarInfo)}px`}
+  style:--end-drawer-space={`${occupiedWidth(endDrawerInfo)}px`}
   style:--navbar-height={`${navbarOffset}px`}
   style:--offset-top={`${topOffset}px`}
-  style:--offset-right={`${rightOffset}px`}
+  style:--physical-offset-right={`${rightOffset}px`}
   style:--offset-bottom={`${bottomOffset}px`}
-  style:--offset-left={`${leftOffset}px`}
+  style:--physical-offset-left={`${leftOffset}px`}
+  style:--left-navigation-top={view.charAt(0) === "h" ? "var(--offset-top)" : "0px"}
+  style:--right-navigation-top={view.charAt(2) === "h" ? "var(--offset-top)" : "0px"}
+  style:--left-navigation-bottom={view.charAt(8) === "f"
+    ? "var(--offset-bottom)"
+    : "var(--navbar-height)"}
+  style:--right-navigation-bottom={view.charAt(10) === "f"
+    ? "var(--offset-bottom)"
+    : "var(--navbar-height)"}
+  style:--left-navigation-top-radius={view.charAt(0) === "h" ? "16px" : "0px"}
+  style:--right-navigation-top-radius={view.charAt(2) === "h" ? "16px" : "0px"}
+  style:--left-navigation-bottom-radius={view.charAt(8) === "f" ? "16px" : "0px"}
+  style:--right-navigation-bottom-radius={view.charAt(10) === "f" ? "16px" : "0px"}
+  style:--left-railbar-z-index={view.charAt(0) === "h" ? 3 : 5}
+  style:--right-railbar-z-index={view.charAt(2) === "h" ? 3 : 5}
+  style:--left-drawer-z-index={view.charAt(0) === "h" ? 2 : 4}
+  style:--right-drawer-z-index={view.charAt(2) === "h" ? 2 : 4}
 >
+  {@render railbarStart?.()}
+  {@render railbarEnd?.()}
+  {@render drawerStart?.()}
+  {@render drawerEnd?.()}
   {@render railbarLeft?.()}
   {@render railbarRight?.()}
   {@render drawerLeft?.()}
@@ -229,6 +302,10 @@ The QLayout component is designed to be the skeleton of the entire page, with na
       headerCtx.symbol,
       footerCtx.symbol,
       navbarCtx.symbol,
+      startRailbarCtx.symbol,
+      endRailbarCtx.symbol,
+      startDrawerCtx.symbol,
+      endDrawerCtx.symbol,
       leftRailbarCtx.symbol,
       rightRailbarCtx.symbol,
       leftDrawerCtx.symbol,

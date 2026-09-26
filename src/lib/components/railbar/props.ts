@@ -16,7 +16,7 @@ export interface QRailbarProps extends Borderable, HTMLAttributes<HTMLElement> {
   width?: number;
 
   /**
-   * Position of the railbar on the screen.
+   * Position of the railbar. "start" and "end" follow its direction; "left" and "right" stay physical.
    */
-  side?: "left" | "right";
+  side?: "start" | "end" | "left" | "right";
 }

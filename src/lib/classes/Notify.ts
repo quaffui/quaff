@@ -1,5 +1,6 @@
 import { mount } from "svelte";
 import QNotifyHost from "$internal/QNotifyHost.svelte";
+import { getAppContext } from "$internal/appContext";
 import type { QSnackbarAction, QSnackbarDismissReason } from "$components/snackbar/props";
 
 export interface NotifyOptions {
@@ -61,7 +62,7 @@ let host: ReturnType<typeof mountHost> | undefined;
 let defaults: NotifyDefaults = {};
 
 function mountHost() {
-  return mount(QNotifyHost, { target: document.body });
+  return mount(QNotifyHost, { target: document.body, context: getAppContext() });
 }
 
 function getHost() {

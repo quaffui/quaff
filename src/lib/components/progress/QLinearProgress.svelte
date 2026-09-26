@@ -6,7 +6,7 @@ The QLinearProgress component is used to display a progress bar, indicating the 
 <script lang="ts">
   import { onMount } from "svelte";
   import { useColor, useSize } from "$composables";
-  import { quaffConfig } from "$internal/quaffConfig";
+  import { useQuaffConfig } from "$internal/quaffConfig.svelte";
   import { between } from "$utils";
   import { linearWavePath } from "./waves";
   import type { QLinearProgressProps } from "./props";
@@ -63,6 +63,7 @@ The QLinearProgress component is used to display a progress bar, indicating the 
 
   // #region:    --- Derived values
   const id = $props.id();
+  const quaffConfig = useQuaffConfig();
   const isExpressive = $derived(expressive ?? quaffConfig.expressive);
   const qSize = $derived(useSize(size ?? (isExpressive ? "10px" : "4px"), "q-linear-progress"));
   const parsedColor = $derived(useColor(color));

@@ -34,7 +34,10 @@ jobs:
           bun run docgen-props
           bun run docgen-snippets
 
-      - name: Run Unit Tests
+      - name: Install Chromium
+        run: bunx playwright install --with-deps --only-shell chromium
+
+      - name: Run Tests
         run: bun run test:unit --run
 
       - name: Run Type Check

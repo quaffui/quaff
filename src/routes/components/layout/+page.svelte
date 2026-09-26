@@ -127,8 +127,21 @@
             application. It allows you to easily create complex layouts with minimal effort.
           </p>
           <p>
-            To handle the layout of your application, Quaff provides a <code>view</code> prop that allows
-            you to quickly configure one. As of today, this prop is not case-sensitive.
+            To handle the layout of your application, Quaff provides a <code>view</code> prop that
+            allows you to quickly configure one. Use lowercase letters for the four corners.
+            Supported uppercase flags, as in <code>hHh LpR fFf</code>, currently behave the same as
+            lowercase.
+          </p>
+          <p>
+            For RTL layouts, use <code>drawerStart</code>/<code>drawerEnd</code> and
+            <code>railbarStart</code>/<code>railbarEnd</code> snippets with matching
+            <code>side="start"</code> (the default) or <code>side="end"</code>. They follow the
+            component's inherited <code>dir</code>. The existing left/right snippets and explicit
+            <code>side="left"</code>/<code>side="right"</code> remain available for fixed placement.
+          </p>
+          <p>
+            The <code>view</code> columns always describe physical left and right, including in RTL.
+            The component's <code>side</code> controls its placement; the snippet name does not.
           </p>
           <p>
             Basically, the <code>view</code> prop can be split in 3 parts of 3 letters:

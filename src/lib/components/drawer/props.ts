@@ -1,18 +1,18 @@
 import { Borderable, OptionalModel } from "$utils";
 import type { HTMLAttributes } from "svelte/elements";
 
-export type QDrawerSideOptions = "left" | "right";
+export type QDrawerSideOptions = "start" | "end" | "left" | "right";
 export type QDrawerBehaviorOptions = "default" | "desktop" | "mobile";
 
 export interface QDrawerProps
   extends OptionalModel<boolean>, Borderable, HTMLAttributes<HTMLDivElement> {
   /**
-   * The side of the layout where the drawer is positioned.
+   * Position of the drawer. "start" and "end" follow its direction; "left" and "right" stay physical.
    */
   side?: QDrawerSideOptions;
 
   /**
-   * The width of the drawer. Can be specified with a CSS unit. If no unit is specified, "px" will be used.
+   * Width of the drawer in pixels. Standalone drawers also support CSS-unit strings at runtime.
    */
   width?: number;
 

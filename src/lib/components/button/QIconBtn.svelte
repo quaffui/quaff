@@ -5,7 +5,7 @@ Icon buttons are buttons that contain only icons (no text labels) and are typica
 
 <script lang="ts">
   import { buttonGroupCtx } from "$components/button-group/QBtnGroup.svelte";
-  import { quaffConfig } from "$internal/quaffConfig";
+  import { useQuaffConfig } from "$internal/quaffConfig.svelte";
   import QBtn from "./QBtn.svelte";
   import type { QIconBtnProps } from "./props";
 
@@ -19,6 +19,7 @@ Icon buttons are buttons that contain only icons (no text labels) and are typica
   }: QIconBtnProps = $props();
 
   const group = buttonGroupCtx.get();
+  const quaffConfig = useQuaffConfig();
   const isExpressive = $derived(expressive ?? group?.isExpressive ?? quaffConfig.expressive);
   const resolvedIcon = $derived(icon ?? children);
 

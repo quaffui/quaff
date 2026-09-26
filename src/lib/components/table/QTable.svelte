@@ -203,6 +203,7 @@ Tables allow for a clear presentation of data sets.
       {#if lastPage > 1}
         <QBtn
           icon="chevron_left"
+          class="q-table__page-button"
           variant="flat"
           disabled={page === 1}
           aria-label={i18n.labels.previousPage}
@@ -210,6 +211,7 @@ Tables allow for a clear presentation of data sets.
         />
         <QBtn
           icon="chevron_right"
+          class="q-table__page-button"
           variant="flat"
           disabled={page === lastPage}
           aria-label={i18n.labels.nextPage}
