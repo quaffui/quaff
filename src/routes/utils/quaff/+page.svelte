@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { resolve } from "$app/paths";
   import { QDocs, QDocsSection } from "$docs";
   import { Quaff, QBtn, QChip, QCodeBlock } from "$lib";
   import { pageTitle } from "$helpers/pageTitle";
@@ -20,19 +21,16 @@
     {#snippet usage()}
       <QDocsSection title="Configuration">
         {#snippet sectionDescription()}
-          Configure framework-wide defaults when initializing Quaff. Expressive styling is off by
-          default. Set <code>expressive: true</code> to enable it for supported components; each
-          component can override this with <code>{`expressive={true}`}</code> or
-          <code>{`expressive={false}`}</code>. The example below reads a Vite environment variable
-          in your root layout and passes the resulting boolean to <code>Quaff.init()</code>.
+          Set defaults once in your root layout. Expressive styling is off by default; individual
+          components can override it with their <code>expressive</code> prop.
         {/snippet}
 
-        <QCodeBlock
-          language="ts"
-          code={`Quaff.init({
-  expressive: import.meta.env.VITE_QUAFF_EXPRESSIVE === "true",
-});`}
-        />
+        <QCodeBlock language="ts" code={`Quaff.init({ expressive: true });`} />
+        <p>
+          A plain object works for fixed settings. For runtime changes, pass a <code>$state</code>
+          object or getters. This applies to <code>expressive</code>, <code>rtl</code>,
+          <code>language</code>, <code>locale</code>, and <code>translations</code>.
+        </p>
       </QDocsSection>
 
       <QDocsSection title="Language">
@@ -80,6 +78,19 @@ Quaff.init({ language: frFR });`}
           configuration comes from props, use getters so it stays current. Keep the same initial
           configuration for server rendering and hydration, and set your page's <code>lang</code>
           and <code>dir</code> attributes to match your application.
+        </p>
+      </QDocsSection>
+
+      <QDocsSection title="Right-to-left layouts">
+        {#snippet sectionDescription()}
+          Set <code>rtl: true</code> for RTL or <code>false</code> for LTR. Omit it to manage
+          direction with HTML <code>dir</code> attributes.
+        {/snippet}
+
+        <QCodeBlock language="ts" code={"Quaff.init({ rtl: true });"} />
+        <p>
+          See <a href={resolve("/utils/rtl", {})}>Right-to-left layouts</a> for setup, local overrides,
+          and live examples.
         </p>
       </QDocsSection>
 

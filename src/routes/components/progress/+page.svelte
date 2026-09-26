@@ -139,7 +139,9 @@
 
       <QDocsSection title="Reversed Linear Progress">
         {#snippet sectionDescription()}
-          Use the <code>reverse</code> prop to change the direction of the progress bar from right-to-left.
+          Progress follows <code>dir</code>: it fills from the right in RTL, except with
+          <code>lang="he"</code> (Hebrew). Use <code>reverse</code> to invert that direction, or
+          <code>dir="ltr"</code> for media progress.
         {/snippet}
 
         <div class="q-my-md flex column q-gap-md" style="max-width: 400px;">

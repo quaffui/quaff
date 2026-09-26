@@ -35,7 +35,7 @@
 <QDocs>
   {#snippet display()}
     <QLayout view="hHh LpR fFf" style="height: 300px;">
-      {#snippet railbarLeft()}
+      {#snippet railbarStart()}
         <QRailbar bordered>
           <QNavItem
             icon="home"
@@ -73,11 +73,17 @@
           items rather than QList and QItem. See
           <a class="q-docs-link" href={resolve("/components/nav-item", {})}> QNavItem </a>
           for drawer destinations and expandable groups.
+          <p>
+            The default <code>side="start"</code> follows reading direction: left in LTR, right in
+            RTL. Use <code>side="end"</code> for the opposite edge, with the matching
+            <code>railbarStart</code> or <code>railbarEnd</code> layout snippet. Explicit
+            <code>left</code> and <code>right</code> stay fixed.
+          </p>
         {/snippet}
 
         <div style="height: 300px; border: 1px solid var(--outline-variant);">
           <QLayout view="hHh LpR fFf">
-            {#snippet railbarLeft()}
+            {#snippet railbarStart()}
               <QRailbar>
                 <QNavItem
                   icon="home"

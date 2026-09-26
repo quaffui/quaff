@@ -7,7 +7,7 @@ export type QLayoutViewOptions = `${"l"|"h"}${"h"|"H"}${"r"|"h"} ${"l"|"L"}${"p"
 export interface QLayoutProps extends HTMLAttributes<HTMLDivElement> {
   /**
    * The layout view configuration, which defines how layout components (header, railbars, drawers, and footer) should be displayed on screen.
-   * The navbar always occupies the bottom edge of the layout.
+   * The left and right columns stay physical in RTL. The navbar always occupies the bottom edge of the layout.
    */
   view?: QLayoutViewOptions;
 
@@ -16,6 +16,18 @@ export interface QLayoutProps extends HTMLAttributes<HTMLDivElement> {
    * It overrides the default children snippet.
    */
   content?: Snippet;
+
+  /** Railbar at the reading-order start. Use with side="start" (the default). */
+  railbarStart?: Snippet;
+
+  /** Railbar at the reading-order end. Use with side="end". */
+  railbarEnd?: Snippet;
+
+  /** Drawer at the reading-order start. Use with side="start" (the default). */
+  drawerStart?: Snippet;
+
+  /** Drawer at the reading-order end. Use with side="end". */
+  drawerEnd?: Snippet;
 
   /**
    * The railbar on the left side of the layout.

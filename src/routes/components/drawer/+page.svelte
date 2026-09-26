@@ -59,7 +59,7 @@
 <QDocs>
   {#snippet display()}
     <QLayout view="hHh LpR fFf" style="height: 300px;">
-      {#snippet drawerLeft()}
+      {#snippet drawerStart()}
         <QDrawer bind:value={displayDrawerOpen} overlay>
           <h6 class="q-drawer__headline">Navigation</h6>
           <QList>
@@ -106,7 +106,7 @@
             </QHeader>
           {/snippet}
 
-          {#snippet drawerLeft()}
+          {#snippet drawerStart()}
             <QDrawer bind:value={basicDrawerOpen}>
               <h6 class="q-drawer__headline">Navigation</h6>
               <QList>
@@ -202,8 +202,10 @@
 
       <QDocsSection title="Drawer Sides">
         {#snippet sectionDescription()}
-          QDrawer can be positioned on either the left or right side of the layout using the
-          <code>side</code> prop. The default is <code>left</code>.
+          The default <code>side="start"</code> opens from the left in LTR and the right in RTL.
+          <code>side="end"</code> uses the opposite edge. In QLayout, use the matching
+          <code>drawerStart</code> or <code>drawerEnd</code> snippet. Explicit
+          <code>left</code> and <code>right</code> stay fixed when direction changes.
         {/snippet}
 
         <QLayout

@@ -3,7 +3,7 @@
   import QTooltip from "$components/tooltip/QTooltip.svelte";
   import type { QExtendedFabProps } from "$components/fab/props";
   import { buttonGroupCtx } from "$components/button-group/QBtnGroup.svelte";
-  import { quaffConfig } from "$internal/quaffConfig";
+  import { useQuaffConfig } from "$internal/quaffConfig.svelte";
 
   interface Props extends Omit<QExtendedFabProps, "label"> {
     label?: string;
@@ -25,6 +25,7 @@
   buttonGroupCtx.reset();
 
   let triggerEl = $state<HTMLElement>();
+  const quaffConfig = useQuaffConfig();
   const isExpressive = $derived(expressive ?? quaffConfig.expressive);
   const resolvedSize = $derived(size ?? (isExpressive ? "sm" : "md"));
   const isExtended = $derived(label !== undefined);

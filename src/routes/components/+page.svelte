@@ -550,7 +550,7 @@
   <QCard style="width: 100%;">
     <QCardSection class="headline-small q-mb-sm">Pick your flavors</QCardSection>
     <QSeparator />
-    <QCardSection horizontal class="q-gap-sm" style="overflow: auto">
+    <QCardSection class="flex q-gap-sm">
       <QChip label="Chocolate" kind="filter" selected={true} />
       <QChip label="Vanilla" kind="filter" />
       <QChip label="Strawberry" kind="filter" />

@@ -9,13 +9,18 @@ Navigation drawers provide ergonomic access to destinations in an app
   import { innerWidth } from "svelte/reactivity/window";
   import { navigationCtx } from "$internal/navigationContext";
   import { navigating } from "$app/state";
-  import { useSize } from "$composables";
-  import { leftDrawerCtx, rightDrawerCtx } from "../layout/QLayout.svelte";
+  import { useSize } from "$composables/useSize";
+  import {
+    startDrawerCtx,
+    endDrawerCtx,
+    leftDrawerCtx,
+    rightDrawerCtx,
+  } from "../layout/QLayout.svelte";
 
   // #region:    --- Props
   let {
     value = $bindable(false),
-    side = "left",
+    side = "start",
     width = 360,
     breakpoint = 1023,
     behavior = "default",
@@ -47,6 +52,7 @@ Navigation drawers provide ergonomic access to destinations in an app
   let startX = 0;
   let dragOffset = 0;
   let swipeWidth = 0;
+  let swipeSide: "left" | "right" = "left";
   // #endregion: --- Non-reactive variables
 
   // #region:    --- Reactive variables
@@ -55,9 +61,13 @@ Navigation drawers provide ergonomic access to destinations in an app
   // #endregion: --- Reactive variables
 
   // #region:    --- Derived values
-  const leftContext = leftDrawerCtx.get();
-  const rightContext = rightDrawerCtx.get();
-  const drawerContext = $derived(side === "left" ? leftContext : rightContext);
+  const contexts = {
+    start: { api: startDrawerCtx, context: startDrawerCtx.get() },
+    end: { api: endDrawerCtx, context: endDrawerCtx.get() },
+    left: { api: leftDrawerCtx, context: leftDrawerCtx.get() },
+    right: { api: rightDrawerCtx, context: rightDrawerCtx.get() },
+  };
+  const drawerContext = $derived(contexts[side].context);
 
   const isBelowBreakpoint = $derived.by(() => {
     if (behavior === "mobile") {
@@ -77,22 +87,8 @@ Navigation drawers provide ergonomic access to destinations in an app
   const hideOnRouteChange = $derived(!persistent || isModal);
   const canSwipe = $derived(!noSwipe && isBelowBreakpoint);
 
-  const offsetTop = $derived.by(() => {
-    const charPos = side === "left" ? 0 : 2;
-    return drawerContext?.view.charAt(charPos) === "h" && !isModal;
-  });
-  const offsetBottom = $derived.by(() => {
-    const charPos = side === "left" ? 8 : 10;
-    return drawerContext?.view.charAt(charPos) === "f" && !isModal;
-  });
-
-  const widthStyle = $derived(!drawerContext ? useSize(width).style : null);
-
-  const drawerWidthStyle = $derived(
-    widthStyle === null ? "" : `--${side}-drawer-width: ${widthStyle};`
-  );
-
-  const style = $derived(`${drawerWidthStyle}${props.style ?? ""}`);
+  const widthStyle = $derived(drawerContext ? `${width}px` : useSize(width).style);
+  const style = $derived(`--q-drawer-width: ${widthStyle};${props.style ?? ""}`);
   // #endregion: --- Derived values
 
   // #region:    --- Lifecycle
@@ -154,13 +150,11 @@ Navigation drawers provide ergonomic access to destinations in an app
 
   $effect(() => {
     // Keep this side's context so cleanup resets it after a side change.
-    const context = drawerContext;
+    const { api: contextApi, context } = contexts[side];
 
     if (!context) {
       return;
     }
-
-    const contextApi = side === "left" ? leftDrawerCtx : rightDrawerCtx;
 
     contextApi.updateEntries(context, { takesSpace: !!value && !isModal, width, ready: true });
 
@@ -237,6 +231,9 @@ Navigation drawers provide ergonomic access to destinations in an app
       return;
     }
 
+    const isRtl = getComputedStyle(drawerEl).direction === "rtl";
+    swipeSide =
+      side === "left" || side === "right" ? side : (side === "start") !== isRtl ? "left" : "right";
     const drawerRect = drawerEl.getBoundingClientRect();
     const y = e.clientY;
 
@@ -252,9 +249,9 @@ Navigation drawers provide ergonomic access to destinations in an app
     if (!value) {
       swipeAllowed = true;
 
-      const baseWidth = side === "left" ? -swipeWidth : swipeWidth;
+      const baseWidth = swipeSide === "left" ? -swipeWidth : swipeWidth;
 
-      dragOffset = baseWidth + (side === "left" ? PEEK_THRESHOLD : -PEEK_THRESHOLD);
+      dragOffset = baseWidth + (swipeSide === "left" ? PEEK_THRESHOLD : -PEEK_THRESHOLD);
 
       drawerEl.style.transform = `translateX(${dragOffset}px)`;
     } else {
@@ -304,7 +301,7 @@ Navigation drawers provide ergonomic access to destinations in an app
     // basePosition is the starting translation before applying the current deltaX.
     let basePosition: number;
 
-    if (side === "left") {
+    if (swipeSide === "left") {
       // For a left-side drawer, dragOffset is between -width (fully closed) and 0 (fully open).
       basePosition = value ? 0 : PEEK_THRESHOLD - swipeWidth;
       newPosition = basePosition + deltaX;
@@ -339,7 +336,7 @@ Navigation drawers provide ergonomic access to destinations in an app
     const thresholdWidth = (swipeWidth * parseInt(swipeThreshold.replace("%", ""))) / 100;
     const realThreshold = value ? swipeWidth - thresholdWidth : thresholdWidth;
 
-    const swiped = swipeWidth + (side === "left" ? dragOffset : -dragOffset);
+    const swiped = swipeWidth + (swipeSide === "left" ? dragOffset : -dragOffset);
 
     if (swiped >= realThreshold) {
       if (!value) {
@@ -370,8 +367,6 @@ Navigation drawers provide ergonomic access to destinations in an app
       active: value,
       overlay: isModal,
       bordered,
-      "offset-top": offsetTop,
-      "offset-bottom": offsetBottom,
     },
     classes: [props.class],
   });

@@ -24,12 +24,12 @@
   height: var(--q-progress-size, 4px);
   overflow: hidden;
 
-  &:dir(rtl),
+  &:dir(rtl):not(:lang(he)):not(:lang(iw)),
   &--reverse {
     transform: scaleX(-1);
   }
 
-  &--reverse:dir(rtl) {
+  &--reverse:dir(rtl):not(:lang(he)):not(:lang(iw)) {
     transform: none;
   }
 

@@ -18,7 +18,7 @@ Group related buttons with Material 3 standard or connected layouts and shared s
 </script>
 
 <script lang="ts">
-  import { quaffConfig } from "$internal/quaffConfig";
+  import { useQuaffConfig } from "$internal/quaffConfig.svelte";
   import { buttonGroupPress } from "$internal/buttonGroupPress";
   import type { QBtnGroupProps } from "./props";
 
@@ -33,6 +33,7 @@ Group related buttons with Material 3 standard or connected layouts and shared s
     ...props
   }: QBtnGroupProps = $props();
 
+  const quaffConfig = useQuaffConfig();
   const isExpressive = $derived(expressive ?? quaffConfig.expressive);
   const isConnected = $derived(connected || !isExpressive);
   const resolvedSize = $derived(isExpressive ? (size ?? "sm") : "md");

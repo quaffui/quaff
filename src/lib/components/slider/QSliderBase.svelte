@@ -2,7 +2,7 @@
   import { onMount } from "svelte";
   import { useColor } from "$composables";
   import QIconSnippet from "$internal/QIconSnippet.svelte";
-  import { quaffConfig } from "$internal/quaffConfig";
+  import { useQuaffConfig } from "$internal/quaffConfig.svelte";
   import type { QEvent } from "$utils";
   import {
     sliderNativeStep,
@@ -93,6 +93,7 @@
 
   const effectiveMax = $derived(max > min ? max : min + 1);
   const effectiveStep = $derived(Math.max(0, step));
+  const quaffConfig = useQuaffConfig();
   const isExpressive = $derived(expressive ?? quaffConfig.expressive);
   const resolvedSize = $derived(isExpressive ? size : "xs");
   const isVertical = $derived(isExpressive && vertical);

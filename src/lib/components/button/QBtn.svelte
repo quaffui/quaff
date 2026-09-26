@@ -7,7 +7,7 @@ Buttons help users take action, such as sending an email, sharing a document, or
   import { useColor, useSize } from "$composables";
   import { ripple } from "$helpers";
   import { buttonGroupCtx } from "$components/button-group/QBtnGroup.svelte";
-  import { quaffConfig } from "$internal/quaffConfig";
+  import { useQuaffConfig } from "$internal/quaffConfig.svelte";
   import { getRouterInfo, handleActivationKeydown, type QEvent } from "$utils";
   import QCircularProgress from "$components/progress/QCircularProgress.svelte";
   import QIconSnippet from "$internal/QIconSnippet.svelte";
@@ -55,6 +55,7 @@ Buttons help users take action, such as sending an email, sharing a document, or
 
   const routerInfo = $derived(getRouterInfo({ href, to, replace }));
   const computedTag = $derived(routerInfo.hasLink ? "a" : tag || "button");
+  const quaffConfig = useQuaffConfig();
   const isExpressive = $derived(expressive ?? group?.isExpressive ?? quaffConfig.expressive);
   const resolvedSize = $derived(size ?? group?.size ?? (isExpressive ? "sm" : "md"));
   const qSize = $derived(useSize(resolvedSize, "q-btn"));
