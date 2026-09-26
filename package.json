@@ -19,6 +19,7 @@
     "lint": "prettier --plugin prettier-plugin-svelte . --check . && eslint .",
     "format": "prettier --plugin prettier-plugin-svelte . --write . && eslint . --fix",
     "docgen-props": "bun scripts/docgenProps.ts",
+    "docgen-clean": "bun scripts/docgenClean.ts",
     "colorgen": "bun scripts/colorgen.ts",
     "docgen-snippets": "bun scripts/docgenSnippets.ts",
     "gen:plugins": "tsc -p plugins/tsconfig.json"

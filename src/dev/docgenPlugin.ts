@@ -1,15 +1,10 @@
-import { spawn } from "child_process";
 import { basename, isAbsolute, relative, resolve as resolvePath, sep } from "path";
 import updateAllSnippets from "../../docgen/snippets/updateAllSnippets.js";
 import updateSnippetsForPage from "../../docgen/snippets/updateSnippetsForPage.js";
 import getSnippetPagePaths from "../../docgen/snippets/getSnippetPagePaths.js";
-import {
-  getAffectedDocgenComponents,
-  isDocgenSourceFile,
-} from "../../docgen/props/dependencies.js";
+import runPropsDocgen, { type DocgenOptions } from "../../docgen/run.js";
 import type { HotUpdateOptions, Logger, Plugin, ViteDevServer } from "vite";
 
-const COMPONENTS_PATH = resolvePath("src/lib/components");
 const SNIPPET_PAGE_FILE = "+page.svelte";
 const DOCGEN_DEBOUNCE_MS = 75;
 const GENERATED_DIRECTORIES = [
@@ -35,73 +30,51 @@ async function debounceDocgen() {
   await new Promise((resolve) => setTimeout(resolve, DOCGEN_DEBOUNCE_MS));
 }
 
-function runDocGenProps(targets?: string[]): Promise<void> {
-  return new Promise((resolve, reject) => {
-    const child = spawn("bun", ["scripts/docgenProps.ts", ...(targets ?? [])], {
-      stdio: "inherit",
-    });
-
-    child.once("error", reject);
-    child.once("exit", (code, signal) => {
-      if (code === 0) {
-        resolve();
-      } else {
-        const status = signal ? `signal ${signal}` : `exit code ${code ?? "unknown"}`;
-        reject(new Error(`Props docgen process failed with ${status}.`));
-      }
-    });
-  });
-}
-
 const DOCGEN_LOG_MESSAGE = "→ docgen";
 
 function docgenPlugin(): Plugin {
   let snippetPagePaths: string[] = [];
-  let hasPendingProps = false;
   let propsRun: Promise<void> | undefined;
   let isFullRunPending = false;
-  const pendingPropsTargets = new Set<string>();
+  const pendingChangedFiles = new Set<string>();
 
-  function queueDocGenProps(files?: string[]) {
+  let resolveImport: DocgenOptions["resolveImport"];
+
+  const hasPendingProps = () => isFullRunPending || pendingChangedFiles.size > 0;
+
+  function mergePendingChanges(files?: string[]) {
     if (!files) {
       isFullRunPending = true;
-      pendingPropsTargets.clear();
+      pendingChangedFiles.clear();
     } else if (!isFullRunPending) {
       for (const file of files) {
-        pendingPropsTargets.add(file);
+        pendingChangedFiles.add(file);
       }
     }
+  }
 
-    hasPendingProps = true;
+  function queueDocGenProps(files?: string[]) {
+    mergePendingChanges(files);
 
     if (!propsRun) {
       propsRun = (async () => {
         try {
-          while (hasPendingProps) {
+          while (hasPendingProps()) {
             await debounceDocgen();
-            hasPendingProps = false;
 
-            const doGenerateAll = isFullRunPending;
-            const targets = doGenerateAll ? undefined : [...pendingPropsTargets];
+            const changedFiles = isFullRunPending ? undefined : [...pendingChangedFiles];
 
             isFullRunPending = false;
-            pendingPropsTargets.clear();
+            pendingChangedFiles.clear();
 
             try {
-              await runDocGenProps(targets);
+              await runPropsDocgen({ changedFiles, resolveImport });
             } catch (error) {
-              if (!hasPendingProps) {
+              if (!hasPendingProps()) {
                 throw error;
               }
 
-              if (doGenerateAll) {
-                isFullRunPending = true;
-                pendingPropsTargets.clear();
-              } else if (!isFullRunPending) {
-                for (const target of targets ?? []) {
-                  pendingPropsTargets.add(target);
-                }
-              }
+              mergePendingChanges(changedFiles);
             }
           }
         } finally {
@@ -147,7 +120,11 @@ function docgenPlugin(): Plugin {
 
       const fileName = basename(file);
       const isSnippetPage = fileName === SNIPPET_PAGE_FILE;
-      const isPropsSource = !isSnippetPage && isDocgenSourceFile(file) && !isGeneratedSource(file);
+      const isPropsSource =
+        !isSnippetPage &&
+        /\.(?:[cm]?[jt]s|svelte)$/.test(file) &&
+        !/^docs(?:\.(?:props|snippets))?\.ts$/.test(fileName) &&
+        !isGeneratedSource(file);
 
       if (!isPropsSource && !isSnippetPage) {
         return;
@@ -155,24 +132,13 @@ function docgenPlugin(): Plugin {
 
       try {
         if (isPropsSource) {
-          const targets =
-            type === "update"
-              ? await getAffectedDocgenComponents(
-                  file,
-                  COMPONENTS_PATH,
-                  async (source, importer) => {
-                    const resolved = await server.pluginContainer.resolveId(source, importer);
-                    return resolved?.external ? undefined : resolved?.id.split("?")[0];
-                  }
-                )
-              : undefined;
-
-          if (targets && !targets.length) {
-            return;
-          }
+          resolveImport = async (source, importer) => {
+            const resolved = await server.pluginContainer.resolveId(source, importer);
+            return resolved?.external ? undefined : resolved?.id.split("?")[0];
+          };
 
           server.config.logger.info(DOCGEN_LOG_MESSAGE);
-          await queueDocGenProps(targets);
+          await queueDocGenProps(type === "update" ? [file] : undefined);
           server.config.logger.clearScreen("info");
         } else if (type === "update") {
           await updateSnippet(file, server);

@@ -1,8 +1,4 @@
-use std::{
-    collections::{BTreeSet, HashMap},
-    io::{BufReader, BufWriter},
-    path::{Path, PathBuf},
-};
+use std::{collections::HashMap, path::PathBuf};
 
 use crate::{
     Result,
@@ -21,122 +17,13 @@ use crate::{
     transformer::html::{QApiPropInfo, ToHtml},
 };
 
-use super::model::{
-    DocgenComponentInput, DocgenComponentOutput, DocgenInterface, DocgenRequest, DocgenResponse,
-    PROTOCOL_VERSION, QApiGeneric,
-};
+use super::model::{DocgenComponentInput, DocgenComponentOutput, DocgenInterface, QApiGeneric};
 
-pub fn generate() -> Result<()> {
-    let request: DocgenRequest = serde_json::from_reader(BufReader::new(std::io::stdin().lock()))?;
-    let response = generate_response(request)?;
-    let mut stdout = BufWriter::new(std::io::stdout().lock());
-
-    serde_json::to_writer(&mut stdout, &response)?;
-
-    Ok(())
-}
-
-fn generate_response(mut request: DocgenRequest) -> Result<DocgenResponse> {
-    validate_request(&request)?;
-    request
-        .components
-        .sort_by(|left, right| left.props_file.cmp(&right.props_file));
-
-    let components = request
-        .components
-        .into_iter()
-        .map(generate_component)
-        .collect::<Result<Vec<_>>>()?;
-
-    Ok(DocgenResponse {
-        version: PROTOCOL_VERSION,
-        components,
-    })
-}
-
-fn validate_request(request: &DocgenRequest) -> Result<()> {
-    if request.version != PROTOCOL_VERSION {
-        return Err(format!(
-            "Unsupported docgen protocol version {}. Expected {PROTOCOL_VERSION}.",
-            request.version
-        )
-        .into());
-    }
-
-    let mut props_files = BTreeSet::new();
-
-    for component in &request.components {
-        let props_file = Path::new(&component.props_file);
-
-        validate_absolute_file(props_file, "propsFile")?;
-
-        if !props_files.insert(props_file.to_path_buf()) {
-            return Err(
-                format!("Duplicate docgen component input: {}", props_file.display()).into(),
-            );
-        }
-
-        let mut svelte_files = BTreeSet::new();
-
-        for svelte_file in &component.svelte_files {
-            let svelte_file = Path::new(svelte_file);
-
-            validate_absolute_file(svelte_file, "svelteFiles entry")?;
-
-            if svelte_file
-                .extension()
-                .and_then(|extension| extension.to_str())
-                != Some("svelte")
-            {
-                return Err(
-                    format!("Expected a .svelte file, found {}", svelte_file.display()).into(),
-                );
-            }
-
-            if svelte_file.parent() != props_file.parent() {
-                return Err(format!(
-                    "Svelte file {} is not next to props file {}",
-                    svelte_file.display(),
-                    props_file.display()
-                )
-                .into());
-            }
-
-            if !svelte_files.insert(svelte_file.to_path_buf()) {
-                return Err(format!(
-                    "Duplicate Svelte file for {}: {}",
-                    props_file.display(),
-                    svelte_file.display()
-                )
-                .into());
-            }
-        }
-    }
-
-    Ok(())
-}
-
-fn validate_absolute_file(path: &Path, field: &str) -> Result<()> {
-    if !path.is_absolute() {
-        return Err(format!("{field} must be an absolute path: {}", path.display()).into());
-    }
-
-    if !path.is_file() {
-        return Err(format!("{field} does not name a file: {}", path.display()).into());
-    }
-
-    Ok(())
-}
-
-fn generate_component(component: DocgenComponentInput) -> Result<DocgenComponentOutput> {
-    eprintln!("processing {}", component.props_file);
-    let props_file = PathBuf::from(&component.props_file);
-    let svelte_files = component
-        .svelte_files
-        .iter()
-        .map(PathBuf::from)
-        .collect::<Vec<_>>();
-    let resolver = PathResolver(&props_file);
+pub(crate) fn generate_component(component: DocgenComponentInput) -> Result<DocgenComponentOutput> {
+    eprintln!("processing {}", component.props_file.display());
+    let props_file = &component.props_file;
+    let svelte_files = &component.svelte_files;
+    let resolver = PathResolver(props_file);
     let parsed_interfaces = props_file.parse_props(&resolver)?;
     let mut parsed_svelte_files = HashMap::new();
     let mut interfaces = Vec::with_capacity(parsed_interfaces.len());
@@ -146,7 +33,7 @@ fn generate_component(component: DocgenComponentInput) -> Result<DocgenComponent
         type_definitions,
     } in parsed_interfaces.into_values()
     {
-        let svelte_file = resolve_svelte_file(&interface.name, &svelte_files)?;
+        let svelte_file = resolve_svelte_file(&interface.name, svelte_files)?;
 
         if !parsed_svelte_files.contains_key(&svelte_file) {
             let (props, methods) = parse_svelte_file(&svelte_file)?;
@@ -167,8 +54,6 @@ fn generate_component(component: DocgenComponentInput) -> Result<DocgenComponent
         interfaces.push(docs);
     }
 
-    interfaces.sort_by(|left, right| left.name.cmp(&right.name));
-
     Ok(DocgenComponentOutput {
         props_file: component.props_file,
         interfaces,
@@ -180,19 +65,11 @@ fn resolve_svelte_file(interface_name: &str, svelte_files: &[PathBuf]) -> Result
         .strip_suffix("Props")
         .ok_or_else(|| format!("Expected a *Props interface, found {interface_name}"))?;
     let expected_name = format!("{component_name}.svelte");
-    let exact = svelte_files
+    if let Some(path) = svelte_files
         .iter()
-        .filter(|path| path.file_name().and_then(|name| name.to_str()) == Some(&expected_name))
-        .collect::<Vec<_>>();
-
-    if let [path] = exact.as_slice() {
-        return Ok((*path).clone());
-    }
-
-    if exact.len() > 1 {
-        return Err(
-            format!("More than one Svelte file matches {interface_name}: {expected_name}").into(),
-        );
+        .find(|path| path.file_name().and_then(|name| name.to_str()) == Some(&expected_name))
+    {
+        return Ok(path.clone());
     }
 
     if let [path] = svelte_files {
@@ -297,11 +174,8 @@ fn generate_interface(
 
 #[cfg(test)]
 mod tests {
-    use std::{
-        collections::HashMap,
-        fs::{File, create_dir_all},
-        path::Path,
-    };
+    use crate::test_support::Fixture;
+    use std::collections::HashMap;
 
     use crate::parser::{
         svelte::ParsedSvelteProp,
@@ -312,71 +186,6 @@ mod tests {
     };
 
     use super::*;
-
-    fn fixture_file(root: &Path, relative: &str) -> String {
-        let path = root.join(relative);
-
-        create_dir_all(path.parent().expect("fixture has a parent")).expect("create fixture dir");
-        File::create(&path).expect("create fixture file");
-
-        path.to_string_lossy().into_owned()
-    }
-
-    #[test]
-    fn rejects_unknown_protocol_versions() {
-        let error = generate_response(DocgenRequest {
-            version: PROTOCOL_VERSION + 1,
-            components: Vec::new(),
-        })
-        .expect_err("version should be rejected");
-
-        assert!(
-            error
-                .to_string()
-                .contains("Unsupported docgen protocol version")
-        );
-    }
-
-    #[test]
-    fn rejects_relative_and_duplicate_inputs() {
-        let relative = DocgenRequest {
-            version: PROTOCOL_VERSION,
-            components: vec![DocgenComponentInput {
-                props_file: "relative/props.ts".to_string(),
-                svelte_files: Vec::new(),
-            }],
-        };
-
-        assert!(
-            validate_request(&relative)
-                .expect_err("relative path should be rejected")
-                .to_string()
-                .contains("absolute path")
-        );
-
-        let root = std::env::temp_dir().join(format!("quaff-docgen-ipc-{}", std::process::id()));
-        let props = fixture_file(&root, "component/props.ts");
-        let duplicate = DocgenRequest {
-            version: PROTOCOL_VERSION,
-            components: vec![
-                DocgenComponentInput {
-                    props_file: props.clone(),
-                    svelte_files: Vec::new(),
-                },
-                DocgenComponentInput {
-                    props_file: props,
-                    svelte_files: Vec::new(),
-                },
-            ],
-        };
-
-        assert!(
-            validate_request(&duplicate)
-                .expect_err("duplicate should be rejected")
-                .to_string()
-                .contains("Duplicate docgen component")
-        );
-    }
 
     #[test]
     fn resolves_exact_svelte_names_and_single_file_fallbacks() {
@@ -408,16 +217,6 @@ mod tests {
             .expect_err("ambiguous fallback should be rejected");
 
         assert!(error.to_string().contains("received 2 Svelte candidates"));
-    }
-
-    #[test]
-    fn request_shape_rejects_unknown_fields() {
-        let error = serde_json::from_str::<DocgenRequest>(
-            r#"{"version":1,"components":[],"unexpected":true}"#,
-        )
-        .expect_err("unknown field should be rejected");
-
-        assert!(error.to_string().contains("unknown field"));
     }
 
     #[test]
@@ -465,26 +264,20 @@ mod tests {
 
     #[test]
     fn includes_type_definitions_used_only_by_methods() -> Result<()> {
-        let root =
-            std::env::temp_dir().join(format!("quaff-docgen-method-ipc-{}", std::process::id()));
-        let props = fixture_file(&root, "props.ts");
-        let svelte = fixture_file(&root, "Test.svelte");
-        std::fs::write(&props, "export interface TestProps {}")?;
-        std::fs::write(
-            &svelte,
+        let fixture = Fixture::new();
+        let props = fixture.write("props.ts", "export interface TestProps {}");
+        let svelte = fixture.write(
+            "Test.svelte",
             r#"<script lang="ts">
             type DismissReason = "escape" | "programmatic";
             export function hide(reason: DismissReason = "programmatic") {}
         </script>"#,
-        )?;
-        let response = generate_response(DocgenRequest {
-            version: PROTOCOL_VERSION,
-            components: vec![DocgenComponentInput {
-                props_file: props,
-                svelte_files: vec![svelte],
-            }],
+        );
+        let response = generate_component(DocgenComponentInput {
+            props_file: props,
+            svelte_files: vec![svelte],
         })?;
-        let interface = &response.components[0].interfaces[0];
+        let interface = &response.interfaces[0];
 
         assert!(
             interface.methods[0]
@@ -495,7 +288,6 @@ mod tests {
             interface.type_dependencies["DismissReason"],
             "type DismissReason = \"escape\" | \"programmatic\";"
         );
-        std::fs::remove_dir_all(root)?;
         Ok(())
     }
 
@@ -600,15 +392,9 @@ mod tests {
 
     #[test]
     fn renders_inherited_defaults_with_local_overrides_and_local_bindability() -> Result<()> {
-        let root = std::env::temp_dir().join(format!(
-            "quaff-docgen-inherited-default-ipc-{}",
-            std::process::id()
-        ));
-        let props = fixture_file(&root, "props.ts");
-        let button = fixture_file(&root, "QBtn.svelte");
-        let icon = fixture_file(&root, "QIconBtn.svelte");
-        std::fs::write(
-            &props,
+        let fixture = Fixture::new();
+        let props = fixture.write(
+            "props.ts",
             r#"
             export interface QBtnProps {
                 flat?: boolean;
@@ -622,27 +408,24 @@ mod tests {
                 disabled?: boolean;
             }
         "#,
-        )?;
-        std::fs::write(
-            &button,
+        );
+        let button = fixture.write(
+            "QBtn.svelte",
             r#"<script lang="ts">
             import type { QBtnProps } from "./props";
             let { flat = false, selected = $bindable(false), disabled = false, cleared = true } = $props();
             export function update(props: QBtnProps) {}
         </script>"#,
-        )?;
-        std::fs::write(
-            &icon,
+        );
+        let icon = fixture.write(
+            "QIconBtn.svelte",
             r#"<script lang="ts">let { cleared = undefined } = $props();</script>"#,
-        )?;
-        let response = generate_response(DocgenRequest {
-            version: PROTOCOL_VERSION,
-            components: vec![DocgenComponentInput {
-                props_file: props,
-                svelte_files: vec![button, icon],
-            }],
+        );
+        let response = generate_component(DocgenComponentInput {
+            props_file: props,
+            svelte_files: vec![button, icon],
         })?;
-        let interfaces = &response.components[0].interfaces;
+        let interfaces = &response.interfaces;
         let button = interfaces
             .iter()
             .find(|interface| interface.name == "QBtnProps")
@@ -664,7 +447,6 @@ mod tests {
         assert!(props["cleared"].header.contains("undefined"));
         assert!(!props.contains_key("label"));
         assert_eq!(button.methods[0].name, "update");
-        std::fs::remove_dir_all(root)?;
         Ok(())
     }
 }

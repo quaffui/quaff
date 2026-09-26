@@ -81,7 +81,7 @@ impl<'b> ParseSource for SourceType<'b> {
     }
 }
 
-fn instance_script(content: &str) -> Option<&str> {
+pub(crate) fn extract_svelte_scripts(content: &str) -> impl Iterator<Item = (&str, &str)> {
     static SCRIPTS: LazyLock<Regex> = LazyLock::new(|| {
         // Consume whole tags and raw-text blocks so comment markers in their contents stay intact.
         Regex::new(
@@ -94,29 +94,29 @@ fn instance_script(content: &str) -> Option<&str> {
         )
         .unwrap()
     });
+    SCRIPTS
+        .captures_iter(content)
+        .filter_map(|script| Some((script.get(1)?.as_str(), script.get(2)?.as_str())))
+}
+
+fn instance_script(content: &str) -> Option<&str> {
     static ATTRIBUTES: LazyLock<Regex> = LazyLock::new(|| {
         Regex::new(r#"(?:^|\s)([^\s=]+)(?:\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s]+)))?"#).unwrap()
     });
 
-    SCRIPTS.captures_iter(content).find_map(|script| {
-        let is_module = ATTRIBUTES
-            .captures_iter(script.get(1)?.as_str())
-            .any(|attribute| {
-                let name = attribute.get(1).map(|value| value.as_str());
-                let value = attribute
-                    .get(2)
-                    .or(attribute.get(3))
-                    .or(attribute.get(4))
-                    .map(|value| value.as_str());
+    extract_svelte_scripts(content).find_map(|(attributes, script)| {
+        let is_module = ATTRIBUTES.captures_iter(attributes).any(|attribute| {
+            let name = attribute.get(1).map(|value| value.as_str());
+            let value = attribute
+                .get(2)
+                .or(attribute.get(3))
+                .or(attribute.get(4))
+                .map(|value| value.as_str());
 
-                name == Some("module") || (name == Some("context") && value == Some("module"))
-            });
+            name == Some("module") || (name == Some("context") && value == Some("module"))
+        });
 
-        if is_module {
-            None
-        } else {
-            Some(script.get(2)?.as_str())
-        }
+        if is_module { None } else { Some(script) }
     })
 }
 

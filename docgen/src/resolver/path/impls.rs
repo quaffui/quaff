@@ -1,4 +1,4 @@
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 
 use crate::Result;
 
@@ -6,16 +6,29 @@ use super::PathResolver;
 
 impl PathResolver<'_> {
     /// Resolves a local TypeScript module, including Quaff aliases and directory indexes.
-    pub fn resolve<T: FnMut(PathBuf) -> Result<bool>>(
+    pub fn resolve(&self, path_str: &str) -> Result<PathBuf> {
+        if !path_str.starts_with('$') && !path_str.starts_with("./") && !path_str.starts_with("../")
+        {
+            return Err(format!("Cannot resolve external module: {path_str}").into());
+        }
+
+        self.resolve_local_file(path_str, None)?.ok_or_else(|| {
+            format!(
+                "Could not resolve path: {path_str} from {}",
+                self.0.display()
+            )
+            .into()
+        })
+    }
+
+    pub(crate) fn resolve_local_file(
         &self,
         path_str: &str,
-        mut callback: T,
-    ) -> Result<()> {
+        lib_root: Option<&Path>,
+    ) -> Result<Option<PathBuf>> {
         let path = if let Some(alias) = path_str.strip_prefix('$') {
-            let lib = self
-                .0
-                .ancestors()
-                .find(|path| path.ends_with("lib"))
+            let lib = lib_root
+                .or_else(|| self.0.ancestors().find(|path| path.ends_with("lib")))
                 .ok_or_else(|| format!("Could not find lib from {}", self.0.display()))?;
             let relative = alias.strip_prefix("lib/").unwrap_or(alias);
 
@@ -24,13 +37,15 @@ impl PathResolver<'_> {
             } else {
                 lib.join(relative)
             }
-        } else if path_str.starts_with("./") || path_str.starts_with("../") {
+        } else if Path::new(path_str).is_absolute() {
+            PathBuf::from(path_str)
+        } else if path_str.starts_with('.') {
             self.0
                 .parent()
                 .ok_or_else(|| format!("Could not find parent of {}", self.0.display()))?
                 .join(path_str)
         } else {
-            return Err(format!("Cannot resolve external module: {path_str}").into());
+            return Ok(None);
         };
         let mut candidates = vec![
             path.clone(),
@@ -42,12 +57,10 @@ impl PathResolver<'_> {
         }
 
         candidates.push(path.join("index.ts"));
-        let resolved = candidates
+        candidates
             .into_iter()
             .find(|candidate| candidate.is_file())
-            .ok_or_else(|| format!("Could not resolve path: {}", path.display()))?;
-
-        callback(resolved.canonicalize()?)?;
-        Ok(())
+            .map(|resolved| resolved.canonicalize().map_err(Into::into))
+            .transpose()
     }
 }
