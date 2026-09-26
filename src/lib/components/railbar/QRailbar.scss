@@ -4,39 +4,110 @@
 .q-railbar {
   z-index: 5;
   position: fixed;
-  top: 0;
-  bottom: 0;
-
+  inset: 0 auto;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  text-align: center;
-
+  width: var(--q-railbar-width);
+  max-width: 100%;
+  height: auto;
+  max-height: none;
+  margin: 0;
   @include mixins.padding("y-sm");
   @include mixins.gap("sm");
+
+  padding-inline: 0;
+  border: 0;
+  font: inherit;
+  text-align: center;
 
   background-color: var(--surface);
   color: var(--on-surface);
 
   border-radius: 0;
 
-  white-space: nowrap;
-  overflow: auto;
-
-  scrollbar-width: none;
-  transition-property: top, bottom, transform;
+  overflow: visible;
+  transition-property: top, bottom, width;
   transition-duration: variables.$speed3;
+  transition-timing-function: mixins.easing(standard);
+
+  &__content {
+    align-items: inherit;
+    justify-content: inherit;
+    box-sizing: border-box;
+    flex: 1;
+    min-height: 0;
+    width: 100%;
+    gap: inherit;
+    overflow: hidden auto;
+    overscroll-behavior: contain;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  &__items {
+    display: flex;
+    flex-direction: column;
+    align-items: inherit;
+    justify-content: inherit;
+    width: var(--q-railbar-content-width, 100%);
+    min-height: 100%;
+    gap: inherit;
+  }
+
+  &--expanded {
+    padding-inline: 12px;
+    align-items: stretch;
+  }
+
+  &__overlay-root {
+    @include mixins.overlay-root;
+  }
+
+  &--bordered::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+  }
+
+  &::backdrop {
+    background: mixins.with-alpha(var(--scrim), 32%);
+    opacity: 0;
+    transition: opacity variables.$speed3;
+  }
+
+  &--expanded::backdrop {
+    opacity: 1;
+
+    @starting-style {
+      opacity: 0;
+    }
+  }
+
+  // Top-layer rails cover the viewport, including when hosted by a nested QLayout.
+  &:modal {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    height: 100dvh;
+    max-width: 100vw;
+    background: var(--surface-container);
+    box-shadow: var(--elevate2);
+  }
 
   @media (prefers-reduced-motion: reduce) {
-    transition: none;
+    &,
+    &::backdrop {
+      transition: none;
+    }
   }
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
-
-  width: var(--q-railbar-width);
 
   @each $side in ("left", "right") {
     $start-dir: if(sass($side == "left"): "ltr"; else: "rtl");
@@ -50,9 +121,23 @@
     ) {
       #{$side}: 0;
 
-      &.q-railbar--bordered {
+      &:modal {
+        border-top-#{$inner-side}-radius: 16px;
+        border-bottom-#{$inner-side}-radius: 16px;
+      }
+
+      & .q-railbar__items {
+        margin-#{$inner-side}: calc(100% - var(--q-railbar-content-width, 100%));
+      }
+
+      &.q-railbar--bordered::before {
         @include mixins.border($position: $inner-side);
       }
     }
   }
+}
+
+html:has(.q-railbar:modal),
+body:has(.q-railbar:modal) {
+  overflow: hidden;
 }

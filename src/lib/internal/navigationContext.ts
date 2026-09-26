@@ -1,3 +1,3 @@
 import { QContext } from "$utils/context";
 
-export const navigationCtx = QContext<"drawer" | "bar">("QNavigation");
+export const navigationCtx = QContext<"drawer" | "bar" | "rail">("QNavigation");

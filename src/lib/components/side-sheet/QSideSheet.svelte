@@ -9,6 +9,7 @@ Side sheets show supporting content beside the main page.
   import QIconBtn from "$components/button/QIconBtn.svelte";
   import { useSize } from "$composables";
   import type { QEvent } from "$utils";
+  import { closeNestedOverlays } from "$utils/dom";
   import type { QSideSheetProps } from "./props";
 
   // #region:    --- Props
@@ -140,18 +141,6 @@ Side sheets show supporting content beside the main page.
     return () => {
       isCanceled = true;
     };
-  }
-
-  function closeNestedOverlays(element: HTMLDialogElement) {
-    for (const popover of element.querySelectorAll<HTMLElement>("[popover]")) {
-      popover.hidePopover?.();
-    }
-
-    for (const dialog of Array.from(
-      element.querySelectorAll<HTMLDialogElement>("dialog[open]")
-    ).reverse()) {
-      dialog.close();
-    }
   }
 
   function closeDialog(element: HTMLDialogElement) {
