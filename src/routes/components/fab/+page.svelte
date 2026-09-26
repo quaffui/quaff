@@ -373,10 +373,19 @@
         </p>
         <p>
           See the Material 3 specifications for
-          <a href="https://m3.material.io/components/floating-action-button/specs">FABs</a>,
-          <a href="https://m3.material.io/components/extended-fab/specs">extended FABs</a>, and
-          <a href="https://m3.material.io/components/fab-menu/specs">FAB menus</a>, plus the
-          <a href="https://m3.material.io/components/floating-action-button/accessibility"
+          <a
+            class="q-docs-link"
+            href="https://m3.material.io/components/floating-action-button/specs">FABs</a
+          >,
+          <a class="q-docs-link" href="https://m3.material.io/components/extended-fab/specs"
+            >extended FABs</a
+          >, and
+          <a class="q-docs-link" href="https://m3.material.io/components/fab-menu/specs"
+            >FAB menus</a
+          >, plus the
+          <a
+            class="q-docs-link"
+            href="https://m3.material.io/components/floating-action-button/accessibility"
             >accessibility guidance</a
           >.
         </p>

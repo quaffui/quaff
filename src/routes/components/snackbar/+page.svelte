@@ -171,7 +171,7 @@
         {#snippet sectionDescription()}
           Use QSnackbar when one component controls when it is shown. For app-wide notifications
           that should appear one after another, use the
-          <a href={resolve("/utils/notify", {})}>Notify API</a>.
+          <a class="q-docs-link" href={resolve("/utils/notify", {})}>Notify API</a>.
         {/snippet}
       </QDocsSection>
     </div>

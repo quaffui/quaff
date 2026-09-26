@@ -148,8 +148,9 @@ dismiss()`}
       {#snippet sectionDescription()}
         Notify supports one action and shows one snackbar at the bottom. It does not support extra
         positions, captions, or decorative icons because Material Design snackbars do not use them.
-        Use the <a href={resolve("/components/snackbar", {})}>QSnackbar component</a> when one component
-        controls when it is shown.
+        Use the <a class="q-docs-link" href={resolve("/components/snackbar", {})}
+          >QSnackbar component</a
+        > when one component controls when it is shown.
       {/snippet}
     </QDocsSection>
   {/snippet}

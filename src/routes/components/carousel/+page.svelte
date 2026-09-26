@@ -171,7 +171,9 @@
         <p>
           The optional <code>showAll</code> snippet can link to a separate vertical collection. See
           the
-          <a href="https://m3.material.io/components/carousel/specs">Material 3 carousel specs</a>.
+          <a class="q-docs-link" href="https://m3.material.io/components/carousel/specs"
+            >Material 3 carousel specs</a
+          >.
         </p>
       </QDocsSection>
     </div>

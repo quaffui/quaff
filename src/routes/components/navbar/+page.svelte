@@ -60,7 +60,7 @@
           bottom of its content for the bar, while QNavItem represents each primary destination. Use
           three to five stable, equal-priority top-level destinations, keep exactly one active, and
           always show concise one- or two-word labels. See
-          <a href={resolve("/components/nav-item", {})}>QNavItem</a>
+          <a class="q-docs-link" href={resolve("/components/nav-item", {})}>QNavItem</a>
           for drawer destinations and expandable groups.
         {/snippet}
 

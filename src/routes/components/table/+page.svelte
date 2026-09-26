@@ -298,8 +298,9 @@
       <QDocsSection title="Localization" noCode>
         {#snippet sectionDescription()}
           Choose a language to translate pagination and sorting announcements. Column headings and
-          row content remain your own. See <a href={resolve("/utils/quaff#language", {})}
-            >all available locales</a
+          row content remain your own. See <a
+            class="q-docs-link"
+            href={resolve("/utils/quaff#language", {})}>all available locales</a
           >
           for more languages and setup instructions.
         {/snippet}
