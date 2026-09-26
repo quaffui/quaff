@@ -1,5 +1,9 @@
-mod constants;
+mod consts;
 mod impls;
-mod model;
+mod models;
 
-pub use constants::TYPE_SRC_MAPPINGS;
+pub use consts::TYPE_SRC_MAPPINGS;
+pub use models::*;
+
+#[cfg(test)]
+mod tests;

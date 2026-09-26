@@ -1,4 +1,7 @@
 mod impls;
-mod model;
+mod models;
 
-pub use model::*;
+pub use models::*;
+
+#[cfg(test)]
+mod tests;

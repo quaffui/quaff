@@ -1,3 +1,7 @@
-pub mod html;
-pub mod mapping;
-pub mod typescript;
+mod html;
+mod mapping;
+mod typescript;
+
+pub use html::*;
+pub use mapping::*;
+pub use typescript::*;

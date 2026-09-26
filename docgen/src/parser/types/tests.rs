@@ -3,22 +3,20 @@ use std::path::Path;
 use oxc::ast::AstKind;
 
 use crate::{
-    extractor::generics::GenericBindings,
+    extractor::GenericBindings,
     parser::{
-        source::ParseSource,
-        types::{
-            ParsedType, StandardType, TupleElement, TypeOperatorKind,
-            interfaces::{Interface, InterfaceParser, InterfaceProperty, InterfacePropertyKey},
-            ts_utilities::{UtilityKVKind, UtilityTKind},
-        },
+        Interface, InterfaceParser, InterfaceProperty, InterfacePropertyKey, ParseSource,
+        ParsedType, StandardType, TupleElement, TypeOperatorKind, UtilityKVKind, UtilityTKind,
     },
-    resolver::{PathResolver, dependency::TypeRegistry},
+    resolver::{PathResolver, TypeRegistry},
 };
 
+/// Parses one named fixture interface.
 fn parse_interface(source: &str, target: &str) -> Interface {
     parse_interface_with_registry(source, target).0
 }
 
+/// Parses an interface and retains its dependency registry for assertions.
 fn parse_interface_with_registry(source: &str, target: &str) -> (Interface, TypeRegistry) {
     let resolver = PathResolver(Path::new("/virtual/fixture.ts"));
     let mut registry = TypeRegistry::new(Path::new("/virtual"));
@@ -51,6 +49,7 @@ fn parse_interface_with_registry(source: &str, target: &str) -> (Interface, Type
     )
 }
 
+/// Finds the parsed annotation of a named interface property.
 fn property<'a>(interface: &'a Interface, name: &str) -> &'a ParsedType {
     interface
         .properties
@@ -62,6 +61,7 @@ fn property<'a>(interface: &'a Interface, name: &str) -> &'a ParsedType {
         .unwrap_or_else(|| panic!("Property {name} was not parsed"))
 }
 
+/// Reads structural properties from a parsed type literal.
 fn literal_properties(parsed: &ParsedType) -> &[InterfaceProperty] {
     let ParsedType::TypeLiteral(properties) = parsed else {
         panic!("Expected type literal, found {parsed:#?}")
@@ -70,6 +70,7 @@ fn literal_properties(parsed: &ParsedType) -> &[InterfaceProperty] {
     properties
 }
 
+/// Finds a named property in a parsed type literal.
 fn literal_property<'a>(properties: &'a [InterfaceProperty], name: &str) -> &'a ParsedType {
     properties
         .iter()
@@ -80,6 +81,7 @@ fn literal_property<'a>(properties: &'a [InterfaceProperty], name: &str) -> &'a 
         .unwrap_or_else(|| panic!("Literal property {name} was not parsed"))
 }
 
+/// Checks the source spelling of a standard parsed type.
 fn assert_standard(parsed: &ParsedType, expected: &str) {
     let ParsedType::Standard(StandardType { name }) = parsed else {
         panic!("Expected standard type {expected}, found {parsed:#?}")
@@ -566,7 +568,7 @@ fn intersection_heritage_combines_overlapping_properties() {
     assert!(
         !value
             .flags
-            .contains(super::interfaces::InterfacePropertyFlags::Optional)
+            .contains(super::interfaces::InterfacePropertyFlags::OPTIONAL)
     );
     let ParsedType::Intersection(types) = &value.type_annotation else {
         panic!("Expected narrowed intersection")
@@ -581,7 +583,7 @@ fn intersection_heritage_combines_overlapping_properties() {
     assert!(
         optional
             .flags
-            .contains(super::interfaces::InterfacePropertyFlags::Optional)
+            .contains(super::interfaces::InterfacePropertyFlags::OPTIONAL)
     );
     let required = interface
         .properties
@@ -591,7 +593,7 @@ fn intersection_heritage_combines_overlapping_properties() {
     assert!(
         !required
             .flags
-            .contains(super::interfaces::InterfacePropertyFlags::Optional)
+            .contains(super::interfaces::InterfacePropertyFlags::OPTIONAL)
     );
 }
 
@@ -621,7 +623,7 @@ type Labels = { [Key in keyof typeof labels]: string };"#
 
 #[test]
 fn pick_and_omit_keep_dom_heritage_constraints() {
-    use crate::transformer::typescript::ToTs;
+    use crate::transformer::ToTs;
 
     let source = r#"
         interface Base extends Omit<HTMLInputAttributes, "value" | "disabled"> {
@@ -673,7 +675,7 @@ fn recursive_generic_arguments_can_change_without_unbounded_expansion() {
         "#,
         "Props",
     );
-    use crate::transformer::typescript::ToTs;
+    use crate::transformer::ToTs;
 
     let ParsedType::Reference(nested) = property(&interface, "nested") else {
         panic!("Expected Nest reference")

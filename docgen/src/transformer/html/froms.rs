@@ -1,36 +1,15 @@
 use crate::{
     Result,
-    parser::{
-        svelte::MethodInfo,
-        types::{
-            interfaces::{InterfaceProperty, InterfacePropertyFlags},
-            snippets::Snippet,
-        },
-    },
-    transformer::html::{ToHtml, model::QApiPropInfo},
+    parser::{InterfaceProperty, InterfacePropertyFlags, MethodInfo, Snippet},
+    transformer::{QApiPropInfo, ToHtml},
 };
 
-use super::HtmlItem;
+use super::{HtmlItem, funcs::entry_header};
 
 impl From<HtmlItem> for String {
     fn from(value: HtmlItem) -> Self {
         value.create_item()
     }
-}
-
-fn entry_header(name: &str, type_content: String) -> String {
-    let prop_name = HtmlItem::prop_name(name);
-    let type_info = HtmlItem::new("")
-        .tag("pre")
-        .class("prop-type")
-        .child_html(type_content)
-        .create_item();
-
-    HtmlItem::new("")
-        .tag("div")
-        .class("q-api__doc-heading q-my-sm")
-        .child_html(prop_name + &type_info)
-        .create_item()
 }
 
 impl From<Snippet> for QApiPropInfo {
@@ -73,14 +52,14 @@ impl From<MethodInfo> for QApiPropInfo {
 }
 
 impl TryFrom<InterfaceProperty> for QApiPropInfo {
-    type Error = Box<dyn std::error::Error>;
+    type Error = crate::Error;
 
     fn try_from(mut prop: InterfaceProperty) -> Result<Self> {
         let name = prop.key.doc_name();
         let prop_comment = prop.comment.take().unwrap_or_default();
         let mut prop_info_content = String::new();
 
-        if prop.flags.contains(InterfacePropertyFlags::Optional) {
+        if prop.flags.contains(InterfacePropertyFlags::OPTIONAL) {
             prop_info_content.push_str(&HtmlItem::new("?").create_item());
         }
 
@@ -90,13 +69,13 @@ impl TryFrom<InterfaceProperty> for QApiPropInfo {
         if let Some(default) = prop_comment.default {
             prop_info_content.push_str(&HtmlItem::new(" = ").accent().create_item());
 
-            if prop.flags.contains(InterfacePropertyFlags::Bindable) {
+            if prop.flags.contains(InterfacePropertyFlags::BINDABLE) {
                 prop_info_content.push_str(&HtmlItem::new("$bindable(").accent().create_item());
             }
 
             prop_info_content.push_str(&HtmlItem::new(default).create_item());
 
-            if prop.flags.contains(InterfacePropertyFlags::Bindable) {
+            if prop.flags.contains(InterfacePropertyFlags::BINDABLE) {
                 prop_info_content.push_str(&HtmlItem::new(")").accent().create_item());
             }
         }
@@ -106,111 +85,5 @@ impl TryFrom<InterfaceProperty> for QApiPropInfo {
             name,
             description: prop_comment.description,
         })
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use std::collections::HashMap;
-
-    use crate::{
-        extractor::comments::CommentInfo,
-        parser::types::snippets::Snippet,
-        parser::types::{
-            ParsedType, StandardType,
-            interfaces::{InterfaceProperty, InterfacePropertyFlags, InterfacePropertyKey},
-        },
-        transformer::html::QApiPropInfo,
-    };
-
-    #[test]
-    fn escapes_property_headers_but_preserves_description_html() {
-        let property = InterfaceProperty {
-            key: InterfacePropertyKey::Identifier("unsafe<name>".to_string()),
-            type_annotation: ParsedType::Standard(StandardType {
-                name: r#""<value>""#.to_string(),
-            }),
-            flags: InterfacePropertyFlags::Optional,
-            comment: Some(CommentInfo {
-                description: "Use <code>trusted</code>.".to_string(),
-                default: Some("<script>alert('bad')</script>".to_string()),
-            }),
-        };
-
-        let info = QApiPropInfo::try_from(property).expect("property should render");
-
-        assert_eq!(info.name, "unsafe<name>");
-        assert_eq!(info.description, "Use <code>trusted</code>.");
-        assert!(info.header.contains("unsafe&lt;name&gt;"));
-        assert!(info.header.contains("&quot;&lt;value&gt;&quot;"));
-        assert!(
-            info.header
-                .contains("&lt;script&gt;alert(&#39;bad&#39;)&lt;/script&gt;")
-        );
-        assert!(!info.header.contains("<script>"));
-    }
-
-    #[test]
-    fn renders_empty_and_named_snippet_parameters() {
-        let empty = QApiPropInfo::from(Snippet {
-            name: "empty".to_string(),
-            optional: true,
-            description: String::new(),
-            params: HashMap::new(),
-        });
-        let named = QApiPropInfo::from(Snippet {
-            name: "named".to_string(),
-            optional: false,
-            description: String::new(),
-            params: HashMap::from([
-                (
-                    "zeta".to_string(),
-                    ParsedType::Standard(StandardType {
-                        name: "number".to_string(),
-                    }),
-                ),
-                (
-                    "alpha".to_string(),
-                    ParsedType::Standard(StandardType {
-                        name: "string".to_string(),
-                    }),
-                ),
-            ]),
-        });
-
-        assert!(empty.header.contains("?.()"));
-        assert!(!empty.header.contains("{  }"));
-        assert!(named.header.contains("({ alpha: string, zeta: number })"));
-    }
-
-    #[test]
-    fn renders_index_signature_property_with_template_literal_name() {
-        let property = InterfaceProperty {
-            key: InterfacePropertyKey::IndexSignature {
-                name: "key".to_string(),
-                type_annotation: ParsedType::TemplateLiteral(
-                    crate::parser::types::TemplateLiteralType {
-                        head: "bodyCell".to_string(),
-                        spans: vec![crate::parser::types::TemplateLiteralSpan {
-                            type_annotation: ParsedType::Standard(StandardType {
-                                name: "string".to_string(),
-                            }),
-                            literal: String::new(),
-                        }],
-                    },
-                ),
-            },
-            type_annotation: ParsedType::Standard(StandardType {
-                name: "string".to_string(),
-            }),
-            flags: InterfacePropertyFlags::Optional,
-            comment: None,
-        };
-
-        let info = QApiPropInfo::try_from(property).expect("index signature prop");
-
-        assert_eq!(info.name, "bodyCell{string}");
-        assert!(info.header.contains("<b>bodyCell{string}</b>"));
-        assert!(info.header.contains("?: "));
     }
 }

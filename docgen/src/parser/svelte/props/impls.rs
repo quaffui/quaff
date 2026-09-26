@@ -1,4 +1,4 @@
-use std::{collections::HashMap, path::Path};
+use std::collections::HashMap;
 
 use oxc::ast::{
     AstKind,
@@ -8,34 +8,16 @@ use oxc_semantic::{AstNode, Semantic};
 
 use crate::{
     Result, SpanDisplay,
-    parser::{
-        source::{ParseSource, SourceType},
-        svelte::{props::ParsedSvelteProp, traits::SvelteParser},
-    },
+    parser::{ParsedSvelteProp, SvelteParser},
     resolver::{PathResolver, ReferenceResolver, ResolvedReference},
 };
 
 use super::ParsedSvelteProps;
 
-/// Reads defaults without parsing methods, whose parameter types may refer back to props.
-pub fn parse_svelte_props_file(svelte_file: &Path) -> Result<ParsedSvelteProps> {
-    let resolver = PathResolver(svelte_file);
-    let mut props = HashMap::new();
-
-    SourceType::Svelte(svelte_file).parse_source(|node, semantic| {
-        if let Some(mut bindings) = <&[BindingProperty]>::extract(node) {
-            props.extend(bindings.parse(semantic, &resolver)?);
-        }
-
-        Ok(false)
-    })?;
-
-    Ok(props)
-}
-
 impl<'a> SvelteParser<'a> for &'a [BindingProperty<'a>] {
     type Output = Result<ParsedSvelteProps>;
 
+    /// Selects destructured bindings from a `$props()` declaration.
     fn extract(node: &'a AstNode) -> Option<Self> {
         if let AstKind::VariableDeclarator(VariableDeclarator { id, init, .. }) = node.kind()
             && let Some(expr) = init
@@ -49,6 +31,7 @@ impl<'a> SvelteParser<'a> for &'a [BindingProperty<'a>] {
         None
     }
 
+    /// Resolves default expressions and records `$bindable()` declarations.
     fn parse(&mut self, semantic: &Semantic, resolver: &PathResolver) -> Self::Output {
         let mut res: ParsedSvelteProps = HashMap::new();
 
@@ -108,61 +91,5 @@ impl<'a> SvelteParser<'a> for &'a [BindingProperty<'a>] {
         }
 
         Ok(res)
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use std::path::Path;
-
-    use crate::parser::source::ParseSource;
-
-    use super::*;
-
-    #[test]
-    fn preserves_defaults_without_a_resolvable_initializer() -> Result<()> {
-        let resolver = PathResolver(Path::new("/virtual/Fixture.svelte"));
-        let mut props = HashMap::new();
-        r#"
-            import { importedDefault } from "fixture-package";
-            declare const declaredDefault: string;
-            const localDefault = "local";
-            let {
-                nan = NaN,
-                infinity = Infinity,
-                empty = undefined,
-                imported = importedDefault,
-                declared = declaredDefault,
-                local = localDefault,
-                bound = $bindable(localDefault),
-                computed = createDefault(),
-                unset,
-            } = $props();
-        "#
-        .to_string()
-        .parse_source(|node, semantic| {
-            if let Some(mut bindings) = <&[BindingProperty]>::extract(node) {
-                props.extend(bindings.parse(semantic, &resolver)?);
-            }
-
-            Ok(false)
-        })?;
-
-        for (name, expected) in [
-            ("nan", "NaN"),
-            ("infinity", "Infinity"),
-            ("empty", "undefined"),
-            ("imported", "importedDefault"),
-            ("declared", "declaredDefault"),
-            ("local", "\"local\""),
-            ("bound", "localDefault"),
-            ("computed", "createDefault()"),
-        ] {
-            assert_eq!(props[name].default.as_deref(), Some(expected), "{name}");
-        }
-
-        assert!(props["bound"].bindable);
-        assert!(props["unset"].default.is_none());
-        Ok(())
     }
 }

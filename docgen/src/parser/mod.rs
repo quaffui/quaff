@@ -1,9 +1,14 @@
 mod impls;
-mod model;
-pub mod source;
-pub mod svelte;
+mod models;
+mod source;
+mod svelte;
+#[cfg(test)]
+mod tests;
 mod traits;
-pub mod types;
+mod types;
 
-pub use model::*;
+pub use models::*;
+pub use source::*;
+pub use svelte::*;
 pub use traits::*;
+pub use types::*;

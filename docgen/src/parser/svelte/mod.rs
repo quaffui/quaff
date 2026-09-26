@@ -1,12 +1,13 @@
 mod description;
-mod main;
+mod funcs;
 mod methods;
 mod props;
+#[cfg(test)]
+mod tests;
 mod traits;
 
-pub use description::parse_component_description;
-pub use main::*;
+pub use description::*;
+pub use funcs::parse_svelte_file;
 pub use methods::*;
-#[cfg(test)]
-pub use props::ParsedSvelteProp;
-pub use props::{ParsedSvelteProps, parse_svelte_props_file};
+pub use props::*;
+pub use traits::*;

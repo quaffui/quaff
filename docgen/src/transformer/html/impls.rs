@@ -1,18 +1,18 @@
 use std::{collections::HashMap, fmt::Display};
 
 use crate::{
-    extractor::generics::GenericInfo,
-    parser::types::{
-        ExternalType, ParsedType, ReferenceType, StandardType, TemplateLiteralType, TupleElement,
-        TypeOperatorKind,
-        functions::FunctionType,
-        interfaces::{Interface, InterfaceProperty, InterfacePropertyFlags, InterfacePropertyKey},
-        ts_utilities::UtilityTKind,
+    parser::{
+        ExternalType, FunctionType, Interface, InterfaceProperty, InterfacePropertyFlags,
+        InterfacePropertyKey, ParsedType, ReferenceType, StandardType, TemplateLiteralType,
+        TupleElement, TypeOperatorKind, UtilityTKind,
     },
-    transformer::typescript::{ToTs, TsPrecedence},
+    transformer::{ToTs, TsPrecedence},
 };
 
-use super::{HtmlItem, ToHtml};
+use super::{
+    HtmlItem, ToHtml,
+    funcs::{escape_html, render_generic, render_joined, render_nested, render_snippet_type, text},
+};
 
 impl Display for HtmlItem {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
@@ -29,6 +29,7 @@ impl HtmlItem {
         }
     }
 
+    /// Renders an escaped property name with the API heading styles.
     pub fn prop_name(name: &str) -> String {
         Self::new("")
             .tag("span")
@@ -37,31 +38,37 @@ impl HtmlItem {
             .create_item()
     }
 
+    /// Marks this item for accented code styling.
     pub fn accent(mut self) -> Self {
         self.accent = true;
         self
     }
 
+    /// Marks this item as a keyboard-accessible type reference.
     pub fn reference(mut self) -> Self {
         self.is_reference = true;
         self
     }
 
+    /// Sets the lookup name used by a type-reference hover.
     pub fn type_name(mut self, name: impl Into<String>) -> Self {
         self.type_name = name.into();
         self
     }
 
+    /// Sets the documentation URL used for an external type link.
     pub fn type_src(mut self, src: impl Into<String>) -> Self {
         self.type_src = src.into();
         self
     }
 
+    /// Sets additional classes for the generated HTML element.
     pub fn class(mut self, class: impl Into<String>) -> Self {
         self.class = Some(class.into());
         self
     }
 
+    /// Sets the element tag when reference or link rendering does not override it.
     pub fn tag(mut self, tag: impl Into<String>) -> Self {
         self.tag = Some(tag.into());
         self
@@ -73,6 +80,7 @@ impl HtmlItem {
         self
     }
 
+    /// Builds the final element, escaping attributes and applying reference or link styles.
     pub fn create_item(&self) -> String {
         let mut classes = Vec::new();
         let mut attrs = Vec::new();
@@ -136,77 +144,6 @@ impl HtmlItem {
     }
 }
 
-fn escape_html(value: &str) -> String {
-    let mut escaped = String::with_capacity(value.len());
-
-    for character in value.chars() {
-        match character {
-            '&' => escaped.push_str("&amp;"),
-            '<' => escaped.push_str("&lt;"),
-            '>' => escaped.push_str("&gt;"),
-            '"' => escaped.push_str("&quot;"),
-            '\'' => escaped.push_str("&#39;"),
-            other => escaped.push(other),
-        }
-    }
-
-    escaped
-}
-
-fn text(value: impl AsRef<str>) -> String {
-    HtmlItem::new(value).create_item()
-}
-
-fn render_nested(parsed: ParsedType, parent: TsPrecedence) -> String {
-    if parsed.ts_precedence() < parent {
-        format!("{}{}{}", text("("), parsed.to_html(), text(")"))
-    } else {
-        parsed.to_html()
-    }
-}
-
-fn render_generic(generic: GenericInfo) -> String {
-    let mut result = text(generic.name);
-
-    if let Some(constraint) = generic.constraint {
-        result.push_str(&text(" extends "));
-        result.push_str(&constraint.to_html());
-    }
-
-    if let Some(default) = generic.default {
-        result.push_str(&text(" = "));
-        result.push_str(&default.to_html());
-    }
-
-    result
-}
-
-fn render_joined(types: Vec<ParsedType>, joiner: &str, parent: TsPrecedence) -> String {
-    types
-        .into_iter()
-        .map(|parsed| render_nested(parsed, parent))
-        .collect::<Vec<_>>()
-        .join(joiner)
-}
-
-fn render_snippet_type(params: HashMap<String, ParsedType>) -> String {
-    let snippet = ExternalType::maybe_new("Snippet".to_string())
-        .map(ToHtml::to_html)
-        .unwrap_or_else(|| text("Snippet"));
-
-    if params.is_empty() {
-        return snippet;
-    }
-
-    format!(
-        "{}{}{}{}",
-        snippet,
-        text("<[{ "),
-        params.to_html(),
-        text(" }]>"),
-    )
-}
-
 impl ToHtml for StandardType {
     fn to_html(self) -> String {
         HtmlItem::new(self.name).to_string()
@@ -248,7 +185,7 @@ impl ToHtml for Vec<InterfaceProperty> {
         let mapped = self
             .into_iter()
             .map(|prop| {
-                let is_optional = prop.flags.contains(InterfacePropertyFlags::Optional);
+                let is_optional = prop.flags.contains(InterfacePropertyFlags::OPTIONAL);
 
                 if is_optional && matches!(&prop.key, InterfacePropertyKey::IndexSignature { .. }) {
                     return format!(
@@ -502,149 +439,5 @@ impl ToHtml for ParsedType {
                 text(">")
             ),
         }
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use std::collections::HashMap;
-
-    use crate::parser::types::{ExternalType, ParsedType, ReferenceType, StandardType};
-
-    use super::{HtmlItem, ToHtml};
-
-    #[test]
-    fn escapes_text_and_attributes() {
-        let item = HtmlItem::new(r#"<script>"'&"#)
-            .tag("span")
-            .class(r#"type" onclick="bad"#)
-            .create_item();
-
-        assert_eq!(
-            item,
-            r#"<span class="type&quot; onclick=&quot;bad">&lt;script&gt;&quot;&#39;&amp;</span>"#
-        );
-    }
-
-    #[test]
-    fn escapes_reference_names_and_external_urls() {
-        let reference = ParsedType::Reference(ReferenceType {
-            name: r#"A" onmouseover="bad"#.to_string(),
-            type_args: Vec::new(),
-            parsed: Box::new(ParsedType::Standard(StandardType {
-                name: "string".to_string(),
-            })),
-        })
-        .to_html();
-        let external = ExternalType {
-            name: "Type<unsafe>".to_string(),
-            type_src: r#"https://example.test/?q="<&"#.to_string(),
-        }
-        .to_html();
-
-        assert_eq!(
-            reference,
-            r#"<span class="clickable" data-quaff tabindex="0" data-type-name="A&quot; onmouseover=&quot;bad">A&quot; onmouseover=&quot;bad</span>"#
-        );
-        assert_eq!(
-            external,
-            r#"<a class="clickable link" href="https://example.test/?q=&quot;&lt;&amp;" target="_blank">Type&lt;unsafe&gt;</a>"#
-        );
-    }
-
-    #[test]
-    fn preserves_operator_precedence_in_html() {
-        use crate::parser::types::{TypeOperatorKind, ts_utilities::UtilityTKind};
-        use crate::transformer::typescript::ToTs;
-
-        let standard = |name: &str| ParsedType::Standard(StandardType::new(name.to_string()));
-        let union = || ParsedType::Union(vec![standard("A"), standard("B")]);
-        let cases = [
-            ParsedType::IndexedAccess {
-                object: Box::new(union()),
-                index: Box::new(standard("0")),
-            },
-            ParsedType::TypeOperator {
-                kind: TypeOperatorKind::Keyof,
-                type_annotation: Box::new(union()),
-            },
-            ParsedType::UtilityT {
-                kind: UtilityTKind::Array,
-                t: Box::new(ParsedType::TypeOperator {
-                    kind: TypeOperatorKind::Readonly,
-                    type_annotation: Box::new(ParsedType::UtilityT {
-                        kind: UtilityTKind::Array,
-                        t: Box::new(standard("string")),
-                    }),
-                }),
-            },
-        ];
-
-        for parsed in cases {
-            assert_eq!(parsed.clone().to_html(), parsed.to_ts());
-        }
-    }
-
-    #[test]
-    fn renders_snippet_types_inside_other_type_expressions() {
-        let bare = ParsedType::Snippet(HashMap::new()).to_html();
-        let parameterized = ParsedType::Snippet(HashMap::from([(
-            "value".to_string(),
-            ParsedType::Standard(StandardType::new("string".to_string())),
-        )]))
-        .to_html();
-
-        assert!(bare.contains(">Snippet</a>"));
-        assert!(parameterized.contains(">Snippet</a>&lt;[{ value: string }]&gt;"));
-    }
-
-    #[test]
-    fn preserves_optional_tuple_index_and_conditional_grouping() {
-        use crate::parser::types::{
-            TupleElement,
-            functions::FunctionType,
-            interfaces::{InterfaceProperty, InterfacePropertyFlags, InterfacePropertyKey},
-        };
-
-        let standard = |name: &str| ParsedType::Standard(StandardType::new(name.to_string()));
-        let function = || {
-            ParsedType::Function(Box::new(FunctionType {
-                params: Vec::new(),
-                return_type: standard("string"),
-                generics: Vec::new(),
-            }))
-        };
-        let tuple = ParsedType::Tuple(vec![TupleElement {
-            label: None,
-            type_annotation: ParsedType::Union(vec![standard("string"), standard("number")]),
-            optional: true,
-            rest: false,
-        }]);
-        assert_eq!(tuple.to_html(), "[(string | number)?]");
-
-        let index = ParsedType::TypeLiteral(vec![InterfaceProperty {
-            key: InterfacePropertyKey::IndexSignature {
-                name: "key".to_string(),
-                type_annotation: standard("string"),
-            },
-            type_annotation: function(),
-            flags: InterfacePropertyFlags::Optional,
-            comment: None,
-        }]);
-        assert_eq!(
-            index.to_html(),
-            "{ [key: string]: (() =&gt; string) | undefined }"
-        );
-
-        let conditional = ParsedType::Conditional {
-            check: Box::new(function()),
-            extends: Box::new(function()),
-            true_type: Box::new(standard("true")),
-            false_type: Box::new(standard("false")),
-        };
-        assert_eq!(
-            conditional.to_html(),
-            "(() =&gt; string) extends (() =&gt; string) ? true : false"
-        );
     }
 }

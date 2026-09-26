@@ -4,10 +4,10 @@ use oxc_semantic::Semantic;
 use crate::{
     Result, SpanDisplay,
     extractor::Extractor,
-    resolver::{PathResolver, dependency::TypeRegistry},
+    resolver::{PathResolver, TypeRegistry},
 };
 
-use super::CommentInfo;
+use super::{CommentInfo, funcs::clean_comment_line};
 
 impl Default for CommentInfo {
     fn default() -> Self {
@@ -71,35 +71,5 @@ impl Extractor<Option<CommentInfo>> for Span {
             description: description_lines.join("\n"),
             default,
         }))
-    }
-}
-
-fn clean_comment_line(line: &str) -> &str {
-    let line = line.trim();
-    let line = line.strip_prefix("/**").unwrap_or(line).trim_start();
-    let line = line.strip_suffix("*/").unwrap_or(line).trim_end();
-
-    line.strip_prefix('*').unwrap_or(line).trim_start()
-}
-
-#[cfg(test)]
-mod tests {
-    use super::clean_comment_line;
-
-    #[test]
-    fn removes_jsdoc_markers_without_stripping_description_punctuation() {
-        assert_eq!(
-            clean_comment_line("  * `primary-container`."),
-            "`primary-container`."
-        );
-        assert_eq!(
-            clean_comment_line("  * \"Quoted value\""),
-            "\"Quoted value\""
-        );
-        assert_eq!(
-            clean_comment_line("/** <video> fallback */"),
-            "<video> fallback"
-        );
-        assert_eq!(clean_comment_line(" */"), "");
     }
 }

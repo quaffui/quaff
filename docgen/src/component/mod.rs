@@ -1,8 +1,8 @@
-mod impls;
-mod model;
+mod funcs;
+mod models;
 
-pub(crate) use impls::generate_component;
-pub(crate) use model::{DocgenComponentInput, DocgenComponentOutput};
+pub(crate) use funcs::generate_component;
+pub(crate) use models::*;
 
 #[cfg(test)]
-pub(crate) use model::DocgenInterface;
+mod tests;

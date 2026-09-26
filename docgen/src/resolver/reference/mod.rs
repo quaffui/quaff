@@ -1,6 +1,10 @@
+mod funcs;
 mod impls;
-mod model;
+mod models;
 mod traits;
 
-pub use model::ResolvedReference;
+pub use models::ResolvedReference;
 pub use traits::{ReferenceNodeMatcher, ReferenceResolver};
+
+#[cfg(test)]
+mod tests;
