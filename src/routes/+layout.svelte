@@ -265,6 +265,10 @@
       to: "/utils/css",
     },
     {
+      name: "Typography",
+      to: "/utils/typography",
+    },
+    {
       name: "Meta",
       to: "/utils/meta",
     },
