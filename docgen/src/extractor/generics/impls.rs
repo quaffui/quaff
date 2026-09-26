@@ -4,8 +4,8 @@ use oxc_semantic::Semantic;
 use crate::{
     Result,
     extractor::Extractor,
-    parser::types::{ParsedType, StandardType, TypeParser},
-    resolver::{PathResolver, dependency::TypeRegistry},
+    parser::{ParsedType, StandardType, TypeParser},
+    resolver::{PathResolver, TypeRegistry},
 };
 
 use super::{GenericBindings, GenericBindingsParser, GenericInfo};
@@ -87,5 +87,67 @@ impl GenericBindingsParser for TSTypeParameterDeclaration<'_> {
         }
 
         Ok(bindings)
+    }
+}
+
+impl GenericBindings {
+    /// Returns the concrete type assigned to a generic parameter.
+    pub fn get(&self, name: &str) -> Option<&ParsedType> {
+        self.0.get(name)
+    }
+
+    /// Adds unbound generic parameters to this scope without replacing concrete bindings.
+    pub fn with_missing_generics(&self, generics: &[GenericInfo]) -> Self {
+        let mut bindings = self.clone();
+
+        for generic in generics {
+            bindings
+                .0
+                .entry(generic.name.clone())
+                .or_insert_with(|| generic.as_unbound_type());
+        }
+
+        bindings
+    }
+
+    /// Adds generic parameters to a nested scope, shadowing parameters with the same names.
+    pub fn with_shadowed_generics(&self, generics: &[GenericInfo]) -> Self {
+        let mut bindings = self.clone();
+
+        for generic in generics {
+            bindings
+                .0
+                .insert(generic.name.clone(), generic.as_unbound_type());
+        }
+
+        bindings
+    }
+
+    /// Binds a parameter name to a parsed type in this scope.
+    pub(super) fn insert(&mut self, name: String, parsed: ParsedType) {
+        self.0.insert(name, parsed);
+    }
+}
+
+impl GenericInfo {
+    /// Preserves a generic name as a symbolic type until it receives an argument.
+    fn as_unbound_type(&self) -> ParsedType {
+        ParsedType::Standard(StandardType::new(self.name.clone()))
+    }
+}
+
+impl GenericBindingsParser for &TSTypeParameterDeclaration<'_> {
+    fn declaration_bindings(&self) -> GenericBindings {
+        (*self).declaration_bindings()
+    }
+
+    fn instantiate_bindings(
+        &self,
+        type_args: &[ParsedType],
+        semantic: &Semantic,
+        resolver: &PathResolver,
+        registry: &mut TypeRegistry,
+    ) -> Result<GenericBindings> {
+        (*self).instantiate_bindings(type_args, semantic, resolver, registry)
     }
 }

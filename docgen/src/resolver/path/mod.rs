@@ -1,4 +1,4 @@
 mod impls;
-mod model;
+mod models;
 
-pub use model::PathResolver;
+pub use models::PathResolver;

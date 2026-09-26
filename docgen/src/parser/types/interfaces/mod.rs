@@ -1,8 +1,9 @@
+mod funcs;
 mod impls;
-mod model;
+mod models;
 #[cfg(test)]
 mod tests;
 mod traits;
 
-pub use model::*;
+pub use models::*;
 pub use traits::InterfaceParser;

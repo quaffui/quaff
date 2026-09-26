@@ -6,18 +6,16 @@ use oxc_semantic::{AstNode, Semantic};
 
 use crate::{
     Result,
-    extractor::{Extractor, comments::CommentInfo, generics::GenericBindings},
+    extractor::{CommentInfo, Extractor, GenericBindings},
     parser::{
-        svelte::methods::{ExportedMethod, MethodInfo},
-        types::{
-            ParsedType, StandardType, TypeParser,
-            functions::{FunctionType, FunctionTypeParam},
-        },
+        ExportedMethod, FunctionType, FunctionTypeParam, MethodInfo, ParsedType, StandardType,
+        TypeParser,
     },
-    resolver::{PathResolver, dependency::TypeRegistry},
+    resolver::{PathResolver, TypeRegistry},
 };
 
 impl<'a> ExportedMethod<'a> {
+    /// Selects top-level exported function declarations and arrow methods.
     pub fn extract(node: &'a AstNode, semantic: &Semantic) -> Vec<Self> {
         let AstKind::ExportDeclaration(export) = node.kind() else {
             return Vec::new();
@@ -67,6 +65,7 @@ impl<'a> ExportedMethod<'a> {
         }
     }
 
+    /// Parses the method signature, description, and referenced type definitions.
     pub fn parse(
         &self,
         semantic: &Semantic,

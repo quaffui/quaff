@@ -1,5 +1,8 @@
+mod funcs;
 mod impls;
-mod model;
+mod models;
+#[cfg(test)]
+mod tests;
 
-pub use impls::parse_svelte_props_file;
-pub use model::*;
+pub use funcs::parse_svelte_props_file;
+pub use models::*;

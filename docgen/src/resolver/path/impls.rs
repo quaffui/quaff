@@ -21,6 +21,7 @@ impl PathResolver<'_> {
         })
     }
 
+    /// Finds an existing TypeScript source using aliases, extension fallbacks, and index files.
     pub(crate) fn resolve_local_file(
         &self,
         path_str: &str,

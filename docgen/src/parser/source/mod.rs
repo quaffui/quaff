@@ -1,8 +1,11 @@
+mod consts;
+mod funcs;
 mod impls;
-mod model;
+mod models;
+#[cfg(test)]
+mod tests;
 mod traits;
 
-pub use model::SourceType;
-pub use traits::ParseSource;
-
-pub(crate) use impls::extract_svelte_scripts;
+pub(crate) use funcs::extract_svelte_scripts;
+pub use models::*;
+pub use traits::*;

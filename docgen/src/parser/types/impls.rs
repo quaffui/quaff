@@ -16,32 +16,29 @@ use oxc_semantic::Semantic;
 
 use crate::{
     Result, SpanDisplay,
-    extractor::{
-        Extractor,
-        generics::{GenericBindings, GenericBindingsParser, GenericInfo},
-    },
+    extractor::{Extractor, GenericBindings, GenericBindingsParser, GenericInfo},
     resolver::{
-        PathResolver, ReferenceResolver, ResolvedReference,
-        dependency::{DefinitionKind, TypeDefinition, TypeRegistry},
+        DefinitionKind, PathResolver, ReferenceResolver, ResolvedReference, TypeDefinition,
+        TypeRegistry,
     },
-    transformer::mapping::TYPE_SRC_MAPPINGS,
-    transformer::typescript::ToTs,
+    transformer::{TYPE_SRC_MAPPINGS, ToTs},
 };
 
 use super::{
-    ExternalType, ParsedType, ReferenceType, StandardType, TemplateLiteralSpan,
-    TemplateLiteralType, TupleElement, TypeOperatorKind, TypeParser, UtilityTypeParser,
-    interfaces::InterfaceParser,
-    ts_utilities::{UtilityKVKind, UtilityTKind, UtilityType},
+    ExternalType, InterfaceParser, ParsedType, ReferenceType, StandardType, TemplateLiteralSpan,
+    TemplateLiteralType, TupleElement, TypeOperatorKind, TypeParser, UtilityKVKind, UtilityTKind,
+    UtilityType, UtilityTypeParser, funcs::parse_tuple_element,
 };
 
 impl StandardType {
+    /// Stores the original spelling of a primitive or unresolved type.
     pub fn new(name: String) -> Self {
         Self { name }
     }
 }
 
 impl ExternalType {
+    /// Creates an external type when its name matches a documentation mapping.
     pub fn maybe_new(name: String) -> Option<Self> {
         let maybe_src_mapping = TYPE_SRC_MAPPINGS.iter().find(|m| m.matches(&name));
 
@@ -79,6 +76,7 @@ impl ParsedType {
 }
 
 impl TypeParser for TSParenthesizedType<'_> {
+    /// Parses the enclosed type without retaining redundant parentheses.
     fn parse_type(
         &self,
         semantic: &Semantic,
@@ -92,6 +90,7 @@ impl TypeParser for TSParenthesizedType<'_> {
 }
 
 impl TypeParser for TSUnionType<'_> {
+    /// Parses each alternative in a union.
     fn parse_type(
         &self,
         semantic: &Semantic,
@@ -109,6 +108,7 @@ impl TypeParser for TSUnionType<'_> {
 }
 
 impl TypeParser for TSIntersectionType<'_> {
+    /// Parses every member of an intersection.
     fn parse_type(
         &self,
         semantic: &Semantic,
@@ -126,6 +126,7 @@ impl TypeParser for TSIntersectionType<'_> {
 }
 
 impl TypeParser for TSArrayType<'_> {
+    /// Represents an array as its equivalent single-argument utility type.
     fn parse_type(
         &self,
         semantic: &Semantic,
@@ -144,6 +145,7 @@ impl TypeParser for TSArrayType<'_> {
 }
 
 impl TypeParser for TSTemplateLiteralType<'_> {
+    /// Preserves literal segments and recursively parses interpolated types.
     fn parse_type(
         &self,
         semantic: &Semantic,
@@ -188,6 +190,7 @@ impl TypeParser for TSTemplateLiteralType<'_> {
 }
 
 impl TypeParser for TSLiteralType<'_> {
+    /// Preserves literal spellings, including templates without substitutions.
     fn parse_type(
         &self,
         semantic: &Semantic,
@@ -217,6 +220,7 @@ impl TypeParser for TSLiteralType<'_> {
 }
 
 impl TypeParser for TSTupleType<'_> {
+    /// Parses tuple members with their labels and optional or rest markers.
     fn parse_type(
         &self,
         semantic: &Semantic,
@@ -236,69 +240,8 @@ impl TypeParser for TSTupleType<'_> {
     }
 }
 
-fn parse_tuple_element(
-    element: &TSTupleElement<'_>,
-    semantic: &Semantic,
-    resolver: &PathResolver,
-    generic_bindings: &GenericBindings,
-    registry: &mut TypeRegistry,
-) -> Result<TupleElement> {
-    match element {
-        TSTupleElement::TSOptionalType(optional) => Ok(TupleElement {
-            label: None,
-            type_annotation: optional.type_annotation.parse_type(
-                semantic,
-                resolver,
-                generic_bindings,
-                registry,
-            )?,
-            optional: true,
-            rest: false,
-        }),
-        TSTupleElement::TSRestType(rest) => Ok(TupleElement {
-            label: None,
-            type_annotation: rest.type_annotation.parse_type(
-                semantic,
-                resolver,
-                generic_bindings,
-                registry,
-            )?,
-            optional: false,
-            rest: true,
-        }),
-        TSTupleElement::TSNamedTupleMember(named) => {
-            let mut parsed = parse_tuple_element(
-                &named.element_type,
-                semantic,
-                resolver,
-                generic_bindings,
-                registry,
-            )?;
-            parsed.label = Some(named.label.name.to_string());
-            parsed.optional |= named.optional;
-            Ok(parsed)
-        }
-        _ => {
-            let Some(ts_type) = element.as_ts_type() else {
-                return Err(format!("Unsupported tuple element: {element:?}").into());
-            };
-
-            Ok(TupleElement {
-                label: None,
-                type_annotation: ts_type.parse_type(
-                    semantic,
-                    resolver,
-                    generic_bindings,
-                    registry,
-                )?,
-                optional: false,
-                rest: false,
-            })
-        }
-    }
-}
-
 impl TypeParser for TSTypeOperator<'_> {
+    /// Parses a type operator and its operand.
     fn parse_type(
         &self,
         semantic: &Semantic,
@@ -325,6 +268,7 @@ impl TypeParser for TSTypeOperator<'_> {
 }
 
 impl TypeParser for TSIndexedAccessType<'_> {
+    /// Parses the object and index of an indexed access type.
     fn parse_type(
         &self,
         semantic: &Semantic,
@@ -350,6 +294,7 @@ impl TypeParser for TSIndexedAccessType<'_> {
 }
 
 impl TypeParser for TSConditionalType<'_> {
+    /// Parses the condition and both branches of a conditional type.
     fn parse_type(
         &self,
         semantic: &Semantic,
@@ -387,6 +332,7 @@ impl TypeParser for TSConditionalType<'_> {
 }
 
 impl TypeParser for TSTypeReference<'_> {
+    /// Resolves named types, generic arguments, utilities, and snippets.
     fn parse_type(
         &self,
         semantic: &Semantic,
@@ -688,6 +634,7 @@ impl TypeParser for TSTypeReference<'_> {
 }
 
 impl TypeParser for TSTypeQuery<'_> {
+    /// Records value dependencies referenced by a `typeof` query.
     fn parse_type(
         &self,
         semantic: &Semantic,
@@ -748,6 +695,7 @@ impl TypeParser for TSTypeQuery<'_> {
 }
 
 impl TypeParser for TSMappedType<'_> {
+    /// Records mapped-type dependencies while preserving its source spelling.
     fn parse_type(
         &self,
         semantic: &Semantic,
@@ -777,6 +725,7 @@ impl TypeParser for TSMappedType<'_> {
 }
 
 impl TypeParser for TSType<'_> {
+    /// Dispatches supported AST types and preserves source text for other forms.
     fn parse_type(
         &self,
         semantic: &oxc_semantic::Semantic,

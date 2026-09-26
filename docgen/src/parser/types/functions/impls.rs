@@ -3,14 +3,15 @@ use oxc_semantic::Semantic;
 
 use crate::{
     Result, SpanDisplay,
-    extractor::{Extractor, generics::GenericBindings},
-    parser::types::{ParsedType, StandardType, TypeParser, functions::FunctionTypeParam},
-    resolver::{PathResolver, dependency::TypeRegistry},
+    extractor::{Extractor, GenericBindings},
+    parser::{FunctionTypeParam, ParsedType, StandardType, TypeParser},
+    resolver::{PathResolver, TypeRegistry},
 };
 
 use super::FunctionType;
 
 impl TypeParser for TSFunctionType<'_> {
+    /// Parses a function signature with its own generic parameters in scope.
     fn parse_type(
         &self,
         semantic: &Semantic,
@@ -53,6 +54,7 @@ impl TypeParser for TSFunctionType<'_> {
 }
 
 impl FunctionTypeParam {
+    /// Preserves rest parameters and TypeScript optionality rules for defaulted arguments.
     pub fn parse_parameters(
         parameters: &FormalParameters,
         semantic: &Semantic,

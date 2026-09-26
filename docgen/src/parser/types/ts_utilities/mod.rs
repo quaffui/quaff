@@ -1,5 +1,7 @@
+mod funcs;
 mod impls;
 mod macros;
-mod model;
+mod models;
 
-pub use model::*;
+pub(super) use macros::impl_utility_enum;
+pub use models::*;

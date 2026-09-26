@@ -1,9 +1,9 @@
 use oxc_semantic::Semantic;
 
 use crate::{
-    extractor::generics::GenericBindings,
+    extractor::GenericBindings,
     prelude::*,
-    resolver::{PathResolver, dependency::TypeRegistry},
+    resolver::{PathResolver, TypeRegistry},
 };
 
 use super::{Interface, InterfaceProperty};
@@ -25,6 +25,7 @@ pub trait InterfaceParser {
         Err("This optional trait method should not be used if not implemented.".into())
     }
 
+    /// Parses an interface or type literal body into documentation properties.
     fn parse_body(
         &self,
         semantic: &Semantic,

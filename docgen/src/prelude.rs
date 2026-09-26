@@ -1,5 +1,7 @@
-/// A wrapper around a type to allow external types to implement external traits
+pub use crate::error::Error;
+
+/// Wraps external types so docgen can implement external traits for them.
 pub struct W<T>(pub T);
 
-/// A wrapper for the `Result` type to get Box<dyn Error> instead of Result<T, E>
-pub type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;
+/// The shared result type for parsing and generating documentation.
+pub type Result<T> = std::result::Result<T, Error>;

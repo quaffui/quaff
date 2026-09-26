@@ -1,4 +1,4 @@
-use std::{fs::read_to_string, sync::LazyLock};
+use std::fs::read_to_string;
 
 use oxc::{
     allocator::Allocator,
@@ -6,11 +6,10 @@ use oxc::{
     span::SourceType as OxcSrcType,
 };
 use oxc_semantic::{AstNode, Semantic, SemanticBuilder};
-use regex::Regex;
 
 use crate::Result;
 
-use super::{ParseSource, SourceType, traits::ParseCallback};
+use super::{ParseCallback, ParseSource, SourceType, funcs::instance_script};
 
 impl<'a, T: FnMut(&AstNode, &Semantic<'a>) -> Result<bool>> ParseCallback<'a> for T {}
 
@@ -78,103 +77,5 @@ impl<'b> ParseSource for SourceType<'b> {
                 }
             }
         }
-    }
-}
-
-pub(crate) fn extract_svelte_scripts(content: &str) -> impl Iterator<Item = (&str, &str)> {
-    static SCRIPTS: LazyLock<Regex> = LazyLock::new(|| {
-        // Consume whole tags and raw-text blocks so comment markers in their contents stay intact.
-        Regex::new(
-            r#"(?sx)
-                <!--.*?-->
-                |<script\b((?:[^>"']|"[^"]*"|'[^']*')*)>(.*?)</script\s*>
-                |<style\b(?:[^>"']|"[^"]*"|'[^']*')*>.*?</style\s*>
-                |</?[A-Za-z][A-Za-z0-9:.-]*(?:[^>"']|"[^"]*"|'[^']*')*>
-            "#,
-        )
-        .unwrap()
-    });
-    SCRIPTS
-        .captures_iter(content)
-        .filter_map(|script| Some((script.get(1)?.as_str(), script.get(2)?.as_str())))
-}
-
-fn instance_script(content: &str) -> Option<&str> {
-    static ATTRIBUTES: LazyLock<Regex> = LazyLock::new(|| {
-        Regex::new(r#"(?:^|\s)([^\s=]+)(?:\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s]+)))?"#).unwrap()
-    });
-
-    extract_svelte_scripts(content).find_map(|(attributes, script)| {
-        let is_module = ATTRIBUTES.captures_iter(attributes).any(|attribute| {
-            let name = attribute.get(1).map(|value| value.as_str());
-            let value = attribute
-                .get(2)
-                .or(attribute.get(3))
-                .or(attribute.get(4))
-                .map(|value| value.as_str());
-
-            name == Some("module") || (name == Some("context") && value == Some("module"))
-        });
-
-        if is_module { None } else { Some(script) }
-    })
-}
-
-#[cfg(test)]
-mod tests {
-    use super::{ParseSource, instance_script};
-
-    #[test]
-    fn reads_instance_scripts_with_reordered_attributes_and_skips_modules() {
-        let source = r#"
-            <script lang="ts" module>export const shared = 1;</script>
-            <script generics="T extends Record<string, unknown>" lang='ts'>let { value } = $props();</script>
-        "#;
-        assert_eq!(instance_script(source), Some("let { value } = $props();"));
-        assert_eq!(
-            instance_script("<script context='module'>export const shared = 1;</script>"),
-            None
-        );
-        assert_eq!(instance_script("<div>No script</div>"), None);
-    }
-
-    #[test]
-    fn skips_commented_scripts_without_stripping_script_string_contents() {
-        let live_script = r#"let { value = "<!--live-->", marker = "<!--" } = $props();"#;
-        let source = format!(
-            r#"
-                <!-- <script lang="ts">let {{ value = "wrong" }} = $props();</script> -->
-                <script module>const marker = "<!--";</script>
-                <!-- Another comment containing <script>invalid TypeScript</script> -->
-                <script lang="ts">{live_script}</script>
-            "#
-        );
-        assert_eq!(instance_script(&source), Some(live_script));
-        assert_eq!(
-            instance_script("<!-- <script>commentedOut()</script> -->"),
-            None
-        );
-    }
-
-    #[test]
-    fn quoted_comment_markers_before_scripts_do_not_hide_scripts() {
-        let live_script = r#"let { value = "-->" } = $props();"#;
-
-        for prefix in [
-            r#"<div title="<!--"></div>"#,
-            r#"<div title='<!--'></div>"#,
-            r#"<style>.marker::before { content: "<!--" }</style>"#,
-        ] {
-            let source = format!("{prefix}<script lang=\"ts\">{live_script}</script>");
-            assert_eq!(instance_script(&source), Some(live_script), "{prefix}");
-        }
-    }
-
-    #[test]
-    fn rejects_invalid_typescript_instead_of_emitting_partial_docs() {
-        let result = "export interface Props { value: }"
-            .to_string()
-            .parse_source(|_, _| Ok(false));
-        assert!(result.is_err());
     }
 }

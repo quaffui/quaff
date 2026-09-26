@@ -1,4 +1,4 @@
 mod froms;
-mod model;
+mod models;
 
-pub use model::*;
+pub use models::*;

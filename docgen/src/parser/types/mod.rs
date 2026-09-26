@@ -1,13 +1,17 @@
-pub mod functions;
+mod funcs;
+mod functions;
 mod impls;
-pub mod interfaces;
-mod model;
-pub mod snippets;
-mod traits;
-pub mod ts_utilities;
-
+mod interfaces;
+mod models;
+mod snippets;
 #[cfg(test)]
 mod tests;
+mod traits;
+mod ts_utilities;
 
-pub use model::*;
+pub use functions::*;
+pub use interfaces::*;
+pub use models::*;
+pub use snippets::*;
 pub use traits::*;
+pub use ts_utilities::*;

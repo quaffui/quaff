@@ -1,21 +1,10 @@
 use std::collections::BTreeMap;
 
-use crate::{
-    Result,
-    parser::{ParsedPropsInterface, TSPropsParser},
-    resolver::PathResolver,
-    test_support::Fixture,
-};
+use crate::{Result, parser::ParsedPropsInterface, test_support::Fixture};
 
 use super::InterfacePropertyFlags;
 
-impl Fixture {
-    fn parse(&self, name: &str) -> Result<BTreeMap<String, ParsedPropsInterface>> {
-        let path = self.0.join(name);
-        path.parse_props(&PathResolver(&path))
-    }
-}
-
+/// Collects property defaults for inheritance assertions.
 fn defaults(interface: &ParsedPropsInterface) -> BTreeMap<String, Option<&str>> {
     interface
         .interface
@@ -63,7 +52,7 @@ fn inherits_button_defaults_without_inheriting_bindability() -> Result<()> {
         icon.interface
             .properties
             .iter()
-            .all(|property| { !property.flags.contains(InterfacePropertyFlags::Bindable) })
+            .all(|property| { !property.flags.contains(InterfacePropertyFlags::BINDABLE) })
     );
     Ok(())
 }
