@@ -71,7 +71,7 @@
           layout. It is intended for three to seven destinations on medium and large screens. Place
           QNavItem components directly inside it so navigation styling stays scoped to navigation
           items rather than QList and QItem. See
-          <a href={resolve("/components/nav-item", {})}> QNavItem </a>
+          <a class="q-docs-link" href={resolve("/components/nav-item", {})}> QNavItem </a>
           for drawer destinations and expandable groups.
         {/snippet}
 

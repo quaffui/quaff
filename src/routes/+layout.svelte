@@ -2,6 +2,7 @@
   import "$lib/css/fonts.scss";
   import "$lib/css/index.scss";
 
+  import { afterNavigate } from "$app/navigation";
   import {
     QAvatar,
     QBtn,
@@ -22,6 +23,7 @@
     type NavigationItem,
   } from "$docs/QDocsNavigation.svelte";
   import type { MaterialSymbol } from "material-symbols";
+  import type { Snapshot } from "@sveltejs/kit";
 
   type Item = {
     name: string;
@@ -325,6 +327,27 @@
   const isMobile = $derived(Quaff.breakpoints.isLessThan("md"));
   const primaryNav = $derived(isMobile ? { navbar } : { railbarLeft });
 
+  export const snapshot: Snapshot<number> = {
+    capture: () => contentEl?.parentElement?.scrollTop ?? 0,
+    restore: scrollContent,
+  };
+
+  afterNavigate(({ from, to, type }) => {
+    if (!from?.url || !to || type === "popstate" || from.url.pathname === to.url.pathname) {
+      return;
+    }
+
+    const section = document.getElementById(decodeURIComponent(to.url.hash.slice(1)));
+
+    if (!section) {
+      scrollContent(0);
+    }
+  });
+
+  function scrollContent(top: number) {
+    contentEl?.parentElement?.scrollTo({ top, behavior: "instant" });
+  }
+
   function prepareItem(selected: string | null, route: string, kind: "previous" | "next") {
     const path = getNavigationLinks(getDrawerItems(selected));
 
@@ -442,7 +465,9 @@
         </div>
       {/if}
 
-      <div class="privacy-policy"><a href="/privacy-policy">Privacy Policy</a></div>
+      <div class="privacy-policy">
+        <a class="q-docs-link" href="/privacy-policy">Privacy Policy</a>
+      </div>
     </div>
   {/snippet}
 </QLayout>
@@ -481,12 +506,7 @@
     width={220}
     bordered
   >
-    <QDocsNavigation
-      items={drawerContent}
-      label="Section navigation"
-      dense
-      onclick={() => contentEl?.scrollTo({ top: 0, behavior: "smooth" })}
-    />
+    <QDocsNavigation items={drawerContent} label="Section navigation" dense />
   </QDrawer>
 {/snippet}
 
@@ -517,6 +537,28 @@
     background-color: var(--surface-container);
     color: inherit;
     vertical-align: baseline;
+  }
+
+  :global(.q-docs-link),
+  :global(.q-api :is(a.link, .prop-description a)) {
+    display: inline;
+    color: var(--primary);
+    vertical-align: baseline;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.15em;
+    border-radius: 2px;
+  }
+
+  :global(.q-docs-link:is(:hover, :active)),
+  :global(.q-api :is(a.link, .prop-description a):is(:hover, :active)) {
+    text-decoration-thickness: 2px;
+  }
+
+  :global(.q-docs-link:focus-visible),
+  :global(.q-api :is(a.link, .prop-description a):focus-visible) {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
   }
 
   .q-docs-layout__content {

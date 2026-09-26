@@ -161,8 +161,9 @@
         {#snippet sectionDescription()}
           Switch languages to see translated picker labels, buttons, and validation messages. Date
           formatting and the first weekday follow the selected language's locale. See
-          <a href={resolve("/utils/quaff#language", {})}>all available locales</a> for more languages
-          and setup instructions.
+          <a class="q-docs-link" href={resolve("/utils/quaff#language", {})}
+            >all available locales</a
+          > for more languages and setup instructions.
         {/snippet}
 
         <QLanguageExample>

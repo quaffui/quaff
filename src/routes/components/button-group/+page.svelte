@@ -250,9 +250,11 @@
         </p>
         <p>
           See the Material 3 guidance for
-          <a href="https://m3.material.io/components/button-groups/overview">button groups</a>
+          <a class="q-docs-link" href="https://m3.material.io/components/button-groups/overview"
+            >button groups</a
+          >
           and
-          <a href="https://m3.material.io/components/segmented-buttons/overview"
+          <a class="q-docs-link" href="https://m3.material.io/components/segmented-buttons/overview"
             >segmented buttons</a
           >.
         </p>

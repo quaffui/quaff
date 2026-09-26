@@ -201,10 +201,13 @@
         </p>
         <p>
           See the Material 3 split-button
-          <a href="https://m3.material.io/components/split-button/specs">specifications</a>,
-          <a href="https://m3.material.io/components/split-button/guidelines">usage guidelines</a>,
-          and
-          <a href="https://m3.material.io/components/split-button/accessibility"
+          <a class="q-docs-link" href="https://m3.material.io/components/split-button/specs"
+            >specifications</a
+          >,
+          <a class="q-docs-link" href="https://m3.material.io/components/split-button/guidelines"
+            >usage guidelines</a
+          >, and
+          <a class="q-docs-link" href="https://m3.material.io/components/split-button/accessibility"
             >accessibility guidance</a
           >.
         </p>

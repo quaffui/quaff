@@ -429,8 +429,10 @@
       <QDocsSection title="Localization" noCode>
         {#snippet sectionDescription()}
           Choose a language, then open the empty select to see its translated message. See
-          <a href={resolve("/utils/quaff#language", {})}>all available locales</a> for more
-          languages and setup instructions.
+          <a class="q-docs-link" href={resolve("/utils/quaff#language", {})}
+            >all available locales</a
+          >
+          for more languages and setup instructions.
           <code>noOptionText</code> overrides the message for an individual select.
         {/snippet}
 

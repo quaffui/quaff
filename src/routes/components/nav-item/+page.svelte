@@ -93,8 +93,8 @@
         <code>href</code> for links; the current route gets its active style and
         <code>aria-current</code> automatically. Set <code>active</code> to control selection
         yourself. Icons are optional in drawers; include them in
-        <a href={resolve("/components/navbar", {})}>bars</a>
-        and <a href={resolve("/components/railbar", {})}>rails</a>.
+        <a class="q-docs-link" href={resolve("/components/navbar", {})}>bars</a>
+        and <a class="q-docs-link" href={resolve("/components/railbar", {})}>rails</a>.
       {/snippet}
 
       <QLayout class="linked-drawer">

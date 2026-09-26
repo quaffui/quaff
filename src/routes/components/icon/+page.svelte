@@ -94,8 +94,7 @@
         {#snippet sectionDescription()}
           Use the <code>color</code> prop to apply theme colors or standard CSS colors. You can also
           use utility classes like <code>text-primary</code>, <code>text-red-5</code> (see
-          <a class="text-primary" href="/colors">the colors page</a> for a list of available colors),
-          etc.
+          <a class="q-docs-link" href="/colors">the colors page</a> for a list of available colors), etc.
         {/snippet}
         <div class="flex q-gap-lg items-center">
           <QIcon name="thumb_up" color="primary" />

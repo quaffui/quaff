@@ -14,7 +14,7 @@
       <div class="text-italic">Last updated May 12, 2025</div>
 
       <p>
-        Quaff (open-source project at <a href="https://github.com/quaffui/quaff"
+        Quaff (open-source project at <a class="q-docs-link" href="https://github.com/quaffui/quaff"
           >github.com/quaffui/quaff</a
         >) is the data controller.
       </p>
@@ -27,6 +27,7 @@
 
       <p>
         This static page is served via GitHub Pages; server logs are processed by GitHub under its <a
+          class="q-docs-link"
           href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement"
           >Privacy Statement</a
         >.
@@ -35,12 +36,14 @@
       <ul class="q-pl-md">
         <li>
           <a
+            class="q-docs-link"
             href="https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages#data-collection"
             >GitHub Pages data collection</a
           >
         </li>
         <li>
           <a
+            class="q-docs-link"
             href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement"
             >GitHub general privacy statement</a
           >
@@ -49,6 +52,7 @@
 
       <p>
         For privacy questions, open an issue at <a
+          class="q-docs-link"
           href="https://github.com/quaffui/quaff/issues/new">github.com/quaffui/quaff</a
         >.
       </p>

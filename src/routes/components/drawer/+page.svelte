@@ -137,6 +137,7 @@
         {#snippet sectionDescription()}
           Group related pages under an expandable heading. Expand Projects to choose a workspace, or
           collapse it to keep the navigation compact. See <a
+            class="q-docs-link"
             href={resolve("/components/nav-item", {})}
           >
             QNavItem and QNavGroup

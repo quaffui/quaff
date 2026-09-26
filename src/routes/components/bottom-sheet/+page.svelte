@@ -213,7 +213,7 @@
         {#snippet sectionDescription()}
           Use <code>modal</code> for a focused task, especially on compact screens. Select an
           option, press Escape or select the scrim to close. On larger screens, consider a standard
-          sheet or <a href={resolve("/components/dialog", {})}>QDialog</a>.
+          sheet or <a class="q-docs-link" href={resolve("/components/dialog", {})}>QDialog</a>.
         {/snippet}
 
         <QBtn variant="tonal" label="Choose a place" onclick={() => (isModalOpen = true)} />

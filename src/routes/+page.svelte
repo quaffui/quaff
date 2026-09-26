@@ -36,12 +36,14 @@
       />
     </li>
     <li>
-      Check our <a href="/components">components</a> and familiarize yourself with our
-      <a href="/layout/grid">grid</a>, <a href="/utils">utils</a> and the rest of our docs.
+      Check our <a class="q-docs-link" href="/components">components</a> and familiarize yourself
+      with our
+      <a class="q-docs-link" href="/layout/grid">grid</a>,
+      <a class="q-docs-link" href="/utils">utils</a> and the rest of our docs.
     </li>
     <li>
       Found an issue? <s>Rage</s> Comment on Quaff's
-      <a href="https://github.com/quaffui/quaff">GitHub page</a>.
+      <a class="q-docs-link" href="https://github.com/quaffui/quaff">GitHub page</a>.
     </li>
   </ul>
 </div>
@@ -93,10 +95,6 @@
       justify-content: center;
       align-items: center;
       gap: 0.4em;
-    }
-
-    a {
-      color: var(--primary);
     }
   }
 </style>

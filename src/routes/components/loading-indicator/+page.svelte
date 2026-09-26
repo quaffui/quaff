@@ -54,7 +54,7 @@
   {#snippet usage()}
     <p class="q-mb-lg">
       Use QLoadingIndicator for short waits of about 200ms to 5 seconds. For longer tasks or known
-      progress, use <a href={resolve("/components/progress", {})}>QProgress</a>.
+      progress, use <a class="q-docs-link" href={resolve("/components/progress", {})}>QProgress</a>.
     </p>
 
     <QDocsSection title="Variants">

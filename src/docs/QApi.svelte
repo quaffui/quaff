@@ -303,22 +303,10 @@
     }
   }
 
-  :global(.q-api .link) {
-    display: unset;
-  }
-
   :global(.q-api .prop-type) {
-    opacity: 0.75;
+    color: var(--on-surface-variant);
     width: 100%;
     letter-spacing: 0.03125rem;
-  }
-
-  :global(.q-api .prop-type.clickable) {
-    cursor: pointer;
-
-    &:hover {
-      opacity: 1;
-    }
   }
 
   :global(.q-api .q-api__doc-heading) {
@@ -338,10 +326,6 @@
     margin: 0;
     border-radius: inherit;
     white-space: pre-wrap;
-  }
-
-  :global(.q-api .prop-description > a:hover) {
-    color: var(--primary);
   }
 
   :global(.q-api .q-api__tabs .q-tab) {
