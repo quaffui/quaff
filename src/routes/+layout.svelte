@@ -277,6 +277,10 @@
       to: "/utils/quaff",
     },
     {
+      name: "Right-to-left layouts",
+      to: "/utils/rtl",
+    },
+    {
       name: "QTheme",
       to: "/utils/q-theme",
     },

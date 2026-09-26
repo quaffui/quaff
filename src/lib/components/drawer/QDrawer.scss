@@ -65,27 +65,26 @@
     touch-action: none;
   }
 
+  width: var(--q-drawer-width);
+
   @each $side in ("left", "right") {
-    &.q-drawer--#{$side} {
+    $start-dir: if(sass($side == "left"): "ltr"; else: "rtl");
+    $end-dir: if(sass($side == "left"): "rtl"; else: "ltr");
+    $inner-side: if(sass($side == "left"): "right"; else: "left");
+
+    &:is(
+      .q-drawer--#{$side},
+      .q-drawer--start:dir(#{$start-dir}),
+      .q-drawer--end:dir(#{$end-dir})
+    ) {
       #{$side}: 0;
-      width: var(--#{$side}-drawer-width);
-      transform: translate(if(sass($side == "left"): -100%; else: 100%));
-
-      @each $position in ("top", "bottom") {
-        @if $side == "left" {
-          &.q-drawer--offset-#{$position}:not(.q-drawer--bordered) {
-            border-#{$position}-right-radius: 16px;
-          }
-        } @else {
-          &.q-drawer--offset-#{$position}:not(.q-drawer--bordered) {
-            border-#{$position}-left-radius: 16px;
-          }
-        }
+      &:not(.q-drawer--active) {
+        transform: translateX(if(sass($side == "left"): -100%; else: 100%));
       }
-    }
 
-    &:not(.q-drawer--#{$side}).q-drawer--bordered {
-      @include mixins.border($position: $side);
+      &.q-drawer--bordered {
+        @include mixins.border($position: $inner-side);
+      }
     }
   }
 
@@ -216,7 +215,15 @@
 }
 
 @each $side in ("left", "right") {
-  .q-drawer__swipearea--#{$side} {
+  $start-dir: if(sass($side == "left"): "ltr"; else: "rtl");
+  $end-dir: if(sass($side == "left"): "rtl"; else: "ltr");
+
+  .q-drawer:is(
+      .q-drawer--#{$side},
+      .q-drawer--start:dir(#{$start-dir}),
+      .q-drawer--end:dir(#{$end-dir})
+    )
+    + .q-drawer__swipearea {
     #{$side}: 0;
     width: 20px;
   }

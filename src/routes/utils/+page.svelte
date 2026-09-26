@@ -31,6 +31,12 @@
       hovered: false,
     },
     {
+      name: "Right-to-left layouts",
+      description: "Set page direction, local overrides, and popup alignment.",
+      href: "/utils/rtl",
+      hovered: false,
+    },
+    {
       name: "QTheme",
       description: "Class for managing the application's color theme.",
       href: "/utils/q-theme",

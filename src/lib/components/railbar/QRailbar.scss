@@ -36,14 +36,23 @@
     display: none;
   }
 
-  @each $side in ("left", "right") {
-    &.q-railbar--#{$side} {
-      #{$side}: 0;
-      width: var(--#{$side}-railbar-width);
-    }
+  width: var(--q-railbar-width);
 
-    &:not(.q-railbar--#{$side}).q-railbar--bordered {
-      @include mixins.border($position: $side);
+  @each $side in ("left", "right") {
+    $start-dir: if(sass($side == "left"): "ltr"; else: "rtl");
+    $end-dir: if(sass($side == "left"): "rtl"; else: "ltr");
+    $inner-side: if(sass($side == "left"): "right"; else: "left");
+
+    &:is(
+      .q-railbar--#{$side},
+      .q-railbar--start:dir(#{$start-dir}),
+      .q-railbar--end:dir(#{$end-dir})
+    ) {
+      #{$side}: 0;
+
+      &.q-railbar--bordered {
+        @include mixins.border($position: $inner-side);
+      }
     }
   }
 }

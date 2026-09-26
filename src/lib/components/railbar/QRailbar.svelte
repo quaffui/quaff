@@ -7,7 +7,12 @@ Railbars are used to provide navigation between different sections or views with
   import { navigationCtx } from "$internal/navigationContext";
 
   import { useColor } from "$composables";
-  import { leftRailbarCtx, rightRailbarCtx } from "../layout/QLayout.svelte";
+  import {
+    startRailbarCtx,
+    endRailbarCtx,
+    leftRailbarCtx,
+    rightRailbarCtx,
+  } from "../layout/QLayout.svelte";
   import type { QRailbarProps } from "./props";
 
   navigationCtx.set("bar");
@@ -16,7 +21,7 @@ Railbars are used to provide navigation between different sections or views with
   let {
     activeColor = "secondary-container",
     width = 80,
-    side = "left",
+    side = "start",
     bordered = false,
     children,
     ...props
@@ -24,31 +29,30 @@ Railbars are used to provide navigation between different sections or views with
   // #endregion: --- Props
 
   let railbarEl = $state<HTMLElement>();
-  const leftContext = leftRailbarCtx.get();
-  const rightContext = rightRailbarCtx.get();
+  const contexts = {
+    start: { api: startRailbarCtx, context: startRailbarCtx.get() },
+    end: { api: endRailbarCtx, context: endRailbarCtx.get() },
+    left: { api: leftRailbarCtx, context: leftRailbarCtx.get() },
+    right: { api: rightRailbarCtx, context: rightRailbarCtx.get() },
+  };
 
   // #region:    --- Derived values
-  const railbarCtx = $derived(side === "left" ? leftContext : rightContext);
-  const hasTopOffset = $derived(railbarCtx?.view.charAt(side === "left" ? 0 : 2) === "h");
-  const hasBottomOffset = $derived(railbarCtx?.view.charAt(side === "left" ? 8 : 10) === "f");
   const parsedActiveColor = $derived(
     activeColor === "secondary-container" ? undefined : useColor(activeColor)
   );
 
-  const style = $derived(`--${side}-railbar-width: ${width}px;${props.style ?? ""}`);
+  const style = $derived(`--q-railbar-width: ${width}px;${props.style ?? ""}`);
   // #endregion: --- Derived values
 
   $effect(() => {
     // Keep this side's context so cleanup resets it after a side change.
-    const context = railbarCtx;
+    const { api: contextApi, context } = contexts[side];
     const element = railbarEl;
     const configuredWidth = width;
 
     if (!context || !element) {
       return;
     }
-
-    const contextApi = side === "left" ? leftRailbarCtx : rightRailbarCtx;
 
     const updateLayout = () => {
       const style = getComputedStyle(element);
@@ -78,8 +82,6 @@ Railbars are used to provide navigation between different sections or views with
     bemClasses: {
       [side]: true,
       bordered,
-      "offset-top": hasTopOffset,
-      "offset-bottom": hasBottomOffset,
     },
     classes: [props.class],
   });

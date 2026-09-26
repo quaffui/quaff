@@ -13,7 +13,7 @@ Search bars expand into a focused space for suggestions, filters, and results.
   import QLinearProgress from "$components/progress/QLinearProgress.svelte";
   import { ripple } from "$helpers";
   import { useI18n } from "$internal/i18n.svelte";
-  import { quaffConfig } from "$internal/quaffConfig";
+  import { useQuaffConfig } from "$internal/quaffConfig.svelte";
   import { getClosestFocusableChild, shouldReduceMotion, type QEvent } from "$utils";
   import { prepareSearchMotion, type SearchMotion } from "./searchMotion";
   import type { QSearchProps } from "./props";
@@ -46,6 +46,7 @@ Search bars expand into a focused space for suggestions, filters, and results.
   const id = $props.id();
   const viewId = `${id}-view`;
   const placeholder = $derived(providedPlaceholder ?? i18n.labels.placeholder);
+  const quaffConfig = useQuaffConfig();
   const isExpressive = $derived(expressive ?? quaffConfig.expressive);
   const isFullscreen = $derived(
     layout === "fullscreen" || (layout === "auto" && (innerWidth.current ?? 600) < 600)

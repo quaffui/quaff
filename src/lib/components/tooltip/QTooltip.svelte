@@ -8,6 +8,8 @@ The Tooltip component displays informative text on hover or focus, providing add
   import { on } from "svelte/events";
   import { type Attachment, createAttachmentKey } from "svelte/attachments";
   import { getOverlayPortalTarget, portal } from "$utils";
+  import { syncOverlayDirection } from "$internal/overlayDirection";
+  import { useQuaffConfig } from "$internal/quaffConfig.svelte";
   import type { QTooltipProps } from "./props";
 
   // #region:    --- Props
@@ -41,6 +43,7 @@ The Tooltip component displays informative text on hover or focus, providing add
   // #endregion: --- Non-reactive variables
 
   // #region:    --- Derived values
+  const quaffConfig = useQuaffConfig();
   const id = $derived(customId ?? `q-tooltip-${generatedId}`);
   const realTarget = $derived.by(resolveTarget);
   // #endregion: --- Derived values
@@ -115,6 +118,8 @@ The Tooltip component displays informative text on hover or focus, providing add
       return;
     }
 
+    // Track global changes; the root pre-effect has already applied direction.
+    void quaffConfig.rtl;
     updatePosition();
     const observer = new ResizeObserver(updatePosition);
     observer.observe(realTarget);
@@ -244,6 +249,8 @@ The Tooltip component displays informative text on hover or focus, providing add
     if (!realTarget || !tooltipEl) {
       return;
     }
+
+    syncOverlayDirection(tooltipEl, realTarget, props.dir, props.lang);
 
     const rect = realTarget.getBoundingClientRect();
     const gap = position.includes("-") ? 0 : 8;

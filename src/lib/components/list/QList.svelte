@@ -25,7 +25,7 @@ The QList component is used to display a list of items with options for adding t
 
 <script lang="ts">
   import { onMount, tick } from "svelte";
-  import { quaffConfig } from "$internal/quaffConfig";
+  import { useQuaffConfig } from "$internal/quaffConfig.svelte";
   import { menuCtx } from "$internal/menuContext";
   import { getDirection, isArrowKey } from "$utils";
 
@@ -58,6 +58,7 @@ The QList component is used to display a list of items with options for adding t
 
   // #region:    --- Derived values
   const isInMenu = menuCtx.get() ?? false;
+  const quaffConfig = useQuaffConfig();
   const isExpressive = $derived(expressive ?? (!isInMenu && quaffConfig.expressive));
   const role = $derived(props.role ?? (selection ? "listbox" : undefined));
   // #endregion: --- Derived values
