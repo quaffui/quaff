@@ -137,26 +137,82 @@ Quaff.init({ language: frFR });`}
         </div>
       </QDocsSection>
 
-      <QDocsSection title="Breakpoints">
+      <QDocsSection title="Screen">
         {#snippet sectionDescription()}
           <p>
-            Quaff provides a simple way to manage breakpoints with its
-            <code>breakpoints</code> property. This property is an object that contains the current breakpoints
-            of the framework. You can use it to check the current breakpoint and react to changes in the
-            viewport size.
-          </p>
-
-          <QCodeBlock language="ts" code={JSON.stringify(Quaff.breakpoints, null, 2)} />
-
-          <p>
-            It also provides two methods to check if the current viewport is more than or less than
-            a given breakpoint: <code>isMoreThan</code> and <code>isLessThan</code>. These methods
-            take a breakpoint name and an optional boolean value to determine if the given
-            breakpoint should be inclusive. For example, to check if the current viewport is larger
-            than <code>md</code> (included), you can use
-            <code>Quaff.breakpoints.isMoreThan("md", true)</code>.
+            <code>Quaff.screen</code> provides reactive, read-only viewport dimensions and size
+            flags using MD3 boundaries: 600/840/1200/1600px. Call <code>Quaff.init()</code> once
+            during root layout setup, including in client-only apps. Read screen properties directly
+            in markup or inside <code>$derived</code>.
           </p>
         {/snippet}
+
+        <QCodeBlock
+          language="ts"
+          code={`Quaff.screen.width;      // Viewport width in CSS pixels
+Quaff.screen.height;     // Viewport height in CSS pixels
+Quaff.screen.name;       // "xs" | "sm" | "md" | "lg" | "xl"
+Quaff.screen.sizes;      // { sm: 600, md: 840, lg: 1200, xl: 1600 }
+Quaff.screen.md;         // Only md: 840px up to, but excluding, 1200px
+Quaff.screen.lt.md;      // Below md: less than 840px
+Quaff.screen.gt.md;      // Above md: at least 1200px
+Quaff.screen.ready;      // Whether viewport measurements are available
+Quaff.screen.navigation; // "navbar" below 600px, otherwise "railbar"
+Quaff.screen.twoPane;    // true from 840px
+
+const expanded = $derived(!Quaff.screen.lt.md); // md or wider: at least 840px`}
+        />
+        <p>
+          The <code>xs</code>, <code>sm</code>, <code>md</code>, <code>lg</code>, and
+          <code>xl</code> flags each match exactly one size class. <code>lt</code> supports
+          <code>sm/md/lg/xl</code>; <code>gt</code> supports <code>xs/sm/md/lg</code>.
+          <code>gt.md</code> means above the entire md class; <code>!lt.md</code> includes md from 840px.
+        </p>
+        <p>
+          Until the root layout mounts, width and height are <code>0</code>, <code>name</code> is
+          <code>"xs"</code>, and <code>ready</code> is false. Live viewport updates begin on mount. This
+          keeps the initial server render and hydration consistent.
+        </p>
+        <p>
+          <code>Quaff.getScreen(width, height?)</code> returns a <code>ScreenState</code> with the
+          same properties for a container; height defaults to <code>0</code>. It is pure and needs
+          no <code>Quaff.init()</code>. Derive it from a measured width with <code>$derived</code>.
+          A valid width, including <code>0</code>, makes
+          <code>ready</code> true; undefined or invalid widths leave it false. See
+          <a class="q-docs-link" href={resolve("/layout/adaptive", {})}>adaptive layouts</a>
+          for container sizing, navigation, and list/detail examples.
+        </p>
+      </QDocsSection>
+
+      <QDocsSection title="Migrating from breakpoints">
+        {#snippet sectionDescription()}
+          <p>
+            <code>Quaff.screen</code> replaces <code>Quaff.breakpoints</code>. Initialize it with
+            <code>Quaff.init()</code> in your root layout. The md/lg/xl thresholds also change from 960/1280/1920px
+            to 840/1200/1600px; sm stays at 600px.
+          </p>
+        {/snippet}
+
+        <QCodeBlock
+          language="ts"
+          code={`const screen = $derived(Quaff.screen);
+
+screen.width;                         // Was breakpoints.currentWidth
+screen.name;                          // Was breakpoints.current
+screen.sizes.md;                      // Was breakpoints.md (now 840px)
+
+// Comparisons using the new thresholds, once screen.ready is true:
+!screen.lt.md;                         // Was isMoreThan("md", true)
+screen.width > screen.sizes.md;        // Was isMoreThan("md")
+screen.lt.sm;                         // Was isLessThan("sm")
+screen.width <= screen.sizes.sm;       // Was isLessThan("sm", true)`}
+        />
+        <p>
+          The old methods compared against a class's starting width. <code>screen.gt.md</code>
+          instead means above the whole md class, starting at 1200px. To keep comparisons false before
+          mounting, guard them with <code>screen.ready</code>, for example
+          <code>screen.ready && screen.lt.sm</code>.
+        </p>
       </QDocsSection>
 
       <QDocsSection title="Sveltekit router">

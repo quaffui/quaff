@@ -1,9 +1,10 @@
 import { onMount } from "svelte";
-import { innerWidth } from "svelte/reactivity/window";
+import { innerHeight, innerWidth } from "svelte/reactivity/window";
 import { version } from "$helpers";
 import { initI18n } from "$internal/i18n.svelte";
 import { captureAppContext } from "$internal/appContext";
 import { initQuaffConfig, type QuaffConfig } from "$internal/quaffConfig.svelte";
+import { resolveScreen } from "$internal/breakpoints";
 import { page } from "$app/state";
 
 type DisplayMode = "light" | "dark";
@@ -13,57 +14,19 @@ const DISPLAY_MODE_STORAGE_KEY = "displayMode";
 class Quaff {
   public version = version;
 
-  private static readonly breakpointList = {
-    xs: 0,
-    sm: 600,
-    md: 960,
-    lg: 1280,
-    xl: 1920,
-  };
+  private mounted = $state(false);
 
-  public readonly breakpoints = $derived.by(() => {
-    type Breakpoint = "xs" | "sm" | "md" | "lg" | "xl";
-    const currentWidth = innerWidth.current;
-
-    let current: Breakpoint;
-
-    if (!currentWidth || currentWidth < 600) {
-      current = "xs";
-    } else if (currentWidth < 960) {
-      current = "sm";
-    } else if (currentWidth < 1280) {
-      current = "md";
-    } else if (currentWidth < 1920) {
-      current = "lg";
-    } else {
-      current = "xl";
-    }
-
-    return {
-      ...Quaff.breakpointList,
-      currentWidth: currentWidth || 0,
-      current,
-      isMoreThan(breakpoint: Breakpoint, included = false) {
-        if (!currentWidth) {
-          return false;
-        }
-
-        const breakpointWidth = this[breakpoint];
-        return included ? currentWidth >= breakpointWidth : currentWidth > breakpointWidth;
-      },
-      isLessThan(breakpoint: Breakpoint, included = false) {
-        if (!currentWidth) {
-          return false;
-        }
-
-        const breakpointWidth = this[breakpoint];
-        return included ? currentWidth <= breakpointWidth : currentWidth < breakpointWidth;
-      },
-    };
-  });
+  public readonly screen = $derived(
+    this.mounted ? resolveScreen(innerWidth.current, innerHeight.current) : resolveScreen(undefined)
+  );
   public router = $derived(page);
 
   protected dark = $state(false);
+
+  /** Evaluate container dimensions. Wrap in $derived when the measurements change. */
+  public getScreen(width: number | undefined, height?: number) {
+    return resolveScreen(width, height);
+  }
 
   public init(config: Partial<QuaffConfig> = {}) {
     initQuaffConfig(config);
@@ -71,6 +34,7 @@ class Quaff {
     captureAppContext();
 
     onMount(() => {
+      this.mounted = true;
       this.applyDisplayMode(this.getCurrentDisplayMode(), false);
     });
   }

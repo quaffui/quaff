@@ -331,7 +331,7 @@
     <div class="row q-gap-lg q-pa-lg items-center">
       <QSwitch value={true} class="col-3" />
 
-      {#if Quaff.breakpoints.isMoreThan("sm")}
+      {#if Quaff.screen.ready && Quaff.screen.width > Quaff.screen.sizes.sm}
         <QCheckbox value={true} class="col-2" color="secondary" />
       {/if}
 
@@ -347,7 +347,7 @@
         class="col-xs-12 col-sm-7"
         style="width: 100%"
       />
-      {#if Quaff.breakpoints.isMoreThan("sm")}
+      {#if Quaff.screen.ready && Quaff.screen.width > Quaff.screen.sizes.sm}
         <QLinearProgress
           indeterminate
           class="col-5"
@@ -357,7 +357,7 @@
         />
       {/if}
     </div>
-    {#if Quaff.breakpoints.isLessThan("sm", true)}
+    {#if Quaff.screen.ready && Quaff.screen.width <= Quaff.screen.sizes.sm}
       <div class="row q-gap-lg q-pa-lg items-center">
         <QLinearProgress
           indeterminate
@@ -375,7 +375,7 @@
       </div>
     {/if}
     <div class="row q-gap-lg q-pa-lg items-center">
-      {#if Quaff.breakpoints.isMoreThan("sm")}
+      {#if Quaff.screen.ready && Quaff.screen.width > Quaff.screen.sizes.sm}
         <QChip label="Hey!" icon="waving_hand" class="col-3 surface" />
       {/if}
       <QTabs value="home" class="col-12 col-sm-9" style="border-radius: 8px;">
