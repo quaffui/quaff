@@ -9,7 +9,7 @@ export interface QuaffI18nConfig {
   locale?: string;
   /** Stock component text overrides. Omitted entries use the selected language pack. */
   translations?: {
-    [Component in keyof QuaffTranslations]?: Partial<QuaffTranslations[Component]>;
+    [Component in keyof QuaffTranslations]?: Partial<NonNullable<QuaffTranslations[Component]>>;
   };
 }
 
@@ -22,7 +22,8 @@ export function initI18n(config: QuaffI18nConfig) {
 export function useI18n<Component extends keyof QuaffTranslations>(component: Component) {
   const config = getContext<QuaffI18nConfig | undefined>(i18nContext);
   const labels = $derived.by(() => {
-    const defaults = config?.language?.translations[component] ?? en.translations[component];
+    const defaults = (config?.language?.translations[component] ??
+      en.translations[component]) as Required<QuaffTranslations>[Component];
     const merged = { ...defaults, ...config?.translations?.[component] };
 
     for (const key in merged) {

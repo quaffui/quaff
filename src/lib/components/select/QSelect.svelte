@@ -147,7 +147,7 @@ QSelect is a form component that allows users to choose from multiple options in
     }
   }
 
-  function handleWrapperMousedown(event: QEvent<MouseEvent, HTMLLabelElement>) {
+  function handleBackgroundMousedown(event: QEvent<MouseEvent, HTMLElement>) {
     if (event.target === event.currentTarget) {
       handleMousedown();
     }
@@ -363,10 +363,11 @@ QSelect is a form component that allows users to choose from multiple options in
       bind:this={menuTarget}
       for={inputId}
       class="q-field__wrapper"
-      onmousedown={handleWrapperMousedown}
+      onmousedown={handleBackgroundMousedown}
     >
       {#if prepend}
-        <div class="q-field__snippet-prepend">
+        <!-- svelte-ignore a11y_no_static_element_interactions (Only background clicks activate the associated combobox.) -->
+        <div class="q-field__snippet-prepend" onmousedown={handleBackgroundMousedown}>
           {@render prepend()}
         </div>
       {/if}
@@ -396,7 +397,8 @@ QSelect is a form component that allows users to choose from multiple options in
 
       <span class="q-field__label"><span class="q-field__label-text">{label}</span></span>
 
-      <div class="q-field__snippet-append">
+      <!-- svelte-ignore a11y_no_static_element_interactions (Only background clicks activate the associated combobox.) -->
+      <div class="q-field__snippet-append" onmousedown={handleBackgroundMousedown}>
         {@render append?.()}
 
         <QIcon

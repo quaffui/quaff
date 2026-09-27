@@ -71,6 +71,11 @@ const COMPONENT_REGISTRY = {
       renders: ["QBtn"],
     }),
   }),
+  "color-picker": group("components/color-picker", {
+    QColorPicker: component("q-color-picker", {
+      renders: ["QInput", "QSlider", "QIconBtn", "QMenu", "QBtn", "QBtnToggle"],
+    }),
+  }),
   date: group("components/date", {
     QDate: component("q-date", {
       renders: ["QDialog", "QMenu", "QBtn", "QIconBtn", "QIcon", "QInput"],

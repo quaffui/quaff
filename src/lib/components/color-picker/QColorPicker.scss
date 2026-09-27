@@ -1,0 +1,215 @@
+@use "$css/mixins";
+
+.q-color-picker {
+  min-inline-size: 0;
+
+  &--inline {
+    inline-size: 320px;
+    max-inline-size: 100%;
+    border-radius: 16px;
+    background: var(--surface-container);
+    color: var(--on-surface);
+  }
+
+  &__popup.q-menu {
+    inline-size: 320px;
+    min-inline-size: 0;
+    max-inline-size: calc(100vw - 16px);
+    max-block-size: var(--q-menu-available-height, calc(100dvh - 16px));
+    border-radius: 16px;
+    background: var(--surface-container);
+  }
+
+  &__panel {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px;
+    min-inline-size: 0;
+  }
+
+  &__title {
+    @include mixins.typography(title-large);
+    margin: 0;
+  }
+
+  &__axes,
+  &__control-label {
+    @include mixins.typography(label-medium);
+    color: var(--on-surface-variant);
+  }
+
+  &__axes {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 4px 16px;
+    margin-block-end: -8px;
+  }
+
+  &__field {
+    position: relative;
+    min-block-size: 144px;
+    aspect-ratio: 3 / 2;
+    border-radius: 8px;
+    background:
+      linear-gradient(to top, #000, transparent), linear-gradient(to right, #fff, transparent),
+      hsl(var(--q-color-hue) 100% 50%);
+    box-shadow: inset 0 0 0 1px var(--outline);
+    touch-action: none;
+    forced-color-adjust: none;
+    cursor: crosshair;
+  }
+
+  &__axis,
+  &__thumb {
+    position: absolute;
+    left: var(--q-color-x);
+    top: var(--q-color-y);
+    translate: -50% -50%;
+    inline-size: 24px;
+    block-size: 24px;
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  &__axis {
+    margin: 0;
+    opacity: 0;
+  }
+
+  &__thumb {
+    border: 3px solid #fff;
+    box-shadow: 0 0 0 2px #000;
+  }
+
+  &__field:has(input:focus-visible) {
+    outline: 3px solid var(--secondary);
+    outline-offset: 3px;
+
+    .q-color-picker__thumb {
+      outline: 3px solid #fff;
+      outline-offset: 4px;
+    }
+  }
+
+  &__control {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  &__hue,
+  &__opacity {
+    direction: ltr;
+    flex: none;
+    inline-size: calc(100% - 24px);
+    margin-inline: 12px;
+    color: var(--on-surface);
+
+    .q-slider__track {
+      border-radius: 8px;
+      outline: 1px solid var(--outline);
+      outline-offset: -1px;
+      forced-color-adjust: none;
+    }
+
+    .q-slider__segment {
+      background: transparent;
+    }
+
+    .q-slider__stop {
+      display: none;
+    }
+
+    .q-slider__handle::before {
+      background: #fff;
+      box-shadow: 0 0 0 1px #000;
+      forced-color-adjust: none;
+    }
+  }
+
+  &__hue .q-slider__track {
+    background: linear-gradient(to right, #f00, #ff0, #0f0, #0ff, #00f, #f0f, #f00);
+  }
+
+  &__opacity .q-slider__track {
+    background:
+      linear-gradient(to right, transparent, var(--q-color-opaque)),
+      repeating-conic-gradient(#ddd 0% 25%, #fff 0% 50%) 0 / 8px 8px;
+  }
+
+  &__formats {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: space-between;
+  }
+
+  &__swatch {
+    display: inline-block;
+    flex: none;
+    position: relative;
+    inline-size: 32px;
+    block-size: 32px;
+    border: 1px solid var(--outline);
+    border-radius: 8px;
+    overflow: hidden;
+    background: repeating-conic-gradient(#ddd 0% 25%, #fff 0% 50%) 0 / 8px 8px;
+    forced-color-adjust: none;
+
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: var(--q-color-preview);
+    }
+  }
+
+  &__channels {
+    @include mixins.typography(body-large);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, calc(4ch + 48px)), 1fr));
+    gap: 8px;
+  }
+
+  &__error {
+    @include mixins.typography(body-small);
+    margin: 4px 0 0;
+    color: var(--error);
+
+    &:empty {
+      position: absolute;
+      inline-size: 1px;
+      block-size: 1px;
+      margin: 0;
+      overflow: hidden;
+      clip-path: inset(50%);
+    }
+  }
+
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 8px;
+  }
+
+  &--disabled &__panel {
+    :is(
+      .q-color-picker__field,
+      .q-color-picker__axes,
+      .q-color-picker__control-label,
+      .q-color-picker__swatch,
+      .q-slider__track
+    ) {
+      opacity: 38%;
+    }
+  }
+
+  &:is(&--disabled, &--readonly) &__field {
+    cursor: default;
+    touch-action: auto;
+  }
+}

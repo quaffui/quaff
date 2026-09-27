@@ -159,6 +159,10 @@
           letter,
           <code>N</code> alphanumeric, <code>A</code> uppercase letter, <code>a</code> lowercase
           letter, <code>X</code> uppercase alphanumeric, and <code>x</code> lowercase alphanumeric.
+          Prefix a token with a backslash to make it literal: <code>mask="\#XXXXXX"</code>
+          displays a fixed # followed by six uppercase alphanumeric characters. When passing a mask through
+          a JavaScript string, preserve the backslash with <code>String.raw</code> or escape it as
+          <code>\\</code>.
         {/snippet}
         <QInput
           bind:value={phoneValue}

@@ -57,7 +57,7 @@ export interface QInputProps
   rounded?: boolean;
 
   /**
-   * Applies a mask to text input. Supports tokens (#, S, N, A, a, X, x) and named masks: date, datetime, time, fulltime, phone, card.
+   * Applies a mask to text input. Supports tokens (#, S, N, A, a, X, x) and named masks: date, datetime, time, fulltime, phone, card. Prefix a token with a backslash to render it literally (for example, \#XXXXXX).
    *
    */
   mask?: string;

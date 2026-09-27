@@ -59,7 +59,7 @@ QInput is a form component that allows users to input text. It supports differen
   const inputId = $derived(inputProps.id ?? `q-input-${id}`);
   const nativeValue = $derived(value ?? "");
   const displayValue = $derived(
-    mask ? maskValue(String(nativeValue), mask, fillMask) : nativeValue
+    mask ? maskValue(String(nativeValue), mask, fillMask, unmaskedValue) : nativeValue
   );
   const hasValue = $derived(value !== "" && value !== undefined && value !== null);
   const hasNativePlaceholder = $derived(

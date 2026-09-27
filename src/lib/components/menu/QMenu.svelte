@@ -42,6 +42,7 @@ QMenu displays anchored popup content. It handles positioning, outside-click dis
   let menuLeft = $state(0);
   let menuWidth = $state<string | undefined>();
   let menuMaxWidth = $state<string | undefined>();
+  let menuAvailableHeight = $state<string>();
   let menuPosition = $state<"fixed" | "absolute">("fixed");
   let menuTranslateX = $state("0px");
   let wasMenuOpen = false;
@@ -253,6 +254,11 @@ QMenu displays anchored popup content. It handles positioning, outside-click dis
     menuWidth = fit ? `${rect.width}px` : undefined;
     menuMaxWidth = fit ? `${maxViewportWidth}px` : undefined;
 
+    const viewportTop = dialogRect
+      ? top
+      : Math.max(margin, Math.min(top, viewportHeight - measured.height - margin));
+    menuAvailableHeight = `${Math.max(0, viewportHeight - viewportTop - margin)}px`;
+
     if (dialogRect) {
       menuPosition = "absolute";
       menuTop = top - dialogRect.top;
@@ -262,7 +268,7 @@ QMenu displays anchored popup content. It handles positioning, outside-click dis
     }
 
     menuPosition = "fixed";
-    menuTop = Math.max(margin, Math.min(top, viewportHeight - measured.height - margin));
+    menuTop = viewportTop;
     menuLeft = baseLeft;
     // Percentages follow the popup's own width, including content loaded after opening.
     menuTranslateX = `clamp(${margin - baseLeft}px, ${-selfX * 100}%, calc(100vw - ${margin + baseLeft}px - 100%))`;
@@ -378,6 +384,7 @@ QMenu displays anchored popup content. It handles positioning, outside-click dis
     style:translate="{menuTranslateX} 0"
     style:width={menuWidth}
     style:max-width={menuMaxWidth}
+    style:--q-menu-available-height={menuAvailableHeight}
     onclick={handleMenuClick}
     ontoggle={handlePopoverToggle}
   >

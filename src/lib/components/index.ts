@@ -16,6 +16,7 @@ import QCheckbox from "./checkbox/QCheckbox.svelte";
 import QChip from "./chip/QChip.svelte";
 import QCircularProgress from "./progress/QCircularProgress.svelte";
 import QCodeBlock from "./codeBlock/QCodeBlock.svelte";
+import QColorPicker from "./color-picker/QColorPicker.svelte";
 import QDate from "./date/QDate.svelte";
 import QDialog from "./dialog/QDialog.svelte";
 import QDrawer from "./drawer/QDrawer.svelte";
@@ -75,6 +76,7 @@ export {
   QChip,
   QCircularProgress,
   QCodeBlock,
+  QColorPicker,
   QDate,
   QDialog,
   QDrawer,

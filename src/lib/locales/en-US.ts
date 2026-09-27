@@ -3,7 +3,7 @@ import { defaultTimeLabels } from "$components/time/props.js";
 
 import type { QuaffLanguage } from "./types.js";
 
-const en: QuaffLanguage = {
+const en = {
   locale: "en-US",
   translations: {
     table: {
@@ -32,6 +32,21 @@ const en: QuaffLanguage = {
       confirmLabel: "OK",
       cancelLabel: "Cancel",
     },
+    colorPicker: {
+      chooseColor: "Choose color",
+      colorField: "Color field",
+      saturation: "Saturation",
+      brightness: "Brightness",
+      hue: "Hue",
+      opacity: "Opacity",
+      red: "Red",
+      green: "Green",
+      blue: "Blue",
+      format: "Color format",
+      apply: "Apply",
+      cancel: "Cancel",
+      invalidColor: "Enter a valid HEX or RGB color",
+    },
     select: {
       noOptionText: "No options",
     },
@@ -43,6 +58,6 @@ const en: QuaffLanguage = {
       searching: "Searching",
     },
   },
-};
+} satisfies QuaffLanguage;
 
 export default en;
