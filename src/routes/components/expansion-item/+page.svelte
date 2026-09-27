@@ -1,6 +1,16 @@
 <script lang="ts">
+  import { resolve } from "$app/paths";
   import { QExpansionItemDocs } from "$components/expansion-item/docs";
-  import { QExpansionItem, QItem, QList, QItemSection, QIcon, QSwitch } from "$components";
+  import {
+    QBtn,
+    QCheckbox,
+    QExpansionItem,
+    QIcon,
+    QItemSection,
+    QList,
+    QSelect,
+    QSwitch,
+  } from "$lib";
   import { QDocs, QDocsSection } from "$docs";
   import { docsCtx } from "$docs/QDocs.svelte";
   import { useMeta } from "$lib/meta";
@@ -14,434 +24,477 @@
     )
   );
 
-  docsCtx.set({ snippets, componentDocs: QExpansionItemDocs });
+  const REPAIRS = [
+    {
+      label: "Jacket pocket",
+      icon: "apparel",
+      detail: "Match the thread and reinforce the loose corner.",
+    },
+    {
+      label: "Bicycle bell",
+      icon: "pedal_bike",
+      detail: "Clean the lever before checking its spring.",
+    },
+    {
+      label: "Picture frame",
+      icon: "photo",
+      detail: "Square the corners and replace the backing.",
+    },
+  ] as const;
+  const ICON_PRESETS = {
+    Chevron: { expandIcon: "keyboard_arrow_down" },
+    "Plus / minus": { expandIcon: "add", expandedIcon: "remove" },
+    Stationary: { expandIcon: "handyman", noRotateExpandIcon: true },
+    Hidden: { hideExpandIcon: true },
+  } as const;
+  const ICON_OPTIONS = Object.keys(ICON_PRESETS);
+  const DURATIONS = [
+    { label: "Default", value: "default" },
+    { label: "150 ms", value: "150" },
+    { label: "800 ms", value: "800" },
+  ];
 
-  let customExpandedValue = $state(false);
+  let noRipple = $state(false);
+  let isExclusive = $state(true);
+  let expressive = $state(true);
+  let isSegmented = $state(true);
+  let dense = $state(false);
+  let iconStyle = $state<keyof typeof ICON_PRESETS>("Chevron");
+  let duration = $state("default");
+  let isPanelOpen = $state(false);
+  let isPrepared = $state(false);
+  let repairItem = $state<ReturnType<typeof QExpansionItem>>();
+  let lastChange = $state("No state changes yet.");
+  let detailsClicks = $state(0);
+
+  const iconPreset = $derived({
+    expandIcon: "keyboard_arrow_down",
+    expandedIcon: undefined,
+    noRotateExpandIcon: false,
+    hideExpandIcon: false,
+    ...ICON_PRESETS[iconStyle],
+  } as const);
+  const animationDuration = $derived(duration === "default" ? undefined : Number(duration));
+
+  docsCtx.set({ snippets, componentDocs: QExpansionItemDocs });
 </script>
 
 <QDocs>
   {#snippet display()}
-    <QList bordered class="surface" style="max-width: 75%">
-      <QExpansionItem label="Click me" icon="waving_hand">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia aliquid facere,
-      </QExpansionItem>
-    </QList>
+    <!-- svelte-ignore a11y_no_noninteractive_tabindex (The preview scrolls when text is enlarged.) -->
+    <div
+      class="expansion-preview min-width-0 overflow-auto surface-container-low"
+      role="region"
+      aria-label="Repair notes preview"
+      tabindex="0"
+    >
+      <h2 class="title-large q-mt-none q-mb-md">Repair notes</h2>
+      <QList role="group" expressive segmented aria-label="Repair notes">
+        <QExpansionItem label="Jacket pocket" caption="Loose seam" icon="apparel" defaultOpened>
+          <div class="panel-copy q-px-md q-pt-sm q-pb-md">
+            <p class="q-ma-none">Match the thread and reinforce the loose corner.</p>
+          </div>
+        </QExpansionItem>
+        <QExpansionItem label="Bicycle bell" caption="Sticking lever" icon="pedal_bike">
+          <div class="panel-copy q-px-md q-pt-sm q-pb-md">
+            <p class="q-ma-none">Clean the lever before checking its spring.</p>
+          </div>
+        </QExpansionItem>
+      </QList>
+    </div>
   {/snippet}
 
   {#snippet usage()}
-    <div>
-      <QDocsSection title="Basic">
+    <div class="expansion-usage">
+      <QDocsSection title="Basic Disclosure">
         {#snippet sectionDescription()}
-          <code>QExpansionItem</code> is a collapsible component that displays content within an expandable
-          container. It's perfect for organizing information into collapsible sections like FAQs, settings
-          panels, or nested navigation.
+          Place expansion items inside <code>QList</code>. The whole header opens the panel by
+          default. Add an <code>icon</code> and <code>caption</code>, start open with
+          <code>defaultOpened</code>, or make a row unavailable with <code>disabled</code>.
         {/snippet}
 
-        <QList bordered separator>
-          <QExpansionItem label="Click me" icon="waving_hand">
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia aliquid facere,
-              dolorem iusto amet quas ad nesciunt, error molestias nostrum quisquam unde a minima
-              molestiae natus omnis nulla magni exercitationem.
-            </p>
-          </QExpansionItem>
-          <QExpansionItem
-            label="Another expansion item"
-            caption="But this time, with a caption"
-            icon="cookie"
-          >
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt atque libero autem
-              velit magni similique porro laborum temporibus excepturi, nobis, alias numquam
-              molestiae eaque, unde qui accusantium ullam reiciendis facilis!
-            </p>
-          </QExpansionItem>
-          <QExpansionItem label="No ripple effect" icon="ripples" noRipple>
-            <p>
-              This item's ripple effect has been disabled with the <code>noRipple</code> prop, making
-              it suitable for static content or when you want to avoid visual feedback.
-            </p>
-          </QExpansionItem>
-          <QExpansionItem label="Disabled expansion item" icon="lock" disabled>
-            <p>This item is disabled and cannot be interacted with.</p>
-          </QExpansionItem>
-        </QList>
-      </QDocsSection>
-
-      <QDocsSection title="Mutually exclusive groups">
-        {#snippet sectionDescription()}
-          Use the <code>name</code> prop when only one item in a group should be expanded at a time.
-          Groups are scoped to their containing <code>QList</code>.
-        {/snippet}
-
-        <QList bordered separator>
-          <QExpansionItem label="First section" icon="folder" name="group1">
-            <p>
-              This is the first section. When you expand another item in this group, this one will
-              automatically close.
-            </p>
-          </QExpansionItem>
-          <QExpansionItem
-            label="Second section"
-            caption="With a helpful caption"
-            icon="description"
-            name="group1"
-          >
-            <p>
-              This is the second section. Notice how expanding this closes the previous section
-              automatically.
-            </p>
-          </QExpansionItem>
-          <QExpansionItem label="Third section" icon="settings" name="group1">
-            <p>And this is the third section of our mutually exclusive group.</p>
-          </QExpansionItem>
-        </QList>
-      </QDocsSection>
-
-      <QDocsSection title="Expressive and segmented lists">
-        {#snippet sectionDescription()}
-          The header reuses <code>QItem</code>, so density and expressive list styling are inherited
-          from the containing <code>QList</code>. Expanded items use the Material 3 large container
-          shape and surface colors.
-        {/snippet}
-
-        <QList expressive segmented>
-          <QExpansionItem
-            label="Projects"
-            caption="Three active projects"
-            icon="folder"
-            defaultOpened
-          >
-            <QList expressive segmented aria-label="Projects">
-              <QItem>
-                <QItemSection>Design system</QItemSection>
-              </QItem>
-              <QItem>
-                <QItemSection>Documentation</QItemSection>
-              </QItem>
-              <QItem>
-                <QItemSection>Mobile app</QItemSection>
-              </QItem>
-            </QList>
-          </QExpansionItem>
-          <QExpansionItem label="Archive" icon="archive">
-            Archived projects appear here.
-          </QExpansionItem>
-        </QList>
-      </QDocsSection>
-
-      <QDocsSection title="Custom expand icons">
-        {#snippet sectionDescription()}
-          Customize the expand/collapse icons using <code>expandIcon</code> and
-          <code>expandedIcon</code>
-          props. If only <code>expandIcon</code> is provided, it will rotate when expanded. You can
-          disable this rotation with the <code>noRotateExpandIcon</code> prop.
-        {/snippet}
-
-        <QList bordered separator>
-          <QExpansionItem label="Custom expand icon" icon="star" expandIcon="arrow_drop_down">
-            <p>This item uses a dropdown arrow icon that rotates when expanded.</p>
-          </QExpansionItem>
-          <QExpansionItem
-            label="Different expand/collapse icons"
-            icon="visibility"
-            expandIcon="add"
-            expandedIcon="remove"
-          >
-            <p>This item uses different icons for expanded and collapsed states.</p>
-          </QExpansionItem>
-          <QExpansionItem
-            label="Custom icon with no rotation"
-            icon="rotate_left"
-            noRotateExpandIcon
-            expandIcon="lock"
-          >
-            <p>
-              This item uses a custom icon that does not rotate when expanded, thanks to the
-              <code>noRotateExpandIcon</code> prop.
-            </p>
-          </QExpansionItem>
-          <QExpansionItem label="No expand icon" icon="visibility_off" hideExpandIcon>
-            <p>This item has no expand icon - click anywhere on the header to toggle.</p>
-          </QExpansionItem>
-        </QList>
-      </QDocsSection>
-
-      <QDocsSection title="Links and separate toggles">
-        {#snippet sectionDescription()}
-          Linked headers automatically keep navigation and expansion as separate sibling actions.
-          The default non-linked pattern keeps the whole row clickable, as specified by Material 3.
-          <code>expandIconToggle</code> remains available as a legacy product-specific override when only
-          the trailing control should expand the panel.
-        {/snippet}
-
-        <QList bordered separator>
-          <QExpansionItem
-            label="Navigation item"
-            caption="Click the arrow to expand, or the text to navigate"
-            icon="home"
-            to="/components/button"
-          >
-            <p>
-              The main header area navigates to a different page, while only the expand icon toggles
-              the content.
-            </p>
-          </QExpansionItem>
-          <QExpansionItem
-            label="External link"
-            caption="Opens in new tab"
-            icon="link"
-            href="https://example.com"
-            target="_blank"
-          >
-            <p>
-              The link and disclosure button are separate actions within the list's arrow-key order.
-            </p>
-          </QExpansionItem>
-          <QExpansionItem
-            label="Separate disclosure control"
-            caption="Only the trailing button expands this item"
-            icon="info"
-            expandIconToggle
-          >
-            <p>The rest of this non-linked header is intentionally non-interactive.</p>
-          </QExpansionItem>
-        </QList>
-      </QDocsSection>
-
-      <QDocsSection title="Dense style">
-        {#snippet sectionDescription()}
-          Set <code>dense</code> on one expansion item or on the containing list to use the legacy compact
-          layout. Prefer regular density for touch interfaces.
-        {/snippet}
-
-        <div class="flex q-gap-md">
-          <div class="body-large">Regular size:</div>
-          <QList bordered separator>
-            <QExpansionItem label="Regular item" icon="folder">
-              <p>This is a regular-sized expansion item.</p>
+        <div class="expansion-example full-width min-width-0">
+          <div class="example-controls flex q-gap-x-lg q-my-md">
+            <QSwitch label="Disable ripple" bind:value={noRipple} />
+          </div>
+          <QList role="group" expressive={false} bordered separator aria-label="Basic repair notes">
+            <QExpansionItem
+              label="Jacket pocket"
+              caption="Loose seam"
+              icon="apparel"
+              defaultOpened
+              {noRipple}
+            >
+              <div class="panel-copy q-px-md q-pt-sm q-pb-md">
+                <p class="q-ma-none">Match the thread and reinforce the loose corner.</p>
+              </div>
             </QExpansionItem>
-            <QExpansionItem label="Another regular item" icon="description">
-              <p>Another regular-sized item for comparison.</p>
+            <QExpansionItem
+              label="Bicycle bell"
+              caption="Sticking lever"
+              icon="pedal_bike"
+              {noRipple}
+            >
+              <div class="panel-copy q-px-md q-pt-sm q-pb-md">
+                <p class="q-ma-none">Clean the lever before checking its spring.</p>
+              </div>
             </QExpansionItem>
-          </QList>
-
-          <div class="body-large">Dense:</div>
-          <QList bordered separator dense>
-            <QExpansionItem label="Dense item" icon="folder">
-              <p>This is a dense expansion item - more compact.</p>
-            </QExpansionItem>
-            <QExpansionItem label="Another dense item" icon="description">
-              <p>Another dense item showing the space savings.</p>
+            <QExpansionItem label="Reading lamp" caption="Not available" icon="lightbulb" disabled>
+              <div class="panel-copy q-px-md q-pt-sm q-pb-md">
+                <p class="q-ma-none">Electrical repairs require a qualified volunteer.</p>
+              </div>
             </QExpansionItem>
           </QList>
         </div>
       </QDocsSection>
 
-      <QDocsSection title="Default opened and controlled state">
+      <QDocsSection title="Exclusive Groups">
         {#snippet sectionDescription()}
-          Use <code>defaultOpened</code> to have items expanded by default, or bind to the
-          <code>value</code>
-          prop to control the expansion state programmatically.
+          Items with the same <code>name</code> close one another when opened. Groups are scoped to
+          their containing <code>QList</code>: these two lists share a name but expand
+          independently. Remove the name to allow multiple open panels.
+        {/snippet}
 
-          <div class="q-mt-md flex items-center q-gap-sm">
-            <QSwitch bind:value={customExpandedValue} label="Toggle controlled expansion item" />
+        <div class="example-controls flex q-gap-x-lg q-my-md">
+          <QSwitch label="Exclusive groups" bind:value={isExclusive} />
+        </div>
+        <div class="group-grid q-gap-lg">
+          <div class="min-width-0">
+            <h3 class="title-medium">Repairs</h3>
+            <QList role="group" expressive segmented aria-label="Grouped repairs">
+              {#each REPAIRS as repair, index (repair.label)}
+                <QExpansionItem
+                  label={repair.label}
+                  icon={repair.icon}
+                  name={isExclusive ? "repairs" : undefined}
+                  defaultOpened={index === 0}
+                >
+                  <div class="panel-copy q-px-md q-pt-sm q-pb-md">
+                    <p class="q-ma-none">{repair.detail}</p>
+                  </div>
+                </QExpansionItem>
+              {/each}
+            </QList>
           </div>
-        {/snippet}
-
-        <QList bordered separator>
-          <QExpansionItem
-            label="Controlled expansion item"
-            icon="settings"
-            bind:value={customExpandedValue}
-          >
-            <p>This expansion item is controlled by the switch above.</p>
-          </QExpansionItem>
-          <QExpansionItem label="Opened by default" icon="info" defaultOpened>
-            <p>This expansion item is opened by default when the page loads.</p>
-          </QExpansionItem>
-        </QList>
+          <div class="min-width-0">
+            <h3 class="title-medium">Materials</h3>
+            <QList role="group" expressive segmented aria-label="Grouped materials">
+              <QExpansionItem
+                label="Thread"
+                icon="palette"
+                name={isExclusive ? "repairs" : undefined}
+                defaultOpened
+              >
+                <div class="panel-copy q-px-md q-pt-sm q-pb-md">
+                  <p class="q-ma-none">Choose a matching colour and medium-weight thread.</p>
+                </div>
+              </QExpansionItem>
+              <QExpansionItem
+                label="Backing board"
+                icon="crop_square"
+                name={isExclusive ? "repairs" : undefined}
+              >
+                <div class="panel-copy q-px-md q-pt-sm q-pb-md">
+                  <p class="q-ma-none">Cut a backing board to the frame's inside dimensions.</p>
+                </div>
+              </QExpansionItem>
+            </QList>
+          </div>
+        </div>
       </QDocsSection>
 
-      <QDocsSection title="Custom animation duration">
+      <QDocsSection title="Appearance and Icons">
         {#snippet sectionDescription()}
-          Customize the expand/collapse animation speed using the <code>duration</code> prop (in milliseconds).
+          The containing list supplies expressive styling, segmentation and density. Change the
+          disclosure icon or its motion independently. <code>duration</code> is in milliseconds; the default
+          is 300 in standard lists and 350 in expressive lists.
         {/snippet}
 
-        <QList bordered separator>
-          <QExpansionItem
-            label="Fast animation"
-            caption="150ms duration"
-            icon="flash_on"
-            duration={150}
+        <div class="expansion-example full-width min-width-0">
+          <div class="example-controls flex q-gap-x-lg q-my-md">
+            <QSwitch label="Expressive" bind:value={expressive} />
+            <QSwitch label="Segmented" bind:value={isSegmented} disabled={!expressive} />
+            <QSwitch label="Dense" bind:value={dense} />
+          </div>
+          <div class="appearance-selects q-gap-md q-my-md">
+            <QSelect
+              class="min-width-0"
+              outlined
+              label="Disclosure icon"
+              options={ICON_OPTIONS}
+              bind:value={iconStyle}
+            />
+            <QSelect
+              class="min-width-0"
+              outlined
+              label="Animation duration"
+              options={DURATIONS}
+              bind:value={duration}
+              emitValue
+            />
+          </div>
+          <QList
+            role="group"
+            {expressive}
+            segmented={expressive && isSegmented}
+            {dense}
+            bordered={!expressive}
+            separator={!expressive}
+            aria-label="Expansion appearance"
           >
-            <p>This item expands and collapses quickly with a 150ms animation.</p>
-          </QExpansionItem>
-          <QExpansionItem
-            label="Slow animation"
-            caption="800ms duration"
-            icon="hourglass_empty"
-            duration={800}
-          >
-            <p>This item has a slower, more deliberate animation at 800ms.</p>
-          </QExpansionItem>
-        </QList>
+            <QExpansionItem
+              label="Picture frame"
+              caption="Loose corner"
+              icon="photo"
+              expandIcon={iconPreset.expandIcon}
+              expandedIcon={iconPreset.expandedIcon}
+              noRotateExpandIcon={iconPreset.noRotateExpandIcon}
+              hideExpandIcon={iconPreset.hideExpandIcon}
+              duration={animationDuration}
+            >
+              <div class="panel-copy q-px-md q-pt-sm q-pb-md">
+                <p class="q-ma-none">Square the corners before fitting a new backing.</p>
+              </div>
+            </QExpansionItem>
+            <QExpansionItem
+              label="Bicycle bell"
+              caption="Sticking lever"
+              icon="pedal_bike"
+              expandIcon={iconPreset.expandIcon}
+              expandedIcon={iconPreset.expandedIcon}
+              noRotateExpandIcon={iconPreset.noRotateExpandIcon}
+              hideExpandIcon={iconPreset.hideExpandIcon}
+              duration={animationDuration}
+            >
+              <div class="panel-copy q-px-md q-pt-sm q-pb-md">
+                <p class="q-ma-none">Check the lever and spring after cleaning.</p>
+              </div>
+            </QExpansionItem>
+          </QList>
+        </div>
+        <p class="body-medium q-mt-md">
+          A single <code>expandIcon</code> rotates when open. Pair it with <code>expandedIcon</code>
+          to swap glyphs, or use <code>noRotateExpandIcon</code> to keep it still.
+          <code>hideExpandIcon</code> hides only the decoration; the whole header remains operable.
+        </p>
       </QDocsSection>
 
-      <QDocsSection title="Custom summary with complex layouts">
+      <QDocsSection title="Controlled State and Methods">
         {#snippet sectionDescription()}
-          Use the <code>summary</code> snippet to customize the header's list-item sections. The expansion
-          item supplies the trailing disclosure control, so the custom summary should not add another
-          interactive control.
+          Bind <code>value</code> to application state, or use <code>bind:this</code> to call
+          <code>show()</code>, <code>hide()</code> and <code>toggle()</code>.
+          <code>ontoggle</code> reports the resulting state for header, binding and method changes. Collapsing
+          the panel preserves its controls' state.
         {/snippet}
 
-        <QList bordered separator>
-          <QExpansionItem>
-            {#snippet summary()}
-              <QItemSection type="thumbnail">
-                <img src="/cocktail.jpg" alt="User avatar" />
-              </QItemSection>
-              <QItemSection>
-                {#snippet headline()}
-                  John Smith
-                {/snippet}
-                {#snippet line1()}
-                  Senior Developer
-                {/snippet}
-                {#snippet line2()}
-                  <span class="text-primary">Click to view details</span>
-                {/snippet}
-              </QItemSection>
-            {/snippet}
-
-            <div class="q-pa-md">
-              <div class="body-large q-mb-sm">Contact Information</div>
-              <div>Email: john.smith@company.com</div>
-              <div>Phone: +1 (555) 123-4567</div>
-              <div>Department: Engineering</div>
-              <div>Location: San Francisco, CA</div>
-            </div>
-          </QExpansionItem>
-
-          <QExpansionItem>
-            {#snippet summary()}
-              <QItemSection type="icon">
-                <QIcon name="notifications" aria-hidden="true" />
-              </QItemSection>
-              <QItemSection>
-                <span>Notification Settings</span>
-              </QItemSection>
-            {/snippet}
-
-            <div class="q-pa-md">
-              <div class="q-mb-sm">Configure your notification preferences:</div>
-              <div>• Email notifications: Enabled</div>
-              <div>• Push notifications: Enabled</div>
-              <div>• SMS notifications: Disabled</div>
-            </div>
-          </QExpansionItem>
-        </QList>
+        <div class="expansion-example full-width min-width-0">
+          <div class="example-controls flex q-gap-x-lg q-my-md">
+            <QSwitch label="Panel open" bind:value={isPanelOpen} />
+            <QBtn outlined label="Show" onclick={() => repairItem?.show()} />
+            <QBtn outlined label="Hide" onclick={() => repairItem?.hide()} />
+            <QBtn outlined label="Toggle" onclick={() => repairItem?.toggle()} />
+          </div>
+          <QList role="group" expressive segmented aria-label="Controlled repair note">
+            <QExpansionItem
+              bind:this={repairItem}
+              bind:value={isPanelOpen}
+              label="Repair checklist"
+              icon="checklist"
+              ontoggle={(event) => (lastChange = `Panel ${event.newState}.`)}
+            >
+              <div class="panel-copy q-px-md q-pt-sm q-pb-md">
+                <QCheckbox label="Tools packed" bind:value={isPrepared} />
+              </div>
+            </QExpansionItem>
+          </QList>
+          <p class="example-status body-medium q-mt-md q-mb-none" role="status">
+            {lastChange} Checkbox: {isPrepared ? "checked" : "unchecked"}.
+          </p>
+        </div>
       </QDocsSection>
 
-      <QDocsSection title="Accessibility">
+      <QDocsSection title="Custom Summary">
         {#snippet sectionDescription()}
-          The whole-row trigger exposes <code>aria-expanded</code> and supports Enter and Space. Tab
-          enters the list's current action; arrow keys move through its rows and any separate
-          actions. Separate toggles get a state-aware label automatically; use
-          <code>toggleAriaLabel</code>
-          when a different stable name is more useful. Do not set <code>selection</code> on a
-          <code>QList</code> containing expansion items: disclosures are actions, not listbox options.
+          The <code>summary</code> snippet receives <code>expanded</code> and the
+          <code>show</code>, <code>hide</code> and <code>toggle</code> helpers. Compose its layout
+          with <code>QItemSection</code>. Keep the summary non-interactive: the component supplies
+          the disclosure action.
         {/snippet}
 
-        <QList bordered separator>
-          <QExpansionItem label="FAQ Item 1" caption="What is Quaff?" icon="help">
-            <p>
-              Quaff is a comprehensive UI component library built with Svelte 5, designed to help
-              developers create beautiful and accessible web applications quickly and efficiently.
-            </p>
-          </QExpansionItem>
-
-          <QExpansionItem
-            label="FAQ Item 2"
-            caption="How do I get started?"
-            icon="help"
-            expandIconToggle
-            toggleAriaLabel="Toggle answer: How do I get started?"
-          >
-            <p>
-              Getting started is easy! Install the package and start building, the components are
-              auto-imported. Check our documentation for detailed examples and API references.
-            </p>
-          </QExpansionItem>
-        </QList>
+        <div class="expansion-example full-width min-width-0">
+          <QList role="group" expressive segmented aria-label="Custom repair summary">
+            <QExpansionItem label="Picture frame">
+              {#snippet summary({ expanded })}
+                <QItemSection type="icon"><QIcon name="photo" aria-hidden="true" /></QItemSection>
+                <QItemSection>
+                  {#snippet headline()}Picture frame{/snippet}
+                  {#snippet line1()}Loose corner · Woodwork{/snippet}
+                  {#snippet line2()}{expanded
+                      ? "Repair notes expanded"
+                      : "Repair notes collapsed"}{/snippet}
+                </QItemSection>
+              {/snippet}
+              <div class="panel-copy q-px-md q-pt-sm q-pb-md">
+                <p class="q-ma-none">Keep the original frame and replace the damaged backing.</p>
+              </div>
+            </QExpansionItem>
+          </QList>
+        </div>
       </QDocsSection>
 
-      <QDocsSection title="Complex example">
+      <QDocsSection title="Links and Separate Toggles">
         {#snippet sectionDescription()}
-          A comprehensive example combining multiple features: mutually exclusive grouping, custom
-          icons, dense styling, and mixed content types.
+          With <code>to</code> or <code>href</code>, the title navigates while a separate trailing
+          button opens the panel. <code>expandIconToggle</code> gives a non-linked row the same
+          separate control. The event count below tracks only <code>onExpandIconClick</code>.
         {/snippet}
 
-        <QList bordered separator>
-          <QExpansionItem
-            label="Account Settings"
-            icon="account_circle"
-            name="settings-group"
-            dense
+        <div class="expansion-example full-width min-width-0">
+          <QList
+            role="group"
+            expressive={false}
+            bordered
+            separator
+            aria-label="Linked repair notes"
           >
-            <div class="q-pa-md">
-              <div class="body-large q-mb-sm">Profile Information</div>
-              <div>Update your personal information and preferences.</div>
-            </div>
-          </QExpansionItem>
+            <QExpansionItem
+              label="Repair materials"
+              caption="to: jump to the materials note"
+              icon="inventory_2"
+              to="#repair-materials"
+              toggleAriaLabel="Toggle repair materials details"
+              expandIcon="add"
+              expandedIcon="remove"
+              onExpandIconClick={() => (detailsClicks += 1)}
+            >
+              <div class="panel-copy q-px-md q-pt-sm q-pb-md">
+                <p class="q-ma-none">Read the note below for the material list.</p>
+              </div>
+            </QExpansionItem>
+            <QExpansionItem
+              label="Repair tools"
+              caption="href: jump to the tools note"
+              icon="handyman"
+              href="#repair-tools"
+              toggleAriaLabel="Toggle repair tools details"
+              onExpandIconClick={() => (detailsClicks += 1)}
+            >
+              <div class="panel-copy q-px-md q-pt-sm q-pb-md">
+                <p class="q-ma-none">Read the note below for the tool list.</p>
+              </div>
+            </QExpansionItem>
+            <QExpansionItem
+              label="Storage note"
+              caption="Only the trailing button expands"
+              icon="shelves"
+              expandIconToggle
+              toggleAriaLabel="Toggle storage note"
+              onExpandIconClick={() => (detailsClicks += 1)}
+            >
+              <div class="panel-copy q-px-md q-pt-sm q-pb-md">
+                <p class="q-ma-none">Keep small parts together in a labelled container.</p>
+              </div>
+            </QExpansionItem>
+          </QList>
+          <p class="example-status body-medium q-mt-md q-mb-none" role="status">
+            Separate toggle activations: {detailsClicks}.
+          </p>
+          <section
+            class="link-target border q-mt-lg q-pa-md"
+            id="repair-materials"
+            aria-label="Repair materials note"
+          >
+            <h3 class="title-medium q-mt-none q-mb-sm">Materials</h3>
+            <p class="q-ma-none">Matching thread and a backing board.</p>
+          </section>
+          <section
+            class="link-target border q-mt-lg q-pa-md"
+            id="repair-tools"
+            aria-label="Repair tools note"
+          >
+            <h3 class="title-medium q-mt-none q-mb-sm">Tools</h3>
+            <p class="q-ma-none">A needle, screwdriver and corner clamp.</p>
+          </section>
+        </div>
+        <p class="body-medium q-mt-md">
+          Set <code>toggleAriaLabel</code> to identify the separate button; its default label
+          reflects the open state. Even with <code>hideExpandIcon</code>, separate buttons stay
+          visible so the panel remains operable.
+        </p>
+      </QDocsSection>
 
-          <QExpansionItem
-            label="Privacy Settings"
-            caption="Control your privacy and data sharing"
-            icon="privacy_tip"
-            name="settings-group"
-            dense
-          >
-            <div class="q-pa-md">
-              <div class="body-large q-mb-sm">Privacy Controls</div>
-              <div>• Data sharing: Limited</div>
-              <div>• Profile visibility: Friends only</div>
-              <div>• Activity status: Hidden</div>
-            </div>
-          </QExpansionItem>
-
-          <QExpansionItem
-            label="Notification Preferences"
-            icon="notifications"
-            name="settings-group"
-            dense
-            expandIcon="tune"
-            noRotateExpandIcon
-          >
-            <div class="q-pa-md">
-              <div class="body-large q-mb-sm">Notification Types</div>
-              <div>Configure how and when you receive notifications.</div>
-            </div>
-          </QExpansionItem>
-
-          <QExpansionItem
-            label="Security"
-            caption="Two-factor authentication and password settings"
-            icon="security"
-            name="settings-group"
-            dense
-            expandIcon="lock"
-            expandedIcon="lock_open"
-          >
-            <div class="q-pa-md">
-              <div class="body-large q-mb-sm">Security Settings</div>
-              <div>• Two-factor authentication: Enabled</div>
-              <div>• Login alerts: Enabled</div>
-              <div>• Password strength: Strong</div>
-            </div>
-          </QExpansionItem>
-        </QList>
+      <QDocsSection title="Accessibility" noCode>
+        <p>
+          Enter and Space toggle a focused whole-row header. Tab enters the list; arrow keys move
+          through its rows and separate actions. Use <code>preserveTabOrder</code> on the list if every
+          header should be a Tab stop. Collapsed panels keep their state, but their content is hidden
+          from assistive technology and keyboard navigation.
+        </p>
+        <p>
+          Keep <code>selection</code> off a list of expansion items: these are disclosures, not
+          listbox options. See
+          <a class="q-docs-link" href={resolve("/components/list", {})}>QList</a>
+          for keyboard and layout options.
+        </p>
       </QDocsSection>
     </div>
   {/snippet}
 </QDocs>
+
+<style>
+  code {
+    overflow-wrap: anywhere;
+  }
+
+  .expansion-preview {
+    width: min(100%, 420px);
+    max-height: 100%;
+    padding: 20px;
+    border-radius: 24px;
+  }
+
+  .expansion-usage :global(.q-docs-section__header h5) {
+    overflow-wrap: anywhere;
+  }
+
+  .expansion-example {
+    max-width: 640px;
+  }
+
+  .panel-copy {
+    overflow-wrap: anywhere;
+  }
+
+  .example-controls {
+    row-gap: 12px;
+  }
+
+  .example-controls :global(.q-switch) {
+    max-width: 100%;
+  }
+
+  .group-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+    max-width: 960px;
+  }
+
+  .group-grid h3 {
+    margin-block: 0 12px;
+  }
+
+  .appearance-selects {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+  }
+
+  .example-status {
+    overflow-wrap: anywhere;
+  }
+
+  .link-target {
+    border-radius: 16px;
+    overflow-wrap: anywhere;
+    scroll-margin-block-start: 96px;
+  }
+</style>
