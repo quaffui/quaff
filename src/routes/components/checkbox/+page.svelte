@@ -1,10 +1,8 @@
 <script lang="ts">
-  import QCard from "$components/card/QCard.svelte";
   import { QCheckboxDocs } from "$components/checkbox/docs";
-  import { docsCtx } from "$docs/QDocs.svelte";
-  import { Notify, QBtn, QCheckbox, QIcon, QItem, QItemSection, QList } from "$lib";
   import { QDocs, QDocsSection } from "$docs";
-
+  import { docsCtx } from "$docs/QDocs.svelte";
+  import { QBtn, QCheckbox, QIcon, QSeparator } from "$lib";
   import { useMeta } from "$lib/meta";
   import { pageMeta } from "$docs/metadata";
   import snippets from "./docs.snippets";
@@ -18,109 +16,368 @@
 
   docsCtx.set({ snippets, componentDocs: QCheckboxDocs });
 
-  let value1 = false;
-  let value2 = true;
-  let value3 = false;
-  let mixedValue = false;
-  let indeterminate = true;
+  const CHECKS = [
+    {
+      title: "Props on their marks",
+      detail: "Moon, paper boat, and the tiny red suitcase.",
+      icon: "inventory_2",
+    },
+    {
+      title: "Sound cues rehearsed",
+      detail: "Rain on the roof. One very small thunderstorm.",
+      icon: "graphic_eq",
+    },
+    {
+      title: "Costumes fastened",
+      detail: "Three capes, six buttons, and no loose threads.",
+      icon: "checkroom",
+    },
+  ] as const;
+
+  let isTrunkReady = $state(false);
+  let isTrunkMixed = $state(true);
+  let prepared = $state([true, false, false]);
+  let isConfirmed = $state(false);
+  let hasSubmitted = $state(false);
+  let isVenueOpen = $state(false);
+  let lastChange = $state("Props checked by the morning crew.");
+
+  const readyCount = $derived(prepared.filter((isPrepared) => isPrepared).length);
+  const isFullyPrepared = $derived(readyCount === CHECKS.length);
+  const isPartlyPrepared = $derived(readyCount > 0 && !isFullyPrepared);
+  const hasConfirmationError = $derived(hasSubmitted && !isConfirmed);
+  const canOpenDoors = $derived(isFullyPrepared && isConfirmed);
+  const trunkStatus = $derived.by(() => {
+    if (isTrunkMixed) {
+      return "Some props still need a look.";
+    }
+
+    if (isTrunkReady) {
+      return "Packed and ready for the next stage.";
+    }
+
+    return "Ready for another inventory check.";
+  });
+
+  function selectAll(event: Event) {
+    const isChecked = (event.target as HTMLInputElement).checked;
+    prepared = CHECKS.map(() => isChecked);
+    isVenueOpen = false;
+    lastChange = isChecked
+      ? "Every department is ready."
+      : "All checks cleared for another rehearsal.";
+  }
+
+  function recordChange(event: Event, title: string) {
+    isVenueOpen = false;
+    lastChange = `${title}: ${(event.target as HTMLInputElement).checked ? "ready" : "needs a check"}.`;
+  }
+
+  function openDoors(event: SubmitEvent) {
+    event.preventDefault();
+    hasSubmitted = true;
+    isVenueOpen = canOpenDoors;
+  }
+
+  function resetRehearsal() {
+    prepared = [true, false, false];
+    isConfirmed = false;
+    hasSubmitted = false;
+    isVenueOpen = false;
+    lastChange = "Reset for rehearsal. Props are already on their marks.";
+  }
 </script>
 
-<QDocs>
+<QDocs docDescription="Check off tasks, select a whole group, and make partial progress visible.">
   {#snippet display()}
-    <QCard>
-      <QCheckbox label="I agree to the terms and conditions" bind:value={value1} />
-    </QCard>
+    <div class="trunk-preview surface q-pa-lg">
+      <div
+        class="mini-stage tertiary-container flex items-center justify-between no-overflow"
+        aria-hidden="true"
+      >
+        <span class="stage-curtain tertiary"></span>
+        <QIcon name="theater_comedy" size="48px" />
+        <span class="stage-curtain tertiary"></span>
+      </div>
+      <div class="label-medium text-tertiary q-mt-md">LITTLE STRING THEATRE</div>
+      <h2 class="title-large q-mt-xs q-mb-md">One trunk. A whole world.</h2>
+      <QCheckbox
+        label="Touring trunk checked"
+        bind:value={isTrunkReady}
+        bind:indeterminate={isTrunkMixed}
+      />
+      <p class="body-small q-mt-sm q-mb-none" role="status">
+        {trunkStatus}
+      </p>
+      <QBtn
+        variant="flat"
+        label="Mark for recheck"
+        class="q-mt-sm"
+        onclick={() => {
+          isTrunkReady = false;
+          isTrunkMixed = true;
+        }}
+      />
+    </div>
   {/snippet}
 
   {#snippet usage()}
     <div>
-      <QDocsSection title="Default Checkboxes">
+      <QDocsSection title="Before the Curtain">
         {#snippet sectionDescription()}
-          QCheckbox is a customizable checkbox component that supports binding, labels, and various
-          states. It's fully accessible and easy to use in forms or standalone.
+          Bind each checkbox's <code>value</code> to its own boolean. Derive the group checkbox's
+          <code>value</code> and <code>indeterminate</code> from the selected items: some checked
+          means mixed, and all checked means complete. Its <code>onchange</code> handler selects or clears
+          the whole group. Individual changes update the cue log below.
         {/snippet}
 
-        <div class="q-ma-sm flex column items-start q-gap-lg">
-          <QCheckbox aria-label="Checkbox without a visible label" bind:value={value1} />
-          <QCheckbox label="With label" bind:value={value1} />
+        <div class="stage-checklist surface q-pa-lg">
+          <div class="show-heading flex items-center q-gap-md q-mb-lg">
+            <div class="show-mark tertiary-container flex flex-center" aria-hidden="true">
+              <QIcon name="theater_comedy" size="32px" />
+            </div>
+            <div>
+              <div class="label-medium text-tertiary">SATURDAY MATINÉE · 14:00</div>
+              <h3 class="headline-small q-mt-xs q-mb-none">The Moon in a Suitcase</h3>
+            </div>
+          </div>
+          <div
+            class="checklist-summary secondary-container flex items-center justify-between q-gap-md q-pa-md q-mb-lg"
+          >
+            <QCheckbox
+              label="All departments ready"
+              value={isFullyPrepared}
+              indeterminate={isPartlyPrepared}
+              onchange={selectAll}
+            />
+            <span class="label-large">{readyCount} / {CHECKS.length}</span>
+          </div>
+          <div class="flex column q-gap-lg">
+            {#each CHECKS as check, index (check.title)}
+              <div class="department-row flex items-start q-gap-lg">
+                <QIcon name={check.icon} class="text-tertiary" aria-hidden="true" />
+                <div class="department-copy">
+                  <QCheckbox
+                    label={check.title}
+                    bind:value={prepared[index]}
+                    onchange={(event) => recordChange(event, check.title)}
+                  />
+                  <p class="body-medium text-on-surface-variant q-mt-xs q-mb-none">
+                    {check.detail}
+                  </p>
+                </div>
+              </div>
+            {/each}
+          </div>
+          <QSeparator spacing="md" />
+          <div class="readiness-line flex items-center">
+            <QIcon
+              name={isFullyPrepared ? "task_alt" : "pending_actions"}
+              class="text-primary"
+              aria-hidden="true"
+            />
+            <span class="title-medium"
+              >{isFullyPrepared
+                ? "The stage is ready."
+                : `${CHECKS.length - readyCount} departments still to check.`}</span
+            >
+          </div>
+          <p class="body-small text-on-surface-variant q-mt-sm q-mb-none" role="status">
+            {lastChange}
+          </p>
         </div>
       </QDocsSection>
 
-      <QDocsSection title="Checkbox States">
+      <QDocsSection title="Opening the Doors">
         {#snippet sectionDescription()}
-          Checkboxes support checked, unchecked, indeterminate, error, and disabled states. The
-          independent <code>indeterminate</code> prop is useful when a group is only partially
-          selected. The <code>error</code> prop communicates a validation problem.
+          <code>error</code> marks an invalid checkbox; show an explanation alongside it. Complete the
+          checks above and confirm the handover to open the doors. The reset action changes the bound
+          values programmatically. This is a local demo; nothing is submitted.
         {/snippet}
 
-        <div class="q-ma-sm flex column items-start q-gap-lg">
-          <QCheckbox label="Unchecked by default" bind:value={value3} />
-          <QCheckbox label="Checked by default" bind:value={value2} />
-          <QCheckbox label="Indeterminate" bind:value={mixedValue} bind:indeterminate />
-          <QCheckbox label="Error unchecked" value={false} error />
-          <QCheckbox label="Error checked" value={true} error />
-          <QCheckbox label="Disabled unchecked" value={false} disabled />
-          <QCheckbox label="Disabled checked" value={true} disabled />
-        </div>
-      </QDocsSection>
-
-      <QDocsSection title="Two-way Binding">
-        {#snippet sectionDescription()}
-          QCheckbox supports Svelte's two-way binding with the <code>bind:value</code> directive. The
-          example below shows how the checkbox state updates the bound variable and vice versa.
-        {/snippet}
-
-        <div class="flex items-center q-gap-md q-ma-sm">
-          <QCheckbox label="Toggle me" bind:value={value1} />
-          <span>Current value: {value1 ? "Checked" : "Unchecked"}</span>
-          <QBtn size="sm" label="Toggle programmatically" onclick={() => (value1 = !value1)} />
-        </div>
-      </QDocsSection>
-
-      <QDocsSection title="Accessibility">
-        {#snippet sectionDescription()}
-          QCheckbox is designed with accessibility in mind. It includes proper ARIA attributes and
-          can be navigated and toggled using keyboard controls.
-        {/snippet}
-
-        <div class="row q-ma-sm">
+        <form class="handover q-pa-lg" onsubmit={openDoors}>
+          <div class="label-medium text-tertiary">STAGE MANAGER'S HANDOVER</div>
+          <h3 class="title-large q-mt-xs q-mb-md">A little show, ready to go.</h3>
           <QCheckbox
-            class="col-4"
-            label="Accessible checkbox (try using keyboard)"
-            bind:value={value3}
+            label="I have reviewed the stage checklist"
+            bind:value={isConfirmed}
+            error={hasConfirmationError}
+            onchange={() => (isVenueOpen = false)}
           />
-          <div class="col-8">
-            <QList dense>
-              <QItem>
-                <QItemSection type="avatar">
-                  <QIcon name="chevron_right" />
-                </QItemSection>
-                <QItemSection>Tab: Focus the checkbox</QItemSection>
-              </QItem>
-              <QItem>
-                <QItemSection type="avatar">
-                  <QIcon name="chevron_right" />
-                </QItemSection>
-                <QItemSection>Space: Toggle the checkbox state</QItemSection>
-              </QItem>
-            </QList>
+          {#if hasConfirmationError}
+            <p class="body-medium text-error q-mt-sm q-mb-none" role="alert">
+              Confirm the handover before opening the doors.
+            </p>
+          {/if}
+          <div class="handover-actions flex q-my-lg">
+            <QBtn
+              type="submit"
+              variant="tonal"
+              icon="door_front"
+              label={isVenueOpen ? "Doors are open" : "Open the doors"}
+              disabled={isVenueOpen}
+            />
+            <QBtn
+              type="button"
+              variant="outlined"
+              icon="restart_alt"
+              label="Reset rehearsal"
+              onclick={resetRehearsal}
+            />
+          </div>
+          <p class="body-medium q-ma-none" role="status">
+            {#if isVenueOpen}
+              Welcome in! The first puppet is waiting in the wings.
+            {:else if hasSubmitted && !isFullyPrepared}
+              {CHECKS.length - readyCount} departments still need a check before the audience arrives.
+            {:else if canOpenDoors}
+              All checks complete. You can open the doors.
+            {:else}
+              {readyCount} of {CHECKS.length} departments checked · {isConfirmed
+                ? "Handover confirmed"
+                : "Handover awaiting confirmation"}
+            {/if}
+          </p>
+        </form>
+      </QDocsSection>
+
+      <QDocsSection title="Checks from the Venue">
+        {#snippet sectionDescription()}
+          <code>disabled</code> prevents changes and removes a checkbox from keyboard navigation. Keep
+          the reason visible. Disabled checkboxes can still show checked, unchecked, or mixed states;
+          these venue records are separate from your rehearsal checklist.
+        {/snippet}
+
+        <div class="venue-notes surface q-pa-lg">
+          <div class="label-medium text-tertiary">VENUE RECORD · READ ONLY</div>
+          <h3 class="title-large q-mt-xs q-mb-lg">From the house crew</h3>
+          <div class="venue-check">
+            <QCheckbox label="Dressing room allocated" value={true} disabled />
+            <p class="body-medium text-on-surface-variant q-mt-xs q-mb-none">
+              Room 2 is reserved for your company.
+            </p>
+          </div>
+          <div class="venue-check q-mt-lg">
+            <QCheckbox label="Orchestra pit requested" value={false} disabled />
+            <p class="body-medium text-on-surface-variant q-mt-xs q-mb-none">
+              Not available in this studio theatre.
+            </p>
+          </div>
+          <div class="venue-check q-mt-lg">
+            <QCheckbox label="Tour dates confirmed" value={false} indeterminate disabled />
+            <p class="body-medium text-on-surface-variant q-mt-xs q-mb-none">
+              Two dates confirmed; the venue is arranging the third.
+            </p>
           </div>
         </div>
       </QDocsSection>
 
-      <QDocsSection title="Event Handling">
+      <QDocsSection title="Mixed State and Keyboard Access" noCode>
         {#snippet sectionDescription()}
-          You can attach event handlers to QCheckbox to perform actions when the checkbox state
-          changes.
+          <p>
+            <code>indeterminate</code> is independent of <code>value</code>. Use
+            <code>bind:indeterminate</code> when you want to observe it clearing after a user toggles
+            the checkbox, as in the touring-trunk preview. For select-all controls, recompute it from
+            the group's current selection instead.
+          </p>
+          <p>
+            Give every checkbox a visible <code>label</code>. Tab moves to an enabled checkbox and
+            Space toggles it. The native input announces mixed and invalid states; accompany an
+            error with readable text and keep surrounding status messages in a live region.
+          </p>
         {/snippet}
-
-        <QCheckbox
-          class="q-ma-sm"
-          label="Click me"
-          bind:value={value3}
-          onchange={() => Notify.create(`Checkbox is now ${value3 ? "checked" : "unchecked"}`)}
-        />
       </QDocsSection>
     </div>
   {/snippet}
 </QDocs>
+
+<style lang="scss">
+  @use "$css/mixins";
+
+  code {
+    overflow-wrap: anywhere;
+  }
+
+  .trunk-preview,
+  .stage-checklist,
+  .handover,
+  .venue-notes {
+    width: 100%;
+    max-width: 640px;
+    border-radius: 24px;
+  }
+
+  .trunk-preview {
+    max-width: 352px;
+    max-height: 100%;
+    overflow: auto;
+  }
+
+  .mini-stage {
+    flex-wrap: nowrap;
+    height: 64px;
+    border-radius: 16px 16px 8px 8px;
+  }
+
+  .stage-curtain {
+    width: 40px;
+    height: 100%;
+    border-radius: 0 0 40px 0;
+  }
+
+  .stage-curtain:last-child {
+    border-radius: 0 0 0 40px;
+  }
+
+  .show-heading > div:last-child {
+    flex: 1 1 200px;
+  }
+
+  .show-mark {
+    flex: none;
+    width: 64px;
+    height: 64px;
+    border-radius: 16px 32px 16px 16px;
+  }
+
+  .checklist-summary {
+    border-radius: 16px;
+  }
+
+  .department-row {
+    flex-wrap: nowrap;
+  }
+
+  .department-copy {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .department-copy p,
+  .venue-check p {
+    padding-inline-start: 33px;
+    overflow-wrap: anywhere;
+  }
+
+  .readiness-line {
+    flex-wrap: nowrap;
+    gap: 12px;
+  }
+
+  .handover {
+    background: var(--surface-container-low);
+  }
+
+  .handover-actions {
+    gap: 12px;
+  }
+
+  @include mixins.up-to-sm {
+    .trunk-preview,
+    .stage-checklist,
+    .handover,
+    .venue-notes {
+      padding: 16px;
+    }
+  }
+</style>
