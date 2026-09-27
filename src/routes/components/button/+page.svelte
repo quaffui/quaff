@@ -1,8 +1,10 @@
 <script lang="ts">
+  import { base, resolve } from "$app/paths";
   import { QBtnDocs } from "$components/button/docs";
-  import { docsCtx } from "$docs/QDocs.svelte";
-  import { Notify, QBtn } from "$lib";
+  import type { QBtnProps } from "$components/button/props";
   import { QDocs, QDocsSection } from "$docs";
+  import { docsCtx } from "$docs/QDocs.svelte";
+  import { QBtn, QInput, QSelect, QSwitch } from "$lib";
 
   import { useMeta } from "$lib/meta";
   import { pageMeta } from "$docs/metadata";
@@ -17,197 +19,392 @@
 
   docsCtx.set({ snippets, componentDocs: QBtnDocs });
 
-  let filledSelected = $state(false);
-  let outlinedSelected = $state(true);
+  const VARIANTS = ["elevated", "filled", "tonal", "outlined", "flat"];
+  const SIZES = [
+    { label: "Default · 40px", value: "default" },
+    ...["xs", "sm", "md", "lg", "xl"].map((value) => ({ label: value, value })),
+  ];
+  const ICONS = {
+    symbol: "article",
+    image: `img:${base}/logo.svg`,
+    snippet: bookmarkIcon,
+    none: undefined,
+  } satisfies Record<string, QBtnProps["icon"]>;
+  const COLORS = [
+    { label: "Variant default", value: "default" },
+    ...["primary", "secondary", "tertiary"].map((value) => ({ label: value, value })),
+  ];
+
+  let heroSelected = $state(false);
+  let variantFeedback = $state("Press a button to try its interaction.");
+  let variantClicks = $state(0);
+  let standardSelected = $state(false);
+  let expressiveSelected = $state(false);
+  let expressive = $state(true);
+  let variant = $state<NonNullable<QBtnProps["variant"]>>("outlined");
+  let size = $state<NonNullable<QBtnProps["size"]> | "default">("default");
+  let shape = $state<NonNullable<QBtnProps["shape"]>>("round");
+  let rectangle = $state(false);
+  let color = $state("default");
+  let iconMode = $state<keyof typeof ICONS>("symbol");
+  let rippleMode = $state("default");
+  let unelevated = $state(false);
+  let previewClicks = $state(0);
+  let publishing = $state(false);
+  let publishFeedback = $state("Ready to publish.");
+  let title = $state("Field notes");
+  let formFeedback = $state("Edit the title, then submit or reset the form.");
+  const hasContainerColor = $derived(variant === "filled" || variant === "tonal");
+
+  $effect(() => {
+    if (!publishing) {
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      publishing = false;
+      publishFeedback = "Note published.";
+    }, 1600);
+
+    return () => clearTimeout(timer);
+  });
+
+  function tryVariant(name: string) {
+    variantClicks += 1;
+    variantFeedback = `${name} pressed · ${variantClicks} clicks`;
+  }
+
+  function publish() {
+    if (publishing) {
+      return;
+    }
+
+    publishing = true;
+    publishFeedback = "Publishing…";
+  }
+
+  function saveTitle(event: SubmitEvent) {
+    event.preventDefault();
+
+    if (title.trim()) {
+      formFeedback = `Saved “${title.trim()}”.`;
+    }
+  }
+
+  function resetTitle(event: Event) {
+    event.preventDefault();
+    title = "Field notes";
+    formFeedback = "Title reset to “Field notes”.";
+  }
 </script>
+
+{#snippet bookmarkIcon()}
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <path
+      d="M6 4h12v17l-6-4-6 4V4Z"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linejoin="round"
+    />
+  </svg>
+{/snippet}
 
 <QDocs>
   {#snippet display()}
-    <QBtn icon="star">Star me on Github</QBtn>
+    <div class="hero surface">
+      <QBtn expressive filled icon="bookmark" label="Save note" bind:selected={heroSelected} />
+      <p class="body-small" role="status">{heroSelected ? "Saved" : "Not saved"}</p>
+    </div>
   {/snippet}
 
   {#snippet usage()}
-    <div>
-      <QDocsSection title="Default Buttons">
+    <div class="examples">
+      <QDocsSection title="Variants">
         {#snippet sectionDescription()}
-          QBtn is a versatile component that can display text, icons, or both. It supports various
-          styling options and states. It's accessible out of the box so, when the button is focused,
-          the enter and space keys can be used to trigger it.
+          Choose an emphasis for your action. Labeled buttons default to elevated; use
+          <code>filled</code>, <code>tonal</code>, <code>outlined</code> or <code>flat</code> for
+          another variant. An explicit <code>variant</code> takes precedence over these boolean props.
         {/snippet}
 
-        <QBtn class="q-ma-sm" icon="favorite" label="Using Label" />
-        <QBtn class="q-ma-sm q-gap-md">
-          <span>Using</span>
-          <span class="text-tertiary">children snippet</span>
-        </QBtn>
+        <div class="example surface">
+          <div class="actions" role="group" aria-label="Button variants">
+            <QBtn label="Elevated" onclick={() => tryVariant("Elevated")} />
+            <QBtn filled label="Filled" onclick={() => tryVariant("Filled")} />
+            <QBtn tonal label="Tonal" onclick={() => tryVariant("Tonal")} />
+            <QBtn outlined label="Outlined" onclick={() => tryVariant("Outlined")} />
+            <QBtn flat label="Flat" onclick={() => tryVariant("Flat")} />
+          </div>
+          <p class="feedback body-small" role="status">{variantFeedback}</p>
+        </div>
       </QDocsSection>
 
-      <QDocsSection title="Icon Buttons">
+      <QDocsSection title="Standard and Expressive">
         {#snippet sectionDescription()}
-          QBtn remains usable as an icon-only button. Use QIconBtn when you want the dedicated icon
-          button API.
+          Press and hold to compare the motion, then release to toggle selection. Bind
+          <code>selected</code> to control the pressed state; flat labeled buttons do not toggle.
         {/snippet}
 
-        <QBtn class="q-ma-sm" icon="favorite" aria-label="Favorite" />
-        <QBtn class="q-ma-sm" icon="share" flat aria-label="Share" />
+        <div class="comparison">
+          <div class="example surface">
+            <p class="label-medium comparison-label">Standard</p>
+            <QBtn
+              expressive={false}
+              outlined
+              icon="bookmark"
+              label="Save note"
+              bind:selected={standardSelected}
+            />
+            <p class="feedback body-small" role="status">
+              {standardSelected ? "Selected" : "Not selected"}
+            </p>
+          </div>
+          <div class="example surface">
+            <p class="label-medium comparison-label">Expressive</p>
+            <QBtn
+              expressive
+              outlined
+              icon="bookmark"
+              label="Save note"
+              bind:selected={expressiveSelected}
+            />
+            <p class="feedback body-small" role="status">
+              {expressiveSelected ? "Selected" : "Not selected"}
+            </p>
+          </div>
+        </div>
+        <p class="body-medium q-mt-md">
+          Set <code>expressive</code> per button or enable it globally with
+          <code>Quaff.init({`{ expressive: true }`})</code>. The standard example explicitly sets
+          <code>{"expressive={false}"}</code> to override that global setting. Keep the default focus
+          ring; keyboard users can activate buttons with Enter or Space.
+        </p>
       </QDocsSection>
 
-      <QDocsSection title="Loading State Buttons">
+      <QDocsSection title="Playground">
         {#snippet sectionDescription()}
-          Buttons can display a loading indicator, useful for operations that take time to complete.
-          When the loading prop is true, a circular progress indicator replaces any icon.
+          Explore sizes, shapes, icons and ripples on one button. Standard mode uses
+          <code>rectangle</code>; expressive mode uses <code>shape</code>.
         {/snippet}
 
-        <QBtn class="q-ma-sm" label="loading" loading />
-        <QBtn class="q-ma-sm" icon="refresh" loading aria-label="Refresh" />
+        <div class="playground surface">
+          <div class="preview">
+            <QBtn
+              {expressive}
+              {variant}
+              size={size === "default" ? undefined : size}
+              {shape}
+              {rectangle}
+              color={hasContainerColor || color === "default" ? undefined : color}
+              {unelevated}
+              icon={ICONS[iconMode]}
+              noRipple={rippleMode === "none"}
+              rippleColor={rippleMode === "tertiary" ? "tertiary" : undefined}
+              onclick={() => (previewClicks += 1)}>Read issue</QBtn
+            >
+            <p class="body-small" role="status">Pressed {previewClicks} times</p>
+          </div>
+          <div class="settings" role="group" aria-label="Playground settings">
+            <QSelect outlined label="Variant" options={VARIANTS} bind:value={variant} />
+            <QSelect outlined label="Size" options={SIZES} bind:value={size} emitValue />
+            <QSelect
+              outlined
+              label="Icon source"
+              options={Object.keys(ICONS)}
+              bind:value={iconMode}
+            />
+            <QSelect
+              outlined
+              label="Text color"
+              options={COLORS}
+              bind:value={color}
+              emitValue
+              disabled={hasContainerColor}
+              displayValue={hasContainerColor ? "Variant default" : undefined}
+            />
+            <QSelect
+              outlined
+              label="Ripple"
+              options={["default", "tertiary", "none"]}
+              bind:value={rippleMode}
+            />
+            {#if expressive}
+              <QSelect
+                outlined
+                label="Expressive shape"
+                options={["round", "squared"]}
+                bind:value={shape}
+              />
+            {:else}
+              <QSwitch label="Rectangular shape" bind:value={rectangle} />
+            {/if}
+            <QSwitch label="Expressive styling" bind:value={expressive} />
+            <QSwitch label="Remove elevation" bind:value={unelevated} />
+          </div>
+        </div>
+        <p class="body-medium q-mt-md">
+          The default minimum height is 40px in both modes. Explicit sizes use each mode’s scale:
+          <code>md</code> is 40px standard and 56px expressive. Icons accept a Material Symbol, an
+          <code>img:</code> URL or a snippet. This button uses children instead of
+          <code>label</code>.
+          <code>color</code> sets the text and default ripple color; this example preserves the matching
+          foreground for filled and tonal variants.
+        </p>
       </QDocsSection>
 
-      <QDocsSection title="Disabled State Buttons">
+      <QDocsSection title="Loading and Disabled">
         {#snippet sectionDescription()}
-          Disabled buttons indicate that an action is unavailable. They maintain their appearance
-          but don't respond to user interaction.
+          <code>loading</code> replaces the leading icon with a spinner. It does not block
+          <code>onclick</code>, so guard repeated requests in your handler. <code>disabled</code>
+          prevents interaction and removes the button from keyboard navigation.
         {/snippet}
 
-        <QBtn class="q-ma-sm" icon="add" label="Disabled" disabled />
-        <QBtn class="q-ma-sm" disabled>
-          <span>Disabled</span>
-          <span class="text-red">Button</span>
-        </QBtn>
-
-        <QBtn
-          class="q-ma-sm"
-          label="Click me"
-          disabled
-          onclick={() => Notify.create("Button clicked")}
-        />
+        <div class="example surface">
+          <div class="actions">
+            <QBtn
+              filled
+              icon="publish"
+              label="Publish note"
+              loading={publishing}
+              aria-busy={publishing}
+              onclick={publish}
+            />
+            <QBtn outlined icon="schedule" label="Schedule note" disabled />
+          </div>
+          <p class="feedback body-small" role="status">{publishFeedback}</p>
+        </div>
       </QDocsSection>
 
-      <QDocsSection title="Button Variants">
+      <QDocsSection title="Forms and Links">
         {#snippet sectionDescription()}
-          QBtn supports multiple variants to match your design needs. You can specify variants using
-          the <code>variant</code> prop.
+          Buttons forward native attributes such as <code>type</code>, <code>name</code> and
+          <code>form</code>. Try submitting with Enter, resetting the value, or following the link.
         {/snippet}
 
-        <QBtn class="q-ma-sm" label="Elevated (default)" icon="star" />
-        <QBtn class="q-ma-sm" label="Unelevated" unelevated icon="star" />
-        <QBtn class="q-ma-sm" label="Filled" variant="filled" icon="star" />
-        <QBtn class="q-ma-sm" label="Tonal" variant="tonal" icon="star" />
-        <QBtn class="q-ma-sm" label="Outlined" variant="outlined" icon="star" />
-        <QBtn class="q-ma-sm" label="Flat" variant="flat" icon="star" />
-        <QBtn class="q-ma-sm" label="With image" icon="img:/cocktail.jpg" />
-      </QDocsSection>
-
-      <QDocsSection title="Button Variants Using Boolean Props">
-        {#snippet sectionDescription()}
-          As an alternative to the <code>variant</code> prop, you can use boolean props to set the button
-          variant. If multiple boolean variant props are used, the ones with higher precedence will take
-          effect. The precedence order is: filled &gt; tonal &gt; outlined &gt; flat.
-        {/snippet}
-
-        <QBtn class="q-ma-sm" label="Elevated (default)" />
-        <QBtn class="q-ma-sm" label="Unelevated" unelevated />
-        <QBtn class="q-ma-sm" label="Filled" filled />
-        <QBtn class="q-ma-sm" label="Tonal" tonal />
-        <QBtn class="q-ma-sm" label="Outlined" outlined />
-        <QBtn class="q-ma-sm" label="Flat" flat />
-      </QDocsSection>
-
-      <QDocsSection title="Size">
-        {#snippet sectionDescription()}
-          Baseline Material 3 uses the 40px <code>md</code> size by default. Quaff also keeps
-          <code>sm</code>, <code>lg</code>, and <code>xl</code> compatibility sizes.
-        {/snippet}
-
-        <QBtn class="q-ma-sm" size="sm" label="Small" unelevated />
-        <QBtn class="q-ma-sm" label="Medium" unelevated />
-        <QBtn class="q-ma-sm" size="lg" label="Large" unelevated />
-        <QBtn class="q-ma-sm" size="xl" label="Extra Large" unelevated />
-      </QDocsSection>
-
-      <QDocsSection title="Expressive Buttons">
-        {#snippet sectionDescription()}
-          Enable <code>expressive</code> for one button, or pass
-          <code>{`{ expressive: true }`}</code>
-          to <code>Quaff.init()</code> to use the Material 3 Expressive styles globally. Use
-          <code>{`expressive={false}`}</code> to keep an individual button standard. Both modes
-          default to 40px high, but named sizes differ: <code>md</code> is 40px standard and 56px
-          expressive; <code>lg</code> is 48px standard and 96px expressive.
-        {/snippet}
-
-        <QBtn class="q-ma-sm" expressive size="xs" label="Extra Small" filled />
-        <QBtn class="q-ma-sm" expressive label="Small" filled />
-        <QBtn class="q-ma-sm" expressive size="md" label="Medium" filled />
-        <QBtn class="q-ma-sm" expressive size="md" shape="squared" label="Squared" tonal />
-      </QDocsSection>
-
-      <QDocsSection title="Toggle Buttons">
-        {#snippet sectionDescription()}
-          Bind <code>selected</code> to update a toggle button and its <code>aria-pressed</code> state.
-          Material 3 defines toggle common buttons for Expressive, while Quaff keeps the same API on baseline
-          styles for compatibility. Flat labeled buttons remain regular text buttons.
-        {/snippet}
-
-        <QBtn
-          class="q-ma-sm"
-          bind:selected={filledSelected}
-          label="Filled"
-          icon="favorite"
-          filled
-        />
-        <QBtn
-          class="q-ma-sm"
-          expressive
-          bind:selected={outlinedSelected}
-          label="Outlined"
-          icon="notifications"
-          outlined
-        />
-      </QDocsSection>
-
-      <QDocsSection title="Button with Router Link">
-        {#snippet sectionDescription()}
-          Buttons can function as navigation links by adding the <code>to</code> prop. This renders the
-          button as an anchor element instead of a button.
-        {/snippet}
-
-        <QBtn class="q-ma-sm" icon="open_in_new" label="With router link" to="#" />
-        <QBtn class="q-ma-sm" icon="open_in_new" label="With router link" to="#" disabled />
-      </QDocsSection>
-
-      <QDocsSection title="Events">
-        {#snippet sectionDescription()}
-          QBtn supports standard event handlers like <code>onclick</code>. Events are not triggered
-          when the button is disabled.
-        {/snippet}
-
-        <QBtn class="q-ma-sm" label="Click me" onclick={() => Notify.create("Button clicked")} />
-        <QBtn
-          class="q-ma-sm"
-          label="Click me"
-          onclick={() => Notify.create("Button clicked")}
-          disabled
-        />
-      </QDocsSection>
-
-      <QDocsSection title="Shape Variations">
-        {#snippet sectionDescription()}
-          Standard buttons support the <code>round</code> and <code>rectangle</code> props.
-        {/snippet}
-
-        <QBtn class="q-ma-sm" label="Default" />
-        <QBtn class="q-ma-sm" label="Rectangle" rectangle />
-        <QBtn class="q-ma-sm" icon="add" round aria-label="Add" />
-      </QDocsSection>
-
-      <QDocsSection title="Ripple Effect">
-        {#snippet sectionDescription()}
-          QBtn includes a ripple effect by default. You can disable it or customize its color.
-        {/snippet}
-
-        <QBtn class="q-ma-sm" label="Default ripple" />
-        <QBtn class="q-ma-sm" label="No ripple" noRipple />
-        <QBtn class="q-ma-sm" label="Custom ripple color" rippleColor="error" />
+        <form class="example surface" onsubmit={saveTitle} onreset={resetTitle}>
+          <QInput
+            outlined
+            label="Issue title"
+            name="title"
+            bind:value={title}
+            required
+            maxlength={48}
+          />
+          <div class="actions q-mt-md">
+            <QBtn type="submit" filled label="Save title" disabled={!title.trim()} />
+            <QBtn type="reset" outlined label="Reset" />
+            <QBtn to="#variants" flat icon="arrow_upward" label="Back to variants" />
+          </div>
+          <p class="feedback body-small" role="status">{formFeedback}</p>
+        </form>
+        <p class="body-medium q-mt-md">
+          <code>to</code> or <code>href</code> renders an anchor; <code>target</code> and
+          <code>replace</code> control navigation. Use <code>tag</code> only when you need a custom
+          element and can preserve its semantics. For dedicated icon-only controls, see
+          <a class="q-docs-link" href={resolve("/components/button-icon", {})}>QIconBtn</a>.
+        </p>
       </QDocsSection>
     </div>
   {/snippet}
 </QDocs>
+
+<style lang="scss">
+  .examples :global(.q-docs-section__header h5) {
+    overflow-wrap: anywhere;
+  }
+
+  .hero {
+    max-width: 100%;
+    max-height: 100%;
+    overflow: auto;
+    padding: 24px;
+    border-radius: 24px;
+    text-align: center;
+    flex: 0 1 auto;
+
+    p {
+      margin: 16px 0 0;
+    }
+  }
+
+  .example,
+  .playground {
+    border-radius: 20px;
+  }
+
+  .example {
+    padding: 24px;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .feedback {
+    margin: 20px 0 0;
+    color: var(--on-surface-variant);
+    overflow-wrap: anywhere;
+  }
+
+  .comparison {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+    gap: 16px;
+  }
+
+  .comparison-label {
+    margin: 0 0 20px;
+  }
+
+  .preview {
+    min-height: 240px;
+    padding: 32px 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+
+    p {
+      margin: 0;
+      color: var(--on-surface-variant);
+    }
+  }
+
+  .settings {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+    align-items: start;
+    gap: 24px;
+    padding: 24px;
+    border-block-start: 1px solid var(--outline-variant);
+    border-radius: 0;
+
+    :global(.q-field) {
+      min-width: 0;
+    }
+
+    :global(.q-switch__label) {
+      min-width: 0;
+      overflow-wrap: anywhere;
+    }
+  }
+
+  .hero,
+  .example,
+  .preview {
+    :global(.q-btn) {
+      max-width: 100%;
+    }
+  }
+
+  @media (max-width: 520px) {
+    .example,
+    .settings,
+    .preview {
+      padding: 16px;
+    }
+  }
+</style>
