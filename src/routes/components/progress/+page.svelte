@@ -1,32 +1,42 @@
 <script lang="ts">
-  import { docsCtx } from "#docs/QDocs.svelte";
   import { QCircularProgressDocs, QLinearProgressDocs } from "#components/progress/docs.js";
-  import {
-    QBtn,
-    QCard,
-    QCardActions,
-    QCardSection,
-    QCircularProgress,
-    QLinearProgress,
-  } from "#lib";
   import { QDocs, QDocsSection } from "#docs";
-
-  import { useMeta } from "#lib/meta.js";
+  import { docsCtx } from "#docs/QDocs.svelte";
   import { pageMeta } from "#docs/metadata.js";
-  import snippets from "./docs.snippets";
+  import { QBtn, QCircularProgress, QLinearProgress, QSelect, QSlider, QSwitch } from "#lib";
+  import { useMeta } from "#lib/meta.js";
+  import snippets from "./docs.snippets.js";
 
   useMeta(
     pageMeta(
       "Linear & Circular Progress",
-      "Show task progress in Svelte with linear and circular indicators. Explore determinate and indeterminate states, buffers, expressive styles, and sizing."
+      "Show task progress with linear and circular indicators for Svelte. Compare measured and indeterminate progress, buffers, expressive styles, and custom ranges."
     )
   );
 
   docsCtx.set({ snippets, componentDocs: [QLinearProgressDocs, QCircularProgressDocs] });
 
-  let linearValue = 30;
-  let circularValue = 25;
-  let indeterminateProgress = true;
+  const COLORS = [
+    { label: "Primary", value: "primary" },
+    { label: "Secondary", value: "secondary" },
+    { label: "Tertiary", value: "tertiary" },
+    { label: "Custom CSS color", value: "#b65b3e" },
+  ];
+  const TRACK_COLORS = ["secondary-container", "surface-container-highest", "transparent"];
+  const TIMINGS = [200, 600, 1200];
+
+  let previewValue = $state(60);
+  let progress = $state(40);
+  let expressive = $state(true);
+  let isWaitingExpressive = $state(false);
+  let direction = $state<"ltr" | "rtl">("ltr");
+  let reverse = $state(false);
+  let color = $state("primary");
+  let trackColor = $state("secondary-container");
+  let noRound = $state(false);
+  let completedSteps = $state(3);
+  let animationSpeed = $state(600);
+  let instantFeedback = $state(false);
 </script>
 
 <QDocs
@@ -34,431 +44,219 @@
   docDescription="Progress indicators show task completion or ongoing work. Choose a linear bar or circular indicator, with measured progress or an indeterminate animation."
 >
   {#snippet display()}
-    <QCard class="flex column q-gap-lg" style="width: 75%">
-      <QLinearProgress value={75} color="primary" trackColor="secondary" size="8px" />
+    <!-- svelte-ignore a11y_no_noninteractive_tabindex (The scrollable preview needs keyboard access.) -->
+    <div
+      class="progress-preview column items-center q-gap-lg surface overflow-auto q-pa-lg"
+      role="region"
+      aria-label="Progress preview"
+      tabindex="0"
+    >
+      <h2 class="title-medium q-ma-none">Uploading files</h2>
       <QCircularProgress
-        style="align-self: center;"
-        value={75}
-        color="primary"
-        size="4em"
+        value={previewValue}
+        expressive
+        size="6rem"
         showValue
+        fontSize="1rem"
+        aria-label="Upload progress, circular">{previewValue}%</QCircularProgress
+      >
+      <QLinearProgress
+        value={previewValue / 100}
+        expressive
+        class="full-width"
+        aria-label="Upload progress, linear"
       />
-    </QCard>
+      <QBtn
+        variant="tonal"
+        label={previewValue === 100 ? "Reset progress" : "Advance progress"}
+        onclick={() => (previewValue = previewValue === 100 ? 0 : Math.min(100, previewValue + 20))}
+      />
+    </div>
   {/snippet}
 
   {#snippet usage()}
-    <div>
-      <QDocsSection title="Linear Progress - Basic Usage">
-        {#snippet sectionDescription()}
-          QLinearProgress displays progress in a horizontal bar. It can represent determinate
-          progress with a specific value or indeterminate progress when the duration is unknown.
-        {/snippet}
-
-        <div class="q-my-md flex column q-gap-md" style="max-width: 400px;">
-          <QLinearProgress value={linearValue} />
-          <div class="flex q-gap-md">
-            <QBtn
-              size="sm"
-              label="Decrease"
-              onclick={() => (linearValue = Math.max(0, linearValue - 10))}
-            />
-            <QBtn
-              size="sm"
-              label="Increase"
-              onclick={() => (linearValue = Math.min(100, linearValue + 10))}
-            />
-          </div>
-          <div>Current value: {linearValue}%</div>
-        </div>
-      </QDocsSection>
-
-      <QDocsSection title="Indeterminate Linear Progress">
-        {#snippet sectionDescription()}
-          Use the <code>indeterminate</code> prop when the progress duration is unknown. This displays
-          an animated loading state to indicate that an operation is in progress.
-        {/snippet}
-
-        <div class="q-my-md flex column q-gap-md" style="max-width: 400px;">
-          <QLinearProgress indeterminate />
-          <div>
-            <QBtn
-              size="sm"
-              label="Toggle indeterminate"
-              onclick={() => (indeterminateProgress = !indeterminateProgress)}
+    <QDocsSection title="Measured Progress">
+      {#snippet sectionDescription()}
+        Pass <code>value</code> when the amount of completed work is known. Linear progress accepts
+        fractions from 0–1 or percentages above 1; circular progress uses 0–100 by default. Turn on
+        <code>expressive</code> for wavy indicators.
+      {/snippet}
+      <QSwitch label="Expressive" bind:value={expressive} class="q-mb-md" />
+      <div class="q-mb-lg">
+        <label for="progress-value" class="label-large">Progress: {progress}%</label>
+        <QSlider id="progress-value" bind:value={progress} step={10} label />
+      </div>
+      <div class="progress-example surface-container-low q-pa-lg">
+        <div class="row q-gutter-y-lg q-gutter-x-md items-center">
+          <div class="col-12 col-sm-8">
+            <p class="body-medium q-mt-none q-mb-md">Downloading files · {progress}%</p>
+            <QLinearProgress
+              value={progress / 100}
+              {expressive}
+              aria-label="Download progress, linear"
             />
           </div>
-
-          <div>
-            <QLinearProgress value={45} indeterminate={indeterminateProgress} />
+          <div class="col-12 col-sm-4 flex flex-center">
+            <QCircularProgress
+              value={progress}
+              {expressive}
+              size="5rem"
+              showValue
+              fontSize="1rem"
+              aria-label="Download progress, circular">{progress}%</QCircularProgress
+            >
           </div>
         </div>
-      </QDocsSection>
+      </div>
+    </QDocsSection>
 
-      <QDocsSection title="Expressive Progress">
-        {#snippet sectionDescription()}
-          Set <code>expressive</code> for wavy Material 3 Expressive indicators. Pass
-          <code>{`{ expressive: true }`}</code> to <code>Quaff.init()</code> to enable them globally.
-        {/snippet}
-
-        <div class="q-my-md flex column q-gap-lg" style="max-width: 400px;">
-          <QLinearProgress value={65} expressive aria-label="Profile setup" />
-          <QLinearProgress expressive indeterminate aria-label="Uploading files" />
-
-          <div class="flex items-center q-gap-lg">
-            <QCircularProgress value={65} expressive aria-label="Profile setup" />
-            <QCircularProgress value={35} expressive aria-label="Download progress" />
-            <QCircularProgress expressive indeterminate aria-label="Download progress" />
-          </div>
+    <QDocsSection title="Indeterminate Progress">
+      {#snippet sectionDescription()}
+        Use <code>indeterminate</code> when the total or completion percentage is unknown. Both
+        indicators animate without a <code>value</code>.
+      {/snippet}
+      <QSwitch label="Expressive" bind:value={isWaitingExpressive} class="q-mb-lg" />
+      <div class="progress-example surface-container-low q-pa-lg" aria-busy="true">
+        <div class="flex no-wrap items-center q-gap-lg">
+          <QCircularProgress
+            indeterminate
+            expressive={isWaitingExpressive}
+            aria-label="Checking for updates, circular"
+          />
+          <p class="body-medium q-ma-none">Checking for updates…</p>
         </div>
-      </QDocsSection>
+        <QLinearProgress
+          indeterminate
+          expressive={isWaitingExpressive}
+          class="q-mt-lg"
+          aria-label="Checking for updates, linear"
+        />
+      </div>
+    </QDocsSection>
 
-      <QDocsSection title="Linear Progress Colors">
-        {#snippet sectionDescription()}
-          Customize the appearance of QLinearProgress with the <code>color</code> and
-          <code>trackColor</code> props. You can use theme color names or custom CSS color values.
-        {/snippet}
+    <QDocsSection title="Buffer and Direction">
+      {#snippet sectionDescription()}
+        <code>buffer</code> shows work prepared ahead of the completed portion, such as downloaded
+        audio ahead of playback. Compare reading directions or use <code>reverse</code> to flip the fill.
+      {/snippet}
+      <div class="flex items-center q-gap-lg q-mb-lg">
+        <QSelect label="Reading direction" options={["ltr", "rtl"]} bind:value={direction} />
+        <QSwitch label="Reverse" bind:value={reverse} />
+      </div>
+      <div class="progress-example surface-container-low q-pa-lg" dir={direction}>
+        <p class="body-medium q-mt-none q-mb-md">40% played · 75% buffered</p>
+        <QLinearProgress
+          value={0.4}
+          buffer={0.75}
+          {reverse}
+          expressive={false}
+          aria-label="Audio playback"
+          aria-valuetext="40% played; 75% buffered"
+        />
+      </div>
+    </QDocsSection>
 
-        <div class="q-my-md flex column q-gap-md" style="max-width: 400px;">
-          <QLinearProgress value={40} color="primary" />
-          <QLinearProgress value={60} color="secondary" />
-          <QLinearProgress value={80} color="tertiary" />
-          <QLinearProgress value={50} color="error" trackColor="error-container" />
-          <QLinearProgress value={70} color="#8E44AD" trackColor="#D7BDE2" />
-        </div>
-      </QDocsSection>
-
-      <QDocsSection title="Linear Progress Sizes and Shapes">
-        {#snippet sectionDescription()}
-          Baseline indicators are 4px high and expressive indicators are 10px high. Use the
-          <code>size</code> prop for a custom height or <code>noRound</code> for square ends.
-        {/snippet}
-
-        <div class="q-my-md flex column q-gap-md" style="max-width: 400px;">
-          <QLinearProgress value={50} />
-          <QLinearProgress value={50} expressive />
-          <QLinearProgress value={50} size="8px" />
-          <QLinearProgress value={50} size="8px" noRound />
-        </div>
-      </QDocsSection>
-
-      <QDocsSection title="Reversed Linear Progress">
-        {#snippet sectionDescription()}
-          Progress follows <code>dir</code>: it fills from the right in RTL, except with
-          <code>lang="he"</code> (Hebrew). Use <code>reverse</code> to invert that direction, or
-          <code>dir="ltr"</code> for media progress.
-        {/snippet}
-
-        <div class="q-my-md flex column q-gap-md" style="max-width: 400px;">
-          <div>Default direction (left-to-right):</div>
-          <QLinearProgress value={60} />
-          <div class="q-mt-sm">Reversed direction (right-to-left):</div>
-          <QLinearProgress value={60} reverse />
-        </div>
-      </QDocsSection>
-
-      <QDocsSection title="Linear Progress with Buffer">
-        {#snippet sectionDescription()}
-          The <code>buffer</code> prop displays a secondary progress indicator, useful for showing buffered
-          content in media players or multi-step operations where some parts are already prepared. If
-          the provided buffer is greater than 1, it will be interpreted as a percentage (0-100). Otherwise,
-          it will be treated as a fraction (0-1).
-        {/snippet}
-
-        <div class="q-my-md flex column q-gap-md" style="max-width: 400px;">
-          <QLinearProgress value={30} buffer={0.6} />
-          <div class="text-caption">Download progress: 30%, Buffered: 60%</div>
-
-          <QLinearProgress value={50} buffer={80} color="secondary" />
-          <div class="text-caption">Download progress: 50%, Buffered: 80%</div>
-        </div>
-      </QDocsSection>
-
-      <QDocsSection title="Linear Progress Animation Control">
-        {#snippet sectionDescription()}
-          Control animation behavior with the <code>instantFeedback</code> and
-          <code>animationSpeed</code> props. This is useful when you need immediate visual feedback or
-          custom timing.
-        {/snippet}
-
-        <div class="q-my-md flex column q-gap-md" style="max-width: 400px;">
-          <div>Default animation (600ms):</div>
-          <QLinearProgress bind:value={linearValue} />
-
-          <div>Faster animation (200ms):</div>
-          <QLinearProgress bind:value={linearValue} animationSpeed={200} />
-
-          <div>Instant feedback (no animation):</div>
-          <QLinearProgress bind:value={linearValue} instantFeedback />
-
-          <div class="q-mt-sm">
-            <QBtn size="sm" label="Set to 20%" onclick={() => (linearValue = 20)} class="q-mr-sm" />
-            <QBtn size="sm" label="Set to 80%" onclick={() => (linearValue = 80)} />
-          </div>
-        </div>
-      </QDocsSection>
-
-      <QDocsSection title="Circular Progress - Basic Usage">
-        {#snippet sectionDescription()}
-          QCircularProgress displays progress in a circular format. Like its linear counterpart, it
-          supports both determinate and indeterminate states.
-        {/snippet}
-
-        <div class="q-my-md">
-          <div class="flex q-gap-lg">
-            <QCircularProgress value={circularValue} />
-            <div class="flex column justify-center">
-              <div class="flex q-gap-md q-mb-sm">
-                <QBtn
-                  size="sm"
-                  label="Decrease"
-                  onclick={() => (circularValue = Math.max(0, circularValue - 10))}
-                />
-                <QBtn
-                  size="sm"
-                  label="Increase"
-                  onclick={() => (circularValue = Math.min(100, circularValue + 10))}
-                />
-              </div>
-              <div>Current value: {circularValue}%</div>
+    <QDocsSection title="Colors and Sizes">
+      {#snippet sectionDescription()}
+        Set <code>color</code> and <code>trackColor</code> with theme names or CSS colors.
+        <code>size</code> sets the bar height or circle diameter; numbers use pixels and CSS lengths
+        retain their units. <code>noRound</code> makes the ends square.
+      {/snippet}
+      <div class="flex items-center q-gap-lg q-mb-lg">
+        <QSelect label="Indicator color" options={COLORS} emitValue bind:value={color} />
+        <QSelect label="Track color" options={TRACK_COLORS} bind:value={trackColor} />
+        <QSwitch label="Square ends" bind:value={noRound} />
+      </div>
+      <div class="progress-example surface-container-low q-pa-lg">
+        <p class="body-small q-mt-none q-mb-md">12px bar</p>
+        <QLinearProgress
+          value={0.6}
+          {color}
+          {trackColor}
+          {noRound}
+          size="12px"
+          expressive={false}
+          aria-label="Styled linear progress"
+        />
+        <div class="flex justify-center items-center q-gap-lg q-mt-lg">
+          {#each [48, 80, 112] as size (size)}
+            <div class="column items-center q-gap-sm">
+              <QCircularProgress
+                value={60}
+                {color}
+                {trackColor}
+                {noRound}
+                {size}
+                expressive={false}
+                aria-label={`Styled circular progress, ${size}px`}
+              />
+              <span class="body-small">{size}px</span>
             </div>
-          </div>
+          {/each}
         </div>
-      </QDocsSection>
+      </div>
+    </QDocsSection>
 
-      <QDocsSection title="Indeterminate Circular Progress">
-        {#snippet sectionDescription()}
-          Similar to linear progress, use the <code>indeterminate</code> prop to show a continuous animation
-          when the progress duration is unknown.
-        {/snippet}
-
-        <div class="q-my-md flex q-gap-lg">
-          <QCircularProgress indeterminate size="3em" />
-          <QCircularProgress indeterminate size="3em" color="secondary" />
-          <QCircularProgress indeterminate size="3em" color="tertiary" thickness={0.1} />
-          <QCircularProgress indeterminate size="3em" color="error" thickness={0.3} />
+    <QDocsSection title="Custom Ranges and Labels">
+      {#snippet sectionDescription()}
+        Circular progress supports a custom <code>min</code> and <code>max</code>. Enable
+        <code>showValue</code> to display the value; supply children to customize its label. Adjust
+        <code>animationSpeed</code> for value transitions; <code>instantFeedback</code> skips them.
+      {/snippet}
+      <div class="flex items-center q-gap-lg q-mb-lg">
+        <QSelect label="Transition duration (ms)" options={TIMINGS} bind:value={animationSpeed} />
+        <QSwitch label="Instant feedback" bind:value={instantFeedback} />
+      </div>
+      <div class="progress-example flex items-center q-gap-lg surface-container-low q-pa-lg">
+        <QCircularProgress
+          value={completedSteps}
+          min={0}
+          max={8}
+          size="6rem"
+          showValue
+          fontSize="1.25rem"
+          {animationSpeed}
+          {instantFeedback}
+          aria-label="Setup progress"
+          aria-valuetext={`${completedSteps} of 8 steps complete`}
+        >
+          {completedSteps} / 8
+        </QCircularProgress>
+        <div class="column items-start q-gap-md">
+          <p class="body-medium q-ma-none">{completedSteps} of 8 steps complete</p>
+          <QBtn
+            variant="tonal"
+            label={completedSteps === 8 ? "Reset steps" : "Next step"}
+            onclick={() => (completedSteps = completedSteps === 8 ? 0 : completedSteps + 1)}
+          />
         </div>
-      </QDocsSection>
+      </div>
+    </QDocsSection>
 
-      <QDocsSection title="Circular Progress Colors">
-        {#snippet sectionDescription()}
-          Customize colors using the <code>color</code> and <code>trackColor</code> props. Use theme colors
-          or custom values.
-        {/snippet}
-
-        <div class="q-my-md flex q-gap-lg">
-          <QCircularProgress value={75} color="primary" />
-          <QCircularProgress value={75} color="secondary" />
-          <QCircularProgress value={75} color="tertiary" />
-          <QCircularProgress value={75} color="error" />
-          <QCircularProgress value={75} color="#8E44AD" trackColor="#D7BDE2" />
-        </div>
-      </QDocsSection>
-
-      <QDocsSection title="Circular Progress with Value Display">
-        {#snippet sectionDescription()}
-          Enable the <code>showValue</code> prop to display the current progress value in the center of
-          the circle. You can also customize the displayed content using the default slot.
-        {/snippet}
-
-        <div class="q-my-md flex q-gap-lg">
-          <QCircularProgress value={65} showValue />
-
-          <QCircularProgress value={42} showValue size="4em">
-            <div class="text-primary">{42}%</div>
-          </QCircularProgress>
-
-          <QCircularProgress value={78} showValue size="5em" fontSize="0.4em">
-            <div class="title-small">{78}</div>
-          </QCircularProgress>
-        </div>
-      </QDocsSection>
-
-      <QDocsSection title="Circular Progress Sizes">
-        {#snippet sectionDescription()}
-          Adjust the size of the circular progress indicator with the <code>size</code> prop. The value
-          can be specified in any valid CSS unit or as a number (which will be interpreted as pixels).
-        {/snippet}
-
-        <div class="q-my-md flex items-center q-gap-lg">
-          <QCircularProgress value={50} size="1.5em" />
-          <QCircularProgress value={50} size="3em" />
-          <QCircularProgress value={50} size="4.5em" />
-          <QCircularProgress value={50} size="6em" />
-        </div>
-      </QDocsSection>
-
-      <QDocsSection title="Circular Progress Thickness">
-        {#snippet sectionDescription()}
-          Control the thickness of the progress arc with the <code>thickness</code> prop. Values range
-          from 0 to 1, representing the proportion of the radius.
-        {/snippet}
-
-        <div class="q-my-md flex q-gap-lg">
-          <QCircularProgress value={60} thickness={0.1} size="3em" />
-          <QCircularProgress value={60} thickness={0.15} size="3em" />
-          <QCircularProgress value={60} thickness={0.2} size="3em" />
-          <QCircularProgress value={60} thickness={0.3} size="3em" />
-        </div>
-      </QDocsSection>
-
-      <QDocsSection title="Circular Progress Angle and Range">
-        {#snippet sectionDescription()}
-          Customize the starting position of the progress arc with the <code>angle</code> prop and
-          set custom minimum and maximum values with <code>min</code> and <code>max</code>.
-        {/snippet}
-
-        <div class="q-my-md">
-          <div class="flex q-gap-lg">
-            <QCard class="flex column items-center q-gap-sm">
-              <QCardSection>
-                <div class="text-subtitle2">angle: 0° (top)</div>
-              </QCardSection>
-              <QCircularProgress value={50} angle={0} size="3em" />
-            </QCard>
-
-            <QCard class="flex column items-center q-gap-sm">
-              <QCardSection>
-                <div class="text-subtitle2">angle: 90° (right)</div>
-              </QCardSection>
-              <QCircularProgress value={50} angle={90} size="3em" />
-            </QCard>
-
-            <QCard class="flex column items-center q-gap-sm">
-              <QCardSection>
-                <div class="text-subtitle2">angle: 180° (bottom)</div>
-              </QCardSection>
-              <QCircularProgress value={50} angle={180} size="3em" />
-            </QCard>
-
-            <QCard class="flex column items-center q-gap-sm">
-              <QCardSection>
-                <div class="text-subtitle2">angle: 270° (left)</div>
-              </QCardSection>
-              <QCircularProgress value={50} angle={270} size="3em" />
-            </QCard>
-          </div>
-
-          <div class="q-mt-lg flex q-gap-lg">
-            <QCard class="flex column items-center q-gap-sm">
-              <QCardSection>
-                <div class="text-subtitle2">Custom range (0-50)</div>
-              </QCardSection>
-              <QCircularProgress value={25} min={0} max={50} size="3em" showValue />
-            </QCard>
-
-            <QCard class="flex column items-center q-gap-sm">
-              <QCardSection>
-                <div class="text-subtitle2">Custom range (0-200)</div>
-              </QCardSection>
-              <QCircularProgress value={150} min={0} max={200} size="3em" showValue />
-            </QCard>
-          </div>
-        </div>
-      </QDocsSection>
-
-      <QDocsSection title="Circular Progress Shape Customization">
-        {#snippet sectionDescription()}
-          Control the appearance of the progress indicator with the <code>noRound</code> prop, which determines
-          whether the ends of the progress arc are rounded.
-        {/snippet}
-
-        <div class="q-my-md flex q-gap-lg">
-          <div class="text-center">
-            <div class="text-subtitle2 q-mb-sm">Without <code>noRound</code> (Default)</div>
-            <QCircularProgress value={65} size="3em" />
-          </div>
-
-          <div class="text-center">
-            <div class="text-subtitle2 q-mb-sm">With <code>noRound</code></div>
-            <QCircularProgress value={65} size="3em" noRound />
-          </div>
-        </div>
-      </QDocsSection>
-
-      <QDocsSection title="Circular Progress Animation Control">
-        {#snippet sectionDescription()}
-          Like with linear progress, control animation behavior with <code>instantFeedback</code>
-          and
-          <code>animationSpeed</code>.
-        {/snippet}
-
-        <div class="q-my-md flex column q-gap-md" style="max-width: 600px;">
-          <div class="flex q-gap-lg">
-            <div class="text-center">
-              <div class="text-subtitle2 q-mb-sm">Default (600ms)</div>
-              <QCircularProgress bind:value={circularValue} size="3em" />
-            </div>
-
-            <div class="text-center">
-              <div class="text-subtitle2 q-mb-sm">Fast (200ms)</div>
-              <QCircularProgress bind:value={circularValue} size="3em" animationSpeed={200} />
-            </div>
-
-            <div class="text-center">
-              <div class="text-subtitle2 q-mb-sm">No animation</div>
-              <QCircularProgress bind:value={circularValue} size="3em" instantFeedback />
-            </div>
-          </div>
-
-          <div class="q-mt-sm">
-            <QBtn
-              size="sm"
-              label="Set to 10%"
-              onclick={() => (circularValue = 10)}
-              class="q-mr-sm"
-            />
-            <QBtn size="sm" label="Set to 90%" onclick={() => (circularValue = 90)} />
-          </div>
-        </div>
-      </QDocsSection>
-
-      <QDocsSection title="Practical Applications">
-        {#snippet sectionDescription()}
-          Examples of how progress indicators can be used in real-world applications.
-        {/snippet}
-
-        <div class="q-my-md flex q-gap-lg">
-          <QCard style="width: 288px;">
-            <QCardSection>
-              <div class="text-h6">File Upload</div>
-              <div class="text-subtitle2">3 of 5 files completed</div>
-            </QCardSection>
-
-            <QCardSection class="q-mt-md">
-              <QLinearProgress value={60} />
-              <div class="flex justify-between q-mt-xs">
-                <div class="text-caption">27.5 MB/45.8 MB</div>
-                <div class="text-caption">60%</div>
-              </div>
-            </QCardSection>
-
-            <QCardActions align="right">
-              <QBtn flat label="Cancel" />
-              <QBtn tonal label="Pause" />
-            </QCardActions>
-          </QCard>
-
-          <QCard class="flex column justify-center" style="width: 288px;">
-            <div class="flex items-center justify-center q-mb-md">
-              <QCircularProgress value={75} size="5em" showValue color="tertiary" />
-            </div>
-            <div class="text-center text-h6">Battery Status</div>
-            <div class="text-center text-subtitle2">Charging - 1h 20m until full</div>
-          </QCard>
-        </div>
-      </QDocsSection>
-
-      <QDocsSection title="Accessibility">
-        {#snippet sectionDescription()}
-          Add a label that identifies the operation. Determinate indicators expose their current
-          value and range; indeterminate indicators omit <code>aria-valuenow</code>.
-        {/snippet}
-
-        <div class="q-my-md flex column q-gap-lg" style="max-width: 400px;">
-          <QLinearProgress value={35} aria-label="Uploading profile photo" />
-          <QCircularProgress indeterminate aria-label="Loading account details" />
-        </div>
-      </QDocsSection>
-    </div>
+    <QDocsSection title="Accessibility" noCode>
+      <p>
+        Give each indicator an accessible name with <code>aria-label</code> or
+        <code>aria-labelledby</code>. Use nearby text to explain the task and
+        <code>aria-valuetext</code> when its number needs context.
+      </p>
+      <p>
+        Measured indicators expose their value and range; indeterminate ones omit
+        <code>aria-valuenow</code>. Indicators do not take keyboard focus. Keep status text visible
+        so color and animation are not the only cues.
+      </p>
+    </QDocsSection>
   {/snippet}
 </QDocs>
+
+<style>
+  .progress-preview,
+  .progress-example {
+    border-radius: 24px;
+    overflow-wrap: anywhere;
+  }
+
+  .progress-preview {
+    width: min(100%, 340px);
+    max-height: 100%;
+  }
+</style>
