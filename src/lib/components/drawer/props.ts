@@ -18,6 +18,8 @@ export interface QDrawerProps
 
   /**
    * The viewport width below which the drawer uses modal behavior and swipe gestures.
+   * Defaults to the MD3 expanded breakpoint; at 840px the drawer becomes standard.
+   * @default 840
    */
   breakpoint?: number;
 

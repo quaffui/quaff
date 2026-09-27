@@ -8,6 +8,7 @@ Navigation drawers provide ergonomic access to destinations in an app
   import { on } from "svelte/events";
   import { innerWidth } from "svelte/reactivity/window";
   import { navigationCtx } from "$internal/navigationContext";
+  import { BREAKPOINTS } from "$internal/breakpoints";
   import { navigating } from "$app/state";
   import { useSize } from "$composables/useSize";
   import {
@@ -22,7 +23,7 @@ Navigation drawers provide ergonomic access to destinations in an app
     value = $bindable(false),
     side = "start",
     width = 360,
-    breakpoint = 1023,
+    breakpoint = BREAKPOINTS.md,
     behavior = "default",
     bordered = false,
     overlay = false,
@@ -58,6 +59,7 @@ Navigation drawers provide ergonomic access to destinations in an app
   // #region:    --- Reactive variables
   let drawerEl = $state<HTMLDivElement>();
   let swipeAreaEl = $state<HTMLDivElement>();
+  let mounted = $state(false);
   // #endregion: --- Reactive variables
 
   // #region:    --- Derived values
@@ -78,8 +80,8 @@ Navigation drawers provide ergonomic access to destinations in an app
       return false;
     }
 
-    const currentWidth = innerWidth.current;
-    return currentWidth ? currentWidth <= breakpoint : false;
+    // Match SSR during hydration, then adapt to the actual viewport.
+    return mounted && innerWidth.current !== undefined && innerWidth.current < breakpoint;
   });
 
   const isModal = $derived(overlay || isBelowBreakpoint);
@@ -93,6 +95,8 @@ Navigation drawers provide ergonomic access to destinations in an app
 
   // #region:    --- Lifecycle
   onMount(() => {
+    mounted = true;
+
     setTimeout(() => {
       drawerEl?.style.setProperty("transition", TRANSITION);
     }, 100);

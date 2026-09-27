@@ -54,15 +54,15 @@
 
 <div
   class="q-docs"
-  style="--q-hue-rotate: {hueRotate}deg; --q-brightness: {brightness}; max-width: {Quaff.breakpoints
-    .lg}px; width: 100%; margin-inline: auto;"
+  style="--q-hue-rotate: {hueRotate}deg; --q-brightness: {brightness}; max-width: {Quaff.screen
+    .sizes.lg}px; width: 100%; margin-inline: auto;"
 >
   <div class="q-docs__hero row q-gutter-lg" style="min-height: 400px">
     <QCard
       class="q-docs__heading primary-container col-sm-12 col-xs-12 col-lg-6"
       style="min-height: 400px; align-content: center;"
     >
-      <h1 class={["justify-center", Quaff.breakpoints.isMoreThan("sm", true) ? "large" : "small"]}>
+      <h1 class={["justify-center", Quaff.screen.gt.xs ? "large" : "small"]}>
         {docName || principalDocument?.name}
       </h1>
       <QCardSection class="q-docs__description flex flex-center">

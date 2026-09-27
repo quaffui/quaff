@@ -70,7 +70,7 @@ QDate is a Material 3 component for selecting or entering single dates and date 
   const inputId = $derived(providedInputId ?? generatedInputId);
   const modelMask = $derived(isValidDateMask(mask) ? mask : defaultDateMask);
   const composed = $derived(variant !== "modal");
-  const compact = $derived(Quaff.breakpoints.isLessThan("sm"));
+  const compact = $derived(Quaff.screen.ready && Quaff.screen.lt.sm);
   const docked = $derived(variant === "docked" || (variant === "adaptive" && !compact));
   const fullscreen = $derived(!docked && compact);
   const overlayId = $derived(docked ? dockedId : dialogId);

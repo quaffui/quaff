@@ -67,7 +67,7 @@ QTime is a Material 3 component for selecting or entering a time. It supports di
   const cancelLabel = $derived(providedCancelLabel ?? i18n.labels.cancelLabel);
   const inputId = $derived(providedInputId ?? generatedInputId);
   const composed = $derived(variant !== "modal");
-  const compact = $derived(Quaff.breakpoints.isLessThan("sm"));
+  const compact = $derived(Quaff.screen.ready && Quaff.screen.lt.sm);
   const docked = $derived(variant === "docked" || (variant === "adaptive" && !compact));
   const overlayId = $derived(docked ? dockedId : dialogId);
   const viewportWidth = $derived(innerWidth.current ?? 0);

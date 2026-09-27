@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { resolve } from "$app/paths";
   import { pageTitle } from "$helpers/pageTitle";
 
   const cols = [1, 2, 3, 4];
@@ -69,8 +70,16 @@
 
   <h2 class="q-my-lg">Breakpoints</h2>
 
+  <p>
+    Grid classes use the MD3 window sizes below, matching <code class="q-docs-code"
+      >Quaff.screen</code
+    >. See
+    <a class="q-docs-link" href={resolve("/layout/adaptive", {})}>adaptive layouts</a> for navigation
+    and list/detail examples.
+  </p>
+
   <ul class="q-ml-lg">
-    {#each [["xs", 0, 599], ["sm", 600, 959], ["md", 960, 1279], ["lg", 1280, 1919], ["xl", 1920]] as info (info)}
+    {#each [["xs", 0, 599], ["sm", 600, 839], ["md", 840, 1199], ["lg", 1200, 1599], ["xl", 1600]] as info (info)}
       <li class="q-mb-md">
         <strong>{info[0]}</strong>
         {#if info.length === 3}

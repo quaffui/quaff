@@ -303,6 +303,10 @@
       name: "Grid",
       to: "/layout/grid",
     },
+    {
+      name: "Adaptive layouts",
+      to: "/layout/adaptive",
+    },
   ];
 
   const colors = [
@@ -332,8 +336,8 @@
   const nextItem = $derived(prepareItem(selectedSection, Quaff.router.url.pathname, "next"));
 
   const drawerContent = $derived(getDrawerItems(selectedSection));
-  const isMobile = $derived(Quaff.breakpoints.isLessThan("md"));
-  const primaryNav = $derived(isMobile ? { navbar } : { railbarLeft });
+  const hasSectionSpace = $derived(Quaff.screen.twoPane);
+  const primaryNav = $derived(Quaff.screen.navigation === "navbar" ? { navbar } : { railbarLeft });
 
   export const snapshot: Snapshot<number> = {
     capture: () => contentEl?.parentElement?.scrollTop ?? 0,
@@ -359,7 +363,7 @@
   function prepareItem(selected: string | null, route: string, kind: "previous" | "next") {
     const path = getNavigationLinks(getDrawerItems(selected));
 
-    if (!path.length || Quaff.breakpoints.isMoreThan("md", true)) {
+    if (!path.length || Quaff.screen.gt.sm) {
       return null;
     }
 
@@ -412,7 +416,7 @@
 <QLayout view="hhr lpr fff" {drawerLeft} {...primaryNav}>
   {#snippet header()}
     <QHeader class="elevate-2">
-      {#if isMobile}
+      {#if !hasSectionSpace}
         <QIconBtn
           icon="menu"
           variant="flat"
@@ -461,7 +465,7 @@
     <div bind:this={contentEl} class="q-docs-layout__content">
       {@render children?.()}
 
-      {#if Quaff.breakpoints.isLessThan("md") && (nextItem || previousItem)}
+      {#if Quaff.screen.ready && Quaff.screen.lt.md && (nextItem || previousItem)}
         <div class="q-px-md flex justify-center q-gap-md" style="padding-bottom: 64px;">
           {#if previousItem}
             <QBtn icon="arrow_back" label={previousItem.name} to={previousItem.to} filled />
@@ -506,9 +510,9 @@
 
 {#snippet drawerLeft()}
   <QDrawer
-    value={!isMobile && !!drawerContent.length}
-    persistent={!isMobile}
-    behavior={isMobile ? "mobile" : "desktop"}
+    value={hasSectionSpace && !!drawerContent.length}
+    persistent={hasSectionSpace}
+    behavior={hasSectionSpace ? "desktop" : "mobile"}
     noSwipe={!drawerContent.length}
     bind:this={drawerLeftEl}
     width={220}

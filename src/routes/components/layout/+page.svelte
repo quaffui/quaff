@@ -292,7 +292,7 @@
   <QDrawer
     bordered
     width={160}
-    persistent={Quaff.breakpoints.currentWidth >= 1023}
+    persistent={Quaff.screen.gt.sm}
     bind:value={leftDrawerShown}
     bind:this={leftDrawerElement}
   >
@@ -321,7 +321,7 @@
   <QDrawer
     side="right"
     bordered
-    persistent={Quaff.breakpoints.currentWidth >= 1023}
+    persistent={Quaff.screen.gt.sm}
     width={160}
     bind:value={rightDrawerShown}
     bind:this={rightDrawerElement}
