@@ -17,6 +17,8 @@ QHeader is a top app bar for titles, navigation, and actions. It can be used ind
   let headerEl = $state<HTMLElement>();
   let scrollPosition = $state(0);
   let isScrollingDown = $state(true);
+  let isCompact = $state(false);
+  let measuredHeight = $state<number>();
 
   const headerContext = headerCtx.get();
   // #endregion: --- Reactive variables
@@ -27,7 +29,9 @@ QHeader is a top app bar for titles, navigation, and actions. It can be used ind
     inset = false,
     reveal = false,
     revealOffset = 250,
-    height = 64,
+    height,
+    variant = "small",
+    collapse = false,
     bordered = false,
     children,
     ...props
@@ -35,9 +39,18 @@ QHeader is a top app bar for titles, navigation, and actions. It can be used ind
   // #endregion: --- Props
 
   // #region:    --- Derived values
-  const revealObserver = useRevealScrollObserver("header", uid, () => reveal && !!headerContext);
+  const isFlexible = $derived(variant !== "small");
+  const layoutHeight = $derived(measuredHeight ?? height ?? 64);
+  const revealObserver = useRevealScrollObserver(
+    "header",
+    uid,
+    () => !!headerContext && (reveal || isFlexible)
+  );
   const revealScroll = $derived(revealObserver.scroll);
-  const isCollapsed = $derived(reveal && isScrollingDown && scrollPosition > height + revealOffset);
+  const isScrolled = $derived(isFlexible && (revealScroll?.position ?? 0) > 0);
+  const isCollapsed = $derived(
+    reveal && isScrollingDown && scrollPosition > layoutHeight + revealOffset
+  );
 
   const leftOffset = $derived(headerContext?.view.charAt(0) === "l");
 
@@ -47,6 +60,32 @@ QHeader is a top app bar for titles, navigation, and actions. It can be used ind
   // #region:    --- Effects
   $effect.pre(() => {
     const position = revealScroll?.position ?? 0;
+
+    if (!isFlexible || !collapse || !headerContext || position === 0) {
+      isCompact = false;
+    } else if (!isCompact) {
+      const content = headerEl?.parentElement?.querySelector<HTMLElement>(
+        ":scope > .q-layout__content"
+      );
+      const expandedHeight = headerEl?.offsetHeight ?? 64;
+      const scrollRange = content ? content.scrollHeight - content.clientHeight : 0;
+      let reduction = Math.max(0, expandedHeight - (reveal ? 0 : 64));
+
+      if (headerEl && !reveal && scrollRange <= reduction + 1) {
+        // Wrapped compact text may be taller than 64px. Measure only when the
+        // nominal height would prevent collapse, restoring geometry before paint.
+        const inlineStyle = headerEl.style.cssText;
+        headerEl.style.setProperty("transition", "none", "important");
+        headerEl.classList.add("q-header--compact");
+        reduction = Math.max(0, expandedHeight - headerEl.offsetHeight);
+        headerEl.classList.remove("q-header--compact");
+        void headerEl.offsetHeight;
+        headerEl.style.cssText = inlineStyle;
+      }
+
+      // Leave scroll range for collapsing and, with reveal, hiding the remaining bar.
+      isCompact = scrollRange > reduction + 1;
+    }
 
     if (revealScroll?.direction === "up" && position > 0) {
       const content = headerEl?.parentElement?.querySelector<HTMLElement>(
@@ -74,9 +113,9 @@ QHeader is a top app bar for titles, navigation, and actions. It can be used ind
     }
 
     headerCtx.updateEntries(headerContext, {
-      height,
+      height: layoutHeight,
       collapsed: isCollapsed,
-      ready: true,
+      ready: !isFlexible || measuredHeight !== undefined,
     });
   });
   // #endregion: --- Effects
@@ -97,6 +136,11 @@ QHeader is a top app bar for titles, navigation, and actions. It can be used ind
   Q.classes("q-header", {
     bemClasses: {
       [uid]: true,
+      [variant]: true,
+      flexible: isFlexible,
+      collapsible: isFlexible && collapse,
+      compact: isCompact,
+      scrolled: isScrolled,
       elevated,
       bordered,
       collapsed: isCollapsed,
@@ -110,12 +154,26 @@ QHeader is a top app bar for titles, navigation, and actions. It can be used ind
   });
 </script>
 
-<header
-  bind:this={headerEl}
-  {...props}
-  class="q-header"
-  style:--header-height="{height}px"
-  data-quaff
->
-  {@render children?.()}
-</header>
+{#if headerContext}
+  <!-- Context is fixed: keep controls mounted and avoid size observers for standalone headers. -->
+  <header
+    bind:this={headerEl}
+    bind:offsetHeight={measuredHeight}
+    {...props}
+    class="q-header"
+    style:--header-height={height === undefined ? undefined : `${height}px`}
+    data-quaff
+  >
+    {@render children?.()}
+  </header>
+{:else}
+  <header
+    bind:this={headerEl}
+    {...props}
+    class="q-header"
+    style:--header-height={height === undefined ? undefined : `${height}px`}
+    data-quaff
+  >
+    {@render children?.()}
+  </header>
+{/if}
