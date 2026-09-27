@@ -285,7 +285,7 @@ The Tooltip component displays informative text on hover or focus, providing add
 {#if value && realTarget}
   <div
     bind:this={tooltipEl}
-    {@attach portal(getOverlayPortalTarget(realTarget))}
+    {@attach portal(getOverlayPortalTarget(realTarget), realTarget)}
     {...props}
     {id}
     {role}

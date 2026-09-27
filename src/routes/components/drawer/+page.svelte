@@ -25,7 +25,7 @@
 
   let displayDrawerOpen = $state(false);
   let basicDrawerOpen = $state(false);
-  let isNavigationDrawerOpen = $state(true);
+  let isNavigationDrawerOpen = $state(false);
   let navigationDestination = $state("Website");
 
   let leftDrawerOpen = $state(false);
@@ -60,7 +60,7 @@
   {#snippet display()}
     <QLayout view="hHh LpR fFf" style="height: 300px;">
       {#snippet drawerStart()}
-        <QDrawer bind:value={displayDrawerOpen} overlay>
+        <QDrawer bind:value={displayDrawerOpen} overlay aria-label="Navigation">
           <h6 class="q-drawer__headline">Navigation</h6>
           <QList>
             <QItem to="#" active>
@@ -92,7 +92,9 @@
         {#snippet sectionDescription()}
           QDrawer is a side navigation component that can be toggled open and closed. It's typically
           used for navigation menus, filtering options, or additional content. The drawer is
-          controlled with the <code>value</code> prop which determines if it's open or closed.
+          controlled with the <code>value</code> prop which determines if it's open or closed. Modal
+          drawers keep keyboard focus inside and return it when closed. Escape closes non-persistent
+          drawers. Give the drawer an <code>aria-label</code> or <code>aria-labelledby</code>.
         {/snippet}
 
         <QLayout
@@ -107,7 +109,7 @@
           {/snippet}
 
           {#snippet drawerStart()}
-            <QDrawer bind:value={basicDrawerOpen}>
+            <QDrawer bind:value={basicDrawerOpen} aria-label="Navigation">
               <h6 class="q-drawer__headline">Navigation</h6>
               <QList>
                 <QItem to="#" active>
@@ -168,7 +170,7 @@
               bind:value={isNavigationDrawerOpen}
               behavior="desktop"
               overlay
-              inert={!isNavigationDrawerOpen}
+              aria-label="Workspace navigation"
               style="max-width: 100%;"
             >
               <div class="flex items-center justify-between">
@@ -221,7 +223,7 @@
           {/snippet}
 
           {#snippet drawerLeft()}
-            <QDrawer bind:value={leftDrawerOpen} side="left">
+            <QDrawer bind:value={leftDrawerOpen} side="left" aria-label="Navigation">
               <div class="q-pa-md">
                 <h6 class="q-mb-md">Left Drawer</h6>
                 <p class="q-mb-md">This drawer opens from the left side.</p>
@@ -231,7 +233,7 @@
           {/snippet}
 
           {#snippet drawerRight()}
-            <QDrawer bind:value={rightDrawerOpen} side="right">
+            <QDrawer bind:value={rightDrawerOpen} side="right" aria-label="Navigation">
               <div class="q-pa-md">
                 <h6 class="q-mb-md">Right Drawer</h6>
                 <p class="q-mb-md">This drawer opens from the right side.</p>
@@ -272,7 +274,7 @@
           {/snippet}
 
           {#snippet drawerLeft()}
-            <QDrawer bind:value={overlayDrawerOpen} overlay>
+            <QDrawer bind:value={overlayDrawerOpen} overlay aria-label="Navigation">
               <div class="q-pa-md">
                 <h6 class="q-mb-md">Overlay Drawer</h6>
                 <p class="q-mb-md">
@@ -316,7 +318,7 @@
           {/snippet}
 
           {#snippet drawerLeft()}
-            <QDrawer bind:value={persistentDrawerOpen} persistent>
+            <QDrawer bind:value={persistentDrawerOpen} persistent aria-label="Navigation">
               <div class="q-pa-md">
                 <h6 class="q-mb-md">Persistent Drawer</h6>
                 <p>This drawer won't close when clicking outside it. Try it!</p>
@@ -361,7 +363,7 @@
           {/snippet}
 
           {#snippet drawerLeft()}
-            <QDrawer bind:value={borderedDrawerOpen} bordered>
+            <QDrawer bind:value={borderedDrawerOpen} bordered aria-label="Navigation">
               <div class="q-pa-md">
                 <h6 class="q-mb-md">Bordered Drawer</h6>
                 <p class="q-mb-md">This drawer has a border on its edge.</p>
@@ -402,7 +404,7 @@
           {/snippet}
 
           {#snippet drawerLeft()}
-            <QDrawer bind:value={customWidthDrawerOpen} width={400}>
+            <QDrawer bind:value={customWidthDrawerOpen} width={400} aria-label="Navigation">
               <div class="q-pa-md">
                 <h6 class="q-mb-md">Wide Drawer (400px)</h6>
                 <p class="q-mb-md">
@@ -441,7 +443,11 @@
           {/snippet}
 
           {#snippet drawerLeft()}
-            <QDrawer bind:this={drawerRef} bind:value={programmaticDrawerState}>
+            <QDrawer
+              bind:this={drawerRef}
+              bind:value={programmaticDrawerState}
+              aria-label="Navigation"
+            >
               <div class="q-pa-md">
                 <h6 class="q-mb-md">Drawer Content</h6>
                 <p class="q-mb-md">This drawer is controlled programmatically.</p>
@@ -481,7 +487,7 @@
           {/snippet}
 
           {#snippet drawerLeft()}
-            <QDrawer bind:value={layoutDrawerOpen} bordered>
+            <QDrawer bind:value={layoutDrawerOpen} bordered aria-label="Navigation">
               <h6 class="q-drawer__headline">Navigation</h6>
               <QList>
                 <QItem to="#" active>

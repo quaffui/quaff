@@ -1,10 +1,17 @@
+import { portalParents } from "$internal/portalParent";
 import type { Direction } from "./events";
 import type { Attachment } from "svelte/attachments";
 
 export type PortalTarget = ParentNode | undefined;
 
-export function portal(target?: PortalTarget): Attachment<HTMLElement> {
+export function portal(target?: PortalTarget, owner?: Node | null): Attachment<HTMLElement> {
   return (element) => {
+    const parent = owner ?? portalParents.get(element) ?? element.parentNode;
+
+    if (parent) {
+      portalParents.set(element, parent);
+    }
+
     (target ?? document.body).appendChild(element);
 
     return () => element.remove();
