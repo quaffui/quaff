@@ -40,6 +40,7 @@
   } = $props();
 
   const yearSelectionId = $derived(`${focusId}-years`);
+  const rangeErrorId = $derived(`${focusId}-range-error`);
 
   function toggleYearView() {
     const view = state.toggleCalendarView("years");
@@ -78,14 +79,10 @@
     }
   }
 
-  function handleDateInput(event: QDateInputEvent<Event>) {
-    state.updateDraftInput(event.currentTarget.value);
-  }
-
-  function handleDateInputKeydown(event: QDateInputEvent<KeyboardEvent>) {
+  function handleDateInputKeydown(event: QDateInputEvent<KeyboardEvent>, part: "start" | "end") {
     if (event.key === "Enter") {
       event.preventDefault();
-      state.submitDraftInput();
+      state.submitDraftInput(part);
     }
   }
 
@@ -110,10 +107,31 @@
       fullscreen,
       "motion-ready": state.animatePickerChanges,
       input: state.displayMode === "input",
+      range: state.range,
       auto: !state.showActions,
     },
   });
 </script>
+
+{#snippet dateInput(part: "start" | "end", value: string, label: string, error: string)}
+  <QInput
+    {value}
+    {label}
+    mask={state.dateFieldMask}
+    placeholder={state.dateInputMask}
+    hint={error ? undefined : `${state.resolvedLabels.expectedFormat}: ${state.dateInputMask}`}
+    error={!!error}
+    errorMessage={error}
+    aria-invalid={!!error || !!state.rangeValidationMessage || undefined}
+    aria-describedby={state.rangeValidationMessage ? rangeErrorId : undefined}
+    autocomplete="off"
+    inputmode="numeric"
+    outlined
+    oninput={(event) => state.updateDraftInput(event.currentTarget.value, part)}
+    onkeydown={(event) => handleDateInputKeydown(event, part)}
+    onblur={() => state.validateDraftInput(part)}
+  />
+{/snippet}
 
 {#snippet modalCalendar()}
   <div class="q-date__month-navigation">
@@ -261,24 +279,25 @@
           {@render modalCalendar()}
         {:else}
           <div class="q-date__input-mode">
-            <QInput
-              value={state.draftInput}
-              label={state.resolvedLabels.dateInput}
-              mask={state.dateFieldMask}
-              placeholder={state.dateInputMask}
-              hint={state.inputValidationMessage
-                ? undefined
-                : `${state.resolvedLabels.expectedFormat}: ${state.dateInputMask}`}
-              error={!!state.inputValidationMessage}
-              errorMessage={state.inputValidationMessage}
-              aria-invalid={!!state.inputValidationMessage || undefined}
-              autocomplete="off"
-              inputmode="numeric"
-              outlined
-              oninput={handleDateInput}
-              onkeydown={handleDateInputKeydown}
-              onblur={() => state.validateDraftInput()}
-            />
+            {@render dateInput(
+              "start",
+              state.draftInput,
+              state.range ? state.resolvedLabels.startDate : state.resolvedLabels.dateInput,
+              state.inputValidationMessage
+            )}
+            {#if state.range}
+              {@render dateInput(
+                "end",
+                state.draftEndInput,
+                state.resolvedLabels.endDate,
+                state.endInputValidationMessage
+              )}
+            {/if}
+            {#if state.rangeValidationMessage}
+              <p class="q-date__range-error" id={rangeErrorId} role="alert">
+                {state.rangeValidationMessage}
+              </p>
+            {/if}
           </div>
         {/if}
       </div>

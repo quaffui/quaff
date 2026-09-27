@@ -23,7 +23,8 @@ import type {
 export type QDateCalendarView = "calendar" | "months" | "years";
 
 export interface QDateStateSource {
-  value: () => QDateValue;
+  value: () => QDateValue<boolean> | undefined;
+  range: () => boolean;
   mask: () => string;
   min: () => string | undefined;
   max: () => string | undefined;
@@ -36,7 +37,7 @@ export interface QDateStateSource {
   defaultMode: () => QDateDisplayMode;
   docked: () => boolean;
   autoApply: () => boolean;
-  commit: (value: string) => void;
+  commit: (value: NonNullable<QDateValue<boolean>>) => void;
 }
 
 export interface QDateConstraints {
@@ -56,6 +57,7 @@ export function createDateFormatters(locale: string) {
   const formatter = (options: Intl.DateTimeFormatOptions) => createFormatter(locale, options);
   const display = formatter({ year: "numeric", month: "short", day: "numeric" });
   const headline = formatter({ weekday: "short", month: "short", day: "numeric" });
+  const rangeHeadline = formatter({ month: "short", day: "numeric" });
   const spoken = formatter({
     weekday: "long",
     year: "numeric",
@@ -72,6 +74,7 @@ export function createDateFormatters(locale: string) {
   return {
     display: (date: QCalendarDate | null) => (date ? display.format(createUtcDate(date)) : ""),
     headline: (date: QCalendarDate) => headline.format(createUtcDate(date)),
+    rangeHeadline: (date: QCalendarDate) => rangeHeadline.format(createUtcDate(date)),
     spoken: (date: QCalendarDate) => spoken.format(createUtcDate(date)),
     monthYear: (date: QCalendarDate) => monthYear.format(createUtcDate(date)),
     month: (date: QCalendarDate, width: "short" | "long") =>
@@ -123,6 +126,43 @@ export function isSelectableDate(date: QCalendarDate, constraints: QDateConstrai
     typeof constraints.disabledDates !== "function" ||
     !constraints.disabledDates(formatDateValue(date))
   );
+}
+
+export function getDateRangeValidation(
+  start: QCalendarDate,
+  end: QCalendarDate,
+  constraints: QDateConstraints
+): "invalidRange" | "unavailableRange" | null {
+  if (compareCalendarDates(start, end) > 0) {
+    return "invalidRange";
+  }
+
+  if (!isSelectableDate(start, constraints) || !isSelectableDate(end, constraints)) {
+    return "unavailableRange";
+  }
+
+  const startValue = formatDateValue(start);
+  const endValue = formatDateValue(end);
+
+  if (constraints.disabledDateSet) {
+    for (const value of constraints.disabledDateSet) {
+      if (value > startValue && value < endValue && parseDateValue(value)) {
+        return "unavailableRange";
+      }
+    }
+  } else if (typeof constraints.disabledDates === "function") {
+    for (
+      let date = addCalendarDays(start, 1);
+      compareCalendarDates(date, end) < 0;
+      date = addCalendarDays(date, 1)
+    ) {
+      if (constraints.disabledDates(formatDateValue(date))) {
+        return "unavailableRange";
+      }
+    }
+  }
+
+  return null;
 }
 
 export function buildCalendarPage(

@@ -1,9 +1,9 @@
 <!--
 @component
-QDate is a Material 3 component for selecting or entering dates. It supports modal, docked, and adaptive presentations, custom masks, localization, date constraints, and composition with QInput.
+QDate is a Material 3 component for selecting or entering single dates and date ranges. It supports modal, docked, and adaptive presentations, custom masks, localization, date constraints, and composition with QInput.
 -->
 
-<script lang="ts">
+<script lang="ts" generics="Range extends boolean = false">
   import { onDestroy, untrack } from "svelte";
   import { useI18n } from "$internal/i18n.svelte";
   import Quaff from "$classes/Quaff.svelte";
@@ -29,7 +29,8 @@ QDate is a Material 3 component for selecting or entering dates. It supports mod
   const dialogTitleId = `q-date-title-${componentId}`;
 
   let {
-    value = $bindable<QDateValue>(),
+    value = $bindable<QDateValue<Range>>(),
+    range: providedRange,
     open = $bindable(false),
     validationMessage = $bindable(""),
     mask = defaultDateMask,
@@ -53,13 +54,16 @@ QDate is a Material 3 component for selecting or entering dates. It supports mod
     labels,
     id: providedInputId,
     ...fieldProps
-  }: QDateProps = $props();
+  }: QDateProps<Range> = $props();
 
   let wasOpen = false;
 
+  const range = $derived(providedRange ?? false);
   const locale = $derived(providedLocale ?? i18n.locale);
-  const title = $derived(providedTitle ?? i18n.labels.title);
-  const inputTitle = $derived(providedInputTitle ?? i18n.labels.inputTitle);
+  const title = $derived(providedTitle ?? (range ? i18n.labels.chooseRange : i18n.labels.title));
+  const inputTitle = $derived(
+    providedInputTitle ?? (range ? i18n.labels.selectedRange : i18n.labels.inputTitle)
+  );
   const confirmLabel = $derived(providedConfirmLabel ?? i18n.labels.confirmLabel);
   const cancelLabel = $derived(providedCancelLabel ?? i18n.labels.cancelLabel);
   const saveLabel = $derived(providedSaveLabel ?? i18n.labels.saveLabel);
@@ -73,6 +77,7 @@ QDate is a Material 3 component for selecting or entering dates. It supports mod
 
   const source: QDateStateSource = {
     value: () => value,
+    range: () => range,
     mask: () => modelMask,
     min: () => min,
     max: () => max,
@@ -132,13 +137,14 @@ QDate is a Material 3 component for selecting or entering dates. It supports mod
 
   $effect(() => {
     const config = {
-      value,
+      value: value && typeof value === "object" ? { ...value } : value,
+      range,
       mask: modelMask,
       min,
       max,
       yearStart: yearRange[0],
       yearEnd: yearRange[1],
-      disabledDates,
+      disabledDates: Array.isArray(disabledDates) ? [...disabledDates] : disabledDates,
       locale,
       firstDayOfWeek,
     };
@@ -198,8 +204,8 @@ QDate is a Material 3 component for selecting or entering dates. It supports mod
     open ? hide() : show();
   }
 
-  function commit(nextValue: string) {
-    value = nextValue;
+  function commit(nextValue: QDateValue<boolean>) {
+    value = nextValue as QDateValue<Range>;
     open = false;
   }
 

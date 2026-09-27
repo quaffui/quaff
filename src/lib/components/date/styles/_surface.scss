@@ -161,6 +161,10 @@
     overflow-wrap: anywhere;
   }
 
+  &__picker--range &__headline {
+    @include mixins.typography("headline-small");
+  }
+
   &__mode-toggle {
     position: absolute;
     inset-inline-end: 12px;

@@ -5,6 +5,7 @@ import {
   formatDateValue,
   getDateInputMask,
   getLocaleFirstDayOfWeek,
+  isSameCalendarDate,
   parseDateValue,
   startOfMonth,
   type QCalendarDate,
@@ -17,6 +18,7 @@ import {
   findSelectableDateInMonth,
   getAvailableMonthInYear,
   getDateConstraints,
+  getDateRangeValidation,
   getFocusableDateInMonth,
   getInitialDate,
   getLocalToday,
@@ -31,28 +33,40 @@ import { defaultDateLabels, type QDateDisplayMode, type QDateValue } from "./pro
 
 export type { QDateCalendarView, QDateStateSource } from "./calendar";
 
+type DatePart = "start" | "end";
+type DateValidationKey = "invalidDate" | "unavailableDate" | null;
+
 export default class QDateState {
   private source!: QDateStateSource;
-  private synchronizedExternalValue: QDateValue = null;
-  private synchronizedMask = "";
-  private inputValidationKey = $state<"invalidDate" | "unavailableDate" | null>(null);
+  private synchronizedValueKey = "";
+  private inputValidationKey = $state<DateValidationKey>(null);
+  private endInputValidationKey = $state<DateValidationKey>(null);
+  private unavailableStartDate: QCalendarDate | null = null;
+  private unavailableEndDate: QCalendarDate | null = null;
+  private rejectedRange = $state(false);
 
   today = $state<QCalendarDate>(fallbackCalendarDate);
   displayMode = $state<QDateDisplayMode>("calendar");
   calendarView = $state<QDateCalendarView>("calendar");
   draftDate = $state<QCalendarDate | null>(null);
+  draftEndDate = $state<QCalendarDate | null>(null);
   displayedMonth = $state(startOfMonth(fallbackCalendarDate));
   focusedDate = $state<QCalendarDate | null>(null);
   focusedYear = $state(fallbackCalendarDate.year);
   focusedMonth = $state(fallbackCalendarDate.month);
   draftInput = $state("");
+  draftEndInput = $state("");
   monthMotionDirection = $state<1 | -1>(1);
   animatePickerChanges = $state(false);
   isRtl = $state(false);
 
+  range = $derived(this.source.range());
   resolvedLabels = $derived({ ...defaultDateLabels, ...this.source.labels() });
   inputValidationMessage = $derived(
     this.inputValidationKey ? this.resolvedLabels[this.inputValidationKey] : ""
+  );
+  endInputValidationMessage = $derived(
+    this.endInputValidationKey ? this.resolvedLabels[this.endInputValidationKey] : ""
   );
   constraints = $derived(
     getDateConstraints(
@@ -62,7 +76,25 @@ export default class QDateState {
       this.source.disabledDates()
     )
   );
-  committedDate = $derived(parseDateValue(this.source.value(), this.source.mask()));
+  private modelParts = $derived(this.getModelParts(this.source.value()));
+  committedDate = $derived(parseDateValue(this.modelParts.start, this.source.mask()));
+  committedEndDate = $derived(parseDateValue(this.modelParts.end, this.source.mask()));
+  private rangeValidationKey = $derived(
+    this.range && this.draftDate && this.draftEndDate
+      ? getDateRangeValidation(this.draftDate, this.draftEndDate, this.constraints)
+      : null
+  );
+  rangeValidationMessage = $derived.by(() => {
+    if (!this.range) {
+      return "";
+    }
+
+    if (this.rejectedRange) {
+      return this.resolvedLabels.unavailableRange;
+    }
+
+    return this.rangeValidationKey ? this.resolvedLabels[this.rangeValidationKey] : "";
+  });
   initialDate = $derived(getInitialDate(this.committedDate, this.today, this.constraints));
   resolvedFirstDayOfWeek = $derived(
     this.source.firstDayOfWeek() ?? getLocaleFirstDayOfWeek(this.source.locale())
@@ -85,26 +117,54 @@ export default class QDateState {
   monthOptions = $derived(
     getMonthOptions(this.displayedMonth.year, this.constraints, this.formatters)
   );
-  fieldDisplayValue = $derived(this.formatters.display(this.committedDate));
-  headline = $derived(
-    this.draftDate
-      ? this.formatters.headline(this.draftDate)
-      : this.displayMode === "input"
-        ? this.source.inputTitle()
-        : this.resolvedLabels.selectedDate
+  fieldDisplayValue = $derived(
+    this.range && this.committedDate && this.committedEndDate
+      ? `${this.formatters.display(this.committedDate)} – ${this.formatters.display(this.committedEndDate)}`
+      : this.formatters.display(this.committedDate)
   );
+  headline = $derived.by(() => {
+    if (!this.draftDate) {
+      if (this.displayMode === "input") {
+        return this.source.inputTitle();
+      }
+
+      return this.range ? this.resolvedLabels.selectedRange : this.resolvedLabels.selectedDate;
+    }
+
+    if (!this.range) {
+      return this.formatters.headline(this.draftDate);
+    }
+
+    const start = this.formatters.rangeHeadline(this.draftDate);
+    const end = this.draftEndDate
+      ? this.formatters.rangeHeadline(this.draftEndDate)
+      : this.resolvedLabels.endDate;
+    return `${start} – ${end}`;
+  });
   monthYearLabel = $derived(this.formatters.monthYear(this.displayedMonth));
   monthLabel = $derived(this.formatters.month(this.displayedMonth, "short"));
   canNavigatePrevious = $derived(this.canNavigateMonth(-1));
   canNavigateNext = $derived(this.canNavigateMonth(1));
   canNavigatePreviousYear = $derived(this.canNavigateYear(-1));
   canNavigateNextYear = $derived(this.canNavigateYear(1));
-  canConfirm = $derived(!!this.draftDate && this.isSelectable(this.draftDate));
-  triggerLabel = $derived(
-    this.committedDate
-      ? `${this.resolvedLabels.changeDate}, ${this.formatters.spoken(this.committedDate)}`
-      : this.resolvedLabels.chooseDate
+  canConfirm = $derived(
+    !!this.draftDate &&
+      this.isSelectable(this.draftDate) &&
+      (!this.range || (!!this.draftEndDate && !this.rangeValidationKey))
   );
+  triggerLabel = $derived.by(() => {
+    if (this.range) {
+      if (!this.committedDate || !this.committedEndDate) {
+        return this.resolvedLabels.chooseRange;
+      }
+
+      return `${this.resolvedLabels.changeRange}, ${this.formatters.spoken(this.committedDate)} – ${this.formatters.spoken(this.committedEndDate)}`;
+    }
+
+    return this.committedDate
+      ? `${this.resolvedLabels.changeDate}, ${this.formatters.spoken(this.committedDate)}`
+      : this.resolvedLabels.chooseDate;
+  });
   showActions = $derived(!this.source.autoApply());
   valueValidationMessage = $derived.by(() => {
     const value = this.source.value();
@@ -113,13 +173,18 @@ export default class QDateState {
       return "";
     }
 
-    const date = parseDateValue(value, this.source.mask());
+    const date = this.committedDate;
 
-    return !date
-      ? this.resolvedLabels.invalidDate
-      : this.isSelectable(date)
-        ? ""
-        : this.resolvedLabels.unavailableDate;
+    if (this.range && date && this.committedEndDate) {
+      const error = getDateRangeValidation(date, this.committedEndDate, this.constraints);
+      return error ? this.resolvedLabels[error] : "";
+    }
+
+    if (!date || this.range) {
+      return this.resolvedLabels.invalidDate;
+    }
+
+    return this.isSelectable(date) ? "" : this.resolvedLabels.unavailableDate;
   });
 
   constructor(source: QDateStateSource) {
@@ -132,64 +197,43 @@ export default class QDateState {
     this.isRtl = isRtl;
     this.displayMode = this.source.docked() ? "calendar" : this.source.defaultMode();
     this.calendarView = "calendar";
-    this.inputValidationKey = null;
-    this.synchronizedExternalValue = this.source.value();
-    this.synchronizedMask = this.source.mask();
+    this.loadExternalValue(this.source.value());
 
     const initialDate = this.initialDate;
-    this.draftDate =
-      this.committedDate && this.isSelectable(this.committedDate) ? this.committedDate : null;
     this.focusedDate = initialDate;
     this.displayedMonth = startOfMonth(
       initialDate ?? clampCalendarDate(this.committedDate ?? this.today, this.constraints)
     );
     this.focusedYear = this.displayedMonth.year;
     this.focusedMonth = this.displayedMonth.month;
-    this.draftInput = formatDateValue(this.draftDate, this.dateInputMask);
   }
 
-  synchronizeExternalValue(currentValue: QDateValue) {
-    const currentMask = this.source.mask();
+  synchronizeExternalValue(currentValue: QDateValue<boolean> | undefined) {
+    const currentKey = this.valueKey(currentValue);
 
-    if (currentValue === this.synchronizedExternalValue && currentMask === this.synchronizedMask) {
+    if (currentKey === this.synchronizedValueKey) {
       return;
     }
 
-    this.synchronizedExternalValue = currentValue;
-    this.synchronizedMask = currentMask;
-    const parsed = parseDateValue(currentValue, currentMask);
+    this.loadExternalValue(currentValue);
 
-    if (!parsed || !this.isSelectable(parsed)) {
-      this.draftDate = null;
-      this.draftInput = parsed ? formatDateValue(parsed, this.dateInputMask) : (currentValue ?? "");
-      this.inputValidationKey = parsed ? "unavailableDate" : currentValue ? "invalidDate" : null;
-      return;
+    if (this.draftDate) {
+      this.setDisplayedMonth(startOfMonth(this.draftDate), this.draftDate.day);
     }
-
-    this.setDraft(parsed);
   }
 
   reconcileOpenSession() {
-    if (!this.constraints.valid) {
-      this.draftDate = null;
-      this.focusedDate = null;
-      this.calendarView = "calendar";
-      this.inputValidationKey = this.source.value() ? "unavailableDate" : null;
-      return;
+    this.rejectedRange = false;
+    this.reconcileDraftPart("start");
+
+    if (this.range) {
+      this.reconcileDraftPart("end");
     }
 
-    if (this.draftDate && !this.isSelectable(this.draftDate)) {
-      this.draftDate = null;
-      this.inputValidationKey = "unavailableDate";
-    } else if (this.draftDate) {
-      this.draftInput = formatDateValue(this.draftDate, this.dateInputMask);
-      this.inputValidationKey = null;
-    } else if (
-      this.inputValidationKey === "unavailableDate" &&
-      this.committedDate &&
-      this.isSelectable(this.committedDate)
-    ) {
-      this.setDraft(this.committedDate, false);
+    if (!this.constraints.valid) {
+      this.focusedDate = null;
+      this.calendarView = "calendar";
+      return;
     }
 
     if (!isMonthWithinRange(this.displayedMonth, this.constraints)) {
@@ -214,6 +258,43 @@ export default class QDateState {
 
   isSelectable(date: QCalendarDate) {
     return isSelectableDate(date, this.constraints);
+  }
+
+  isSelected(date: QCalendarDate) {
+    if (isSameCalendarDate(date, this.draftDate)) {
+      return true;
+    }
+
+    return (
+      this.range &&
+      !!this.draftDate &&
+      !!this.draftEndDate &&
+      !this.rangeValidationKey &&
+      compareCalendarDates(date, this.draftDate) >= 0 &&
+      compareCalendarDates(date, this.draftEndDate) <= 0
+    );
+  }
+
+  isRangeStart(date: QCalendarDate) {
+    return this.range && isSameCalendarDate(date, this.draftDate);
+  }
+
+  isRangeEnd(date: QCalendarDate) {
+    return this.range && this.canConfirm && isSameCalendarDate(date, this.draftEndDate);
+  }
+
+  dayLabel(date: QCalendarDate, fallbackLabel: string) {
+    const labels = [fallbackLabel];
+
+    if (this.isRangeStart(date)) {
+      labels.push(this.resolvedLabels.startDate);
+    }
+
+    if (this.isRangeEnd(date)) {
+      labels.push(this.resolvedLabels.endDate);
+    }
+
+    return labels.join(", ");
   }
 
   canNavigateMonth(offset: number) {
@@ -278,9 +359,32 @@ export default class QDateState {
     const changedMonth =
       this.source.docked() &&
       (date.month !== this.displayedMonth.month || date.year !== this.displayedMonth.year);
-    this.setDraft(date, changedMonth);
+    this.rejectedRange = false;
 
-    if (this.source.autoApply()) {
+    if (
+      this.range &&
+      this.draftDate &&
+      !this.draftEndDate &&
+      compareCalendarDates(date, this.draftDate) >= 0
+    ) {
+      if (getDateRangeValidation(this.draftDate, date, this.constraints)) {
+        this.rejectedRange = true;
+        this.focusedDate = date;
+
+        if (changedMonth) {
+          this.setDisplayedMonth(startOfMonth(date), date.day);
+        }
+
+        return changedMonth;
+      }
+
+      this.setDraft(date, changedMonth, "end");
+    } else {
+      this.setDraft(date, changedMonth);
+      this.setDraftPart("end", null, "", null);
+    }
+
+    if (this.source.autoApply() && this.canConfirm) {
       this.commitSelection();
       return false;
     }
@@ -289,47 +393,50 @@ export default class QDateState {
   }
 
   commitSelection() {
-    if (!this.draftDate || !this.isSelectable(this.draftDate)) {
+    if (!this.canConfirm) {
       return;
     }
 
-    const nextValue = formatDateValue(this.draftDate, this.source.mask());
-    this.synchronizedExternalValue = nextValue;
-    this.synchronizedMask = this.source.mask();
+    const start = formatDateValue(this.draftDate, this.source.mask());
+    const nextValue = this.range
+      ? { start, end: formatDateValue(this.draftEndDate, this.source.mask()) }
+      : start;
+    this.synchronizedValueKey = this.valueKey(nextValue);
     this.source.commit(nextValue);
   }
 
-  updateDraftInput(input: string) {
-    this.draftInput = input;
+  updateDraftInput(input: string, part: DatePart = "start") {
+    this.rejectedRange = false;
     const parsed = parseDateValue(input, this.dateInputMask);
 
     if (!parsed) {
-      this.draftDate = null;
-      this.inputValidationKey = input.replaceAll(/\D/g, "").length >= 8 ? "invalidDate" : null;
+      const error = input.replaceAll(/\D/g, "").length >= 8 ? "invalidDate" : null;
+      this.setDraftPart(part, null, input, error);
       return;
     }
 
     if (!this.isSelectable(parsed)) {
-      this.draftDate = null;
-      this.inputValidationKey = "unavailableDate";
+      this.setDraftPart(part, parsed, input, "unavailableDate");
       return;
     }
 
-    this.setDraft(parsed);
+    this.setDraft(parsed, true, part);
   }
 
-  validateDraftInput() {
-    if (this.draftDate) {
-      this.draftInput = formatDateValue(this.draftDate, this.dateInputMask);
-    } else if (this.draftInput && !this.inputValidationKey) {
-      this.inputValidationKey = "invalidDate";
+  validateDraftInput(part: DatePart = "start") {
+    const { date, input, error } = this.getDraftPart(part);
+
+    if (date) {
+      this.setDraftPart(part, date, formatDateValue(date, this.dateInputMask), null);
+    } else if (input && !error) {
+      this.setDraftPart(part, null, input, "invalidDate");
     }
   }
 
-  submitDraftInput() {
-    this.validateDraftInput();
+  submitDraftInput(part: DatePart = "start") {
+    this.validateDraftInput(part);
 
-    if (this.source.autoApply() && this.draftDate) {
+    if (this.source.autoApply() && this.canConfirm) {
       this.commitSelection();
     }
   }
@@ -340,7 +447,10 @@ export default class QDateState {
     if (this.displayMode === "calendar") {
       this.displayMode = "input";
       this.draftInput = formatDateValue(this.draftDate, this.dateInputMask);
+      this.draftEndInput = formatDateValue(this.draftEndDate, this.dateInputMask);
       this.inputValidationKey = null;
+      this.endInputValidationKey = null;
+      this.rejectedRange = false;
     } else {
       this.displayMode = "calendar";
       this.displayedMonth = startOfMonth(this.draftDate ?? this.focusedDate ?? this.today);
@@ -367,14 +477,105 @@ export default class QDateState {
       : 0;
   }
 
-  private setDraft(date: QCalendarDate, updateMonth = true) {
-    this.draftDate = date;
+  private setDraft(date: QCalendarDate, updateMonth = true, part: DatePart = "start") {
+    this.setDraftPart(part, date, formatDateValue(date, this.dateInputMask), null);
     this.focusedDate = date;
-    this.draftInput = formatDateValue(date, this.dateInputMask);
-    this.inputValidationKey = null;
 
     if (updateMonth) {
       this.setDisplayedMonth(startOfMonth(date), date.day);
+    }
+  }
+
+  private getDraftPart(part: DatePart) {
+    return part === "start"
+      ? {
+          date: this.draftDate,
+          input: this.draftInput,
+          error: this.inputValidationKey,
+          unavailable: this.unavailableStartDate,
+        }
+      : {
+          date: this.draftEndDate,
+          input: this.draftEndInput,
+          error: this.endInputValidationKey,
+          unavailable: this.unavailableEndDate,
+        };
+  }
+
+  private setDraftPart(
+    part: DatePart,
+    date: QCalendarDate | null,
+    input: string,
+    error: DateValidationKey
+  ) {
+    const unavailable = error === "unavailableDate";
+
+    if (part === "start") {
+      this.draftDate = unavailable ? null : date;
+      this.draftInput = input;
+      this.inputValidationKey = error;
+      this.unavailableStartDate = unavailable ? date : null;
+    } else {
+      this.draftEndDate = unavailable ? null : date;
+      this.draftEndInput = input;
+      this.endInputValidationKey = error;
+      this.unavailableEndDate = unavailable ? date : null;
+    }
+  }
+
+  private reconcileDraftPart(part: DatePart) {
+    const { date, unavailable } = this.getDraftPart(part);
+    const parsed = date ?? unavailable;
+
+    if (parsed) {
+      const selectable = this.isSelectable(parsed);
+      this.setDraftPart(
+        part,
+        parsed,
+        formatDateValue(parsed, this.dateInputMask),
+        selectable ? null : "unavailableDate"
+      );
+    }
+  }
+
+  private getModelParts(value: QDateValue<boolean> | undefined) {
+    if (this.range) {
+      return value && typeof value === "object"
+        ? { start: value.start, end: value.end }
+        : { start: "", end: "" };
+    }
+
+    return { start: typeof value === "string" ? value : "", end: "" };
+  }
+
+  private valueKey(value: QDateValue<boolean> | undefined) {
+    const { start, end } = this.getModelParts(value);
+    return JSON.stringify([this.range, this.source.mask(), start, end]);
+  }
+
+  private loadExternalValue(value: QDateValue<boolean> | undefined) {
+    this.synchronizedValueKey = this.valueKey(value);
+    this.rejectedRange = false;
+    const parts = this.getModelParts(value);
+
+    for (const part of ["start", "end"] as const) {
+      const raw = parts[part];
+      const parsed = parseDateValue(raw, this.source.mask());
+      const selectable = parsed && this.isSelectable(parsed);
+      let error: DateValidationKey = null;
+
+      if (raw && !parsed) {
+        error = "invalidDate";
+      } else if (parsed && !selectable) {
+        error = "unavailableDate";
+      }
+
+      this.setDraftPart(
+        part,
+        parsed,
+        parsed ? formatDateValue(parsed, this.dateInputMask) : raw,
+        error
+      );
     }
   }
 
