@@ -1,6 +1,7 @@
 # Quaff Agent Notes
 
 - Keep changes small and component-local. Do not stage unrelated work such as experimental components unless the task explicitly asks for it.
+- Avoid nested ternaries; use clear branches or a lookup instead.
 - Keep every diff justified by the requested behavior: fix a reproduced bug, implement an explicitly requested feature, or make the code clearly simpler or faster. Avoid speculative changes and unrelated cleanup.
 - Add a blank line before and after control-flow blocks such as `if`, `for`, `while`, `switch`, and `try`/`catch` when they sit next to other statements. Omit it when the block is first or last in its enclosing scope, and keep paired clauses such as `else`, `catch`, and `finally` together.
 - Keep typography relative and design geometry stable. Read [Sizing and text scaling](docs/development/sizing.md) before changing component sizing; it defines the unit policy, official M3 sources, and checks to preserve text scaling.
