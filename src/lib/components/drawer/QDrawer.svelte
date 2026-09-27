@@ -7,6 +7,7 @@ Navigation drawers provide ergonomic access to destinations in an app
   import { onMount, untrack } from "svelte";
   import { on } from "svelte/events";
   import { innerWidth } from "svelte/reactivity/window";
+  import { containsWithPortals } from "$internal/portalParent";
   import { navigationCtx } from "$internal/navigationContext";
   import { navigating } from "$app/state";
   import { useSize } from "$composables/useSize";
@@ -16,6 +17,7 @@ Navigation drawers provide ergonomic access to destinations in an app
     leftDrawerCtx,
     rightDrawerCtx,
   } from "../layout/QLayout.svelte";
+  import { containDrawerFocus, isActiveModalDrawer } from "./focus";
 
   // #region:    --- Props
   let {
@@ -41,6 +43,7 @@ Navigation drawers provide ergonomic access to destinations in an app
   const PEEK_THRESHOLD = 30; // How far the drawer peeks out when cursor is near the edge
   const TRANSITION = "top 0.3s, bottom 0.3s, transform 0.3s";
 
+  let releaseModalFocus: ((restoreFocus: boolean) => void) | undefined;
   let clickTimer: ReturnType<typeof setTimeout> | undefined;
   let removeWindowClickListener: (() => void) | undefined;
   let removePointerdownListener: (() => void) | undefined;
@@ -98,6 +101,7 @@ Navigation drawers provide ergonomic access to destinations in an app
     }, 100);
 
     return () => {
+      releaseModalFocus?.(true);
       clearClickListener();
       clearPointerdownListener();
 
@@ -113,6 +117,24 @@ Navigation drawers provide ergonomic access to destinations in an app
   // #endregion: --- Lifecycle
 
   // #region:    --- Effects
+  $effect(() => {
+    if (!value || !isModal || !drawerEl || props.inert) {
+      // Keep focus in place when a responsive drawer becomes standard.
+      releaseModalFocus?.(!value || isModal);
+      releaseModalFocus = undefined;
+      return;
+    }
+
+    const drawer = drawerEl;
+    releaseModalFocus ??= untrack(() =>
+      containDrawerFocus(drawer, () => {
+        if (!persistent) {
+          hide();
+        }
+      })
+    );
+  });
+
   $effect(() => {
     if (navigating.type && hideOnRouteChange) {
       hide();
@@ -189,10 +211,11 @@ Navigation drawers provide ergonomic access to destinations in an app
 
   // #region:    --- Functions
   function tryClose(e: MouseEvent) {
-    const isTargetDrawer = e.target === drawerEl;
-    const isTargetInsideDrawer = drawerEl?.contains(e.target as Node);
+    if (!drawerEl || (isModal && !isActiveModalDrawer(drawerEl))) {
+      return;
+    }
 
-    if (canHideOnClickOutside && !isTargetDrawer && !isTargetInsideDrawer) {
+    if (canHideOnClickOutside && !containsWithPortals(drawerEl, e.target as Node)) {
       e.stopPropagation();
       hide();
     }
@@ -387,10 +410,14 @@ Navigation drawers provide ergonomic access to destinations in an app
 
 <div
   bind:this={drawerEl}
+  tabindex="-1"
   {...props}
   class="q-drawer"
   {style}
   inert={!value || props.inert}
+  role={isModal ? "dialog" : props.role}
+  aria-modal={isModal && value ? true : undefined}
+  data-quaff-overlay={isModal || undefined}
   data-quaff
 >
   {@render children?.()}

@@ -363,7 +363,7 @@ QMenu displays anchored popup content. It handles positioning, outside-click dis
 {#if value}
   <div
     bind:this={menuEl}
-    {@attach portal(portalTarget)}
+    {@attach portal(portalTarget, anchorEl)}
     popover={doesOverlayUsePopover(anchorEl) ? "manual" : undefined}
     data-quaff
     data-quaff-overlay
