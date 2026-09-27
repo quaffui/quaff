@@ -17,6 +17,7 @@
     QCheckbox,
     QChip,
     QCircularProgress,
+    QColorPicker,
     QDate,
     QDrawer,
     QExpansionItem,
@@ -147,6 +148,12 @@
       description: "Showcase compact information or tags with interactive chips.",
       href: "/components/chip",
       snippet: chips,
+    },
+    {
+      name: "QColorPicker",
+      description: "Choose HEX and RGB colors with a visual editor and optional opacity.",
+      href: "/components/color-picker",
+      snippet: colorPicker,
     },
     {
       name: "QDate",
@@ -556,6 +563,18 @@
       <QChip label="Strawberry" kind="filter" />
     </QCardSection>
   </QCard>
+{/snippet}
+
+{#snippet colorPicker()}
+  <div class="q-component-card__color-demo">
+    <div class="q-component-card__color-palette" aria-hidden="true">
+      <span style="background: #6750a4;"></span>
+      <span style="background: #387c69;"></span>
+      <span style="background: #e4653d;"></span>
+      <span style="background: #e8bd56;"></span>
+    </div>
+    <QColorPicker value="#6750A4" label="Accent color" outlined />
+  </div>
 {/snippet}
 
 {#snippet date()}
@@ -1063,6 +1082,28 @@
     opacity: 1;
     visibility: visible;
     transform: scale(1) translateY(100%);
+  }
+
+  .q-component-card__color-demo {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: min(100%, 304px);
+    padding: 16px;
+    border-radius: 24px;
+    color: var(--on-surface);
+    background: var(--surface-container-low);
+  }
+
+  .q-component-card__color-palette {
+    display: flex;
+    gap: 8px;
+
+    span {
+      flex: 1;
+      height: 32px;
+      border-radius: 8px;
+    }
   }
 
   .q-component-card__menu-demo {

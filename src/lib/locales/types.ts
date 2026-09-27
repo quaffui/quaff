@@ -1,3 +1,4 @@
+import type { QColorPickerLabels } from "$components/color-picker/props.js";
 import type { QDateLabels, QDateProps } from "$components/date/props.js";
 import type { QSearchLabels } from "$components/search/props.js";
 import type { QTimeLabels, QTimeProps } from "$components/time/props.js";
@@ -19,6 +20,7 @@ export interface QuaffTranslations {
     >;
   time: QTimeLabels &
     Required<Pick<QTimeProps, "title" | "inputTitle" | "confirmLabel" | "cancelLabel">>;
+  colorPicker?: QColorPickerLabels;
   select: { noOptionText: string };
   search: QSearchLabels & { placeholder: string };
 }

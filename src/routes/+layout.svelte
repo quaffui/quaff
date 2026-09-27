@@ -118,6 +118,10 @@
       to: "/components/chip",
     },
     {
+      name: "Color Picker",
+      to: "/components/color-picker",
+    },
+    {
       name: "Date & Time",
       children: [
         {

@@ -40,3 +40,9 @@ export type { QNavItemProps, QNavGroupProps } from "./components/nav-item/props.
 
 export type { QSearchProps, QSearchScope, QSearchLabels } from "./components/search/props.js";
 export type { QDateProps, QDateValue, QDateRangeValue } from "./components/date/props.js";
+
+export type {
+  QColorPickerProps,
+  QColorPickerLabels,
+  QColorFormat,
+} from "./components/color-picker/props.js";

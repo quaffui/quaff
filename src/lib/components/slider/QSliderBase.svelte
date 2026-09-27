@@ -647,6 +647,7 @@
 <!-- svelte-ignore a11y_no_static_element_interactions (the native range inputs provide slider semantics) -->
 <div
   bind:this={root}
+  dir={inputProps.dir}
   class="q-slider"
   {style}
   style:--q-slider-active-color={parsedColor}

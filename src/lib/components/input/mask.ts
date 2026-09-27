@@ -2,6 +2,7 @@ export type QInputFillMask = boolean | string;
 export type QMaskDeleteDirection = "backward" | "forward";
 
 type MaskToken = { regex: RegExp; transform?: (value: string) => string };
+type MaskPart = { char: string; token?: MaskToken };
 
 const NAMED_MASKS: Record<string, string> = {
   date: "####/##/##",
@@ -22,12 +23,22 @@ const TOKENS: Record<string, MaskToken> = {
   x: { regex: /[0-9a-zA-Z]/, transform: (value) => value.toLocaleLowerCase() },
 };
 
-function normalizeMask(mask: string) {
-  return NAMED_MASKS[mask] ?? mask;
-}
+function parseMask(mask: string): MaskPart[] {
+  const normalized = NAMED_MASKS[mask] ?? mask;
+  const parts: MaskPart[] = [];
 
-function tokenFor(maskChar: string) {
-  return TOKENS[maskChar];
+  for (let index = 0; index < normalized.length; index += 1) {
+    const isEscaped = normalized[index] === "\\" && index + 1 < normalized.length;
+
+    if (isEscaped) {
+      index += 1;
+    }
+
+    const char = normalized[index];
+    parts.push({ char, token: isEscaped ? undefined : TOKENS[char] });
+  }
+
+  return parts;
 }
 
 function fillEnabled(fillMask: QInputFillMask | undefined) {
@@ -78,11 +89,11 @@ function readRawToken(raw: string, start: number, token: MaskToken) {
   return { value: "", next: raw.length };
 }
 
-function tokenPositions(normalizedMask: string) {
+function tokenPositions(maskParts: MaskPart[]) {
   const positions: number[] = [];
 
-  for (let index = 0; index < normalizedMask.length; index += 1) {
-    if (tokenFor(normalizedMask[index])) {
+  for (let index = 0; index < maskParts.length; index += 1) {
+    if (maskParts[index].token) {
       positions.push(index);
     }
   }
@@ -90,11 +101,11 @@ function tokenPositions(normalizedMask: string) {
   return positions;
 }
 
-function isMaskLikeValue(value: string, normalizedMask: string) {
-  for (let index = 0; index < normalizedMask.length; index += 1) {
-    const maskChar = normalizedMask[index];
+function isMaskLikeValue(value: string, maskParts: MaskPart[]) {
+  for (let index = 0; index < maskParts.length; index += 1) {
+    const { char, token } = maskParts[index];
 
-    if (!tokenFor(maskChar) && value[index] === maskChar) {
+    if (!token && value[index] === char) {
       return true;
     }
   }
@@ -104,17 +115,16 @@ function isMaskLikeValue(value: string, normalizedMask: string) {
 
 function normalizeFilledValue(
   value: string,
-  normalizedMask: string,
+  maskParts: MaskPart[],
   fillMask: QInputFillMask | undefined
 ) {
   const placeholder = fillChar(fillMask);
-  const overflow = value.slice(normalizedMask.length);
+  const overflow = value.slice(maskParts.length);
   let overflowIndex = 0;
   let result = "";
 
-  for (let index = 0; index < normalizedMask.length; index += 1) {
-    const maskChar = normalizedMask[index];
-    const token = tokenFor(maskChar);
+  for (let index = 0; index < maskParts.length; index += 1) {
+    const { char: maskChar, token } = maskParts[index];
     const valueChar = value[index];
 
     if (!token) {
@@ -156,13 +166,11 @@ function deleteTokenIndex(caret: number, positions: number[], direction: QMaskDe
 }
 
 export function unmaskValue(value: string, mask: string, fillMask?: QInputFillMask) {
-  const normalizedMask = normalizeMask(mask);
+  const maskParts = parseMask(mask);
   let result = "";
   let valueIndex = 0;
 
-  for (const maskChar of normalizedMask) {
-    const token = tokenFor(maskChar);
-
+  for (const { char: maskChar, token } of maskParts) {
     if (!token) {
       valueIndex += value[valueIndex] === maskChar ? 1 : 0;
       continue;
@@ -176,22 +184,33 @@ export function unmaskValue(value: string, mask: string, fillMask?: QInputFillMa
   return result;
 }
 
-export function maskValue(value: string, mask: string, fillMask?: QInputFillMask) {
-  const normalizedMask = normalizeMask(mask);
-  const fill = fillEnabled(fillMask);
-  const placeholder = fillChar(fillMask);
-  if (fill && isMaskLikeValue(value, normalizedMask)) {
-    return normalizeFilledValue(value, normalizedMask, fillMask);
+export function maskValue(
+  value: string,
+  mask: string,
+  fillMask?: QInputFillMask,
+  isUnmasked = false
+) {
+  const maskParts = parseMask(mask);
+
+  if (isUnmasked) {
+    return formatRawValue(value, maskParts, fillMask);
   }
 
-  const raw = unmaskValue(value, normalizedMask, fillMask);
+  if (fillEnabled(fillMask) && isMaskLikeValue(value, maskParts)) {
+    return normalizeFilledValue(value, maskParts, fillMask);
+  }
+
+  return formatRawValue(unmaskValue(value, mask, fillMask), maskParts, fillMask);
+}
+
+function formatRawValue(raw: string, maskParts: MaskPart[], fillMask?: QInputFillMask) {
+  const fill = fillEnabled(fillMask);
+  const placeholder = fillChar(fillMask);
   let result = "";
   let rawIndex = 0;
   let hasValue = false;
 
-  for (const maskChar of normalizedMask) {
-    const token = tokenFor(maskChar);
-
+  for (const { char: maskChar, token } of maskParts) {
     if (!token) {
       result += fill || hasValue || rawIndex < raw.length ? maskChar : "";
       continue;
@@ -214,7 +233,7 @@ export function maskValue(value: string, mask: string, fillMask?: QInputFillMask
 }
 
 export function maskCaretPosition(tokenCount: number, mask: string, displayLength: number) {
-  const positions = tokenPositions(normalizeMask(mask));
+  const positions = tokenPositions(parseMask(mask));
 
   if (tokenCount <= 0) {
     return positions[0] ?? 0;
@@ -230,8 +249,8 @@ export function deleteMaskedToken(
   direction: QMaskDeleteDirection,
   fillMask?: QInputFillMask
 ) {
-  const normalizedMask = normalizeMask(mask);
-  const positions = tokenPositions(normalizedMask);
+  const maskParts = parseMask(mask);
+  const positions = tokenPositions(maskParts);
   const tokenIndex = deleteTokenIndex(caret, positions, direction);
 
   if (tokenIndex < 0) {
@@ -239,7 +258,7 @@ export function deleteMaskedToken(
   }
 
   if (fillEnabled(fillMask)) {
-    const masked = maskValue(value, normalizedMask, fillMask);
+    const masked = maskValue(value, mask, fillMask);
     const position = positions[tokenIndex];
 
     if (position === undefined || masked[position] === fillChar(fillMask)) {
@@ -252,22 +271,23 @@ export function deleteMaskedToken(
 
     return {
       masked: nextMasked,
-      unmasked: unmaskValue(nextMasked, normalizedMask, fillMask),
+      unmasked: unmaskValue(nextMasked, mask, fillMask),
       caret: position,
     };
   }
 
-  const raw = unmaskValue(value, normalizedMask, fillMask);
+  const raw = unmaskValue(value, mask, fillMask);
+
   if (tokenIndex >= raw.length) {
     return null;
   }
 
   const unmasked = `${raw.slice(0, tokenIndex)}${raw.slice(tokenIndex + 1)}`;
-  const masked = maskValue(unmasked, normalizedMask, fillMask);
+  const masked = formatRawValue(unmasked, maskParts, fillMask);
 
   return {
     masked,
     unmasked,
-    caret: maskCaretPosition(tokenIndex, normalizedMask, masked.length),
+    caret: maskCaretPosition(tokenIndex, mask, masked.length),
   };
 }

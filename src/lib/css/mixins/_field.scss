@@ -24,6 +24,7 @@
   &::before,
   &::after {
     content: "";
+    pointer-events: none;
     position: absolute;
     bottom: -1px;
     width: 28px;
@@ -55,6 +56,8 @@
     border-bottom-left-radius: 0px;
 
     @if $variant != "outlined" {
+      // Overlap the straight border to avoid seams at fractional positions.
+      box-sizing: content-box;
       border-left-width: 0;
       border-right-color: var(--decorator-color);
       border-bottom-color: var(--decorator-color);
