@@ -71,13 +71,28 @@
   }
 
   &__input-mode {
+    display: flex;
     flex: 1 0 auto;
+    flex-direction: column;
+    gap: 12px;
     position: relative;
     padding: 10px 24px 16px;
 
     .q-field {
       width: 100%;
     }
+
+    .q-date__range-error {
+      padding: 0;
+    }
+  }
+
+  &__range-error {
+    @include mixins.typography("body-small");
+
+    margin: 0;
+    padding: 8px 24px;
+    color: var(--error);
   }
 
   &__actions {

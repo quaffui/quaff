@@ -1,7 +1,13 @@
 import { Disableable, OptionalModel } from "$utils";
 import type { QInputProps } from "$components/input/props";
 
-export type QDateValue = string | null;
+export interface QDateRangeValue {
+  start: string;
+  end: string;
+}
+
+export type QDateValue<Range extends boolean = false> =
+  (Range extends true ? QDateRangeValue : string) | null;
 export type QDateWeekday = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 export type QDateDisplayMode = "calendar" | "input";
 export type QDateVariant = "modal" | "docked" | "adaptive";
@@ -27,6 +33,13 @@ export const defaultDateLabels = {
   expectedFormat: "Expected format",
   invalidDate: "Enter a valid date",
   unavailableDate: "This date is unavailable",
+  startDate: "Start date",
+  endDate: "End date",
+  selectedRange: "Selected range",
+  invalidRange: "End date must be on or after start date",
+  unavailableRange: "This range includes an unavailable date",
+  chooseRange: "Choose date range",
+  changeRange: "Change date range",
 };
 export type QDateLabels = { [Key in keyof typeof defaultDateLabels]: string };
 
@@ -48,7 +61,16 @@ export type QDateInputProps = Pick<
   | "tabindex"
 >;
 
-export interface QDateProps extends OptionalModel<QDateValue>, Disableable, QDateInputProps {
+export interface QDateProps<Range extends boolean = false>
+  extends OptionalModel<QDateValue<Range>>, Disableable, QDateInputProps {
+  /**
+   * Selects an inclusive date range. The bound value is { start, end }, with both dates using
+   * the model mask. A range cannot include disabled dates.
+   *
+   * @default false
+   */
+  range?: Range;
+
   /**
    * Picker presentation. Adaptive uses docked at the shared sm breakpoint and a full-screen modal
    * below it.
@@ -110,7 +132,7 @@ export interface QDateProps extends OptionalModel<QDateValue>, Disableable, QDat
   /** Full-screen save action label. */
   saveLabel?: string;
 
-  /** Commits and closes immediately after a date is selected. */
+  /** Commits and closes after a date or a complete valid range is selected. */
   autoApply?: boolean;
 
   /** Overrides the shared translations for accessible labels and validation messages. */

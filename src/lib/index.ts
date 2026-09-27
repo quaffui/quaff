@@ -38,3 +38,4 @@ export type { MetaOptions, MetaSource, MetaTag } from "./components/meta/types.j
 export type { QNavItemProps, QNavGroupProps } from "./components/nav-item/props.js";
 
 export type { QSearchProps, QSearchScope, QSearchLabels } from "./components/search/props.js";
+export type { QDateProps, QDateValue, QDateRangeValue } from "./components/date/props.js";

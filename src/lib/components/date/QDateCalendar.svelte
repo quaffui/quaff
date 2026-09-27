@@ -30,6 +30,8 @@
   let swipePointerId: number | undefined;
   let swipeStartX = 0;
   let swipeStartY = 0;
+  const componentId = $props.id();
+  const errorId = `${componentId}-range-error`;
 
   function selectDate(date: QCalendarDate) {
     if (state.selectDate(date)) {
@@ -121,7 +123,10 @@
   Q.classes("q-date__day", {
     bemClasses: {
       outside: docked && cell.outside,
-      selected: isSameCalendarDate(cell.date, state.draftDate),
+      selected: isSameCalendarDate(cell.date, state.draftDate) || state.isRangeEnd(cell.date),
+      "in-range": state.range && state.canConfirm && state.isSelected(cell.date),
+      "range-start": state.range && state.isRangeStart(cell.date),
+      "range-end": state.range && state.isRangeEnd(cell.date),
       today: cell.today,
     },
   });
@@ -137,8 +142,8 @@
               class="q-date__day"
               type="button"
               role="gridcell"
-              aria-label={cell.label}
-              aria-selected={isSameCalendarDate(cell.date, state.draftDate)}
+              aria-label={state.dayLabel(cell.date, cell.label)}
+              aria-selected={state.isSelected(cell.date)}
               aria-current={cell.today ? "date" : undefined}
               aria-disabled={!cell.selectable}
               disabled={!cell.selectable}
@@ -177,6 +182,8 @@
     aria-label={`${state.resolvedLabels.calendar}, ${state.calendarPage.label}`}
     aria-rowcount="7"
     aria-colcount="7"
+    aria-multiselectable={state.range || undefined}
+    aria-describedby={state.rangeValidationMessage ? errorId : undefined}
     aria-hidden={inactive || undefined}
     inert={inactive || undefined}
   >
@@ -208,3 +215,9 @@
     </div>
   </div>
 </div>
+
+{#if state.rangeValidationMessage && !inactive}
+  <p class="q-date__range-error" id={errorId} role="alert">
+    {state.rangeValidationMessage}
+  </p>
+{/if}

@@ -114,7 +114,7 @@
     cursor: pointer;
     transition: color variables.$speed2 linear;
 
-    &--outside:not(&--selected) {
+    &--outside:not(&--selected):not(&--in-range) {
       opacity: 0.38;
     }
 
@@ -134,6 +134,46 @@
 
       color: var(--on-primary);
       opacity: 1;
+    }
+
+    &--range-start::before,
+    &--range-end::before {
+      // Keep the endpoint opaque when its half-width range band appears.
+      transition-property: border-color;
+    }
+
+    &--in-range {
+      background-image: linear-gradient(var(--secondary-container), var(--secondary-container));
+      background-size: 100% 40px;
+      background-position: center;
+      background-repeat: no-repeat;
+      opacity: 1;
+
+      &:not(.q-date__day--selected) {
+        color: var(--on-secondary-container);
+      }
+    }
+
+    &--in-range#{&}--range-start {
+      background-size: 50% 40px;
+      background-position: right center;
+
+      &:dir(rtl) {
+        background-position: left center;
+      }
+    }
+
+    &--in-range#{&}--range-end {
+      background-size: 50% 40px;
+      background-position: left center;
+
+      &:dir(rtl) {
+        background-position: right center;
+      }
+    }
+
+    &--range-start#{&}--range-end {
+      background-image: none;
     }
 
     &:disabled {
