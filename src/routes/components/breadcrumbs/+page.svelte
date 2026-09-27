@@ -1,8 +1,10 @@
 <script lang="ts">
+  import { tick } from "svelte";
   import { QBreadcrumbsDocs, QBreadcrumbsElDocs } from "$components/breadcrumbs/docs";
-  import { docsCtx } from "$docs/QDocs.svelte";
-  import { QBreadcrumbs, QBreadcrumbsEl, QCard } from "$lib";
+  import type { QBreadcrumbsGutterOptions } from "$components/breadcrumbs/props";
   import { QDocs, QDocsSection } from "$docs";
+  import { docsCtx } from "$docs/QDocs.svelte";
+  import { QBreadcrumbs, QBreadcrumbsEl, QIcon, QSelect, QSwitch } from "$lib";
   import { useMeta } from "$lib/meta";
   import { pageMeta } from "$docs/metadata";
   import snippets from "./docs.snippets";
@@ -15,240 +17,395 @@
   );
 
   docsCtx.set({ snippets, componentDocs: [QBreadcrumbsDocs, QBreadcrumbsElDocs] });
+
+  const COLLECTIONS = [
+    {
+      id: "maps",
+      title: "Maps",
+      icon: "map",
+      description: "Coastlines, contours and places in between.",
+      records: [
+        {
+          id: "coast",
+          title: "Coastal survey",
+          date: "1924",
+          code: "MAP 024",
+          icon: "explore",
+        },
+        {
+          id: "town",
+          title: "Old town streets",
+          date: "1936",
+          code: "MAP 036",
+          icon: "location_city",
+        },
+      ],
+    },
+    {
+      id: "posters",
+      title: "Posters",
+      icon: "wall_art",
+      description: "Big type, bright ink and local stories.",
+      records: [
+        {
+          id: "fair",
+          title: "Autumn makers fair",
+          date: "1958",
+          code: "POS 058",
+          icon: "handyman",
+        },
+        {
+          id: "harbor",
+          title: "Harbor open day",
+          date: "1962",
+          code: "POS 062",
+          icon: "sailing",
+        },
+      ],
+    },
+  ] as const;
+  const SEPARATORS = [
+    { label: "Slash", value: "/" },
+    { label: "Middle dot", value: "·" },
+    { label: "Chevron icon", value: "icon:chevron_right" },
+  ];
+  let collectionId = $state<string | undefined>("maps");
+  let recordId = $state<string | undefined>();
+  let separator = $state("icon:chevron_right");
+  let gutter = $state<QBreadcrumbsGutterOptions>("sm");
+  let showIcons = $state(true);
+  let activeColor = $state("primary");
+  let separatorColor = $state("on-surface-variant");
+  let emphasizeCurrent = $state(false);
+  const collection = $derived(COLLECTIONS.find((item) => item.id === collectionId));
+  const record = $derived(collection?.records.find((item) => item.id === recordId));
+
+  let catalogueHeading = $state<HTMLHeadingElement>();
+
+  async function openLocation(nextCollection?: string, nextRecord?: string) {
+    collectionId = nextCollection;
+    recordId = nextRecord;
+    await tick();
+    catalogueHeading?.focus();
+  }
 </script>
 
-<QDocs>
+<QDocs docDescription="Keep your place while exploring a hierarchy.">
   {#snippet display()}
-    <QCard>
-      <QBreadcrumbs>
-        <QBreadcrumbsEl to="/" label="Home" />
-        <QBreadcrumbsEl to="/components" label="Components" />
-        <QBreadcrumbsEl label="Breadcrumbs" />
+    <div class="archive-preview surface q-pa-lg">
+      <div class="label-medium text-tertiary">THE OPEN ARCHIVE</div>
+      <h2 class="title-medium q-mt-xs q-mb-lg">Archive location</h2>
+      <QBreadcrumbs
+        separator="icon:chevron_right"
+        separatorColor="on-surface-variant"
+        aria-label="Archive preview"
+      >
+        <QBreadcrumbsEl href="#browse-a-collection" label="Archive" />
+        <QBreadcrumbsEl label="Maps" />
       </QBreadcrumbs>
-    </QCard>
+    </div>
   {/snippet}
 
   {#snippet usage()}
-    <div>
-      <QDocsSection title="Basic Usage">
-        {#snippet sectionDescription()}
-          <p>
-            Breadcrumbs provide navigation links for the current page location. Links to the active
-            route, including its parent routes, use <code>activeColor</code>, which defaults to
-            <code>primary</code>. A non-linked last item keeps its normal appearance.
-          </p>
-        {/snippet}
-        <div class="q-mb-md">
-          <QBreadcrumbs>
-            <QBreadcrumbsEl to="/" label="Home" />
-            <QBreadcrumbsEl to="/components" label="Components" />
-            <QBreadcrumbsEl label="Breadcrumbs" />
-          </QBreadcrumbs>
-        </div>
-      </QDocsSection>
-
-      <QDocsSection title="Custom Separators">
-        {#snippet sectionDescription()}
-          <p>
-            You can customize the separator between breadcrumbs using the <code>separator</code>
-            prop. By default, the separator is a <code>/</code> (slash) character. You can use a
-            text character or prefix with <code>icon:</code> to use a Material Symbol icon.
-          </p>
-        {/snippet}
-        <div class="q-mb-md">
-          <QBreadcrumbs separator=">">
-            <QBreadcrumbsEl to="/" label="Home" />
-            <QBreadcrumbsEl to="/components" label="Components" />
-            <QBreadcrumbsEl label="Breadcrumbs" />
-          </QBreadcrumbs>
-        </div>
-        <div class="q-mb-md">
-          <QBreadcrumbs separator="icon:chevron_right">
-            <QBreadcrumbsEl to="/" label="Home" />
-            <QBreadcrumbsEl to="/components" label="Components" />
-            <QBreadcrumbsEl label="Breadcrumbs" />
-          </QBreadcrumbs>
-        </div>
-      </QDocsSection>
-
-      <QDocsSection title="Custom Separator Using Snippet">
-        {#snippet sectionDescription()}
-          <p>
-            For more complex separators, you can use the <code>separator</code> snippet to provide custom
-            markup. This gives you complete control over the separator's appearance.
-          </p>
-        {/snippet}
-        <div class="q-mb-md">
-          <QBreadcrumbs>
-            {#snippet separator()}
-              <span class="text-green">•••</span>
-            {/snippet}
-
-            <QBreadcrumbsEl to="/" label="Home" />
-            <QBreadcrumbsEl to="/components" label="Components" />
-            <QBreadcrumbsEl label="Breadcrumbs" />
-          </QBreadcrumbs>
-        </div>
-      </QDocsSection>
-
-      <QDocsSection title="Active Colors, Classes, and Styles">
-        {#snippet sectionDescription()}
-          <p>
-            Customize the active item color and separator color using the <code>activeColor</code>
-            and
-            <code>separatorColor</code> props. These accept any color from your theme.
-          </p>
-          <p>
-            You can also use the <code>activeClass</code> and <code>activeStyle</code> props to customize
-            the active item's appearance using Quaff utility classes and inline styles.
-          </p>
-        {/snippet}
-        <div class="q-mb-md">
-          <QBreadcrumbs activeColor="error" separatorColor="primary" separator="icon:chevron_right">
-            <QBreadcrumbsEl to="/" label="Home" />
-            <QBreadcrumbsEl to="/components" label="Components" />
-            <QBreadcrumbsEl label="Breadcrumbs" />
-          </QBreadcrumbs>
-        </div>
-        <div class="q-mb-md">
+    <QDocsSection title="Browse a Collection">
+      {#snippet sectionDescription()}
+        Breadcrumbs provide a path back through a hierarchy. Open a record, then use the trail to
+        return to its collection. Here <code>tag="button"</code> changes the view locally; the
+        current location is a noninteractive <code>span</code>. Toggle icons and adjust separator
+        spacing without leaving the archive.
+      {/snippet}
+      <div class="archive-workspace q-gap-lg">
+        <div class="archive-browser q-pa-lg">
           <QBreadcrumbs
-            activeClass="primary q-px-sm"
-            activeStyle="border-radius: 4px"
-            separator="icon:chevron_right"
+            {separator}
+            {gutter}
+            separatorColor="on-surface-variant"
+            aria-label="Archive location"
           >
-            <QBreadcrumbsEl to="/" label="Home" />
-            <QBreadcrumbsEl to="/components" label="Components" />
-            <QBreadcrumbsEl label="Breadcrumbs" />
+            <QBreadcrumbsEl
+              tag={collection ? "button" : "span"}
+              label="Archive"
+              icon={showIcons ? "inventory_2" : undefined}
+              aria-current={collection ? undefined : "location"}
+              onclick={collection ? () => openLocation() : undefined}
+            />
+            {#if collection}
+              <QBreadcrumbsEl
+                tag={record ? "button" : "span"}
+                label={collection.title}
+                icon={showIcons ? collection.icon : undefined}
+                aria-current={record ? undefined : "location"}
+                onclick={record ? () => openLocation(collection.id) : undefined}
+              />
+            {/if}
+            {#if record}<QBreadcrumbsEl label={record.title} aria-current="location" />{/if}
           </QBreadcrumbs>
-        </div>
-      </QDocsSection>
-
-      <QDocsSection title="With Icons">
-        {#snippet sectionDescription()}
-          <p>
-            Add icons to breadcrumb items using the <code>icon</code> prop to display Material
-            Symbols icons. Icons appear before the item label. Give icon-only items an
-            <code>aria-label</code>.
+          <div class="q-my-lg">
+            {#if record}
+              <div class="label-small text-tertiary">{record.code} · {record.date}</div>
+              <h3 bind:this={catalogueHeading} tabindex="-1" class="headline-small q-mt-xs q-mb-sm">
+                {record.title}
+              </h3>
+              <p class="body-medium text-on-surface-variant q-mb-none">
+                Use the trail above to return to the collection or the archive.
+              </p>
+            {:else if collection}
+              <div class="label-small text-tertiary">
+                COLLECTION · {collection.records.length} RECORDS
+              </div>
+              <h3 bind:this={catalogueHeading} tabindex="-1" class="headline-small q-mt-xs q-mb-sm">
+                {collection.title}
+              </h3>
+              <p class="body-medium text-on-surface-variant q-mt-none">{collection.description}</p>
+              <div class="catalogue-items q-gap-sm">
+                {#each collection.records as item (item.id)}
+                  <button
+                    class="catalogue-item flex items-center q-gap-md q-pa-md text-on-surface"
+                    type="button"
+                    onclick={() => openLocation(collection.id, item.id)}
+                  >
+                    <QIcon name={item.icon} size="lg" color="tertiary" aria-hidden="true" />
+                    <span
+                      ><span class="title-medium">{item.title}</span><span
+                        class="body-small text-on-surface-variant">{item.date}</span
+                      ></span
+                    >
+                    <QIcon name="chevron_right" aria-hidden="true" />
+                  </button>
+                {/each}
+              </div>
+            {:else}
+              <div class="label-small text-tertiary">THE OPEN ARCHIVE</div>
+              <h3 bind:this={catalogueHeading} tabindex="-1" class="headline-small q-mt-xs q-mb-md">
+                Choose a collection
+              </h3>
+              <div class="catalogue-items q-gap-sm">
+                {#each COLLECTIONS as item (item.id)}
+                  <button
+                    class="catalogue-item flex items-center q-gap-md q-pa-md text-on-surface"
+                    type="button"
+                    onclick={() => openLocation(item.id)}
+                  >
+                    <QIcon name={item.icon} size="lg" color="tertiary" aria-hidden="true" />
+                    <span
+                      ><span class="title-medium">{item.title}</span><span
+                        class="body-small text-on-surface-variant"
+                        >{item.records.length} records</span
+                      ></span
+                    >
+                    <QIcon name="chevron_right" aria-hidden="true" />
+                  </button>
+                {/each}
+              </div>
+            {/if}
+          </div>
+          <p class="location-status body-small text-on-surface-variant q-my-none" role="status">
+            Viewing {record?.title ?? collection?.title ?? "all collections"}
           </p>
-        {/snippet}
-        <div class="q-mb-md">
-          <QBreadcrumbs>
-            <QBreadcrumbsEl to="/" label="Home" icon="home" />
-            <QBreadcrumbsEl to="/components" label="Components" icon="widgets" />
-            <QBreadcrumbsEl label="Breadcrumbs" icon="list_alt" />
-          </QBreadcrumbs>
         </div>
-      </QDocsSection>
+        <div class="controls q-gap-md">
+          <QSelect
+            label="Trail separator"
+            options={SEPARATORS}
+            bind:value={separator}
+            emitValue
+            outlined
+          />
+          <QSelect
+            label="Trail spacing"
+            options={["none", "sm", "md", "lg"]}
+            bind:value={gutter}
+            outlined
+          />
+          <QSwitch label="Show collection icons" bind:value={showIcons} />
+        </div>
+      </div>
+    </QDocsSection>
 
-      <QDocsSection title="Custom Icon Using Snippet">
-        {#snippet sectionDescription()}
-          <p>
-            For more complex icons or custom styling, you can use a Svelte snippet for the <code
-              >icon</code
-            > prop.
-          </p>
-        {/snippet}
-        <div class="q-mb-md">
-          <QBreadcrumbs>
-            <QBreadcrumbsEl to="/" label="Home">
-              {#snippet icon()}
-                <span>🏠</span>
-              {/snippet}
-            </QBreadcrumbsEl>
-            <QBreadcrumbsEl to="/components" label="Components" />
-            <QBreadcrumbsEl label="Breadcrumbs" />
-          </QBreadcrumbs>
-        </div>
-      </QDocsSection>
+    <QDocsSection title="Custom Markers and Content">
+      {#snippet sectionDescription()}
+        Supply a <code>separator</code> snippet for custom markup, an <code>icon</code> snippet for
+        your own artwork, and children instead of <code>label</code> for richer item content. This
+        catalog reference uses <code>tag="strong"</code> for its final element.
+      {/snippet}
+      <div class="reference-card q-pa-lg">
+        <div class="label-medium text-tertiary q-mb-md">FROM THE CATALOGUE</div>
+        <QBreadcrumbs aria-label="Catalogue reference">
+          {#snippet separator()}<span class="trail-marker" aria-hidden="true"></span>{/snippet}
+          <QBreadcrumbsEl label="Archive">
+            {#snippet icon()}<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"
+                ><path d="M4 7h16v13H4zM3 3h18v4H3z" stroke="currentColor" stroke-width="2" /><path
+                  d="M9 11h6"
+                  stroke="currentColor"
+                  stroke-width="2"
+                /></svg
+              >{/snippet}
+          </QBreadcrumbsEl>
+          <QBreadcrumbsEl label="Maps" />
+          <QBreadcrumbsEl tag="strong" aria-current="location">
+            <span class="flex items-center q-gap-sm">
+              <span class="record-code tertiary-container q-py-xs q-px-sm text-weight-regular"
+                >MAP 024</span
+              >
+              <span>Coastal survey</span>
+            </span>
+          </QBreadcrumbsEl>
+        </QBreadcrumbs>
+        <p class="body-medium text-on-surface-variant q-mt-lg q-mb-none">
+          The identifier accompanies the title when a record is shared with another researcher.
+        </p>
+      </div>
+    </QDocsSection>
 
-      <QDocsSection title="Gutter Sizes">
-        {#snippet sectionDescription()}
-          <p>
-            Adjust the spacing around separators using the <code>gutter</code> prop. Available
-            options are <code>none</code>, <code>sm</code> (default), <code>md</code>, and
-            <code>lg</code>.
-          </p>
-        {/snippet}
-        <div class="q-mb-md">
-          <QBreadcrumbs gutter="sm">
-            <QBreadcrumbsEl label="Small" />
-            <QBreadcrumbsEl label="Gutter" />
-          </QBreadcrumbs>
+    <QDocsSection title="Links and Current Pages">
+      {#snippet sectionDescription()}
+        Use <code>to</code> for app routes and <code>href</code> for URLs or anchors. Route matches
+        receive <code>activeColor</code>; <code>activeClass</code> and <code>activeStyle</code> can
+        add emphasis. An element can override those shared active styles. Exact route links receive
+        <code>aria-current="page"</code> automatically. These links lead to the actual docs pages.
+      {/snippet}
+      <div class="reference-card q-pa-lg">
+        <div class="label-medium text-tertiary q-mb-md">PATTERN REFERENCE</div>
+        <QBreadcrumbs
+          {activeColor}
+          {separatorColor}
+          separator="icon:chevron_right"
+          activeClass={emphasizeCurrent ? "text-bold" : undefined}
+          activeStyle={emphasizeCurrent ? "font-style: italic" : undefined}
+          aria-label="Documentation path"
+        >
+          <QBreadcrumbsEl
+            to="/components"
+            label="Components"
+            icon="widgets"
+            activeClass=""
+            activeStyle=""
+          />
+          <QBreadcrumbsEl to="/components/breadcrumbs/" label="Breadcrumbs" />
+        </QBreadcrumbs>
+        <div class="controls link-controls q-gap-md">
+          <QSelect
+            label="Active link color"
+            options={["primary", "secondary", "tertiary"]}
+            bind:value={activeColor}
+            outlined
+          />
+          <QSelect
+            label="Separator color"
+            options={["on-surface-variant", "primary", "tertiary"]}
+            bind:value={separatorColor}
+            outlined
+          />
+          <QSwitch label="Emphasize current page" bind:value={emphasizeCurrent} />
         </div>
-        <div class="q-mb-md">
-          <QBreadcrumbs gutter="md">
-            <QBreadcrumbsEl label="Medium" />
-            <QBreadcrumbsEl label="Gutter" />
-          </QBreadcrumbs>
-        </div>
-        <div class="q-mb-md">
-          <QBreadcrumbs gutter="lg">
-            <QBreadcrumbsEl label="Large" />
-            <QBreadcrumbsEl label="Gutter" />
-          </QBreadcrumbs>
-        </div>
-      </QDocsSection>
-
-      <QDocsSection title="Custom Content">
-        {#snippet sectionDescription()}
-          <p>
-            Instead of using the <code>label</code> prop, you can provide custom content using the default
-            slot. This allows for more complex markup and styling inside each breadcrumb element.
-          </p>
-        {/snippet}
-        <div class="q-mb-md">
-          <QBreadcrumbs>
-            <QBreadcrumbsEl to="/">
-              {#snippet icon()}
-                <span>🏠</span>
-              {/snippet}
-
-              <span>Home</span>
-            </QBreadcrumbsEl>
-            <QBreadcrumbsEl to="/components">
-              <span class="text-green">Components</span>
-            </QBreadcrumbsEl>
-            <QBreadcrumbsEl>
-              <span>Breadcrumbs</span>
-            </QBreadcrumbsEl>
-          </QBreadcrumbs>
-        </div>
-      </QDocsSection>
-
-      <QDocsSection title="Navigation">
-        {#snippet sectionDescription()}
-          <p>
-            Breadcrumb elements become navigational links when you add the <code>to</code> or
-            <code>href</code>
-            prop. The <code>to</code> prop is typically used with your router, while
-            <code>href</code> can be used for standard hyperlinks or anchor links, although you can use
-            them interchangeably.
-          </p>
-        {/snippet}
-        <div class="q-mb-md">
-          <QBreadcrumbs>
-            <QBreadcrumbsEl to="/" label="Router Link" />
-            <QBreadcrumbsEl href="#navigation" label="Anchor Link" />
-            <QBreadcrumbsEl label="Non-navigational" />
-          </QBreadcrumbs>
-        </div>
-      </QDocsSection>
-
-      <QDocsSection title="Custom Element Tag">
-        {#snippet sectionDescription()}
-          <p>
-            By default, non-navigational breadcrumb elements use a <code>span</code> tag. You can
-            change this using the <code>tag</code> prop.
-          </p>
-        {/snippet}
-        <div class="q-mb-md">
-          <QBreadcrumbs>
-            <QBreadcrumbsEl to="/" label="Link Element (a)" />
-            <QBreadcrumbsEl tag="div" label="Div Element" />
-            <QBreadcrumbsEl label="Span Element (default)" />
-          </QBreadcrumbs>
-        </div>
-      </QDocsSection>
-    </div>
+      </div>
+    </QDocsSection>
   {/snippet}
 </QDocs>
+
+<style>
+  .archive-preview {
+    width: min(100%, 340px);
+    max-height: 100%;
+    overflow: auto;
+    border-radius: 24px;
+  }
+  .archive-workspace {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  }
+  .archive-browser,
+  .reference-card {
+    min-width: 0;
+    background: var(--surface-container-low);
+    border: 1px solid var(--outline-variant);
+    border-radius: 24px;
+  }
+  .archive-browser :global(.q-breadcrumbs__el) {
+    padding-block: 4px;
+  }
+  :is(.archive-preview, .archive-browser, .reference-card)
+    :global(.q-breadcrumbs__separator > .q-icon) {
+    display: block;
+  }
+  .archive-browser :global(button.q-breadcrumbs__el) {
+    border: 0;
+    border-radius: 4px;
+    color: var(--tertiary);
+    font: inherit;
+    background: transparent;
+    cursor: pointer;
+  }
+  .archive-browser :global(button.q-breadcrumbs__el:hover) {
+    background: var(--tertiary-container);
+  }
+  .archive-browser :global(button.q-breadcrumbs__el:focus-visible),
+  .catalogue-item:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 4px;
+  }
+  .catalogue-items {
+    display: grid;
+  }
+  .catalogue-item {
+    flex-wrap: nowrap;
+    width: 100%;
+    border: 0;
+    border-radius: 16px;
+    font: inherit;
+    text-align: start;
+    background: var(--surface-container);
+    cursor: pointer;
+  }
+  .catalogue-item:hover {
+    background: var(--surface-container-high);
+  }
+  .catalogue-item > span {
+    display: grid;
+    gap: 4px;
+    flex: 1;
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+  .location-status {
+    border-radius: 0;
+    padding-block-start: 16px;
+    border-block-start: 1px solid var(--outline-variant);
+  }
+  .controls {
+    display: grid;
+    align-content: start;
+    min-width: 0;
+  }
+  .link-controls {
+    margin-block-start: 24px;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+  }
+  .trail-marker {
+    display: block;
+    width: 6px;
+    height: 6px;
+    border: 1px solid var(--tertiary);
+    border-radius: 0;
+    rotate: 45deg;
+  }
+  .record-code {
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+  @media (max-width: 1000px) {
+    .archive-workspace {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  @media (max-width: 400px) {
+    .archive-browser,
+    .reference-card {
+      padding: 16px;
+    }
+    .catalogue-item {
+      gap: 8px;
+      padding: 12px;
+    }
+  }
+</style>
