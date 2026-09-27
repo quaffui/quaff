@@ -1,11 +1,15 @@
 <script lang="ts">
-  import { docsCtx } from "#docs/QDocs.svelte";
   import { QSeparatorHorizontalDocs, QSeparatorVerticalDocs } from "#components/separator/docs.js";
-  import { QCard, QCardSection, QSeparator } from "#lib";
+  import type {
+    QSeparatorHorizontalProps,
+    QSeparatorVerticalProps,
+  } from "#components/separator/props.js";
   import { QDocs, QDocsSection } from "#docs";
-  import { useMeta } from "#lib/meta.js";
+  import { docsCtx } from "#docs/QDocs.svelte";
   import { pageMeta } from "#docs/metadata.js";
-  import snippets from "./docs.snippets";
+  import { QSelect, QSeparator, QSwitch } from "#lib";
+  import { useMeta } from "#lib/meta.js";
+  import snippets from "./docs.snippets.js";
 
   useMeta(
     pageMeta(
@@ -15,200 +19,226 @@
   );
 
   docsCtx.set({ snippets, componentDocs: [QSeparatorHorizontalDocs, QSeparatorVerticalDocs] });
+
+  const INSETS = [
+    { label: "Full width", value: "none" },
+    { label: "Left", value: "left" },
+    { label: "Right", value: "right" },
+    { label: "Both", value: "both" },
+  ];
+  const SPACING = ["none", "xs", "sm", "md", "lg", "xl"];
+  const COLORS = [
+    { label: "Outline variant", value: "outline-variant" },
+    { label: "Primary", value: "primary" },
+    { label: "Tertiary", value: "tertiary" },
+    { label: "Custom CSS color", value: "#ad7050" },
+  ];
+  const THICKNESSES = [
+    { label: "1px · default", value: 1 },
+    { label: "2px · number", value: 2 },
+    { label: "4px · CSS value", value: "4px" },
+  ];
+
+  let inset = $state<"none" | "left" | "right" | "both">("none");
+  let spacing = $state<NonNullable<QSeparatorHorizontalProps["spacing"]>>("md");
+  let hasText = $state(true);
+  let textAlign = $state<NonNullable<QSeparatorHorizontalProps["textAlign"]>>("center");
+  let color = $state("tertiary");
+  let thickness = $state<NonNullable<QSeparatorHorizontalProps["size"]>>(2);
+  let verticalTextAlign = $state<NonNullable<QSeparatorVerticalProps["textAlign"]>>("middle");
+  let hasVerticalInset = $state(false);
 </script>
 
 <QDocs>
   {#snippet display()}
-    <QCard class="flex column flex-center surface" style="width: 75%; height: 50%">
-      <div>Me</div>
-      <QSeparator text="My procrastination" spacing="lg" />
-      <div>My projects</div>
-    </QCard>
+    <div class="separator-preview full-width overflow-auto surface q-pa-lg">
+      <h2 class="title-medium q-ma-none">Bakery receipt</h2>
+      <QSeparator text="ORDER 028" spacing="md" />
+      <div class="flex items-center justify-between q-gap-md body-medium">
+        <span>2 × Cardamom bun</span>
+        <span>€7.00</span>
+      </div>
+      <QSeparator spacing="md" />
+      <p class="body-small text-on-surface-variant q-ma-none">Collection at the counter</p>
+    </div>
   {/snippet}
 
   {#snippet usage()}
-    <div>
-      <QDocsSection title="Basic Horizontal Separator">
-        {#snippet sectionDescription()}
-          QSeparator is used to create visual divisions between content. By default, it creates a
-          horizontal line that spans the width of its container.
-        {/snippet}
+    <QDocsSection title="Horizontal Spacing and Insets">
+      {#snippet sectionDescription()}
+        A plain separator spans its container. Use <code>spacing</code> for the margin around the
+        line and <code>inset</code> for a 16px inset on the left, right, or both sides.
+        <code>inset</code> is shorthand for <code>inset="both"</code>. Both lines below share the
+        selected settings.
+      {/snippet}
 
-        <div class="q-my-md text-center">
-          <p>Content above the separator</p>
-          <QSeparator />
-          <p>Content below the separator</p>
+      <div class="separator-controls flex items-center q-gap-md q-mb-md">
+        <QSelect
+          class="min-width-0"
+          label="Divider inset"
+          bind:value={inset}
+          options={INSETS}
+          emitValue
+          outlined
+        />
+        <QSelect
+          class="min-width-0"
+          label="Divider spacing"
+          bind:value={spacing}
+          options={SPACING}
+          outlined
+        />
+      </div>
+      <div class="separator-example full-width surface q-pa-lg">
+        <h3 class="title-medium q-ma-none">Order 028</h3>
+        <QSeparator inset={inset === "none" ? false : inset} {spacing} />
+        <div class="flex column q-gap-sm body-medium">
+          <div class="flex justify-between q-gap-md">
+            <span>Country sourdough</span><span>€6.50</span>
+          </div>
+          <div class="flex justify-between q-gap-md">
+            <span>2 × Cardamom bun</span><span>€7.00</span>
+          </div>
         </div>
-      </QDocsSection>
-
-      <QDocsSection title="Vertical Separator">
-        {#snippet sectionDescription()}
-          Use the <code>vertical</code> prop to create a separator that runs vertically. This is useful
-          for creating column divisions in a horizontal layout.
-        {/snippet}
-
-        <div class="flex flex-center q-gap-md q-my-md" style="height: 100px;">
-          <div>Left content</div>
-          <QSeparator vertical />
-          <div>Center content</div>
-          <QSeparator vertical />
-          <div>Right content</div>
+        <QSeparator inset={inset === "none" ? false : inset} {spacing} />
+        <div class="flex justify-between q-gap-md title-medium">
+          <span>Total</span><span>€13.50</span>
         </div>
-      </QDocsSection>
+      </div>
+    </QDocsSection>
 
-      <QDocsSection title="Separator with Text">
-        {#snippet sectionDescription()}
-          Add text to a separator using the <code>text</code> prop. This creates a visual break with a
-          label, which can be useful for section headings or to provide context.
-        {/snippet}
+    <QDocsSection title="Text, Color and Thickness">
+      {#snippet sectionDescription()}
+        Add <code>text</code> and choose <code>textAlign</code>: <code>left</code>,
+        <code>center</code>, or <code>right</code>. <code>color</code> accepts theme names and CSS
+        colors; <code>size</code> sets line thickness using a number in pixels or a CSS length.
+      {/snippet}
 
-        <div class="q-my-md text-center">
-          <QSeparator text="Section Heading" />
-          <p class="q-mt-md">Content in this section</p>
+      <div class="separator-controls flex items-center q-gap-md q-mb-md">
+        <QSelect
+          class="min-width-0"
+          label="Text alignment"
+          bind:value={textAlign}
+          options={["left", "center", "right"]}
+          disabled={!hasText}
+          outlined
+        />
+        <QSelect
+          class="min-width-0"
+          label="Line color"
+          bind:value={color}
+          options={COLORS}
+          emitValue
+          outlined
+        />
+        <QSelect
+          class="min-width-0"
+          label="Line thickness"
+          bind:value={thickness}
+          options={THICKNESSES}
+          emitValue
+          outlined
+        />
+      </div>
+      <QSwitch label="Show divider text" bind:value={hasText} class="q-mb-md" />
+      <div class="separator-example full-width surface q-pa-lg">
+        <p class="body-medium q-ma-none">Bread and rolls</p>
+        <QSeparator
+          text={hasText ? "SWEET BAKES" : undefined}
+          {textAlign}
+          {color}
+          size={thickness}
+          spacing="lg"
+        />
+        <p class="body-medium q-ma-none">Cardamom buns and apricot galettes</p>
+      </div>
+    </QDocsSection>
+
+    <QDocsSection title="Vertical Dividers">
+      {#snippet sectionDescription()}
+        Use <code>vertical</code> between columns in a container with enough height. Vertical text
+        alignment is <code>top</code>, <code>middle</code>, or <code>bottom</code>. For vertical
+        dividers, <code>inset="left"</code> trims the top,
+        <code>inset="right"</code> trims the bottom, and <code>inset</code> trims both. Vertical
+        <code>spacing</code> adds horizontal margins to the line.
+      {/snippet}
+
+      <div class="separator-controls flex items-center q-gap-md q-mb-md">
+        <QSelect
+          class="min-width-0"
+          label="Vertical text alignment"
+          bind:value={verticalTextAlign}
+          options={["top", "middle", "bottom"]}
+          outlined
+        />
+        <QSwitch label="Inset both ends" bind:value={hasVerticalInset} />
+      </div>
+      <div class="separator-example full-width surface q-pa-lg">
+        <div class="vertical-example">
+          <div class="column no-wrap min-width-0 flex-center q-py-md text-center">
+            <h3 class="title-medium q-mt-none q-mb-sm">Eat in</h3>
+            <p class="body-medium text-on-surface-variant q-ma-none">Served on a plate</p>
+          </div>
+          <QSeparator
+            vertical
+            text="or"
+            textAlign={verticalTextAlign}
+            inset={hasVerticalInset}
+            spacing="sm"
+            style="height: auto"
+          />
+          <div class="column no-wrap min-width-0 flex-center q-py-md text-center">
+            <h3 class="title-medium q-mt-none q-mb-sm">Take away</h3>
+            <p class="body-medium text-on-surface-variant q-ma-none">Wrapped in paper</p>
+          </div>
         </div>
-      </QDocsSection>
+      </div>
+    </QDocsSection>
 
-      <QDocsSection title="Text Alignment">
-        {#snippet sectionDescription()}
-          Control the placement of text with the <code>textAlign</code> prop. For horizontal separators,
-          options are "left", "center" (default), or "right". For vertical separators, options are "top",
-          "middle" (default), or "bottom".
-        {/snippet}
-
-        <div class="q-my-md">
-          <QSeparator text="Left Aligned Text" textAlign="left" />
-          <div class="q-my-md"></div>
-          <QSeparator text="Centered Text (Default)" />
-          <div class="q-my-md"></div>
-          <QSeparator text="Right Aligned Text" textAlign="right" />
-        </div>
-
-        <div class="flex items-center justify-center q-my-md" style="height: 200px;">
-          <QSeparator vertical text="Top" textAlign="top" class="q-mx-md" />
-          <QSeparator vertical text="Middle (Default)" class="q-mx-md" />
-          <QSeparator vertical text="Bottom" textAlign="bottom" class="q-mx-md" />
-        </div>
-      </QDocsSection>
-
-      <QDocsSection title="Spacing">
-        {#snippet sectionDescription()}
-          Adjust the margin around the separator with the <code>spacing</code> prop. Options include "none"
-          (default), "xs", "sm", "md", "lg", and "xl".
-        {/snippet}
-
-        <div class="q-my-md">
-          <QSeparator text="No Spacing (Default)" spacing="none" />
-          <QSeparator text="XS Spacing" spacing="xs" />
-          <QSeparator text="SM Spacing" spacing="sm" />
-          <QSeparator text="MD Spacing" spacing="md" />
-          <QSeparator text="LG Spacing" spacing="lg" />
-          <QSeparator text="XL Spacing" spacing="xl" />
-        </div>
-      </QDocsSection>
-
-      <QDocsSection title="Custom Color">
-        {#snippet sectionDescription()}
-          Customize the color of the separator line with the <code>color</code> prop. You can use any
-          color name from your theme or a custom CSS color.
-        {/snippet}
-
-        <div class="q-my-md">
-          <QSeparator text="Default Color (outline variant)" />
-          <QSeparator text="Primary Color" color="primary" class="q-my-md" />
-          <QSeparator text="Secondary Color" color="secondary" class="q-my-md" />
-          <QSeparator text="Error Color" color="error" class="q-my-md" />
-        </div>
-      </QDocsSection>
-
-      <QDocsSection title="Custom Size (Thickness)">
-        {#snippet sectionDescription()}
-          Control the thickness of the separator line with the <code>size</code> prop. This accepts any
-          valid CSS size value. If a number is provided it will be treated as px.
-        {/snippet}
-
-        <div class="q-my-md">
-          <QSeparator text="Default Size" />
-          <QSeparator text="2px Thick (number)" size={2} class="q-my-md" />
-          <QSeparator text="3px Thick" size="3px" class="q-my-md" />
-          <QSeparator text="4px Thick" size="4px" class="q-my-md" />
-        </div>
-      </QDocsSection>
-
-      <QDocsSection title="Inset Separator">
-        {#snippet sectionDescription()}
-          Use <code>inset</code> to add 16px of space on the left, right, or both sides.
-        {/snippet}
-
-        <div class="q-my-md" style="border: 1px dashed var(--outline-variant); padding: 16px;">
-          <p>Full-width</p>
-          <QSeparator />
-          <p class="q-mt-md">Left inset</p>
-          <QSeparator inset="left" />
-          <p class="q-mt-md">Right inset</p>
-          <QSeparator inset="right" />
-          <p class="q-mt-md">Both sides</p>
-          <QSeparator inset="both" />
-        </div>
-      </QDocsSection>
-
-      <QDocsSection title="Use in Cards">
-        {#snippet sectionDescription()}
-          Separators are especially useful in cards to divide different sections of content.
-        {/snippet}
-
-        <QCard class="q-ma-md" style="max-width: 350px;">
-          <QCardSection>
-            <h6 class="q-my-none">Card Title</h6>
-            <p>This is the primary content of the card.</p>
-          </QCardSection>
-
-          <QSeparator />
-
-          <QCardSection>
-            <p>This is a secondary section of content.</p>
-          </QCardSection>
-
-          <QSeparator text="Additional Information" />
-
-          <QCardSection>
-            <p>Here is some additional information about this card.</p>
-          </QCardSection>
-        </QCard>
-      </QDocsSection>
-
-      <QDocsSection title="Decorative Separators">
-        {#snippet sectionDescription()}
-          Separators can be used decoratively to add visual interest to a page, especially when
-          combined with text and custom styling.
-        {/snippet}
-
-        <div class="q-pa-md">
-          <h5 class="text-center q-mb-lg">Page Section</h5>
-
-          <QSeparator text="★ Featured Content ★" color="secondary" size="2px" spacing="lg" />
-
-          <p class="text-center q-mt-lg">This section is highlighted with a decorative separator</p>
-        </div>
-      </QDocsSection>
-
-      <QDocsSection title="Accessibility Considerations" noCode>
-        {#snippet sectionDescription()}
-          QSeparator includes appropriate ARIA attributes (<code>aria-orientation</code>) to ensure
-          good accessibility. Separators with text act as visual headings but don't replace semantic
-          heading elements (h1-h6) for screen readers.
-        {/snippet}
-
-        <div class="q-pa-md">
-          <h6>Accessibility Best Practices</h6>
-          <ul>
-            <li>Use separators with text to complement, not replace, proper heading elements</li>
-            <li>Ensure sufficient color contrast when customizing separator colors</li>
-            <li>
-              When using vertical separators, consider alternative visual cues for smaller screens
-            </li>
-          </ul>
-        </div>
-      </QDocsSection>
-    </div>
+    <QDocsSection title="Decorative Lines and Accessibility">
+      {#snippet sectionDescription()}
+        Separators render native <code>&lt;hr&gt;</code> elements with the matching
+        <code>aria-orientation</code>. Their text complements real headings; it does not replace
+        them. Use <code>aria-hidden="true"</code> for a purely decorative line, and keep essential information
+        outside it.
+      {/snippet}
+      <div class="separator-example full-width tertiary-container q-pa-lg">
+        <QSeparator text="✦" color="on-tertiary-container" size="2px" inset aria-hidden="true" />
+        <h3 class="title-medium q-mt-md q-mb-sm">Allergen information</h3>
+        <p class="body-medium q-ma-none">Ask at the counter before ordering.</p>
+      </div>
+    </QDocsSection>
   {/snippet}
 </QDocs>
+
+<style>
+  .separator-controls :global(.q-switch) {
+    max-width: 100%;
+  }
+
+  .separator-preview,
+  .separator-example {
+    max-width: 640px;
+    border-radius: 24px;
+    overflow-wrap: anywhere;
+  }
+
+  .separator-preview {
+    max-width: 352px;
+    max-height: 100%;
+  }
+
+  .separator-controls {
+    max-width: 640px;
+  }
+
+  .separator-controls :global(.q-select) {
+    flex: 1 1 160px;
+  }
+
+  .vertical-example {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    min-height: 200px;
+  }
+</style>
