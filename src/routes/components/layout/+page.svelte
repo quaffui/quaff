@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { onMount } from "svelte";
   import { QLayoutDocs } from "$components/layout/docs";
   import {
     QBtn,
@@ -47,10 +48,15 @@
   });
 
   let leftDrawerElement = $state<ReturnType<typeof QDrawer>>();
-  let leftDrawerShown = $state(true);
+  let leftDrawerShown = $state(false);
 
   let rightDrawerElement = $state<ReturnType<typeof QDrawer>>();
-  let rightDrawerShown = $state(true);
+  let rightDrawerShown = $state(false);
+
+  onMount(() => {
+    leftDrawerShown = leftDrawer && Quaff.screen.gt.sm;
+    rightDrawerShown = rightDrawer && Quaff.screen.gt.sm;
+  });
 
   $effect(() => {
     if (!leftDrawer) {
@@ -295,6 +301,7 @@
     persistent={Quaff.screen.gt.sm}
     bind:value={leftDrawerShown}
     bind:this={leftDrawerElement}
+    aria-label="Primary navigation"
   >
     <QList>
       <QItem to="#">
@@ -325,6 +332,7 @@
     width={160}
     bind:value={rightDrawerShown}
     bind:this={rightDrawerElement}
+    aria-label="Secondary navigation"
   >
     <QList>
       <QItem to="#">

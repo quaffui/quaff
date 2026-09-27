@@ -5,6 +5,7 @@ QInput is a form component that allows users to input text. It supports differen
 
 <script lang="ts">
   import { type QEvent } from "$utils";
+  import QFieldMessage from "$internal/QFieldMessage.svelte";
   import { deleteMaskedToken, maskCaretPosition, maskValue, unmaskValue } from "./mask";
   import type { QInputProps } from "./props";
 
@@ -53,9 +54,16 @@ QInput is a form component that allows users to input text. It supports differen
 
   // #region:    --- Non-reactive variables
   const id = $props.id();
+  const messageId = `q-input-${id}-message`;
   // #endregion: --- Non-reactive variables
 
   // #region:    --- Derived values
+  const supportingText = $derived((error && errorMessage) || hint);
+  const describedBy = $derived(
+    [inputProps["aria-describedby"], supportingText ? messageId : undefined]
+      .filter(Boolean)
+      .join(" ") || undefined
+  );
   const inputId = $derived(inputProps.id ?? `q-input-${id}`);
   const nativeValue = $derived(value ?? "");
   const displayValue = $derived(
@@ -194,6 +202,8 @@ QInput is a form component that allows users to input text. It supports differen
       <input
         {...inputProps}
         id={inputId}
+        aria-describedby={describedBy}
+        aria-invalid={inputProps["aria-invalid"] ?? (error || undefined)}
         class="q-field__input"
         value={displayValue}
         {placeholder}
@@ -214,11 +224,7 @@ QInput is a form component that allows users to input text. It supports differen
       {/if}
     </label>
 
-    {#if error && errorMessage}
-      <div class="q-field__error">{errorMessage}</div>
-    {:else if hint}
-      <div class="q-field__hint">{hint}</div>
-    {/if}
+    <QFieldMessage id={messageId} message={supportingText} error={error && !!errorMessage} />
   </div>
 
   {#if after}

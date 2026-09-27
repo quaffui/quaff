@@ -44,7 +44,7 @@ export interface QDrawerProps
   overlay?: boolean;
 
   /**
-   * Determines whether the drawer remains persistent, not closing on click outside.
+   * Prevents dismissal by clicking outside, pressing Escape or swiping. Modal focus stays inside the drawer.
    */
   persistent?: boolean;
 
