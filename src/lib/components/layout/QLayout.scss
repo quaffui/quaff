@@ -122,3 +122,14 @@
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
 }
+
+// Flexible headers report their rendered height as text wraps or the bar collapses.
+.q-layout:has(> .q-header--flexible.q-header--collapsible) > .q-layout__content {
+  transition-property: margin-right, margin-bottom, margin-left;
+}
+
+// When both bars resize, follow both measured offsets without a second animation.
+.q-layout:has(> .q-header--flexible.q-header--collapsible):has(> .q-railbar--resizing)
+  > .q-layout__content {
+  transition-property: margin-bottom;
+}

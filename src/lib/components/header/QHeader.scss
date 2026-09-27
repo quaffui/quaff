@@ -8,7 +8,7 @@
   @include mixins.layoutBarDisplay;
 
   min-height: unset;
-  height: var(--header-height);
+  height: var(--header-height, 64px);
   width: 100%;
 
   padding-inline: 4px;
@@ -16,7 +16,12 @@
   border-radius: 0;
 
   background-color: var(--surface);
-  transition: all variables.$speed3;
+  transition:
+    background-color variables.$speed3,
+    box-shadow variables.$speed3,
+    translate variables.$speed3,
+    left variables.$speed3,
+    right variables.$speed3;
 
   @media (prefers-reduced-motion: reduce) {
     transition: none;
@@ -26,6 +31,109 @@
     width: 48px;
     min-width: 48px;
     height: 48px;
+  }
+
+  &:not(.q-header--flexible):has(> .q-header-title--subtitle) {
+    height: var(--header-height, auto);
+    min-height: var(--header-height, 64px);
+
+    > .q-header-title {
+      margin-block: 8px;
+      white-space: normal;
+    }
+  }
+
+  // M3 flexible measurements; extra lines grow beyond these nominal heights.
+  // https://m3.material.io/components/app-bars/specs#8a5b3245-66ad-4b51-9ae3-79696dad76c8
+  &--flexible {
+    color: var(--on-surface);
+    height: auto;
+    min-height: 64px;
+
+    > .q-btn--flat:first-child:has(+ .q-header-title):not(.q-btn--selected):not(
+        :has(> .q-btn__label)
+      ) {
+      --ripple-color: var(--on-surface);
+    }
+
+    > :not(.q-header-title) {
+      flex-shrink: 0;
+      margin-block: 8px;
+    }
+
+    > .q-header-title {
+      margin-block: 8px;
+      white-space: normal;
+      overflow-wrap: anywhere;
+
+      &:not(.q-header-title--align-center) {
+        align-items: flex-start;
+        justify-content: flex-start;
+        text-align: start;
+      }
+    }
+
+    &:not(.q-header--compact) {
+      flex-wrap: wrap;
+      align-content: space-between;
+      min-height: var(--header-height, var(--q-header-expanded-height));
+
+      &:not(:has(> :not(.q-header-title))) {
+        align-content: flex-end;
+      }
+
+      // Reserve the action row without stretching logos or other decorative children.
+      &:has(> :not(.q-header-title))::before {
+        content: "";
+        flex: 0 0 0;
+        height: 64px;
+      }
+
+      > .q-header-title {
+        order: 1;
+        flex: 0 0 calc(100% - 24px);
+        margin: 0 12px;
+        padding: 0 0 12px;
+      }
+
+      > .q-header-title + * {
+        margin-inline-start: auto;
+      }
+
+      &.q-header--medium {
+        --q-header-expanded-height: 112px;
+
+        &:has(> .q-header-title--subtitle) {
+          --q-header-expanded-height: 136px;
+        }
+
+        > .q-header-title {
+          gap: 4px;
+          @include mixins.typography("headline-medium");
+        }
+
+        .q-header-title__subtitle {
+          @include mixins.typography("label-large");
+        }
+      }
+
+      &.q-header--large {
+        --q-header-expanded-height: 120px;
+
+        &:has(> .q-header-title--subtitle) {
+          --q-header-expanded-height: 152px;
+        }
+
+        > .q-header-title {
+          gap: 8px;
+          @include mixins.typography("display-small");
+        }
+
+        .q-header-title__subtitle {
+          @include mixins.typography("title-medium");
+        }
+      }
+    }
   }
 
   &--layout {
@@ -45,8 +153,27 @@
     @include mixins.elevate(1);
   }
 
+  &--compact > .q-header-title {
+    padding-inline: 4px;
+  }
+
+  &.q-header--scrolled {
+    background-color: var(--surface-container);
+    @include mixins.elevate(2);
+  }
+
   &.q-header--bordered {
-    @include mixins.border($position: "bottom");
+    border-color: var(--outline-variant);
+
+    // Keep the divider outside the layout so controls stay centered.
+    &::after {
+      @include mixins.border($position: "bottom");
+      content: "";
+      position: absolute;
+      inset: auto 0 0;
+      border-color: inherit;
+      pointer-events: none;
+    }
   }
 
   &.q-header--dense {
@@ -77,6 +204,36 @@
   justify-content: center;
 
   @include mixins.typography("title-large");
+
+  &--subtitle {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  &--align-start {
+    align-items: flex-start;
+    justify-content: flex-start;
+    text-align: start;
+  }
+
+  &--align-center {
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+
+  &__text,
+  &__subtitle {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    border-radius: 0;
+  }
+
+  &__subtitle {
+    color: var(--on-surface-variant);
+    @include mixins.typography("label-medium");
+  }
 
   &--shrink {
     flex: 0 1 auto;
