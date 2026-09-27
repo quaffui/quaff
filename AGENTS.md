@@ -4,6 +4,7 @@
 - Avoid nested ternaries; use clear branches or a lookup instead.
 - Use `!!value` instead of `Boolean(value)` for truthiness casts.
 - Name functions and methods with a verb describing the action, such as `readCachedFont` or `collectIconUsage`. Boolean predicates should start with `is`, `has`, `does`, `can`, or `should`, such as `doesFileExist`. Keep names required by external APIs (for example Vite hooks).
+- Matching a component prop name for shorthand takes precedence over other identifier naming rules.
 - Use `async`/`await` and `try`/`catch`/`finally` for asynchronous control flow. Avoid `.then()`, `.catch()`, `.finally()`, and `.error()` callback chains. Keep an external API call only when there is no appropriate async/await alternative, and explain the reason briefly. Error-reporting calls such as Vite's `logger.error()` are external logging APIs, not asynchronous control flow.
 - Give intermediate values descriptive names and use explicit branches when an expression combines selection, imports, and asynchronous work. For example:
 
