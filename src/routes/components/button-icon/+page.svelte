@@ -1,9 +1,9 @@
 <script lang="ts">
   import { QIconBtnDocs } from "$components/button/docs";
+  import type { QIconBtnProps } from "$components/button/props";
   import { docsCtx } from "$docs/QDocs.svelte";
-  import { Notify, QIconBtn } from "$lib";
+  import { QIconBtn, QSelect, QSwitch } from "$lib";
   import { QDocs, QDocsSection } from "$docs";
-
   import { useMeta } from "$lib/meta";
   import { pageMeta } from "$docs/metadata";
   import snippets from "./docs.snippets";
@@ -17,206 +17,317 @@
 
   docsCtx.set({ snippets, componentDocs: QIconBtnDocs });
 
-  let favoriteSelected = $state(false);
-  let outlinedSelected = $state(true);
+  const SEGMENTS = ["Station ident", "Community stories", "Closing theme"];
+  const SIZES = ["xs", "sm", "md", "lg", "xl"];
+  const VARIANTS = ["flat", "filled", "tonal", "outlined", "elevated"];
+  const RIPPLE_MODES = [
+    { label: "Default ripple", value: "default" },
+    { label: "Tertiary ripple", value: "tertiary" },
+    { label: "No ripple", value: "off" },
+  ];
+
+  let segmentIndex = $state(0);
+  let isPlaying = $state(false);
+  let isMonitoring = $state(false);
+  let isMuted = $state(false);
+  let isBookmarked = $state(false);
+  let expressive = $state(true);
+  let size = $state<NonNullable<QIconBtnProps["size"]>>("md");
+  let shape = $state<NonNullable<QIconBtnProps["shape"]>>("round");
+  let width = $state<NonNullable<QIconBtnProps["width"]>>("default");
+  let variant = $state<NonNullable<QIconBtnProps["variant"]>>("tonal");
+  let color = $state("primary");
+  let shouldUseCustomIcon = $state(false);
+  let isUnelevated = $state(false);
+  let rippleMode = $state("default");
+  let previewClickCount = $state(0);
+  let isPreparingSheet = $state(false);
+  let isSheetReady = $state(false);
+  const hasContainerColor = $derived(variant === "filled" || variant === "tonal");
+  const sheetStatus = $derived.by(() => {
+    if (isPreparingSheet) {
+      return "Preparing the cue sheet…";
+    }
+
+    if (isSheetReady) {
+      return "Cue sheet ready. Its status link is enabled.";
+    }
+
+    return "Prepare the sheet to try loading and enable its link.";
+  });
+
+  $effect(() => {
+    if (!isPreparingSheet) {
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      isSheetReady = true;
+      isPreparingSheet = false;
+    }, 1200);
+
+    return () => clearTimeout(timer);
+  });
 </script>
 
-<QDocs>
+{#snippet renderFaderIcon()}
+  <svg class="fader-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"
+    ><path d="M5 3v18M12 3v18M19 3v18" stroke="currentColor" stroke-width="2" /><path
+      d="M2 8h6m1 8h6m1-10h6"
+      stroke="currentColor"
+      stroke-width="4"
+      stroke-linecap="round"
+    /></svg
+  >
+{/snippet}
+
+<QDocs docDescription="Put a clear action behind a compact, recognizable symbol.">
   {#snippet display()}
-    <QIconBtn icon="star" aria-label="Star" />
+    <!-- svelte-ignore a11y_no_noninteractive_tabindex (Keyboard users must be able to scroll the preview when text is enlarged.) -->
+    <div
+      class="radio-preview surface q-pa-lg text-on-surface text-center"
+      role="region"
+      aria-label="Radio controls preview"
+      tabindex="0"
+    >
+      <div class="label-medium text-tertiary">BOROUGH 92 · COMMUNITY RADIO</div>
+      <h2 class="title-large q-mt-xs q-mb-lg">Play or pause</h2>
+      <QIconBtn
+        expressive
+        filled
+        size="lg"
+        icon={isPlaying ? "pause" : "play_arrow"}
+        aria-label={isPlaying ? "Pause rehearsal preview" : "Play rehearsal preview"}
+        onclick={() => (isPlaying = !isPlaying)}
+      />
+      <p class="body-medium q-mt-md q-mb-none" role="status">{isPlaying ? "Playing" : "Paused"}</p>
+    </div>
   {/snippet}
 
   {#snippet usage()}
-    <div>
-      <QDocsSection title="Default Icon Buttons">
-        {#snippet sectionDescription()}
-          QIconBtn is a button component that displays only an icon. It's built on top of QBtn and
-          inherits most of its features and properties.
-        {/snippet}
+    <QDocsSection title="Actions and Toggles">
+      {#snippet sectionDescription()}
+        Give each icon button an action-oriented <code>aria-label</code>. Use <code>onclick</code>
+        for actions such as play or skip. Bind <code>selected</code> for toggles; it updates
+        <code>aria-pressed</code> automatically. Keep a toggle's label stable as its state changes. These
+        controls update local state without playing audio.
+      {/snippet}
 
-        <QIconBtn class="q-ma-sm" icon="favorite" aria-label="Favorite" />
-        <QIconBtn class="q-ma-sm" icon="search" aria-label="Search" />
-        <QIconBtn class="q-ma-sm" icon="share" aria-label="Share" />
-      </QDocsSection>
+      <div class="broadcast-desk q-pa-lg text-on-surface">
+        <h3 class="title-large q-mt-none q-mb-lg">{SEGMENTS[segmentIndex]}</h3>
+        <div class="flex items-center q-gap-lg" role="group" aria-label="Rehearsal controls">
+          <QIconBtn
+            expressive
+            size="md"
+            filled
+            icon={isPlaying ? "pause" : "play_arrow"}
+            aria-label={isPlaying ? "Pause rehearsal" : "Play rehearsal"}
+            onclick={() => (isPlaying = !isPlaying)}
+          />
+          <QIconBtn
+            icon="skip_next"
+            aria-label="Next segment"
+            onclick={() => (segmentIndex = (segmentIndex + 1) % SEGMENTS.length)}
+          />
+          <QIconBtn
+            tonal
+            icon="headphones"
+            aria-label="Headphone monitor"
+            bind:selected={isMonitoring}
+          />
+          <QIconBtn
+            expressive
+            outlined
+            icon="volume_off"
+            aria-label="Mute desk output"
+            bind:selected={isMuted}
+          />
+          <QIconBtn icon="bookmark" aria-label="Bookmark rehearsal" bind:selected={isBookmarked} />
+        </div>
+        <p class="body-medium text-on-surface-variant q-mt-lg q-mb-none" role="status">
+          {isPlaying ? "Playing" : "Paused"} · {isMonitoring ? "Headphones on" : "Headphones off"} ·
+          {isMuted ? "Muted" : "Output on"} · {isBookmarked ? "Bookmarked" : "Not bookmarked"}
+        </p>
+      </div>
+      <p class="body-medium q-mt-lg q-mb-none">
+        Icon-only buttons default to the <code>flat</code> variant. <code>filled</code>,
+        <code>tonal</code> and <code>outlined</code> are shorthand for the matching
+        <code>variant</code> values, as used on the controls above. An explicit <code>variant</code>
+        takes precedence.
+      </p>
+    </QDocsSection>
 
-      <QDocsSection title="Width Options">
-        {#snippet sectionDescription()}
-          Expressive icon buttons support narrow, default, and wide widths using the
-          <code>width</code> prop.
-        {/snippet}
+    <QDocsSection title="Sizes, Shapes and Variants">
+      {#snippet sectionDescription()}
+        Try <code>expressive</code> sizes, <code>width</code> and <code>shape</code> on one button.
+        Baseline defaults to <code>md</code> and expressive to <code>sm</code>, both 40px; explicit
+        size names use their mode's scale. Expressive mode inherits
+        <code>Quaff.init()</code>
+        when omitted. Custom icon snippets can replace a Material Symbol.
+      {/snippet}
 
-        <QIconBtn class="q-ma-sm" expressive icon="favorite" width="narrow" aria-label="Favorite" />
-        <QIconBtn
-          class="q-ma-sm"
-          expressive
-          icon="favorite"
-          width="default"
-          aria-label="Favorite"
-        />
-        <QIconBtn class="q-ma-sm" expressive icon="favorite" width="wide" aria-label="Favorite" />
-      </QDocsSection>
-
-      <QDocsSection title="Loading State">
-        {#snippet sectionDescription()}
-          Icon buttons can display a loading indicator. When the loading prop is true, a circular
-          progress indicator replaces the icon.
-        {/snippet}
-
-        <QIconBtn class="q-ma-sm" icon="refresh" loading aria-label="Refresh" />
-      </QDocsSection>
-
-      <QDocsSection title="Disabled State">
-        {#snippet sectionDescription()}
-          Disabled icon buttons indicate that an action is unavailable. They maintain their
-          appearance but don't respond to user interaction.
-        {/snippet}
-
-        <QIconBtn class="q-ma-sm" icon="add" disabled aria-label="Add" />
-        <QIconBtn
-          class="q-ma-sm"
-          icon="close"
-          aria-label="Close"
-          disabled
-          onclick={() => Notify.create("Icon button clicked")}
-        />
-      </QDocsSection>
-
-      <QDocsSection title="Button Variants">
-        {#snippet sectionDescription()}
-          QIconBtn supports multiple variants to match your design needs. You can specify variants
-          using the <code>variant</code> prop.
-        {/snippet}
-
-        <QIconBtn class="q-ma-sm" icon="star" aria-label="Standard" />
-        <QIconBtn class="q-ma-sm" icon="star" variant="filled" aria-label="Filled" />
-        <QIconBtn class="q-ma-sm" icon="star" variant="tonal" aria-label="Tonal" />
-        <QIconBtn class="q-ma-sm" icon="star" variant="outlined" aria-label="Outlined" />
-      </QDocsSection>
-
-      <QDocsSection title="Button Variants Using Boolean Props">
-        {#snippet sectionDescription()}
-          As an alternative to the <code>variant</code> prop, you can use boolean props to set the button
-          variant.
-        {/snippet}
-
-        <QIconBtn class="q-ma-sm" icon="star" aria-label="Standard" />
-        <QIconBtn class="q-ma-sm" icon="star" filled aria-label="Filled" />
-        <QIconBtn class="q-ma-sm" icon="star" tonal aria-label="Tonal" />
-        <QIconBtn class="q-ma-sm" icon="star" outlined aria-label="Outlined" />
-      </QDocsSection>
-
-      <QDocsSection title="Size">
-        {#snippet sectionDescription()}
-          Baseline Material 3 uses the 40px <code>md</code> size by default. Quaff also keeps
-          <code>sm</code>, <code>lg</code>, and <code>xl</code> compatibility sizes.
-        {/snippet}
-
-        <QIconBtn class="q-ma-sm" icon="star" size="sm" aria-label="Small" />
-        <QIconBtn class="q-ma-sm" icon="star" aria-label="Medium" />
-        <QIconBtn class="q-ma-sm" icon="star" size="lg" aria-label="Large" />
-        <QIconBtn class="q-ma-sm" icon="star" size="xl" aria-label="Extra large" />
-      </QDocsSection>
-
-      <QDocsSection title="Expressive Icon Buttons">
-        {#snippet sectionDescription()}
-          Enable <code>expressive</code> for one button, or pass
-          <code>{`{ expressive: true }`}</code>
-          to <code>Quaff.init()</code> to use the Material 3 Expressive styles globally.
-        {/snippet}
-
-        <QIconBtn
-          class="q-ma-sm"
-          expressive
-          icon="star"
-          size="xs"
-          filled
-          aria-label="Extra small"
-        />
-        <QIconBtn class="q-ma-sm" expressive icon="star" filled aria-label="Small" />
-        <QIconBtn class="q-ma-sm" expressive icon="star" size="md" filled aria-label="Medium" />
-        <QIconBtn
-          class="q-ma-sm"
-          expressive
-          icon="star"
-          size="md"
-          width="wide"
-          shape="squared"
-          tonal
-          aria-label="Wide squared"
-        />
-      </QDocsSection>
-
-      <QDocsSection title="Toggle Icon Buttons">
-        {#snippet sectionDescription()}
-          Toggle icon buttons are available in both baseline Material 3 and Material 3 Expressive.
-          Bind <code>selected</code> to update both the value and <code>aria-pressed</code> when activated.
-        {/snippet}
-
-        <QIconBtn
-          class="q-ma-sm"
-          bind:selected={favoriteSelected}
-          icon="favorite"
-          aria-label="Favorite"
-        />
-        <QIconBtn
-          class="q-ma-sm"
-          expressive
-          bind:selected={outlinedSelected}
-          icon="notifications"
+      <div class="console-controls q-gap-md q-mb-lg">
+        <QSelect label="Button variant" options={VARIANTS} bind:value={variant} outlined />
+        <QSelect label="Button size" options={SIZES} bind:value={size} outlined />
+        <QSelect
+          label="Button width"
+          options={["narrow", "default", "wide"]}
+          bind:value={width}
+          disabled={!expressive}
           outlined
-          aria-label="Notifications"
         />
-      </QDocsSection>
-
-      <QDocsSection title="Button with Router Link">
-        {#snippet sectionDescription()}
-          Icon buttons can function as navigation links by adding the <code>to</code> prop. This renders
-          the button as an anchor element.
-        {/snippet}
-
-        <QIconBtn class="q-ma-sm" icon="open_in_new" to="#" aria-label="Open link" />
-        <QIconBtn class="q-ma-sm" icon="open_in_new" to="#" disabled aria-label="Open link" />
-      </QDocsSection>
-
-      <QDocsSection title="Events">
-        {#snippet sectionDescription()}
-          QIconBtn supports standard event handlers like <code>onclick</code>. Events are not
-          triggered when the button is disabled.
-        {/snippet}
-
-        <QIconBtn
-          class="q-ma-sm"
-          icon="touch_app"
-          aria-label="Activate"
-          onclick={() => Notify.create("Icon button clicked")}
+        <QSelect
+          label="Button shape"
+          options={["round", "squared"]}
+          bind:value={shape}
+          disabled={!expressive}
+          outlined
         />
-        <QIconBtn
-          class="q-ma-sm"
-          icon="touch_app"
-          aria-label="Activate"
-          onclick={() => Notify.create("Icon button clicked")}
-          disabled
+        <QSelect
+          label="Icon color"
+          options={["primary", "secondary", "tertiary"]}
+          bind:value={color}
+          disabled={hasContainerColor}
+          outlined
         />
-      </QDocsSection>
+        <QSelect
+          label="Ripple feedback"
+          options={RIPPLE_MODES}
+          bind:value={rippleMode}
+          emitValue
+          outlined
+        />
+        <QSwitch label="Expressive styling" bind:value={expressive} />
+        <QSwitch label="Use a custom icon" bind:value={shouldUseCustomIcon} />
+        <QSwitch
+          label="Remove elevation"
+          bind:value={isUnelevated}
+          disabled={variant !== "elevated"}
+        />
+      </div>
+      <div class="cue-console flex items-center q-gap-lg q-pa-lg text-on-surface">
+        <div class="cue-button-stage q-pa-md">
+          <QIconBtn
+            {expressive}
+            {size}
+            {width}
+            {shape}
+            {variant}
+            color={hasContainerColor ? undefined : color}
+            unelevated={variant === "elevated" && isUnelevated}
+            icon={shouldUseCustomIcon ? renderFaderIcon : "graphic_eq"}
+            noRipple={rippleMode === "off"}
+            rippleColor={rippleMode === "tertiary" ? "tertiary" : undefined}
+            aria-label="Try icon button"
+            onclick={() => (previewClickCount += 1)}
+          />
+        </div>
+        <p class="body-medium q-ma-none" role="status">Pressed {previewClickCount} times</p>
+      </div>
+      <p class="body-medium q-mt-lg q-mb-none">
+        Baseline icon buttons are circular; expressive buttons support
+        <code>shape="squared"</code>. Turn off the ripple with <code>noRipple</code>, or set
+        <code>rippleColor</code> to a theme or CSS color. The <code>unelevated</code> prop removes the
+        elevated variant's shadow. The icon color control applies to flat, outlined and elevated buttons;
+        filled and tonal buttons keep their matching foreground color.
+      </p>
+    </QDocsSection>
 
-      <QDocsSection title="Shape Variations">
-        {#snippet sectionDescription()}
-          Expressive icon buttons can use the <code>shape</code> prop.
-        {/snippet}
+    <QDocsSection title="Loading, Disabled and Links">
+      {#snippet sectionDescription()}
+        Set <code>loading</code> to replace the icon with a progress indicator and
+        <code>disabled</code>
+        to prevent another activation while work is pending. Add <code>href</code> or
+        <code>to</code>
+        to render a navigation link. Preparing the cue sheet enables the status link below.
+      {/snippet}
 
-        <QIconBtn class="q-ma-sm" expressive icon="add" aria-label="Add" />
-        <QIconBtn class="q-ma-sm" expressive icon="add" shape="squared" aria-label="Add" />
-      </QDocsSection>
-
-      <QDocsSection title="Ripple Effect">
-        {#snippet sectionDescription()}
-          QIconBtn includes a ripple effect by default. You can disable it or customize its color.
-        {/snippet}
-
-        <QIconBtn class="q-ma-sm" icon="touch_app" aria-label="Activate" />
-        <QIconBtn class="q-ma-sm" icon="touch_app" noRipple aria-label="Activate" />
-        <QIconBtn class="q-ma-sm" icon="touch_app" rippleColor="error" aria-label="Activate" />
-      </QDocsSection>
-    </div>
+      <div class="sheet-card q-pa-lg text-on-surface">
+        <div class="flex items-center q-gap-md" role="group" aria-label="Cue sheet actions">
+          <QIconBtn
+            variant="tonal"
+            icon="playlist_add_check"
+            aria-label="Prepare cue sheet"
+            loading={isPreparingSheet}
+            disabled={isPreparingSheet}
+            onclick={() => {
+              isSheetReady = false;
+              isPreparingSheet = true;
+            }}
+          />
+          <QIconBtn
+            icon="description"
+            aria-label="View cue sheet status"
+            href="#radio-cue-sheet"
+            disabled={!isSheetReady}
+          />
+          <QIconBtn icon="help" aria-label="Read button documentation" to="/components/button" />
+        </div>
+        <p
+          id="radio-cue-sheet"
+          class="cue-sheet body-medium q-mt-md q-mb-none"
+          role="status"
+          tabindex="-1"
+        >
+          {sheetStatus}
+        </p>
+      </div>
+      <p class="body-medium q-mt-lg q-mb-none">
+        Tab focuses an enabled button; Space or Enter activates it. Links retain normal link
+        behavior. Disabled actions do not run their click handler. Keep a visible focus indicator
+        and provide accessible names for custom icons too.
+      </p>
+    </QDocsSection>
   {/snippet}
 </QDocs>
+
+<style>
+  .radio-preview,
+  .broadcast-desk,
+  .cue-console,
+  .sheet-card {
+    border-radius: 24px;
+    background: var(--surface-container-low);
+    overflow-wrap: anywhere;
+  }
+
+  .radio-preview {
+    width: 100%;
+    max-width: 352px;
+    max-height: 100%;
+    overflow: auto;
+  }
+
+  .fader-icon {
+    width: var(--q-btn-icon-size, 24px);
+    height: var(--q-btn-icon-size, 24px);
+    flex: none;
+    border-radius: 0;
+  }
+
+  .console-controls {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 224px), 1fr));
+    align-items: start;
+  }
+
+  .cue-button-stage {
+    display: grid;
+    place-items: safe center;
+    flex: 1 1 176px;
+    min-width: 0;
+    min-height: 192px;
+    overflow: auto;
+    border-radius: 20px;
+    background: var(--surface-container-high);
+  }
+
+  .cue-sheet {
+    scroll-margin-block: 96px;
+  }
+
+  .cue-sheet:focus {
+    outline: 3px solid var(--secondary);
+    outline-offset: 4px;
+  }
+</style>
