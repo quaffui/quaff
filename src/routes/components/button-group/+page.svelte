@@ -1,9 +1,9 @@
 <script lang="ts">
   import { QBtnGroupDocs, QBtnToggleDocs } from "$components/button-group/docs";
+  import type { QBtnGroupProps, QBtnToggleProps } from "$components/button-group/props";
   import { QDocs, QDocsSection } from "$docs";
   import { docsCtx } from "$docs/QDocs.svelte";
-  import { QBtn, QBtnGroup, QBtnToggle, QIconBtn } from "$lib";
-  import type { QBtnToggleProps } from "$components/button-group/props";
+  import { QBtn, QBtnGroup, QBtnToggle, QIconBtn, QSelect, QSwitch } from "$lib";
   import { useMeta } from "$lib/meta";
   import { pageMeta } from "$docs/metadata";
   import snippets from "./docs.snippets";
@@ -19,241 +19,257 @@
 
   type ToggleValue = QBtnToggleProps["value"];
 
-  const periods = [
-    { label: "Day", value: "day" },
-    { label: "Week", value: "week" },
-    { label: "Month", value: "month" },
+  const FORECASTS = [
+    { value: "now", label: "Now", temperature: 18 },
+    { value: "later", label: "Later", temperature: 22 },
+    { value: "night", label: "Night", temperature: 13 },
   ];
-  const weekdays = [
-    { label: "Mon", value: "mon" },
-    { label: "Tue", value: "tue" },
-    { label: "Wed", value: "wed" },
+  const PERIODS = FORECASTS.map(({ value, label }) => ({ value, label }));
+  const UNITS = [
+    { label: "°C", value: 0 },
+    { label: "°F", value: 1 },
   ];
-  const alignments: QBtnToggleProps["options"] = [
-    { icon: "format_align_left", value: "left", "aria-label": "Align left" },
-    { icon: "format_align_center", value: "center", "aria-label": "Align center" },
-    { icon: "format_align_right", value: "right", "aria-label": "Align right" },
+  const METRICS = [
+    { value: "wind", label: "Wind" },
+    { value: "rain", label: "Rain" },
+    { value: "uv", label: "UV" },
   ];
-  const sizes = ["xs", "sm", "md", "lg", "xl"] as const;
-  const heights = { xs: 32, sm: 40, md: 56, lg: 96, xl: 136 };
+  const LAYERS = [
+    { value: "cloud", icon: "cloud", "aria-label": "Cloud cover" },
+    { value: "pollen", icon: "grass", "aria-label": "Pollen" },
+    { value: "radar", icon: "radar", "aria-label": "Rain radar unavailable", disabled: true },
+  ] satisfies QBtnToggleProps["options"];
+  const LAYER_DETAILS = {
+    cloud: "Cloud cover · 35%",
+    pollen: "Pollen · moderate",
+  };
+  const SIZES = ["xs", "sm", "md", "lg", "xl"];
+  const VARIANTS = ["tonal", "filled", "outlined", "elevated"];
 
-  let baseline = $state<ToggleValue>("day");
-  let period = $state<ToggleValue>("week");
-  let days = $state<ToggleValue>(["mon", "wed"]);
-  let optional = $state<ToggleValue>("day");
-  let alignment = $state<ToggleValue>("left");
-  let action = $state("Choose an action");
+  let unit = $state<ToggleValue>(0);
+  let period = $state<ToggleValue>("now");
+  let expressive = $state(true);
+  let connected = $state(true);
+  let spread = $state(true);
+  let size = $state<NonNullable<QBtnGroupProps["size"]>>("sm");
+  let shape = $state<NonNullable<QBtnGroupProps["shape"]>>("round");
+  let variant = $state<NonNullable<QBtnToggleProps["variant"]>>("tonal");
+  let selectedMetrics = $state<ToggleValue>(["wind", "rain"]);
+  let canClearSelection = $state(false);
+  let layer = $state<ToggleValue>("cloud");
+  let isStationLocked = $state(false);
+  let isLogPinned = $state(false);
+  let loggedReadingCount = $state(0);
+
+  const forecast = $derived(FORECASTS.find(({ value }) => value === period) ?? FORECASTS[0]);
+  const temperature = $derived(
+    unit === 1 ? Math.round((forecast.temperature * 9) / 5 + 32) : forecast.temperature
+  );
+  const unitLabel = $derived(unit === 1 ? "°F" : "°C");
+  const visibleMetrics = $derived(
+    METRICS.filter(({ value }) => Array.isArray(selectedMetrics) && selectedMetrics.includes(value))
+  );
+  const layerDetail = $derived(
+    layer === "cloud" || layer === "pollen" ? LAYER_DETAILS[layer] : "No extra layer selected."
+  );
+
+  function keepRequiredMetric() {
+    if (!canClearSelection && (!Array.isArray(selectedMetrics) || selectedMetrics.length === 0)) {
+      selectedMetrics = ["wind"];
+    }
+  }
 </script>
 
 <QDocs
   docName="Button groups"
-  docDescription="Group related actions or choose options with Material 3 button groups and segmented buttons."
+  docDescription="Choose a view, combine useful readings, or keep related actions together."
 >
   {#snippet display()}
-    <div style="width: min(448px, 100%);">
-      <QBtnToggle expressive options={periods} value="week" aria-label="Preview period" />
+    <div class="group-preview surface q-pa-lg">
+      <p class="label-medium text-tertiary q-mt-none q-mb-md">ROOFTOP FORECAST · UNITS</p>
+      <div class="group-scroll q-pa-sm">
+        <QBtnToggle
+          expressive={false}
+          options={UNITS}
+          bind:value={unit}
+          aria-label="Temperature unit"
+        />
+      </div>
+      <p class="body-medium q-mt-md q-mb-none" role="status">Temperature unit: {unitLabel}</p>
     </div>
   {/snippet}
 
   {#snippet usage()}
-    <QDocsSection title="Baseline Segmented Buttons">
-      {#snippet sectionDescription()}
-        <p>
-          With <code>{"expressive={false}"}</code>, groups use the baseline Material 3 connected
-          style at 40px high. <code>QBtnToggle</code> manages selection from an <code>options</code>
-          array; bind <code>value</code> to read and update the choice.
-        </p>
-        <p>
-          Both components inherit the global <code>{"Quaff.init({ expressive: true })"}</code>
-          setting unless you pass <code>expressive</code> explicitly. Baseline groups remain
-          connected regardless of the <code>connected</code> prop.
-        </p>
-      {/snippet}
-
-      <div style="max-width: 32rem;">
-        <QBtnToggle
-          expressive={false}
-          options={periods}
-          bind:value={baseline}
-          aria-label="Calendar view"
-        />
-      </div>
-    </QDocsSection>
-
-    <QDocsSection title="Standard Action Groups">
-      {#snippet sectionDescription()}
-        <p>
-          An expressive <code>QBtnGroup</code> uses separate buttons by default. Place
-          <code>QBtn</code> and <code>QIconBtn</code> directly inside it; each button keeps its own action
-          and visual variant. The group shares size, shape, and disabled state with its buttons.
-        </p>
-      {/snippet}
-
-      <QBtnGroup expressive role="group" aria-label="Message actions">
-        <QBtn label="Send" icon="send" filled onclick={() => (action = "Message sent")} />
-        <QBtn label="Save draft" tonal onclick={() => (action = "Draft saved")} />
-        <QIconBtn
-          icon="delete"
-          variant="outlined"
-          aria-label="Delete draft"
-          onclick={() => (action = "Draft deleted")}
-        />
-      </QBtnGroup>
-      <p class="q-mt-md" aria-live="polite">{action}</p>
-    </QDocsSection>
-
-    <QDocsSection title="Connected Selection">
-      {#snippet sectionDescription()}
-        <p>
-          <code>QBtnToggle</code> is connected by default. Expressive connected groups use narrow
-          gaps and changing shapes to show interaction and selection. Options need a unique string
-          or number <code>value</code> and a label, icon, or both.
-        </p>
-        <p>
-          Select one option by default, or use <code>multiple</code> with an array of values. The
-          default expressive variant is <code>tonal</code>; <code>filled</code>,
-          <code>outlined</code>, and <code>elevated</code> are also available.
-        </p>
-      {/snippet}
-
-      <div class="flex column q-gap-lg" style="max-width: 32rem;">
-        <QBtnToggle
-          expressive
-          options={periods}
-          bind:value={period}
-          aria-label="Reporting period"
-        />
-        <QBtnToggle
-          expressive
-          multiple
-          options={weekdays}
-          bind:value={days}
-          aria-label="Repeat on weekdays"
-        />
-      </div>
-    </QDocsSection>
-
-    <QDocsSection title="Required and Optional Selection">
-      {#snippet sectionDescription()}
-        <p>
-          By default, a selected single option cannot be cleared; multiple selection allows an empty
-          array. Set <code>clearable</code> to allow an empty single selection, represented by
-          <code>undefined</code>, or <code>{"clearable={false}"}</code> to keep the final selected
-          option in a multiple group. Initialize <code>value</code> with a valid selection when a choice
-          is required.
-        </p>
-        <p>
-          Set <code>{"connected={false}"}</code> for an expressive standard selection group. This example
-          allows you to select an option and click it again to clear it.
-        </p>
-      {/snippet}
-
-      <QBtnToggle
-        expressive
-        connected={false}
-        clearable
-        options={periods}
-        bind:value={optional}
-        aria-label="Optional period"
-      />
-      <p class="q-mt-md">Selected: {optional ?? "None"}</p>
-    </QDocsSection>
-
-    <QDocsSection title="Expressive Sizes">
-      {#snippet sectionDescription()}
-        Expressive groups support <code>xs</code>, <code>sm</code>, <code>md</code>,
-        <code>lg</code>, and <code>xl</code>, with <code>sm</code> as the default. All members share the
-        group size. Large examples can be scrolled horizontally.
-      {/snippet}
-
-      <div class="flex column q-gap-lg">
-        {#each sizes as size (size)}
-          <div class="group-size-example">
-            <p class="q-mb-sm">{size.toUpperCase()} · {heights[size]}px</p>
-            <div class="group-example-scroll q-pa-sm">
-              <QBtnGroup expressive {size} role="group" aria-label={`${size} actions`}>
-                <QBtn label="Edit" icon="edit" filled />
-                <QBtn label="Share" icon="share" tonal />
-              </QBtnGroup>
-            </div>
+    <div>
+      <QDocsSection title="Single Selection">
+        {#snippet sectionDescription()}
+          <code>QBtnToggle</code> manages selection from an <code>options</code> array. Give options
+          unique string or number values and bind <code>value</code> to change the view. A single choice
+          stays selected by default. Try baseline segmented buttons or expressive groups; large groups
+          scroll inside the example.
+        {/snippet}
+        <div class="group-controls flex items-center q-gap-md q-mb-md">
+          <QSwitch label="Expressive" bind:value={expressive} />
+          <QSwitch label="Connected" bind:value={connected} disabled={!expressive} />
+          <QSwitch label="Fill available width" bind:value={spread} />
+        </div>
+        <div class="group-controls flex items-center q-gap-md q-mb-md">
+          <QSelect
+            label="Group size"
+            bind:value={size}
+            options={SIZES}
+            disabled={!expressive}
+            outlined
+          />
+          <QSelect
+            label="Button shape"
+            bind:value={shape}
+            options={["round", "squared"]}
+            disabled={!expressive}
+            outlined
+          />
+          <QSelect
+            label="Button variant"
+            bind:value={variant}
+            options={VARIANTS}
+            disabled={!expressive}
+            outlined
+          />
+        </div>
+        <div class="group-example surface q-pa-lg">
+          <div class="group-scroll q-pa-sm">
+            <QBtnToggle
+              {expressive}
+              {connected}
+              {spread}
+              {size}
+              {shape}
+              {variant}
+              options={PERIODS}
+              bind:value={period}
+              aria-label="Forecast period"
+            />
           </div>
-        {/each}
-      </div>
-    </QDocsSection>
-
-    <QDocsSection title="Shapes and Width">
-      {#snippet sectionDescription()}
-        <p>
-          Expressive groups support <code>shape="round"</code> (the default) and
-          <code>shape="squared"</code>. Expressive connected groups fill the available width by
-          default. Standard groups and baseline segmented buttons fit their contents. Use
-          <code>spread</code> to override this.
+          <p class="body-medium q-mt-md q-mb-none" role="status">
+            {forecast.label}: {temperature}{unitLabel}
+          </p>
+        </div>
+        <p class="body-medium q-mt-md">
+          Baseline groups are always connected, with a 40px minimum height. Expressive groups
+          support <code>xs</code> through <code>xl</code>, round or squared shapes, and four
+          variants. When omitted, <code>expressive</code> follows <code>Quaff.init()</code>'s
+          setting;
+          <code>spread</code> defaults to true for expressive connected groups and false otherwise.
         </p>
-      {/snippet}
+      </QDocsSection>
 
-      <div class="flex column q-gap-lg" style="max-width: 32rem;">
-        <QBtnToggle
-          expressive
-          shape="round"
-          options={periods}
-          value="day"
-          aria-label="Round group"
+      <QDocsSection title="Multiple and Optional Selection">
+        {#snippet sectionDescription()}
+          Use <code>multiple</code> with an array of values. Multiple groups allow an empty
+          selection by default; <code>{"clearable={false}"}</code> preserves the final selected
+          option. Initialize a required group with a valid value. A clearable single group returns
+          <code>undefined</code> when its selected option is pressed again.
+        {/snippet}
+        <QSwitch
+          label="Allow an empty selection"
+          bind:value={canClearSelection}
+          onchange={keepRequiredMetric}
+          class="q-mb-md"
         />
-        <QBtnToggle
-          expressive
-          shape="squared"
-          spread={false}
-          options={periods}
-          value="week"
-          aria-label="Compact squared group"
-        />
-      </div>
-    </QDocsSection>
-
-    <QDocsSection title="Disabled and Icon-only Options">
-      {#snippet sectionDescription()}
-        <p>
-          Set <code>disabled</code> on a group to disable every button, or on an option to disable
-          that option. Give icon-only options an <code>aria-label</code> describing their action.
+        <div class="group-example surface q-pa-lg">
+          <div class="group-scroll q-pa-sm">
+            <QBtnToggle
+              expressive
+              multiple
+              clearable={canClearSelection}
+              options={METRICS}
+              bind:value={selectedMetrics}
+              aria-label="Visible weather readings"
+            />
+          </div>
+          <p class="body-medium q-mt-md q-mb-none" role="status">
+            Readings: {visibleMetrics.map((metric) => metric.label).join(", ") || "None selected"}
+          </p>
+          <h3 class="title-small q-mt-lg q-mb-sm">Optional weather layer</h3>
+          <div class="group-scroll q-pa-sm">
+            <QBtnToggle
+              expressive
+              connected={false}
+              clearable
+              spread={false}
+              options={LAYERS}
+              bind:value={layer}
+              aria-label="Optional weather layer"
+            />
+          </div>
+          <p class="body-medium q-mt-md q-mb-none" role="status">{layerDetail}</p>
+          <p class="body-small text-on-surface-variant q-mt-md q-mb-none">
+            Rain radar is offline. Its option stays visible and disabled.
+          </p>
+        </div>
+        <p class="body-medium q-mt-md">
+          <code>{"connected={false}"}</code> separates expressive toggle buttons. Icon-only options
+          need an <code>aria-label</code>; set <code>disabled</code> on an individual option when it is
+          unavailable.
         </p>
-      {/snippet}
+      </QDocsSection>
 
-      <div class="flex column q-gap-lg" style="max-width: 32rem;">
-        <QBtnToggle
-          expressive
-          options={alignments}
-          bind:value={alignment}
-          aria-label="Text alignment"
-        />
-        <QBtnToggle
-          expressive
-          options={[
-            { label: "Day", value: "day" },
-            { label: "Week", value: "week", disabled: true },
-            { label: "Month", value: "month" },
-          ]}
-          value="day"
-          aria-label="Available periods"
-        />
-        <QBtnToggle
-          expressive
-          disabled
-          options={periods}
-          value="day"
-          aria-label="Disabled periods"
-        />
-      </div>
-    </QDocsSection>
+      <QDocsSection title="Related Actions">
+        {#snippet sectionDescription()}
+          Put <code>QBtn</code> and <code>QIconBtn</code> directly inside <code>QBtnGroup</code> for independent
+          actions. The group shares its size, shape, expressive mode, and disabled state with them; each
+          button keeps its own variant and action. Expressive action groups use separate buttons by default.
+          Toggle the maintenance lock to disable the whole group.
+        {/snippet}
+        <QSwitch label="Maintenance lock" bind:value={isStationLocked} class="q-mb-md" />
+        <div class="group-example surface q-pa-lg">
+          <div class="group-scroll q-pa-sm">
+            <QBtnGroup
+              expressive
+              size="md"
+              shape="squared"
+              disabled={isStationLocked}
+              aria-label="Observation actions"
+              style="min-width: max-content"
+            >
+              <QBtn
+                label="Log reading"
+                icon="add"
+                variant="filled"
+                disabled={loggedReadingCount === 5}
+                onclick={() => (loggedReadingCount += 1)}
+              />
+              <QIconBtn
+                icon="keep"
+                variant="tonal"
+                aria-label="Pin observation log"
+                bind:selected={isLogPinned}
+              />
+              <QIconBtn
+                icon="delete"
+                variant="outlined"
+                aria-label="Clear observation log"
+                disabled={loggedReadingCount === 0}
+                onclick={() => (loggedReadingCount = 0)}
+              />
+            </QBtnGroup>
+          </div>
+          <p class="body-medium q-mt-md q-mb-none" role="status">
+            {#if isStationLocked}
+              Station locked while the sensors are serviced.
+            {:else}
+              {loggedReadingCount} / 5 readings logged{isLogPinned ? " · Pinned" : ""}.
+            {/if}
+          </p>
+        </div>
+      </QDocsSection>
 
-    <QDocsSection title="Keyboard and Accessibility" noCode>
-      {#snippet sectionDescription()}
-        <p>
-          Each enabled button is a Tab stop. Space and Enter activate the focused button, and
-          selection is announced through <code>aria-pressed</code>. The group container is not a
-          focus stop. Keep button labels stable when selection changes.
-        </p>
-        <p>
-          See the Material 3 guidance for
+      <QDocsSection title="Keyboard and Selection" noCode>
+        {#snippet sectionDescription()}
+          Each enabled button is a Tab stop; Space and Enter activate it. Selection is announced
+          through <code>aria-pressed</code>. Keep labels stable as selections change, and name each
+          group with <code>aria-label</code>. The container itself is not a focus stop. See the
+          Material guidance for
           <a class="q-docs-link" href="https://m3.material.io/components/button-groups/overview"
             >button groups</a
           >
@@ -261,20 +277,53 @@
           <a class="q-docs-link" href="https://m3.material.io/components/segmented-buttons/overview"
             >segmented buttons</a
           >.
-        </p>
-      {/snippet}
-    </QDocsSection>
+        {/snippet}
+      </QDocsSection>
+    </div>
   {/snippet}
 </QDocs>
 
 <style>
-  .group-size-example {
-    min-width: 0;
-    width: 100%;
+  code {
+    overflow-wrap: anywhere;
   }
 
-  .group-example-scroll {
+  .group-controls :global(.q-switch) {
     max-width: 100%;
-    overflow-x: auto;
+  }
+
+  .group-preview,
+  .group-example {
+    width: 100%;
+    max-width: 680px;
+    border-radius: 24px;
+    overflow-wrap: anywhere;
+  }
+
+  .group-preview {
+    max-width: 352px;
+    max-height: 100%;
+    overflow: auto;
+  }
+
+  .group-controls {
+    max-width: 680px;
+  }
+
+  .group-controls :global(.q-select) {
+    flex: 1 1 160px;
+    min-width: 0;
+  }
+
+  .group-scroll {
+    max-width: 100%;
+    overflow: auto;
+  }
+
+  @media (max-width: 599px) {
+    .group-preview,
+    .group-example {
+      padding: 16px;
+    }
   }
 </style>
