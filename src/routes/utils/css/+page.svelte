@@ -23,7 +23,8 @@
           <code>quaffCss()</code> keeps all base and helper CSS plus the complete stylesheets for used
           components and their dependencies. It does not prune individual selectors. This default applies
           in development and production. Whole-package dynamic imports and wildcard re-exports keep all
-          component styles.
+          component styles. Namespace imports keep only the detected components unless their usage hides
+          the component choice, such as looking up a name received from a server.
         </p>
         <p>
           <code>create-quaff</code> includes the plugin when auto-import is enabled. Otherwise, add

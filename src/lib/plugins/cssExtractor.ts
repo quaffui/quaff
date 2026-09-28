@@ -1,5 +1,6 @@
 import { parse, preprocess, type AST } from "svelte/compiler";
 import { COMPONENT_DEFINITIONS } from "../internal/componentRegistry.js";
+import { tryCollectNamespaceComponents } from "./namespaceUsage.js";
 
 export interface SourceUsage {
   candidates: Set<string>;
@@ -12,10 +13,10 @@ export interface SourceUsage {
 const CANDIDATE_PATTERN = /[A-Za-z0-9_-]+/g;
 const DIRECT_COMPONENT_PATTERN = /@quaffui\/quaff\/components\/([^"'`\s?#]+)/g;
 const TOKEN_GAP_PATTERN = String.raw`(?:\s|/\*[\s\S]*?\*/|//[^\r\n]*)*`;
+// Only parse namespaces that could import Quaff; escaped sources need the parser to decode them.
 const NAMESPACE_IMPORT_PATTERN = new RegExp(
-  String.raw`\bimport${TOKEN_GAP_PATTERN}\*${TOKEN_GAP_PATTERN}as${TOKEN_GAP_PATTERN}` +
-    String.raw`([\w$]+)${TOKEN_GAP_PATTERN}from${TOKEN_GAP_PATTERN}["']@quaffui/quaff["']`,
-  "g"
+  String.raw`\*${TOKEN_GAP_PATTERN}as${TOKEN_GAP_PATTERN}[^\s/"';*]+${TOKEN_GAP_PATTERN}` +
+    String.raw`from${TOKEN_GAP_PATTERN}(?:["']@quaffui/quaff["']|["'][^"'\\\r\n]*\\)`
 );
 
 const DYNAMIC_IMPORT_PATTERN = new RegExp(
@@ -34,14 +35,13 @@ export async function analyzeSource(code: string, isRootLayout = false): Promise
     componentPaths.add(match[1]);
   }
 
-  for (const match of code.matchAll(NAMESPACE_IMPORT_PATTERN)) {
-    const computedAccessPattern = new RegExp(
-      String.raw`(?<![\w$])${escapeRegExp(match[1])}${TOKEN_GAP_PATTERN}(?:\?\.${TOKEN_GAP_PATTERN})?\[`
-    );
+  const layout = isRootLayout ? await parseLayout(code) : undefined;
 
-    if (computedAccessPattern.test(code)) {
-      addAllComponents(candidates);
-    }
+  if (
+    NAMESPACE_IMPORT_PATTERN.test(code) &&
+    !(await tryCollectNamespaceComponents(code, candidates, layout))
+  ) {
+    addAllComponents(candidates);
   }
 
   // Whole-package imports and re-exports can hide the selected components from this scan.
@@ -49,7 +49,6 @@ export async function analyzeSource(code: string, isRootLayout = false): Promise
     addAllComponents(candidates);
   }
 
-  const layout = isRootLayout ? await parseLayout(code) : undefined;
   const instanceScript = layout?.instance?.content as
     (AST.Script["content"] & { start: number }) | undefined;
   const imports = new Set(
@@ -84,8 +83,4 @@ function addAllComponents(candidates: Set<string>) {
   for (const name of Object.keys(COMPONENT_DEFINITIONS)) {
     candidates.add(name);
   }
-}
-
-function escapeRegExp(value: string) {
-  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
