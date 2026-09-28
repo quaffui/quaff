@@ -2,7 +2,7 @@ import { access, readdir, readFile, realpath, stat } from "node:fs/promises";
 import { dirname, isAbsolute, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import {
-  COMPONENT_BLOCK_CSS_DEPENDENCIES,
+  CSS_BY_CLASS,
   COMPONENT_CSS,
   COMPONENT_METADATA,
   COMPONENT_NAMES_BY_IMPORT_PATH,
@@ -234,8 +234,8 @@ export class CssPluginState {
       keyframes: true,
       safelist: {
         deep: this.safelist.deep,
-        greedy: [...[...selection.blocks].map(createBemPattern), ...this.safelist.greedy],
-        standard: this.safelist.standard,
+        greedy: this.safelist.greedy,
+        standard: [...[...selection.keep].map(createClassPattern), ...this.safelist.standard],
       },
       variables: false,
     });
@@ -245,7 +245,7 @@ export class CssPluginState {
   private async createSafelistSelection(): Promise<CssSelection> {
     const { standard, deep, greedy } = this.safelist;
     const selection: CssSelection = {
-      blocks: new Set(),
+      keep: new Set(),
       candidates: new Set(standard.filter((value): value is string => typeof value === "string")),
       css: new Set(),
     };
@@ -269,10 +269,10 @@ export class CssPluginState {
         }
 
         selection.css.add(name);
-        const block = getComponentBlock(className);
+        const baseClass = getBaseClass(className);
 
-        if (block) {
-          selection.blocks.add(block);
+        if (baseClass) {
+          selection.keep.add(baseClass);
         }
       }
     }
@@ -320,7 +320,7 @@ export class CssPluginState {
 }
 
 interface CssSelection {
-  blocks: Set<string>;
+  keep: Set<string>;
   candidates: Set<string>;
   css: Set<ComponentCssName>;
 }
@@ -331,7 +331,7 @@ function createCssSelection(
   safelisted: CssSelection
 ): CssSelection {
   const selection: CssSelection = {
-    blocks: new Set(safelisted.blocks),
+    keep: new Set(safelisted.keep),
     candidates: new Set(safelisted.candidates),
     css: new Set(safelisted.css),
   };
@@ -391,8 +391,7 @@ function getImportedComponents(importPath: string) {
 function addComponent(selection: CssSelection, component: ComponentName) {
   const metadata = COMPONENT_METADATA[component];
 
-  addAll(selection.blocks, metadata.blocks);
-  addAll(selection.candidates, metadata.helpers);
+  addAll(selection.keep, metadata.keep);
   addAll(selection.css, metadata.css);
 }
 
@@ -489,24 +488,24 @@ function isSourceFile(file: string) {
   return SOURCE_FILE_PATTERN.test(file) && !DECLARATION_FILE_PATTERN.test(file);
 }
 
-function createBemPattern(block: string) {
-  return new RegExp(`^${block}(?:$|--|__)`);
+function createClassPattern(className: string) {
+  return new RegExp(`^${className}(?:$|--|__)`);
 }
 
 function addCandidateComponentCss(selection: CssSelection) {
   for (const candidate of selection.candidates) {
-    const block = getComponentBlock(candidate);
+    const baseClass = getBaseClass(candidate);
 
-    if (!block || !Object.hasOwn(COMPONENT_BLOCK_CSS_DEPENDENCIES, block)) {
+    if (!baseClass || !Object.hasOwn(CSS_BY_CLASS, baseClass)) {
       continue;
     }
 
-    selection.blocks.add(block);
-    addAll(selection.css, COMPONENT_BLOCK_CSS_DEPENDENCIES[block]);
+    selection.keep.add(baseClass);
+    addAll(selection.css, CSS_BY_CLASS[baseClass]);
   }
 }
 
-function getComponentBlock(candidate: string) {
+function getBaseClass(candidate: string) {
   return candidate.startsWith("q-") ? candidate.split(/--|__/, 1)[0] : undefined;
 }
 
