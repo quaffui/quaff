@@ -1,4 +1,8 @@
-// Order determines the CSS cascade. Blocks are explicit because component names do not always match.
+// Order determines the CSS cascade. Each group names its stylesheet and public components.
+// component("q-btn", { uses: ["QIcon"], keep: ["q-ripple"] }) means:
+// - q-btn identifies this component's CSS, including q-btn__icon and q-btn--filled.
+// - uses adds the styles needed by other components rendered internally.
+// - keep preserves additional classes and their __element/--modifier variants.
 const COMPONENT_REGISTRY = {
   avatar: group("components/avatar", { QAvatar: component("q-avatar") }),
   badge: group("components/badge", { QBadge: component("q-badge") }),
@@ -8,29 +12,29 @@ const COMPONENT_REGISTRY = {
   breadcrumbs: group("components/breadcrumbs", {
     QBreadcrumbs: component("q-breadcrumbs"),
     QBreadcrumbsEl: component("q-breadcrumbs", {
-      helpers: ["q-px-none", "q-px-sm", "q-px-md", "q-px-lg"],
-      renders: ["QIcon"],
+      keep: ["q-px-none", "q-px-sm", "q-px-md", "q-px-lg"],
+      uses: ["QIcon"],
     }),
   }),
   button: group("components/button", {
     QBtn: component("q-btn", {
-      renders: ["QCircularProgress", "QIcon"],
-      selectorBlocks: ["q-ripple"],
+      uses: ["QCircularProgress", "QIcon"],
+      keep: ["q-ripple"],
     }),
-    QIconBtn: component("q-icon-btn", { renders: ["QBtn"] }),
+    QIconBtn: component("q-icon-btn", { uses: ["QBtn"] }),
   }),
   "button-group": group("components/button-group", {
     QBtnGroup: component("q-btn-group"),
-    QBtnToggle: component("q-btn-group", { renders: ["QBtnGroup", "QBtn"] }),
+    QBtnToggle: component("q-btn-group", { uses: ["QBtnGroup", "QBtn"] }),
   }),
   "split-button": group("components/split-button", {
-    QSplitBtn: component("q-split-btn", { renders: ["QBtn", "QIconBtn", "QIcon", "QMenu"] }),
+    QSplitBtn: component("q-split-btn", { uses: ["QBtn", "QIconBtn", "QIcon", "QMenu"] }),
   }),
   card: group("components/card", {
     QCard: component("q-card"),
-    QCardSection: component("q-card", { helpers: ["row"] }),
+    QCardSection: component("q-card", { keep: ["row"] }),
     QCardActions: component("q-card", {
-      helpers: [
+      keep: [
         "flex",
         "items-start",
         "items-center",
@@ -45,17 +49,17 @@ const COMPONENT_REGISTRY = {
     }),
   }),
   carousel: group("components/carousel", {
-    QCarousel: component("q-carousel", { renders: ["QIconBtn"] }),
+    QCarousel: component("q-carousel", { uses: ["QIconBtn"] }),
   }),
   checkbox: group("components/checkbox", {
-    QCheckbox: component("q-checkbox", { selectorBlocks: ["q-ripple"] }),
+    QCheckbox: component("q-checkbox", { keep: ["q-ripple"] }),
   }),
   chip: group("components/chip", {
-    QChip: component("q-chip", { renders: ["QAvatar", "QIcon"], selectorBlocks: ["q-ripple"] }),
+    QChip: component("q-chip", { uses: ["QAvatar", "QIcon"], keep: ["q-ripple"] }),
   }),
   codeBlock: group(undefined, {
     QCodeBlock: component([], {
-      helpers: [
+      keep: [
         "q-pb-sm",
         "q-ma-none",
         "items-center",
@@ -68,25 +72,25 @@ const COMPONENT_REGISTRY = {
         "border-green",
         "text-green",
       ],
-      renders: ["QBtn"],
+      uses: ["QBtn"],
     }),
   }),
   date: group("components/date", {
     QDate: component("q-date", {
-      renders: ["QDialog", "QMenu", "QBtn", "QIconBtn", "QIcon", "QInput"],
+      uses: ["QDialog", "QMenu", "QBtn", "QIconBtn", "QIcon", "QInput"],
     }),
   }),
   dialog: group("components/dialog", { QDialog: component("q-dialog") }),
   drawer: group("components/drawer", { QDrawer: component("q-drawer") }),
   "expansion-item": group("components/expansion-item", {
     QExpansionItem: component("q-expansion-item", {
-      renders: ["QIconBtn", "QIcon", "QItem", "QItemSection", "QSeparator"],
+      uses: ["QIconBtn", "QIcon", "QItem", "QItemSection", "QSeparator"],
     }),
   }),
   fab: group("components/fab", {
-    QFab: component("q-fab", { renders: ["QBtn", "QTooltip"] }),
-    QExtendedFab: component(["q-fab", "q-extended-fab"], { renders: ["QBtn", "QTooltip"] }),
-    QFabMenu: component("q-fab", { renders: ["QBtn", "QTooltip", "QMenu"] }),
+    QFab: component("q-fab", { uses: ["QBtn", "QTooltip"] }),
+    QExtendedFab: component(["q-fab", "q-extended-fab"], { uses: ["QBtn", "QTooltip"] }),
+    QFabMenu: component("q-fab", { uses: ["QBtn", "QTooltip", "QMenu"] }),
   }),
   field: group("shared/field", {}),
   footer: group("components/footer", { QFooter: component("q-footer") }),
@@ -98,9 +102,9 @@ const COMPONENT_REGISTRY = {
   input: group(undefined, { QInput: component("q-field", { css: ["shared/field"] }) }),
   layout: group("components/layout", { QLayout: component("q-layout") }),
   list: group("components/list", {
-    QList: component("q-list", { helpers: ["q-py-sm"], css: ["components/separator"] }),
-    QItem: component("q-item", { renders: ["QSeparator"], selectorBlocks: ["q-ripple"] }),
-    QItemSection: component("q-item", { selectorBlocks: ["q-ripple"] }),
+    QList: component("q-list", { keep: ["q-py-sm"], css: ["components/separator"] }),
+    QItem: component("q-item", { uses: ["QSeparator"], keep: ["q-ripple"] }),
+    QItemSection: component("q-item", { keep: ["q-ripple"] }),
   }),
   "loading-indicator": group("components/loading-indicator", {
     QLoadingIndicator: component("q-loading-indicator"),
@@ -109,61 +113,61 @@ const COMPONENT_REGISTRY = {
   meta: group(undefined, { QMetaHead: component([]) }),
   navbar: group("components/navbar", { QNavbar: component("q-navbar") }),
   "nav-item": group("components/nav-item", {
-    QNavGroup: component([], { renders: ["QExpansionItem", "QList"] }),
+    QNavGroup: component([], { uses: ["QExpansionItem", "QList"] }),
     QNavItem: component("q-nav-item", {
-      renders: ["QIcon", "QBadge"],
-      selectorBlocks: ["q-ripple"],
+      uses: ["QIcon", "QBadge"],
+      keep: ["q-ripple"],
     }),
   }),
   progress: group("components/progress", {
     QCircularProgress: component("q-circular-progress", {
-      helpers: ["absolute-full", "flex", "flex-center"],
+      keep: ["absolute-full", "flex", "flex-center"],
     }),
     QLinearProgress: component("q-linear-progress"),
   }),
   radio: group("components/radio", {
-    QRadio: component("q-radio", { selectorBlocks: ["q-ripple"] }),
+    QRadio: component("q-radio", { keep: ["q-ripple"] }),
   }),
   railbar: group("components/railbar", { QRailbar: component("q-railbar") }),
   search: group("components/search", {
     QSearch: component("q-search", {
-      renders: ["QDialog", "QIcon", "QIconBtn", "QLinearProgress"],
+      uses: ["QDialog", "QIcon", "QIconBtn", "QLinearProgress"],
       css: ["shared/field"],
     }),
   }),
   select: group("components/select", {
     QSelect: component("q-select", {
-      renders: ["QIcon", "QItem", "QItemSection", "QList", "QMenu"],
+      uses: ["QIcon", "QItem", "QItemSection", "QList", "QMenu"],
       css: ["shared/field"],
     }),
   }),
   "side-sheet": group("components/side-sheet", {
-    QSideSheet: component("q-side-sheet", { renders: ["QIconBtn"] }),
+    QSideSheet: component("q-side-sheet", { uses: ["QIconBtn"] }),
   }),
   slider: group("components/slider", {
-    QRange: component("q-slider", { renders: ["QIcon"] }),
-    QSlider: component("q-slider", { renders: ["QIcon"] }),
+    QRange: component("q-slider", { uses: ["QIcon"] }),
+    QSlider: component("q-slider", { uses: ["QIcon"] }),
   }),
   snackbar: group("components/snackbar", {
     QSnackbar: component(["q-snackbar", "q-snackbar-positioner"], {
-      renders: ["QBtn", "QIconBtn"],
+      uses: ["QBtn", "QIconBtn"],
     }),
   }),
   separator: group("components/separator", {
-    QSeparator: component("q-separator", { helpers: ["q-px-sm", "q-py-sm"] }),
+    QSeparator: component("q-separator", { keep: ["q-px-sm", "q-py-sm"] }),
   }),
   switch: group("components/switch", {
-    QSwitch: component("q-switch", { renders: ["QIcon"], selectorBlocks: ["q-ripple"] }),
+    QSwitch: component("q-switch", { uses: ["QIcon"], keep: ["q-ripple"] }),
   }),
   table: group("components/table", {
-    QTable: component("q-table", { renders: ["QBtn", "QIcon", "QSelect"] }),
+    QTable: component("q-table", { uses: ["QBtn", "QIcon", "QSelect"] }),
   }),
   tabs: group("components/tabs", {
     QTabs: component("q-tabs"),
-    QTab: component("q-tab", { renders: ["QIcon"], selectorBlocks: ["q-ripple"] }),
+    QTab: component("q-tab", { uses: ["QIcon"], keep: ["q-ripple"] }),
   }),
   time: group("components/time", {
-    QTime: component("q-time", { renders: ["QIconBtn", "QDialog", "QInput", "QMenu", "QBtn"] }),
+    QTime: component("q-time", { uses: ["QIconBtn", "QDialog", "QInput", "QMenu", "QBtn"] }),
   }),
   toolbar: group("components/toolbar", { QToolbar: component("q-toolbar") }),
   tooltip: group("components/tooltip", { QTooltip: component("q-tooltip") }),
@@ -177,21 +181,19 @@ export type ComponentCssName = NonNullable<Registry[keyof Registry]["css"]>;
 
 interface ComponentOptions<Css extends string = string> {
   css?: readonly Css[];
-  helpers?: readonly string[];
-  renders?: readonly string[];
-  selectorBlocks?: readonly string[];
+  keep?: readonly string[];
+  uses?: readonly string[];
 }
 
 interface ComponentDefinition extends ComponentOptions<ComponentCssName> {
   path: string;
-  blocks: readonly string[];
+  classes: readonly string[];
   css: readonly ComponentCssName[];
 }
 
 interface ResolvedComponentMetadata {
-  blocks: string[];
   css: ComponentCssName[];
-  helpers: string[];
+  keep: string[];
 }
 
 const COMPONENT_GROUPS: Record<
@@ -236,15 +238,16 @@ export const COMPONENT_METADATA = Object.fromEntries(
   ])
 ) as Record<ComponentName, ResolvedComponentMetadata>;
 
-export const COMPONENT_BLOCK_CSS_DEPENDENCIES: Record<string, ComponentCssName[]> = {};
+export const CSS_BY_CLASS: Record<string, ComponentCssName[]> = {};
 
 for (const definition of Object.values(COMPONENT_DEFINITIONS)) {
-  for (const block of definition.blocks) {
-    addUnique((COMPONENT_BLOCK_CSS_DEPENDENCIES[block] ??= []), definition.css);
+  for (const className of definition.classes) {
+    addUnique((CSS_BY_CLASS[className] ??= []), definition.css);
   }
 
-  for (const block of definition.selectorBlocks ?? []) {
-    COMPONENT_BLOCK_CSS_DEPENDENCIES[block] ??= [];
+  // Extra classes must survive pruning, but do not identify this component's stylesheet.
+  for (const className of definition.keep ?? []) {
+    CSS_BY_CLASS[className] ??= [];
   }
 }
 
@@ -257,17 +260,17 @@ function group<Css extends string | undefined, Components>(css: Css, components:
 }
 
 function component<Css extends string = never>(
-  blocks: string | readonly string[],
+  classes: string | readonly string[],
   options: ComponentOptions<Css> = {}
 ) {
-  return { blocks: typeof blocks === "string" ? [blocks] : blocks, ...options };
+  return { classes: typeof classes === "string" ? [classes] : classes, ...options };
 }
 
 function collectComponentMetadata(
   name: ComponentName,
   seen = new Set<ComponentName>()
 ): ResolvedComponentMetadata {
-  const metadata: ResolvedComponentMetadata = { blocks: [], css: [], helpers: [] };
+  const metadata: ResolvedComponentMetadata = { css: [], keep: [] };
 
   if (seen.has(name)) {
     return metadata;
@@ -277,20 +280,18 @@ function collectComponentMetadata(
 
   const definition = COMPONENT_DEFINITIONS[name];
 
-  metadata.blocks.push(...definition.blocks, ...(definition.selectorBlocks ?? []));
   metadata.css.push(...definition.css);
-  metadata.helpers.push(...(definition.helpers ?? []));
+  metadata.keep.push(...definition.classes, ...(definition.keep ?? []));
 
-  for (const dependency of definition.renders ?? []) {
+  for (const dependency of definition.uses ?? []) {
     if (!(dependency in COMPONENT_DEFINITIONS)) {
-      throw new Error(`${name} renders unknown component ${dependency}`);
+      throw new Error(`${name} uses unknown component ${dependency}`);
     }
 
     const dependencyMetadata = collectComponentMetadata(dependency as ComponentName, seen);
 
-    addUnique(metadata.blocks, dependencyMetadata.blocks);
     addUnique(metadata.css, dependencyMetadata.css);
-    addUnique(metadata.helpers, dependencyMetadata.helpers);
+    addUnique(metadata.keep, dependencyMetadata.keep);
   }
 
   return metadata;
