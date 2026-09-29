@@ -433,7 +433,7 @@
   {/snippet}
 
   {#snippet drawerRight()}
-    <QDrawer side="right" bind:this={drawerRightEl} overlay bordered>
+    <QDrawer side="right" bind:this={drawerRightEl} overlay bordered aria-label="Color theme">
       <div class="q-pa-md">
         <h6 class="q-mb-lg">Want a different color theme?</h6>
         <div class="flex q-gap-md">
@@ -511,6 +511,7 @@
     behavior={isMobile ? "mobile" : "desktop"}
     noSwipe={!drawerContent.length}
     bind:this={drawerLeftEl}
+    aria-label="Section navigation"
     width={220}
     bordered
   >

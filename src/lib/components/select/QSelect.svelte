@@ -5,6 +5,7 @@ QSelect is a form component that allows users to choose from multiple options in
 
 <script lang="ts">
   import { onDestroy, tick } from "svelte";
+  import QFieldMessage from "$internal/QFieldMessage.svelte";
   import { useI18n } from "$internal/i18n.svelte";
   import { isActivationKey, type QEvent } from "$utils";
   import QIcon from "$components/icon/QIcon.svelte";
@@ -54,6 +55,8 @@ QSelect is a form component that allows users to choose from multiple options in
     after,
     value = $bindable(),
     "aria-label": ariaLabel,
+    "aria-describedby": ariaDescribedBy,
+    "aria-invalid": ariaInvalid,
     onblur,
     onfocus,
     onkeydown,
@@ -63,6 +66,7 @@ QSelect is a form component that allows users to choose from multiple options in
 
   // #region:    --- Non-reactive variables
   const id = $props.id();
+  const messageId = `q-select-${id}-message`;
   const inputId = `q-select__input-${id}`;
   const listboxId = `q-select__listbox-${id}`;
   // #endregion: --- Non-reactive variables
@@ -83,6 +87,10 @@ QSelect is a form component that allows users to choose from multiple options in
   });
 
   // #region:    --- Derived values
+  const supportingText = $derived((error && errorMessage) || hint);
+  const describedBy = $derived(
+    [ariaDescribedBy, supportingText ? messageId : undefined].filter(Boolean).join(" ") || undefined
+  );
   const noOptionText = $derived(providedNoOptionText ?? i18n.labels.noOptionText);
   const currentDisplayValue = $derived(getDisplayValue(value, options, multiple, displayValue));
 
@@ -382,6 +390,8 @@ QSelect is a form component that allows users to choose from multiple options in
         aria-expanded={isMenuOpen}
         aria-haspopup="listbox"
         aria-label={ariaLabel ?? label}
+        aria-describedby={describedBy}
+        aria-invalid={ariaInvalid ?? (error || undefined)}
         aria-activedescendant={activeOptionId}
         aria-readonly={useInput ? undefined : "true"}
         onfocus={handleFocus}
@@ -440,11 +450,7 @@ QSelect is a form component that allows users to choose from multiple options in
       </QList>
     </QMenu>
 
-    {#if error && errorMessage}
-      <div class="q-field__error">{errorMessage}</div>
-    {:else if hint}
-      <div class="q-field__hint">{hint}</div>
-    {/if}
+    <QFieldMessage id={messageId} message={supportingText} error={error && !!errorMessage} />
   </div>
 
   {#if after}
