@@ -52,6 +52,41 @@
   ] as const;
 
   const SAUNA_SESSIONS = ["17:30", "18:30"] as const;
+  const HARBOR_STOPS = [
+    {
+      title: "The old port",
+      time: "09:00",
+      icon: "sailing",
+      color: "primary-container",
+      detail: "Stone quays, tall ships, and a city built around the water.",
+      description:
+        "Start by the harbor clock. Follow the quay past the old warehouses, where painted numbers still mark each loading bay. The small exhibition inside the customs house tells the story of the ships that once docked here.",
+    },
+    {
+      title: "Market hall",
+      time: "09:45",
+      icon: "storefront",
+      color: "tertiary-container",
+      detail: "An iron-and-glass landmark, still full of local flavor.",
+      description:
+        "Cross the footbridge to the covered market. Its original iron roof shelters bakers, flower stalls, and a counter serving coffee from early morning. Take the stairs to the gallery for a closer look at the building's tiled signs.",
+    },
+    {
+      title: "Ferry landing",
+      time: "10:45",
+      icon: "directions_boat",
+      color: "secondary-container",
+      detail: "A new view of the waterfront, just across the river.",
+      description:
+        "Continue along the promenade to the public ferry. Boats leave every fifteen minutes, and a regular city ticket covers the crossing. From the opposite bank, you can see the whole route: the warehouses, the market roof, and the harbor clock.",
+    },
+  ] as const;
+
+  let hasLargeAppBar = $state(false);
+  let hasCenteredAppBar = $state(false);
+  let hasAppBarSubtitle = $state(true);
+  let hasSavedWeekend = $state(false);
+  let hasSavedWalk = $state(false);
 
   let reservedSession = $state<string>();
   let hasClassReminders = $state(false);
@@ -149,6 +184,62 @@
         </div>
       </QDocsSection>
 
+      <QDocsSection title="Flexible App Bars">
+        {#snippet sectionDescription()}
+          Use <code>variant="medium"</code> or <code>variant="large"</code> for a larger title. Add
+          <code>subtitle</code>
+          and <code>align="center"</code> to <code>QHeaderTitle</code>.
+        {/snippet}
+
+        <div class="example-controls">
+          <QSwitch label="Large" bind:value={hasLargeAppBar} />
+          <QSwitch label="Centered" bind:value={hasCenteredAppBar} />
+          <QSwitch label="Subtitle" bind:value={hasAppBarSubtitle} />
+        </div>
+        <div class="header-frame city-preview">
+          <QHeader variant={hasLargeAppBar ? "large" : "medium"}>
+            <QIcon name="apartment" class="text-primary q-ml-sm" aria-hidden="true" />
+            <QHeaderTitle
+              align={hasCenteredAppBar ? "center" : "start"}
+              subtitle={hasAppBarSubtitle ? "A weekend behind closed doors" : undefined}
+              >Open House</QHeaderTitle
+            >
+            <QIconBtn
+              icon="bookmark"
+              variant="flat"
+              aria-label="Save Open House weekend"
+              bind:selected={hasSavedWeekend}
+            />
+          </QHeader>
+          <div class="city-content">
+            <div class="city-art" aria-hidden="true">
+              <span class="city-sun tertiary-container"></span>
+              <span class="city-building secondary-container"
+                ><QIcon name="window" size="40px" /></span
+              >
+              <span class="city-building primary-container"
+                ><QIcon name="door_front" size="48px" /></span
+              >
+              <span class="city-building tertiary-container"
+                ><QIcon name="window" size="40px" /></span
+              >
+            </div>
+            <div class="city-caption">
+              <div>
+                <div class="label-medium text-on-surface-variant">18–19 MAY · FREE ENTRY</div>
+                <h6 class="title-large q-mt-sm q-mb-xs">See the city from the inside.</h6>
+                <p class="body-medium text-on-surface-variant q-ma-none">
+                  Studios, courtyards, and the stories behind them.
+                </p>
+              </div>
+              <span class="label-large text-primary" aria-live="polite">
+                {hasSavedWeekend ? "Saved to your plans" : "32 places to explore"}
+              </span>
+            </div>
+          </div>
+        </div>
+      </QDocsSection>
+
       <QDocsSection title="Custom Height">
         {#snippet sectionDescription()}
           The default height is 64px. Set <code>height</code> to a number of pixels for more room;
@@ -188,6 +279,56 @@
                 {reservedSession
                   ? `${reservedSession} reserved. Bring a towel.`
                   : "Choose your time. Towels are available to hire."}
+              </p>
+            </div>
+          {/snippet}
+        </QLayout>
+      </QDocsSection>
+
+      <QDocsSection title="Collapse on Scroll">
+        {#snippet sectionDescription()}
+          Set <code>collapse</code> inside <code>QLayout</code>. Scroll inside the guide: the title
+          and subtitle become compact and stay small until you return to the top.
+        {/snippet}
+
+        <QLayout class="header-frame harbor-layout">
+          {#snippet header()}
+            <QHeader variant="large" collapse>
+              <QIcon name="explore" class="text-primary q-ml-sm" aria-hidden="true" />
+              <QHeaderTitle subtitle="3 stops · 2.4 km">Harbor walk</QHeaderTitle>
+              <QIconBtn
+                icon="bookmark"
+                variant="flat"
+                aria-label="Save harbor walk"
+                bind:selected={hasSavedWalk}
+              />
+            </QHeader>
+          {/snippet}
+          {#snippet content()}
+            <div class="harbor-content">
+              <div class="walk-intro body-medium text-on-surface-variant">
+                <QIcon name="directions_walk" aria-hidden="true" />
+                <span>Two hours along the waterfront. Start at the harbor clock.</span>
+              </div>
+              {#each HARBOR_STOPS as stop, i (stop.title)}
+                <article class="harbor-stop">
+                  <div class="stop-marker" aria-hidden="true">
+                    <span class={stop.color}><QIcon name={stop.icon} size="28px" /></span>
+                  </div>
+                  <div>
+                    <div class="label-medium text-on-surface-variant">
+                      STOP {i + 1} · {stop.time}
+                    </div>
+                    <h6 class="title-large q-mt-sm q-mb-xs">{stop.title}</h6>
+                    <p class="body-medium text-primary q-mt-none q-mb-md">{stop.detail}</p>
+                    <p class="body-large q-ma-none">{stop.description}</p>
+                  </div>
+                </article>
+              {/each}
+              <p class="walk-saved label-large text-primary" aria-live="polite">
+                {hasSavedWalk
+                  ? "Saved to your plans. See you by the water."
+                  : "Save this walk for your next free morning."}
               </p>
             </div>
           {/snippet}
@@ -374,6 +515,113 @@
     border-top: 1px solid var(--outline-variant);
     margin-top: 32px;
     padding-top: 32px;
+  }
+
+  .city-content {
+    padding: 16px 24px 24px;
+  }
+
+  .city-art {
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 12px;
+    height: 168px;
+    padding-inline: 16px;
+    overflow: hidden;
+    border-radius: 16px;
+    background: var(--surface-container);
+  }
+
+  .city-sun {
+    position: absolute;
+    width: 56px;
+    height: 56px;
+    inset-block-start: 16px;
+    inset-inline-end: 12%;
+    border-radius: 50%;
+  }
+
+  .city-building {
+    position: relative;
+    display: grid;
+    place-items: center;
+    flex: 1;
+    max-width: 136px;
+    height: 96px;
+    border-radius: 48px 48px 0 0;
+  }
+
+  .city-building:nth-of-type(3) {
+    height: 144px;
+    border-radius: 8px 8px 0 0;
+  }
+
+  .city-building:nth-of-type(4) {
+    height: 112px;
+    border-radius: 32px 8px 0 0;
+  }
+
+  .city-caption {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 16px;
+    padding-top: 24px;
+  }
+
+  :global(.harbor-layout) {
+    height: 440px;
+  }
+
+  .harbor-content {
+    padding: 20px 24px 24px;
+  }
+
+  .walk-intro {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+
+  .harbor-stop {
+    display: grid;
+    grid-template-columns: 48px minmax(0, 1fr);
+    gap: 16px;
+    padding-bottom: 32px;
+  }
+
+  .stop-marker {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    border-radius: 0;
+  }
+
+  .harbor-stop:not(:last-of-type) .stop-marker::after {
+    position: absolute;
+    content: "";
+    width: 2px;
+    inset-block: 56px -24px;
+    background: var(--outline-variant);
+  }
+
+  .stop-marker span {
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 16px;
+  }
+
+  .walk-saved {
+    margin: 0;
+    padding-top: 20px;
+    border-top: 1px solid var(--outline-variant);
+    border-radius: 0;
   }
 
   .search-results {
