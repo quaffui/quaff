@@ -76,6 +76,7 @@ QSelect is a form component that allows users to choose from multiple options in
 
   let menuTarget = $state<HTMLLabelElement>();
   let isMenuOpen = $state(false);
+  let snippetPrependWidth = $state(0);
   let focusedOptionIndex = $state(-1);
   let searchValue = $state("");
   let isSearching = $state(false);
@@ -358,7 +359,7 @@ QSelect is a form component that allows users to choose from multiple options in
   });
 </script>
 
-<div {...props} class="q-field" data-quaff>
+<div {...props} class="q-field" style:--snippet-prepend-width="{snippetPrependWidth}px" data-quaff>
   {#if before}
     <div class="q-field__snippet-before">
       {@render before()}
@@ -375,7 +376,11 @@ QSelect is a form component that allows users to choose from multiple options in
     >
       {#if prepend}
         <!-- svelte-ignore a11y_no_static_element_interactions (Only background clicks activate the associated combobox.) -->
-        <div class="q-field__snippet-prepend" onmousedown={handleBackgroundMousedown}>
+        <div
+          class="q-field__snippet-prepend"
+          bind:clientWidth={snippetPrependWidth}
+          onmousedown={handleBackgroundMousedown}
+        >
           {@render prepend()}
         </div>
       {/if}

@@ -1,6 +1,12 @@
 @use "sass:math";
 @use "../mixins";
 
+@property --q-field-label-resting {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 1;
+}
+
 .q-field {
   $transition-duration: 0.2s;
   $wrapper-height: 56px;
@@ -120,14 +126,24 @@
     min-width: 0;
     color: var(--decorator-color);
     pointer-events: none;
-    transition: color $transition-duration ease 0s;
+    line-height: var(--typescale-body-large-line-height);
+    transition:
+      color $transition-duration ease 0s,
+      line-height $transition-duration ease 0s,
+      --q-field-label-resting $transition-duration ease 0s,
+      margin-inline-start $transition-duration ease 0s,
+      margin-inline-end $transition-duration ease 0s;
+  }
+
+  &--active &__label {
+    line-height: var(--typescale-body-small-line-height);
   }
 
   &__label-text {
-    // Changing the reserved line box immediately avoids a height pulse on focus.
     transition:
       transform $transition-duration ease 0s,
       font-size $transition-duration ease 0s,
+      line-height $transition-duration ease 0s,
       letter-spacing $transition-duration ease 0s;
   }
 
@@ -211,13 +227,11 @@
     padding-block-end: 8px;
   }
 
-  &--rounded &__input,
-  &--rounded:not(&--active) &__label {
+  &--rounded &__input {
     padding: 15px ($rounded-content-space - 1px);
   }
 
-  &--outlined &__input,
-  &--outlined:not(&--active) &__label {
+  &--outlined &__input {
     padding: 15px ($content-space - 1px);
   }
 
@@ -231,13 +245,11 @@
     padding-block-end: 2px;
   }
 
-  &--dense#{&}--outlined &__input,
-  &--dense#{&}--outlined:not(&--active) &__label {
+  &--dense#{&}--outlined &__input {
     padding-block: 7px;
   }
 
-  &--dense#{&}--rounded &__input,
-  &--dense#{&}--rounded:not(&--active) &__label {
+  &--dense#{&}--rounded &__input {
     padding: 7px ($rounded-content-space - 1px);
   }
 
@@ -257,8 +269,7 @@
     }
   }
 
-  &--label &__input,
-  &--label &__label {
+  &--label &__input {
     grid-area: 2 / 2;
   }
 
@@ -267,8 +278,13 @@
   }
 
   &--label:not(&--has-border) &__label {
-    grid-area: 1 / 2 / 3 / 3;
-    padding-inline: $content-space;
+    grid-area: 1 / 2;
+    padding: 8px $content-space 0;
+    margin-block-end: calc(var(--typescale-body-small-line-height) - 1lh);
+  }
+
+  &--label:not(&--active):not(&--has-border) &__label-text {
+    transform: translateY(calc(var(--typescale-body-small-line-height) / 2));
   }
 
   &--label:not(&--has-border) &__snippet-prepend {
@@ -287,27 +303,77 @@
     grid-area: 2 / 3;
   }
 
-  &--label#{&}--active:not(&--has-border) &__label {
-    grid-area: 1 / 2;
-    padding-block-start: 8px;
+  &--label#{&}--has-border:not(&--active) {
+    .q-field__input,
+    .q-field__snippet-prepend,
+    .q-field__snippet-append {
+      grid-row: 1 / 3;
+    }
   }
 
   &--label#{&}--dense:not(&--has-border) &__wrapper::before {
     height: calc(var(--typescale-body-small-line-height) - 2px);
   }
 
-  &--label#{&}--dense#{&}--active:not(&--has-border) &__label {
+  &--label#{&}--dense:not(&--has-border) &__label {
     padding-block-start: 4px;
-    margin-block-end: -6px;
+    margin-block-end: calc(var(--typescale-body-small-line-height) - 1lh - 6px);
   }
 
-  // The first label line straddles the border; wrapped lines grow the field.
+  &--label#{&}--dense:not(&--active):not(&--has-border) &__label-text {
+    transform: translateY(calc(var(--typescale-body-small-line-height) / 2 - 4px));
+  }
+
+  // A stable grid row lets labels move with CSS while wrapped lines reserve space.
+  &--label#{&}--has-border &__label {
+    grid-area: 1 / 1 / 2 / 3;
+    margin-block: -0.5lh;
+    margin-inline: $content-space - 1px;
+  }
+
+  &--label#{&}--rounded &__label {
+    margin-inline: $rounded-content-space - 1px;
+  }
+
+  &--label#{&}--has-border#{&}--snippet-append:not(&--active) &__label {
+    margin-inline-end: $content-space;
+  }
+
+  &--label#{&}--has-border#{&}--snippet-prepend &__label {
+    grid-column-start: 2;
+    margin-inline-start: $content-space;
+  }
+
+  // The grid reserves prepend space before hydration. Measurements only enable motion.
+  @container not style(--snippet-prepend-width: 0px) {
+    &--label#{&}--has-border#{&}--snippet-prepend &__label {
+      padding-inline-start: calc(var(--snippet-prepend-width) * var(--q-field-label-resting));
+      grid-column-start: 1;
+    }
+  }
+
+  &--label#{&}--has-border:not(&--active) &__label {
+    margin-block-end: calc(0.5lh + 30px);
+  }
+
+  &--label#{&}--has-border#{&}--dense:not(&--active) &__label {
+    margin-block-end: calc(0.5lh + 14px);
+  }
+
+  &--label#{&}--has-border:not(&--active) &__label-text {
+    transform: translateY(calc(var(--typescale-body-large-line-height) / 2 + 15px));
+  }
+
+  &--label#{&}--has-border#{&}--dense:not(&--active) &__label-text {
+    transform: translateY(calc(var(--typescale-body-large-line-height) / 2 + 7px));
+  }
+
   &--label#{&}--active#{&}--has-border &__label {
-    grid-area: 1 / 1 / 2 / 4;
-    margin-block: calc(var(--typescale-body-small-line-height) / -2);
+    --q-field-label-resting: 0;
+    grid-column: 1 / 4;
 
     &::after {
-      margin-block-start: calc(var(--typescale-body-small-line-height) / 2);
+      margin-block-start: 0.5lh;
     }
   }
 
@@ -328,13 +394,11 @@
       (math.div($wrapper-height-dense, 2) - 1px);
   }
 
-  &--snippet-prepend &__input,
-  &--snippet-prepend:not(&--active) &__label {
+  &--snippet-prepend &__input {
     padding-inline-start: $content-space !important;
   }
 
-  &--snippet-append &__input,
-  &--snippet-append:not(&--active) &__label {
+  &--snippet-append &__input {
     padding-inline-end: $content-space !important;
   }
 
@@ -393,6 +457,13 @@
 
   &__snippet-after {
     padding-inline-start: 12px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &--label &__label,
+    &__label-text {
+      transition: none;
+    }
   }
 
   &--disabled {
