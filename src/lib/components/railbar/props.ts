@@ -10,20 +10,8 @@ export interface QRailbarProps extends Borderable, HTMLAttributes<HTMLElement> {
    */
   activeColor?: string;
 
-  /** Whether the rail is expanded. Can be bound with `bind:expanded`. */
-  expanded?: boolean;
-
   /**
-   * Expand above the page with a scrim, keeping the collapsed layout space.
-   * Escape or a click on the scrim collapses the rail.
-   */
-  modal?: boolean;
-
-  /** Width of the expanded railbar in pixels. */
-  expandedWidth?: number;
-
-  /**
-   * Width of the collapsed railbar in pixels.
+   * Width of the railbar in pixels.
    */
   width?: number;
 

@@ -112,7 +112,7 @@ const COMPONENT_REGISTRY = {
     QNavGroup: component([], { renders: ["QExpansionItem", "QList"] }),
     QNavItem: component("q-nav-item", {
       renders: ["QIcon", "QBadge"],
-      selectorBlocks: ["q-ripple", "q-railbar"],
+      selectorBlocks: ["q-ripple"],
     }),
   }),
   progress: group("components/progress", {

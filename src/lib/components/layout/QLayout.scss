@@ -55,7 +55,7 @@
     $end-dir: if(sass($side == "left"): "rtl"; else: "ltr");
     $inner-side: if(sass($side == "left"): "right"; else: "left");
 
-    > .q-railbar:not(:modal):is(
+    > .q-railbar:is(
         .q-railbar--#{$side},
         .q-railbar--start:dir(#{$start-dir}),
         .q-railbar--end:dir(#{$end-dir})
@@ -106,11 +106,6 @@
   @media (prefers-reduced-motion: reduce) {
     transition: none;
   }
-}
-
-// Follow measured rail widths directly while they animate; retain drawer transitions otherwise.
-.q-layout:has(> .q-railbar--resizing) > .q-layout__content {
-  transition-property: margin-top, margin-bottom, height;
 }
 
 .q-layout > .q-header ~ .q-layout__content {

@@ -6,7 +6,6 @@ Navigation destinations for drawers, navigation bars, and railbars.
 <script lang="ts">
   import { navigationCtx } from "$internal/navigationContext";
   import { listCtx } from "$components/list/QList.svelte";
-  import { railbarNavigationCtx } from "$components/railbar/QRailbar.svelte";
   import QBadge from "$components/badge/QBadge.svelte";
   import QIconSnippet from "$internal/QIconSnippet.svelte";
   import { ripple } from "$helpers";
@@ -44,9 +43,7 @@ Navigation destinations for drawers, navigation bars, and railbars.
 
   // #region:    --- Non-reactive variables
   const uid = $props.id();
-  const navigation = navigationCtx.get();
-  const isInDrawer = navigation === "drawer";
-  const railbar = railbarNavigationCtx.get();
+  const isInDrawer = navigationCtx.get() === "drawer";
   const list = listCtx.get();
   // #endregion: --- Non-reactive variables
 
@@ -57,8 +54,6 @@ Navigation destinations for drawers, navigation bars, and railbars.
   // #region:    --- Derived values
   const resolvedTabIndex = $derived(disabled ? -1 : (tabindex ?? 0));
   const isDense = $derived(dense ?? list?.dense ?? false);
-  const isExpandedRail = $derived(navigation === "rail" && !!railbar?.expanded);
-  const isHorizontal = $derived(isInDrawer || isExpandedRail);
   const routerInfo = $derived(getRouterInfo({ href, to, replace }));
   const tag = $derived(routerInfo.hasLink ? "a" : "button");
   const isActive = $derived(active ?? !!routerInfo.isActive);
@@ -119,7 +114,6 @@ Navigation destinations for drawers, navigation bars, and railbars.
     bemClasses: {
       active: isActive,
       drawer: isInDrawer,
-      expanded: isExpandedRail,
       dense: isInDrawer && isDense,
       "no-ripple": noRipple,
     },
@@ -160,7 +154,7 @@ Navigation destinations for drawers, navigation bars, and railbars.
       <span class="q-nav-item__icon" aria-hidden="true">
         <QIconSnippet {icon} size="24px" filled={isActive} />
 
-        {#if badge && !isHorizontal}
+        {#if badge && !isInDrawer}
           {@render badgeContent(true)}
         {/if}
       </span>
@@ -174,7 +168,7 @@ Navigation destinations for drawers, navigation bars, and railbars.
       {/if}
     </span>
 
-    {#if badge && isHorizontal}
+    {#if badge && isInDrawer}
       {@render badgeContent(false)}
     {/if}
   </span>
