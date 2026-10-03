@@ -15,6 +15,7 @@ QInput is a form component that allows users to input text. It supports differen
 
   // #region:    --- Reactive variables
   let focus = $state(false);
+  let snippetPrependWidth = $state(0);
 
   let pendingDeletion:
     { event: InputEvent; result: NonNullable<ReturnType<typeof deleteMaskedToken>> } | undefined;
@@ -185,7 +186,13 @@ QInput is a form component that allows users to input text. It supports differen
   });
 </script>
 
-<div class="q-field" {style} aria-disabled={disabled || undefined} data-quaff>
+<div
+  class="q-field"
+  {style}
+  style:--snippet-prepend-width="{snippetPrependWidth}px"
+  aria-disabled={disabled || undefined}
+  data-quaff
+>
   {#if before}
     <div class="q-field__snippet-before">
       {@render before()}
@@ -195,7 +202,7 @@ QInput is a form component that allows users to input text. It supports differen
   <div class="q-field__inner">
     <label for={inputId} class="q-field__wrapper">
       {#if prepend}
-        <div class="q-field__snippet-prepend">
+        <div class="q-field__snippet-prepend" bind:clientWidth={snippetPrependWidth}>
           {@render prepend()}
         </div>
       {/if}
