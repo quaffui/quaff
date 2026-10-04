@@ -2,6 +2,12 @@
 @use "$css/variables";
 @use "$css/disabled";
 
+@property --q-btn-inverse-radius {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 0;
+}
+
 @layer q-btn {
   .q-btn {
     --q-btn-line-height: 20px;
@@ -113,7 +119,9 @@
 
     &--expressive {
       padding-inline: var(--q-btn-padding-inline, 24px);
-      transition-property: color, background-color, border-radius, width;
+      // Animate inverse radius so spring overshoot cannot turn a full pill into square corners.
+      border-radius: calc(1px / max(1 / 9999, var(--q-btn-inverse-radius, 0)));
+      transition-property: color, background-color, --q-btn-inverse-radius, width;
       @include mixins.spring(spatial, fast, expressive);
 
       &.q-btn--xs {
@@ -155,36 +163,36 @@
       &:is(.q-btn--squared, .q-btn--selected) {
         &.q-btn--xs,
         &.q-btn--sm {
-          border-radius: 12px;
+          --q-btn-inverse-radius: calc(1 / 12);
         }
 
         &.q-btn--md {
-          border-radius: 16px;
+          --q-btn-inverse-radius: calc(1 / 16);
         }
 
         &.q-btn--lg,
         &.q-btn--xl {
-          border-radius: 28px;
+          --q-btn-inverse-radius: calc(1 / 28);
         }
       }
 
       &.q-btn--selected.q-btn--squared {
-        border-radius: 9999px;
+        --q-btn-inverse-radius: 0;
       }
 
       &:active {
         &.q-btn--xs,
         &.q-btn--sm {
-          border-radius: 8px;
+          --q-btn-inverse-radius: calc(1 / 8);
         }
 
         &.q-btn--md {
-          border-radius: 12px;
+          --q-btn-inverse-radius: calc(1 / 12);
         }
 
         &.q-btn--lg,
         &.q-btn--xl {
-          border-radius: 16px;
+          --q-btn-inverse-radius: calc(1 / 16);
         }
       }
     }
