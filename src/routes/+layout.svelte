@@ -3,6 +3,9 @@
   import "$lib/css/index.scss";
 
   import { afterNavigate } from "$app/navigation";
+  import { page } from "$app/state";
+  import { initMeta, QMetaHead } from "$lib/meta";
+  import { formatPageTitle, getCanonicalUrl } from "$docs/metadata";
   import {
     QAvatar,
     QBtn,
@@ -33,6 +36,25 @@
   const { children } = $props();
 
   Quaff.init();
+
+  initMeta(() => {
+    const canonicalUrl = getCanonicalUrl(page.route.id ?? page.url.pathname);
+
+    return {
+      title: page.status >= 400 ? "Page not found" : "Quaff",
+      titleTemplate: formatPageTitle,
+      meta: {
+        robots: page.status >= 400 ? { name: "robots", content: "noindex" } : null,
+        "og:site_name": { property: "og:site_name", content: "Quaff" },
+        "og:type": { property: "og:type", content: "website" },
+        "og:url": { property: "og:url", content: canonicalUrl },
+        "twitter:card": { name: "twitter:card", content: "summary" },
+      },
+      link: {
+        canonical: { rel: "canonical", href: canonicalUrl },
+      },
+    };
+  });
 
   let chosenColor = $state(0);
 
@@ -371,7 +393,8 @@
       return null;
     }
 
-    const currentIndex = path.findIndex((item) => item.to === route);
+    const currentRoute = route.replace(/\/$/, "") || "/";
+    const currentIndex = path.findIndex((item) => item.to === currentRoute);
 
     if (currentIndex === -1) {
       return null;
@@ -487,6 +510,8 @@
     </div>
   {/snippet}
 </QLayout>
+
+<QMetaHead />
 
 {#snippet primaryNavigationItems(noRipple = false)}
   {#each PAGES as { name, icon, to } (`${name}-${icon}-${to}`)}

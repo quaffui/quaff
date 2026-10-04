@@ -1,8 +1,16 @@
 <script lang="ts">
   import { resolve } from "$app/paths";
-  import { pageTitle } from "$helpers/pageTitle";
   import { QCodeBlock } from "$lib";
+  import { useMeta } from "$lib/meta";
+  import { pageMeta } from "$docs/metadata";
   import ListeningRoom from "./ListeningRoom.svelte";
+
+  useMeta(
+    pageMeta(
+      "Adaptive Layouts",
+      "Adapt Svelte layouts to window and container sizes with Quaff. Switch navigation patterns, build list-detail views, and use reactive screen state."
+    )
+  );
 
   const BREAKPOINTS = [
     ["xs", "< 600px", "Compact"],
@@ -12,10 +20,6 @@
     ["xl", "≥ 1600px", "Extra-large"],
   ];
 </script>
-
-<svelte:head>
-  <title>{pageTitle("Adaptive layouts")}</title>
-</svelte:head>
 
 <div class="q-page adaptive-docs">
   <h1>Adaptive layouts</h1>

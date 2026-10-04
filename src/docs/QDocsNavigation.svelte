@@ -28,7 +28,7 @@
     onclick?: () => void;
   } = $props();
 
-  const pathname = $derived(Quaff.router.url.pathname);
+  const pathname = $derived(Quaff.router.url.pathname.replace(/\/$/, "") || "/");
 
   let expandedGroups = $state(untrack(() => getExpandedGroups(items, pathname)));
 

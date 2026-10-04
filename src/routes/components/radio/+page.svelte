@@ -1,10 +1,18 @@
 <script lang="ts">
   import { docsCtx } from "$docs/QDocs.svelte";
   import { QRadioDocs } from "$components/radio/docs";
-  import { pageTitle } from "$helpers/pageTitle";
   import { Notify, QBtn, QCard, QCardSection, QItem, QItemSection, QList, QRadio } from "$lib";
   import { QDocs, QDocsSection } from "$docs";
+  import { useMeta } from "$lib/meta";
+  import { pageMeta } from "$docs/metadata";
   import snippets from "./docs.snippets";
+
+  useMeta(
+    pageMeta(
+      "QRadio — Radio Button",
+      "Choose one option from a group with QRadio for Svelte. Explore value binding, list integration, dynamic options, disabled states, and keyboard access."
+    )
+  );
 
   docsCtx.set({ snippets, componentDocs: QRadioDocs });
 
@@ -28,10 +36,6 @@
     event.stopPropagation();
   }
 </script>
-
-<svelte:head>
-  <title>{pageTitle("QRadio")}</title>
-</svelte:head>
 
 <QDocs>
   {#snippet display()}

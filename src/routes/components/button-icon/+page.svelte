@@ -1,21 +1,25 @@
 <script lang="ts">
   import { QIconBtnDocs } from "$components/button/docs";
   import { docsCtx } from "$docs/QDocs.svelte";
-  import { pageTitle } from "$helpers/pageTitle";
   import { Notify, QIconBtn } from "$lib";
   import { QDocs, QDocsSection } from "$docs";
 
+  import { useMeta } from "$lib/meta";
+  import { pageMeta } from "$docs/metadata";
   import snippets from "./docs.snippets";
+
+  useMeta(
+    pageMeta(
+      "QIconBtn — Icon Button",
+      "Add compact icon actions with QIconBtn for Svelte. Explore Material 3 variants, toggle states, expressive shapes, sizes, and loading feedback."
+    )
+  );
 
   docsCtx.set({ snippets, componentDocs: QIconBtnDocs });
 
   let favoriteSelected = $state(false);
   let outlinedSelected = $state(true);
 </script>
-
-<svelte:head>
-  <title>{pageTitle("QIconBtn")}</title>
-</svelte:head>
 
 <QDocs>
   {#snippet display()}

@@ -3,17 +3,21 @@
   import { QExpansionItem, QItem, QList, QItemSection, QIcon, QSwitch } from "$components";
   import { QDocs, QDocsSection } from "$docs";
   import { docsCtx } from "$docs/QDocs.svelte";
-  import { pageTitle } from "$helpers/pageTitle";
+  import { useMeta } from "$lib/meta";
+  import { pageMeta } from "$docs/metadata";
   import snippets from "./docs.snippets";
+
+  useMeta(
+    pageMeta(
+      "QExpansionItem — Accordion",
+      "Reveal details with QExpansionItem for Svelte. Build accordions, exclusive groups, and expandable lists with custom summaries and separate link actions."
+    )
+  );
 
   docsCtx.set({ snippets, componentDocs: QExpansionItemDocs });
 
   let customExpandedValue = $state(false);
 </script>
-
-<svelte:head>
-  <title>{pageTitle("QExpansionItem")}</title>
-</svelte:head>
 
 <QDocs>
   {#snippet display()}

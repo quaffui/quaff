@@ -5,9 +5,17 @@
   import { Notify, QBtn, QCard, QCardSection, QCodeBlock, QIcon, QTable } from "$lib";
   import { QDocs, QDocsSection } from "$docs";
   import type { QTableColumn, QTableRow } from "$components/table/props";
-  import { pageTitle } from "$helpers/pageTitle";
   import { docsCtx } from "$docs/QDocs.svelte";
+  import { useMeta } from "$lib/meta";
+  import { pageMeta } from "$docs/metadata";
   import snippets from "./docs.snippets";
+
+  useMeta(
+    pageMeta(
+      "QTable — Data Table",
+      "Display structured data with QTable for Svelte. Configure columns, pagination, sorting, value formatting, custom cells, localization, and row actions."
+    )
+  );
 
   docsCtx.set({ snippets, componentDocs: QTableDocs });
 
@@ -119,10 +127,6 @@
     }
   }
 </script>
-
-<svelte:head>
-  <title>{pageTitle("QTable")}</title>
-</svelte:head>
 
 <QDocs>
   {#snippet display()}

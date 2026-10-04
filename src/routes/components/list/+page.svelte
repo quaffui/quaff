@@ -1,7 +1,6 @@
 <script lang="ts">
   import { QItemDocs, QItemSectionDocs, QListDocs } from "$components/list/docs";
   import { docsCtx } from "$docs/QDocs.svelte";
-  import { pageTitle } from "$helpers/pageTitle";
   import {
     QAvatar,
     QCheckbox,
@@ -15,7 +14,16 @@
     QSwitch,
   } from "$lib";
   import { QDocs, QDocsSection } from "$docs";
+  import { useMeta } from "$lib/meta";
+  import { pageMeta } from "$docs/metadata";
   import snippets from "./docs.snippets";
+
+  useMeta(
+    pageMeta(
+      "QList — Lists & Items",
+      "Build Material 3 lists in Svelte with QList and QItem. Explore icons, avatars, selection, multiple actions, expressive styles, and multiline content."
+    )
+  );
 
   docsCtx.set({ snippets, componentDocs: [QListDocs, QItemDocs, QItemSectionDocs] });
 
@@ -36,10 +44,6 @@
     event.stopPropagation();
   }
 </script>
-
-<svelte:head>
-  <title>{pageTitle("QList")}</title>
-</svelte:head>
 
 <QDocs>
   {#snippet display()}

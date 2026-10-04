@@ -4,8 +4,16 @@
   import { docsCtx } from "$docs/QDocs.svelte";
   import { QDocs, QDocsSection } from "$docs";
   import { QBtn, QSnackbar } from "$lib";
-  import { pageTitle } from "$helpers/pageTitle";
+  import { useMeta } from "$lib/meta";
+  import { pageMeta } from "$docs/metadata";
   import snippets from "./docs.snippets";
+
+  useMeta(
+    pageMeta(
+      "QSnackbar — Snackbar",
+      "Give brief feedback with QSnackbar for Svelte. Explore messages, optional actions, close buttons, placement, accessibility, and the Notify utility."
+    )
+  );
 
   type SnackbarExample = "display" | "basic" | "action" | "dismissible" | "longAction";
 
@@ -73,10 +81,6 @@
     showSnackbar("action");
   }
 </script>
-
-<svelte:head>
-  <title>{pageTitle("QSnackbar")}</title>
-</svelte:head>
 
 <QDocs>
   {#snippet display()}

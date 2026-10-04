@@ -2,22 +2,19 @@
   import { QBtn, QCard, QCodeBlock, QInput } from "$lib";
   import { useMeta } from "$lib/meta";
   import { QDocs, QDocsSection } from "$docs";
-  import { pageTitle } from "$helpers/pageTitle";
+  import { pageMeta } from "$docs/metadata";
   import { setupExample, pageExample } from "./examples";
 
-  const DEFAULT_DESCRIPTION = "Manage page titles and descriptions with Quaff.";
-  let title = $state("Meta");
+  const DEFAULT_TITLE = "Page Metadata";
+  const DEFAULT_DESCRIPTION =
+    "Manage page titles, descriptions, and canonical links in Svelte with Quaff's metadata API. Learn setup, reactive updates, defaults, and server rendering.";
+  let title = $state(DEFAULT_TITLE);
   let description = $state(DEFAULT_DESCRIPTION);
 
-  useMeta(() => ({
-    title: title || "Meta",
-    meta: {
-      description: { name: "description", content: description },
-    },
-  }));
+  useMeta(() => pageMeta(title || DEFAULT_TITLE, description));
 
   function reset() {
-    title = "Meta";
+    title = DEFAULT_TITLE;
     description = DEFAULT_DESCRIPTION;
   }
 </script>
@@ -28,7 +25,7 @@
       <QInput label="Page title" bind:value={title} outlined />
       <QInput label="Description" bind:value={description} outlined />
       <div aria-live="polite">
-        <strong>{pageTitle(title || "Meta")}</strong>
+        <strong>{title || DEFAULT_TITLE}</strong>
         <p>{description}</p>
       </div>
       <QBtn label="Reset metadata" variant="flat" onclick={reset} />

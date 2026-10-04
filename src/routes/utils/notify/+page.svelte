@@ -2,8 +2,16 @@
   import { resolve } from "$app/paths";
   import { QBtn, QCodeBlock, Notify } from "$lib";
   import { QDocs, QDocsSection } from "$docs";
-  import { pageTitle } from "$helpers/pageTitle";
   import type { NotifyDismiss, NotifyOptions } from "$lib";
+  import { useMeta } from "$lib/meta";
+  import { pageMeta } from "$docs/metadata";
+
+  useMeta(
+    pageMeta(
+      "Notify — Snackbar Notifications",
+      "Create Material 3 snackbar notifications from code with Quaff's Notify utility. Add actions, queue messages, close notifications, and set defaults."
+    )
+  );
 
   let saveStatus = $state("");
   let dismiss = $state<NotifyDismiss>();
@@ -54,10 +62,6 @@
     Notify.setDefaults();
   }
 </script>
-
-<svelte:head>
-  <title>{pageTitle("Notify")}</title>
-</svelte:head>
 
 <QDocs
   docName="Notify"

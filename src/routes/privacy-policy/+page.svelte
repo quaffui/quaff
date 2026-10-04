@@ -1,11 +1,13 @@
-<script>
-  import { pageTitle } from "$helpers/pageTitle";
-</script>
+<script lang="ts">
+  import { useMeta } from "$lib/meta";
 
-<svelte:head>
-  <title>{pageTitle("Privacy Policy")}</title>
-  <meta name="robots" content="noindex" />
-</svelte:head>
+  useMeta({
+    title: "Privacy Policy",
+    meta: {
+      robots: { name: "robots", content: "noindex" },
+    },
+  });
+</script>
 
 <div class="q-page">
   <h1 class="q-mb-xl">Privacy Policy</h1>

@@ -1,7 +1,15 @@
 <script lang="ts">
   import { QDocs, QDocsSection } from "$docs";
-  import { pageTitle } from "$helpers/pageTitle";
   import { QAvatar, QBtn, QCodeBlock, QIcon, QInput, QSelect, QSwitch } from "$lib";
+  import { useMeta } from "$lib/meta";
+  import { pageMeta } from "$docs/metadata";
+
+  useMeta(
+    pageMeta(
+      "Typography",
+      "Build clear text hierarchies with Quaff's Material 3 typography. Explore baseline and emphasized styles, text scaling, utility classes, and design tokens."
+    )
+  );
 
   // Role, emphasized class, size, line height, baseline weight, emphasized weight.
   const TYPE_STYLES = [
@@ -65,10 +73,6 @@
     unread = unread.includes(id) ? unread.filter((value) => value !== id) : [...unread, id];
   }
 </script>
-
-<svelte:head>
-  <title>{pageTitle("Typography")}</title>
-</svelte:head>
 
 <QDocs
   docName="Typography"

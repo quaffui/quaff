@@ -2,9 +2,17 @@
   import { QCarouselDocs } from "$components/carousel/docs";
   import { QDocs, QDocsSection } from "$docs";
   import { docsCtx } from "$docs/QDocs.svelte";
-  import { pageTitle } from "$helpers/pageTitle";
   import { QCarousel } from "$lib";
+  import { useMeta } from "$lib/meta";
+  import { pageMeta } from "$docs/metadata";
   import snippets from "./docs.snippets";
+
+  useMeta(
+    pageMeta(
+      "QCarousel — Carousel",
+      "Browse visual collections with QCarousel for Svelte. Compare multi-browse, uncontained, hero, centered hero, and full-screen Material 3 layouts."
+    )
+  );
 
   docsCtx.set({ snippets, componentDocs: [QCarouselDocs] });
 
@@ -20,10 +28,6 @@
   let value = $state(0);
   let selected = $state("");
 </script>
-
-<svelte:head>
-  <title>{pageTitle("QCarousel")}</title>
-</svelte:head>
 
 <QDocs>
   {#snippet display()}

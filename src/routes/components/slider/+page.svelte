@@ -2,9 +2,17 @@
   import { QRangeDocs, QSliderDocs } from "$components/slider/docs";
   import { QDocs, QDocsSection } from "$docs";
   import { docsCtx } from "$docs/QDocs.svelte";
-  import { pageTitle } from "$helpers/pageTitle";
   import { QCard, QRange, QSlider } from "$lib";
+  import { useMeta } from "$lib/meta";
+  import { pageMeta } from "$docs/metadata";
   import snippets from "./docs.snippets";
+
+  useMeta(
+    pageMeta(
+      "QSlider — Slider & Range Slider",
+      "Select single values or ranges with QSlider for Svelte. Try centered sliders, stops, value indicators, expressive styles, and keyboard controls."
+    )
+  );
 
   docsCtx.set({ snippets, componentDocs: [QSliderDocs, QRangeDocs] });
 
@@ -17,10 +25,6 @@
   const sizes = ["xs", "sm", "md", "lg", "xl"] as const;
   const textSizeLabels = ["Extra small", "Small", "Medium", "Large", "Extra large"] as const;
 </script>
-
-<svelte:head>
-  <title>{pageTitle("QSlider")}</title>
-</svelte:head>
 
 <QDocs
   docName="QSlider"

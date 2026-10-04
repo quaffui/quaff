@@ -1,17 +1,21 @@
 <script lang="ts">
   import { docsCtx } from "$docs/QDocs.svelte";
   import { QSeparatorHorizontalDocs, QSeparatorVerticalDocs } from "$components/separator/docs";
-  import { pageTitle } from "$helpers/pageTitle";
   import { QCard, QCardSection, QSeparator } from "$lib";
   import { QDocs, QDocsSection } from "$docs";
+  import { useMeta } from "$lib/meta";
+  import { pageMeta } from "$docs/metadata";
   import snippets from "./docs.snippets";
+
+  useMeta(
+    pageMeta(
+      "QSeparator — Divider",
+      "Separate content with QSeparator for Svelte. Try horizontal and vertical dividers, text labels, inset spacing, custom colors, and decorative separators."
+    )
+  );
 
   docsCtx.set({ snippets, componentDocs: [QSeparatorHorizontalDocs, QSeparatorVerticalDocs] });
 </script>
-
-<svelte:head>
-  <title>{pageTitle("QSeparator")}</title>
-</svelte:head>
 
 <QDocs>
   {#snippet display()}

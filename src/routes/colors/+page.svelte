@@ -1,5 +1,13 @@
 <script lang="ts">
-  import { pageTitle } from "$helpers/pageTitle";
+  import { useMeta } from "$lib/meta";
+  import { pageMeta } from "$docs/metadata";
+
+  useMeta(
+    pageMeta(
+      "Colors & CSS Classes",
+      "Browse Quaff's color palettes and numbered shades. Preview background and text color classes to choose colors for your Svelte app."
+    )
+  );
 
   const colors = [
     "red",
@@ -33,10 +41,6 @@
     return index <= switchingTextColorIndex ? `${color}-10` : `${color}-1`;
   };
 </script>
-
-<svelte:head>
-  <title>{pageTitle("Colors")}</title>
-</svelte:head>
 
 <div class="q-page">
   <h1 class="q-mb-xl">Colors</h1>

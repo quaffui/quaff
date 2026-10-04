@@ -5,7 +5,6 @@
   import { QRailbarDocs } from "$components/railbar/docs";
   import { QDocs, QDocsSection } from "$docs";
   import { docsCtx } from "$docs/QDocs.svelte";
-  import { pageTitle } from "$helpers/pageTitle";
   import {
     QBtn,
     QFooter,
@@ -18,7 +17,16 @@
     QSelect,
     QSwitch,
   } from "$lib";
+  import { useMeta } from "$lib/meta";
+  import { pageMeta } from "$docs/metadata";
   import snippets from "./docs.snippets";
+
+  useMeta(
+    pageMeta(
+      "QRailbar — Navigation Rail",
+      "Build Material 3 navigation rails with QRailbar for Svelte. Try collapsed and expanded rails, modal expansion, placement, and accessible navigation."
+    )
+  );
 
   docsCtx.set({ snippets, componentDocs: [QRailbarDocs, QNavItemDocs] });
 
@@ -205,10 +213,6 @@
     }
   }
 </script>
-
-<svelte:head>
-  <title>{pageTitle("QRailbar")}</title>
-</svelte:head>
 
 <QDocs
   docDescription="Keep your main destinations within reach. Expand beside the page or open above it."

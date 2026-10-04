@@ -1,12 +1,16 @@
 <script lang="ts">
   import { QCodeBlock } from "$lib";
   import { QDocs, QDocsSection } from "$docs";
-  import { pageTitle } from "$helpers/pageTitle";
-</script>
+  import { useMeta } from "$lib/meta";
+  import { pageMeta } from "$docs/metadata";
 
-<svelte:head>
-  <title>{pageTitle("CSS Tree Shaking")}</title>
-</svelte:head>
+  useMeta(
+    pageMeta(
+      "CSS Tree Shaking",
+      "Include only the component styles your Svelte app needs with quaffCss. Configure the Vite plugin, optional selector pruning, safelists, and fallbacks."
+    )
+  );
+</script>
 
 <QDocs
   docName="CSS Tree Shaking"

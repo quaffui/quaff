@@ -2,12 +2,16 @@
   import { resolve } from "$app/paths";
   import { QDocs, QDocsSection } from "$docs";
   import { Quaff, QBtn, QChip, QCodeBlock } from "$lib";
-  import { pageTitle } from "$helpers/pageTitle";
-</script>
+  import { useMeta } from "$lib/meta";
+  import { pageMeta } from "$docs/metadata";
 
-<svelte:head>
-  <title>{pageTitle("The Quaff class")}</title>
-</svelte:head>
+  useMeta(
+    pageMeta(
+      "Configuration & Screen API",
+      "Configure Quaff in your Svelte app. Manage language, right-to-left layouts, dark mode, reactive screen state, initialization, and SvelteKit routing."
+    )
+  );
+</script>
 
 <div>
   <QDocs

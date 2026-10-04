@@ -1,6 +1,5 @@
 <script lang="ts">
   import { QDocs, QDocsSection } from "$docs";
-  import { pageTitle } from "$helpers/pageTitle";
   import {
     QAvatar,
     QBtn,
@@ -21,6 +20,15 @@
     QMenu,
     QNavItem,
   } from "$lib";
+  import { useMeta } from "$lib/meta";
+  import { pageMeta } from "$docs/metadata";
+
+  useMeta(
+    pageMeta(
+      "Right-to-Left Layouts",
+      "Build right-to-left interfaces with Quaff. Configure app direction, adapt navigation, mix reading directions, and position popups in Svelte layouts."
+    )
+  );
 
   const COPY = {
     en: {
@@ -109,10 +117,6 @@
     drawerOpen = false;
   }
 </script>
-
-<svelte:head>
-  <title>{pageTitle("Right-to-left layouts")}</title>
-</svelte:head>
 
 {#snippet languagePicker(label = "Preview language")}
   <QBtnToggle

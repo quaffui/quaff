@@ -2,7 +2,6 @@
   import { resolve } from "$app/paths";
   import { QDrawerDocs } from "$components/drawer/docs";
   import { docsCtx } from "$docs/QDocs.svelte";
-  import { pageTitle } from "$helpers/pageTitle";
   import {
     QBtn,
     QIconBtn,
@@ -19,7 +18,16 @@
   } from "$lib";
   import { QDocs, QDocsSection } from "$docs";
 
+  import { useMeta } from "$lib/meta";
+  import { pageMeta } from "$docs/metadata";
   import snippets from "./docs.snippets";
+
+  useMeta(
+    pageMeta(
+      "QDrawer — Navigation Drawer",
+      "Build side navigation with QDrawer for Svelte. Explore expandable groups, overlay and persistent modes, custom widths, and QLayout integration."
+    )
+  );
 
   docsCtx.set({ snippets, componentDocs: QDrawerDocs });
 
@@ -51,10 +59,6 @@
     };
   }
 </script>
-
-<svelte:head>
-  <title>{pageTitle("QDrawer")}</title>
-</svelte:head>
 
 <QDocs>
   {#snippet display()}

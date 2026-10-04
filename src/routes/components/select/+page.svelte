@@ -2,12 +2,20 @@
   import { resolve } from "$app/paths";
   import QLanguageExample from "$docs/QLanguageExample.svelte";
   import { QSelectDocs } from "$components/select/docs";
-  import { pageTitle } from "$helpers/pageTitle";
   import { QBtn, QCard, QCardActions, QCardSection, QIcon, QSelect } from "$lib";
   import { QDocs, QDocsSection } from "$docs";
   import type { QSelectFilterUpdate, QSelectOption } from "$components/select/props";
   import { docsCtx } from "$docs/QDocs.svelte";
+  import { useMeta } from "$lib/meta";
+  import { pageMeta } from "$docs/metadata";
   import snippets from "./docs.snippets";
+
+  useMeta(
+    pageMeta(
+      "QSelect — Select & Combobox",
+      "Choose one or multiple options with QSelect for Svelte. Explore filtering, custom displays, validation, dynamic options, localization, and keyboard use."
+    )
+  );
 
   docsCtx.set({ snippets, componentDocs: QSelectDocs });
 
@@ -78,10 +86,6 @@
     return selectMultiple[0];
   });
 </script>
-
-<svelte:head>
-  <title>{pageTitle("QSelect")}</title>
-</svelte:head>
 
 <QDocs>
   {#snippet display()}

@@ -1,19 +1,20 @@
 import { createContext } from "svelte";
+import { SvelteSet } from "svelte/reactivity";
 import type { MetaOptions, MetaSource } from "../components/meta/types.js";
 
 export const [getMetaContext, setMetaContext] =
   createContext<ReturnType<typeof createMetaContext>>();
 
 export function createMetaContext(defaults: MetaSource) {
-  let entries = $state.raw<{ source: MetaSource }[]>([]);
+  const entries = new SvelteSet<{ source: MetaSource }>();
 
   return {
     add(source: MetaSource) {
       const entry = { source };
-      entries = [...entries, entry];
+      entries.add(entry);
 
       return () => {
-        entries = entries.filter((current) => current !== entry);
+        entries.delete(entry);
       };
     },
 
@@ -25,7 +26,7 @@ export function createMetaContext(defaults: MetaSource) {
         link: Object.create(null),
       };
 
-      for (const source of [defaults, ...entries.map((entry) => entry.source)]) {
+      for (const source of [defaults, ...Array.from(entries, (entry) => entry.source)]) {
         const metadata = typeof source === "function" ? source() : source;
 
         if (metadata.title !== undefined) {

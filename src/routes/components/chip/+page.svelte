@@ -1,11 +1,19 @@
 <script lang="ts">
   import { QChipDocs } from "$components/chip/docs";
   import { docsCtx } from "$docs/QDocs.svelte";
-  import { pageTitle } from "$helpers/pageTitle";
   import { Notify, QChip } from "$lib";
   import { QDocs, QDocsSection } from "$docs";
 
+  import { useMeta } from "$lib/meta";
+  import { pageMeta } from "$docs/metadata";
   import snippets from "./docs.snippets";
+
+  useMeta(
+    pageMeta(
+      "QChip — Chip",
+      "Use Material 3 assist, filter, input, and suggestion chips in Svelte. Explore QChip selection, avatars, disabled states, styling, and events."
+    )
+  );
 
   docsCtx.set({ snippets, componentDocs: QChipDocs });
 
@@ -20,10 +28,6 @@
 
   const contactLabel = $derived(contactValue?.split("<", 1)[0].trim());
 </script>
-
-<svelte:head>
-  <title>{pageTitle("QChip")}</title>
-</svelte:head>
 
 <QDocs>
   {#snippet display()}

@@ -1,10 +1,18 @@
 <script lang="ts">
   import { QInputDocs } from "$components/input/docs";
   import { docsCtx } from "$docs/QDocs.svelte";
-  import { pageTitle } from "$helpers/pageTitle";
   import { Notify, QBtn, QIcon, QInput } from "$lib";
   import { QDocs, QDocsSection } from "$docs";
+  import { useMeta } from "$lib/meta";
+  import { pageMeta } from "$docs/metadata";
   import snippets from "./docs.snippets";
+
+  useMeta(
+    pageMeta(
+      "QInput — Text Input",
+      "Create Material 3 text fields with QInput for Svelte. Explore input styles, validation, hints, masks, native attributes, and leading or trailing content."
+    )
+  );
 
   docsCtx.set({ snippets, componentDocs: QInputDocs });
 
@@ -27,10 +35,6 @@
   let phoneValue = $state("");
   let batchCodeValue = $state("");
 </script>
-
-<svelte:head>
-  <title>{pageTitle("QInput")}</title>
-</svelte:head>
 
 <QDocs>
   {#snippet display()}

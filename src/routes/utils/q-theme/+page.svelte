@@ -1,12 +1,20 @@
 <script lang="ts">
-  import { onDestroy } from "svelte";
+  import { onMount } from "svelte";
   import { QDocs, QDocsSection } from "$docs";
   import { QBtn, QCodeBlock, QTheme, Quaff } from "$lib";
-  import { pageTitle } from "$helpers/pageTitle";
   import QSelect from "$components/select/QSelect.svelte";
   import type { HexValue } from "$utils";
   import type { ThemeVariant } from "$classes/QTheme.svelte";
   import QInput from "$components/input/QInput.svelte";
+  import { useMeta } from "$lib/meta";
+  import { pageMeta } from "$docs/metadata";
+
+  useMeta(
+    pageMeta(
+      "QTheme — Themes & Colors",
+      "Create Material 3 color themes with Quaff's QTheme class. Explore color roles, theme variants, contrast levels, custom colors, and theme switching."
+    )
+  );
 
   let hexColor = $state("");
   let customPrimary = $state<HexValue>(
@@ -55,12 +63,8 @@
     QTheme.setTheme("#0039b4");
   }
 
-  onDestroy(resetTheme);
+  onMount(() => resetTheme);
 </script>
-
-<svelte:head>
-  <title>{pageTitle("QTheme")}</title>
-</svelte:head>
 
 <QDocs
   docName="QTheme"
