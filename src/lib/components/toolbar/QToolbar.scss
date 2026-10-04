@@ -34,7 +34,13 @@
 
     // Floating toolbars keep selected icon buttons round at rest.
     > .q-btn--selected:not(:active):not(:has(> .q-btn__label)) {
-      border-radius: calc(var(--q-btn-height, 40px) / 2);
+      &.q-btn--expressive {
+        --q-btn-inverse-radius: 0;
+      }
+
+      &:not(.q-btn--expressive) {
+        border-radius: calc(var(--q-btn-height, 40px) / 2);
+      }
     }
 
     &:not(.q-toolbar--unelevated) {

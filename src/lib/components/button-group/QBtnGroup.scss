@@ -54,7 +54,7 @@
       width: var(--q-btn-group-width);
       min-width: 0;
       flex: none;
-      transition-property: width, border-radius;
+      transition-property: width, --q-btn-inverse-radius;
       @include mixins.spring(spatial, fast, expressive);
 
       > .q-btn__label {
@@ -72,6 +72,7 @@
         height: auto;
         min-height: var(--q-btn-height, 40px);
         min-width: 48px;
+        transition-property: color, background-color, border-radius, width;
         border-radius: var(--q-btn-group-inner-corner);
         --q-btn-group-inner-corner: var(--q-btn-group-corner);
         --q-btn-group-full-corner: calc(var(--q-btn-height, 40px) / 2);
