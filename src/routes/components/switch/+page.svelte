@@ -1,7 +1,6 @@
 <script lang="ts">
   import { docsCtx } from "$docs/QDocs.svelte";
   import { QSwitchDocs } from "$components/switch/docs";
-  import { pageTitle } from "$helpers/pageTitle";
   import {
     Notify,
     QBtn,
@@ -14,7 +13,16 @@
     QSwitch,
   } from "$lib";
   import { QDocs, QDocsSection } from "$docs";
+  import { useMeta } from "$lib/meta";
+  import { pageMeta } from "$docs/metadata";
   import snippets from "./docs.snippets";
+
+  useMeta(
+    pageMeta(
+      "QSwitch — Switch",
+      "Toggle settings with QSwitch for Svelte. Explore labels, icons, two-way binding, disabled states, list integration, events, and accessible usage."
+    )
+  );
 
   docsCtx.set({ snippets, componentDocs: QSwitchDocs });
 
@@ -25,10 +33,6 @@
   let darkMode = $state(false);
   let notificationsEnabled = $state(true);
 </script>
-
-<svelte:head>
-  <title>{pageTitle("QSwitch")}</title>
-</svelte:head>
 
 <QDocs>
   {#snippet display()}

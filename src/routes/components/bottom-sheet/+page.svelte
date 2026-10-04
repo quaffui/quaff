@@ -3,7 +3,6 @@
   import { QBottomSheetDocs } from "$components/bottom-sheet/docs";
   import { QDocs, QDocsSection } from "$docs";
   import { docsCtx } from "$docs/QDocs.svelte";
-  import { pageTitle } from "$helpers/pageTitle";
   import {
     QAvatar,
     QBottomSheet,
@@ -16,7 +15,16 @@
     QSelect,
     QSwitch,
   } from "$lib";
+  import { useMeta } from "$lib/meta";
+  import { pageMeta } from "$docs/metadata";
   import snippets from "./docs.snippets";
+
+  useMeta(
+    pageMeta(
+      "QBottomSheet — Bottom Sheet",
+      "Add standard and modal bottom sheets to your Svelte app with QBottomSheet. Explore expandable content, actions, and component composition."
+    )
+  );
 
   docsCtx.set({ snippets, componentDocs: QBottomSheetDocs });
 
@@ -83,10 +91,6 @@
     isModalOpen = false;
   }
 </script>
-
-<svelte:head>
-  <title>{pageTitle("QBottomSheet")}</title>
-</svelte:head>
 
 <QDocs>
   {#snippet display()}

@@ -1,7 +1,6 @@
 <script lang="ts">
   import { docsCtx } from "$docs/QDocs.svelte";
   import { QCircularProgressDocs, QLinearProgressDocs } from "$components/progress/docs";
-  import { pageTitle } from "$helpers/pageTitle";
   import {
     QBtn,
     QCard,
@@ -12,7 +11,16 @@
   } from "$lib";
   import { QDocs, QDocsSection } from "$docs";
 
+  import { useMeta } from "$lib/meta";
+  import { pageMeta } from "$docs/metadata";
   import snippets from "./docs.snippets";
+
+  useMeta(
+    pageMeta(
+      "Linear & Circular Progress",
+      "Show task progress in Svelte with linear and circular indicators. Explore determinate and indeterminate states, buffers, expressive styles, and sizing."
+    )
+  );
 
   docsCtx.set({ snippets, componentDocs: [QLinearProgressDocs, QCircularProgressDocs] });
 
@@ -20,10 +28,6 @@
   let circularValue = 25;
   let indeterminateProgress = true;
 </script>
-
-<svelte:head>
-  <title>{pageTitle("QProgress")}</title>
-</svelte:head>
 
 <QDocs
   docName="QProgress"

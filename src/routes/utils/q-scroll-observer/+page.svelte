@@ -1,7 +1,15 @@
 <script lang="ts">
   import { QDocs, QDocsSection } from "$docs";
   import { QCodeBlock, QScrollObserver } from "$lib";
-  import { pageTitle } from "$helpers/pageTitle";
+  import { useMeta } from "$lib/meta";
+  import { pageMeta } from "$docs/metadata";
+
+  useMeta(
+    pageMeta(
+      "QScrollObserver — Scroll Observer",
+      "Observe element scrolling with QScrollObserver for Svelte. Track scroll position, direction, and derived metrics through documented properties and examples."
+    )
+  );
 
   const displayObserver = new QScrollObserver("#display-observer");
   const usageObserver = new QScrollObserver("#usage-observer");
@@ -14,10 +22,6 @@
     inflectionPoint: usageObserver.inflectionPoint,
   });
 </script>
-
-<svelte:head>
-  <title>{pageTitle("QScrollObserver")}</title>
-</svelte:head>
 
 <QDocs
   docName="QScrollObserver"

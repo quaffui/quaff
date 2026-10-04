@@ -1,21 +1,25 @@
 <script lang="ts">
   import { QBtnDocs } from "$components/button/docs";
   import { docsCtx } from "$docs/QDocs.svelte";
-  import { pageTitle } from "$helpers/pageTitle";
   import { Notify, QBtn } from "$lib";
   import { QDocs, QDocsSection } from "$docs";
 
+  import { useMeta } from "$lib/meta";
+  import { pageMeta } from "$docs/metadata";
   import snippets from "./docs.snippets";
+
+  useMeta(
+    pageMeta(
+      "QBtn — Button",
+      "Create Material 3 buttons in Svelte with QBtn. Explore filled, outlined, text, and expressive styles, loading states, icons, and toggle buttons."
+    )
+  );
 
   docsCtx.set({ snippets, componentDocs: QBtnDocs });
 
   let filledSelected = $state(false);
   let outlinedSelected = $state(true);
 </script>
-
-<svelte:head>
-  <title>{pageTitle("QButton")}</title>
-</svelte:head>
 
 <QDocs>
   {#snippet display()}

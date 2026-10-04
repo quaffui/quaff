@@ -1,13 +1,17 @@
 <script lang="ts">
   import { resolve } from "$app/paths";
-  import { pageTitle } from "$helpers/pageTitle";
+  import { useMeta } from "$lib/meta";
+  import { pageMeta } from "$docs/metadata";
+
+  useMeta(
+    pageMeta(
+      "Grid & Breakpoints",
+      "Build responsive Svelte layouts with Quaff's grid system. Learn column classes, gutters, directional spacing, and the five layout breakpoints."
+    )
+  );
 
   const cols = [1, 2, 3, 4];
 </script>
-
-<svelte:head>
-  <title>{pageTitle("Grid")}</title>
-</svelte:head>
 
 <div class="q-page">
   <h1 class="q-mb-xl">Grid system</h1>

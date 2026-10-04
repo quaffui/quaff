@@ -3,9 +3,17 @@
   import { QNavGroupDocs, QNavItemDocs } from "$components/nav-item/docs";
   import { QDocs, QDocsSection } from "$docs";
   import { docsCtx } from "$docs/QDocs.svelte";
-  import { pageTitle } from "$helpers/pageTitle";
   import { QDrawer, QIcon, QLayout, QList, QNavGroup, QNavItem, QSwitch } from "$lib";
+  import { useMeta } from "$lib/meta";
+  import { pageMeta } from "$docs/metadata";
   import snippets from "./docs.snippets";
+
+  useMeta(
+    pageMeta(
+      "QNavItem — Navigation Items & Groups",
+      "Link destinations with QNavItem and organize them with QNavGroup. Build Svelte drawer, bar, and rail navigation with icons and expandable groups."
+    )
+  );
 
   docsCtx.set({ snippets, componentDocs: [QNavItemDocs, QNavGroupDocs] });
 
@@ -41,10 +49,6 @@
     }
   }
 </script>
-
-<svelte:head>
-  <title>{pageTitle("QNavItem & QNavGroup")}</title>
-</svelte:head>
 
 <QDocs
   docName="Navigation Items"

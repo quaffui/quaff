@@ -4,18 +4,22 @@
   import { QNavItemDocs } from "$components/nav-item/docs";
   import { QDocs, QDocsSection } from "$docs";
   import { docsCtx } from "$docs/QDocs.svelte";
-  import { pageTitle } from "$helpers/pageTitle";
   import { QLayout, QNavbar, QNavItem } from "$lib";
+  import { useMeta } from "$lib/meta";
+  import { pageMeta } from "$docs/metadata";
   import snippets from "./docs.snippets";
+
+  useMeta(
+    pageMeta(
+      "QNavbar — Navigation Bar",
+      "Navigate between primary destinations with QNavbar for Svelte. Explore badges, horizontal items, active links, custom labels, and QLayout integration."
+    )
+  );
 
   docsCtx.set({ snippets, componentDocs: [QNavbarDocs, QNavItemDocs] });
 
   let selectedDestination = $state("home");
 </script>
-
-<svelte:head>
-  <title>{pageTitle("QNavbar")}</title>
-</svelte:head>
 
 <QDocs>
   {#snippet display()}

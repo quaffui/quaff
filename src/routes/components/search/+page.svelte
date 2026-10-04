@@ -2,9 +2,17 @@
   import { QSearchDocs } from "$components/search/docs";
   import { QDocs, QDocsSection } from "$docs";
   import { docsCtx } from "$docs/QDocs.svelte";
-  import { pageTitle } from "$helpers/pageTitle";
   import { QChip, QIcon, QIconBtn, QItem, QItemSection, QList, QSearch } from "$lib";
+  import { useMeta } from "$lib/meta";
+  import { pageMeta } from "$docs/metadata";
   import snippets from "./docs.snippets";
+
+  useMeta(
+    pageMeta(
+      "QSearch — Search",
+      "Help users find content with QSearch for Svelte. Explore basic and expressive search views, full-screen search, and keyboard accessibility."
+    )
+  );
 
   docsCtx.set({ snippets, componentDocs: QSearchDocs });
 
@@ -210,10 +218,6 @@
     savedTitles = [...savedTitles, title];
   }
 </script>
-
-<svelte:head>
-  <title>{pageTitle("QSearch")}</title>
-</svelte:head>
 
 <QDocs>
   {#snippet display()}

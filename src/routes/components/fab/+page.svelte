@@ -2,7 +2,6 @@
   import { QExtendedFabDocs, QFabDocs, QFabMenuDocs } from "$components/fab/docs";
   import { QDocs, QDocsSection } from "$docs";
   import { docsCtx } from "$docs/QDocs.svelte";
-  import { pageTitle } from "$helpers/pageTitle";
   import {
     QBtn,
     QDialog,
@@ -16,7 +15,16 @@
     QList,
     QSwitch,
   } from "$lib";
+  import { useMeta } from "$lib/meta";
+  import { pageMeta } from "$docs/metadata";
   import snippets from "./docs.snippets";
+
+  useMeta(
+    pageMeta(
+      "QFab — Floating Action Buttons",
+      "Highlight primary actions with Quaff's Svelte floating action buttons. Explore expressive FABs, extended labels, action menus, and placement."
+    )
+  );
 
   docsCtx.set({ snippets, componentDocs: [QFabDocs, QExtendedFabDocs, QFabMenuDocs] });
 
@@ -90,10 +98,6 @@
     isComposerOpen = false;
   }
 </script>
-
-<svelte:head>
-  <title>{pageTitle("Floating action buttons")}</title>
-</svelte:head>
 
 <QDocs
   docName="Floating action buttons"

@@ -2,7 +2,6 @@
   import { QSideSheetDocs } from "$components/side-sheet/docs";
   import { QDocs, QDocsSection } from "$docs";
   import { docsCtx } from "$docs/QDocs.svelte";
-  import { pageTitle } from "$helpers/pageTitle";
   import {
     QAvatar,
     QBtn,
@@ -16,7 +15,16 @@
     QSideSheet,
     QSwitch,
   } from "$lib";
+  import { useMeta } from "$lib/meta";
+  import { pageMeta } from "$docs/metadata";
   import snippets from "./docs.snippets";
+
+  useMeta(
+    pageMeta(
+      "QSideSheet — Side Sheet",
+      "Keep supporting details beside your content with QSideSheet for Svelte. Explore standard and modal sheets, placement, shape, and practical examples."
+    )
+  );
 
   docsCtx.set({ snippets, componentDocs: QSideSheetDocs });
 
@@ -93,10 +101,6 @@
   let isRightToLeft = $state(false);
   let hasReadingHints = $state(true);
 </script>
-
-<svelte:head>
-  <title>{pageTitle("QSideSheet")}</title>
-</svelte:head>
 
 <QDocs docDescription="Keep useful details and tools beside the content they belong to.">
   {#snippet display()}

@@ -1,6 +1,15 @@
 <script lang="ts">
   import QBtn from "$components/button/QBtn.svelte";
   import { copy } from "$utils";
+  import { useMeta } from "$lib/meta";
+  import { pageMeta } from "$docs/metadata";
+
+  useMeta(
+    pageMeta(
+      "Material 3 UI Components for Svelte 5",
+      "Build Svelte 5 and SvelteKit apps with Quaff's Material 3 components. Explore interactive examples, responsive layouts, themes, and API docs."
+    )
+  );
 
   let copied = false;
   const npmCommand = "npm create quaff@latest";
@@ -12,10 +21,6 @@
   }
 </script>
 
-<svelte:head>
-  <title>Quaff – Svelte Material 3 UI Framework</title>
-</svelte:head>
-
 <div class="q-page page-home">
   <div class="page-home__logo-container">
     <img
@@ -24,7 +29,7 @@
       alt="Quaff logo, a cocktail with a slice of orange"
     />
   </div>
-  <div class="page-home__teaser">Quaff is a UI Component Framework built on top of SvelteKit.</div>
+  <h1 class="page-home__teaser">Quaff is a UI Component Framework built on top of SvelteKit.</h1>
   <ul class="page-home__get-started-list">
     <li class="page-home__install">
       <pre class="language-svelte">npm create quaff@latest</pre>
@@ -65,7 +70,12 @@
     }
 
     &__teaser {
+      display: block;
       font-size: 1.4em;
+      font-weight: inherit;
+      line-height: inherit;
+      letter-spacing: inherit;
+      margin: 0;
     }
 
     &__get-started-list {

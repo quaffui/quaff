@@ -4,9 +4,17 @@
   import { QDocs, QDocsSection } from "$docs";
   import QLanguageExample from "$docs/QLanguageExample.svelte";
   import { docsCtx } from "$docs/QDocs.svelte";
-  import { pageTitle } from "$helpers/pageTitle";
   import { QColorPicker } from "$lib";
+  import { useMeta } from "$lib/meta";
+  import { pageMeta } from "$docs/metadata";
   import snippets from "./docs.snippets";
+
+  useMeta(
+    pageMeta(
+      "QColorPicker — Color Picker",
+      "Choose HEX and RGB colors with QColorPicker for Svelte. Try editable fields, an inline visual editor, opacity controls, and localized labels."
+    )
+  );
 
   docsCtx.set({ snippets, componentDocs: QColorPickerDocs });
 
@@ -17,10 +25,6 @@
   let annotationColor = $state<string | null>("rgba(255, 196, 0, 0.35)");
   let customColor = $state<string | null>("#3265A8");
 </script>
-
-<svelte:head>
-  <title>{pageTitle("QColorPicker")}</title>
-</svelte:head>
 
 <QDocs>
   {#snippet display()}

@@ -2,9 +2,17 @@
   import { QSplitBtnDocs } from "$components/split-button/docs";
   import { QDocs, QDocsSection } from "$docs";
   import { docsCtx } from "$docs/QDocs.svelte";
-  import { pageTitle } from "$helpers/pageTitle";
   import { QItem, QItemSection, QList, QSplitBtn } from "$lib";
+  import { useMeta } from "$lib/meta";
+  import { pageMeta } from "$docs/metadata";
   import snippets from "./docs.snippets";
+
+  useMeta(
+    pageMeta(
+      "QSplitBtn — Split Button",
+      "Pair a primary action with a menu of related choices using QSplitBtn for Svelte. Explore variants, sizes, loading states, icons, and keyboard controls."
+    )
+  );
 
   docsCtx.set({ snippets, componentDocs: QSplitBtnDocs });
 
@@ -18,10 +26,6 @@
   let sizeStatus = $state("Choose an action");
   let stateStatus = $state("Choose a download action");
 </script>
-
-<svelte:head>
-  <title>{pageTitle("QSplitBtn")}</title>
-</svelte:head>
 
 <QDocs>
   {#snippet display()}

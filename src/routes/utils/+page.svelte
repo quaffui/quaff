@@ -2,7 +2,15 @@
   import { goto } from "$app/navigation";
   import { QCard, QCardSection } from "$components";
   import QDocs from "$docs/QDocs.svelte";
-  import { pageTitle } from "$helpers/pageTitle";
+  import { useMeta } from "$lib/meta";
+  import { pageMeta } from "$docs/metadata";
+
+  useMeta(
+    pageMeta(
+      "Utilities",
+      "Explore Quaff utilities for Svelte apps, including CSS tree shaking, typography, page metadata, notifications, themes, screen state, and scrolling."
+    )
+  );
 
   const utils = [
     {
@@ -56,10 +64,6 @@
     },
   ];
 </script>
-
-<svelte:head>
-  <title>{pageTitle("Utils")}</title>
-</svelte:head>
 
 <QDocs docName="Utils" docDescription="Utilities and helper functions/classes for various tasks.">
   <div class="row q-gap-md q-mt-lg">

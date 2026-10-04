@@ -2,10 +2,18 @@
   import { QBtnGroupDocs, QBtnToggleDocs } from "$components/button-group/docs";
   import { QDocs, QDocsSection } from "$docs";
   import { docsCtx } from "$docs/QDocs.svelte";
-  import { pageTitle } from "$helpers/pageTitle";
   import { QBtn, QBtnGroup, QBtnToggle, QIconBtn } from "$lib";
   import type { QBtnToggleProps } from "$components/button-group/props";
+  import { useMeta } from "$lib/meta";
+  import { pageMeta } from "$docs/metadata";
   import snippets from "./docs.snippets";
+
+  useMeta(
+    pageMeta(
+      "QBtnGroup — Button Groups",
+      "Group related actions or select options with QBtnGroup and QBtnToggle. Try segmented buttons, connected groups, expressive sizes, and keyboard controls."
+    )
+  );
 
   docsCtx.set({ snippets, componentDocs: [QBtnGroupDocs, QBtnToggleDocs] });
 
@@ -36,10 +44,6 @@
   let alignment = $state<ToggleValue>("left");
   let action = $state("Choose an action");
 </script>
-
-<svelte:head>
-  <title>{pageTitle("Button groups")}</title>
-</svelte:head>
 
 <QDocs
   docName="Button groups"

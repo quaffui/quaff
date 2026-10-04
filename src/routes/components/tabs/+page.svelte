@@ -2,9 +2,17 @@
   import { QTabDocs, QTabsDocs } from "$components/tabs/docs";
   import { QDocs, QDocsSection } from "$docs";
   import { docsCtx } from "$docs/QDocs.svelte";
-  import { pageTitle } from "$helpers/pageTitle";
   import { QAvatar, QIcon, QInput, QSwitch, QTab, QTabs } from "$lib";
+  import { useMeta } from "$lib/meta";
+  import { pageMeta } from "$docs/metadata";
   import snippets from "./docs.snippets";
+
+  useMeta(
+    pageMeta(
+      "QTabs — Tabs",
+      "Switch between related views with QTabs for Svelte. Explore primary, secondary, and vertical tabs, router links, panels, and keyboard navigation."
+    )
+  );
 
   docsCtx.set({ snippets, componentDocs: [QTabsDocs, QTabDocs] });
 
@@ -81,10 +89,6 @@
   let hasWeeklySummary = $state(false);
   let isOnlineVisible = $state(true);
 </script>
-
-<svelte:head>
-  <title>{pageTitle("QTabs")}</title>
-</svelte:head>
 
 <QDocs docDescription="Switch between related views without leaving the page.">
   {#snippet display()}

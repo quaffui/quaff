@@ -3,10 +3,18 @@
   import { QTimeDocs } from "$components/time/docs";
   import { docsCtx } from "$docs/QDocs.svelte";
   import QLanguageExample from "$docs/QLanguageExample.svelte";
-  import { pageTitle } from "$helpers/pageTitle";
   import { QBtn, QInput, QTime } from "$lib";
   import { QDocs, QDocsSection } from "$docs";
+  import { useMeta } from "$lib/meta";
+  import { pageMeta } from "$docs/metadata";
   import snippets from "./docs.snippets";
+
+  useMeta(
+    pageMeta(
+      "QTime — Time Picker",
+      "Pick times with QTime for Svelte using clock dial or text input. Explore modal and docked modes, adaptive layouts, validation, and localization."
+    )
+  );
 
   docsCtx.set({ snippets, componentDocs: QTimeDocs });
 
@@ -24,10 +32,6 @@
   let controlledOpen = $state(false);
   let controlledPicker = $state<QTime>();
 </script>
-
-<svelte:head>
-  <title>{pageTitle("QTime")}</title>
-</svelte:head>
 
 <QDocs>
   {#snippet display()}

@@ -1,17 +1,21 @@
 <script lang="ts">
   import { QBreadcrumbsDocs, QBreadcrumbsElDocs } from "$components/breadcrumbs/docs";
   import { docsCtx } from "$docs/QDocs.svelte";
-  import { pageTitle } from "$helpers/pageTitle";
   import { QBreadcrumbs, QBreadcrumbsEl, QCard } from "$lib";
   import { QDocs, QDocsSection } from "$docs";
+  import { useMeta } from "$lib/meta";
+  import { pageMeta } from "$docs/metadata";
   import snippets from "./docs.snippets";
+
+  useMeta(
+    pageMeta(
+      "QBreadcrumbs — Breadcrumbs",
+      "Build breadcrumb navigation in Svelte with QBreadcrumbs. Customize separators, icons, spacing, active colors, links, and item content."
+    )
+  );
 
   docsCtx.set({ snippets, componentDocs: [QBreadcrumbsDocs, QBreadcrumbsElDocs] });
 </script>
-
-<svelte:head>
-  <title>{pageTitle("QBreadcrumbs")}</title>
-</svelte:head>
 
 <QDocs>
   {#snippet display()}

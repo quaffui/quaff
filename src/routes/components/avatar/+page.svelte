@@ -1,19 +1,23 @@
 <script lang="ts">
   import { QAvatarDocs } from "$components/avatar/docs";
   import { docsCtx } from "$docs/QDocs.svelte";
-  import { pageTitle } from "$helpers/pageTitle";
   import { QAvatar, QBtn } from "$lib";
   import { QDocs, QDocsSection } from "$docs";
+  import { useMeta } from "$lib/meta";
+  import { pageMeta } from "$docs/metadata";
   import snippets from "./docs.snippets";
+
+  useMeta(
+    pageMeta(
+      "QAvatar — Avatar",
+      "Display photos, initials, icons, or video with Quaff's Svelte avatar component. Explore sizes, shapes, custom content, and accessible examples."
+    )
+  );
 
   docsCtx.set({ snippets, componentDocs: QAvatarDocs });
 
   let paused = $state(false);
 </script>
-
-<svelte:head>
-  <title>{pageTitle("QAvatar")}</title>
-</svelte:head>
 
 <QDocs>
   {#snippet display()}

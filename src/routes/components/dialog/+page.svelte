@@ -15,8 +15,16 @@
   import { QDocs, QDocsSection } from "$docs";
   import type { QDialogPositionOptions } from "$components/dialog/props";
   import { docsCtx } from "$docs/QDocs.svelte";
-  import { pageTitle } from "$helpers/pageTitle";
+  import { useMeta } from "$lib/meta";
+  import { pageMeta } from "$docs/metadata";
   import snippets from "./docs.snippets";
+
+  useMeta(
+    pageMeta(
+      "QDialog — Dialog",
+      "Present dialogs in your Svelte app with QDialog. Explore modal, persistent, positioned, and full-screen dialogs with programmatic controls."
+    )
+  );
 
   docsCtx.set({ snippets, componentDocs: QDialogDocs });
 
@@ -40,10 +48,6 @@
   ];
   let selectedPosition: QDialogPositionOptions = $state("default");
 </script>
-
-<svelte:head>
-  <title>{pageTitle("QDialog")}</title>
-</svelte:head>
 
 <QDocs>
   {#snippet display()}

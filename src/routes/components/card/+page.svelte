@@ -3,10 +3,18 @@
   import { QCardActionsDocs, QCardDocs, QCardSectionDocs } from "$components/card/docs";
   import type { QCardActionsProps } from "$components/card/props";
   import { docsCtx } from "$docs/QDocs.svelte";
-  import { pageTitle } from "$helpers/pageTitle";
   import { QAvatar, QBtn, QCard, QCardActions, QCardSection, QIcon, QSelect, QSwitch } from "$lib";
   import { QDocs, QDocsSection } from "$docs";
+  import { useMeta } from "$lib/meta";
+  import { pageMeta } from "$docs/metadata";
   import snippets from "./docs.snippets";
+
+  useMeta(
+    pageMeta(
+      "QCard — Card",
+      "Arrange content with Quaff's Material 3 cards for Svelte. Explore card variants, images, horizontal sections, structured content, and actions."
+    )
+  );
 
   docsCtx.set({ snippets, componentDocs: [QCardDocs, QCardSectionDocs, QCardActionsDocs] });
 
@@ -52,10 +60,6 @@
   let isBagSaved = $state(false);
   let isInBasket = $state(false);
 </script>
-
-<svelte:head>
-  <title>{pageTitle("QCard")}</title>
-</svelte:head>
 
 <QDocs>
   {#snippet display()}

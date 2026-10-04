@@ -1,6 +1,14 @@
 <script lang="ts">
   import { QCodeBlock } from "$lib";
-  import { pageTitle } from "$helpers/pageTitle";
+  import { useMeta } from "$lib/meta";
+  import { pageMeta } from "$docs/metadata";
+
+  useMeta(
+    pageMeta(
+      "Page Layouts & Spacing",
+      "Structure page content with Quaff's q-page class and QLayout. Learn responsive columns, page spacing, and sizing that supports text scaling."
+    )
+  );
 
   const basicPage = `<div class="q-page">
   <h1>Settings</h1>
@@ -26,10 +34,6 @@
   </div>
 </div>`;
 </script>
-
-<svelte:head>
-  <title>{pageTitle("Pages")}</title>
-</svelte:head>
 
 <div class="q-page">
   <h1 class="q-mb-xl">Pages</h1>

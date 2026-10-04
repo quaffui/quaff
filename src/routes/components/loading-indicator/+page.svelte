@@ -3,9 +3,17 @@
   import { QLoadingIndicatorDocs } from "$components/loading-indicator/docs";
   import { QDocs, QDocsSection } from "$docs";
   import { docsCtx } from "$docs/QDocs.svelte";
-  import { pageTitle } from "$helpers/pageTitle";
   import { QBtn, QCard, QCardSection, QIcon, QLoadingIndicator } from "$lib";
+  import { useMeta } from "$lib/meta";
+  import { pageMeta } from "$docs/metadata";
   import snippets from "./docs.snippets";
+
+  useMeta(
+    pageMeta(
+      "QLoadingIndicator — Loading Indicator",
+      "Show short waits with Quaff's animated Material 3 loading indicator for Svelte. Try contained styles, sizes, colors, and button or card examples."
+    )
+  );
 
   docsCtx.set({ snippets, componentDocs: QLoadingIndicatorDocs });
 
@@ -35,10 +43,6 @@
     isRefreshing = false;
   }
 </script>
-
-<svelte:head>
-  <title>{pageTitle("QLoadingIndicator")}</title>
-</svelte:head>
 
 <QDocs>
   {#snippet display()}

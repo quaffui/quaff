@@ -2,9 +2,17 @@
   import { QToolbarDocs } from "$components/toolbar/docs";
   import { QDocs, QDocsSection } from "$docs";
   import { docsCtx } from "$docs/QDocs.svelte";
-  import { pageTitle } from "$helpers/pageTitle";
   import { QAvatar, QIconBtn, QSwitch, QToolbar } from "$lib";
+  import { useMeta } from "$lib/meta";
+  import { pageMeta } from "$docs/metadata";
   import snippets from "./docs.snippets";
+
+  useMeta(
+    pageMeta(
+      "QToolbar — Toolbar",
+      "Keep related actions together with QToolbar for Svelte. Explore floating, docked, and vertical Material 3 toolbars with interactive examples."
+    )
+  );
 
   docsCtx.set({ snippets, componentDocs: QToolbarDocs });
 
@@ -20,10 +28,6 @@
   let zoom = $state(1);
   // #endregion: --- Reactive variables
 </script>
-
-<svelte:head>
-  <title>{pageTitle("QToolbar")}</title>
-</svelte:head>
 
 <QDocs>
   {#snippet display()}

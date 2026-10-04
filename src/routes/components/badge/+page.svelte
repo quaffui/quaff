@@ -2,7 +2,6 @@
   import { QBadgeDocs } from "$components/badge/docs";
   import { QDocs, QDocsSection } from "$docs";
   import { docsCtx } from "$docs/QDocs.svelte";
-  import { pageTitle } from "$helpers/pageTitle";
   import {
     QBadge,
     QBtn,
@@ -14,17 +13,22 @@
     QItemSection,
     QList,
   } from "$lib";
+  import { useMeta } from "$lib/meta";
+  import { pageMeta } from "$docs/metadata";
   import snippets from "./docs.snippets";
+
+  useMeta(
+    pageMeta(
+      "QBadge — Badge",
+      "Show counts, notification dots, and short status labels with QBadge. See how to position Svelte badges on icons or alongside text."
+    )
+  );
 
   docsCtx.set({ snippets, componentDocs: QBadgeDocs });
 
   let hasNotification = $state(true);
   let unreadCount = $state(3);
 </script>
-
-<svelte:head>
-  <title>{pageTitle("QBadge")}</title>
-</svelte:head>
 
 <QDocs>
   {#snippet display()}

@@ -2,11 +2,19 @@
   import QCard from "$components/card/QCard.svelte";
   import { QCheckboxDocs } from "$components/checkbox/docs";
   import { docsCtx } from "$docs/QDocs.svelte";
-  import { pageTitle } from "$helpers/pageTitle";
   import { Notify, QBtn, QCheckbox, QIcon, QItem, QItemSection, QList } from "$lib";
   import { QDocs, QDocsSection } from "$docs";
 
+  import { useMeta } from "$lib/meta";
+  import { pageMeta } from "$docs/metadata";
   import snippets from "./docs.snippets";
+
+  useMeta(
+    pageMeta(
+      "QCheckbox — Checkbox",
+      "Collect checked, unchecked, and indeterminate choices with QCheckbox for Svelte. Learn value binding, disabled states, events, and accessibility."
+    )
+  );
 
   docsCtx.set({ snippets, componentDocs: QCheckboxDocs });
 
@@ -16,10 +24,6 @@
   let mixedValue = false;
   let indeterminate = true;
 </script>
-
-<svelte:head>
-  <title>{pageTitle("QCheckbox")}</title>
-</svelte:head>
 
 <QDocs>
   {#snippet display()}

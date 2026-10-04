@@ -1,17 +1,21 @@
 <script lang="ts">
   import { QIconDocs } from "$components/icon/docs";
   import { docsCtx } from "$docs/QDocs.svelte";
-  import { pageTitle } from "$helpers/pageTitle";
   import { QCard, QIcon } from "$lib";
   import { QDocs, QDocsSection } from "$docs";
+  import { useMeta } from "$lib/meta";
+  import { pageMeta } from "$docs/metadata";
   import snippets from "./docs.snippets";
+
+  useMeta(
+    pageMeta(
+      "QIcon — Icon",
+      "Display Material Symbols, images, and SVG icons with QIcon for Svelte. Customize size, color, and fill, with guidance for accessible icon labels."
+    )
+  );
 
   docsCtx.set({ snippets, componentDocs: QIconDocs });
 </script>
-
-<svelte:head>
-  <title>{pageTitle("QIcon")}</title>
-</svelte:head>
 
 <QDocs>
   {#snippet display()}

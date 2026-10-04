@@ -6,9 +6,17 @@
   import { QDocs, QDocsSection } from "$docs";
   import { docsCtx } from "$docs/QDocs.svelte";
   import QLanguageExample from "$docs/QLanguageExample.svelte";
-  import { pageTitle } from "$helpers/pageTitle";
   import { QBtn, QDate, QIcon, QInput, QSwitch } from "$lib";
+  import { useMeta } from "$lib/meta";
+  import { pageMeta } from "$docs/metadata";
   import snippets from "./docs.snippets";
+
+  useMeta(
+    pageMeta(
+      "QDate — Date & Range Picker",
+      "Select dates and date ranges with QDate for Svelte. Explore calendar and text input, date constraints, adaptive layouts, formatting, and localization."
+    )
+  );
 
   docsCtx.set({ snippets, componentDocs: QDateDocs });
 
@@ -87,10 +95,6 @@
     };
   }
 </script>
-
-<svelte:head>
-  <title>{pageTitle("QDate")}</title>
-</svelte:head>
 
 <QDocs>
   {#snippet display()}

@@ -1,10 +1,18 @@
 <script lang="ts">
   import { QFooterDocs } from "$components/footer/docs";
   import { docsCtx } from "$docs/QDocs.svelte";
-  import { pageTitle } from "$helpers/pageTitle";
   import { QBtn, QCard, QFooter, QIcon, QIconBtn, QLayout, QSwitch } from "$lib";
   import { QDocs, QDocsSection } from "$docs";
+  import { useMeta } from "$lib/meta";
+  import { pageMeta } from "$docs/metadata";
   import snippets from "./docs.snippets";
+
+  useMeta(
+    pageMeta(
+      "QFooter — Footer",
+      "Keep links and actions within reach with QFooter for Svelte. Explore visibility, custom height, scroll reveal, and integration with app layouts."
+    )
+  );
 
   docsCtx.set({ snippets, componentDocs: QFooterDocs });
 
@@ -74,10 +82,6 @@
 
   const journalPage = $derived(JOURNAL_PAGES[journalPageIndex]);
 </script>
-
-<svelte:head>
-  <title>{pageTitle("QFooter")}</title>
-</svelte:head>
 
 <QDocs
   docDescription="Keep helpful links and actions within reach with a footer that stays visible or follows the scroll."

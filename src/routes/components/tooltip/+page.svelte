@@ -1,20 +1,24 @@
 <script lang="ts">
   import { docsCtx } from "$docs/QDocs.svelte";
   import { QTooltipDocs } from "$components/tooltip/docs";
-  import { pageTitle } from "$helpers/pageTitle";
   import { QBtn, QCard, QCardActions, QCardSection, QIcon, QTooltip } from "$lib";
   import { QDocs, QDocsSection } from "$docs";
+  import { useMeta } from "$lib/meta";
+  import { pageMeta } from "$docs/metadata";
   import snippets from "./docs.snippets";
+
+  useMeta(
+    pageMeta(
+      "QTooltip — Tooltip",
+      "Add contextual help with QTooltip for Svelte. Customize placement, offsets, delays, targets, rich content, styling, and programmatic visibility."
+    )
+  );
 
   docsCtx.set({ snippets, componentDocs: QTooltipDocs });
 
   let tooltipRef = $state<QTooltip<string>>();
   let showControlledTooltip = $state(false);
 </script>
-
-<svelte:head>
-  <title>{pageTitle("QTooltip")}</title>
-</svelte:head>
 
 <QDocs>
   {#snippet display()}

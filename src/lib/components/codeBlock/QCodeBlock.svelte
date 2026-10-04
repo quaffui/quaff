@@ -114,8 +114,12 @@
   {:else if title}
     <h4>{title}</h4>
   {/if}
-  <!-- eslint-disable-next-line svelte/no-at-html-tags -- Shiki output; fallback source is escaped. -->
-  {@html html}
+  {#if html}
+    <!-- eslint-disable-next-line svelte/no-at-html-tags -- Shiki output; fallback source is escaped. -->
+    {@html html}
+  {:else}
+    <pre><code>{code}</code></pre>
+  {/if}
 </div>
 
 <style lang="scss">
@@ -128,6 +132,8 @@
       text-align: left;
       padding: 16px;
       overflow: auto;
+      background-color: var(--surface-container);
+      color: var(--on-surface);
     }
   }
 

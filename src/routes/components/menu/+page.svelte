@@ -1,7 +1,6 @@
 <script lang="ts">
   import { QMenuDocs } from "$components/menu/docs";
   import { docsCtx } from "$docs/QDocs.svelte";
-  import { pageTitle } from "$helpers/pageTitle";
   import {
     QBtn,
     QCard,
@@ -15,7 +14,16 @@
     QMenu,
   } from "$lib";
   import { QDocs, QDocsSection } from "$docs";
+  import { useMeta } from "$lib/meta";
+  import { pageMeta } from "$docs/metadata";
   import snippets from "./docs.snippets";
+
+  useMeta(
+    pageMeta(
+      "QMenu — Popup Menu",
+      "Create anchored popup menus with QMenu for Svelte. Explore expressive styling, custom targets, positioning, interactive content, and dialog use."
+    )
+  );
 
   docsCtx.set({ snippets, componentDocs: QMenuDocs });
 
@@ -30,10 +38,6 @@
   let isDialogOpen = $state(false);
   let isDialogMenuOpen = $state(false);
 </script>
-
-<svelte:head>
-  <title>{pageTitle("QMenu")}</title>
-</svelte:head>
 
 <QDocs>
   {#snippet display()}

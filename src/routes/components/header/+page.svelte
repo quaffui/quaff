@@ -2,7 +2,6 @@
   import { QHeaderDocs, QHeaderTitleDocs } from "$components/header/docs";
   import { QDocs, QDocsSection } from "$docs";
   import { docsCtx } from "$docs/QDocs.svelte";
-  import { pageTitle } from "$helpers/pageTitle";
   import {
     QAvatar,
     QBtn,
@@ -14,7 +13,16 @@
     QLayout,
     QSwitch,
   } from "$lib";
+  import { useMeta } from "$lib/meta";
+  import { pageMeta } from "$docs/metadata";
   import snippets from "./docs.snippets";
+
+  useMeta(
+    pageMeta(
+      "QHeader — App Bar",
+      "Build Material 3 app bars with QHeader for Svelte. Explore titles, subtitles, flexible heights, search, and headers that collapse or reveal on scroll."
+    )
+  );
 
   docsCtx.set({ snippets, componentDocs: [QHeaderDocs, QHeaderTitleDocs] });
 
@@ -101,10 +109,6 @@
     NOTES.filter((note) => note.title.toLowerCase().includes(searchQuery.trim().toLowerCase()))
   );
 </script>
-
-<svelte:head>
-  <title>{pageTitle("QHeader")}</title>
-</svelte:head>
 
 <QDocs docDescription="Keep navigation, titles, and actions at the top of your app.">
   {#snippet display()}

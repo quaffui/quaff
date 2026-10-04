@@ -21,9 +21,17 @@
   } from "$lib";
   import { QDocs, QDocsSection } from "$docs";
   import type { QLayoutProps } from "$components/layout/props";
-  import { pageTitle } from "$helpers/pageTitle";
   import { docsCtx } from "$docs/QDocs.svelte";
+  import { useMeta } from "$lib/meta";
+  import { pageMeta } from "$docs/metadata";
   import { snippet } from "./docs.snippets";
+
+  useMeta(
+    pageMeta(
+      "QLayout — App Layout",
+      "Structure your Svelte app with QLayout. Try combinations of headers, footers, drawers, navigation bars, and rails, and configure how they fit together."
+    )
+  );
 
   let displayLeftDrawerElement = $state<ReturnType<typeof QDrawer>>();
   let displayLeftDrawer = $state(true);
@@ -66,10 +74,6 @@
     }
   });
 </script>
-
-<svelte:head>
-  <title>{pageTitle("QLayout")}</title>
-</svelte:head>
 
 <QDocs>
   {#snippet display()}
