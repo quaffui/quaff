@@ -93,8 +93,10 @@
 
 <QDocs>
   {#snippet display()}
-    <div class="table-preview">
-      <p class="label-large preview-label">ATLAS · SPECIMEN CATALOGUE</p>
+    <div class="table-preview q-pa-md text-on-surface">
+      <p class="label-large text-on-surface-variant q-ma-none q-mb-md">
+        ATLAS · SPECIMEN CATALOGUE
+      </p>
       <QTable
         columns={COLUMNS.slice(0, 2)}
         rows={SPECIMENS.slice(0, 3)}
@@ -116,12 +118,12 @@
         order, and a third time to clear sorting.
       {/snippet}
 
-      <div class="demo-panel">
-        <div class="demo-heading">
-          <div>
-            <h6>Atlas specimen catalogue</h6>
-            <p class="body-small">12 records · accession, specimen and class</p>
-          </div>
+      <div class="demo-panel q-pa-lg">
+        <div class="q-mb-lg">
+          <h6>Atlas specimen catalogue</h6>
+          <p class="body-small text-on-surface-variant q-ma-none q-mt-xs">
+            12 records · accession, specimen and class
+          </p>
         </div>
         <QTable
           columns={[
@@ -145,7 +147,7 @@
           ]}
           aria-label="Specimen catalogue"
         />
-        <p class="demo-note body-small">
+        <p class="body-small text-on-surface-variant q-ma-none q-mt-md">
           On narrow screens, scroll the table sideways. Its scroll area and sort buttons are
           keyboard accessible.
         </p>
@@ -161,7 +163,7 @@
         Try sorting Class, Mass and Storage below.
       {/snippet}
 
-      <div class="demo-panel">
+      <div class="demo-panel q-pa-lg">
         <QTable
           columns={[
             { name: "specimen", label: "Specimen", field: "name", sortable: true },
@@ -192,18 +194,24 @@
           bordered
           aria-label="Specimen measurements and storage"
         />
-        <dl class="column-notes body-small">
+        <dl class="column-notes flex q-gap-md q-mt-lg body-small">
           <div>
-            <dt>Class</dt>
-            <dd>Custom order: Stone → Stony-iron → Iron.</dd>
+            <dt class="text-weight-medium q-mb-xs">Class</dt>
+            <dd class="text-on-surface-variant q-ma-none">
+              Custom order: Stone → Stony-iron → Iron.
+            </dd>
           </div>
           <div>
-            <dt>Mass</dt>
-            <dd>Formatted in grams, sorted numerically and aligned right.</dd>
+            <dt class="text-weight-medium q-mb-xs">Mass</dt>
+            <dd class="text-on-surface-variant q-ma-none">
+              Formatted in grams, sorted numerically and aligned right.
+            </dd>
           </div>
           <div>
-            <dt>Storage</dt>
-            <dd>Cabinet and drawer combined into one field, with padded drawer numbers.</dd>
+            <dt class="text-weight-medium q-mb-xs">Storage</dt>
+            <dd class="text-on-surface-variant q-ma-none">
+              Cabinet and drawer combined into one field, with padded drawer numbers.
+            </dd>
           </div>
         </dl>
       </div>
@@ -216,9 +224,9 @@
         same table to compare their effects.
       {/snippet}
 
-      <div class="demo-panel">
-        <fieldset class="appearance-controls">
-          <legend class="label-large">Table options</legend>
+      <div class="demo-panel q-pa-lg">
+        <fieldset class="appearance-controls flex q-gap-md q-mb-lg">
+          <legend class="label-large q-mb-md">Table options</legend>
           <QSwitch bind:value={dense} label="Dense" />
           <QSwitch bind:value={flat} label="Flat" />
           <QSwitch bind:value={bordered} label="Bordered" />
@@ -244,8 +252,8 @@
         remain checked when filtering or changing pages.
       {/snippet}
 
-      <div class="demo-panel">
-        <div class="demo-heading">
+      <div class="demo-panel q-pa-lg">
+        <div class="flex justify-between items-center q-gap-md q-mb-lg">
           <h6>Browse the collection</h6>
           <QBtn
             icon="add"
@@ -255,7 +263,7 @@
             onclick={receiveSpecimen}
           />
         </div>
-        <div class="filter-controls">
+        <div class="filter-controls q-gap-md q-mb-md">
           <QInput
             bind:value={query}
             label="Search specimens"
@@ -271,8 +279,8 @@
             outlined
           />
         </div>
-        <div class="table-toolbar">
-          <p class="body-small" role="status">
+        <div class="flex justify-between items-center q-gap-md q-mb-lg">
+          <p class="body-small q-ma-none" role="status">
             {filteredRows.length} of {inventory.length} specimens shown
           </p>
           <QBtn label="Clear filters" variant="flat" onclick={clearFilters} />
@@ -300,12 +308,12 @@
           {/snippet}
         </QTable>
         {#if !filteredRows.length}
-          <p class="demo-note body-medium">
+          <p class="body-medium text-on-surface-variant q-ma-none q-mt-md">
             No specimens match. Try another name or clear the filters.
           </p>
         {/if}
-        <div class="table-toolbar selection-summary">
-          <p class="body-small" role="status">{selectedIds.length} selected</p>
+        <div class="flex justify-between items-center q-gap-md q-mt-md">
+          <p class="body-small q-ma-none" role="status">{selectedIds.length} selected</p>
           <QBtn
             label="Clear selection"
             variant="outlined"
@@ -325,7 +333,7 @@
         > for application configuration.
       {/snippet}
 
-      <div class="demo-panel">
+      <div class="demo-panel q-pa-lg">
         <QLanguageExample>
           <QTable
             columns={COLUMNS}
@@ -340,100 +348,35 @@
   {/snippet}
 </QDocs>
 
-<style>
-  p {
-    margin: 0;
-  }
+<style lang="scss">
+  @use "$css/mixins";
 
   .table-preview {
     width: 100%;
     max-width: 560px;
     max-height: 100%;
     overflow: auto;
-    padding: 16px;
-    color: var(--on-surface);
     background: var(--surface-container-low);
     border-radius: 16px;
-  }
-
-  .preview-label {
-    margin-block-end: 16px;
-    color: var(--on-surface-variant);
   }
 
   .demo-panel {
     min-width: 0;
-    padding: 24px;
     background: var(--surface-container-low);
     border-radius: 16px;
-  }
-
-  .demo-heading,
-  .table-toolbar {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
-    gap: 12px;
-    margin-block-end: 20px;
-  }
-
-  .demo-heading > div {
-    min-width: 0;
-  }
-
-  .demo-heading p {
-    margin-block-start: 4px;
-    color: var(--on-surface-variant);
-  }
-
-  .demo-note {
-    margin-block-start: 16px;
-    color: var(--on-surface-variant);
-  }
-
-  .column-notes {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px 24px;
-    margin-block-start: 20px;
   }
 
   .column-notes > div {
     flex: 1 1 180px;
   }
 
-  .column-notes dt {
-    margin-block-end: 4px;
-    font-weight: 500;
-  }
-
-  .column-notes dd {
-    margin: 0;
-    color: var(--on-surface-variant);
-  }
-
   .appearance-controls {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px 24px;
-    margin-block-end: 20px;
     border: 0;
-  }
-
-  .appearance-controls legend {
-    margin-block-end: 12px;
   }
 
   .filter-controls {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
-    gap: 16px;
-    margin-block-end: 12px;
-  }
-
-  .filter-controls :global(.q-field) {
-    min-width: 0;
   }
 
   .selection-cell :global(.q-checkbox__label) {
@@ -445,13 +388,9 @@
     white-space: nowrap;
   }
 
-  .selection-summary {
-    margin-block: 16px 0;
-  }
-
-  @media (width < 600px) {
+  @include mixins.up-to-sm {
     .demo-panel {
-      padding: 16px;
+      @include mixins.padding("a-md");
     }
   }
 </style>
