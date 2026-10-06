@@ -111,9 +111,11 @@
 
 <QDocs>
   {#snippet display()}
-    <div class="hero surface">
+    <div class="hero surface q-pa-lg text-center">
       <QBtn expressive filled icon="bookmark" label="Save note" bind:selected={heroSelected} />
-      <p class="body-small" role="status">{heroSelected ? "Saved" : "Not saved"}</p>
+      <p class="body-small q-ma-none q-mt-md" role="status">
+        {heroSelected ? "Saved" : "Not saved"}
+      </p>
     </div>
   {/snippet}
 
@@ -126,15 +128,17 @@
           another variant. An explicit <code>variant</code> takes precedence over these boolean props.
         {/snippet}
 
-        <div class="example surface">
-          <div class="actions" role="group" aria-label="Button variants">
+        <div class="example surface q-pa-lg">
+          <div class="flex items-center q-gap-md" role="group" aria-label="Button variants">
             <QBtn label="Elevated" onclick={() => tryVariant("Elevated")} />
             <QBtn filled label="Filled" onclick={() => tryVariant("Filled")} />
             <QBtn tonal label="Tonal" onclick={() => tryVariant("Tonal")} />
             <QBtn outlined label="Outlined" onclick={() => tryVariant("Outlined")} />
             <QBtn flat label="Flat" onclick={() => tryVariant("Flat")} />
           </div>
-          <p class="feedback body-small" role="status">{variantFeedback}</p>
+          <p class="feedback body-small text-on-surface-variant q-ma-none q-mt-lg" role="status">
+            {variantFeedback}
+          </p>
         </div>
       </QDocsSection>
 
@@ -144,9 +148,9 @@
           <code>selected</code> to control the pressed state; flat labeled buttons do not toggle.
         {/snippet}
 
-        <div class="comparison">
-          <div class="example surface">
-            <p class="label-medium comparison-label">Standard</p>
+        <div class="comparison q-gap-md">
+          <div class="example surface q-pa-lg">
+            <p class="label-medium q-ma-none q-mb-lg">Standard</p>
             <QBtn
               expressive={false}
               outlined
@@ -154,12 +158,12 @@
               label="Save note"
               bind:selected={standardSelected}
             />
-            <p class="feedback body-small" role="status">
+            <p class="feedback body-small text-on-surface-variant q-ma-none q-mt-lg" role="status">
               {standardSelected ? "Selected" : "Not selected"}
             </p>
           </div>
-          <div class="example surface">
-            <p class="label-medium comparison-label">Expressive</p>
+          <div class="example surface q-pa-lg">
+            <p class="label-medium q-ma-none q-mb-lg">Expressive</p>
             <QBtn
               expressive
               outlined
@@ -167,7 +171,7 @@
               label="Save note"
               bind:selected={expressiveSelected}
             />
-            <p class="feedback body-small" role="status">
+            <p class="feedback body-small text-on-surface-variant q-ma-none q-mt-lg" role="status">
               {expressiveSelected ? "Selected" : "Not selected"}
             </p>
           </div>
@@ -187,7 +191,7 @@
         {/snippet}
 
         <div class="playground surface">
-          <div class="preview">
+          <div class="preview flex column flex-center q-gap-lg q-px-lg">
             <QBtn
               {expressive}
               {variant}
@@ -201,9 +205,15 @@
               rippleColor={rippleMode === "tertiary" ? "tertiary" : undefined}
               onclick={() => (previewClicks += 1)}>Read issue</QBtn
             >
-            <p class="body-small" role="status">Pressed {previewClicks} times</p>
+            <p class="body-small q-ma-none text-on-surface-variant" role="status">
+              Pressed {previewClicks} times
+            </p>
           </div>
-          <div class="settings" role="group" aria-label="Playground settings">
+          <div
+            class="settings items-start q-gap-lg q-pa-lg"
+            role="group"
+            aria-label="Playground settings"
+          >
             <QSelect outlined label="Variant" options={VARIANTS} bind:value={variant} />
             <QSelect outlined label="Size" options={SIZES} bind:value={size} emitValue />
             <QSelect
@@ -258,8 +268,8 @@
           prevents interaction and removes the button from keyboard navigation.
         {/snippet}
 
-        <div class="example surface">
-          <div class="actions">
+        <div class="example surface q-pa-lg">
+          <div class="flex items-center q-gap-md">
             <QBtn
               filled
               icon="publish"
@@ -270,7 +280,9 @@
             />
             <QBtn outlined icon="schedule" label="Schedule note" disabled />
           </div>
-          <p class="feedback body-small" role="status">{publishFeedback}</p>
+          <p class="feedback body-small text-on-surface-variant q-ma-none q-mt-lg" role="status">
+            {publishFeedback}
+          </p>
         </div>
       </QDocsSection>
 
@@ -280,7 +292,7 @@
           <code>form</code>. Try submitting with Enter, resetting the value, or following the link.
         {/snippet}
 
-        <form class="example surface" onsubmit={saveTitle} onreset={resetTitle}>
+        <form class="example surface q-pa-lg" onsubmit={saveTitle} onreset={resetTitle}>
           <QInput
             outlined
             label="Issue title"
@@ -289,12 +301,14 @@
             required
             maxlength={48}
           />
-          <div class="actions q-mt-md">
+          <div class="flex items-center q-gap-md q-mt-md">
             <QBtn type="submit" filled label="Save title" disabled={!title.trim()} />
             <QBtn type="reset" outlined label="Reset" />
             <QBtn to="#variants" flat icon="arrow_upward" label="Back to variants" />
           </div>
-          <p class="feedback body-small" role="status">{formFeedback}</p>
+          <p class="feedback body-small text-on-surface-variant q-ma-none q-mt-lg" role="status">
+            {formFeedback}
+          </p>
         </form>
         <p class="body-medium q-mt-md">
           <code>to</code> or <code>href</code> renders an anchor; <code>target</code> and
@@ -308,6 +322,8 @@
 </QDocs>
 
 <style lang="scss">
+  @use "$css/mixins";
+
   .examples :global(.q-docs-section__header h5) {
     overflow-wrap: anywhere;
   }
@@ -316,14 +332,7 @@
     max-width: 100%;
     max-height: 100%;
     overflow: auto;
-    padding: 24px;
     border-radius: 24px;
-    text-align: center;
-    flex: 0 1 auto;
-
-    p {
-      margin: 16px 0 0;
-    }
   }
 
   .example,
@@ -331,60 +340,25 @@
     border-radius: 20px;
   }
 
-  .example {
-    padding: 24px;
-  }
-
-  .actions {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 16px;
-  }
-
   .feedback {
-    margin: 20px 0 0;
-    color: var(--on-surface-variant);
     overflow-wrap: anywhere;
   }
 
   .comparison {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
-    gap: 16px;
-  }
-
-  .comparison-label {
-    margin: 0 0 20px;
   }
 
   .preview {
     min-height: 240px;
-    padding: 32px 24px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 24px;
-
-    p {
-      margin: 0;
-      color: var(--on-surface-variant);
-    }
+    padding-block: 32px;
   }
 
   .settings {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
-    align-items: start;
-    gap: 24px;
-    padding: 24px;
     border-block-start: 1px solid var(--outline-variant);
     border-radius: 0;
-
-    :global(.q-field) {
-      min-width: 0;
-    }
 
     :global(.q-switch__label) {
       min-width: 0;
@@ -392,19 +366,11 @@
     }
   }
 
-  .hero,
-  .example,
-  .preview {
-    :global(.q-btn) {
-      max-width: 100%;
-    }
-  }
-
-  @media (max-width: 520px) {
+  @include mixins.up-to-sm {
     .example,
     .settings,
     .preview {
-      padding: 16px;
+      @include mixins.padding("a-md");
     }
   }
 </style>
