@@ -90,7 +90,7 @@
         button's shape and rotates its icon while preserving its color.
       {/snippet}
 
-      <div class="flex q-gap-lg" style="flex-wrap: wrap;">
+      <div class="flex q-gap-lg">
         {#each variants as variant (variant)}
           <QSplitBtn
             {variant}
@@ -125,7 +125,7 @@
         {#each sizes as size (size)}
           <div class="split-size-example">
             <p class="q-mb-sm">{size.toUpperCase()} · {HEIGHTS[size]}px</p>
-            <div class="split-example-scroll">
+            <div class="split-example-scroll q-pa-sm">
               <QSplitBtn
                 {size}
                 label="Share"
@@ -159,7 +159,7 @@
         </p>
       {/snippet}
 
-      <div class="flex q-gap-lg" style="flex-wrap: wrap;">
+      <div class="flex q-gap-lg">
         <QSplitBtn label="Save" disabled menuLabel="More disabled save options">
           <QList role="presentation">
             <QItem clickable role="menuitem"><QItemSection>Save a copy</QItemSection></QItem>
@@ -227,6 +227,5 @@
 
   .split-example-scroll {
     overflow-x: auto;
-    padding: 8px;
   }
 </style>
