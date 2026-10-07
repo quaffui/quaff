@@ -170,7 +170,7 @@
         {#each sizes as size (size)}
           <div class="group-size-example">
             <p class="q-mb-sm">{size.toUpperCase()} · {heights[size]}px</p>
-            <div class="group-example-scroll">
+            <div class="group-example-scroll q-pa-sm">
               <QBtnGroup expressive {size} role="group" aria-label={`${size} actions`}>
                 <QBtn label="Edit" icon="edit" filled />
                 <QBtn label="Share" icon="share" tonal />
@@ -276,6 +276,5 @@
   .group-example-scroll {
     max-width: 100%;
     overflow-x: auto;
-    padding: 8px;
   }
 </style>
