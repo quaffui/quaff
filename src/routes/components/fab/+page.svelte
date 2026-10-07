@@ -104,16 +104,16 @@
   docDescription="Present a primary action with a FAB, add a label with an extended FAB, or offer related actions in a FAB menu."
 >
   {#snippet display()}
-    <div class="fab-placement fab-notebook">
-      <div class="fab-demo-heading">
+    <div class="fab-placement fab-notebook border text-on-surface">
+      <div class="fab-demo-heading flex items-center q-gap-sm">
         <QIcon name="auto_stories" aria-hidden="true" />
         <strong>Little notes</strong>
-        <span>Just for you</span>
+        <span class="text-on-surface-variant">Just for you</span>
       </div>
-      <div class="fab-note-preview">
+      <div class="fab-note-preview primary-container">
         <QIcon name="wb_sunny" size="32px" aria-hidden="true" />
         <h5>Make room for a slow weekend</h5>
-        <p>{savedNote ? "Saved to your notebook." : "Small plans, good days."}</p>
+        <p class="q-ma-none">{savedNote ? "Saved to your notebook." : "Small plans, good days."}</p>
       </div>
       <QFab
         expressive
@@ -143,9 +143,9 @@
 
       {#each [false, true] as expressive (expressive)}
         <h6 class="q-my-md">{expressive ? "Expressive" : "Baseline"}</h6>
-        <div class="fab-examples">
+        <div class="flex items-center q-gap-lg">
           {#each sizes as size (size)}
-            <div class="fab-example">
+            <div class="fab-example flex items-center">
               <QFab
                 {expressive}
                 {size}
@@ -168,9 +168,9 @@
         <code>tertiary</code> tone colors. <code>surface</code> is a legacy baseline style.
       {/snippet}
 
-      <div class="fab-examples">
+      <div class="flex items-center q-gap-lg">
         {#each colors as color (color)}
-          <div class="fab-example">
+          <div class="fab-example flex items-center">
             <QFab
               expressive={color !== "surface"}
               {color}
@@ -201,9 +201,9 @@
 
       <QSwitch bind:value={isCollapsed} label="Collapse to icon" class="q-mb-lg" />
       <h6 class="q-my-md">Expressive</h6>
-      <div class="fab-examples">
+      <div class="flex items-center q-gap-lg">
         {#each sizes as size (size)}
-          <div class="fab-example">
+          <div class="fab-example flex items-center">
             <QExtendedFab
               expressive
               {size}
@@ -217,7 +217,7 @@
         {/each}
       </div>
       <h6 class="q-my-md">Baseline</h6>
-      <div class="fab-examples">
+      <div class="flex items-center q-gap-lg">
         <QExtendedFab
           expressive={false}
           icon="edit"
@@ -249,31 +249,34 @@
         </p>
       {/snippet}
 
-      <div class="fab-placement fab-workspace">
-        <div class="fab-demo-heading">
+      <div class="fab-placement fab-workspace border text-on-surface">
+        <div class="fab-demo-heading flex items-center q-gap-sm">
           <QIcon name="folder_open" aria-hidden="true" />
           <strong>Weekend workspace</strong>
-          <span>Your next idea</span>
+          <span class="text-on-surface-variant">Your next idea</span>
         </div>
-        <div class="fab-file-grid">
-          <div class="fab-file">
-            <span class="fab-file-icon"><QIcon name="description" aria-hidden="true" /></span>
+        <div class="fab-file-grid q-gap-md">
+          <div class="fab-file flex column items-start q-pa-md">
+            <span class="fab-file-icon flex-center primary-container"
+              ><QIcon name="description" aria-hidden="true" /></span
+            >
             <strong>A little escape</strong>
-            <span>Trip notes · Today</span>
+            <span class="text-on-surface-variant">Trip notes · Today</span>
           </div>
-          <div class="fab-file">
-            <span class="fab-file-icon fab-file-icon--drawing"
+          <div class="fab-file flex column items-start q-pa-md">
+            <span class="fab-file-icon flex-center tertiary-container"
               ><QIcon name="draw" aria-hidden="true" /></span
             >
             <strong>By the water</strong>
-            <span>Sketch · Yesterday</span>
+            <span class="text-on-surface-variant">Sketch · Yesterday</span>
           </div>
           {#if createdItem}
-            <div class="fab-file">
-              <span class="fab-file-icon"><QIcon name={createdItem.icon} aria-hidden="true" /></span
+            <div class="fab-file flex column items-start q-pa-md">
+              <span class="fab-file-icon flex-center primary-container"
+                ><QIcon name={createdItem.icon} aria-hidden="true" /></span
               >
               <strong>Untitled {createdItem.label.toLowerCase()}</strong>
-              <span>Just created</span>
+              <span class="text-on-surface-variant">Just created</span>
             </div>
           {/if}
         </div>
@@ -301,34 +304,34 @@
         bottom and trailing edges. Scroll the notes, then use the FAB to write your own.
       {/snippet}
 
-      <div class="fab-placement">
+      <div class="fab-placement border text-on-surface">
         <!-- svelte-ignore a11y_no_noninteractive_tabindex (The scrollable region needs keyboard access.) -->
         <div class="fab-scroll" role="region" aria-label="Scrollable notebook" tabindex="0">
-          <div class="fab-demo-heading">
+          <div class="fab-demo-heading flex items-center q-gap-sm">
             <QIcon name="auto_stories" aria-hidden="true" />
             <strong>Little notes</strong>
-            <span>Keep a good thought</span>
+            <span class="text-on-surface-variant">Keep a good thought</span>
           </div>
-          <ul class="fab-note-list">
+          <ul class="fab-note-list q-ma-none q-pa-none">
             {#if savedNote}
-              <li>
-                <span class="fab-file-icon"><QIcon name="edit_note" aria-hidden="true" /></span>
+              <li class="flex items-center q-gap-md q-py-md border-bottom border-outline-variant">
+                <span class="fab-file-icon flex-center primary-container"
+                  ><QIcon name="edit_note" aria-hidden="true" /></span
+                >
                 <div>
                   <strong>{savedNote}</strong>
-                  <p>Saved just now</p>
+                  <p class="q-ma-none text-on-surface-variant">Saved just now</p>
                 </div>
               </li>
             {/if}
             {#each notes as note (note.title)}
-              <li>
-                <span
-                  class="fab-file-icon"
-                  style="background: var(--{note.color}-container); color: var(--on-{note.color}-container);"
+              <li class="flex items-center q-gap-md q-py-md border-bottom border-outline-variant">
+                <span class="fab-file-icon flex-center {note.color}-container"
                   ><QIcon name={note.icon} aria-hidden="true" /></span
                 >
                 <div>
                   <strong>{note.title}</strong>
-                  <p>{note.detail}</p>
+                  <p class="q-ma-none text-on-surface-variant">{note.detail}</p>
                 </div>
               </li>
             {/each}
@@ -347,7 +350,7 @@
       </p>
 
       <QDialog bind:value={isComposerOpen} modal aria-labelledby="fab-note-heading">
-        <form class="fab-note-form" onsubmit={saveNote}>
+        <form class="fab-note-form flex column q-gap-lg" onsubmit={saveNote}>
           <h5 id="fab-note-heading">A new little note</h5>
           <QInput
             label="What would you like to remember?"
@@ -355,7 +358,7 @@
             maxlength={60}
             required
           />
-          <div class="fab-form-actions">
+          <div class="flex justify-end q-gap-sm">
             <QBtn
               type="button"
               variant="flat"
@@ -399,16 +402,7 @@
 </QDocs>
 
 <style>
-  .fab-examples {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 24px;
-  }
-
   .fab-example {
-    display: flex;
-    align-items: center;
     gap: 12px;
   }
 
@@ -416,10 +410,8 @@
     position: relative;
     height: 320px;
     overflow: hidden;
-    border: 1px solid var(--outline-variant);
     border-radius: 24px;
     background: var(--surface-container-low);
-    color: var(--on-surface);
   }
 
   .fab-scroll {
@@ -446,34 +438,22 @@
   }
 
   .fab-demo-heading {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 8px;
     margin-bottom: 20px;
   }
 
   .fab-demo-heading > span {
     margin-inline-start: auto;
-    color: var(--on-surface-variant);
     font-size: 0.75rem;
   }
 
   .fab-note-preview {
     padding: 20px;
     border-radius: 8px 24px 24px 24px;
-    background: var(--primary-container);
-    color: var(--on-primary-container);
     overflow-wrap: anywhere;
   }
 
   .fab-note-preview h5 {
     margin-block: 12px 8px;
-  }
-
-  .fab-note-preview p,
-  .fab-note-list p {
-    margin: 0;
   }
 
   .fab-workspace {
@@ -485,68 +465,39 @@
   .fab-file-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 144px), 1fr));
-    gap: 16px;
   }
 
   .fab-file {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
     gap: 12px;
-    padding: 16px;
     border-radius: 16px;
     background: var(--surface-container-highest);
   }
 
   .fab-file > span:last-child,
   .fab-note-list p {
-    color: var(--on-surface-variant);
     font-size: 0.875rem;
   }
 
   .fab-file-icon {
     display: inline-flex;
-    align-items: center;
-    justify-content: center;
     flex-shrink: 0;
     width: 44px;
     height: 44px;
     border-radius: 14px;
-    background: var(--primary-container);
-    color: var(--on-primary-container);
-  }
-
-  .fab-file-icon--drawing {
-    background: var(--tertiary-container);
-    color: var(--on-tertiary-container);
   }
 
   .fab-note-list {
     list-style: none;
-    margin: 0;
-    padding: 0;
   }
 
   .fab-note-list li {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    padding-block: 16px;
-    border-bottom: 1px solid var(--outline-variant);
+    flex-wrap: nowrap;
     border-radius: 0;
     overflow-wrap: anywhere;
   }
 
   .fab-note-form {
-    display: grid;
-    gap: 24px;
     width: 416px;
     max-width: 100%;
-  }
-
-  .fab-form-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 8px;
   }
 </style>
