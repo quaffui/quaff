@@ -126,11 +126,17 @@
         </QHeader>
       {/snippet}
       {#snippet content()}
-        <div class="workout-content">
-          <div class="workout-art" aria-hidden="true">
-            <span class="primary-container"><QIcon name="directions_run" size="40px" /></span>
-            <span class="tertiary-container"><QIcon name="fitness_center" size="48px" /></span>
-            <span class="secondary-container"><QIcon name="sports_gymnastics" size="40px" /></span>
+        <div class="q-pa-md">
+          <div class="workout-art flex items-end justify-center" aria-hidden="true">
+            <span class="flex flex-center primary-container"
+              ><QIcon name="directions_run" size="40px" /></span
+            >
+            <span class="flex flex-center tertiary-container"
+              ><QIcon name="fitness_center" size="48px" /></span
+            >
+            <span class="flex flex-center secondary-container"
+              ><QIcon name="sports_gymnastics" size="40px" /></span
+            >
           </div>
           <div class="label-medium text-on-surface-variant q-mt-md">TONIGHT'S CLASS</div>
           <h2 class="headline-small q-my-sm">Strength circuit</h2>
@@ -151,11 +157,11 @@
           and a border.
         {/snippet}
 
-        <div class="example-controls">
+        <div class="example-controls flex q-mb-md">
           <QSwitch label="Elevated" bind:value={hasElevation} />
           <QSwitch label="Bordered" bind:value={hasBorder} />
         </div>
-        <div class="header-frame">
+        <div class="header-frame no-overflow">
           <QHeader elevated={hasElevation} bordered={hasBorder}>
             <QIconBtn
               icon="arrow_back"
@@ -173,7 +179,7 @@
               onclick={() => noteIndex++}
             />
           </QHeader>
-          <div class="note-preview" aria-live="polite">
+          <div class="flex items-center q-gap-lg q-pa-lg" aria-live="polite">
             <QAvatar size="64px" class={currentNote.color} aria-hidden="true">
               <QIcon name={currentNote.icon} size="32px" />
             </QAvatar>
@@ -195,12 +201,12 @@
           and <code>align="center"</code> to <code>QHeaderTitle</code>.
         {/snippet}
 
-        <div class="example-controls">
+        <div class="example-controls flex q-mb-md">
           <QSwitch label="Large" bind:value={hasLargeAppBar} />
           <QSwitch label="Centered" bind:value={hasCenteredAppBar} />
           <QSwitch label="Subtitle" bind:value={hasAppBarSubtitle} />
         </div>
-        <div class="header-frame city-preview">
+        <div class="header-frame city-preview no-overflow">
           <QHeader variant={hasLargeAppBar ? "large" : "medium"}>
             <QIcon name="apartment" class="text-primary q-ml-sm" aria-hidden="true" />
             <QHeaderTitle
@@ -215,20 +221,23 @@
               bind:selected={hasSavedWeekend}
             />
           </QHeader>
-          <div class="city-content">
-            <div class="city-art" aria-hidden="true">
+          <div class="q-pt-md q-px-lg q-pb-lg">
+            <div
+              class="city-art flex items-end justify-center q-px-md no-overflow"
+              aria-hidden="true"
+            >
               <span class="city-sun tertiary-container"></span>
-              <span class="city-building secondary-container"
+              <span class="city-building flex flex-center secondary-container"
                 ><QIcon name="window" size="40px" /></span
               >
-              <span class="city-building primary-container"
+              <span class="city-building flex flex-center primary-container"
                 ><QIcon name="door_front" size="48px" /></span
               >
-              <span class="city-building tertiary-container"
+              <span class="city-building flex flex-center tertiary-container"
                 ><QIcon name="window" size="40px" /></span
               >
             </div>
-            <div class="city-caption">
+            <div class="flex items-end justify-between q-gap-md q-pt-lg">
               <div>
                 <div class="label-medium text-on-surface-variant">18–19 MAY · FREE ENTRY</div>
                 <h6 class="title-large q-mt-sm q-mb-xs">See the city from the inside.</h6>
@@ -250,7 +259,7 @@
           this booking app uses <code>height={96}</code>.
         {/snippet}
 
-        <QLayout class="header-frame sauna-layout">
+        <QLayout class="header-frame sauna-layout no-overflow">
           {#snippet header()}
             <QHeader height={96} class="tertiary-container">
               <QIcon name="hot_tub" size="32px" class="q-ml-md" aria-hidden="true" />
@@ -263,12 +272,12 @@
             </QHeader>
           {/snippet}
           {#snippet content()}
-            <div class="sauna-content">
+            <div class="q-pa-md">
               <div class="label-large text-on-surface-variant q-mb-md">
                 TODAY · 60 MINUTES · €18
               </div>
               {#each SAUNA_SESSIONS as session (session)}
-                <div class="session-row">
+                <div class="session-row flex items-center justify-between q-gap-md q-py-sm">
                   <div class="title-large">{session}</div>
                   <QBtn
                     variant="tonal"
@@ -295,7 +304,7 @@
           and subtitle become compact and stay small until you return to the top.
         {/snippet}
 
-        <QLayout class="header-frame harbor-layout">
+        <QLayout class="header-frame harbor-layout no-overflow">
           {#snippet header()}
             <QHeader variant="large" collapse>
               <QIcon name="explore" class="text-primary q-ml-sm" aria-hidden="true" />
@@ -309,15 +318,17 @@
             </QHeader>
           {/snippet}
           {#snippet content()}
-            <div class="harbor-content">
-              <div class="walk-intro body-medium text-on-surface-variant">
+            <div class="harbor-content q-px-lg q-pb-lg">
+              <div class="walk-intro flex items-center body-medium text-on-surface-variant">
                 <QIcon name="directions_walk" aria-hidden="true" />
                 <span>Two hours along the waterfront. Start at the harbor clock.</span>
               </div>
               {#each HARBOR_STOPS as stop, i (stop.title)}
-                <article class="harbor-stop">
-                  <div class="stop-marker" aria-hidden="true">
-                    <span class={stop.color}><QIcon name={stop.icon} size="28px" /></span>
+                <article class="harbor-stop q-gap-md">
+                  <div class="stop-marker flex justify-center" aria-hidden="true">
+                    <span class="flex flex-center {stop.color}"
+                      ><QIcon name={stop.icon} size="28px" /></span
+                    >
                   </div>
                   <div>
                     <div class="label-medium text-on-surface-variant">
@@ -329,7 +340,7 @@
                   </div>
                 </article>
               {/each}
-              <p class="walk-saved label-large text-primary" aria-live="polite">
+              <p class="walk-saved label-large text-primary q-ma-none" aria-live="polite">
                 {hasSavedWalk
                   ? "Saved to your plans. See you by the water."
                   : "Save this walk for your next free morning."}
@@ -346,7 +357,7 @@
           the header height before it hides.
         {/snippet}
 
-        <QLayout class="header-frame reader-layout">
+        <QLayout class="header-frame reader-layout no-overflow">
           {#snippet header()}
             <QHeader reveal revealOffset={48} bordered>
               <QIcon name="auto_stories" class="text-tertiary q-ml-md" aria-hidden="true" />
@@ -354,7 +365,7 @@
             </QHeader>
           {/snippet}
           {#snippet content()}
-            <div class="journal-content">
+            <div class="journal-content q-mx-auto q-pa-lg">
               {#each NOTES as note (note.title)}
                 <article>
                   <QIcon name={note.icon} class="text-tertiary" aria-hidden="true" />
@@ -375,11 +386,11 @@
           remaining width by default; <code>shrink</code> keeps it at its natural width.
         {/snippet}
 
-        <div class="example-controls">
+        <div class="example-controls flex q-mb-md">
           <QSwitch label="Inset content" bind:value={isInset} />
           <QSwitch label="Compact title" bind:value={hasCompactTitle} />
         </div>
-        <div class="header-frame">
+        <div class="header-frame no-overflow">
           <QHeader inset={isInset} bordered>
             <QHeaderTitle shrink={hasCompactTitle}>Drafts</QHeaderTitle>
             <QIcon name="cloud_done" class="text-tertiary q-mr-md" aria-label="All changes saved" />
@@ -393,7 +404,7 @@
           results below.
         {/snippet}
 
-        <div class="header-frame">
+        <div class="header-frame no-overflow">
           <QHeader bordered>
             <QHeaderTitle>
               <QInput
@@ -417,7 +428,7 @@
           </QHeader>
           <div class="search-results" aria-live="polite">
             {#each matchingNotes as note (note.title)}
-              <div class="search-result">
+              <div class="search-result flex items-center q-gap-md">
                 <QAvatar class={note.color} aria-hidden="true">
                   <QIcon name={note.icon} />
                 </QAvatar>
@@ -444,22 +455,12 @@
     border-radius: 24px;
   }
 
-  .workout-content,
-  .sauna-content {
-    padding: 16px;
-  }
-
   .workout-art {
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
     gap: 12px;
     height: 96px;
   }
 
   .workout-art span {
-    display: grid;
-    place-items: center;
     flex: 1;
     height: 72px;
     max-width: 88px;
@@ -471,10 +472,7 @@
   }
 
   .example-controls {
-    display: flex;
-    flex-wrap: wrap;
     gap: 16px 24px;
-    margin-bottom: 16px;
   }
 
   :global(.header-frame) {
@@ -482,27 +480,10 @@
     background-color: var(--surface-container-low);
     color: var(--on-surface);
     border-radius: 16px;
-    overflow: hidden;
-  }
-
-  .note-preview {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 24px;
-    padding: 24px;
   }
 
   :global(.sauna-layout) {
     height: 352px;
-  }
-
-  .session-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-    padding-block: 8px;
   }
 
   :global(.reader-layout) {
@@ -511,8 +492,6 @@
 
   .journal-content {
     max-width: 40rem;
-    margin-inline: auto;
-    padding: 24px;
   }
 
   .journal-content article + article {
@@ -521,19 +500,10 @@
     padding-top: 32px;
   }
 
-  .city-content {
-    padding: 16px 24px 24px;
-  }
-
   .city-art {
     position: relative;
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
     gap: 12px;
     height: 168px;
-    padding-inline: 16px;
-    overflow: hidden;
     border-radius: 16px;
     background: var(--surface-container);
   }
@@ -549,8 +519,6 @@
 
   .city-building {
     position: relative;
-    display: grid;
-    place-items: center;
     flex: 1;
     max-width: 136px;
     height: 96px;
@@ -567,26 +535,15 @@
     border-radius: 32px 8px 0 0;
   }
 
-  .city-caption {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: flex-end;
-    gap: 16px;
-    padding-top: 24px;
-  }
-
   :global(.harbor-layout) {
     height: 440px;
   }
 
   .harbor-content {
-    padding: 20px 24px 24px;
+    padding-top: 20px;
   }
 
   .walk-intro {
-    display: flex;
-    align-items: center;
     gap: 12px;
     margin-bottom: 28px;
   }
@@ -594,14 +551,11 @@
   .harbor-stop {
     display: grid;
     grid-template-columns: 48px minmax(0, 1fr);
-    gap: 16px;
     padding-bottom: 32px;
   }
 
   .stop-marker {
     position: relative;
-    display: flex;
-    justify-content: center;
     border-radius: 0;
   }
 
@@ -614,15 +568,12 @@
   }
 
   .stop-marker span {
-    display: grid;
-    place-items: center;
     width: 48px;
     height: 48px;
     border-radius: 16px;
   }
 
   .walk-saved {
-    margin: 0;
     padding-top: 20px;
     border-top: 1px solid var(--outline-variant);
     border-radius: 0;
@@ -634,9 +585,12 @@
     padding: 20px;
   }
 
+  .workout-art,
+  .session-row,
+  .city-art,
+  .walk-intro,
+  .stop-marker,
   .search-result {
-    display: flex;
-    align-items: center;
-    gap: 16px;
+    flex-wrap: nowrap;
   }
 </style>
