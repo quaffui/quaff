@@ -91,7 +91,7 @@
       {#snippet content()}
         <div class="q-pa-md" aria-live="polite">
           <div class="label-medium text-on-surface-variant">WEEKEND JOURNAL</div>
-          <div class="journal-art {journalPage.color}" aria-hidden="true">
+          <div class="journal-art flex flex-center q-my-sm {journalPage.color}" aria-hidden="true">
             <QIcon name={journalPage.icon} size="48px" />
           </div>
           <h2 class="title-large q-mb-sm">{journalPage.title}</h2>
@@ -136,12 +136,18 @@
         </div>
         <QLayout class="footer-layout surface">
           {#snippet content()}
-            <div class="studio-content q-pa-md">
+            <div class="studio-content q-gap-xl q-pa-md">
               <section id="acme-about">
-                <div class="studio-art q-mb-sm" aria-hidden="true">
-                  <span class="primary-container"><QIcon name="interests" size="32px" /></span>
-                  <span class="secondary-container"><QIcon name="palette" size="32px" /></span>
-                  <span class="tertiary-container"><QIcon name="code" size="32px" /></span>
+                <div class="studio-art flex q-gap-sm q-mb-sm" aria-hidden="true">
+                  <span class="flex flex-center primary-container">
+                    <QIcon name="interests" size="32px" />
+                  </span>
+                  <span class="flex flex-center secondary-container">
+                    <QIcon name="palette" size="32px" />
+                  </span>
+                  <span class="flex flex-center tertiary-container">
+                    <QIcon name="code" size="32px" />
+                  </span>
                 </div>
                 <h6 class="q-mb-sm">Small studio. Big ideas.</h6>
                 <p class="body-medium q-mb-none">
@@ -170,11 +176,11 @@
               value={isStudioFooterVisible}
               bordered={hasStudioFooterBorder}
               height={128}
-              class="studio-footer"
+              class="studio-footer column justify-center q-gap-sm"
             >
-              <div class="studio-footer-main">
+              <div class="studio-footer-main flex items-center justify-between">
                 <div class="flex items-center q-gap-sm">
-                  <span class="studio-mark secondary" aria-hidden="true">
+                  <span class="studio-mark flex flex-center secondary" aria-hidden="true">
                     <QIcon name="interests" />
                   </span>
                   <div>
@@ -182,13 +188,13 @@
                     <div class="body-small">Good ideas, made real.</div>
                   </div>
                 </div>
-                <nav class="studio-links label-large" aria-label="Acme Studio footer">
+                <nav class="studio-links flex q-gap-md label-large" aria-label="Acme Studio footer">
                   <a href="#acme-about">About</a>
                   <a href="#acme-work">Work</a>
                   <a href="#acme-contact">Contact</a>
                 </nav>
               </div>
-              <div class="studio-fine-print body-small">
+              <div class="studio-fine-print flex items-center justify-between q-pt-sm body-small">
                 <span>© Acme Studio</span>
                 <span>Made with care.</span>
               </div>
@@ -255,10 +261,10 @@
             <div class="q-pa-lg">
               <div class="label-medium text-tertiary">ONE DAY, NO RUSH</div>
               <h6 id="trailmark-top" class="q-mb-lg">A day by the water</h6>
-              <ol class="itinerary">
+              <ol class="itinerary q-ma-none q-pa-none">
                 {#each STOPS as stop (stop.time)}
                   <li class="flex q-gap-md">
-                    <div class="stop-icon secondary-container" aria-hidden="true">
+                    <div class="stop-icon flex flex-center secondary-container" aria-hidden="true">
                       <QIcon name={stop.icon} />
                     </div>
                     <div>
@@ -299,62 +305,40 @@
   }
 
   .journal-art {
-    display: grid;
-    place-items: center;
     width: 88px;
     height: 56px;
-    margin-block: 8px;
     border-radius: 56px 56px 16px 16px;
   }
 
   .studio-content {
     display: grid;
-    gap: 48px;
   }
 
   .studio-art {
-    display: flex;
-    gap: 8px;
+    flex-wrap: nowrap;
   }
 
   .studio-art span {
-    display: grid;
     width: 48px;
     height: 48px;
-    place-items: center;
     border-radius: 16px;
   }
 
   :global(.studio-footer) {
-    flex-direction: column;
     align-items: stretch;
-    justify-content: center;
-    gap: 8px;
     padding-block: 12px;
     white-space: normal;
   }
 
   .studio-footer-main,
   .studio-fine-print {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
     gap: 8px 16px;
   }
 
   .studio-mark {
-    display: grid;
     width: 36px;
     height: 36px;
-    place-items: center;
     border-radius: 12px;
-  }
-
-  .studio-links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px;
   }
 
   .studio-links a,
@@ -364,7 +348,6 @@
   }
 
   .studio-fine-print {
-    padding-top: 8px;
     border-top: 1px solid color-mix(in srgb, currentColor 20%, transparent);
   }
 
@@ -380,17 +363,13 @@
   .itinerary {
     display: grid;
     gap: 40px;
-    margin: 0;
-    padding: 0;
     list-style: none;
   }
 
   .stop-icon {
-    display: grid;
     flex: none;
     width: 48px;
     height: 48px;
-    place-items: center;
     border-radius: 50%;
   }
 </style>
