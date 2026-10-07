@@ -64,7 +64,10 @@
 <QDocs>
   {#snippet display()}
     <QCard class="workshop-card">
-      <div class="print-art secondary-container" aria-hidden="true">
+      <div
+        class="print-art secondary-container flex flex-center no-overflow q-mb-md"
+        aria-hidden="true"
+      >
         <span class="print-sheet secondary"><QIcon name="filter_vintage" size="48px" /></span>
         <span class="print-sheet primary"><QIcon name="wb_sunny" size="48px" /></span>
         <span class="print-sheet tertiary"><QIcon name="waves" size="48px" /></span>
@@ -120,16 +123,20 @@
                 The essentials for a day away.
               </p>
             </QCardSection>
-            <div class="packing-list body-medium">
-              <span><QIcon name="check" size="18px" aria-hidden="true" /> Water bottle</span>
-              <span><QIcon name="check" size="18px" aria-hidden="true" /> A good book</span>
+            <div class="packing-list flex body-medium">
+              <span class="flex items-center q-gap-xs"
+                ><QIcon name="check" size="18px" aria-hidden="true" /> Water bottle</span
+              >
+              <span class="flex items-center q-gap-xs"
+                ><QIcon name="check" size="18px" aria-hidden="true" /> A good book</span
+              >
             </div>
           </QCard>
 
           <QCard class="example-card" flat>
             <div class="label-medium text-on-surface-variant">FLAT</div>
             <QCardSection class="q-my-lg">
-              <div class="book-spines" aria-hidden="true">
+              <div class="book-spines flex items-end q-gap-xs" aria-hidden="true">
                 <span class="primary-container"></span>
                 <span class="tertiary-container"></span>
                 <span class="secondary-container"></span>
@@ -191,8 +198,8 @@
           >
             <ol class="recipe-steps q-ma-none">
               <li>Gently muddle six mint leaves with the juice of half a lime.</li>
-              <li>Add ice and a teaspoon of sugar syrup.</li>
-              <li>Top with sparkling water, stir, and add a slice of lime.</li>
+              <li class="q-mt-sm">Add ice and a teaspoon of sugar syrup.</li>
+              <li class="q-mt-sm">Top with sparkling water, stir, and add a slice of lime.</li>
             </ol>
           </QCardSection>
         </QCard>
@@ -205,7 +212,7 @@
         {/snippet}
 
         <QCard class="story-card" fill="secondary" rounded>
-          <QCardSection class="story-byline">
+          <QCardSection class="story-byline items-center q-gap-md">
             <QAvatar size="sm" class="secondary" aria-hidden="true">ML</QAvatar>
             <div>
               <div class="title-medium">Maya Lee</div>
@@ -269,8 +276,8 @@
           <code>vertical</code> to stack them. Try saving the bag or adding it to your basket.
         {/snippet}
 
-        <div class="actions-example">
-          <div class="action-controls">
+        <div class="actions-example flex items-start q-gap-lg">
+          <div class="action-controls flex column q-gap-md">
             <QSelect
               label="Action alignment"
               options={ALIGNMENTS}
@@ -334,13 +341,9 @@
   }
 
   .print-art {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    flex-wrap: nowrap;
     height: 104px;
-    overflow: hidden;
     border-radius: 8px;
-    margin-bottom: 16px;
   }
 
   .print-sheet {
@@ -376,21 +379,15 @@
   }
 
   .packing-list {
-    display: flex;
-    flex-wrap: wrap;
     gap: 8px 16px;
   }
 
   .packing-list span {
-    display: flex;
-    align-items: center;
-    gap: 4px;
+    flex-wrap: nowrap;
   }
 
   .book-spines {
-    display: flex;
-    align-items: flex-end;
-    gap: 4px;
+    flex-wrap: nowrap;
     height: 72px;
   }
 
@@ -422,10 +419,6 @@
     padding-inline-start: 20px;
   }
 
-  .recipe-steps li + li {
-    margin-top: 8px;
-  }
-
   :global(.story-card) {
     max-width: 30rem;
   }
@@ -433,22 +426,14 @@
   :global(.story-byline) {
     display: grid;
     grid-template-columns: auto minmax(0, 1fr) auto;
-    align-items: center;
-    gap: 16px;
   }
 
   .actions-example {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: flex-start;
-    gap: 24px;
     max-width: 60rem;
   }
 
   .action-controls {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
+    flex-wrap: nowrap;
     flex: 1 1 224px;
     min-width: 0;
   }
