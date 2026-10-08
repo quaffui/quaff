@@ -305,7 +305,7 @@
               </QList>
             {/snippet}
           </QSearch>
-          <div class="search-detail q-mt-lg" aria-live="polite">
+          <div class="search-detail flex items-start q-gap-md q-mt-lg" aria-live="polite">
             <QIcon aria-hidden="true" name={selectedPlace.icon} size={36} />
             <div>
               <div class="title-medium">{selectedPlace.name}</div>
@@ -391,7 +391,7 @@
           have descriptions only; no audio is loaded.
         {/snippet}
 
-        <div class="search-demo search-demo--recordings">
+        <div class="search-demo secondary-container">
           <p class="label-large q-mb-sm">FIELD NOTES · A SOUND JOURNAL</p>
           <QSearch
             bind:value={recordingQuery}
@@ -440,7 +440,7 @@
               </QList>
             {/snippet}
           </QSearch>
-          <div class="search-detail q-mt-lg" aria-live="polite">
+          <div class="search-detail flex items-start q-gap-md q-mt-lg" aria-live="polite">
             <QIcon aria-hidden="true" name={selectedRecording.icon} size={40} />
             <div>
               <div class="title-medium">{selectedRecording.title}</div>
@@ -502,14 +502,7 @@
     background: var(--surface-container-low);
   }
 
-  .search-demo--recordings {
-    background: var(--secondary-container);
-    color: var(--on-secondary-container);
-  }
-
   .search-detail {
-    display: flex;
-    align-items: flex-start;
-    gap: 16px;
+    flex-wrap: nowrap;
   }
 </style>
