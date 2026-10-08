@@ -58,11 +58,11 @@
   }
 
   @starting-style {
-    &[open] {
+    &[open]:not(.q-side-sheet--initial) {
       @include -closed;
     }
 
-    &[open]::backdrop {
+    &[open]:not(.q-side-sheet--initial)::backdrop {
       opacity: 0;
     }
   }

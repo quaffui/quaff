@@ -4,7 +4,7 @@ Side sheets show supporting content beside the main page.
 -->
 
 <script lang="ts">
-  import { tick } from "svelte";
+  import { tick, untrack } from "svelte";
   import { on } from "svelte/events";
   import QIconBtn from "$components/button/QIconBtn.svelte";
   import { useSize } from "$composables";
@@ -35,6 +35,9 @@ Side sheets show supporting content beside the main page.
   // #region:    --- State
   const componentId = $props.id();
   const headlineId = `${componentId}-headline`;
+  // Standard sheets that start open belong in the initial page layout.
+  const initiallyOpen = untrack(() => value && !modal);
+  let isInitialOpen = $state(initiallyOpen);
   let sheetEl = $state<HTMLDialogElement>();
   let hasBackdropPointerDown = false;
   let previousFocus: Element | null = null;
@@ -59,6 +62,7 @@ Side sheets show supporting content beside the main page.
     }
 
     if (!value) {
+      isInitialOpen = false;
       return closeAfterTransition(element);
     }
 
@@ -68,8 +72,12 @@ Side sheets show supporting content beside the main page.
       closeDialog(element);
     }
 
-    if (!element.open) {
+    if (!element.open || previousFocus === null) {
       previousFocus = document.activeElement;
+    }
+
+    if (!element.open) {
+      isInitialOpen = false;
 
       if (modal) {
         element.showModal();
@@ -218,7 +226,14 @@ Side sheets show supporting content beside the main page.
   // #endregion: --- Functions
 
   Q.classes("q-side-sheet", {
-    bemClasses: { standard: !modal, start: side === "start", detached, bordered, closing: !value },
+    bemClasses: {
+      standard: !modal,
+      start: side === "start",
+      detached,
+      bordered,
+      closing: !value,
+      initial: isInitialOpen,
+    },
     classes: [props.class],
   });
 </script>
@@ -227,6 +242,7 @@ Side sheets show supporting content beside the main page.
   bind:this={sheetEl}
   {...props}
   class="q-side-sheet"
+  open={initiallyOpen}
   aria-modal={modal || undefined}
   aria-labelledby={props["aria-labelledby"] ??
     (!props["aria-label"] && headline ? headlineId : undefined)}
