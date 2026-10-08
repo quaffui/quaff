@@ -92,7 +92,7 @@
 
 <QDocs docDescription="Switch between related views without leaving the page.">
   {#snippet display()}
-    <div class="media-library surface">
+    <div class="media-library surface no-overflow">
       <h2 class="title-large q-pa-md q-ma-none">Soundbox</h2>
       <QTabs bind:value={mediaTab} aria-label="Media library">
         {#each MEDIA as category (category.name)}
@@ -111,9 +111,9 @@
           aria-labelledby={`media-tab-${category.name}`}
           hidden={mediaTab !== category.name}
           tabindex="0"
-          class="media-panel"
+          class="q-pa-md"
         >
-          <div class="media-art {category.color}" aria-hidden="true">
+          <div class="media-art flex flex-center no-overflow {category.color}" aria-hidden="true">
             <QIcon name={category.icon} size="48px" />
           </div>
           <h3 class="title-large q-mt-md q-mb-xs">{category.title}</h3>
@@ -132,13 +132,13 @@
           label. <code>noSeparator</code> removes the divider.
         {/snippet}
 
-        <div class="example-controls">
+        <div class="example-controls flex q-mb-md">
           <QSwitch label="Show labels" bind:value={hasLabels} />
           <QSwitch label="Inline icons" bind:value={hasInlineLabels} disabled={!hasLabels} />
           <QSwitch label="Divider" bind:value={hasSeparator} />
         </div>
-        <div class="example-frame surface">
-          <div class="example-heading">
+        <div class="example-frame surface border no-overflow">
+          <div class="example-heading flex items-center q-gap-md q-pa-md">
             <QIcon name="sports_esports" class="text-tertiary" size="32px" aria-hidden="true" />
             <div>
               <h6 class="title-large">Orbit Racer</h6>
@@ -170,11 +170,11 @@
               aria-labelledby={`asset-tab-${group.name}`}
               hidden={assetTab !== group.name}
               tabindex="0"
-              class="example-panel"
+              class="q-pa-md"
             >
-              <ul class="asset-list">
+              <ul class="asset-list q-gap-md q-pa-none q-ma-none">
                 {#each group.files as file (file.name)}
-                  <li class="asset-row">
+                  <li class="asset-row flex items-center q-gap-md">
                     <QAvatar class={group.color} aria-hidden="true">
                       <QIcon name={group.icon} />
                     </QAvatar>
@@ -196,8 +196,8 @@
           and the indicator spans the tab's width.
         {/snippet}
 
-        <div class="example-frame surface">
-          <div class="example-heading">
+        <div class="example-frame surface border no-overflow">
+          <div class="example-heading flex items-center q-gap-md q-pa-md">
             <QAvatar class="primary-container" size="md" aria-hidden="true">
               <QIcon name="local_shipping" />
             </QAvatar>
@@ -226,9 +226,9 @@
             aria-labelledby="order-tab-tracking"
             hidden={orderTab !== "tracking"}
             tabindex="0"
-            class="example-panel"
+            class="q-pa-md"
           >
-            <div class="delivery-banner tertiary-container">
+            <div class="delivery-banner flex items-center q-gap-md q-pa-md tertiary-container">
               <QIcon name="delivery_truck_speed" size="40px" aria-hidden="true" />
               <div>
                 <h6 class="title-large">On its way</h6>
@@ -243,20 +243,20 @@
             aria-labelledby="order-tab-items"
             hidden={orderTab !== "items"}
             tabindex="0"
-            class="example-panel"
+            class="q-pa-md"
           >
-            <dl class="order-details">
-              <div>
+            <dl class="order-details q-gap-md q-ma-none">
+              <div class="flex justify-between">
                 <dt>Club racket</dt>
-                <dd>€79</dd>
+                <dd class="q-ma-none">€79</dd>
               </div>
-              <div>
+              <div class="flex justify-between">
                 <dt>Grip tape · 3 pack</dt>
-                <dd>€7</dd>
+                <dd class="q-ma-none">€7</dd>
               </div>
-              <div class="title-medium">
+              <div class="title-medium flex justify-between">
                 <dt>Total</dt>
-                <dd>€86</dd>
+                <dd class="q-ma-none">€86</dd>
               </div>
             </dl>
           </div>
@@ -269,7 +269,7 @@
           that need it. Values in these settings stay intact when you switch tabs.
         {/snippet}
 
-        <div class="example-frame surface">
+        <div class="example-frame surface border no-overflow">
           <h6 class="title-large q-pa-md q-ma-none">Workspace settings</h6>
           <div class="settings-layout">
             <QTabs bind:value={settingsTab} variant="vertical" aria-label="Workspace settings">
@@ -290,9 +290,9 @@
                 aria-labelledby="settings-tab-profile"
                 hidden={settingsTab !== "profile"}
                 tabindex="0"
-                class="example-panel"
+                class="q-pa-md"
               >
-                <div class="profile-preview q-mb-md">
+                <div class="profile-preview flex items-center q-gap-md q-mb-md">
                   <QAvatar class="tertiary-container" aria-hidden="true">
                     {displayName.trim().charAt(0).toUpperCase() || "?"}
                   </QAvatar>
@@ -306,9 +306,9 @@
                 aria-labelledby="settings-tab-alerts"
                 hidden={settingsTab !== "alerts"}
                 tabindex="0"
-                class="example-panel"
+                class="q-pa-md"
               >
-                <div class="settings-options">
+                <div class="settings-options q-gap-md">
                   <QSwitch label="Email alerts" bind:value={hasEmailAlerts} />
                   <QSwitch label="Weekly summary" bind:value={hasWeeklySummary} />
                 </div>
@@ -319,7 +319,7 @@
                 aria-labelledby="settings-tab-privacy"
                 hidden={settingsTab !== "privacy"}
                 tabindex="0"
-                class="example-panel"
+                class="q-pa-md"
               >
                 <QSwitch label="Online status" bind:value={isOnlineVisible} />
                 <p class="body-medium text-on-surface-variant q-mb-none" aria-live="polite">
@@ -339,7 +339,7 @@
           not need a bound value. The links below open other component pages.
         {/snippet}
 
-        <div class="example-frame surface">
+        <div class="example-frame surface border no-overflow">
           <QTabs value="tabs" aria-label="Component pages" variant="secondary">
             <QTab name="tabs" to="/components/tabs">Tabs</QTab>
             <QTab name="buttons" to="/components/button">Buttons</QTab>
@@ -368,21 +368,12 @@
     width: 100%;
     max-width: 24rem;
     border-radius: 24px;
-    overflow: hidden;
-  }
-
-  .media-panel,
-  .example-panel {
-    padding: 16px;
   }
 
   .media-art {
     position: relative;
-    display: grid;
-    place-items: center;
     height: 80px;
     border-radius: 12px;
-    overflow: hidden;
   }
 
   .media-art::before,
@@ -405,61 +396,34 @@
   }
 
   .example-controls {
-    display: flex;
-    flex-wrap: wrap;
     gap: 16px 24px;
-    margin-bottom: 16px;
   }
 
   .example-frame {
     max-width: 42rem;
-    border: 1px solid var(--outline-variant);
     border-radius: 16px;
-    overflow: hidden;
   }
 
   .example-heading,
-  .asset-row,
-  .profile-preview,
-  .delivery-banner {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-  }
-
-  .example-heading {
-    padding: 16px;
+  .asset-row {
+    flex-wrap: nowrap;
   }
 
   .asset-list {
     display: grid;
-    gap: 16px;
-    padding: 0;
-    margin: 0;
     list-style: none;
   }
 
   .delivery-banner {
-    flex-wrap: wrap;
-    padding: 16px;
     border-radius: 12px;
   }
 
   .order-details {
     display: grid;
-    gap: 16px;
-    margin: 0;
   }
 
   .order-details > div {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
     gap: 8px 16px;
-  }
-
-  .order-details dd {
-    margin: 0;
   }
 
   .settings-layout {
@@ -473,12 +437,10 @@
   }
 
   .profile-preview {
-    flex-wrap: wrap;
     overflow-wrap: anywhere;
   }
 
   .settings-options {
     display: grid;
-    gap: 16px;
   }
 </style>
