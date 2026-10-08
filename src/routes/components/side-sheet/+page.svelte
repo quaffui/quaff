@@ -104,10 +104,10 @@
 
 <QDocs docDescription="Keep useful details and tools beside the content they belong to.">
   {#snippet display()}
-    <div class="preview-frame" class:sheet-open={isPreviewOpen}>
-      <div class="preview-main">
+    <div class="preview-frame flex no-overflow border" class:sheet-open={isPreviewOpen}>
+      <div class="preview-main column justify-center">
         <div class="label-large text-on-surface-variant">YOUR WORKSPACE</div>
-        <h2 class="headline-small">Ready to launch</h2>
+        <h2 class="headline-small q-ma-none">Ready to launch</h2>
         <QCard fill="tertiary" flat>
           <QList>
             <QItem
@@ -130,15 +130,15 @@
         <p class="body-small text-on-surface-variant">Select the checklist to see its details.</p>
       </div>
       <QSideSheet bind:value={isPreviewOpen} headline="Task details" bordered>
-        <div class="sheet-content">
-          <div class="identity-row">
+        <div class="sheet-content flex column">
+          <div class="identity-row flex items-center">
             <QAvatar size="sm" class="primary-container">DS</QAvatar>
             <div>
               <div class="label-large">Design system</div>
               <div class="body-small text-on-surface-variant">Release checklist</div>
             </div>
           </div>
-          <div class="checklist">
+          <div class="checklist flex column q-gap-sm">
             <QCheckbox bind:value={isDocsReviewComplete} label="Review the docs" />
             <QCheckbox bind:value={isReleaseReady} label="Write release notes" />
           </div>
@@ -166,12 +166,12 @@
           <code>256px</code>; this example uses <code>320px</code>.
         {/snippet}
 
-        <div class="workspace" class:sheet-open={isFileSheetOpen}>
-          <div class="workspace-main">
-            <div class="workspace-heading">
+        <div class="workspace flex no-overflow border" class:sheet-open={isFileSheetOpen}>
+          <div class="workspace-main q-pa-lg">
+            <div class="workspace-heading flex items-center q-mb-lg">
               <QIcon name="folder_open" class="text-primary" aria-hidden="true" />
               <div>
-                <h2 class="title-large">Creative studio</h2>
+                <h2 class="title-large q-ma-none">Creative studio</h2>
                 <p class="body-medium text-on-surface-variant">
                   Shared files · {files.length} items
                 </p>
@@ -210,13 +210,13 @@
           </div>
 
           <QSideSheet bind:value={isFileSheetOpen} headline="File details" width="320px" bordered>
-            <div class="sheet-content">
-              <div class={["file-summary", selectedFile.color]}>
+            <div class="sheet-content flex column">
+              <div class={["file-summary flex items-center q-gap-md", selectedFile.color]}>
                 <QIcon name={selectedFile.icon} size="40px" aria-hidden="true" />
                 <span class="label-large">{selectedFile.type}</span>
               </div>
               <QInput bind:value={selectedFile.name} label="File name" outlined />
-              <div class="identity-row">
+              <div class="identity-row flex items-center">
                 <QAvatar size="sm" class="secondary-container">AL</QAvatar>
                 <div>
                   <div class="label-large">Alex Lee</div>
@@ -246,11 +246,11 @@
           <code>actions</code> snippet.
         {/snippet}
 
-        <QCard flat bordered class="workshops-card">
-          <div class="workshops-heading">
+        <QCard flat bordered class="workshops-card q-pa-lg">
+          <div class="flex items-center justify-between q-gap-md q-mb-lg">
             <div>
               <div class="label-large text-primary">MAKE TIME TO MAKE</div>
-              <h2 class="headline-small">Weekend workshops</h2>
+              <h2 class="headline-small q-mx-none q-my-sm">Weekend workshops</h2>
               <p class="body-medium text-on-surface-variant" aria-live="polite">
                 {visibleWorkshops.length} workshops to explore
               </p>
@@ -279,7 +279,7 @@
         </QCard>
 
         <QSideSheet bind:value={isFilterSheetOpen} headline="Find a workshop" modal width="352px">
-          <div class="sheet-content">
+          <div class="sheet-content flex column">
             <p class="body-medium text-on-surface-variant">
               A small creative break for your weekend.
             </p>
@@ -327,13 +327,13 @@
 
         <QCheckbox bind:value={isRightToLeft} label="Right-to-left layout" class="q-mb-md" />
         <div
-          class="placement-demo"
+          class="placement-demo flex no-overflow border"
           class:sheet-open={isPreferencesSheetOpen}
           dir={isRightToLeft ? "rtl" : "ltr"}
         >
-          <div class="placement-main">
+          <div class="placement-main column items-start justify-center">
             <QIcon name="auto_stories" size="32px" class="text-primary" aria-hidden="true" />
-            <h2 class="title-large">Your reading space</h2>
+            <h2 class="title-large q-ma-none">Your reading space</h2>
             <p class="body-medium text-on-surface-variant">Make yourself comfortable.</p>
             <QBtn
               label="Reading preferences"
@@ -347,7 +347,7 @@
             side="start"
             detached
           >
-            <div class="sheet-content">
+            <div class="sheet-content flex column">
               <QSwitch bind:value={hasReadingHints} label="Reading hints" />
               <p class="body-small text-on-surface-variant">Show helpful notes while you read.</p>
             </div>
@@ -362,13 +362,21 @@
   .preview-frame,
   .workspace,
   .placement-demo {
-    display: flex;
     width: 100%;
-    overflow: hidden;
-    border: 1px solid var(--outline-variant);
     border-radius: 16px;
     background: var(--surface-container-low);
     color: var(--on-surface);
+  }
+
+  .preview-frame,
+  .workspace,
+  .placement-demo,
+  .sheet-content,
+  .identity-row,
+  .workspace-heading,
+  .checklist,
+  .file-summary {
+    flex-wrap: nowrap;
   }
 
   .preview-frame {
@@ -385,29 +393,16 @@
 
   .preview-main {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
     gap: 14px;
     padding: 20px;
   }
 
-  .preview-main h2,
-  .workspace-heading h2,
-  .workshops-heading h2,
-  .placement-main h2 {
-    margin: 0;
-  }
-
   .sheet-content {
-    display: flex;
-    flex-direction: column;
     gap: 20px;
   }
 
   .identity-row,
   .workspace-heading {
-    display: flex;
-    align-items: center;
     gap: 12px;
   }
 
@@ -415,48 +410,17 @@
     min-width: 0;
   }
 
-  .checklist {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-
   .workspace {
     height: 480px;
   }
 
-  .workspace-main {
-    padding: 24px;
-  }
-
-  .workspace-heading {
-    margin-bottom: 24px;
-  }
-
   .file-summary {
-    display: flex;
-    align-items: center;
-    gap: 16px;
     padding: 20px;
     border-radius: 12px;
   }
 
   :global(.workshops-card) {
     max-width: 48rem;
-    padding: 24px;
-  }
-
-  .workshops-heading {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-    margin-bottom: 24px;
-  }
-
-  .workshops-heading h2 {
-    margin-block: 8px;
   }
 
   .placement-demo {
@@ -465,9 +429,6 @@
 
   .placement-main {
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
     gap: 12px;
     padding: 32px;
   }
