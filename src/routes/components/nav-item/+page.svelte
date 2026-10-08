@@ -55,11 +55,13 @@
   docDescription="Navigation items link to destinations in drawers, bars, and rails. Add active indicators and badges, or organize drawer links under expandable headings."
 >
   {#snippet display()}
-    <QLayout class="mail-preview">
+    <QLayout class="mail-preview border">
       {#snippet drawerLeft()}
         <QDrawer value={true} width={288} behavior="desktop" persistent style="max-width: 100%;">
-          <div class="mail-brand">
-            <span class="mail-mark"><QIcon name="alternate_email" aria-hidden="true" /></span>
+          <div class="mail-brand flex no-wrap items-center q-px-md q-pt-sm q-pb-md">
+            <span class="mail-mark tertiary-container">
+              <QIcon name="alternate_email" aria-hidden="true" />
+            </span>
             <span class="title-large">Kite mail</span>
           </div>
           <QList tag="nav" aria-label="Kite mail" expressive={false} preserveTabOrder>
@@ -84,7 +86,12 @@
               onclick={() => selectMailbox("Drafts")}
             />
           </QList>
-          <p class="mail-status label-medium" aria-live="polite">Viewing {mailbox.toLowerCase()}</p>
+          <p
+            class="label-medium q-mx-md q-mt-md q-mb-none text-on-surface-variant"
+            aria-live="polite"
+          >
+            Viewing {mailbox.toLowerCase()}
+          </p>
         </QDrawer>
       {/snippet}
     </QLayout>
@@ -101,7 +108,7 @@
         and <a class="q-docs-link" href={resolve("/components/railbar", {})}>rails</a>.
       {/snippet}
 
-      <QLayout class="linked-drawer">
+      <QLayout class="linked-drawer border">
         {#snippet drawerLeft()}
           <QDrawer value={true} width={320} behavior="desktop" persistent style="max-width: 100%;">
             <h6 class="q-drawer__headline">Explore navigation</h6>
@@ -130,8 +137,8 @@
       {/snippet}
 
       <QSwitch bind:value={isDense} label="Compact navigation" class="q-mb-md" />
-      <div class="studio-example">
-        <QLayout class="studio-navigation">
+      <div class="studio-example q-gap-md">
+        <QLayout class="studio-navigation border">
           {#snippet drawerLeft()}
             <QDrawer
               value={true}
@@ -171,12 +178,15 @@
             </QDrawer>
           {/snippet}
         </QLayout>
-        <section class="studio-summary" aria-live="polite">
+        <section
+          class="studio-summary column no-wrap items-start justify-center q-gap-md q-pa-lg tertiary-container"
+          aria-live="polite"
+        >
           <span class="label-large">TEMPO STUDIO</span>
           <QIcon name={selectedPage.icon} size="48px" aria-hidden="true" />
-          <h5>{destination}</h5>
-          <p>{selectedPage.detail}</p>
-          <div class="studio-stat title-medium">{selectedPage.summary}</div>
+          <h5 class="q-ma-none">{destination}</h5>
+          <p class="q-ma-none">{selectedPage.detail}</p>
+          <div class="studio-stat title-medium q-pa-md surface">{selectedPage.summary}</div>
         </section>
       </div>
     </QDocsSection>
@@ -190,7 +200,6 @@
   :global(.linked-drawer),
   :global(.studio-navigation) {
     border-radius: 16px;
-    border: 1px solid var(--outline-variant);
   }
 
   :global(.mail-preview) {
@@ -199,10 +208,7 @@
   }
 
   .mail-brand {
-    display: flex;
-    align-items: center;
     gap: 12px;
-    padding: 8px 16px 16px;
   }
 
   .mail-mark {
@@ -211,13 +217,6 @@
     width: 40px;
     height: 40px;
     border-radius: 14px;
-    background: var(--tertiary-container);
-    color: var(--on-tertiary-container);
-  }
-
-  .mail-status {
-    margin: 16px 16px 0;
-    color: var(--on-surface-variant);
   }
 
   :global(.linked-drawer) {
@@ -228,7 +227,6 @@
   .studio-example {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 272px), 1fr));
-    gap: 16px;
     max-width: 44rem;
   }
 
@@ -238,26 +236,10 @@
   }
 
   .studio-summary {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-    gap: 16px;
-    padding: 24px;
     border-radius: 16px;
-    background: var(--tertiary-container);
-    color: var(--on-tertiary-container);
-
-    h5,
-    p {
-      margin: 0;
-    }
   }
 
   .studio-stat {
-    padding: 16px;
     border-radius: 12px;
-    background: var(--surface);
-    color: var(--on-surface);
   }
 </style>
