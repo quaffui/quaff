@@ -185,10 +185,11 @@ and use `modal` to expand above the page instead of resizing its content.
         parseFloat(style.borderLeftWidth) +
         parseFloat(style.borderRightWidth);
       const isResizing = getWidthTransitions(element).length > 0;
-      // Lay out children at their destination width while the scroll viewport reveals them.
-      contentWidth = isResizing
-        ? Math.max(0, Math.min(configuredWidth, availableWidth) - inlineSpacing)
-        : undefined;
+      // Reveal expanded content without squeezing it; collapse with the animated viewport.
+      contentWidth =
+        isResizing && !isCollapsed
+          ? Math.max(0, Math.min(configuredWidth, availableWidth) - inlineSpacing)
+          : undefined;
 
       if (!context) {
         return;
@@ -220,7 +221,20 @@ and use `modal` to expand above the page instead of resizing its content.
         ready: true,
       });
     };
-    const observer = new ResizeObserver(updateLayout);
+    let resizeFrame = 0;
+    const updateFrame = () => {
+      updateLayout();
+
+      if (getWidthTransitions(element).some((animation) => animation.playState === "running")) {
+        resizeFrame = requestAnimationFrame(updateFrame);
+      }
+    };
+    const scheduleLayout = () => {
+      // Publish fresh measurements before paint, outside ResizeObserver delivery.
+      cancelAnimationFrame(resizeFrame);
+      resizeFrame = requestAnimationFrame(updateFrame);
+    };
+    const observer = new ResizeObserver(scheduleLayout);
     updateLayout();
     observer.observe(element);
 
@@ -228,10 +242,26 @@ and use `modal` to expand above the page instead of resizing its content.
       observer.observe(containingBlock);
     }
 
+    const stopTransitions = (["transitionstart", "transitionend", "transitioncancel"] as const).map(
+      (type) =>
+        on(element, type, (event) => {
+          if (event.target === element && event.propertyName === "width") {
+            // Cover the first and final frames even without a resize notification.
+            updateLayout();
+            scheduleLayout();
+          }
+        })
+    );
     const stopResize = on(window, "resize", updateLayout);
 
     return () => {
       observer.disconnect();
+      cancelAnimationFrame(resizeFrame);
+
+      for (const stopTransition of stopTransitions) {
+        stopTransition();
+      }
+
       stopResize();
 
       if (context) {

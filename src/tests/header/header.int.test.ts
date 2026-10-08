@@ -8,6 +8,12 @@ import { chromium, type Browser, type Page } from "playwright";
 import { preview, type PreviewServer } from "vite";
 import { afterAll, afterEach, beforeAll, beforeEach, expect, it } from "vitest";
 
+declare global {
+  interface Window {
+    resizeObserverErrors: string[];
+  }
+}
+
 const projectRoot = fileURLToPath(new URL("../../../", import.meta.url));
 const fixture = fileURLToPath(new URL("../../../tests/fixtures/header/", import.meta.url));
 const exec = promisify(execFile);
@@ -232,7 +238,7 @@ it("keeps content aligned while an expandable rail resizes beside a collapsible 
     await page.locator("#rail.q-railbar--resizing").waitFor();
     const animated = await content.evaluate((el) => getComputedStyle(el).transitionProperty);
 
-    for (const property of ["margin-left", "margin-right", "margin-top", "height"]) {
+    for (const property of ["margin-top", "height"]) {
       expect(animated).not.toContain(property);
     }
 
@@ -248,6 +254,92 @@ it("keeps content aligned while an expandable rail resizes beside a collapsible 
   await scrollTo(120);
   await expect.poll(height).toBe(64);
   await expect.poll(layoutOffset).toBe(64);
+});
+
+it.each(["ltr", "rtl"])("keeps layout aligned during navigation changes (%s)", async (dir) => {
+  await page.addInitScript(() => {
+    window.resizeObserverErrors = [];
+    window.addEventListener("error", (event) => {
+      if (event.message.includes("ResizeObserver")) {
+        window.resizeObserverErrors.push(event.message);
+      }
+    });
+  });
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await open(`variant=small&rail&inset&footer&border${dir === "rtl" ? "&rtl" : ""}`);
+  await page.locator(".q-layout--animated").waitFor();
+  let expanded = false;
+
+  // Switch sides while expanded, with both inset and full-width app bars.
+  for (const control of [
+    "#toggle-rail",
+    "#switch-rail-side",
+    "#toggle-inset",
+    "#switch-rail-side",
+    "#toggle-rail",
+    "#toggle-inset",
+  ]) {
+    const frames = await page.locator("#layout").evaluate(async (layout, control) => {
+      const rail = layout.querySelector<HTMLElement>("#rail")!;
+      const header = layout.querySelector<HTMLElement>("#header")!;
+      const footer = layout.querySelector<HTMLElement>("#footer")!;
+      const content = layout.querySelector<HTMLElement>(".q-layout__content")!;
+      const frames = [];
+      const isRtl = getComputedStyle(rail).direction === "rtl";
+      document.querySelector<HTMLButtonElement>(control)!.click();
+
+      for (let frame = 0; frame < 24; frame++) {
+        // Read after this frame's layout and resize notifications have completed.
+        await new Promise<void>((resolve) => {
+          requestAnimationFrame(() => setTimeout(resolve, 0));
+        });
+        const railRect = rail.getBoundingClientRect();
+        const layoutRect = layout.getBoundingClientRect();
+        const onRight = rail.classList.contains("q-railbar--end") !== isRtl;
+        const inset = header.classList.contains("q-header--offset-left");
+        const railEdge = onRight ? railRect.left : railRect.right;
+        const layoutEdge = onRight ? layoutRect.right : layoutRect.left;
+        const barEdge = inset ? railEdge : layoutEdge;
+        const gap = (element: HTMLElement, edge: number) => {
+          const rect = element.getBoundingClientRect();
+          return (onRight ? rect.right : rect.left) - edge;
+        };
+        frames.push({
+          width: railRect.width,
+          headerGap: gap(header, barEdge),
+          footerGap: gap(footer, barEdge),
+          contentGap: gap(content, railEdge),
+        });
+      }
+
+      return frames;
+    }, control);
+
+    if (control === "#toggle-rail") {
+      expanded = !expanded;
+      expect(frames.some((frame) => frame.width > 80 && frame.width < 256)).toBe(true);
+    }
+
+    for (const frame of frames) {
+      // Layout offsets use offsetWidth, which rounds fractional animation widths.
+      expect(Math.abs(frame.headerGap)).toBeLessThanOrEqual(1);
+      expect(Math.abs(frame.footerGap)).toBeLessThanOrEqual(1);
+      expect(Math.abs(frame.contentGap)).toBeLessThanOrEqual(1);
+    }
+
+    await page.locator("#rail:not(.q-railbar--resizing)").waitFor();
+    expect((await page.locator("#rail").boundingBox())!.width).toBe(expanded ? 256 : 80);
+
+    for (const bar of ["#header", "#footer"]) {
+      const properties = await page
+        .locator(bar)
+        .evaluate((el) => getComputedStyle(el).transitionProperty);
+      expect(properties).toContain("left");
+      expect(properties).toContain("right");
+    }
+
+    expect(await page.evaluate(() => window.resizeObserverErrors)).toEqual([]);
+  }
 });
 
 it("uses distinct leading and trailing icon colors while preserving explicit colors", async () => {

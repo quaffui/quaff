@@ -67,6 +67,68 @@ async function settle() {
   });
 }
 
+async function sampleWidths() {
+  return page.locator("#rail").evaluate(async (element) => {
+    const transition = element
+      .getAnimations()
+      .find(
+        (animation) =>
+          animation instanceof CSSTransition && animation.transitionProperty === "width"
+      );
+
+    if (!transition) {
+      throw new Error("Expected a rail width transition");
+    }
+
+    transition.pause();
+    const samples: { rail: number; items: number }[] = [];
+
+    for (const fraction of [0.25, 0.5, 0.75]) {
+      transition.currentTime = Number(transition.effect!.getComputedTiming().duration) * fraction;
+      // ResizeObserver updates the content width after the animated layout changes.
+      await new Promise(requestAnimationFrame);
+      await new Promise(requestAnimationFrame);
+      samples.push({
+        rail: element.getBoundingClientRect().width,
+        items: element.querySelector(".q-railbar__items")!.getBoundingClientRect().width,
+      });
+    }
+
+    transition.finish();
+    return samples;
+  });
+}
+
+it.each([false, true])("keeps menu sizing in sync while toggling (modal: %s)", async (modal) => {
+  if (!modal) {
+    await page.locator("#standard").click();
+  }
+
+  await page.locator("#expand").click();
+  const expanding = await sampleWidths();
+
+  for (const sample of expanding) {
+    expect(sample.rail).toBeGreaterThan(80);
+    expect(sample.rail).toBeLessThan(256);
+    expect(sample.items).toBe(232);
+  }
+
+  expect(expanding[0].rail).toBeLessThan(expanding.at(-1)!.rail);
+  await settle();
+  await page.locator("#collapse").dispatchEvent("click");
+  const samples = await sampleWidths();
+
+  for (const sample of samples) {
+    expect(sample.rail).toBeGreaterThan(80);
+    expect(sample.rail).toBeLessThan(256);
+    expect(sample.items).toBeCloseTo(sample.rail, 0);
+  }
+
+  expect(samples[0].rail).toBeGreaterThan(samples.at(-1)!.rail);
+  await settle();
+  expect((await page.locator("#rail").boundingBox())!.width).toBe(80);
+});
+
 async function expand() {
   await page.locator("#expand").click();
   await expect.poll(() => page.locator("#rail").evaluate((el) => el.matches(":modal"))).toBe(true);

@@ -76,16 +76,17 @@ async function direction(selector: string) {
   return page.locator(selector).evaluate((el) => getComputedStyle(el).direction);
 }
 
-async function margins() {
+async function contentOffsets() {
   return page.locator(".q-layout__content").evaluate((el) => {
-    const style = getComputedStyle(el);
-    return [parseFloat(style.marginLeft), parseFloat(style.marginRight)];
+    const content = el.getBoundingClientRect();
+    const layout = el.parentElement!.getBoundingClientRect();
+    return [content.left - layout.left, layout.right - content.right];
   });
 }
 
 it("places logical navigation and content on either side while preserving physical placement", async () => {
   await open("navigation");
-  await expect.poll(margins).toEqual([80, 224]);
+  await expect.poll(contentOffsets).toEqual([80, 224]);
   const layout = (await page.locator("#layout").boundingBox())!;
   const rail = (await page.locator("#start-rail").boundingBox())!;
   const drawer = (await page.locator("#start-drawer").boundingBox())!;
@@ -98,7 +99,7 @@ it("places logical navigation and content on either side while preserving physic
   ).toBe("16px");
 
   await page.locator("#scope").evaluate((el) => el.setAttribute("dir", "ltr"));
-  await expect.poll(margins).toEqual([224, 80]);
+  await expect.poll(contentOffsets).toEqual([224, 80]);
   await expect
     .poll(async () => (await page.locator("#start-rail").boundingBox())!.x)
     .toBeCloseTo(layout.x);
@@ -113,16 +114,16 @@ it("places logical navigation and content on either side while preserving physic
 
   // Switching sides releases the old layout space.
   await page.locator("#change-side").click();
-  await expect.poll(margins).toEqual([64, 240]);
+  await expect.poll(contentOffsets).toEqual([64, 240]);
   // A child's local override also determines which content edge it occupies.
   await page.locator("#start-drawer").evaluate((el) => el.setAttribute("dir", "rtl"));
-  await expect.poll(margins).toEqual([224, 80]);
+  await expect.poll(contentOffsets).toEqual([224, 80]);
 
   await open("navigation", "&physical");
-  await expect.poll(margins).toEqual([180, 64]);
+  await expect.poll(contentOffsets).toEqual([180, 64]);
   expect((await page.locator("#physical-drawer").boundingBox())!.x).toBeCloseTo(layout.x + 80);
   await page.locator("#scope").evaluate((el) => el.setAttribute("dir", "ltr"));
-  await expect.poll(margins).toEqual([164, 80]);
+  await expect.poll(contentOffsets).toEqual([164, 80]);
   expect((await page.locator("#physical-drawer").boundingBox())!.x).toBeCloseTo(layout.x + 64);
 
   await open("drawer-width");
