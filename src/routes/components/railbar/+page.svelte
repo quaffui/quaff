@@ -218,7 +218,7 @@
   docDescription="Keep your main destinations within reach. Expand beside the page or open above it."
 >
   {#snippet display()}
-    <div class="cinema-preview surface">
+    <div class="cinema-preview surface no-overflow">
       <QLayout>
         {#snippet railbarStart()}
           <QRailbar width={72} aria-label="Framehouse preview" bordered>
@@ -233,7 +233,7 @@
           </QRailbar>
         {/snippet}
         <div
-          class="preview-content"
+          class="preview-content q-pa-md"
           bind:this={previewContent}
           tabindex="-1"
           role="region"
@@ -241,7 +241,7 @@
         >
           <div class="label-small text-on-surface-variant">FRAMEHOUSE</div>
           {#if previewPage === "programme" || (previewPage === "saved" && previewSaved)}
-            <div class="preview-art primary-container" aria-hidden="true">
+            <div class="preview-art flex flex-center primary-container" aria-hidden="true">
               <QIcon name="satellite_alt" size="40px" />
             </div>
             <h2 class="title-medium q-my-sm">The Last Signal</h2>
@@ -298,7 +298,7 @@
           the workspace horizontally.
         {/snippet}
 
-        <div class="example-controls">
+        <div class="example-controls flex items-center q-mb-md">
           <QSwitch label="Expanded navigation" bind:value={programmeExpanded} />
           <QBtn
             variant="outlined"
@@ -310,17 +310,17 @@
         </div>
         <!-- svelte-ignore a11y_no_noninteractive_tabindex (The workspace scrolls horizontally and needs keyboard access.) -->
         <div
-          class="cinema-viewport"
+          class="cinema-viewport border"
           role="region"
           aria-label="Framehouse programme workspace"
           tabindex="0"
         >
-          <div class="cinema-stage">
+          <div class="cinema-stage surface">
             <QLayout view="hhh lpr fff">
               {#snippet header()}
                 <QHeader class="surface-container-low" height={Math.max(64, programmeHeaderHeight)}>
                   <div
-                    class="app-heading"
+                    class="app-heading flex items-center q-pa-md"
                     {@attach measureBarHeight((height) => (programmeHeaderHeight = height))}
                   >
                     <QIcon name="theaters" aria-hidden="true" />
@@ -337,7 +337,7 @@
                   aria-label="Programme navigation"
                   bordered
                 >
-                  <div class="rail-menu">
+                  <div class="rail-menu flex justify-center">
                     <QIconBtn
                       icon="menu"
                       flat
@@ -361,8 +361,8 @@
                   {/each}
                 </QRailbar>
               {/snippet}
-              <div class="app-content">
-                <div class="section-heading">
+              <div class="app-content q-pa-lg">
+                <div class="section-heading flex items-center justify-between q-mb-lg">
                   <div>
                     <p class="label-medium text-on-surface-variant q-ma-none">
                       YOUR EVENING AT THE CINEMA
@@ -375,17 +375,17 @@
                       {programmeTitle}
                     </h6>
                   </div>
-                  <span class="film-count label-medium"
+                  <span class="film-count label-medium text-no-wrap"
                     >{visibleFilms.length} {visibleFilms.length === 1 ? "film" : "films"}</span
                   >
                 </div>
                 {#if visibleFilms.length}
-                  <ul class="film-list">
+                  <ul class="film-list q-ma-none q-pa-none">
                     {#each visibleFilms as film (film.id)}
                       {@const isSaved = savedIds.includes(film.id)}
                       {@const isReserved = ticketIds.includes(film.id)}
-                      <li class="film-row">
-                        <div class="film-art {film.color}" aria-hidden="true">
+                      <li class="film-row q-py-md border-bottom border-outline-variant">
+                        <div class="film-art flex flex-center {film.color}" aria-hidden="true">
                           <QIcon name={film.icon} size="32px" />
                         </div>
                         <div class="film-copy">
@@ -395,7 +395,7 @@
                           </p>
                           <p class="body-medium q-ma-none">{film.time} · {film.room}</p>
                         </div>
-                        <div class="film-actions">
+                        <div class="film-actions flex items-center q-gap-sm">
                           <QIconBtn
                             icon={isSaved ? "bookmark_added" : "bookmark_add"}
                             flat
@@ -414,7 +414,7 @@
                     {/each}
                   </ul>
                 {:else}
-                  <div class="empty-state surface-container-low">
+                  <div class="empty-state surface-container-low q-pa-lg">
                     <QIcon
                       name={programmePage === "saved" ? "bookmark" : "local_activity"}
                       size="40px"
@@ -440,7 +440,10 @@
                     />
                   </div>
                 {/if}
-                <p class="body-small text-on-surface-variant action-message" role="status">
+                <p
+                  class="body-small text-on-surface-variant action-message q-mt-md q-mb-none"
+                  role="status"
+                >
                   {programmeMessage}
                 </p>
               </div>
@@ -457,7 +460,7 @@
           visiting Updates clears its unread badge.
         {/snippet}
 
-        <div class="festival-window surface">
+        <div class="festival-window surface border no-overflow">
           <QLayout>
             {#snippet railbarEnd()}
               <QRailbar
@@ -469,7 +472,7 @@
                 activeColor="primary-container"
                 bordered
               >
-                <div class="rail-menu">
+                <div class="rail-menu flex justify-center">
                   <QIconBtn
                     icon={guideExpanded ? "close" : "menu"}
                     flat
@@ -496,7 +499,7 @@
               </QRailbar>
             {/snippet}
             <div class="app-content festival-content">
-              <div class="festival-banner tertiary-container">
+              <div class="festival-banner flex items-center tertiary-container q-pa-md">
                 <QIcon name="movie" size="32px" aria-hidden="true" />
                 <div>
                   <p class="label-small q-ma-none">FRAMEHOUSE PRESENTS</p>
@@ -515,9 +518,9 @@
                   outlined
                   dense
                 />
-                <ul class="guide-list">
+                <ul class="guide-list q-ma-none q-pa-none q-mt-md">
                   {#each guideFilms as film (film.id)}
-                    <li>
+                    <li class="flex items-start q-py-md border-bottom border-outline-variant">
                       <span class="label-large text-primary">{film.time}</span>
                       <div>
                         <div class="title-small">{film.title}</div>
@@ -527,9 +530,9 @@
                   {/each}
                 </ul>
               {:else if guidePage === "venues"}
-                <ul class="guide-list">
+                <ul class="guide-list q-ma-none q-pa-none q-mt-md">
                   {#each VENUES as venue (venue.name)}
-                    <li>
+                    <li class="flex items-start q-py-md border-bottom border-outline-variant">
                       <QIcon name={venue.icon} class="text-primary" aria-hidden="true" />
                       <div>
                         <div class="title-small">{venue.name}</div>
@@ -580,13 +583,13 @@
         {/snippet}
 
         <div class="appearance-controls">
-          <div class="example-controls">
+          <div class="example-controls flex items-center q-mb-md">
             <QSwitch label="Rail on the right" bind:value={deskOnRight} />
             <QSwitch label="Expanded rail" bind:value={deskExpanded} />
             <QSwitch label="Border" bind:value={deskBordered} />
             <QSwitch label="Full-width header and footer" bind:value={headerSpansRail} />
           </div>
-          <div class="select-controls">
+          <div class="select-controls q-gap-md">
             <QSelect
               label="Collapsed width"
               options={WIDTHS}
@@ -615,17 +618,17 @@
         </div>
         <!-- svelte-ignore a11y_no_noninteractive_tabindex (The workspace scrolls horizontally and needs keyboard access.) -->
         <div
-          class="cinema-viewport"
+          class="cinema-viewport border"
           role="region"
           aria-label="Framehouse projection workspace"
           tabindex="0"
         >
-          <div class="cinema-stage projection-stage">
+          <div class="cinema-stage projection-stage surface">
             <QLayout view={deskView}>
               {#snippet header()}
                 <QHeader class="surface-container-low" height={Math.max(64, deskHeaderHeight)}>
                   <div
-                    class="app-heading"
+                    class="app-heading flex items-center q-pa-md"
                     {@attach measureBarHeight((height) => (deskHeaderHeight = height))}
                   >
                     <QIcon name="videocam" aria-hidden="true" />
@@ -645,7 +648,7 @@
                   activeColor={indicatorColor}
                   aria-label="Projection navigation"
                 >
-                  <div class="rail-menu" style:width="{railWidth}px">
+                  <div class="rail-menu flex justify-center" style:width="{railWidth}px">
                     <QIconBtn
                       icon="menu"
                       flat
@@ -678,25 +681,25 @@
               {#snippet footer()}
                 <QFooter class="surface-container-low" height={Math.max(80, deskFooterHeight)}>
                   <div
-                    class="projection-status body-small"
+                    class="projection-status flex items-center q-gap-sm q-px-md body-small"
                     {@attach measureBarHeight((height) => (deskFooterHeight = height))}
                   >
-                    <span class="status-light" aria-hidden="true"></span>
+                    <span class="status-light bg-primary" aria-hidden="true"></span>
                     <span>{queuedFilm.title} · {subtitles ? "Subtitles on" : "Subtitles off"}</span>
                   </div>
                 </QFooter>
               {/snippet}
-              <div class="app-content">
+              <div class="app-content q-pa-lg">
                 {#if deskPage === "queue"}
                   <h6 class="title-large q-mt-none q-mb-sm">Up next</h6>
                   <p class="body-medium text-on-surface-variant">
                     Choose the film to cue for the next screening.
                   </p>
-                  <div class="queue-list">
+                  <div class="queue-list flex column q-gap-sm">
                     {#each FILMS as film (film.id)}
                       <QBtn
                         flat
-                        class="queue-film"
+                        class="queue-film justify-start"
                         icon={selectedFilm === film.id ? "check_circle" : "play_circle"}
                         label={`${film.time} · ${film.title}`}
                         aria-pressed={selectedFilm === film.id}
@@ -713,7 +716,7 @@
                   </p>
                 {:else}
                   <h6 class="title-large q-mt-none q-mb-sm">Screening notes</h6>
-                  <div class="screening-note secondary-container">
+                  <div class="screening-note flex items-start q-gap-md secondary-container">
                     <QIcon name={queuedFilm.icon} size="32px" aria-hidden="true" />
                     <div>
                       <h6 class="title-medium q-mt-none q-mb-xs">{queuedFilm.title}</h6>
@@ -759,17 +762,13 @@
     width: 100%;
     max-width: 448px;
     height: 312px;
-    overflow: hidden;
     border-radius: 16px;
   }
   .preview-content {
-    padding: 16px;
     min-width: 0;
     overflow-wrap: anywhere;
   }
   .preview-art {
-    display: grid;
-    place-items: center;
     height: 88px;
     margin-top: 12px;
     border-radius: 12px;
@@ -781,11 +780,7 @@
     );
   }
   .example-controls {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
     gap: 12px 24px;
-    margin-bottom: 16px;
   }
   .example-controls :global(.q-switch) {
     max-width: 100%;
@@ -797,7 +792,6 @@
   .cinema-viewport {
     max-width: 100%;
     overflow: auto;
-    border: 1px solid var(--outline-variant);
     border-radius: 16px;
   }
   .cinema-viewport:focus-visible {
@@ -807,12 +801,8 @@
   .cinema-stage {
     height: 520px;
     min-width: 560px;
-    background: var(--surface);
-    color: var(--on-surface);
   }
   .rail-menu {
-    display: flex;
-    justify-content: center;
     flex: none;
     width: 80px;
     align-self: flex-start;
@@ -829,11 +819,7 @@
     align-self: flex-start;
   }
   .app-heading {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
     gap: 8px 12px;
-    padding: 16px;
     box-sizing: border-box;
     width: 100%;
     min-width: 0;
@@ -844,29 +830,20 @@
     margin-inline-start: auto;
   }
   .app-content {
-    padding: 24px;
     min-width: 0;
     overflow-wrap: anywhere;
   }
   .section-heading {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
     gap: 12px;
-    margin-bottom: 24px;
   }
   .film-count {
     padding: 6px 12px;
     border-radius: 9999px;
     background: var(--surface-container);
-    white-space: nowrap;
   }
   .film-list,
   .guide-list {
     list-style: none;
-    margin: 0;
-    padding: 0;
     border-radius: 0;
   }
   .film-list {
@@ -876,15 +853,11 @@
     display: grid;
     grid-template-columns: 56px minmax(0, 1fr);
     gap: 8px 16px;
-    padding-block: 16px;
-    border-bottom: 1px solid var(--outline-variant);
   }
   .film-row:first-child {
     padding-top: 0;
   }
   .film-art {
-    display: grid;
-    place-items: center;
     width: 56px;
     height: 80px;
     border-radius: 8px;
@@ -893,47 +866,28 @@
     min-width: 0;
   }
   .film-actions {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 8px;
     grid-column: 2;
   }
   .empty-state {
-    padding: 24px;
     border-radius: 16px;
   }
   .action-message {
     min-height: 2.5em;
-    margin-block: 16px 0;
   }
   .festival-window {
     max-width: 640px;
     height: 480px;
-    border: 1px solid var(--outline-variant);
     border-radius: 16px;
-    overflow: hidden;
   }
   .festival-content {
     padding: 20px;
   }
   .festival-banner {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
     gap: 12px;
-    padding: 16px;
     border-radius: 16px;
   }
-  .guide-list {
-    margin-top: 16px;
-  }
   .guide-list li {
-    display: flex;
     gap: 12px;
-    align-items: flex-start;
-    padding-block: 16px;
-    border-bottom: 1px solid var(--outline-variant);
   }
   .guide-list li > :first-child {
     flex: none;
@@ -951,16 +905,12 @@
   .select-controls {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 192px), 1fr));
-    gap: 16px;
   }
   .projection-stage {
     height: 420px;
   }
   .projection-status {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 12px 16px;
+    padding-block: 12px;
     overflow-wrap: anywhere;
     box-sizing: border-box;
     width: 100%;
@@ -972,22 +922,14 @@
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background: var(--primary);
   }
   .queue-list {
-    display: flex;
-    flex-direction: column;
     align-items: stretch;
-    gap: 8px;
   }
   .queue-list :global(.queue-film) {
-    justify-content: flex-start;
     text-align: start;
   }
   .screening-note {
-    display: flex;
-    align-items: flex-start;
-    gap: 16px;
     padding: 20px;
     border-radius: 16px;
   }
@@ -996,6 +938,13 @@
   }
   .screening-note > div {
     min-width: 0;
+  }
+  .rail-menu,
+  .guide-list li,
+  .projection-status,
+  .queue-list,
+  .screening-note {
+    flex-wrap: nowrap;
   }
   @container (width >= 520px) {
     .film-row {
