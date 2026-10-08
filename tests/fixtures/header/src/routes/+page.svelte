@@ -2,6 +2,7 @@
   import { onMount } from "svelte";
   import { page } from "$app/state";
   import QBtn from "$components/button/QBtn.svelte";
+  import QFooter from "$components/footer/QFooter.svelte";
   import QHeader from "$components/header/QHeader.svelte";
   import QHeaderTitle from "$components/header/QHeaderTitle.svelte";
   import QLayout from "$components/layout/QLayout.svelte";
@@ -31,6 +32,9 @@
   let selected = $state(false);
   let visible = $state(true);
   let railExpanded = $state(false);
+  let railOnEnd = $state(false);
+  let insetOverride = $state<boolean>();
+  const inset = $derived(insetOverride ?? params.has("inset"));
   let borderOverride = $state<boolean>();
   let subtitleOverride = $state<boolean>();
   const bordered = $derived(borderOverride ?? params.has("border"));
@@ -88,10 +92,20 @@
     </QHeader>
   {/snippet}
 
+  {#snippet statusBar()}
+    <QFooter id="footer" height={40}>Playback status</QFooter>
+  {/snippet}
+
   {#if params.has("standalone")}
     {@render appBar()}
   {:else}
-    <QLayout id="layout" class="animated" style="height: 400px;">
+    <QLayout
+      id="layout"
+      class="animated"
+      style="height: 400px;"
+      view={inset ? "lhr lpr lfr" : undefined}
+      footer={params.has("footer") ? statusBar : undefined}
+    >
       {#snippet header()}
         {#if visible}
           {@render appBar()}
@@ -99,7 +113,13 @@
       {/snippet}
       {#snippet railbarStart()}
         {#if params.has("rail")}
-          <QRailbar id="rail" expanded={railExpanded} style="transition-timing-function: linear;" />
+          <QRailbar
+            id="rail"
+            expanded={railExpanded}
+            bordered={params.has("border")}
+            side={railOnEnd ? "end" : "start"}
+            style="transition-timing-function: linear;"
+          />
         {/if}
       {/snippet}
       <div id="content" style:height={params.has("short") ? "310px" : "1400px"}>City guide</div>
@@ -110,6 +130,8 @@
     >Change variant</button
   >
   <button id="toggle-rail" onclick={() => (railExpanded = !railExpanded)}>Toggle rail</button>
+  <button id="switch-rail-side" onclick={() => (railOnEnd = !railOnEnd)}>Switch rail side</button>
+  <button id="toggle-inset" onclick={() => (insetOverride = !inset)}>Toggle full-width bars</button>
   <button id="toggle-border" onclick={() => (borderOverride = !bordered)}>Toggle border</button>
   <button id="toggle-subtitle" onclick={() => (subtitleOverride = !hasSubtitle)}
     >Toggle subtitle</button

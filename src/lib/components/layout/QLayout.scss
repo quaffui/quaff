@@ -3,6 +3,13 @@
 .q-layout {
   z-index: 0;
   position: relative;
+  display: grid;
+  // Reserve rail space directly; horizontal margins animate drawer offsets.
+  grid-template-columns: var(--left-railbar-width) minmax(0, 1fr) var(--right-railbar-width);
+
+  &:dir(rtl) {
+    grid-template-columns: var(--right-railbar-width) minmax(0, 1fr) var(--left-railbar-width);
+  }
 
   width: 100%;
   height: 100%;
@@ -89,7 +96,11 @@
 }
 
 .q-layout > .q-layout__content {
-  margin: var(--offset-top) var(--offset-right) var(--offset-bottom) var(--offset-left);
+  grid-column: 2;
+  grid-row: 1;
+  min-width: 0;
+  margin: var(--offset-top) calc(var(--offset-right) - var(--right-railbar-width))
+    var(--offset-bottom) calc(var(--offset-left) - var(--left-railbar-width));
   height: calc(100% - var(--offset-top) - var(--offset-bottom));
   overflow: auto;
 }
@@ -108,11 +119,6 @@
   }
 }
 
-// Follow measured rail widths directly while they animate; retain drawer transitions otherwise.
-.q-layout:has(> .q-railbar--resizing) > .q-layout__content {
-  transition-property: margin-top, margin-bottom, height;
-}
-
 .q-layout > .q-header ~ .q-layout__content {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
@@ -126,10 +132,4 @@
 // Flexible headers report their rendered height as text wraps or the bar collapses.
 .q-layout:has(> .q-header--flexible.q-header--collapsible) > .q-layout__content {
   transition-property: margin-right, margin-bottom, margin-left;
-}
-
-// When both bars resize, follow both measured offsets without a second animation.
-.q-layout:has(> .q-header--flexible.q-header--collapsible):has(> .q-railbar--resizing)
-  > .q-layout__content {
-  transition-property: margin-bottom;
 }

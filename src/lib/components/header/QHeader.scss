@@ -191,7 +191,9 @@
 
   @each $side in ("left", "right") {
     &.q-header--offset-#{$side} {
-      #{$side}: var(--offset-#{$side}, 0);
+      // Follow the rail directly; only drawer offsets need another transition.
+      #{$side}: calc(var(--offset-#{$side}, 0px) - var(--#{$side}-railbar-width, 0px));
+      margin-#{$side}: var(--#{$side}-railbar-width, 0px);
     }
   }
 }
