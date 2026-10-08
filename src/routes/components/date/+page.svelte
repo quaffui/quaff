@@ -41,7 +41,7 @@
   });
 
   let rentalRange = $state<QDateRangeValue | null>({ start: "2026-10-09", end: "2026-10-12" });
-  let includesMeter = $state(false);
+  let isMeterIncluded = $state(false);
   let inputRange = $state<QDateRangeValue | null>({ start: "2026-11-03", end: "2026-11-06" });
   let availableRange = $state<QDateRangeValue | null>({ start: "2026-10-19", end: "2026-10-22" });
   let dockedDate = $state<string | null>("16.10.2026");
@@ -50,14 +50,14 @@
   let adaptiveValidation = $state("");
   let pickupDate = $state<string | null>("2026-10-20");
   let controlledRange = $state<QDateRangeValue | null>({ start: "2026-11-12", end: "2026-11-14" });
-  let controlledOpen = $state(false);
+  let isControlledOpen = $state(false);
   let controlledPicker = $state<QDate<true>>();
 
   const rentalDays = $derived(countDays(rentalRange));
-  const dailyRate = $derived(DAY_RATE + (includesMeter ? METER_RATE : 0));
+  const dailyRate = $derived(DAY_RATE + (isMeterIncluded ? METER_RATE : 0));
   const rentalTotal = $derived(PRICE_FORMAT.format(rentalDays * dailyRate));
 
-  function dateTimestamp(value: string, mask = "YYYY-MM-DD") {
+  function getDateTimestamp(value: string, mask = "YYYY-MM-DD") {
     const date = parseDateValue(value, mask);
 
     if (!date) {
@@ -68,14 +68,14 @@
   }
 
   function describeDate(value: string | null | undefined, mask = "YYYY-MM-DD") {
-    const timestamp = dateTimestamp(value ?? "", mask);
+    const timestamp = getDateTimestamp(value ?? "", mask);
 
     return timestamp === null ? "Choose a date" : DATE_FORMAT.format(timestamp);
   }
 
   function countDays(value: QDateRangeValue | null) {
-    const start = dateTimestamp(value?.start ?? "");
-    const end = dateTimestamp(value?.end ?? "");
+    const start = getDateTimestamp(value?.start ?? "");
+    const end = getDateTimestamp(value?.end ?? "");
 
     if (start === null || end === null || end < start) {
       return 0;
@@ -98,8 +98,11 @@
 
 <QDocs>
   {#snippet display()}
-    <div class="rental-preview surface">
-      <div class="camera-art secondary-container" aria-hidden="true">
+    <div class="rental-preview surface border overflow-auto">
+      <div
+        class="camera-art secondary-container items-center q-gap-y-sm q-gap-x-md"
+        aria-hidden="true"
+      >
         <span class="film-label label-medium">35 MM · MANUAL FOCUS</span>
         <QIcon name="photo_camera" size="48px" />
         <span class="frame-number label-medium">FRAME 01</span>
@@ -111,7 +114,10 @@
           A 35 mm camera and a 50 mm lens, ready to go.
         </p>
         <QDate range bind:value={rentalRange} label="Your rental dates" outlined />
-        <div class="rental-total q-mt-md" aria-live="polite">
+        <div
+          class="flex items-baseline justify-between q-gap-y-sm q-gap-x-md q-mt-md"
+          aria-live="polite"
+        >
           <span class="body-medium">{rentalDays} days · {PRICE_FORMAT.format(dailyRate)} / day</span
           >
           <strong class="headline-small">{rentalTotal}</strong>
@@ -135,28 +141,30 @@
           </p>
         {/snippet}
 
-        <div class="rental-panel">
-          <div class="panel-heading">
+        <div class="rental-panel full-width min-width-0 q-pa-lg surface-container-low">
+          <div class="flex no-wrap items-center q-gap-md">
             <QIcon name="camera" class="text-primary" size="32px" aria-hidden="true" />
-            <div>
+            <div class="min-width-0">
               <h6 class="title-large">Build your camera kit</h6>
               <p class="body-medium text-on-surface-variant q-ma-none">35 mm camera + 50 mm lens</p>
             </div>
           </div>
           <QDate range bind:value={rentalRange} label="Collect and return" filled />
-          <QSwitch bind:value={includesMeter} label="Add a light meter · €4 / day" />
-          <dl class="booking-details body-medium" aria-live="polite">
-            <div>
+          <QSwitch bind:value={isMeterIncluded} label="Add a light meter · €4 / day" />
+          <dl class="booking-details body-medium q-ma-none" aria-live="polite">
+            <div class="flex items-baseline justify-between q-gap-y-sm q-gap-x-md">
               <dt>Collection</dt>
-              <dd>{describeDate(rentalRange?.start)}</dd>
+              <dd class="q-ma-none">{describeDate(rentalRange?.start)}</dd>
             </div>
-            <div>
+            <div class="flex items-baseline justify-between q-gap-y-sm q-gap-x-md">
               <dt>Return</dt>
-              <dd>{describeDate(rentalRange?.end)}</dd>
+              <dd class="q-ma-none">{describeDate(rentalRange?.end)}</dd>
             </div>
-            <div class="booking-total">
+            <div
+              class="flex items-baseline justify-between q-gap-y-sm q-gap-x-md q-pt-md border-top border-outline-variant no-border-radius"
+            >
               <dt>{rentalDays} rental days</dt>
-              <dd class="title-large">{rentalTotal}</dd>
+              <dd class="title-large q-ma-none">{rentalTotal}</dd>
             </div>
           </dl>
           <p class="body-small text-on-surface-variant q-ma-none">
@@ -172,10 +180,10 @@
           <code>showModeToggle</code> is false. The input format follows <code>locale</code>.
         {/snippet}
 
-        <div class="rental-panel">
-          <div class="panel-heading">
+        <div class="rental-panel full-width min-width-0 q-pa-lg surface-container-low">
+          <div class="flex no-wrap items-center q-gap-md">
             <QIcon name="receipt_long" class="text-tertiary" size="32px" aria-hidden="true" />
-            <div>
+            <div class="min-width-0">
               <h6 class="title-large">Dates already in your brief?</h6>
               <p class="body-medium text-on-surface-variant q-ma-none">
                 Enter your studio booking.
@@ -191,9 +199,12 @@
             labels={{ startDate: "Collection date", endDate: "Return date" }}
             outlined
           />
-          <div class="booking-note body-medium" aria-live="polite">
+          <div
+            class="booking-note flex no-wrap items-center q-gap-md q-pa-md body-medium"
+            aria-live="polite"
+          >
             <QIcon name="event_available" size="24px" aria-hidden="true" />
-            <span>{countDays(inputRange)} days reserved in your plan</span>
+            <span class="min-width-0">{countDays(inputRange)} days reserved in your plan</span>
           </div>
         </div>
       </QDocsSection>
@@ -211,10 +222,10 @@
           </p>
         {/snippet}
 
-        <div class="rental-panel">
-          <div class="panel-heading">
+        <div class="rental-panel full-width min-width-0 q-pa-lg surface-container-low">
+          <div class="flex no-wrap items-center q-gap-md">
             <QIcon name="handyman" class="text-tertiary" size="32px" aria-hidden="true" />
-            <div>
+            <div class="min-width-0">
               <h6 class="title-large">Medium format, limited availability</h6>
               <p class="body-medium text-on-surface-variant q-ma-none">
                 October 2026 rental calendar
@@ -233,9 +244,13 @@
             locale="en-GB"
             outlined
           />
-          <div class="booking-note tertiary-container body-medium">
+          <div
+            class="booking-note flex no-wrap items-center q-gap-md q-pa-md tertiary-container body-medium"
+          >
             <QIcon name="build" size="24px" aria-hidden="true" />
-            <span>In the workshop 14–16 October. Rentals must fit either side of maintenance.</span>
+            <span class="min-width-0"
+              >In the workshop 14–16 October. Rentals must fit either side of maintenance.</span
+            >
           </div>
           <p class="body-medium q-ma-none" aria-live="polite">
             Your plan: {describeDate(availableRange?.start)} – {describeDate(availableRange?.end)}
@@ -257,8 +272,8 @@
           </p>
         {/snippet}
 
-        <div class="example-grid">
-          <div class="rental-panel">
+        <div class="example-grid items-start">
+          <div class="rental-panel full-width min-width-0 q-pa-lg surface-container-low">
             <div>
               <div class="label-medium text-primary">DOCKED · SINGLE DATE</div>
               <h6 class="title-large q-mt-xs">Lens collection</h6>
@@ -269,7 +284,7 @@
               mask="##.##.####"
               fillMask
               hint="DD.MM.YYYY"
-              error={Boolean(dockedValidation)}
+              error={!!dockedValidation}
               errorMessage={dockedValidation}
               outlined
             >
@@ -287,7 +302,7 @@
               Ready at the counter: {describeDate(dockedDate, "DD.MM.YYYY")}
             </p>
           </div>
-          <div class="rental-panel">
+          <div class="rental-panel full-width min-width-0 q-pa-lg surface-container-low">
             <div>
               <div class="label-medium text-primary">ADAPTIVE · DATE RANGE</div>
               <h6 class="title-large q-mt-xs">A weekend with a wide-angle</h6>
@@ -311,7 +326,7 @@
                 label={field.label}
                 mask="####-##-##"
                 hint="YYYY-MM-DD"
-                error={Boolean(adaptiveValidation)}
+                error={!!adaptiveValidation}
                 errorMessage={adaptiveValidation}
                 append={field.key === "end" ? adaptivePicker : undefined}
                 filled
@@ -330,10 +345,10 @@
           default modal variant renders its own field and becomes full-screen on small screens.
         {/snippet}
 
-        <div class="rental-panel">
-          <div class="panel-heading">
+        <div class="rental-panel full-width min-width-0 q-pa-lg surface-container-low">
+          <div class="flex no-wrap items-center q-gap-md">
             <QIcon name="photo_library" class="text-secondary" size="32px" aria-hidden="true" />
-            <div>
+            <div class="min-width-0">
               <h6 class="title-large">Your negatives are ready</h6>
               <p class="body-medium text-on-surface-variant q-ma-none">
                 Two rolls, 72 little moments.
@@ -364,14 +379,14 @@
           </p>
         {/snippet}
 
-        <div class="rental-panel">
+        <div class="rental-panel full-width min-width-0 q-pa-lg surface-container-low">
           <h6 class="title-large">A camera for your next trip</h6>
           <QLanguageExample>
             <QDate
               range
               value={{ start: "2026-11-09", end: "2026-11-13" }}
               outlined
-              style="width: 100%"
+              class="full-width"
             />
           </QLanguageExample>
         </div>
@@ -385,7 +400,7 @@
           prevent opening.
         {/snippet}
 
-        <div class="rental-panel">
+        <div class="rental-panel full-width min-width-0 q-pa-lg surface-container-low">
           <div>
             <div class="label-medium text-primary">RENTAL REQUEST #024</div>
             <h6 class="title-large q-mt-xs">Fine-tune your collection dates</h6>
@@ -394,7 +409,7 @@
             range
             bind:this={controlledPicker}
             bind:value={controlledRange}
-            bind:open={controlledOpen}
+            bind:open={isControlledOpen}
             label="Requested rental"
             title="Plan your camera rental"
             inputTitle="Enter your rental dates"
@@ -404,7 +419,7 @@
             labels={{ startDate: "Collect", endDate: "Return" }}
             outlined
           />
-          <div class="example-actions">
+          <div class="example-actions flex">
             <QBtn
               variant="tonal"
               icon="edit_calendar"
@@ -414,7 +429,7 @@
             <QBtn variant="outlined" label="Toggle picker" onclick={controlledPicker?.toggle} />
           </div>
           <p class="body-small text-on-surface-variant q-ma-none" aria-live="polite">
-            {controlledOpen ? "Editing your request" : "Your chosen dates are saved in this plan"}
+            {isControlledOpen ? "Editing your request" : "Your chosen dates are saved in this plan"}
           </p>
         </div>
       </QDocsSection>
@@ -452,16 +467,12 @@
   .rental-preview {
     width: min(100%, 480px);
     max-height: 100%;
-    border: 1px solid var(--outline-variant);
     border-radius: 24px;
-    overflow: auto;
   }
 
   .camera-art {
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
-    align-items: center;
-    gap: 8px 16px;
     min-height: 88px;
     padding: 16px 20px;
     background-image: repeating-linear-gradient(
@@ -496,68 +507,27 @@
     display: grid;
     grid-template-columns: minmax(0, 1fr);
     gap: 20px;
-    width: 100%;
     max-width: 560px;
-    min-width: 0;
-    padding: 24px;
     border-radius: 20px;
-    background-color: var(--surface-container-low);
-    color: var(--on-surface);
   }
 
   .example-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
-    align-items: start;
     gap: 20px;
     max-width: 880px;
   }
 
-  .panel-heading,
   .booking-note {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-  }
-
-  .panel-heading > div,
-  .booking-note > span {
-    min-width: 0;
-  }
-
-  .booking-note {
-    padding: 16px;
     border-radius: 12px;
   }
 
   .booking-details {
     display: grid;
     gap: 12px;
-    margin: 0;
-  }
-
-  .booking-details > div,
-  .rental-total {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 8px 16px;
-  }
-
-  .booking-details dd {
-    margin: 0;
-  }
-
-  .booking-total {
-    padding-top: 16px;
-    border-top: 1px solid var(--outline-variant);
-    border-radius: 0;
   }
 
   .example-actions {
-    display: flex;
-    flex-wrap: wrap;
     gap: 12px;
   }
 
