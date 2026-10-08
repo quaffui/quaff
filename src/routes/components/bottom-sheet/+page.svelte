@@ -38,7 +38,7 @@
   let travelMode = $state("walking");
   let hasNotifications = $state(true);
 
-  const places = [
+  const PLACES = [
     {
       name: "Riverside Café",
       description: "Coffee & pastries",
@@ -61,7 +61,7 @@
       color: "secondary-container",
     },
   ] as const;
-  const travelModes = [
+  const TRAVEL_MODES = [
     {
       label: "Walking",
       value: "walking",
@@ -81,9 +81,9 @@
       route: "Find a nearby stop",
     },
   ];
-  const selectedStop = $derived(places.find((place) => place.name === selectedPlace) ?? places[0]);
+  const selectedStop = $derived(PLACES.find((place) => place.name === selectedPlace) ?? PLACES[0]);
   const selectedTravelMode = $derived(
-    travelModes.find((mode) => mode.value === travelMode) ?? travelModes[0]
+    TRAVEL_MODES.find((mode) => mode.value === travelMode) ?? TRAVEL_MODES[0]
   );
 
   function choosePlace(place: string) {
@@ -94,7 +94,7 @@
 
 <QDocs>
   {#snippet display()}
-    <div class="q-bottom-sheet-preview">
+    <div class="q-bottom-sheet-preview relative-position full-width overflow-hidden q-pa-md">
       <QList class="tertiary-container">
         <QItem
           clickable
@@ -152,7 +152,9 @@
           container, then drag or select its handle to expand or collapse it.
         {/snippet}
 
-        <div class="q-bottom-sheet-example surface-container-low">
+        <div
+          class="q-bottom-sheet-example relative-position full-width overflow-hidden surface-container-low"
+        >
           <div class="q-pa-md">
             <QCard fill="tertiary" class="q-mb-md flex items-center q-gap-md">
               <QAvatar size="lg" class="tertiary" aria-hidden="true">
@@ -186,7 +188,7 @@
             <h6 id="nearby-places-title" class="q-mb-sm">Nearby places</h6>
             <p>Good food, a little fresh air, and somewhere new.</p>
             <QList>
-              {#each places as place (place.name)}
+              {#each PLACES as place (place.name)}
                 <QItem
                   clickable
                   active={selectedPlace === place.name}
@@ -224,7 +226,7 @@
         <QBottomSheet bind:value={isModalOpen} modal aria-labelledby="choose-place-title">
           <h6 id="choose-place-title" class="q-mb-sm">Choose a place</h6>
           <QList>
-            {#each places as place (place.name)}
+            {#each PLACES as place (place.name)}
               <QItem
                 clickable
                 active={selectedPlace === place.name}
@@ -267,7 +269,7 @@
             </QCard>
             <QSelect
               bind:value={travelMode}
-              options={travelModes}
+              options={TRAVEL_MODES}
               label="Travel mode"
               outlined
               emitValue
@@ -291,16 +293,12 @@
 <style>
   .q-bottom-sheet-preview,
   .q-bottom-sheet-example {
-    position: relative;
-    width: 100%;
     max-width: 40rem;
-    overflow: hidden;
     border-radius: 16px;
   }
 
   .q-bottom-sheet-preview {
     height: 320px;
-    padding: 16px;
   }
 
   .q-bottom-sheet-example {
