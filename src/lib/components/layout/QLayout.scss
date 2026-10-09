@@ -16,7 +16,8 @@
   min-height: 0;
   min-width: 0;
 
-  overflow: hidden;
+  // Clip off-screen navigation without allowing focus to scroll the layout.
+  overflow: clip;
 
   border-radius: inherit;
   opacity: 0;

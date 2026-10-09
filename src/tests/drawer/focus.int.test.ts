@@ -17,17 +17,21 @@ beforeAll(async () => {
         enforce: "pre",
         configureServer(server) {
           server.middlewares.use((request, response, next) => {
-            if (request.url?.split("?")[0] !== "/drawer-test") {
+            const path = request.url?.split("?")[0];
+
+            if (path !== "/drawer-test" && path !== "/drawer-layout-test") {
               return next();
             }
 
+            const fixture = path === "/drawer-layout-test" ? "LayoutFocusFixture" : "FocusFixture";
+
             void server
               .transformIndexHtml(
-                "/drawer-test",
+                path,
                 `<!doctype html><html><body>
                 <script type="module">
                   import { mount } from "svelte";
-                  import Fixture from "/src/tests/drawer/FocusFixture.svelte";
+                  import Fixture from "/src/tests/drawer/${fixture}.svelte";
                   mount(Fixture, { target: document.body });
                 </script></body></html>`
               )
@@ -74,6 +78,47 @@ async function openDrawer(query = "") {
   await page.locator("#open-drawer").click();
   await expect.poll(focused).toBe("open-dialog");
 }
+
+it.each([
+  { scrollContainer: "#drawer", scrollTop: 0 },
+  { scrollContainer: "#drawer", scrollTop: 400 },
+  { scrollContainer: "#drawer-list", scrollTop: 400 },
+])(
+  "focuses an overlay without scrolling its layout ($scrollContainer scroll: $scrollTop)",
+  async ({ scrollContainer, scrollTop }) => {
+    await page.goto(`${server.resolvedUrls!.local[0]}drawer-layout-test`);
+    const layout = page.locator("#layout");
+    const drawer = page.locator("#drawer");
+    await expect
+      .poll(() => drawer.evaluate((element) => getComputedStyle(element).transitionProperty))
+      .toContain("transform");
+
+    const scroller = page.locator(scrollContainer);
+    await scroller.evaluate((element, scrollTop) => (element.scrollTop = scrollTop), scrollTop);
+    expect(await scroller.evaluate((element) => element.scrollTop)).toBe(scrollTop);
+
+    await layout.evaluate((element) => {
+      element.addEventListener("focusin", (event) => {
+        if ((event.target as HTMLElement).closest("#drawer")) {
+          element.dataset.scrollLeftAtFocus = String(element.scrollLeft);
+        }
+      });
+    });
+    await page.locator("#open-drawer").click();
+    await expect.poll(focused).toBe("drawer-action");
+    expect(await layout.getAttribute("data-scroll-left-at-focus")).toBe("0");
+
+    const bounds = await page.locator("#drawer-list").evaluate((element) => ({
+      control: document.activeElement!.getBoundingClientRect().toJSON(),
+      list: element.getBoundingClientRect().toJSON(),
+      drawer: element.closest("#drawer")!.getBoundingClientRect().toJSON(),
+    }));
+    expect(bounds.control.top).toBeGreaterThanOrEqual(Math.max(bounds.list.top, bounds.drawer.top));
+    expect(bounds.control.bottom).toBeLessThanOrEqual(
+      Math.min(bounds.list.bottom, bounds.drawer.bottom)
+    );
+  }
+);
 
 it.each([false, true])(
   "contains focus and restores the opener, with a standard rail present: %s",
