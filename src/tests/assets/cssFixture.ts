@@ -3,8 +3,8 @@ import { tmpdir } from "node:os";
 import { dirname, join, relative, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { compile } from "sass";
-import { CssPluginState } from "../../lib/plugins/cssState";
-import type { QuaffCssOptions } from "../../lib/plugins/css";
+import { AssetUsageState } from "../../lib/plugins/assets/assetUsageState";
+import type { QuaffAssetsOptions } from "../../lib/plugins/assets";
 import type { ResolvedConfig } from "vite";
 
 const LIB_ROOT = fileURLToPath(new URL("../../lib/", import.meta.url));
@@ -19,10 +19,10 @@ export function readCssAsset(path: unknown): string | undefined {
     return;
   }
 
-  return cssAsset(relative(CSS_ROOT, path).slice(0, -4));
+  return getCssAsset(relative(CSS_ROOT, path).slice(0, -4));
 }
 
-export function cssAsset(name: string): string {
+export function getCssAsset(name: string): string {
   let css = cssCache.get(name);
 
   if (css === undefined) {
@@ -51,7 +51,7 @@ export function cssAsset(name: string): string {
 
 export async function createCssFixture(
   files: Record<string, string> = {},
-  options: QuaffCssOptions = {}
+  options: QuaffAssetsOptions = {}
 ) {
   const root = await mkdtemp(join(tmpdir(), "quaff-css-"));
   directories.add(root);
@@ -69,14 +69,15 @@ export async function createCssFixture(
     await write(name, content);
   }
 
-  const state = new CssPluginState(
+  const state = new AssetUsageState(
     { root, command: "build" } as ResolvedConfig,
     options,
     undefined
   );
 
   return {
-    styles: () => state.getStylesheet(),
+    getStylesheet: () => state.getStylesheet(),
+    getFontUsage: () => state.getFontUsage(),
     async update(name: string, content: string) {
       const path = await write(name, content);
       return state.updateFile("update", path, () => readFile(path, "utf8"));

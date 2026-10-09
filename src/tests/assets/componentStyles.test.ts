@@ -2,11 +2,11 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import {
   cleanupCssFixtures,
   createCssFixture,
-  cssAsset,
+  getCssAsset,
   hasSelector,
   readCssAsset,
-} from "./fixture";
-import type { QuaffCssOptions } from "../../lib/plugins/css";
+} from "./cssFixture";
+import type { QuaffAssetsOptions } from "../../lib/plugins/assets";
 
 vi.mock("node:fs/promises", async (importOriginal) => {
   const actual = await importOriginal<typeof import("node:fs/promises")>();
@@ -22,7 +22,7 @@ vi.mock("node:fs/promises", async (importOriginal) => {
 
 afterEach(cleanupCssFixtures);
 
-function componentSource(...names: string[]) {
+function createComponentSource(...names: string[]) {
   return `<script>import { ${names.join(", ")} } from "@quaffui/quaff";</script>`;
 }
 
@@ -68,8 +68,8 @@ describe("component styles", () => {
     },
     { component: "Notify", selectors: [".q-snackbar", ".q-btn", ".q-icon-btn"] },
   ])("includes the styles rendered by $component", async ({ component, selectors }) => {
-    const fixture = await createCssFixture({ "App.svelte": componentSource(component) });
-    expectSelectors(await fixture.styles(), selectors, [".q-table", ".q-carousel"]);
+    const fixture = await createCssFixture({ "App.svelte": createComponentSource(component) });
+    expectSelectors(await fixture.getStylesheet(), selectors, [".q-table", ".q-carousel"]);
   });
 
   it.each([
@@ -78,9 +78,9 @@ describe("component styles", () => {
     'import * as Kit from "@quaffui/quaff"; const Button = Kit.QBtn; function serialize(Kit) { return JSON.stringify(Kit); }',
     'import * as Kit from "@quaffui/quaff"; const UI = Kit; const Button = UI.QBtn;',
   ])("keeps static import forms equally small: %s", async (source) => {
-    const baseline = await createCssFixture({ "App.svelte": componentSource("QBtn") });
+    const baseline = await createCssFixture({ "App.svelte": createComponentSource("QBtn") });
     const fixture = await createCssFixture({ "components.ts": source });
-    expect(await fixture.styles()).toBe(await baseline.styles());
+    expect(await fixture.getStylesheet()).toBe(await baseline.getStylesheet());
   });
 
   it("retains all component styles when a namespace alias selects dynamically", async () => {
@@ -88,7 +88,7 @@ describe("component styles", () => {
       "components.ts":
         'import * as Kit from "@quaffui/quaff"; const UI = Kit; const Component = UI[window.selectedComponent];',
     });
-    expectSelectors(await fixture.styles(), [
+    expectSelectors(await fixture.getStylesheet(), [
       ".q-btn",
       ".q-date__picker",
       ".q-table",
@@ -98,13 +98,13 @@ describe("component styles", () => {
 
   it("keeps shared styles once in cascade order regardless of import order", async () => {
     const fixture = await createCssFixture({
-      "App.svelte": componentSource("QMenu", "QIcon", "QIconBtn", "QSplitBtn", "QBtn"),
-      "Other.svelte": componentSource("QSplitBtn", "QBtn"),
+      "App.svelte": createComponentSource("QMenu", "QIcon", "QIconBtn", "QSplitBtn", "QBtn"),
+      "Other.svelte": createComponentSource("QSplitBtn", "QBtn"),
     });
-    const css = await fixture.styles();
+    const css = await fixture.getStylesheet();
     const SHEETS = ["button", "split-button", "icon", "menu", "progress"];
     const positions = SHEETS.map((name) => {
-      const asset = cssAsset(`components/${name}`);
+      const asset = getCssAsset(`components/${name}`);
       expect(css.split(asset)).toHaveLength(2);
       return css.indexOf(asset);
     });
@@ -115,21 +115,27 @@ describe("component styles", () => {
     "recognizes the component family from a literal %s class",
     async (className) => {
       const fixture = await createCssFixture({ "App.svelte": `<div class="${className}"></div>` });
-      expectSelectors(await fixture.styles(), [".q-btn"], [".q-table"]);
+      expectSelectors(await fixture.getStylesheet(), [".q-btn"], [".q-table"]);
     }
   );
 });
 
 describe("optional pruning", () => {
-  it.each([false, true])("retains complete component sheets with prune=%s", async (prune) => {
-    const fixture = await createCssFixture({ "App.svelte": componentSource("QBtn") }, { prune });
-    const css = await fixture.styles();
-    expect(css).toContain(cssAsset("components/button"));
-    expectSelectors(css, [".q-ripple__effect", ".q-ripple--center .q-ripple"]);
-    expect(css).toMatch(/@keyframes ripple\s*\{/);
-    expect(hasSelector(css, ".q-pa-xl")).toBe(!prune);
-    expectSelectors(css, [], [".q-table", ".q-railbar"]);
-  });
+  it.each([false, true])(
+    "retains complete component sheets with stripUnused=%s",
+    async (stripUnused) => {
+      const fixture = await createCssFixture(
+        { "App.svelte": createComponentSource("QBtn") },
+        { css: { stripUnused } }
+      );
+      const css = await fixture.getStylesheet();
+      expect(css).toContain(getCssAsset("components/button"));
+      expectSelectors(css, [".q-ripple__effect", ".q-ripple--center .q-ripple"]);
+      expect(css).toMatch(/@keyframes ripple\s*\{/);
+      expect(hasSelector(css, ".q-pa-xl")).toBe(!stripUnused);
+      expectSelectors(css, [], [".q-table", ".q-railbar"]);
+    }
+  );
 
   it.each([
     { component: "QBreadcrumbsEl", helpers: [".q-px-none", ".q-px-sm", ".q-px-md", ".q-px-lg"] },
@@ -160,10 +166,10 @@ describe("optional pruning", () => {
     },
   ])("preserves internal utility classes for $component", async ({ component, helpers }) => {
     const fixture = await createCssFixture(
-      { "App.svelte": componentSource(component) },
-      { prune: true }
+      { "App.svelte": createComponentSource(component) },
+      { css: { stripUnused: true } }
     );
-    expectSelectors(await fixture.styles(), helpers, [".q-pa-xl", ".q-table"]);
+    expectSelectors(await fixture.getStylesheet(), helpers, [".q-pa-xl", ".q-table"]);
   });
 
   it.each([false, true])("includes grid helpers only when used: %s", async (grid) => {
@@ -171,10 +177,10 @@ describe("optional pruning", () => {
       ? '<QCardSection horizontal class="q-gutter-sm"><div class="col-6"></div></QCardSection>'
       : "<QCardSection horizontal>Content</QCardSection>";
     const fixture = await createCssFixture(
-      { "App.svelte": componentSource("QCardSection") + markup },
-      { prune: true }
+      { "App.svelte": createComponentSource("QCardSection") + markup },
+      { css: { stripUnused: true } }
     );
-    const css = await fixture.styles();
+    const css = await fixture.getStylesheet();
     expectSelectors(css, [".row"], [".row > .col-12", ".row.q-gutter-xl"]);
     expect(hasSelector(css, ".row > .col-6")).toBe(grid);
     expect(hasSelector(css, ".row.q-gutter-sm")).toBe(grid);
@@ -182,11 +188,11 @@ describe("optional pruning", () => {
 
   it("keeps helpers of descendants without loading unrelated components", async () => {
     const fixture = await createCssFixture(
-      { "App.svelte": componentSource("QBtn") },
-      { prune: true }
+      { "App.svelte": createComponentSource("QBtn") },
+      { css: { stripUnused: true } }
     );
     expectSelectors(
-      await fixture.styles(),
+      await fixture.getStylesheet(),
       [".absolute-full", ".flex-center"],
       [".q-px-lg", ".q-railbar"]
     );
@@ -198,27 +204,30 @@ describe("explicit CSS selection", () => {
     { options: { include: ["QSelect"] }, selectors: [".q-select__menu", ".q-field", ".q-menu"] },
     { options: { include: ["Notify"] }, selectors: [".q-snackbar", ".q-btn"] },
     {
-      options: { safelist: ["text-primary", /^q-pa-/] },
+      options: { css: { safelist: ["text-primary", /^q-pa-/] } },
       selectors: [".text-primary", ".q-pa-sm", ".q-pa-xl"],
     },
     {
-      options: { safelist: { standard: ["text-primary"], greedy: [/^q-avatar/] } },
+      options: { css: { safelist: { standard: ["text-primary"], greedy: [/^q-avatar/] } } },
       selectors: [".text-primary", ".q-avatar"],
     },
-  ] satisfies { options: QuaffCssOptions; selectors: string[] }[])(
+  ] satisfies { options: QuaffAssetsOptions; selectors: string[] }[])(
     "supports $options without source references",
     async ({ options, selectors }) => {
-      const fixture = await createCssFixture({}, { ...options, prune: true });
-      expectSelectors(await fixture.styles(), selectors, [".q-table"]);
+      const fixture = await createCssFixture(
+        {},
+        { ...options, css: { ...options.css, stripUnused: true } }
+      );
+      expectSelectors(await fixture.getStylesheet(), selectors, [".q-table"]);
     }
   );
 
   it("can exclude a directly requested component", async () => {
     const fixture = await createCssFixture(
-      { "App.svelte": componentSource("QBtn", "QTable") },
+      { "App.svelte": createComponentSource("QBtn", "QTable") },
       { exclude: ["QTable"] }
     );
-    expectSelectors(await fixture.styles(), [".q-btn"], [".q-table", ".q-select__menu"]);
+    expectSelectors(await fixture.getStylesheet(), [".q-btn"], [".q-table", ".q-select__menu"]);
   });
 });
 
@@ -226,25 +235,25 @@ describe("source updates", () => {
   it("replaces removed styles while retaining shared dependencies", async () => {
     const fixture = await createCssFixture(
       {
-        "App.svelte": componentSource("QBtn"),
-        "Other.svelte": componentSource("QIconBtn"),
+        "App.svelte": createComponentSource("QBtn"),
+        "Other.svelte": createComponentSource("QIconBtn"),
       },
-      { prune: true }
+      { css: { stripUnused: true } }
     );
-    await fixture.styles();
+    await fixture.getStylesheet();
 
-    expect(await fixture.update("App.svelte", componentSource("QSelect"))).toBe(true);
-    expectSelectors(await fixture.styles(), [".q-btn", ".q-select__menu", ".q-menu"]);
+    expect(await fixture.update("App.svelte", createComponentSource("QSelect"))).toBe(true);
+    expectSelectors(await fixture.getStylesheet(), [".q-btn", ".q-select__menu", ".q-menu"]);
     expect(await fixture.remove("Other.svelte")).toBe(true);
     expectSelectors(
-      await fixture.styles(),
+      await fixture.getStylesheet(),
       [".q-select__menu", ".q-icon"],
       [".q-btn", ".q-circular-progress"]
     );
-    expect(await fixture.update("App.svelte", componentSource("QSelect"))).toBe(false);
+    expect(await fixture.update("App.svelte", createComponentSource("QSelect"))).toBe(false);
     expect(await fixture.remove("App.svelte")).toBe(true);
     expectSelectors(
-      await fixture.styles(),
+      await fixture.getStylesheet(),
       [],
       [".q-select__menu", ".q-icon", ".q-ripple__effect"]
     );

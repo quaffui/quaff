@@ -3,7 +3,7 @@ import { chromium, type Browser, type Page } from "playwright";
 import { render } from "svelte/server";
 import { createServer, type ViteDevServer } from "vite";
 import { afterAll, afterEach, beforeAll, beforeEach, expect, it } from "vitest";
-import { cssAsset } from "../css/fixture";
+import { getCssAsset } from "../assets/cssFixture";
 import LabelFixture from "./LabelFixture.svelte";
 
 declare global {
@@ -26,7 +26,7 @@ beforeAll(async () => {
     "components/menu",
     "components/list",
   ]
-    .map(cssAsset)
+    .map(getCssAsset)
     .join("\n");
   const minified = await transform(css, { loader: "css", minify: true });
   server = await createServer({

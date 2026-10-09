@@ -43,6 +43,10 @@
       "types": "./dist/locales/*.d.ts",
       "default": "./dist/locales/*.js"
     },
+    "./plugins/assets": {
+      "types": "./dist/plugins/assets.d.ts",
+      "default": "./dist/plugins/assets.js"
+    },
     "./plugins/css": {
       "types": "./dist/plugins/css.d.ts",
       "default": "./dist/plugins/css.js"
@@ -107,7 +111,9 @@
   "type": "module",
   "dependencies": {
     "@quaffui/material-color-utilities": "^0.4.2",
-    "purgecss": "^8.0.0"
+    "harfbuzzjs": "^1.6.3",
+    "purgecss": "^8.0.0",
+    "wawoff2": "^2.0.1"
   },
   "license": "MIT"
 }

@@ -287,8 +287,8 @@
 
   const QUAFF_UTILS: Item[] = [
     {
-      name: "CSS Tree Shaking",
-      to: "/utils/css",
+      name: "Asset Optimization",
+      to: "/utils/assets",
     },
     {
       name: "Typography",

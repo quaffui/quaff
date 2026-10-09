@@ -8,15 +8,15 @@
   useMeta(
     pageMeta(
       "Utilities",
-      "Explore Quaff utilities for Svelte apps, including CSS tree shaking, typography, page metadata, notifications, themes, screen state, and scrolling."
+      "Explore Quaff utilities for Svelte apps, including asset optimization, typography, page metadata, notifications, themes, screen state, and scrolling."
     )
   );
 
   const utils = [
     {
-      name: "CSS Tree Shaking",
-      description: "Include used component styles, with optional selector pruning.",
-      href: "/utils/css",
+      name: "Asset Optimization",
+      description: "Include used component styles, select fonts, and remove unused CSS and icons.",
+      href: "/utils/assets",
       hovered: false,
     },
     {

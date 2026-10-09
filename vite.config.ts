@@ -2,10 +2,10 @@ import path from "path";
 import { sveltekit } from "@sveltejs/kit/vite";
 import { defineConfig } from "vitest/config";
 import docgenPlugin from "./src/dev/docgenPlugin.ts";
-import { quaffCssMinifier } from "./src/lib/plugins/css.ts";
+import { createCssMinifierPlugin } from "./src/lib/plugins/assets.ts";
 
 export default defineConfig({
-  plugins: [docgenPlugin(), sveltekit(), quaffCssMinifier()],
+  plugins: [docgenPlugin(), sveltekit(), createCssMinifierPlugin()],
   test: {
     include: ["src/**/*.{test,spec}.{js,ts}", "docgen/**/*.{test,spec}.{js,ts}"],
   },

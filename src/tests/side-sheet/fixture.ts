@@ -1,7 +1,7 @@
 import { transform } from "esbuild";
 import { render } from "svelte/server";
 import { createServer } from "vite";
-import { cssAsset } from "../css/fixture";
+import { getCssAsset } from "../assets/cssFixture";
 import VisibilityFixture from "./VisibilityFixture.svelte";
 
 const FIXTURE_PATH = "/side-sheet-test";
@@ -9,7 +9,7 @@ const FIXTURE_PATH = "/side-sheet-test";
 // Use the field tests' SSR/manual-hydration setup to inspect the initial layout.
 export async function startFixture() {
   const css = ["base", "components/side-sheet", "components/button", "components/icon"]
-    .map(cssAsset)
+    .map(getCssAsset)
     .join("\n");
   const minified = await transform(css, { loader: "css", minify: true });
   const server = await createServer({

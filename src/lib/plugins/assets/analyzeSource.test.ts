@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
-import { COMPONENT_DEFINITIONS } from "../internal/componentRegistry.js";
-import { analyzeSource } from "./cssExtractor.js";
+import { COMPONENT_DEFINITIONS } from "../../internal/componentRegistry.js";
+import { analyzeSource } from "./analyzeSource.js";
 import * as namespaceUsage from "./namespaceUsage.js";
 
 const COMPONENT_NAMES = Object.keys(COMPONENT_DEFINITIONS);
@@ -17,7 +17,7 @@ const FORMATS = [
   },
 ];
 
-function selectedComponents(candidates: Set<string>) {
+function getSelectedComponents(candidates: Set<string>) {
   return COMPONENT_NAMES.filter((name) => candidates.has(name));
 }
 
@@ -30,12 +30,12 @@ for (const { name, wrap } of FORMATS) {
       'import * as Icons from "other-library"; const path = "escaped\\ntext";',
       'import * as Icons from "@quaffui/quaff-extra";',
     ])("skips namespace parsing for %s", async (source) => {
-      const collect = vi.spyOn(namespaceUsage, "tryCollectNamespaceComponents");
+      const collect = vi.spyOn(namespaceUsage, "canCollectNamespaceComponents");
 
       try {
         const usage = await analyzeSource(wrap(source));
         expect(collect).not.toHaveBeenCalled();
-        expect(selectedComponents(usage.candidates)).toEqual(
+        expect(getSelectedComponents(usage.candidates)).toEqual(
           source.includes("QBtn") ? ["QBtn"] : []
         );
       } finally {
@@ -53,7 +53,7 @@ for (const { name, wrap } of FORMATS) {
       'import * as Quaff from "@quaffui/\\\nquaff";',
     ])("retains CSS for a potentially escaped Quaff namespace: %s", async (source) => {
       const usage = await analyzeSource(wrap(`${source}\nconst Component = Quaff[name];`));
-      expect(selectedComponents(usage.candidates)).toEqual(COMPONENT_NAMES);
+      expect(getSelectedComponents(usage.candidates)).toEqual(COMPONENT_NAMES);
     });
   });
 
@@ -109,7 +109,7 @@ for (const { name, wrap } of FORMATS) {
       ["mutable alias", "let registry = Quaff; const Component = registry[name];"],
     ])("keeps component CSS for %s", async (_, source) => {
       const usage = await analyzeSource(wrap(`${NAMESPACE_IMPORT}\n${source}`));
-      expect(selectedComponents(usage.candidates)).toEqual(COMPONENT_NAMES);
+      expect(getSelectedComponents(usage.candidates)).toEqual(COMPONENT_NAMES);
     });
 
     it.each([
@@ -161,7 +161,7 @@ for (const { name, wrap } of FORMATS) {
       ["class key", "const Button = Quaff.QBtn; class Record { Quaff() {} }"],
     ])("keeps only identified component CSS for %s", async (_, source) => {
       const usage = await analyzeSource(wrap(`${NAMESPACE_IMPORT}\n${source}`));
-      expect(selectedComponents(usage.candidates)).toEqual(["QBtn"]);
+      expect(getSelectedComponents(usage.candidates)).toEqual(["QBtn"]);
     });
 
     it.each([
@@ -180,7 +180,7 @@ for (const { name, wrap } of FORMATS) {
       ["unrelated key", `${NAMESPACE_IMPORT}\nconst result = {Quaff: true};`],
     ])("does not include component CSS for %s", async (_, source) => {
       const usage = await analyzeSource(wrap(source));
-      expect(selectedComponents(usage.candidates)).toEqual([]);
+      expect(getSelectedComponents(usage.candidates)).toEqual([]);
     });
   });
 }
@@ -192,7 +192,7 @@ describe("namespace binding names", () => {
       const usage = await analyzeSource(
         `import * as ${name} from "@quaffui/quaff"; const Component = ${name}[selected];`
       );
-      expect(selectedComponents(usage.candidates)).toEqual(COMPONENT_NAMES);
+      expect(getSelectedComponents(usage.candidates)).toEqual(COMPONENT_NAMES);
     }
   );
 });
@@ -266,7 +266,7 @@ describe("Svelte namespace scopes", () => {
     ],
   ])("resolves %s", async (_, source, expected) => {
     const usage = await analyzeSource(source);
-    expect(selectedComponents(usage.candidates)).toEqual(expected);
+    expect(getSelectedComponents(usage.candidates)).toEqual(expected);
   });
 });
 
@@ -275,19 +275,19 @@ describe("other component imports", () => {
     const usage = await analyzeSource(
       '<script>import * as icons from "other-library"; const incomplete = ;</script>'
     );
-    expect(selectedComponents(usage.candidates)).toEqual([]);
+    expect(getSelectedComponents(usage.candidates)).toEqual([]);
   });
 
   it("does not mistake Svelte examples in JS strings for real namespace imports", async () => {
     const source = `const example = '<script>${NAMESPACE_IMPORT} const Component = Quaff[name];</script>';`;
     const usage = await analyzeSource(source);
-    expect(selectedComponents(usage.candidates)).toEqual([]);
+    expect(getSelectedComponents(usage.candidates)).toEqual([]);
   });
 
   it("handles closing-script text alongside a real static namespace use", async () => {
     const source = `${NAMESPACE_IMPORT} const tag = "</script>"; const Button = Quaff.QBtn;`;
     const usage = await analyzeSource(source);
-    expect(selectedComponents(usage.candidates)).toEqual(["QBtn"]);
+    expect(getSelectedComponents(usage.candidates)).toEqual(["QBtn"]);
   });
 
   it.each([
@@ -303,25 +303,25 @@ describe("other component imports", () => {
     ],
   ])("preserves detection for %s", async (source, expected) => {
     const usage = await analyzeSource(source);
-    expect(selectedComponents(usage.candidates)).toEqual(expected);
+    expect(getSelectedComponents(usage.candidates)).toEqual(expected);
   });
 
   it("recognizes a static namespace component in markup", async () => {
     const usage = await analyzeSource(`<script>${NAMESPACE_IMPORT}</script><Quaff.QBtn />`);
-    expect(selectedComponents(usage.candidates)).toEqual(["QBtn"]);
+    expect(getSelectedComponents(usage.candidates)).toEqual(["QBtn"]);
   });
 
   it("finds namespace escapes in markup expressions", async () => {
     const usage = await analyzeSource(
       `<script>${NAMESPACE_IMPORT}</script><Renderer components={Quaff} />`
     );
-    expect(selectedComponents(usage.candidates)).toEqual(COMPONENT_NAMES);
+    expect(getSelectedComponents(usage.candidates)).toEqual(COMPONENT_NAMES);
   });
 
   it("reuses root-layout parsing without changing its import information", async () => {
     const source = `<script>${NAMESPACE_IMPORT}\nimport "virtual:quaff.css"; const Button = Quaff.QBtn;</script><Button />`;
     const usage = await analyzeSource(source, true);
-    expect(selectedComponents(usage.candidates)).toEqual(["QBtn"]);
+    expect(getSelectedComponents(usage.candidates)).toEqual(["QBtn"]);
     expect(usage.hasVirtualCssImport).toBe(true);
     expect(source.slice(usage.instanceScriptContentStart).startsWith(NAMESPACE_IMPORT)).toBe(true);
   });
