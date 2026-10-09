@@ -31,12 +31,13 @@ npm create quaff@latest
 
 Browse the [documentation](https://quaff.dev/) for components, layouts, and utilities.
 
-## CSS tree shaking
+## Asset optimization
 
-`quaffCss()` keeps all base and helper CSS plus complete stylesheets for used components in
-development and production by default. Selector pruning is opt-in with `quaffCss({ prune: true })`.
+`quaffAssets()` includes styles for used components and can remove unused CSS selectors and
+Material Symbols icons. Font options select Roboto weights, Unicode subsets, and file formats.
 
-See [CSS tree shaking](https://quaff.dev/utils/css) for setup, safelists, and fallbacks.
+Removing unused selectors and icons is opt-in. See
+[Asset optimization](https://quaff.dev/utils/assets) for setup, defaults, and runtime safelists.
 
 ## Contributing to Quaff
 
@@ -68,7 +69,8 @@ bun run test:unit --run
 - `src/lib/components` contains the public UI components
 - `src/lib/css` contains component styles, themes, and layout utilities
 - `src/routes` contains the documentation and component examples
-- `plugins` contains the build-time preprocessors and CSS integration
+- `plugins` contains the build-time preprocessors
+- `src/lib/plugins/assets` contains the Vite asset plugin's source scan, CSS selection, and fonts
 - `docgen` and `scripts` contain documentation and build tooling
 
 ## Acknowledgements

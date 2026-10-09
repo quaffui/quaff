@@ -1,6 +1,6 @@
 import { transform } from "esbuild";
 import { createServer } from "vite";
-import { cssAsset } from "../css/fixture";
+import { getCssAsset } from "../assets/cssFixture";
 
 const FIXTURE_PATH = "/button-radius-test";
 
@@ -13,7 +13,7 @@ export async function startFixture() {
     "components/icon",
     "components/toolbar",
   ]
-    .map(cssAsset)
+    .map(getCssAsset)
     .join("\n");
   const minified = await transform(css, { loader: "css", minify: true });
   const document = `<!doctype html><html><head>
