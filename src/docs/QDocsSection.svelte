@@ -38,7 +38,7 @@
       <div class="q-docs-section__actions">
         <QIconBtn icon="code" variant="outlined" onclick={() => (dialog = true)} />
       </div>
-      <QDialog bind:value={dialog} modal style="max-width: 75vw">
+      <QDialog bind:value={dialog} modal class="q-docs-section__code-dialog">
         <QCodeBlock {code} language="svelte" {title} copiable />
       </QDialog>
     {/if}
@@ -69,5 +69,12 @@
 
   .q-docs-section__actions {
     flex: 0 0 auto;
+  }
+
+  :global(.q-docs-section__code-dialog) {
+    max-width: 75vw;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
   }
 </style>
