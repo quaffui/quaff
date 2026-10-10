@@ -50,7 +50,7 @@ export async function createFontFixture(
     logLevel: "silent",
     cacheDir: join(root, ".vite"),
     plugins: [plugin, svelte({ configFile: false }), createBuiltCssFixturePlugin()],
-    build: { write: false, assetsInlineLimit: 0, minify: false },
+    build: { write: false, assetsInlineLimit: 0, minify: false, cssCodeSplit: false },
     server: {
       middlewareMode: true,
       fs: { allow: [root, MODULES_ROOT] },

@@ -111,7 +111,9 @@
   "type": "module",
   "dependencies": {
     "@quaffui/material-color-utilities": "^0.4.2",
+    "@rollup/pluginutils": "^5.4.0",
     "harfbuzzjs": "^1.6.3",
+    "postcss": "^8.5.28",
     "purgecss": "^8.0.0",
     "wawoff2": "^2.0.1"
   },
