@@ -1,7 +1,10 @@
+import { mkdir, mkdtemp, rm, symlink, writeFile } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { dirname, join } from "node:path";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import * as source from "../../lib/plugins/assets/analyzeSource.js";
 import { AssetUsageState } from "../../lib/plugins/assets/assetUsageState.js";
-import { cleanupCssFixtures, createCssFixture, readCssAsset } from "./cssFixture.js";
+import { cleanupCssFixtures, createCssFixture, hasSelector, readCssAsset } from "./cssFixture.js";
 import type { ResolvedConfig } from "vite";
 
 vi.mock("node:fs/promises", async (importOriginal) => {
@@ -23,6 +26,76 @@ afterEach(async () => {
 });
 
 describe("shared source usage caching", () => {
+  it("preserves CSS ownership and source exclusions across symlink paths", async () => {
+    const root = await mkdtemp(join(tmpdir(), "quaff-css-alias-"));
+    const source = join(root, "source");
+    const rootLayout = join(source, "routes/+layout.svelte");
+    const remoteComponent = join(root, "server/Remote.svelte");
+    const remoteAlias = join(root, "src/Remote.svelte");
+    const displayedCode = join(source, "docs.snippets.ts");
+    const displayedAlias = join(root, "src/docs.snippets.ts");
+    const newDisplayedCode = join(source, "generated/new.docs.snippets.ts");
+    const newDisplayedAlias = join(root, "src/generated/new.docs.snippets.ts");
+    const LAYOUT_SOURCE =
+      '<script>import "@quaffui/quaff/css/index.css";</script><main>Application</main>';
+    const REMOTE_SOURCE = '<div class="q-radio">Remote content</div>';
+    const DISPLAYED_SOURCE = "export const code = '<QTable><QIcon name=\"casino\" /></QTable>';";
+
+    try {
+      await mkdir(dirname(rootLayout), { recursive: true });
+      await symlink(source, join(root, "src"), "dir");
+      await writeFile(rootLayout, LAYOUT_SOURCE);
+      await mkdir(dirname(remoteComponent));
+      await writeFile(remoteComponent, REMOTE_SOURCE);
+      await symlink(remoteComponent, remoteAlias);
+      await writeFile(displayedCode, DISPLAYED_SOURCE);
+      const state = new AssetUsageState(
+        { root, command: "build", build: { cssCodeSplit: true } } as ResolvedConfig,
+        {
+          rootLayout: "source/routes/+layout.svelte",
+          sourceExclude: ["src/**/*.snippets.ts", "**/+layout.svelte"],
+          fonts: { icons: { stripUnused: true } },
+        },
+        rootLayout
+      );
+      const stylesheet = await state.getStylesheet();
+      expect(state.isSourcePath(rootLayout)).toBe(true);
+      expect(state.isSourcePath(join(root, "src/routes/+layout.svelte"))).toBe(true);
+      expect(state.shouldSplitCss()).toBe(false);
+      expect(hasSelector(stylesheet, ".q-btn")).toBe(false);
+      expect(await state.updateFile("update", rootLayout, () => LAYOUT_SOURCE)).toBe(false);
+      expect(state.shouldSplitCss()).toBe(false);
+      expect(await state.getStylesheet()).toBe(stylesheet);
+
+      await state.updateFile("update", rootLayout, () => "<main>Application</main>");
+      expect(state.shouldSplitCss()).toBe(true);
+      expect(hasSelector(await state.getStylesheet(), ".q-radio")).toBe(true);
+      expect(hasSelector(await state.getStylesheet(), ".q-table")).toBe(false);
+
+      for (const file of [remoteAlias, remoteComponent]) {
+        expect(await state.getSourceStylesheets(file, REMOTE_SOURCE)).toEqual([]);
+      }
+
+      await mkdir(dirname(newDisplayedCode));
+      await writeFile(newDisplayedCode, DISPLAYED_SOURCE);
+
+      for (const file of [displayedAlias, displayedCode, newDisplayedAlias, newDisplayedCode]) {
+        expect(state.isSourcePath(file)).toBe(false);
+        expect(await state.getSourceStylesheets(file, DISPLAYED_SOURCE)).toEqual([]);
+      }
+
+      expect(await state.updateFile("create", newDisplayedCode, () => DISPLAYED_SOURCE)).toBe(
+        false
+      );
+      expect(hasSelector(await state.getStylesheet(), ".q-table")).toBe(false);
+      const usage = await state.getFontUsage();
+      expect(usage.components.has("QTable")).toBe(false);
+      expect(usage.sources.some((entry) => entry.candidates.has("casino"))).toBe(false);
+    } finally {
+      await rm(root, { recursive: true, force: true });
+    }
+  });
+
   it("does not require application sources in full CSS mode with unstripped fonts", async () => {
     const state = new AssetUsageState(
       { root: "/missing-quaff-application", command: "serve" } as ResolvedConfig,

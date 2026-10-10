@@ -70,4 +70,6 @@ export interface QuaffAssetsOptions {
   rootLayout?: false | string;
   /** Application source directories scanned for usage. Defaults to src. */
   sourceDir?: string | readonly string[];
+  /** Skip source globs relative to the Vite root. The root layout is always checked. */
+  sourceExclude?: readonly string[];
 }

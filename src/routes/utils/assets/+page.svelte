@@ -73,6 +73,28 @@ export default defineConfig({
       </p>
     </QDocsSection>
 
+    <QDocsSection title="CSS Code Splitting" noCode>
+      {#snippet sectionDescription()}
+        <p>
+          Quaff loads component styles with the Svelte components that use them. Vite's
+          <code>build.cssCodeSplit</code> groups Quaff and application styles into output files, reusing
+          shared styles. CSS splitting is enabled by default.
+        </p>
+      {/snippet}
+
+      <p class="q-mt-md">
+        Base styles, fonts, <code>include</code> entries, safelisted classes, and styles detected in
+        JavaScript, TypeScript, data files, and server-only components stay shared. Set
+        <code>build.cssCodeSplit: false</code>
+        to combine all Quaff and application CSS into one stylesheet. Server imports that cannot be resolved
+        statically keep all detected component styles shared.
+      </p>
+      <p class="q-mt-md">
+        With <code>rootLayout: false</code>, import <code>virtual:quaff.css</code> once in your application
+        entry or root component to load the shared styles.
+      </p>
+    </QDocsSection>
+
     <QDocsSection title="Choose Fonts and Icons" noCode>
       {#snippet sectionDescription()}
         <p>
@@ -135,6 +157,10 @@ export default defineConfig({
       {/snippet}
 
       <QCodeBlock language="ts" code={'quaffAssets({ include: ["QBtn", "Notify"] });'} copiable />
+      <p class="q-mt-md">
+        Use <code>sourceExclude: ["**/*.test.ts"]</code> to skip tests or generated code listings when
+        scanning styles and icons. Patterns are relative to the Vite root; the root layout is always checked.
+      </p>
       <p class="q-my-md">
         To include all Quaff styles during development, use <code>{'css: { dev: "full" }'}</code>.
       </p>

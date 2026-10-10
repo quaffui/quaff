@@ -5,10 +5,12 @@ import type { Dirent } from "node:fs";
 const SOURCE_FILE_PATTERN = /\.(?:svelte|html|[cm]?[jt]s|md|svx|json|css|scss)$/;
 const DECLARATION_FILE_PATTERN = /\.d\.[cm]?[jt]s$/;
 const SKIPPED_DIRECTORIES = new Set([".svelte-kit", "node_modules"]);
+const SERVER_SOURCE_PATTERN =
+  /\.server\.(?:[cm]?[jt]s|svelte)$|(?:^|\/)(?:\+server\.[cm]?[jt]s$|server\/)/;
 
 interface SourceFiles {
   files: string[];
-  realDirectories: Set<string>;
+  realDirectories: Map<string, string>;
   realFiles: Set<string>;
 }
 
@@ -16,7 +18,7 @@ export async function findSourceFiles(
   dir: string,
   sourceFiles: SourceFiles = {
     files: [],
-    realDirectories: new Set(),
+    realDirectories: new Map(),
     realFiles: new Set(),
   }
 ): Promise<SourceFiles> {
@@ -26,7 +28,7 @@ export async function findSourceFiles(
     return sourceFiles;
   }
 
-  sourceFiles.realDirectories.add(realDirectory);
+  sourceFiles.realDirectories.set(realDirectory, dir);
 
   for (const entry of await readdir(dir, { withFileTypes: true })) {
     await collectSourceEntry(dir, entry, sourceFiles);
@@ -80,6 +82,15 @@ async function isDirectoryEntry(entry: Dirent, path: string) {
 
 export function isSourceFile(file: string) {
   return SOURCE_FILE_PATTERN.test(file) && !DECLARATION_FILE_PATTERN.test(file);
+}
+
+/** JS/TS can supply server data without entering the browser graph; keep those styles shared. */
+export function canInjectStylesheet(file: string) {
+  return file.endsWith(".svelte") && !isServerSource(file);
+}
+
+export function isServerSource(file: string) {
+  return SERVER_SOURCE_PATTERN.test(normalizePath(file));
 }
 
 export function normalizePath(path: string) {

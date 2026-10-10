@@ -3,6 +3,7 @@ import { tmpdir } from "node:os";
 import { dirname, join, relative, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { compile } from "sass";
+import { parse } from "postcss";
 import { AssetUsageState } from "../../lib/plugins/assets/assetUsageState";
 import type { QuaffAssetsOptions } from "../../lib/plugins/assets";
 import type { ResolvedConfig } from "vite";
@@ -10,6 +11,7 @@ import type { ResolvedConfig } from "vite";
 const LIB_ROOT = fileURLToPath(new URL("../../lib/", import.meta.url));
 const CSS_ROOT = join(LIB_ROOT, "css");
 const cssCache = new Map<string, string>();
+const selectorCache = new Map<string, Set<string>>();
 const directories = new Set<string>();
 
 // Stand in only for the package's built CSS assets. Compile the actual source once,
@@ -70,7 +72,7 @@ export async function createCssFixture(
   }
 
   const state = new AssetUsageState(
-    { root, command: "build" } as ResolvedConfig,
+    { root, command: "build", build: { cssCodeSplit: false } } as ResolvedConfig,
     options,
     undefined
   );
@@ -98,6 +100,19 @@ export async function cleanupCssFixtures() {
 }
 
 export function hasSelector(css: string, selector: string) {
-  const escaped = selector.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  return new RegExp(`${escaped}(?=\\s*[,\\{])`).test(css);
+  const cachedSelectors = selectorCache.get(css);
+
+  if (cachedSelectors) {
+    return cachedSelectors.has(selector);
+  }
+
+  const selectors = new Set<string>();
+  parse(css).walkRules((rule) => {
+    for (const value of rule.selectors) {
+      selectors.add(value);
+    }
+  });
+  selectorCache.set(css, selectors);
+
+  return selectors.has(selector);
 }

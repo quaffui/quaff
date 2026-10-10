@@ -5,6 +5,13 @@ const palettePattern = `(?:${PALETTE_COLORS.join("|")})`;
 
 export const DOCS_ASSET_OPTIONS = {
   sourceDir: ["src/routes", "src/docs"],
+  // Generated snippets display the same examples already scanned in their Svelte pages.
+  sourceExclude: [
+    "**/docs.snippets.ts",
+    "**/*.{test,spec}.{js,ts}",
+    // The sitemap only lists route URLs; it never renders the matched components.
+    "src/routes/sitemap.xml/+server.ts",
+  ],
   css: {
     stripUnused: true,
     safelist: [

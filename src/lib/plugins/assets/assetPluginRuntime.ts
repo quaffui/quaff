@@ -1,6 +1,7 @@
 import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { COMPONENT_CSS, type ComponentCssName } from "../../internal/componentRegistry.js";
 import { analyzeSource } from "./analyzeSource.js";
 import { AssetUsageState, type CssAssetReader } from "./assetUsageState.js";
 import { doesFileExist, normalizePath } from "./sourceFiles.js";
@@ -17,6 +18,7 @@ import type {
 
 const VIRTUAL_CSS_ID = "virtual:quaff.css";
 const LEGACY_VIRTUAL_CSS_ID = "virtual:quaff/css";
+const COMPONENT_CSS_PREFIX = "virtual:quaff/";
 // Keep SSR CSS discoverable and query imports inside Vite's allowed source root.
 const VIRTUAL_CSS_PATH = "/@quaff/virtual.css";
 const DEFAULT_ROOT_LAYOUT = "src/routes/+layout.svelte";
@@ -35,6 +37,7 @@ export class AssetPluginRuntime {
   private rootLayoutFile: string | undefined;
   private virtualCssId = "";
   private fonts: FontStylesheet | undefined;
+  private readonly componentStylesheets = new Map<string, ComponentCssName>();
 
   constructor(
     private readonly options: QuaffAssetsOptions,
@@ -52,6 +55,12 @@ export class AssetPluginRuntime {
 
     this.config = config;
     this.virtualCssId = resolveVirtualCssId(config.root);
+    this.componentStylesheets.clear();
+
+    for (const name of Object.values(COMPONENT_CSS)) {
+      this.componentStylesheets.set(resolveVirtualCssId(config.root, `${name}.css`), name);
+    }
+
     this.rootLayoutFile = resolveRootLayout(config.root, this.options.rootLayout);
     this.state = new AssetUsageState(config, this.options, this.rootLayoutFile, this.readCssFile);
 
@@ -89,6 +98,18 @@ export class AssetPluginRuntime {
 
   resolveImport(id: string) {
     const { path, suffix } = splitImportId(id);
+    let componentId = path;
+
+    if (path.startsWith(COMPONENT_CSS_PREFIX)) {
+      componentId = resolveVirtualCssId(this.config.root, path.slice(COMPONENT_CSS_PREFIX.length));
+    } else if (path.startsWith("/@quaff/")) {
+      componentId = normalizePath(resolve(this.config.root, `.${path}`));
+    }
+
+    if (this.componentStylesheets.has(componentId)) {
+      return `${componentId}${suffix}`;
+    }
+
     const isStylesheetImport =
       path === VIRTUAL_CSS_ID ||
       path === LEGACY_VIRTUAL_CSS_ID ||
@@ -104,7 +125,14 @@ export class AssetPluginRuntime {
   }
 
   async loadStylesheet(id: string) {
-    if (splitImportId(id).path !== this.virtualCssId) {
+    const path = splitImportId(id).path;
+    const component = this.componentStylesheets.get(path);
+
+    if (component) {
+      return this.state.getComponentStylesheet(component);
+    }
+
+    if (path !== this.virtualCssId) {
       return;
     }
 
@@ -126,27 +154,40 @@ export class AssetPluginRuntime {
   }
 
   async injectStylesheetImport(code: string, id: string) {
-    const isRootLayout =
-      this.rootLayoutFile && normalizePath(id) === normalizePath(this.rootLayoutFile);
-
-    if (!isRootLayout || id.includes("?")) {
+    if (id.includes("?")) {
       return;
     }
 
-    const usage = await analyzeSource(code, true);
+    const isRootLayout = this.state.isRootLayout(id);
+    const components = await this.state.getSourceStylesheets(id, code);
+
+    if (!isRootLayout && !components.length) {
+      return;
+    }
+
+    const isSvelte = id.endsWith(".svelte");
+    const usage = await analyzeSource(code, isSvelte);
     const hasExistingStylesheet =
       usage.hasVirtualCssImport || (usage.hasFullCssImport && !this.fonts);
+    const imports = components.map((name) => `import "${COMPONENT_CSS_PREFIX}${name}.css";`);
 
-    if (hasExistingStylesheet) {
+    if (isRootLayout && !hasExistingStylesheet) {
+      imports.unshift(`import "${VIRTUAL_CSS_ID}";`);
+    }
+
+    if (!imports.length) {
       return;
+    }
+
+    const importCode = `${imports.join("\n")}\n`;
+    let transformed = importCode + code;
+
+    if (isSvelte) {
+      transformed = injectIntoSvelte(code, usage.instanceScriptContentStart, importCode);
     }
 
     return {
-      code: injectIntoSvelte(
-        code,
-        usage.instanceScriptContentStart,
-        `import "${VIRTUAL_CSS_ID}";\n`
-      ),
+      code: transformed,
       map: null,
     };
   }
@@ -156,7 +197,15 @@ export class AssetPluginRuntime {
       return;
     }
 
-    const hasChanged = await this.state.updateFile(update.type, update.file, update.read);
+    const { hasChanged, hasReloaded } = await this.updateSource(
+      update.type,
+      update.file,
+      update.read
+    );
+
+    if (hasReloaded) {
+      return [];
+    }
 
     if (hasChanged) {
       const modules = invalidateEnvironmentCss(update.server, update.timestamp);
@@ -171,7 +220,11 @@ export class AssetPluginRuntime {
     }
 
     const type = (await doesFileExist(update.file)) ? "update" : "delete";
-    const hasChanged = await this.state.updateFile(type, update.file, update.read);
+    const { hasChanged, hasReloaded } = await this.updateSource(type, update.file, update.read);
+
+    if (hasReloaded) {
+      return [];
+    }
 
     if (hasChanged) {
       const modules = invalidateLegacyCss(update.server, update.timestamp);
@@ -196,9 +249,11 @@ export class AssetPluginRuntime {
     }
 
     try {
-      const hasChanged = await this.state.updateFile(type, id, () => readFile(id, "utf8"));
+      const { hasChanged, hasReloaded } = await this.updateSource(type, id, () =>
+        readFile(id, "utf8")
+      );
 
-      if (!hasChanged) {
+      if (!hasChanged || hasReloaded) {
         return;
       }
 
@@ -206,6 +261,30 @@ export class AssetPluginRuntime {
     } catch (error) {
       reportDevelopmentError(server, error);
     }
+  }
+
+  private async updateSource(
+    type: SourceChange,
+    file: string,
+    read: () => Promise<string> | string
+  ) {
+    const previousImports = this.state.getStylesheetImportKey();
+    const hasChanged = await this.state.updateFile(type, file, read);
+    const server = this.devServer;
+    const hasReloaded = previousImports !== this.state.getStylesheetImportKey() && !!server;
+
+    if (!hasReloaded || !server) {
+      return { hasChanged, hasReloaded };
+    }
+
+    // Shared ownership changes imports elsewhere; established layers also need a fresh order.
+    invalidateModuleGraphs(server);
+
+    if (server.config.server.hmr !== false) {
+      server.ws.send({ type: "full-reload" });
+    }
+
+    return { hasChanged, hasReloaded };
   }
 
   private async refreshWatchedStylesheet(server: ViteDevServer) {
@@ -227,8 +306,8 @@ export class AssetPluginRuntime {
   }
 }
 
-function resolveVirtualCssId(root: string) {
-  return normalizePath(resolve(root, `.${VIRTUAL_CSS_PATH}`));
+function resolveVirtualCssId(root: string, stylesheet = "virtual.css") {
+  return normalizePath(resolve(root, `./@quaff/${stylesheet}`));
 }
 
 function resolveRootLayout(root: string, option: QuaffAssetsOptions["rootLayout"]) {
@@ -245,6 +324,18 @@ function injectIntoSvelte(code: string, insertAt: number | undefined, imports: s
 
 function hasEnvironmentApi(server: ViteDevServer): boolean {
   return "environments" in server;
+}
+
+function invalidateModuleGraphs(server: ViteDevServer) {
+  if (!hasEnvironmentApi(server)) {
+    server.moduleGraph.invalidateAll();
+
+    return;
+  }
+
+  for (const environment of Object.values(server.environments)) {
+    environment.moduleGraph.invalidateAll();
+  }
 }
 
 function invalidateEnvironmentCss(server: ViteDevServer, timestamp: number) {
