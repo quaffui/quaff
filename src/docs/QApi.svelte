@@ -224,14 +224,16 @@
   {@const path = COMPONENT_PARENT_FOLDER[componentName as keyof typeof COMPONENT_PARENT_FOLDER]}
 
   <div bind:this={apiElements[index]} class="q-api">
-    <QCard class="q-px-none q-pb-none q-mt-lg">
+    <QCard class="q-px-none q-mt-lg">
       <div class="flex justify-between items-center q-px-md">
-        <h5>
+        <h5 class="q-api__title">
           <QIcon name="info" />
-          <span class="q-mx-md">{QDocument.name} API</span>
+          <span class="q-api__name q-mx-md">{QDocument.name} API</span>
           {#if path}
             <QBtn
+              class="q-api__source"
               label="Source"
+              aria-label="Source on GitHub"
               outlined
               rectangle
               size="xs"
@@ -263,8 +265,8 @@
           {/each}
         </QTabs>
       </div>
-      <QCardSection class="q-px-md q-pb-md" style="max-height: 416px; overflow-y: auto">
-        <QList separator bordered preserveTabOrder>
+      <QCardSection class="q-api__content q-mx-md">
+        <QList class="q-api__list" separator noRound preserveTabOrder>
           {@const docs = QDocument.docs}
           {#if activeApiTabs[index] === "props" && (docs.generics.length || docs.domAttributesConstraint)}
             <QItem>
@@ -296,6 +298,104 @@
 {/each}
 
 <style lang="scss">
+  @use "$css/mixins";
+
+  .q-api__title {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .q-api__name {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  :global(.q-api__source) {
+    flex-shrink: 0;
+  }
+
+  :global(.q-api__source .q-btn__label) {
+    white-space: nowrap;
+  }
+
+  :global(.q-api__content) {
+    --q-api-scroll-shadow-color: light-dark(
+      #{mixins.with-alpha(var(--shadow), 24%)},
+      #{mixins.with-alpha(var(--shadow), 30%)}
+    );
+
+    position: relative;
+    isolation: isolate;
+    max-height: 400px;
+    overflow-y: auto;
+    border-radius: 8px;
+
+    &::before,
+    &::after {
+      content: "";
+      display: block;
+      position: sticky;
+      height: 8px;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    &::before {
+      top: 0;
+      margin-bottom: -8px;
+      background: radial-gradient(
+        farthest-side at 50% 0,
+        var(--q-api-scroll-shadow-color),
+        transparent
+      );
+    }
+
+    &::after {
+      bottom: 0;
+      margin-top: -8px;
+      background: radial-gradient(
+        farthest-side at 50% 100%,
+        var(--q-api-scroll-shadow-color),
+        transparent
+      );
+    }
+  }
+
+  :global(.q-api__list) {
+    position: relative;
+
+    // Covers move with the list, hiding the sticky shadows at either end.
+    &::before,
+    &::after {
+      content: "";
+      position: absolute;
+      inset-inline: 0;
+      height: 8px;
+      z-index: 2;
+      background: var(--surface-container-low);
+      pointer-events: none;
+    }
+
+    &::before {
+      top: 0;
+    }
+
+    &::after {
+      bottom: 0;
+    }
+  }
+
+  @include mixins.xs {
+    :global(.q-api__source) {
+      width: 32px;
+      padding-inline: 0;
+    }
+
+    :global(.q-api__source .q-btn__label) {
+      display: none;
+    }
+  }
+
   :global(.q-api .clickable) {
     cursor: pointer;
     &:hover {
