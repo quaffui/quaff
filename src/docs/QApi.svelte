@@ -1,6 +1,6 @@
 <script lang="ts">
   /* eslint-disable svelte/no-at-html-tags */
-  import { createRawSnippet, mount, tick, unmount } from "svelte";
+  import { mount, tick, unmount } from "svelte";
   import {
     QCard,
     QCardSection,
@@ -12,18 +12,13 @@
     QTabs,
     QTooltip,
     QBtn,
-    Quaff,
   } from "$lib";
   import { capitalize, escape } from "$utils";
   import type { QComponentDocs } from "$docs";
-  import {
-    getQuaffHighlighter,
-    quaffShikiDarkTheme,
-    quaffShikiLightTheme,
-  } from "$internal/shikiTheme";
   import { COMPONENT_PARENT_FOLDER } from "$internal/componentRegistry";
   import { getOwnTypeDefinition } from "./QApi.utils";
   import { docsCtx } from "./QDocs.svelte";
+  import QApiTypeTooltip from "./QApiTypeTooltip.svelte";
 
   type TabableDocsKey = Exclude<
     keyof QComponentDocs["docs"],
@@ -49,19 +44,11 @@
     let isCancelled = false;
     const teardowns: TooltipTeardown[] = [];
 
-    void attachTooltips(Quaff.darkMode.isActive, teardowns, () => isCancelled).catch(
-      (error: unknown) => {
-        cleanupTooltips(teardowns);
-
-        if (!isCancelled) {
-          console.error("Error while attaching QApi tooltips", error);
-        }
-      }
-    );
+    void attachTooltips(teardowns, () => isCancelled);
 
     return () => {
       isCancelled = true;
-      cleanupTooltips(teardowns);
+      void cleanupTooltips(teardowns);
     };
   });
   // #endregion: --- Effects
@@ -117,23 +104,29 @@
     return content;
   }
 
-  function cleanupTooltips(teardowns: TooltipTeardown[]) {
+  async function cleanupTooltips(teardowns: TooltipTeardown[]) {
     for (const teardown of teardowns.splice(0)) {
       try {
-        void Promise.resolve(teardown()).catch((error: unknown) => {
-          console.error("Error while detaching a QApi tooltip", error);
-        });
+        await teardown();
       } catch (error) {
         console.error("Error while detaching a QApi tooltip", error);
       }
     }
   }
 
-  async function attachTooltips(
-    darkMode: boolean,
-    teardowns: TooltipTeardown[],
-    isCancelled: () => boolean
-  ) {
+  async function attachTooltips(teardowns: TooltipTeardown[], isCancelled: () => boolean) {
+    try {
+      await mountTooltips(teardowns, isCancelled);
+    } catch (error) {
+      await cleanupTooltips(teardowns);
+
+      if (!isCancelled()) {
+        console.error("Error while attaching QApi tooltips", error);
+      }
+    }
+  }
+
+  async function mountTooltips(teardowns: TooltipTeardown[], isCancelled: () => boolean) {
     await tick();
 
     if (isCancelled()) {
@@ -160,13 +153,6 @@
       });
     }
 
-    const theme = darkMode ? quaffShikiDarkTheme : quaffShikiLightTheme;
-    const highlighter = await getQuaffHighlighter("typescript", theme);
-
-    if (isCancelled()) {
-      return;
-    }
-
     for (const [index, QDocument] of componentDocs.entries()) {
       const apiElement = apiElements[index];
 
@@ -177,31 +163,14 @@
           return;
         }
 
-        const type =
+        const code =
           getOwnTypeDefinition(QDocument.docs.typeDependencies, typeName) ??
           "/* No definition found */";
-        const html = highlighter.codeToHtml(type, {
-          lang: "typescript",
-          theme,
-          transformers: [
-            {
-              pre(node) {
-                node.properties.style += ";padding: 16px; text-align: left;";
-              },
-            },
-          ],
-        });
-
-        const snip = createRawSnippet(() => ({
-          render: () => html,
-        }));
-        const tooltip = mount(QTooltip, {
+        const tooltip = mount(QApiTypeTooltip, {
           target: el.parentElement,
           props: {
             target: el,
-            class: "q-pa-none transparent",
-            style: "max-width: calc(100vw - 16px)",
-            children: snip,
+            code,
           },
         });
 

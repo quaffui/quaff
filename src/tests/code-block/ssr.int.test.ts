@@ -11,8 +11,9 @@ describe("code block server rendering", () => {
       },
     });
 
+    expect(body).toContain('<code tabindex="0">');
     expect(body).toContain(
-      '<pre><code tabindex="0">&lt;script>\n  const label = "Tea &amp; cake";\n&lt;/script>\n&lt;QBtn {label} /></code></pre>'
+      "&lt;script&gt;\n  const label = &quot;Tea &amp; cake&quot;;\n&lt;/script&gt;\n&lt;QBtn {label} /&gt;"
     );
     expect(body).not.toContain("<script>");
   });

@@ -20,7 +20,7 @@
   // #endregion: --- Props
 
   // #region:    --- Reactive variables
-  let dialog = $state(false);
+  let isCodeOpen = $state(false);
   // #endregion: --- Reactive variables
 
   // #region:    --- Derived values
@@ -36,10 +36,16 @@
     <h5 class="min-width-0">{title}</h5>
     {#if code && !noCode}
       <div class="q-docs-section__actions">
-        <QIconBtn icon="code" variant="outlined" onclick={() => (dialog = true)} />
+        <QIconBtn icon="code" variant="outlined" onclick={() => (isCodeOpen = true)} />
       </div>
-      <QDialog bind:value={dialog} modal class="q-docs-section__code-dialog column overflow-hidden">
-        <QCodeBlock {code} language="svelte" {title} copiable />
+      <QDialog
+        bind:value={isCodeOpen}
+        modal
+        class="q-docs-section__code-dialog column overflow-hidden"
+      >
+        {#if isCodeOpen}
+          <QCodeBlock {code} language="svelte" {title} copiable />
+        {/if}
       </QDialog>
     {/if}
   </div>
