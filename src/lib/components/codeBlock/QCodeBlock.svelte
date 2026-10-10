@@ -30,6 +30,7 @@
   // #region:    --- Reactive variables
   let copyStatus = $state<keyof typeof copyButtonStates>("base");
   let html = $state("");
+  let preAttributes = $state<{ class?: string; style?: string }>({});
 
   const copyButton = $derived(copyButtonStates[copyStatus]);
   // #endregion: --- Reactive variables
@@ -83,15 +84,21 @@
         tabindex: false,
         transformers: [
           {
-            code(node) {
-              node.properties.tabindex = 0;
+            root(node) {
+              preAttributes = {
+                class: String(this.pre.properties.class ?? ""),
+                style: String(this.pre.properties.style ?? ""),
+              };
+              // Update only the highlighted spans so the code pane keeps keyboard focus.
+              node.children = this.code.children;
             },
           },
         ],
       });
     } catch (error) {
       console.error("Error while highlighting code with Shiki", error);
-      html = `<pre><code tabindex="0">${escape(source)}</code></pre>`;
+      preAttributes = {};
+      html = escape(source);
     }
   }
   // #endregion: --- Functions
@@ -122,13 +129,9 @@
   {:else if title}
     <h4>{title}</h4>
   {/if}
-  {#if html}
-    <!-- eslint-disable-next-line svelte/no-at-html-tags -- Shiki output; fallback source is escaped. -->
-    {@html html}
-  {:else}
-    <!-- svelte-ignore a11y_no_noninteractive_tabindex (The scrollable code pane needs keyboard focus.) -->
-    <pre><code tabindex="0">{code}</code></pre>
-  {/if}
+  <!-- svelte-ignore a11y_no_noninteractive_tabindex (The scrollable code pane needs keyboard focus.) -->
+  <!-- eslint-disable-next-line svelte/no-at-html-tags -- Shiki output; fallback source is escaped. -->
+  <pre {...preAttributes}><code tabindex="0">{@html html || escape(code)}</code></pre>
 </div>
 
 <style lang="scss">
