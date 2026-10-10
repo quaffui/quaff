@@ -1,6 +1,6 @@
 <!--
 @component
-Choose colors in a popup or inline, with HEX, RGB and optional opacity controls.
+Color pickers support visual selection and precise HEX or RGB entry. Display them inline or in a popup, with optional opacity controls.
 -->
 
 <script lang="ts">

@@ -1,6 +1,6 @@
 <!--
 @component
-Icon buttons are buttons that contain only icons (no text labels) and are typically used in toolbars, navigation bars, or as action buttons.
+Icon buttons present familiar actions in a compact form. They can trigger an action or toggle a selection, and need an accessible name.
 -->
 
 <script lang="ts">

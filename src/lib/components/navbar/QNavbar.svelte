@@ -1,6 +1,6 @@
 <!--
 @component
-Navigation bars provide access to three to five primary destinations from the bottom of a layout.
+Navigation bars place three to five primary destinations at the bottom of a layout. Display icons and labels, with an active indicator.
 -->
 
 <script lang="ts">

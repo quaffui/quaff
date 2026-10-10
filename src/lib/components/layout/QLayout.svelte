@@ -1,6 +1,6 @@
 <!--
 @component
-The QLayout component is designed to be the skeleton of the entire page, with navigational elements such as a header, railbars, drawers, a navbar, and a footer. This component is not mandatory but it helps structure the page.
+Layouts arrange content around headers, footers, drawers, and navigation. Configure which regions stay fixed and how they share space with scrolling content.
 -->
 
 <script module lang="ts">

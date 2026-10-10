@@ -1,6 +1,6 @@
 <!--
 @component
-Tabs allow creating navigational tabs, enabling users to switch between different views or functional aspects.
+Tabs organize related views and show the current selection. Choose primary, secondary, or vertical tabs, with labels and optional icons.
 -->
 
 <script module lang="ts">

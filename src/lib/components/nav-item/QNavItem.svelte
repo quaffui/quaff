@@ -1,6 +1,6 @@
 <!--
 @component
-Navigation destinations for drawers, navigation bars, and railbars.
+Navigation items link to destinations in drawers, bars, and rails. Use labels, icons, badges, and active indicators to distinguish destinations.
 -->
 
 <script lang="ts">

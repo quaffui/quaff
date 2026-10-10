@@ -82,7 +82,7 @@
 
 <QDocs
   docName="Button groups"
-  docDescription="Choose a view, combine useful readings, or keep related actions together."
+  docDescription="Button groups organize related actions or choices. Keep buttons separate or connected, with single or multiple selection for groups that represent values."
 >
   {#snippet display()}
     <div class="group-preview surface q-pa-lg">

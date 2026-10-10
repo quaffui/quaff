@@ -336,7 +336,7 @@
 
 <QDocs
   docName="Components"
-  docDescription="Find a large set of reusable components to build your projects. They are styled following Material Design 3 guidelines, for a consistent and modern look."
+  docDescription="Explore components for navigation, forms, content, and feedback. Each page includes practical examples and API details to help you build your interface."
 >
   {#snippet display()}
     <div class="row q-gap-lg q-pa-lg items-center">

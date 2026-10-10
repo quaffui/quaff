@@ -1,6 +1,6 @@
 <!--
 @component
-Navigation drawers provide ergonomic access to destinations in an app
+Drawers place navigation or supporting content beside the page. They can share space with content or overlay it, adapting to smaller screens.
 -->
 
 <script lang="ts">

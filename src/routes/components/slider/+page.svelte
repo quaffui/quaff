@@ -28,7 +28,7 @@
 
 <QDocs
   docName="QSlider"
-  docDescription="Select single values or ranges with accessible Material 3 sliders."
+  docDescription="Sliders adjust a single value or the bounds of a range. Continuous movement, fixed steps, and value indicators help users make precise selections."
 >
   {#snippet display()}
     <QCard class="flex column q-gap-lg" style="width: min(448px, 80%);">

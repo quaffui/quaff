@@ -1,6 +1,6 @@
 <!--
 @component
-QDate is a Material 3 component for selecting or entering single dates and date ranges. It supports modal, docked, and adaptive presentations, custom masks, localization, date constraints, and composition with QInput.
+Date pickers support single dates and ranges through a calendar or text entry. Display them in a dialog or anchored popup.
 -->
 
 <script lang="ts" generics="Range extends boolean = false">

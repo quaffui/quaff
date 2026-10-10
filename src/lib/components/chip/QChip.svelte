@@ -1,6 +1,6 @@
 <!--
 @component
-Chips help people enter information, make selections, filter content, or trigger actions. They represent options in a specific context, unlike buttons, which are persistent.
+Chips present compact actions, choices, or entered information alongside related content. Assist, filter, input, and suggestion variants suit different interactions.
 -->
 
 <script lang="ts">

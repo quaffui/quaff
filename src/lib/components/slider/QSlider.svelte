@@ -1,6 +1,6 @@
 <!--
 @component
-QSlider selects one value from a continuous or stepped range, with standard and centered Material 3 configurations.
+Sliders adjust a numeric value by moving a handle along a track. Use continuous movement or fixed steps to control precision.
 -->
 
 <script lang="ts">

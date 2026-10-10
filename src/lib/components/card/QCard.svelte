@@ -1,6 +1,6 @@
 <!--
 @component
-Cards provide a clean, flexible, and convenient means of displaying a wide variety of content.
+Cards group information and actions around a single subject. Combine content and action sections on a filled, bordered, or elevated surface.
 -->
 
 <script lang="ts">

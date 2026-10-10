@@ -1,6 +1,6 @@
 <!--
 @component
-QExpansionItem adds an accessible expand/collapse disclosure to a list item while preserving QList density and expressive styling.
+Expansion items reveal supporting content beneath a summary in a list. Group related items by name so opening one closes the others.
 -->
 
 <script lang="ts">

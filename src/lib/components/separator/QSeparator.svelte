@@ -1,6 +1,6 @@
 <!--
 @component
-Separators can be used to create a dividing line or space between elements within a layout, offering visual separation and organization.
+Separators divide groups of content with a horizontal or vertical line. Adjust spacing and insets, with an optional label.
 -->
 
 <script lang="ts">

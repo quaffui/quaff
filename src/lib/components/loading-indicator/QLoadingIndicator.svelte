@@ -1,6 +1,6 @@
 <!--
 @component
-Show that content is loading during short waits with animated shapes.
+Loading indicators animate shapes to show ongoing work when progress is unknown. Display them alone or on a circular background.
 -->
 
 <script lang="ts">

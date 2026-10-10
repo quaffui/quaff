@@ -102,7 +102,7 @@
   let hasReadingHints = $state(true);
 </script>
 
-<QDocs docDescription="Keep useful details and tools beside the content they belong to.">
+<QDocs>
   {#snippet display()}
     <div class="preview-frame flex no-overflow border" class:sheet-open={isPreviewOpen}>
       <div class="preview-main column justify-center">

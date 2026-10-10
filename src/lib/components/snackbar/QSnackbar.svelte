@@ -1,6 +1,6 @@
 <!--
 @component
-Snackbars briefly show updates without interrupting the user.
+Snackbars show brief updates without interrupting the current task. Display a message with an optional action or dismiss button.
 -->
 
 <script lang="ts">

@@ -1,7 +1,6 @@
 <!--
 @component
-Railbars provide navigation in collapsed and expanded forms. Bind `expanded` to control expansion,
-and use `modal` to expand above the page instead of resizing its content.
+Navigation rails keep primary destinations beside the page in a vertical bar. Expand the rail to share page space or overlay content.
 -->
 
 <script module lang="ts">

@@ -1,6 +1,6 @@
 <!--
 @component
-The Tooltip component displays informative text on hover or focus, providing additional context.
+Tooltips explain controls or provide brief details on hover or focus. Attach them to a trigger and adjust their position and delay.
 -->
 
 <script lang="ts" generics="T extends HTMLElement | string">

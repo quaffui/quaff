@@ -214,9 +214,7 @@
   }
 </script>
 
-<QDocs
-  docDescription="Keep your main destinations within reach. Expand beside the page or open above it."
->
+<QDocs>
   {#snippet display()}
     <div class="cinema-preview surface no-overflow">
       <QLayout>

@@ -1,6 +1,6 @@
 <!--
 @component
-Breadcrumbs are mostly used as a navigation aid. They allow users to keep track of their location within the page.
+Breadcrumbs show the current location within a hierarchy and link to earlier levels. Customize the trail with labels, icons, and separators.
 -->
 
 <script lang="ts" module>

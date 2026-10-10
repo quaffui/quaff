@@ -1,6 +1,6 @@
 <!--
 @component
-Radio buttons allow the user to select one option from a set.
+Radio buttons select one option from a visible set of alternatives. Related buttons share a selected value and group name.
 -->
 
 <script lang="ts">

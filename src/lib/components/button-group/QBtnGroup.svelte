@@ -1,6 +1,6 @@
 <!--
 @component
-Group related buttons with Material 3 standard or connected layouts and shared sizing.
+Button groups arrange related actions with consistent sizing and spacing. Keep buttons separate or connect them into a single visual group.
 -->
 
 <script module lang="ts">

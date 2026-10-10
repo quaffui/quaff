@@ -90,7 +90,7 @@
   let isOnlineVisible = $state(true);
 </script>
 
-<QDocs docDescription="Switch between related views without leaving the page.">
+<QDocs>
   {#snippet display()}
     <div class="media-library surface no-overflow">
       <h2 class="title-large q-pa-md q-ma-none">Soundbox</h2>

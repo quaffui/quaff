@@ -1,6 +1,6 @@
 <!--
 @component
-Browse visual collections with responsive Material 3 carousels, keyboard navigation, and accessible controls.
+Carousels let users browse items in a scrolling row or full-screen view. Add navigation buttons and labels to guide browsing.
 -->
 
 <script lang="ts" generics="T">

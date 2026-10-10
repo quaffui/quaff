@@ -110,7 +110,7 @@
   );
 </script>
 
-<QDocs docDescription="Keep navigation, titles, and actions at the top of your app.">
+<QDocs>
   {#snippet display()}
     <QLayout class="header-preview surface">
       {#snippet header()}

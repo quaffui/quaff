@@ -1,6 +1,6 @@
 <!--
 @component
-QSwitch controls a standalone binary setting that takes effect immediately. It supports labels, optional state icons, and configurable label positioning.
+Switches turn settings on or off, with changes taking effect immediately. Clear labels and optional state icons help explain the setting.
 -->
 
 <script lang="ts">

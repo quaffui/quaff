@@ -31,7 +31,7 @@
 
 <QDocs
   docName="QProgress"
-  docDescription="QProgress provides visual feedback about the progress of a task or operation. It can be used to indicate the completion status of a process, such as file uploads, downloads, or any other time-consuming tasks."
+  docDescription="Progress indicators show task completion or ongoing work. Choose a linear bar or circular indicator, with measured progress or an indeterminate animation."
 >
   {#snippet display()}
     <QCard class="flex column q-gap-lg" style="width: 75%">

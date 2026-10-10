@@ -1,6 +1,6 @@
 <!--
 @component
-QTime is a Material 3 component for selecting or entering a time. It supports dial and text-input modes, modal, docked, and adaptive presentations, 12- and 24-hour clocks, localization, validation, and composition with QInput.
+Time pickers combine a clock dial with numeric entry. Dialog and popup layouts support both 12- and 24-hour clocks.
 -->
 
 <script lang="ts">

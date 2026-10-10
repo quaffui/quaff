@@ -101,7 +101,7 @@
 
 <QDocs
   docName="Floating action buttons"
-  docDescription="Present a primary action with a FAB, add a label with an extended FAB, or offer related actions in a FAB menu."
+  docDescription="Floating action buttons highlight a screen's primary action. Use an icon, a visible label, or a menu for related actions."
 >
   {#snippet display()}
     <div class="fab-placement fab-notebook border text-on-surface">

@@ -1,6 +1,6 @@
 <!--
 @component
-Tables allow for a clear presentation of data sets.
+Tables arrange records in rows and columns for comparison. Add sorting and formatting, or customize cells with links, status labels, and actions.
 -->
 
 <script lang="ts">
