@@ -80,10 +80,18 @@
       html = highlighter.codeToHtml(source, {
         lang: language,
         theme: resolvedTheme,
+        tabindex: false,
+        transformers: [
+          {
+            code(node) {
+              node.properties.tabindex = 0;
+            },
+          },
+        ],
       });
     } catch (error) {
       console.error("Error while highlighting code with Shiki", error);
-      html = `<pre>${escape(source)}</pre>`;
+      html = `<pre><code tabindex="0">${escape(source)}</code></pre>`;
     }
   }
   // #endregion: --- Functions
@@ -118,7 +126,8 @@
     <!-- eslint-disable-next-line svelte/no-at-html-tags -- Shiki output; fallback source is escaped. -->
     {@html html}
   {:else}
-    <pre><code>{code}</code></pre>
+    <!-- svelte-ignore a11y_no_noninteractive_tabindex (The scrollable code pane needs keyboard focus.) -->
+    <pre><code tabindex="0">{code}</code></pre>
   {/if}
 </div>
 
@@ -126,19 +135,35 @@
   @use "$css/mixins";
 
   .q-code-block {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
     border-radius: inherit;
 
     :global(pre) {
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
       text-align: left;
       padding: 16px;
-      overflow: auto;
+      overflow: hidden;
       background-color: var(--surface-container);
       color: var(--on-surface);
+    }
+
+    :global(pre > code) {
+      display: block;
+      min-height: 0;
+      padding-inline-end: 16px;
+      padding-block-end: 16px;
+      overflow: auto;
+      border-radius: 0;
     }
   }
 
   .q-code-block__title-section {
     display: flex;
+    flex-shrink: 0;
     flex-wrap: wrap;
     gap: 8px;
   }

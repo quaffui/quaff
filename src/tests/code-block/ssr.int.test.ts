@@ -12,7 +12,7 @@ describe("code block server rendering", () => {
     });
 
     expect(body).toContain(
-      '<pre><code>&lt;script>\n  const label = "Tea &amp; cake";\n&lt;/script>\n&lt;QBtn {label} /></code></pre>'
+      '<pre><code tabindex="0">&lt;script>\n  const label = "Tea &amp; cake";\n&lt;/script>\n&lt;QBtn {label} /></code></pre>'
     );
     expect(body).not.toContain("<script>");
   });
