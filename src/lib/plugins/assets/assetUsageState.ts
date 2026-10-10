@@ -42,11 +42,13 @@ const BASE_CANDIDATES = [
   "p",
 ];
 
+export type CssAssetReader = (file: string) => Promise<string>;
+
 export class AssetUsageState {
   private readonly assetCache = new Map<string, string>();
   private readonly cssUsageCache = new Map<string, Promise<SourceUsage>>();
   private readonly sources = new Map<string, SourceUsage>();
-  private readonly sourceRoot: string;
+  private readonly sourceRoots: string[];
   private readonly safelist: NormalizedSafelist;
   private safelistSelection: Promise<CssSelection> | undefined;
   private initialization: Promise<void> | undefined;
@@ -57,9 +59,13 @@ export class AssetUsageState {
   constructor(
     private readonly config: ResolvedConfig,
     private readonly options: QuaffAssetsOptions,
-    private readonly rootLayoutFile: string | undefined
+    private readonly rootLayoutFile: string | undefined,
+    private readonly readCssFile: CssAssetReader = (file) => readFile(file, "utf8")
   ) {
-    this.sourceRoot = resolve(config.root, options.sourceDir ?? "src");
+    const sourceDirectories = options.sourceDir ?? "src";
+    const directories =
+      typeof sourceDirectories === "string" ? [sourceDirectories] : sourceDirectories;
+    this.sourceRoots = directories.map((directory) => resolve(config.root, directory));
     this.safelist = normalizeSafelist(options.css?.safelist);
   }
 
@@ -105,7 +111,7 @@ export class AssetUsageState {
   }
 
   getWatchTargets() {
-    return [this.sourceRoot, ...(this.rootLayoutFile ? [dirname(this.rootLayoutFile)] : [])];
+    return [...this.sourceRoots, ...(this.rootLayoutFile ? [dirname(this.rootLayoutFile)] : [])];
   }
 
   isSourcePath(file: string) {
@@ -119,13 +125,13 @@ export class AssetUsageState {
       return isSourceFile(path);
     }
 
-    const pathFromSource = relative(this.sourceRoot, path);
-
     return (
-      !!pathFromSource &&
-      !pathFromSource.startsWith("..") &&
-      !isAbsolute(pathFromSource) &&
-      isSourceFile(path)
+      isSourceFile(path) &&
+      this.sourceRoots.some((sourceRoot) => {
+        const pathFromSource = relative(sourceRoot, path);
+
+        return !!pathFromSource && !pathFromSource.startsWith("..") && !isAbsolute(pathFromSource);
+      })
     );
   }
 
@@ -169,20 +175,29 @@ export class AssetUsageState {
   }
 
   private async findTrackedFiles() {
-    try {
-      const sourceFiles = await findSourceFiles(this.sourceRoot);
+    const sourceFiles = {
+      files: [] as string[],
+      realDirectories: new Set<string>(),
+      realFiles: new Set<string>(),
+    };
 
-      if (this.rootLayoutFile && (await doesFileExist(this.rootLayoutFile))) {
-        const rootLayoutRealPath = await realpath(this.rootLayoutFile);
-
-        if (!sourceFiles.realFiles.has(rootLayoutRealPath)) {
-          sourceFiles.files.push(this.rootLayoutFile);
-        }
+    for (const sourceRoot of this.sourceRoots) {
+      try {
+        await findSourceFiles(sourceRoot, sourceFiles);
+      } catch (error) {
+        throw createProcessingError(sourceRoot, "scan the configured source directory", error);
       }
-      return sourceFiles.files;
-    } catch (error) {
-      throw createProcessingError(this.sourceRoot, "scan the configured source directory", error);
     }
+
+    if (this.rootLayoutFile && (await doesFileExist(this.rootLayoutFile))) {
+      const rootLayoutRealPath = await realpath(this.rootLayoutFile);
+
+      if (!sourceFiles.realFiles.has(rootLayoutRealPath)) {
+        sourceFiles.files.push(this.rootLayoutFile);
+      }
+    }
+
+    return sourceFiles.files;
   }
 
   private async readSourceUsage(file: string) {
@@ -342,7 +357,7 @@ export class AssetUsageState {
     const file = resolve(CSS_ASSET_ROOT, `${name}.css`);
 
     try {
-      const css = await readFile(file, "utf8");
+      const css = await this.readCssFile(file);
 
       this.assetCache.set(name, css);
 

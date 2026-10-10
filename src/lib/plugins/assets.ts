@@ -1,4 +1,4 @@
-import { AssetPluginRuntime, ASSET_PLUGIN_NAME } from "./assets/assetPluginRuntime.js";
+import { createAssetsPlugin, CSS_MINIFIER_CONFIG } from "./assets/assetPlugin.js";
 import type { QuaffAssetsOptions } from "./assets/assetOptions.js";
 import type { Plugin } from "vite";
 
@@ -19,30 +19,7 @@ export type {
 
 /** Include used Quaff CSS and optimize configured font assets through one source scan. */
 export function quaffAssets(options: QuaffAssetsOptions = {}): Plugin {
-  const runtime = new AssetPluginRuntime(options);
-
-  return {
-    name: ASSET_PLUGIN_NAME,
-    enforce: "pre",
-    config: CSS_MINIFIER_CONFIG,
-    configResolved: (config) => runtime.configure(config),
-    async buildStart() {
-      await runtime.initialize((file) => this.addWatchFile(file));
-    },
-    watchChange: (id, change) => runtime.updateWatchedSource(id, change.event),
-    configureServer: (server) => runtime.configureServer(server),
-    resolveId: (id) => runtime.resolveImport(id),
-    load: (id) => runtime.loadStylesheet(id),
-    transform: (code, id) => runtime.injectStylesheetImport(code, id),
-    hotUpdate(update) {
-      if (this.environment.name !== "client") {
-        return;
-      }
-
-      return runtime.updateEnvironmentSource(update);
-    },
-    handleHotUpdate: (update) => runtime.updateLegacySource(update),
-  };
+  return createAssetsPlugin(options);
 }
 
 export function createCssMinifierPlugin(): Plugin {
@@ -51,8 +28,3 @@ export function createCssMinifierPlugin(): Plugin {
     config: CSS_MINIFIER_CONFIG,
   };
 }
-
-const CSS_MINIFIER_CONFIG: Plugin["config"] = {
-  order: "post",
-  handler: () => ({ build: { cssMinify: "esbuild" } }),
-};

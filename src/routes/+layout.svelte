@@ -1,6 +1,5 @@
 <script lang="ts">
-  import "$lib/css/fonts.scss";
-  import "$lib/css/index.scss";
+  import "virtual:quaff.css";
 
   import { afterNavigate } from "$app/navigation";
   import { page } from "$app/state";

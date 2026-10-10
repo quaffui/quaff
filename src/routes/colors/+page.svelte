@@ -1,6 +1,7 @@
 <script lang="ts">
   import { useMeta } from "$lib/meta";
   import { pageMeta } from "$docs/metadata";
+  import { PALETTE_COLORS } from "$docs/colorPalette";
 
   useMeta(
     pageMeta(
@@ -8,28 +9,6 @@
       "Browse Quaff's color palettes and numbered shades. Preview background and text color classes to choose colors for your Svelte app."
     )
   );
-
-  const colors = [
-    "red",
-    "pink",
-    "purple",
-    "deep-purple",
-    "indigo",
-    "blue",
-    "light-blue",
-    "cyan",
-    "teal",
-    "green",
-    "light-green",
-    "lime",
-    "yellow",
-    "amber",
-    "orange",
-    "deep-orange",
-    "brown",
-    "blue-grey",
-    "grey",
-  ];
 
   const textColor = (color: string, index: number) => {
     const colorsTooLightForIndex5LightText = ["lime", "yellow"];
@@ -46,7 +25,7 @@
   <h1 class="q-mb-xl">Colors</h1>
 
   <div class="row q-gutter-md">
-    {#each colors as color (color)}
+    {#each PALETTE_COLORS as color (color)}
       <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2 palette">
         <div class="bg-{color} text-{color}-10 title-large q-pa-sm">{color}</div>
         {#each { length: 10 }, index (index)}
