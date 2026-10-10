@@ -88,7 +88,7 @@
   }
 </script>
 
-<QDocs docDescription="Check off tasks, select a whole group, and make partial progress visible.">
+<QDocs>
   {#snippet display()}
     <div class="trunk-preview surface q-pa-lg">
       <div

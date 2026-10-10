@@ -1,6 +1,6 @@
 <!--
 @component
-Present the primary action with an icon-only Material 3 floating action button.
+Floating action buttons give a screen's primary action a prominent target. Use a clear icon and accessible label to identify the action.
 -->
 
 <script lang="ts">

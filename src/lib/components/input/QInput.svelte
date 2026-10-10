@@ -1,6 +1,6 @@
 <!--
 @component
-QInput is a form component that allows users to input text. It supports different visual styles such as filled, outlined, and rounded, and it can also display hint text and custom error messages.
+Text fields collect and edit text with clear labels. Supporting hints and validation messages guide input in filled or outlined fields.
 -->
 
 <script lang="ts">

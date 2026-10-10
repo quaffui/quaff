@@ -1,6 +1,6 @@
 <!--
 @component
-Search bars expand into a focused space for suggestions, filters, and results.
+Search bars open a dedicated view for queries, suggestions, and results. Choose a docked or fullscreen layout to fit your interface.
 -->
 
 <script lang="ts">

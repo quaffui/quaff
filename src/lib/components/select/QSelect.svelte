@@ -1,6 +1,6 @@
 <!--
 @component
-QSelect is a form component that allows users to choose from multiple options in a dropdown list. It supports single and multiple selection, as well as different visual styles such as filled, outlined, and rounded.
+Select fields let users choose one or more values from a dropdown. Typing and filtering make longer lists easier to search.
 -->
 
 <script lang="ts">

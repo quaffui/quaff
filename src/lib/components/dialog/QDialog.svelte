@@ -1,6 +1,6 @@
 <!--
 @component
-Dialogs provide important prompts in a user flow.
+Dialogs focus attention on a task, decision, or message above the page. Choose a modal or non-modal presentation, including fullscreen.
 -->
 
 <script lang="ts" module>

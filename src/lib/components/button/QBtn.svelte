@@ -1,6 +1,6 @@
 <!--
 @component
-Buttons help users take action, such as sending an email, sharing a document, or liking a comment.
+Buttons trigger actions such as saving changes or submitting forms. Choose a style to show importance, with optional icons and loading feedback.
 -->
 
 <script lang="ts">

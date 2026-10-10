@@ -1,6 +1,6 @@
 <!--
 @component
-Badges show notifications, counts, or short status labels alongside other content.
+Badges highlight notifications, counts, or status beside related content. Display a dot for a simple signal, or a number or short label.
 -->
 
 <script lang="ts">

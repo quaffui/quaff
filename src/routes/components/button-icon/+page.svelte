@@ -81,7 +81,7 @@
   >
 {/snippet}
 
-<QDocs docDescription="Put a clear action behind a compact, recognizable symbol.">
+<QDocs>
   {#snippet display()}
     <!-- svelte-ignore a11y_no_noninteractive_tabindex (Keyboard users must be able to scroll the preview when text is enlarged.) -->
     <div

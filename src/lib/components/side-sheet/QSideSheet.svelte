@@ -1,6 +1,6 @@
 <!--
 @component
-Side sheets show supporting content beside the main page.
+Side sheets present details, filters, or tools beside the main content. Keep the page interactive or use a modal sheet to focus attention.
 -->
 
 <script lang="ts">

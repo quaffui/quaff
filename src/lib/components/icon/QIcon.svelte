@@ -1,6 +1,6 @@
 <!--
 @component
-This component allows you to insert icons within elements of the page. Supported icons are Material Symbols icons.
+Icons represent actions, content, or status with a compact symbol. Use Material Symbols, SVGs, or images, with configurable size and color.
 -->
 
 <script lang="ts">

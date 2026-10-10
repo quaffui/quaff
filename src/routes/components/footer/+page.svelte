@@ -83,9 +83,7 @@
   const journalPage = $derived(JOURNAL_PAGES[journalPageIndex]);
 </script>
 
-<QDocs
-  docDescription="Keep helpful links and actions within reach with a footer that stays visible or follows the scroll."
->
+<QDocs>
   {#snippet display()}
     <QLayout class="footer-layout footer-preview surface">
       {#snippet content()}

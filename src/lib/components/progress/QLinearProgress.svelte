@@ -1,6 +1,6 @@
 <!--
 @component
-The QLinearProgress component is used to display a progress bar, indicating the completion status of a task or process.
+Linear progress indicators show task completion along a horizontal track. Display measured progress or an indeterminate animation when progress is unknown.
 -->
 
 <script lang="ts">

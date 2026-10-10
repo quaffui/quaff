@@ -1,6 +1,6 @@
 <!--
 @component
-QHeader is a top app bar for titles, navigation, and actions. It can be used independently or integrated with QLayout.
+Headers place navigation, titles, and actions at the top of an app. Choose compact or expanded bars, with optional scrolling behavior.
 -->
 
 <script lang="ts">

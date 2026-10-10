@@ -1,6 +1,6 @@
 <!--
 @component
-Keep frequently used actions close to your content with docked or floating toolbars.
+Toolbars group related actions near the content they control. Choose a docked or floating bar, arranged horizontally or vertically.
 -->
 
 <script lang="ts">

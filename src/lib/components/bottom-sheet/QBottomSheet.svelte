@@ -1,6 +1,6 @@
 <!--
 @component
-Bottom sheets show supporting content and actions at the bottom of a screen.
+Bottom sheets present supporting content and actions at the bottom of the screen. Keep the page interactive or use a modal sheet.
 -->
 
 <script lang="ts">

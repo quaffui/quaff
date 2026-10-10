@@ -1,6 +1,6 @@
 <!--
 @component
-The QList component is used to display a list of items with options for adding text, icons and actions.
+Lists arrange related items in vertical rows. Combine text, icons, and actions, with optional selection, separators, and compact spacing.
 -->
 
 <script lang="ts" module>

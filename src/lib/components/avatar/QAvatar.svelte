@@ -1,6 +1,6 @@
 <!--
 @component
-Avatars can be used in many different ways as with icons or for user profile images/videos, for example. They can have many different shapes, the default one being a circle.
+Avatars represent people or other entities using images, icons, or initials. Choose a shape and size that suit the surrounding content.
 -->
 
 <script lang="ts">

@@ -1,6 +1,6 @@
 <!--
 @component
-Footers can be used to display navigation and key actions at the bottom of the screen.
+Footers place navigation and actions at the bottom of a layout. Keep them visible or reveal them as users scroll back up.
 -->
 
 <script lang="ts">

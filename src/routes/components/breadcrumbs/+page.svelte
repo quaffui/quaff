@@ -90,7 +90,7 @@
   }
 </script>
 
-<QDocs docDescription="Keep your place while exploring a hierarchy.">
+<QDocs>
   {#snippet display()}
     <div class="archive-preview surface q-pa-lg">
       <div class="label-medium text-tertiary">THE OPEN ARCHIVE</div>

@@ -1,6 +1,6 @@
 <!--
 @component
-QMenu displays anchored popup content. It handles positioning, outside-click dismissal, Escape dismissal, and native dialog layering.
+Menus show contextual actions or popup content beside a trigger. Adjust their position and choose whether selecting an item closes the menu.
 -->
 
 <script lang="ts">

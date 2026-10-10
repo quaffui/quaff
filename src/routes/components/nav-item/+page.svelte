@@ -52,7 +52,7 @@
 
 <QDocs
   docName="Navigation Items"
-  docDescription="Link to destinations in drawers, navigation bars and rails. Group related pages under expandable headings."
+  docDescription="Navigation items link to destinations in drawers, bars, and rails. Add active indicators and badges, or organize drawer links under expandable headings."
 >
   {#snippet display()}
     <QLayout class="mail-preview">

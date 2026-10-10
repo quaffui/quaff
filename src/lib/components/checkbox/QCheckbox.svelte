@@ -1,6 +1,6 @@
 <!--
 @component
-Checkboxes allow the user to select one or more items from a set.
+Checkboxes select independent options or mark items as complete. An indeterminate state shows when only part of a group is selected.
 -->
 
 <script lang="ts">

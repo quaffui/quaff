@@ -1,6 +1,6 @@
 <!--
 @component
-Combine a primary action with a menu of related actions using a Material 3 Expressive split button.
+Split buttons pair a primary action with a menu of alternatives. Keep the common action accessible while offering related choices in one control.
 -->
 
 <script lang="ts">
