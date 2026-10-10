@@ -74,7 +74,9 @@
 
 <QDocs>
   {#snippet display()}
-    <div class="station-preview text-on-surface text-center">
+    <div
+      class="station-preview full-width overflow-auto bg-surface-container-low text-on-surface text-center"
+    >
       <QAvatar src={`${base}/avatar-research-vessel.svg`} size="80px" />
       <div class="label-medium q-mt-lg">TIDEPOOL FIELD STATION</div>
       <h2 class="title-large q-mt-xs q-mb-sm">A small crew. A big blue world.</h2>
@@ -99,10 +101,10 @@
           profile or perform an action. Choose a crew member to update the selected identity.
         {/snippet}
         <section
-          class="station-card q-pa-lg text-on-surface"
+          class="station-card full-width bg-surface-container-low q-pa-lg text-on-surface"
           aria-label="Tidepool field station crew"
         >
-          <div class="station-heading flex items-center q-gap-md text-primary">
+          <div class="flex no-wrap items-center q-gap-md text-primary">
             <QIcon name="waves" size="32px" aria-hidden="true" />
             <div>
               <div class="label-medium">TIDEPOOL FIELD STATION</div>
@@ -113,7 +115,7 @@
             {#each CREW as member (member.id)}
               <button
                 type="button"
-                class="crew-choice flex column items-center q-gap-sm text-on-surface"
+                class="crew-choice flex column no-wrap items-center q-gap-sm text-on-surface"
                 aria-pressed={crewId === member.id}
                 onclick={() => (crewId = member.id)}
               >
@@ -138,21 +140,21 @@
         {/snippet}
 
         <div class="identity-grid q-gap-md">
-          <div class="identity-card flex items-center q-gap-md">
+          <div class="identity-card flex no-wrap items-center q-gap-md bg-surface-container-low">
             <QAvatar src={`${base}/avatar-research-vessel.svg`} size="xl" />
             <div>
               <h3 class="title-medium q-ma-none">RV Tern</h3>
               <p class="body-medium q-mt-xs q-mb-none">Our floating field lab</p>
             </div>
           </div>
-          <div class="identity-card flex items-center q-gap-md">
+          <div class="identity-card flex no-wrap items-center q-gap-md bg-surface-container-low">
             <QAvatar size="xl" class="tertiary-container" aria-hidden="true">SR</QAvatar>
             <div>
               <h3 class="title-medium q-ma-none">Sam Reed</h3>
               <p class="body-medium q-mt-xs q-mb-none">Equipment & observations</p>
             </div>
           </div>
-          <div class="identity-card flex items-center q-gap-md">
+          <div class="identity-card flex no-wrap items-center q-gap-md bg-surface-container-low">
             <QAvatar size="xl" class="secondary" aria-hidden="true"
               ><QIcon name="science" size="28px" /></QAvatar
             >
@@ -173,12 +175,12 @@
         {/snippet}
 
         <div class="flex items-start q-gap-lg">
-          <div class="avatar-controls q-gap-md">
+          <div class="avatar-controls min-width-0 q-gap-md">
             <QSelect label="Avatar size" options={SIZES} bind:value={size} emitValue outlined />
             <QSelect label="Avatar shape" options={SHAPES} bind:value={shape} emitValue outlined />
             <QSwitch label="Use vessel illustration" bind:value={showImage} />
           </div>
-          <div class="vessel-card">
+          <div class="vessel-card min-width-0 bg-surface-container-low">
             <div class="label-medium text-on-surface-variant">VESSEL DIRECTORY</div>
             <div class="vessel-identity flex items-center q-gap-md q-my-lg">
               <QAvatar
@@ -192,9 +194,7 @@
                 <p class="body-medium q-mt-xs q-mb-none">Survey boat · Berth 04</p>
               </div>
             </div>
-            <div
-              class="vessel-status body-medium flex items-center q-gap-sm text-on-surface-variant"
-            >
+            <div class="body-medium flex no-wrap items-center q-gap-sm text-on-surface-variant">
               <QIcon name="anchor" size="20px" aria-hidden="true" /> Back before high tide
             </div>
           </div>
@@ -208,7 +208,7 @@
           <code>paused</code> and bind it to a playback control when motion is optional.
         {/snippet}
 
-        <div class="galley-card flex items-center">
+        <div class="galley-card flex items-center bg-surface-container-low">
           <QAvatar
             video
             size="80px"
@@ -221,7 +221,7 @@
               <p>A citrus drink being prepared in the galley.</p>
             {/snippet}
           </QAvatar>
-          <div class="galley-copy">
+          <div class="galley-copy min-width-0">
             <div class="label-medium text-on-surface-variant">BACK AT THE STATION</div>
             <h3 class="title-large q-mt-xs q-mb-none">A round for the shore team</h3>
             <p class="body-medium q-mt-sm q-mb-none">
@@ -246,7 +246,7 @@
         {/snippet}
 
         <div class="identity-grid q-gap-md">
-          <div class="identity-card flex items-center q-gap-md">
+          <div class="identity-card flex no-wrap items-center q-gap-md bg-surface-container-low">
             <QAvatar
               src={`${base}/avatar-research-vessel.svg`}
               size="lg"
@@ -254,7 +254,7 @@
             />
             <span class="body-medium">An image with its own description</span>
           </div>
-          <div class="identity-card flex items-center q-gap-md">
+          <div class="identity-card flex no-wrap items-center q-gap-md bg-surface-container-low">
             <QAvatar role="img" aria-label="Alex Taylor" size="lg">AT</QAvatar>
             <span class="body-medium">Initials with an accessible name</span>
           </div>
@@ -274,13 +274,10 @@
   }
 
   .station-preview {
-    width: 100%;
     max-width: 320px;
     max-height: 100%;
-    overflow: auto;
     padding: 20px;
     border-radius: 24px;
-    background: var(--surface-container-low);
   }
 
   .station-preview > :global(.q-avatar) {
@@ -288,18 +285,9 @@
   }
 
   .station-card {
-    width: 100%;
     max-width: 480px;
     border: 1px solid var(--outline-variant);
     border-radius: 24px;
-    background: var(--surface-container-low);
-  }
-
-  .station-heading,
-  .identity-card,
-  .vessel-identity,
-  .vessel-status {
-    flex-wrap: nowrap;
   }
 
   .crew-choices {
@@ -308,7 +296,6 @@
   }
 
   .crew-choice {
-    flex-wrap: nowrap;
     padding: 12px 4px;
     border: 2px solid transparent;
     border-radius: 16px;
@@ -342,7 +329,6 @@
   .galley-card {
     padding: 20px;
     border-radius: 20px;
-    background: var(--surface-container-low);
   }
 
   .identity-card > div,
@@ -355,12 +341,10 @@
   .avatar-controls {
     display: grid;
     flex: 1 1 224px;
-    min-width: 0;
   }
 
   .vessel-card {
     flex: 2 1 320px;
-    min-width: 0;
   }
 
   .vessel-identity {
@@ -373,7 +357,6 @@
 
   .galley-copy {
     flex: 1 1 240px;
-    min-width: 0;
   }
 
   @media (max-width: 400px) {

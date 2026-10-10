@@ -351,20 +351,13 @@
       <QBtn label="Accept" icon="img:/cocktail.jpg" class="col-xs-7 col-sm-5" />
     </div>
     <div class="row q-gap-lg q-pa-lg items-center">
-      <QInput
-        value="Hello world"
-        label="Greeting"
-        filled
-        class="col-xs-12 col-sm-7"
-        style="width: 100%"
-      />
+      <QInput value="Hello world" label="Greeting" filled class="col-xs-12 col-sm-7 full-width" />
       {#if Quaff.screen.ready && Quaff.screen.width > Quaff.screen.sizes.sm}
         <QLinearProgress
           indeterminate
-          class="col-5"
+          class="col-5 full-width"
           trackColor="secondary"
           color="on-secondary"
-          style="width: 100%"
         />
       {/if}
     </div>
@@ -372,10 +365,9 @@
       <div class="row q-gap-lg q-pa-lg items-center">
         <QLinearProgress
           indeterminate
-          class="col-xs-6 col-sm-7"
+          class="col-xs-6 col-sm-7 full-width"
           trackColor="secondary"
           color="on-secondary"
-          style="width: 100%"
         />
 
         <div class="col-1"></div>
@@ -400,10 +392,10 @@
   <div class="row q-gap-md q-mt-lg">
     {#each components as component (component.name)}
       <div
-        class="q-component-card col-sm-6 col-lg-4 col-xs-12"
+        class="q-component-card col-sm-6 col-lg-4 col-xs-12 full-width"
         role="link"
         tabindex="0"
-        style="grid-auto-rows: 1fr; cursor: pointer; width: 100%"
+        style="grid-auto-rows: 1fr; cursor: pointer;"
         onclick={() => goto(resolve(component.href, {}))}
         onkeypress={(e) => {
           if (e.key === "Enter") {
@@ -412,9 +404,9 @@
           }
         }}
       >
-        <QCard class="q-pa-none" style="height: 100%; transition: all 0.3s; overflow: hidden;">
+        <QCard class="q-pa-none full-height overflow-hidden" style="transition: all 0.3s;">
           <div
-            class="q-component-card__display q-pa-md flex flex-center secondary-container"
+            class="q-component-card__display q-pa-md flex flex-center secondary-container full-width overflow-hidden"
             style="height: 224px;"
             inert
           >
@@ -437,10 +429,8 @@
       <QItemSection type="avatar">
         <QAvatar src="/cocktail.jpg" />
       </QItemSection>
-      <QItemSection type="content" style="min-width: 0; flex: 1; overflow: hidden;">
-        <div style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden; width: 100%;">
-          Quaff is a powerful UI library
-        </div>
+      <QItemSection type="content" class="min-width-0 overflow-hidden" style="flex: 1;">
+        <div class="ellipsis full-width">Quaff is a powerful UI library</div>
       </QItemSection>
     </QItem>
   </QList>
@@ -465,8 +455,8 @@
 
 {#snippet bottomSheet()}
   <div
-    class="surface"
-    style="position: relative; width: 100%; height: 192px; border-radius: 16px; overflow: hidden;"
+    class="surface full-width overflow-hidden"
+    style="position: relative; height: 192px; border-radius: 16px;"
   >
     <QBottomSheet value aria-label="Place details" style="transition: none">
       <p class="title-medium q-mb-none">Riverside Café</p>
@@ -540,13 +530,13 @@
     aria-label="Drink photos"
   >
     {#snippet children({ item: src })}
-      <img {src} alt="Drink" style="width: 100%; height: 100%; object-fit: cover;" />
+      <img {src} alt="Drink" class="fit" style="object-fit: cover;" />
     {/snippet}
   </QCarousel>
 {/snippet}
 
 {#snippet checkbox()}
-  <QCard style="width: 100%; min-width: min-content;">
+  <QCard class="full-width" style="min-width: min-content;">
     <QCardSection class="headline-small q-mb-sm">Appearance</QCardSection>
     <QCardSection class="q-ml-md">
       <QCheckbox value={Quaff.darkMode.isActive} label="Dark mode" />
@@ -558,7 +548,7 @@
 {/snippet}
 
 {#snippet chips()}
-  <QCard style="width: 100%;">
+  <QCard class="full-width">
     <QCardSection class="headline-small q-mb-sm">Pick your flavors</QCardSection>
     <QSeparator />
     <QCardSection class="flex q-gap-sm">
@@ -570,8 +560,8 @@
 {/snippet}
 
 {#snippet colorPicker()}
-  <div class="q-component-card__color-demo">
-    <div class="q-component-card__color-palette" aria-hidden="true">
+  <div class="q-component-card__color-demo column q-gap-md q-pa-md surface-container-low">
+    <div class="q-component-card__color-palette flex no-wrap q-gap-sm" aria-hidden="true">
       <span style="background: #6750a4;"></span>
       <span style="background: #387c69;"></span>
       <span style="background: #e4653d;"></span>
@@ -590,7 +580,7 @@
 {/snippet}
 
 {#snippet dialog()}
-  <QCard style="width: 100%;">
+  <QCard class="full-width">
     <QCardSection class="headline-small">Delete this file?</QCardSection>
     <QCardSection class="text-on-surface-variant q-mb-md">
       This action cannot be undone.
@@ -606,7 +596,7 @@
 {#snippet drawer()}
   <QLayout view="lhh LpR fFf" style="height: 50vh;">
     {#snippet drawerLeft()}
-      <QDrawer value={true} persistent behavior="desktop" style="width: 100%;">
+      <QDrawer value={true} persistent behavior="desktop" class="full-width">
         <QList activeClass="text-primary">
           <QItem class="headline-small">Mail</QItem>
           <QItem active clickable class="q-link">
@@ -635,7 +625,7 @@
 {/snippet}
 
 {#snippet navigationItems()}
-  <QLayout style="height: 100%; max-width: 18rem; border-radius: 16px;">
+  <QLayout class="full-height" style="max-width: 18rem; border-radius: 16px;">
     {#snippet drawerLeft()}
       <QDrawer value={true} width={288} behavior="desktop" persistent style="max-width: 100%;">
         <QList tag="nav" aria-label="Navigation preview" dense expressive={false} preserveTabOrder>
@@ -784,7 +774,7 @@
 
 {#snippet progress()}
   <QCard class="q-pa-none" style="position: absolute; bottom: 16px; left: 16px; right: 16px;">
-    <div class="q-py-lg q-px-xl q-mx-auto" style="width: 100%;">
+    <div class="q-py-lg q-px-xl q-mx-auto full-width">
       <img
         src="/cocktail.jpg"
         alt="Cocktail"
@@ -826,9 +816,9 @@
 {/snippet}
 
 {#snippet navbar()}
-  <QLayout class="background" style="height: 100%; width: 100%;">
+  <QLayout class="background fit">
     {#snippet content()}
-      <div class="flex flex-center" style="height: 100%;">
+      <div class="flex flex-center full-height">
         <span class="headline-small">Home</span>
       </div>
     {/snippet}
@@ -846,7 +836,7 @@
 {/snippet}
 
 {#snippet radio()}
-  <QList class="surface q-pa-lg" style="width: 100%; min-width: min-content;" dense>
+  <QList class="surface q-pa-lg full-width" style="min-width: min-content;" dense>
     <QItem class="headline-small">Language</QItem>
     <QItem>
       <QRadio value="english" selected="english" label="English" />
@@ -861,9 +851,9 @@
 {/snippet}
 
 {#snippet railbar()}
-  <QLayout class="background" style="height: 100%; width: 100%;">
+  <QLayout class="background fit">
     {#snippet content()}
-      <div class="flex flex-center" style="height: 100%;">
+      <div class="flex flex-center full-height">
         <span class="headline-small">Home</span>
       </div>
     {/snippet}
@@ -889,7 +879,7 @@
 {/snippet}
 
 {#snippet slider()}
-  <QCard class="column q-gap-lg" style="width: 75%;">
+  <QCard style="width: 75%;">
     <QSlider value={35} aria-label="Preview value" />
     <QSlider value={65} step={20} markers aria-label="Preview stops" />
   </QCard>
@@ -910,7 +900,7 @@
   <QLayout class="background" style="height: 50vh;">
     {#snippet header()}
       <QHeader bordered style="display: block;" height={86}>
-        <div class="flex justify-between items-center q-pa-sm" style="width: 100%;">
+        <div class="flex justify-between items-center q-pa-sm full-width">
           <span class="q-ml-sm">09:30</span>
 
           <div>
@@ -920,7 +910,7 @@
           </div>
         </div>
 
-        <div class="flex justify-between items-center q-px-md" style="width: 100%;">
+        <div class="flex justify-between items-center q-px-md full-width">
           <div class="flex flex-center q-gap-md">
             <QIcon name="arrow_back" />
             <span class="headline-small">Settings</span>
@@ -1028,9 +1018,7 @@
 {/snippet}
 
 {#snippet sideSheet()}
-  <div
-    style="display: flex; justify-content: flex-end; height: 100%; width: 100%; overflow: hidden; background: var(--surface-container);"
-  >
+  <div class="flex no-wrap justify-end fit overflow-hidden bg-surface-container">
     <QSideSheet value headline="Details" width="192px" bordered>
       <div class="text-body-medium">A little more context, right where you need it.</div>
     </QSideSheet>
@@ -1043,10 +1031,8 @@
 
     & &__display {
       position: relative;
-      overflow: hidden;
       transition: all 0.3s;
 
-      width: 100%;
       min-height: 224px;
       pointer-events: none;
 
@@ -1089,20 +1075,11 @@
   }
 
   .q-component-card__color-demo {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
     width: min(100%, 304px);
-    padding: 16px;
     border-radius: 24px;
-    color: var(--on-surface);
-    background: var(--surface-container-low);
   }
 
   .q-component-card__color-palette {
-    display: flex;
-    gap: 8px;
-
     span {
       flex: 1;
       height: 32px;

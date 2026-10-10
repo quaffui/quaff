@@ -104,7 +104,7 @@
 
 <QDocs>
   {#snippet display()}
-    <div class="preview-frame flex no-overflow border" class:sheet-open={isPreviewOpen}>
+    <div class="preview-frame flex overflow-hidden border" class:sheet-open={isPreviewOpen}>
       <div class="preview-main column justify-center">
         <div class="label-large text-on-surface-variant">YOUR WORKSPACE</div>
         <h2 class="headline-small q-ma-none">Ready to launch</h2>
@@ -166,7 +166,7 @@
           <code>256px</code>; this example uses <code>320px</code>.
         {/snippet}
 
-        <div class="workspace flex no-overflow border" class:sheet-open={isFileSheetOpen}>
+        <div class="workspace flex overflow-hidden border" class:sheet-open={isFileSheetOpen}>
           <div class="workspace-main q-pa-lg">
             <div class="workspace-heading flex items-center q-mb-lg">
               <QIcon name="folder_open" class="text-primary" aria-hidden="true" />
@@ -327,7 +327,7 @@
 
         <QCheckbox bind:value={isRightToLeft} label="Right-to-left layout" class="q-mb-md" />
         <div
-          class="placement-demo flex no-overflow border"
+          class="placement-demo flex overflow-hidden border"
           class:sheet-open={isPreferencesSheetOpen}
           dir={isRightToLeft ? "rtl" : "ltr"}
         >

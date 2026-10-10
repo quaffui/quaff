@@ -1,0 +1,28 @@
+$surface-roles: (
+  "surface-dim",
+  "surface-bright",
+  "surface-container-lowest",
+  "surface-container-low",
+  "surface-container",
+  "surface-container-high",
+  "surface-container-highest"
+);
+
+@each $role in $surface-roles {
+  .#{$role},
+  .bg-#{$role} {
+    background-color: var(--#{$role});
+  }
+
+  .#{$role} {
+    color: var(--on-surface);
+  }
+
+  .text-#{$role} {
+    color: var(--#{$role});
+  }
+
+  .border-#{$role} {
+    border-color: var(--#{$role});
+  }
+}

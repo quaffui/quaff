@@ -29,10 +29,6 @@
 
 // Elevation
 .elevate {
-  &-none {
-    box-shadow: none;
-  }
-
   $elevations: (
     "sm": 1,
     "md": 2,
@@ -54,4 +50,34 @@
 // Transparent
 .transparent {
   @include transparent;
+}
+
+// Resets
+.elevate-none,
+.no-box-shadow {
+  box-shadow: none;
+}
+
+.no-margin {
+  margin: 0;
+}
+
+.no-padding {
+  padding: 0;
+}
+
+.no-border {
+  border: 0;
+}
+
+.no-border-radius {
+  border-radius: 0;
+}
+
+.border-radius-inherit {
+  border-radius: inherit;
+}
+
+.no-transition {
+  transition: none;
 }

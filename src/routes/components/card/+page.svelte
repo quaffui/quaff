@@ -65,7 +65,7 @@
   {#snippet display()}
     <QCard class="workshop-card">
       <div
-        class="print-art secondary-container flex flex-center no-overflow q-mb-md"
+        class="print-art secondary-container flex flex-center overflow-hidden q-mb-md"
         aria-hidden="true"
       >
         <span class="print-sheet secondary"><QIcon name="filter_vintage" size="48px" /></span>

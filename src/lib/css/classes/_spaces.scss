@@ -3,9 +3,11 @@
 
 @each $spaceName, $spaceVal in variables.$spaces {
   @each $posName, $_ in variables.$positions {
-    // Padding
-    .q-p#{$posName}-#{$spaceName} {
-      @include mixins.padding("#{$posName}-#{$spaceName}");
+    // Auto is valid for margins, not padding.
+    @if $spaceName != "auto" {
+      .q-p#{$posName}-#{$spaceName} {
+        @include mixins.padding("#{$posName}-#{$spaceName}");
+      }
     }
 
     // Margin
@@ -18,6 +20,14 @@
   @if $spaceName != "auto" {
     .q-gap-#{$spaceName} {
       gap: $spaceVal;
+    }
+
+    .q-gap-x-#{$spaceName} {
+      column-gap: $spaceVal;
+    }
+
+    .q-gap-y-#{$spaceName} {
+      row-gap: $spaceVal;
     }
   }
 }

@@ -92,7 +92,7 @@
 
 <QDocs>
   {#snippet display()}
-    <div class="media-library surface no-overflow">
+    <div class="media-library surface overflow-hidden">
       <h2 class="title-large q-pa-md q-ma-none">Soundbox</h2>
       <QTabs bind:value={mediaTab} aria-label="Media library">
         {#each MEDIA as category (category.name)}
@@ -113,7 +113,10 @@
           tabindex="0"
           class="q-pa-md"
         >
-          <div class="media-art flex flex-center no-overflow {category.color}" aria-hidden="true">
+          <div
+            class="media-art flex flex-center overflow-hidden {category.color}"
+            aria-hidden="true"
+          >
             <QIcon name={category.icon} size="48px" />
           </div>
           <h3 class="title-large q-mt-md q-mb-xs">{category.title}</h3>
@@ -137,7 +140,7 @@
           <QSwitch label="Inline icons" bind:value={hasInlineLabels} disabled={!hasLabels} />
           <QSwitch label="Divider" bind:value={hasSeparator} />
         </div>
-        <div class="example-frame surface border no-overflow">
+        <div class="example-frame surface border overflow-hidden">
           <div class="example-heading flex items-center q-gap-md q-pa-md">
             <QIcon name="sports_esports" class="text-tertiary" size="32px" aria-hidden="true" />
             <div>
@@ -196,7 +199,7 @@
           and the indicator spans the tab's width.
         {/snippet}
 
-        <div class="example-frame surface border no-overflow">
+        <div class="example-frame surface border overflow-hidden">
           <div class="example-heading flex items-center q-gap-md q-pa-md">
             <QAvatar class="primary-container" size="md" aria-hidden="true">
               <QIcon name="local_shipping" />
@@ -269,7 +272,7 @@
           that need it. Values in these settings stay intact when you switch tabs.
         {/snippet}
 
-        <div class="example-frame surface border no-overflow">
+        <div class="example-frame surface border overflow-hidden">
           <h6 class="title-large q-pa-md q-ma-none">Workspace settings</h6>
           <div class="settings-layout">
             <QTabs bind:value={settingsTab} variant="vertical" aria-label="Workspace settings">
@@ -339,7 +342,7 @@
           not need a bound value. The links below open other component pages.
         {/snippet}
 
-        <div class="example-frame surface border no-overflow">
+        <div class="example-frame surface border overflow-hidden">
           <QTabs value="tabs" aria-label="Component pages" variant="secondary">
             <QTab name="tabs" to="/components/tabs">Tabs</QTab>
             <QTab name="buttons" to="/components/button">Buttons</QTab>

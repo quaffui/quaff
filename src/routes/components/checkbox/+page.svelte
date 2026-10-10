@@ -90,14 +90,14 @@
 
 <QDocs>
   {#snippet display()}
-    <div class="trunk-preview surface q-pa-lg">
+    <div class="trunk-preview full-width overflow-auto surface q-pa-lg">
       <div
-        class="mini-stage tertiary-container flex items-center justify-between no-overflow"
+        class="mini-stage tertiary-container flex no-wrap items-center justify-between overflow-hidden"
         aria-hidden="true"
       >
-        <span class="stage-curtain tertiary"></span>
+        <span class="stage-curtain full-height tertiary"></span>
         <QIcon name="theater_comedy" size="48px" />
-        <span class="stage-curtain tertiary"></span>
+        <span class="stage-curtain full-height tertiary"></span>
       </div>
       <div class="label-medium text-tertiary q-mt-md">LITTLE STRING THEATRE</div>
       <h2 class="title-large q-mt-xs q-mb-md">One trunk. A whole world.</h2>
@@ -131,7 +131,7 @@
           the whole group. Individual changes update the cue log below.
         {/snippet}
 
-        <div class="stage-checklist surface q-pa-lg">
+        <div class="stage-checklist full-width surface q-pa-lg">
           <div class="show-heading flex items-center q-gap-md q-mb-lg">
             <div class="show-mark tertiary-container flex flex-center" aria-hidden="true">
               <QIcon name="theater_comedy" size="32px" />
@@ -154,9 +154,9 @@
           </div>
           <div class="flex column q-gap-lg">
             {#each CHECKS as check, index (check.title)}
-              <div class="department-row flex items-start q-gap-lg">
+              <div class="flex no-wrap items-start q-gap-lg">
                 <QIcon name={check.icon} class="text-tertiary" aria-hidden="true" />
-                <div class="department-copy">
+                <div class="department-copy min-width-0">
                   <QCheckbox
                     label={check.title}
                     bind:value={prepared[index]}
@@ -170,7 +170,7 @@
             {/each}
           </div>
           <QSeparator spacing="md" />
-          <div class="readiness-line flex items-center">
+          <div class="readiness-line flex no-wrap items-center">
             <QIcon
               name={isFullyPrepared ? "task_alt" : "pending_actions"}
               class="text-primary"
@@ -195,7 +195,7 @@
           values programmatically. This is a local demo; nothing is submitted.
         {/snippet}
 
-        <form class="handover q-pa-lg" onsubmit={openDoors}>
+        <form class="handover full-width bg-surface-container-low q-pa-lg" onsubmit={openDoors}>
           <div class="label-medium text-tertiary">STAGE MANAGER'S HANDOVER</div>
           <h3 class="title-large q-mt-xs q-mb-md">A little show, ready to go.</h3>
           <QCheckbox
@@ -248,7 +248,7 @@
           these venue records are separate from your rehearsal checklist.
         {/snippet}
 
-        <div class="venue-notes surface q-pa-lg">
+        <div class="venue-notes full-width surface q-pa-lg">
           <div class="label-medium text-tertiary">VENUE RECORD · READ ONLY</div>
           <h3 class="title-large q-mt-xs q-mb-lg">From the house crew</h3>
           <div class="venue-check">
@@ -302,7 +302,6 @@
   .stage-checklist,
   .handover,
   .venue-notes {
-    width: 100%;
     max-width: 640px;
     border-radius: 24px;
   }
@@ -310,18 +309,15 @@
   .trunk-preview {
     max-width: 352px;
     max-height: 100%;
-    overflow: auto;
   }
 
   .mini-stage {
-    flex-wrap: nowrap;
     height: 64px;
     border-radius: 16px 16px 8px 8px;
   }
 
   .stage-curtain {
     width: 40px;
-    height: 100%;
     border-radius: 0 0 40px 0;
   }
 
@@ -344,13 +340,8 @@
     border-radius: 16px;
   }
 
-  .department-row {
-    flex-wrap: nowrap;
-  }
-
   .department-copy {
     flex: 1;
-    min-width: 0;
   }
 
   .department-copy p,
@@ -360,12 +351,7 @@
   }
 
   .readiness-line {
-    flex-wrap: nowrap;
     gap: 12px;
-  }
-
-  .handover {
-    background: var(--surface-container-low);
   }
 
   .handover-actions {

@@ -216,7 +216,7 @@
 
 <QDocs>
   {#snippet display()}
-    <div class="cinema-preview surface no-overflow">
+    <div class="cinema-preview surface overflow-hidden">
       <QLayout>
         {#snippet railbarStart()}
           <QRailbar width={72} aria-label="Framehouse preview" bordered>
@@ -458,7 +458,7 @@
           visiting Updates clears its unread badge.
         {/snippet}
 
-        <div class="festival-window surface border no-overflow">
+        <div class="festival-window surface border overflow-hidden">
           <QLayout>
             {#snippet railbarEnd()}
               <QRailbar

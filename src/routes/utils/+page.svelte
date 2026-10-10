@@ -14,6 +14,12 @@
 
   const utils = [
     {
+      name: "CSS Helpers",
+      description: "Compose layouts and common styles with shared classes.",
+      href: "/utils/css",
+      hovered: false,
+    },
+    {
       name: "Asset Optimization",
       description: "Include used component styles, select fonts, and remove unused CSS and icons.",
       href: "/utils/assets",

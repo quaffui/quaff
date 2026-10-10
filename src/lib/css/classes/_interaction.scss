@@ -1,0 +1,13 @@
+@each $cursor in pointer, not-allowed, inherit, none {
+  .cursor-#{$cursor} {
+    cursor: $cursor;
+  }
+}
+
+.no-pointer-events {
+  pointer-events: none;
+}
+
+.all-pointer-events {
+  pointer-events: all;
+}

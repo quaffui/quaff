@@ -31,14 +31,14 @@
   // #endregion: --- Derived values
 </script>
 
-<div {id} style="margin-bottom:48px">
-  <div class="q-docs-section__header q-mb-sm">
-    <h5>{title}</h5>
+<div {id} class="q-mb-xl">
+  <div class="q-docs-section__header flex no-wrap items-start q-gap-md q-mb-sm">
+    <h5 class="min-width-0">{title}</h5>
     {#if code && !noCode}
       <div class="q-docs-section__actions">
         <QIconBtn icon="code" variant="outlined" onclick={() => (dialog = true)} />
       </div>
-      <QDialog bind:value={dialog} modal class="q-docs-section__code-dialog">
+      <QDialog bind:value={dialog} modal class="q-docs-section__code-dialog column overflow-hidden">
         <QCodeBlock {code} language="svelte" {title} copiable />
       </QDialog>
     {/if}
@@ -56,15 +56,8 @@
 </div>
 
 <style>
-  .q-docs-section__header {
-    display: flex;
-    align-items: flex-start;
-    gap: 16px;
-  }
-
   .q-docs-section__header h5 {
     flex: 1 1 auto;
-    min-width: 0;
   }
 
   .q-docs-section__actions {
@@ -73,8 +66,5 @@
 
   :global(.q-docs-section__code-dialog) {
     max-width: 75vw;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
   }
 </style>
