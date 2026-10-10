@@ -2,7 +2,7 @@ import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { analyzeSource } from "./analyzeSource.js";
-import { AssetUsageState } from "./assetUsageState.js";
+import { AssetUsageState, type CssAssetReader } from "./assetUsageState.js";
 import { doesFileExist, normalizePath } from "./sourceFiles.js";
 import { FontStylesheet } from "./fonts/fontStylesheet.js";
 import type { QuaffAssetsOptions } from "./assetOptions.js";
@@ -36,7 +36,10 @@ export class AssetPluginRuntime {
   private virtualCssId = "";
   private fonts: FontStylesheet | undefined;
 
-  constructor(private readonly options: QuaffAssetsOptions) {}
+  constructor(
+    private readonly options: QuaffAssetsOptions,
+    private readonly readCssFile?: CssAssetReader
+  ) {}
 
   configure(config: ResolvedConfig) {
     const pluginCount = config.plugins.filter((plugin) => plugin.name === ASSET_PLUGIN_NAME).length;
@@ -50,7 +53,7 @@ export class AssetPluginRuntime {
     this.config = config;
     this.virtualCssId = resolveVirtualCssId(config.root);
     this.rootLayoutFile = resolveRootLayout(config.root, this.options.rootLayout);
-    this.state = new AssetUsageState(config, this.options, this.rootLayoutFile);
+    this.state = new AssetUsageState(config, this.options, this.rootLayoutFile, this.readCssFile);
 
     if (this.options.fonts) {
       this.fonts = new FontStylesheet(config, this.options.fonts);
@@ -60,7 +63,12 @@ export class AssetPluginRuntime {
   async initialize(watchFile: (file: string) => void) {
     // Build watchers can miss file creation events, so each build needs a fresh scan.
     if (this.config.command === "build") {
-      this.state = new AssetUsageState(this.config, this.options, this.rootLayoutFile);
+      this.state = new AssetUsageState(
+        this.config,
+        this.options,
+        this.rootLayoutFile,
+        this.readCssFile
+      );
     }
 
     await this.state.ensureInitialized();

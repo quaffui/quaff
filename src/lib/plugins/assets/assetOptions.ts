@@ -68,6 +68,6 @@ export interface QuaffAssetsOptions {
   include?: readonly CssExportName[];
   exclude?: readonly CssExportName[];
   rootLayout?: false | string;
-  /** Application source directory scanned for usage. Defaults to src. */
-  sourceDir?: string;
+  /** Application source directories scanned for usage. Defaults to src. */
+  sourceDir?: string | readonly string[];
 }

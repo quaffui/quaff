@@ -128,8 +128,9 @@ export default defineConfig({
     <QDocsSection title="Components Outside src" noCode>
       {#snippet sectionDescription()}
         <p>
-          The plugin checks <code>src</code> by default. Change <code>sourceDir</code> to scan a
-          different directory, or use <code>include</code> to keep components used by code outside it:
+          The plugin checks <code>src</code> by default. Set <code>sourceDir</code> to a directory
+          or an array of directories to scan, or use <code>include</code> to keep components used by code
+          outside them:
         </p>
       {/snippet}
 

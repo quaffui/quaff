@@ -1,4 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
+import { DOCS_ASSET_OPTIONS } from "../../dev/docsAssets";
 import {
   cleanupCssFixtures,
   createCssFixture,
@@ -37,6 +38,22 @@ function expectSelectors(css: string, present: string[], absent: string[] = []) 
 }
 
 describe("component styles", () => {
+  it("scans multiple source directories without including unrelated library code", async () => {
+    const fixture = await createCssFixture(
+      {
+        "routes/Page.svelte": createComponentSource("QBtn"),
+        "docs/Example.svelte": createComponentSource("QCard"),
+        "lib/Unused.svelte": createComponentSource("QTable"),
+      },
+      { sourceDir: ["src/routes", "src/docs", "src/routes"] }
+    );
+
+    expectSelectors(await fixture.getStylesheet(), [".q-btn", ".q-card"], [".q-table"]);
+
+    await fixture.update("docs/Example.svelte", createComponentSource("QChip"));
+    expectSelectors(await fixture.getStylesheet(), [".q-btn", ".q-chip"], [".q-card", ".q-table"]);
+  });
+
   it.each([
     {
       component: "QIconBtn",
@@ -121,6 +138,19 @@ describe("component styles", () => {
 });
 
 describe("optional pruning", () => {
+  it("keeps API heading spacing from generated docs outside the scanned directories", async () => {
+    const fixture = await createCssFixture(
+      {
+        "routes/+page.svelte": '<script>import heading from "../lib/docs";</script>{@html heading}',
+        "docs/Api.svelte": "<div>API</div>",
+        "lib/docs.ts": "export default '<span class=\"q-mr-xs\">value</span>';",
+      },
+      DOCS_ASSET_OPTIONS
+    );
+
+    expectSelectors(await fixture.getStylesheet(), [".q-mr-xs"], [".q-mr-xl"]);
+  });
+
   it.each([false, true])(
     "retains complete component sheets with stripUnused=%s",
     async (stripUnused) => {
