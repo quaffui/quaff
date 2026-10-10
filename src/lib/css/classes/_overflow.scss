@@ -1,7 +1,21 @@
-.scroll {
-  overflow: scroll;
+.scroll,
+.overflow-auto {
+  overflow: auto;
 }
 
-.no-overflow {
+.overflow-hidden,
+.no-scroll {
   overflow: hidden;
+}
+
+.scroll-x {
+  overflow-x: auto;
+}
+
+.scroll-y {
+  overflow-y: auto;
+}
+
+.overflow-hidden-y {
+  overflow-y: hidden;
 }

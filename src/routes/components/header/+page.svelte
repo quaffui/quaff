@@ -161,7 +161,7 @@
           <QSwitch label="Elevated" bind:value={hasElevation} />
           <QSwitch label="Bordered" bind:value={hasBorder} />
         </div>
-        <div class="header-frame no-overflow">
+        <div class="header-frame overflow-hidden">
           <QHeader elevated={hasElevation} bordered={hasBorder}>
             <QIconBtn
               icon="arrow_back"
@@ -206,7 +206,7 @@
           <QSwitch label="Centered" bind:value={hasCenteredAppBar} />
           <QSwitch label="Subtitle" bind:value={hasAppBarSubtitle} />
         </div>
-        <div class="header-frame city-preview no-overflow">
+        <div class="header-frame city-preview overflow-hidden">
           <QHeader variant={hasLargeAppBar ? "large" : "medium"}>
             <QIcon name="apartment" class="text-primary q-ml-sm" aria-hidden="true" />
             <QHeaderTitle
@@ -223,7 +223,7 @@
           </QHeader>
           <div class="q-pt-md q-px-lg q-pb-lg">
             <div
-              class="city-art flex items-end justify-center q-px-md no-overflow"
+              class="city-art flex items-end justify-center q-px-md overflow-hidden"
               aria-hidden="true"
             >
               <span class="city-sun tertiary-container"></span>
@@ -259,7 +259,7 @@
           this booking app uses <code>height={96}</code>.
         {/snippet}
 
-        <QLayout class="header-frame sauna-layout no-overflow">
+        <QLayout class="header-frame sauna-layout overflow-hidden">
           {#snippet header()}
             <QHeader height={96} class="tertiary-container">
               <QIcon name="hot_tub" size="32px" class="q-ml-md" aria-hidden="true" />
@@ -304,7 +304,7 @@
           and subtitle become compact and stay small until you return to the top.
         {/snippet}
 
-        <QLayout class="header-frame harbor-layout no-overflow">
+        <QLayout class="header-frame harbor-layout overflow-hidden">
           {#snippet header()}
             <QHeader variant="large" collapse>
               <QIcon name="explore" class="text-primary q-ml-sm" aria-hidden="true" />
@@ -357,7 +357,7 @@
           the header height before it hides.
         {/snippet}
 
-        <QLayout class="header-frame reader-layout no-overflow">
+        <QLayout class="header-frame reader-layout overflow-hidden">
           {#snippet header()}
             <QHeader reveal revealOffset={48} bordered>
               <QIcon name="auto_stories" class="text-tertiary q-ml-md" aria-hidden="true" />
@@ -390,7 +390,7 @@
           <QSwitch label="Inset content" bind:value={isInset} />
           <QSwitch label="Compact title" bind:value={hasCompactTitle} />
         </div>
-        <div class="header-frame no-overflow">
+        <div class="header-frame overflow-hidden">
           <QHeader inset={isInset} bordered>
             <QHeaderTitle shrink={hasCompactTitle}>Drafts</QHeaderTitle>
             <QIcon name="cloud_done" class="text-tertiary q-mr-md" aria-label="All changes saved" />
@@ -404,7 +404,7 @@
           results below.
         {/snippet}
 
-        <div class="header-frame no-overflow">
+        <div class="header-frame overflow-hidden">
           <QHeader bordered>
             <QHeaderTitle>
               <QInput

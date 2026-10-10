@@ -17,8 +17,10 @@
   <h1 class="q-mb-xl">Grid system</h1>
 
   <p>
-    Quaff provides a basic 12 column grid system with responsive support. Under the hood, we're
-    using display: grid, providing you a modern grid without any hacks.
+    Quaff provides a responsive 12-column CSS grid. Use <code class="q-docs-code">row</code> for the
+    container and <code class="q-docs-code">col-*</code> for its children. For flex layouts,
+    alignment, sizing, and spacing, see
+    <a class="q-docs-link" href={resolve("/utils/css", {})}>CSS helpers</a>.
   </p>
 
   <div class="row">

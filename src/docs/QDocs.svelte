@@ -53,9 +53,9 @@
 </script>
 
 <div
-  class="q-docs"
+  class="q-docs full-width q-mx-auto"
   style="--q-hue-rotate: {hueRotate}deg; --q-brightness: {brightness}; max-width: {Quaff.screen
-    .sizes.lg}px; width: 100%; margin-inline: auto;"
+    .sizes.lg}px;"
 >
   <div class="q-docs__hero row q-gutter-lg" style="min-height: 400px">
     <QCard
@@ -72,7 +72,7 @@
       </QCardSection>
     </QCard>
     <QCard
-      class="q-docs__preview col-sm-12 col-xs-12 col-lg-6 q-mt-none q-pa-none"
+      class="q-docs__preview overflow-hidden col-sm-12 col-xs-12 col-lg-6 q-mt-none q-pa-none"
       fill="primary"
       style="min-height: 400px; --q-docs-heading-color: {QTheme.themeColors.primaryLight};"
     >
@@ -86,8 +86,8 @@
       </div>
 
       <QCardSection
-        class="flex flex-center column q-pa-lg"
-        style="position: absolute; height: 100%; width: 100%; z-index: 1; overflow: hidden;"
+        class="flex flex-center column q-pa-lg fit overflow-hidden"
+        style="position: absolute; z-index: 1;"
       >
         {@render display?.()}
       </QCardSection>
@@ -112,7 +112,7 @@
 
     {#if usage}
       <div>
-        <div class="heading-usage">
+        <div class="flex no-wrap items-center">
           <h4 class="q-my-xl">Usage</h4>
         </div>
 
@@ -138,7 +138,6 @@
     :global(.q-docs__preview) {
       position: relative;
       isolation: isolate;
-      overflow: hidden;
       padding-bottom: 48px;
       color: #f4f9ff;
       background: linear-gradient(
@@ -296,10 +295,5 @@
     to {
       transform: translate(12px, 12px) rotate(5deg);
     }
-  }
-
-  .heading-usage {
-    display: flex;
-    align-items: center;
   }
 </style>

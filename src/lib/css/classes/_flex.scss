@@ -1,13 +1,35 @@
+.flex,
+.column {
+  display: flex;
+
+  &:where(.inline) {
+    display: inline-flex;
+  }
+}
+
 .flex {
-  display: flex !important;
   flex-wrap: wrap;
+
+  &.reverse {
+    flex-direction: row-reverse;
+  }
 }
 
 .column {
   flex-direction: column;
+
+  &.reverse {
+    flex-direction: column-reverse;
+  }
 }
 
-// Horizontal alignment
+@each $name, $value in (wrap: wrap, no-wrap: nowrap, reverse-wrap: wrap-reverse) {
+  .#{$name} {
+    flex-wrap: $value;
+  }
+}
+
+// Cross-axis alignment
 .items-start {
   align-items: flex-start;
 }
@@ -20,7 +42,45 @@
   align-items: flex-end;
 }
 
-// Vertical alignment
+.items-baseline {
+  align-items: baseline;
+}
+
+.items-stretch {
+  align-items: stretch;
+}
+
+@each $name,
+  $value in (start: flex-start, end: flex-end, center: center, baseline: baseline, stretch: stretch)
+{
+  .self-#{$name} {
+    align-self: $value;
+  }
+}
+
+@each $name,
+  $value
+    in (
+      start: flex-start,
+      end: flex-end,
+      center: center,
+      stretch: stretch,
+      between: space-between,
+      around: space-around
+    )
+{
+  .content-#{$name} {
+    align-content: $value;
+  }
+}
+
+@each $name, $value in (first: -10000, last: 10000, none: 0) {
+  .order-#{$name} {
+    order: $value;
+  }
+}
+
+// Main-axis alignment
 .justify-start {
   justify-content: flex-start;
 }

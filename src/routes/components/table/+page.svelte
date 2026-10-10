@@ -93,7 +93,9 @@
 
 <QDocs>
   {#snippet display()}
-    <div class="table-preview q-pa-md text-on-surface">
+    <div
+      class="table-preview full-width overflow-auto bg-surface-container-low q-pa-md text-on-surface"
+    >
       <p class="label-large text-on-surface-variant q-ma-none q-mb-md">
         ATLAS · SPECIMEN CATALOGUE
       </p>
@@ -118,7 +120,7 @@
         order, and a third time to clear sorting.
       {/snippet}
 
-      <div class="demo-panel q-pa-lg">
+      <div class="demo-panel min-width-0 bg-surface-container-low q-pa-lg">
         <div class="q-mb-lg">
           <h6>Atlas specimen catalogue</h6>
           <p class="body-small text-on-surface-variant q-ma-none q-mt-xs">
@@ -163,7 +165,7 @@
         Try sorting Class, Mass and Storage below.
       {/snippet}
 
-      <div class="demo-panel q-pa-lg">
+      <div class="demo-panel min-width-0 bg-surface-container-low q-pa-lg">
         <QTable
           columns={[
             { name: "specimen", label: "Specimen", field: "name", sortable: true },
@@ -224,7 +226,7 @@
         same table to compare their effects.
       {/snippet}
 
-      <div class="demo-panel q-pa-lg">
+      <div class="demo-panel min-width-0 bg-surface-container-low q-pa-lg">
         <fieldset class="appearance-controls flex q-gap-md q-mb-lg">
           <legend class="label-large q-mb-md">Table options</legend>
           <QSwitch bind:value={dense} label="Dense" />
@@ -252,7 +254,7 @@
         remain checked when filtering or changing pages.
       {/snippet}
 
-      <div class="demo-panel q-pa-lg">
+      <div class="demo-panel min-width-0 bg-surface-container-low q-pa-lg">
         <div class="flex justify-between items-center q-gap-md q-mb-lg">
           <h6>Browse the collection</h6>
           <QBtn
@@ -333,7 +335,7 @@
         > for application configuration.
       {/snippet}
 
-      <div class="demo-panel q-pa-lg">
+      <div class="demo-panel min-width-0 bg-surface-container-low q-pa-lg">
         <QLanguageExample>
           <QTable
             columns={COLUMNS}
@@ -352,17 +354,12 @@
   @use "$css/mixins";
 
   .table-preview {
-    width: 100%;
     max-width: 560px;
     max-height: 100%;
-    overflow: auto;
-    background: var(--surface-container-low);
     border-radius: 16px;
   }
 
   .demo-panel {
-    min-width: 0;
-    background: var(--surface-container-low);
     border-radius: 16px;
   }
 

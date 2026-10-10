@@ -286,6 +286,10 @@
 
   const QUAFF_UTILS: Item[] = [
     {
+      name: "CSS Helpers",
+      to: "/utils/css",
+    },
+    {
       name: "Asset Optimization",
       to: "/utils/assets",
     },

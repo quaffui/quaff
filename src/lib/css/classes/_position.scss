@@ -1,7 +1,51 @@
-.absolute-full {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
+.relative-position {
+  position: relative;
+}
+
+@each $position in absolute, fixed {
+  .#{$position} {
+    &,
+    &-full,
+    &-center,
+    &-top,
+    &-right,
+    &-bottom,
+    &-left,
+    &-top-left,
+    &-top-right,
+    &-bottom-left,
+    &-bottom-right {
+      position: $position;
+    }
+
+    &-full {
+      inset: 0;
+    }
+
+    &-center {
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    @each $placement,
+      $edges
+        in (
+          top: top left right,
+          right: top right bottom,
+          bottom: right bottom left,
+          left: top bottom left,
+          top-left: top left,
+          top-right: top right,
+          bottom-left: bottom left,
+          bottom-right: bottom right
+        )
+    {
+      &-#{$placement} {
+        @each $edge in $edges {
+          #{$edge}: 0;
+        }
+      }
+    }
+  }
 }

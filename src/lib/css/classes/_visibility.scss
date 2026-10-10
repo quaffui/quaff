@@ -1,0 +1,81 @@
+@use "sass:list";
+@use "sass:map";
+@use "../variables";
+
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ellipsis-2-lines,
+.ellipsis-3-lines {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+}
+
+@each $lines in 2, 3 {
+  .ellipsis-#{$lines}-lines {
+    -webkit-line-clamp: $lines;
+  }
+}
+
+.hidden {
+  display: none;
+}
+
+.invisible {
+  visibility: hidden;
+}
+
+$BREAKPOINT_NAMES: map.keys(variables.$breakpoints);
+
+@each $breakpoint, $min-width in variables.$breakpoints {
+  $index: list.index($BREAKPOINT_NAMES, $breakpoint);
+  $range: "(width >= #{$min-width})";
+
+  @if $index < list.length($BREAKPOINT_NAMES) {
+    $next-breakpoint: list.nth($BREAKPOINT_NAMES, $index + 1);
+    $max-width: map.get(variables.$breakpoints, $next-breakpoint);
+    $range: "#{$range} and (width < #{$max-width})";
+  }
+
+  @media #{$range} {
+    .#{$breakpoint}-hide {
+      display: none;
+    }
+
+    @each $name, $width in variables.$breakpoints {
+      @if $name != $breakpoint {
+        .#{$name} {
+          display: none;
+        }
+      }
+
+      @if $width > 0 and $width <= $min-width {
+        .lt-#{$name} {
+          display: none;
+        }
+      }
+
+      @if $name != list.nth($BREAKPOINT_NAMES, -1) and $width >= $min-width {
+        .gt-#{$name} {
+          display: none;
+        }
+      }
+    }
+  }
+}
+
+@media screen {
+  .print-only {
+    display: none;
+  }
+}
+
+@media print {
+  .print-hide {
+    display: none;
+  }
+}

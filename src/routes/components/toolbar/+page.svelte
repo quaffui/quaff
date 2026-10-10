@@ -120,8 +120,8 @@
         toolbar to receive its button styling.
       {/snippet}
 
-      <div class="q-toolbar-docs__viewer no-overflow">
-        <div class="q-toolbar-docs__photo no-overflow">
+      <div class="q-toolbar-docs__viewer overflow-hidden">
+        <div class="q-toolbar-docs__photo overflow-hidden">
           <img
             src="/cocktail.jpg"
             alt="Colorful fruit cocktail"
