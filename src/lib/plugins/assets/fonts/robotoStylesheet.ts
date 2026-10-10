@@ -76,7 +76,8 @@ async function createRobotoFontFace(assets: FontAssetStore, options: RobotoFontF
     const name = `roboto-${options.subset}-${options.weight}-normal.${format}`;
     const bytes = await assets.readAsset(`@fontsource/roboto/files/${name}`);
     const url = await assets.writeAsset(name, bytes);
-    sources.push(`url("${url}") format("${format}")`);
+    // Keep Unicode subsets separate so unused characters don't enlarge blocking CSS.
+    sources.push(`url("${url}?no-inline") format("${format}")`);
   }
 
   return `@font-face{font-family:"Roboto";font-style:normal;font-weight:${options.weight};font-display:${options.display};src:${sources.join(",")};unicode-range:${options.unicodeRange};}`;
