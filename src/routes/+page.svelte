@@ -27,6 +27,9 @@
       class="page-home__logo"
       src="/logo.svg"
       alt="Quaff logo, a cocktail with a slice of orange"
+      width="252"
+      height="252"
+      fetchpriority="high"
     />
   </div>
   <h1 class="page-home__teaser">Quaff is a UI Component Framework built on top of SvelteKit.</h1>
@@ -63,7 +66,8 @@
     }
 
     &__logo {
-      max-width: 252px;
+      max-width: 100%;
+      height: auto;
       margin: 0 auto;
       margin-top: 10%;
       margin-bottom: 28px;
