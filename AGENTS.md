@@ -25,6 +25,7 @@
 - Keep typography relative and design geometry stable. Read [Sizing and text scaling](docs/development/sizing.md) before changing component sizing; it defines the unit policy, official M3 sources, and checks to preserve text scaling.
 - Use `SCREAMING_SNAKE_CASE` for immutable constants, including fixed values, patterns and lookup tables. Keep runtime-derived locals and mutable state in `camelCase`; a `const` binding alone does not make an object immutable.
 - Quaff is Svelte 5 only. Use runes-style component code (`$props`, `$state`, `$derived`, snippets) and avoid adding legacy Svelte 4 patterns.
+- Avoid observers whenever possible. When observation is necessary, prefer Svelte's built-in bindings and reactive utilities over custom observers.
 - Use `bun run check` and `bun run build` for full validation. `bun run format` currently also sees untracked local files, so verify the worktree before trusting a format failure.
 - Component API `docs.ts` files are generated and ignored by Git. Edit descriptions in Svelte `@component` comments and props in `props.ts`; run `bun run docgen-props` to regenerate descriptions, inherited defaults, snippets, and methods.
 - Use `q-docs-link` for docs prose hyperlinks so they share theme color, underline, and keyboard focus styles. Keep component and demo navigation links on their own styles.
