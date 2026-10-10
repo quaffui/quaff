@@ -1,5 +1,6 @@
 import { Variant } from "@quaffui/material-color-utilities";
 import { untrack } from "svelte";
+import { DEFAULT_THEME_COLORS, DEFAULT_THEME_SOURCE_COLOR } from "$internal/defaultTheme";
 import { convertCase, generateColors, type HexValue, type Mode, type QuaffColors } from "$utils";
 
 type ThemeColor = keyof QuaffColors;
@@ -76,8 +77,8 @@ function prepareThemeColors(from: string, variant: ThemeVariant = "vibrant", con
 }
 
 class QTheme {
-  themeColors = $state({} as ThemeColors);
-  srcColor = $state("#0039b4");
+  themeColors = $state<ThemeColors>({ ...DEFAULT_THEME_COLORS });
+  srcColor = $state<string>(DEFAULT_THEME_SOURCE_COLOR);
   variant = $state<ThemeVariant>("vibrant");
   contrastLevel = $state<number>(0);
 
@@ -92,10 +93,6 @@ class QTheme {
 
     return this.contrastLevel;
   });
-
-  constructor() {
-    this.themeColors = prepareThemeColors(this.srcColor, this.variant, this.normalizeContrastLevel);
-  }
 
   private apply(colors: Partial<ThemeColors> = this.themeColors) {
     const root = document.documentElement;
