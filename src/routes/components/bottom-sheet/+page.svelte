@@ -152,9 +152,7 @@
           container, then drag or select its handle to expand or collapse it.
         {/snippet}
 
-        <div
-          class="q-bottom-sheet-example relative-position full-width overflow-hidden surface-container-low"
-        >
+        <div class="q-bottom-sheet-example relative-position full-width overflow-hidden surface">
           <div class="q-pa-md">
             <QCard fill="tertiary" class="q-mb-md flex items-center q-gap-md">
               <QAvatar size="lg" class="tertiary" aria-hidden="true">
