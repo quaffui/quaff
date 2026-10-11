@@ -93,8 +93,8 @@ Quaff.init({ language: frFR });`}
 
         <QCodeBlock language="ts" code={"Quaff.init({ rtl: true });"} />
         <p>
-          See <a href={resolve("/utils/rtl", {})}>Right-to-left layouts</a> for setup, local overrides,
-          and live examples.
+          See <a href={resolve("/utils/rtl")}>Right-to-left layouts</a> for setup, local overrides, and
+          live examples.
         </p>
       </QDocsSection>
 
@@ -183,7 +183,7 @@ const expanded = $derived(!Quaff.screen.lt.md); // md or wider: at least 840px`}
           no <code>Quaff.init()</code>. Derive it from a measured width with <code>$derived</code>.
           A valid width, including <code>0</code>, makes
           <code>ready</code> true; undefined or invalid widths leave it false. See
-          <a class="q-docs-link" href={resolve("/layout/adaptive", {})}>adaptive layouts</a>
+          <a class="q-docs-link" href={resolve("/layout/adaptive")}>adaptive layouts</a>
           for container sizing, navigation, and list/detail examples.
         </p>
       </QDocsSection>

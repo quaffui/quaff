@@ -98,7 +98,7 @@
         one without wrapping. Combine <code>flex column</code> for a wrapping column. Add
         <code>no-wrap</code> to prevent wrapping, <code>inline</code> for inline flex, or
         <code>reverse</code> to reverse direction. <code>row</code> remains a
-        <a class="q-docs-link" href={resolve("/layout/grid", {})}>12-column CSS grid</a>.
+        <a class="q-docs-link" href={resolve("/layout/grid")}>12-column CSS grid</a>.
       </p>
       <QCodeBlock
         language="html"
@@ -160,10 +160,10 @@
       <p>
         Surface roles include <code>surface-dim</code>, <code>surface-bright</code>, and
         <code>surface-container</code>, with <code>-lowest/-low/-high/-highest</code> variants. See
-        <a class="q-docs-link" href={resolve("/colors", {})}>colors</a>
+        <a class="q-docs-link" href={resolve("/colors")}>colors</a>
         and
-        <a class="q-docs-link" href={resolve("/utils/typography", {})}>typography</a> for palettes and
-        text styles.
+        <a class="q-docs-link" href={resolve("/utils/typography")}>typography</a> for palettes and text
+        styles.
       </p>
     </QDocsSection>
 
@@ -173,7 +173,7 @@
           Use <code>xs/sm/md/lg/xl</code> to show content at one size, or
           <code>xs-hide/sm-hide/md-hide/lg-hide/xl-hide</code> to hide it there.
           <code>lt-md</code> shows below medium; <code>gt-sm</code> shows above small. All use
-          Quaff's <a class="q-docs-link" href={resolve("/layout/grid", {})}>M3 breakpoints</a>.
+          Quaff's <a class="q-docs-link" href={resolve("/layout/grid")}>M3 breakpoints</a>.
           <code>print-only</code>
           and <code>print-hide</code> control print visibility.
         </p>
@@ -187,7 +187,7 @@
     </QDocsSection>
     <p>
       Using CSS pruning? Keep runtime-built names in your
-      <a class="q-docs-link" href={resolve("/utils/assets", {})}>CSS safelist</a>.
+      <a class="q-docs-link" href={resolve("/utils/assets")}>CSS safelist</a>.
     </p>
   {/snippet}
 </QDocs>

@@ -740,14 +740,13 @@
         <p>
           These examples use buttons to switch local views. For app navigation, pass <code>to</code>
           or <code>href</code> to
-          <a class="q-docs-link" href={resolve("/components/nav-item", {})}>QNavItem</a>
+          <a class="q-docs-link" href={resolve("/components/nav-item")}>QNavItem</a>
           so destinations remain real links. Use <code>badgeAriaLabel</code> to explain counts or unread
           dots. Modal rails contain focus while expanded and restore it when collapsed.
         </p>
         <p>
-          For more layout combinations, see <a
-            class="q-docs-link"
-            href={resolve("/layout/pages", {})}>QLayout</a
+          For more layout combinations, see <a class="q-docs-link" href={resolve("/layout/pages")}
+            >QLayout</a
           >. Expansion follows the reduced-motion preference automatically.
         </p>
       </QDocsSection>

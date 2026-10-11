@@ -1,4 +1,4 @@
-import { Borderable } from "$utils";
+import type { Borderable } from "$utils";
 import type { Snippet } from "svelte";
 import type { HTMLAttributes } from "svelte/elements";
 

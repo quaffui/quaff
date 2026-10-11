@@ -5,7 +5,17 @@ on:
     types: [opened, synchronize]
 
 jobs:
+  rust-audit:
+    permissions:
+      contents: read
+    uses: ./.github/workflows/rust-audit.yml
+    with:
+      repository: ${{ github.event.pull_request.head.repo.full_name }}
+      ref: ${{ github.event.pull_request.head.sha }}
+      report-name: rustsec-e2e
+
   generated-project-e2e-with-local-quaff:
+    needs: rust-audit
     uses: quaffui/quaff-shared/.github/workflows/generated-project-e2e.yml@main
     with:
       package-under-test: quaff

@@ -10,4 +10,6 @@ The small TypeScript adapter connects Rust to Vite's import resolver and Prettie
 
 The first run builds an optimized Rust executable; later runs reuse it. Component changes do not require rebuilding Rust. Changes to generator sources, dependencies or formatting configuration invalidate the documentation cache.
 
+CI audits all locked crates.io dependencies with `cargo-audit` before compilation. Vulnerabilities, informational advisories and audit failures block the build. Each run fetches the current RustSec commit and saves its archive hash, the lockfile hash and findings.
+
 Keep generator logic independent of specific Quaff component props. Follow [AGENTS.md](../../AGENTS.md), preserve generated metadata and cache behavior, and compare cold, cached and incremental runs when changing this pipeline.

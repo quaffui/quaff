@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { base, resolve } from "$app/paths";
+  import { asset, resolve } from "$app/paths";
   import { QBtnDocs } from "$components/button/docs";
   import type { QBtnProps } from "$components/button/props";
   import { QDocs, QDocsSection } from "$docs";
@@ -26,7 +26,7 @@
   ];
   const ICONS = {
     symbol: "article",
-    image: `img:${base}/logo.svg`,
+    image: `img:${asset("logo.svg")}`,
     snippet: bookmarkIcon,
     none: undefined,
   } satisfies Record<string, QBtnProps["icon"]>;
@@ -314,7 +314,7 @@
           <code>to</code> or <code>href</code> renders an anchor; <code>target</code> and
           <code>replace</code> control navigation. Use <code>tag</code> only when you need a custom
           element and can preserve its semantics. For dedicated icon-only controls, see
-          <a class="q-docs-link" href={resolve("/components/button-icon", {})}>QIconBtn</a>.
+          <a class="q-docs-link" href={resolve("/components/button-icon")}>QIconBtn</a>.
         </p>
       </QDocsSection>
     </div>

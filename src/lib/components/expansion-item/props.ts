@@ -1,7 +1,7 @@
-import { MaterialSymbol } from "material-symbols";
-import { Snippet } from "svelte";
-import { HTMLAttributes, KeyboardEventHandler, MouseEventHandler } from "svelte/elements";
-import { Disableable, Labelable, Linkable, OptionalModel } from "$utils";
+import type { Disableable, Labelable, Linkable, OptionalModel } from "$utils";
+import type { MaterialSymbol } from "material-symbols";
+import type { Snippet } from "svelte";
+import type { HTMLAttributes, KeyboardEventHandler, MouseEventHandler } from "svelte/elements";
 
 export interface QExpansionItemProps
   extends OptionalModel<boolean>, Labelable, Linkable, Disableable, HTMLAttributes<HTMLDivElement> {

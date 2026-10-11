@@ -57,7 +57,7 @@ Quaff.screen.navigation; // "navbar" below 600px, otherwise "railbar"
 Quaff.screen.twoPane;    // true from 840px`}
   />
   <p>
-    <a class="q-docs-link" href={resolve("/utils/quaff", {})}
+    <a class="q-docs-link" href={resolve("/utils/quaff")}
       ><code class="q-docs-code">Quaff.screen</code></a
     >
     provides reactive, read-only viewport dimensions and size flags. Its
@@ -77,7 +77,7 @@ Quaff.screen.twoPane;    // true from 840px`}
   <h2>Navigation</h2>
   <p>
     Share destinations between a bottom bar on compact windows and a rail on larger windows. Render
-    each in its <a class="q-docs-link" href={resolve("/components/layout", {})}>QLayout</a>
+    each in its <a class="q-docs-link" href={resolve("/components/layout")}>QLayout</a>
     slot.
   </p>
   <QCodeBlock
@@ -157,7 +157,7 @@ const screen = $derived(Quaff.getScreen(width));`}
     media queries always follow the viewport, not this container.
   </p>
   <p>
-    See the <a class="q-docs-link" href={resolve("/layout/grid", {})}>grid utilities</a> and
+    See the <a class="q-docs-link" href={resolve("/layout/grid")}>grid utilities</a> and
     <a class="q-docs-link" href="https://m3.material.io/foundations/layout/breakpoints/overview"
       >MD3 breakpoint guidance</a
     >.

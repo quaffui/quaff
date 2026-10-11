@@ -1,5 +1,5 @@
 import type { QInputProps } from "$components/input/props";
-import { Disableable, OptionalModel } from "$utils";
+import type { Disableable, OptionalModel } from "$utils";
 
 export type QTimeValue = string | null;
 export type QTimeDisplayMode = "dial" | "input";

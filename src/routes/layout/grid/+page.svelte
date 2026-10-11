@@ -20,7 +20,7 @@
     Quaff provides a responsive 12-column CSS grid. Use <code class="q-docs-code">row</code> for the
     container and <code class="q-docs-code">col-*</code> for its children. For flex layouts,
     alignment, sizing, and spacing, see
-    <a class="q-docs-link" href={resolve("/utils/css", {})}>CSS helpers</a>.
+    <a class="q-docs-link" href={resolve("/utils/css")}>CSS helpers</a>.
   </p>
 
   <div class="row">
@@ -80,8 +80,8 @@
     Grid classes use the MD3 window sizes below, matching <code class="q-docs-code"
       >Quaff.screen</code
     >. See
-    <a class="q-docs-link" href={resolve("/layout/adaptive", {})}>adaptive layouts</a> for navigation
-    and list/detail examples.
+    <a class="q-docs-link" href={resolve("/layout/adaptive")}>adaptive layouts</a> for navigation and
+    list/detail examples.
   </p>
 
   <ul class="q-ml-lg">

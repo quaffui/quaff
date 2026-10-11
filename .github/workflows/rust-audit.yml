@@ -1,0 +1,79 @@
+name: Audit Rust Dependencies
+
+on:
+  workflow_call:
+    inputs:
+      repository:
+        type: string
+        default: ${{ github.repository }}
+      ref:
+        type: string
+        default: ${{ github.sha }}
+      report-name:
+        type: string
+        required: true
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          repository: ${{ inputs.repository }}
+          ref: ${{ inputs.ref }}
+          persist-credentials: false
+
+      - name: Install cargo-audit
+        env:
+          AUDIT_VERSION: 0.22.2
+          AUDIT_SHA256: ab28a1bdb54db4d5d8ad5981cf1f959410370b3d28250dbd35f6a44248620e39
+        run: |
+          auditArchive="cargo-audit-x86_64-unknown-linux-gnu-v$AUDIT_VERSION"
+          curl --fail --silent --show-error --location --proto '=https' --proto-redir '=https' \
+            --max-time 60 --max-filesize 16777216 \
+            "https://github.com/rustsec/rustsec/releases/download/cargo-audit/v$AUDIT_VERSION/$auditArchive.tgz" \
+            --output "$RUNNER_TEMP/cargo-audit.tgz"
+          printf '%s  %s\n' "$AUDIT_SHA256" "$RUNNER_TEMP/cargo-audit.tgz" | sha256sum --check
+          tar -xzf "$RUNNER_TEMP/cargo-audit.tgz" -C "$RUNNER_TEMP"
+          printf '%s\n' "$RUNNER_TEMP/$auditArchive" >> "$GITHUB_PATH"
+
+      - name: Audit locked Rust dependencies
+        run: |
+          auditWorkDirectory="$RUNNER_TEMP/rustsec"
+          auditReportDirectory="$RUNNER_TEMP/rustsec-report"
+          mkdir -p "$auditWorkDirectory/database" "$auditReportDirectory"
+          cp docgen/Cargo.lock "$auditWorkDirectory/Cargo.lock"
+
+          curl --fail --silent --show-error --proto '=https' --max-time 30 --max-filesize 1048576 \
+            https://api.github.com/repos/RustSec/advisory-db/commits/HEAD \
+            --output "$auditWorkDirectory/commit.json"
+          databaseCommit=$(jq -er '.sha | select(test("^[0-9a-f]{40}$"))' "$auditWorkDirectory/commit.json")
+          printf '%s\n' "$databaseCommit" > "$auditReportDirectory/database-commit.txt"
+
+          curl --fail --silent --show-error --proto '=https' --max-time 60 --max-filesize 16777216 \
+            "https://codeload.github.com/RustSec/advisory-db/tar.gz/$databaseCommit" \
+            --output "$auditWorkDirectory/database.tar.gz"
+          sha256sum "$auditWorkDirectory/database.tar.gz" "$auditWorkDirectory/Cargo.lock" \
+            > "$auditReportDirectory/hashes.txt"
+          timeout 30s tar -xzf "$auditWorkDirectory/database.tar.gz" \
+            --strip-components=1 -C "$auditWorkDirectory/database"
+
+          cd "$auditWorkDirectory"
+          CARGO_HOME="$auditWorkDirectory/cargo-home" timeout 30s cargo-audit audit \
+            --file Cargo.lock --db database --no-fetch --no-yanked --deny warnings --json \
+            > "$auditReportDirectory/findings.json"
+          # cargo-audit reports notices but does not reject them with --deny warnings.
+          jq -e '.vulnerabilities.found == false and ([.warnings[][]] | length == 0)' \
+            "$auditReportDirectory/findings.json"
+
+      - name: Save RustSec audit evidence
+        if: always()
+        uses: actions/upload-artifact@v7.0.2
+        with:
+          name: ${{ inputs.report-name }}
+          path: ${{ runner.temp }}/rustsec-report/
+          if-no-files-found: warn

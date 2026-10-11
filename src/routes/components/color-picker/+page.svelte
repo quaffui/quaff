@@ -195,7 +195,7 @@
       <QDocsSection title="Localization" noCode>
         {#snippet sectionDescription()}
           Picker labels, actions, and validation messages follow Quaff's language. Switch languages
-          below, or see <a class="q-docs-link" href={resolve("/utils/quaff#language", {})}
+          below, or see <a class="q-docs-link" href={resolve("/utils/quaff#language")}
             >language configuration and available locales</a
           >. In right-to-left layouts, the surrounding interface follows the document direction; the
           color field and its numeric axes stay left-to-right.

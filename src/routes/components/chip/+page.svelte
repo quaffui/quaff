@@ -1,6 +1,6 @@
 <script lang="ts">
   import { tick } from "svelte";
-  import { base } from "$app/paths";
+  import { asset } from "$app/paths";
   import { QChipDocs } from "$components/chip/docs";
   import { QDocs, QDocsSection } from "$docs";
   import { docsCtx } from "$docs/QDocs.svelte";
@@ -414,7 +414,7 @@
             <QChip
               id="seed-swap-partner"
               kind="input"
-              icon={`img:${base}/docs/seed-exchange-emblem.svg`}
+              icon={`img:${asset("docs/seed-exchange-emblem.svg")}`}
               label={hostLabel}
               bind:value={host}
               trailingIcon="close"

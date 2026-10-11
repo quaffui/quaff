@@ -1,5 +1,5 @@
-import { CssValue } from "../base";
-import { QSize } from "../quaff";
+import type { CssValue } from "../base";
+import type { QSize } from "../quaff";
 
 /**
  * Gives components support for the size property, allowing predefined sizes to be chosen.

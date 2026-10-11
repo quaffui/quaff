@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { base } from "$app/paths";
+  import { asset } from "$app/paths";
   import { QIconDocs } from "$components/icon/docs";
   import type { QIconSizeOptions, QIconTypeOptions } from "$components/icon/props";
   import { QDocs, QDocsSection } from "$docs";
@@ -181,7 +181,7 @@
       <div class="source-list bg-surface-container-low q-py-sm q-px-lg">
         <div class="source-row flex no-wrap items-center no-border-radius q-gap-lg q-py-lg">
           <QIcon
-            img={`${base}/docs/observatory-patch.svg`}
+            img={asset("docs/observatory-patch.svg")}
             size={56}
             imgAttributes={{ alt: "Night Atlas observatory emblem", width: 56, height: 56 }}
           />

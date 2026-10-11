@@ -331,7 +331,7 @@
         Choose a language to translate pagination, sorting labels and announcements. Column headings
         and specimen names remain your content. The language chooser is scoped to this example; see <a
           class="q-docs-link"
-          href={resolve("/utils/quaff#language", {})}>language setup</a
+          href={resolve("/utils/quaff#language")}>language setup</a
         > for application configuration.
       {/snippet}
 

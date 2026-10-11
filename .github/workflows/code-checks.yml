@@ -5,7 +5,15 @@ on:
     types: [opened, synchronize]
 
 jobs:
+  rust-audit:
+    permissions:
+      contents: read
+    uses: ./.github/workflows/rust-audit.yml
+    with:
+      report-name: rustsec-checks
+
   run-checks:
+    needs: rust-audit
     runs-on: ubuntu-latest
 
     steps:
@@ -13,9 +21,9 @@ jobs:
 
       - uses: oven-sh/setup-bun@v2.2.0
         with:
-          bun-version: 1.4.2
+          bun-version: 1.4.3
 
-      - uses: dtolnay/rust-toolchain@1.95.0
+      - uses: dtolnay/rust-toolchain@1.99.0
         with:
           components: clippy, rustfmt
 

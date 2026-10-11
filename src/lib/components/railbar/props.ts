@@ -1,4 +1,4 @@
-import { Borderable } from "$utils";
+import type { Borderable } from "$utils";
 import type { HTMLAttributes } from "svelte/elements";
 
 export interface QRailbarProps extends Borderable, HTMLAttributes<HTMLElement> {

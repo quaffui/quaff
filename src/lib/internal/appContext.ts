@@ -1,5 +1,5 @@
 import { getAllContexts, onDestroy } from "svelte";
-import { browser } from "$app/environment";
+import { BROWSER as browser } from "esm-env";
 
 let appContext: Map<unknown, unknown> | undefined;
 

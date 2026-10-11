@@ -433,7 +433,7 @@
         <p>
           Keep <code>selection</code> off a list of expansion items: these are disclosures, not
           listbox options. See
-          <a class="q-docs-link" href={resolve("/components/list", {})}>QList</a>
+          <a class="q-docs-link" href={resolve("/components/list")}>QList</a>
           for keyboard and layout options.
         </p>
       </QDocsSection>

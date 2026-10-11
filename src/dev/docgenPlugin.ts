@@ -105,12 +105,12 @@ function docgenPlugin(): Plugin {
 
   return {
     name: "docgen-plugin",
-    async configResolved(config) {
-      if (config.command !== "serve" || config.mode === "test") {
+    async configureServer(server) {
+      if (server.config.mode === "test") {
         return;
       }
 
-      await runDocgen(config.logger);
+      await runDocgen(server.config.logger);
     },
 
     async hotUpdate({ file, server, type }: HotUpdateOptions) {

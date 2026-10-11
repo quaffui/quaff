@@ -7,7 +7,7 @@ Menus show contextual actions or popup content beside a trigger. Adjust their po
   import { onMount, tick, untrack } from "svelte";
   import { on } from "svelte/events";
   import { innerHeight, innerWidth } from "svelte/reactivity/window";
-  import { browser } from "$app/environment";
+  import { BROWSER as browser } from "esm-env";
   import { useQuaffConfig } from "$internal/quaffConfig.svelte";
   import { menuCtx } from "$internal/menuContext";
   import { syncOverlayDirection } from "$internal/overlayDirection";

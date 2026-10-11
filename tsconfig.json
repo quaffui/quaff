@@ -1,5 +1,5 @@
 {
-  "extends": "./.svelte-kit/tsconfig.json",
+  "extends": "$app/tsconfig",
   "compilerOptions": {
     "allowJs": true,
     "checkJs": true,
@@ -12,15 +12,8 @@
     "sourceMap": true,
     "strict": true,
     "moduleResolution": "bundler",
-    "preserveValueImports": false,
-    "verbatimModuleSyntax": false
+    "verbatimModuleSyntax": true
   },
   "exclude": ["./dist/**/*", "./plugins/dist/**/*"],
-  "include": [
-    "./.svelte-kit/ambient.d.ts",
-    "./docgen/**/*",
-    "./scripts/**/*",
-    "./src/**/*",
-    "./plugins/**/*"
-  ]
+  "include": ["./docgen/**/*", "./scripts/**/*", "./src/**/*", "./plugins/**/*"]
 }

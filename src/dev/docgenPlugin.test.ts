@@ -1,9 +1,10 @@
 import path from "path";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
+import { resolveConfig } from "vite";
 import runDocgen from "../../docgen/run.js";
 import updateAllSnippets from "../../docgen/snippets/updateAllSnippets.js";
 import docgenPlugin from "./docgenPlugin.js";
-import type { HotUpdateOptions, ResolvedConfig } from "vite";
+import type { HotUpdateOptions, ViteDevServer } from "vite";
 
 vi.mock("../../docgen/run.js", () => ({ default: vi.fn() }));
 vi.mock("../../docgen/snippets/getSnippetPagePaths.js", () => ({ default: vi.fn(async () => []) }));
@@ -120,24 +121,31 @@ it("preserves edits queued as a generation finishes and delegates Vite resolutio
   expect(logger.error).not.toHaveBeenCalled();
 });
 
-it("keeps startup generation and snippets limited to a development server", async () => {
+it("does not generate docs when packaging resolves development configuration", async () => {
+  vi.useRealTimers();
+  vi.mocked(runDocgen).mockResolvedValue(undefined);
+  await resolveConfig({ configFile: false, plugins: [docgenPlugin()] }, "serve");
+  expect(runDocgen).not.toHaveBeenCalled();
+  expect(updateAllSnippets).not.toHaveBeenCalled();
+});
+
+it("generates docs and snippets when a development server starts", async () => {
   const { plugin, runs, logger } = createHarness();
-  const hook = plugin.configResolved;
+  const hook = plugin.configureServer;
 
   if (typeof hook !== "function") {
-    throw new Error("Expected the config resolved hook");
+    throw new Error("Expected the configure server hook");
   }
 
-  const configure = (command: ResolvedConfig["command"], mode: string) =>
+  const configure = (mode: string) =>
     hook.call(
       {} as ThisParameterType<typeof hook>,
-      { command, mode, logger } as unknown as ResolvedConfig
+      { config: { mode, logger } } as unknown as ViteDevServer
     );
 
-  await configure("build", "production");
-  await configure("serve", "test");
+  await configure("test");
   expect(runs).toHaveLength(0);
-  const start = configure("serve", "development");
+  const start = configure("development");
   await vi.advanceTimersByTimeAsync(75);
   expect(runs).toHaveLength(1);
   expect(updateAllSnippets).toHaveBeenCalledOnce();
