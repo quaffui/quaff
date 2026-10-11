@@ -53,8 +53,7 @@
           bind:value
           itemLabel={(item) => item.title}
           onselect={(item) => (selected = item.title)}
-          aria-label="Browse drink photos"
-        >
+          aria-label="Browse drink photos">
           {#snippet children({ item })}
             <img class="carousel-image" src={item.src} alt="" />
           {/snippet}
@@ -86,8 +85,7 @@
           {items}
           variant="uncontained-multi-aspect"
           aspectRatio={(item) => item.ratio}
-          aria-label="Drink photos with different proportions"
-        >
+          aria-label="Drink photos with different proportions">
           {#snippet children({ item })}
             <img class="carousel-image" src={item.src} alt={item.title} />
           {/snippet}
@@ -106,8 +104,7 @@
           itemWidth={640}
           height="320px"
           style="max-width: 40rem;"
-          aria-label="Featured drink photos"
-        >
+          aria-label="Featured drink photos">
           {#snippet children({ item })}
             <img class="carousel-image" src={item.src} alt={item.title} />
           {/snippet}
@@ -127,8 +124,7 @@
           itemWidth={640}
           height="320px"
           style="max-width: 40rem;"
-          aria-label="Centered featured drink photos"
-        >
+          aria-label="Centered featured drink photos">
           {#snippet children({ item })}
             <img class="carousel-image" src={item.src} alt={item.title} />
           {/snippet}
@@ -148,8 +144,7 @@
             {items}
             variant="full-screen"
             height="448px"
-            aria-label="Full-screen drink photos"
-          >
+            aria-label="Full-screen drink photos">
             {#snippet children({ item })}
               <img class="carousel-image" src={item.src} alt={item.title} />
             {/snippet}

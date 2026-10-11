@@ -40,15 +40,13 @@
           <a
             class="q-docs-link"
             href="https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages#data-collection"
-            >GitHub Pages data collection</a
-          >
+            >GitHub Pages data collection</a>
         </li>
         <li>
           <a
             class="q-docs-link"
             href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement"
-            >GitHub general privacy statement</a
-          >
+            >GitHub general privacy statement</a>
         </li>
       </ul>
 

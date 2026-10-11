@@ -293,8 +293,7 @@ Expansion items reveal supporting content beneath a summary in a list. Group rel
     class="q-expansion-item__toggle-icon-glyph"
     name={toggleIcon}
     size={ctx.expressive ? "sm" : "md"}
-    aria-hidden="true"
-  />
+    aria-hidden="true" />
 {/snippet}
 
 {#snippet itemContent()}
@@ -310,8 +309,7 @@ Expansion items reveal supporting content beneath a summary in a list. Group rel
     {#if label || caption}
       <QItemSection
         headline={label ? labelSnippet : undefined}
-        line1={caption ? captionSnippet : undefined}
-      />
+        line1={caption ? captionSnippet : undefined} />
     {/if}
   {/if}
 {/snippet}
@@ -328,8 +326,7 @@ Expansion items reveal supporting content beneath a summary in a list. Group rel
   style:--q-expansion-panel-height="{contentHeight}px"
   ontransitionrun={handlePanelTransitionRun}
   ontransitionend={handlePanelTransitionEnd}
-  ontransitioncancel={handlePanelTransitionCancel}
->
+  ontransitioncancel={handlePanelTransitionCancel}>
   {#if hasSeparateToggle}
     <div class="q-expansion-item__header">
       <QItem
@@ -344,8 +341,7 @@ Expansion items reveal supporting content beneath a summary in a list. Group rel
         noSeparator
         role={hasLink ? "link" : "presentation"}
         onclick={handleHeaderClick}
-        onkeydown={handleHeaderKeydown}
-      >
+        onkeydown={handleHeaderKeydown}>
         {@render itemContent()}
       </QItem>
 
@@ -362,8 +358,7 @@ Expansion items reveal supporting content beneath a summary in a list. Group rel
         aria-expanded={value}
         aria-controls={contentId}
         onclick={handleToggleClick}
-        onkeydown={handleToggleKeydown}
-      />
+        onkeydown={handleToggleKeydown} />
     </div>
   {:else}
     <QItem
@@ -382,8 +377,7 @@ Expansion items reveal supporting content beneath a summary in a list. Group rel
       aria-expanded={value}
       aria-controls={contentId}
       onclick={handleHeaderClick}
-      onkeydown={handleHeaderKeydown}
-    >
+      onkeydown={handleHeaderKeydown}>
       {@render itemContent()}
 
       {#if !hideExpandIcon}
@@ -402,8 +396,7 @@ Expansion items reveal supporting content beneath a summary in a list. Group rel
         bind:this={contentEl}
         class="q-expansion-item__content"
         class:q-expansion-item__content--regular={!isDense}
-        class:q-expansion-item__content--expressive={ctx.expressive}
-      >
+        class:q-expansion-item__content--expressive={ctx.expressive}>
         {#if value || hasOpened}
           {@render children?.()}
         {/if}

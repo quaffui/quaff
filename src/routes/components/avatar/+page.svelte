@@ -75,19 +75,16 @@
 <QDocs>
   {#snippet display()}
     <div
-      class="station-preview full-width overflow-auto bg-surface-container-low text-on-surface text-center"
-    >
+      class="station-preview full-width overflow-auto bg-surface-container-low text-on-surface text-center">
       <QAvatar src={asset("avatar-research-vessel.svg")} size="80px" />
       <div class="label-medium q-mt-lg">TIDEPOOL FIELD STATION</div>
       <h2 class="title-large q-mt-xs q-mb-sm">A small crew. A big blue world.</h2>
       <div
         class="flex justify-center q-gap-sm q-mt-md"
-        aria-label="Three crew members on today's survey"
-      >
+        aria-label="Three crew members on today's survey">
         {#each CREW as member (member.id)}
           <QAvatar class={member.color} role="img" aria-label={member.name}
-            >{member.initials}</QAvatar
-          >
+            >{member.initials}</QAvatar>
         {/each}
       </div>
     </div>
@@ -102,8 +99,7 @@
         {/snippet}
         <section
           class="station-card full-width bg-surface-container-low q-pa-lg text-on-surface"
-          aria-label="Tidepool field station crew"
-        >
+          aria-label="Tidepool field station crew">
           <div class="flex no-wrap items-center q-gap-md text-primary">
             <QIcon name="waves" size="32px" aria-hidden="true" />
             <div>
@@ -117,11 +113,9 @@
                 type="button"
                 class="crew-choice flex column no-wrap items-center q-gap-sm text-on-surface"
                 aria-pressed={crewId === member.id}
-                onclick={() => (crewId = member.id)}
-              >
+                onclick={() => (crewId = member.id)}>
                 <QAvatar size="lg" class={member.color} aria-hidden="true"
-                  >{member.initials}</QAvatar
-                >
+                  >{member.initials}</QAvatar>
                 <span class="label-large">{member.name}</span>
               </button>
             {/each}
@@ -156,8 +150,7 @@
           </div>
           <div class="identity-card flex no-wrap items-center q-gap-md bg-surface-container-low">
             <QAvatar size="xl" class="secondary" aria-hidden="true"
-              ><QIcon name="science" size="28px" /></QAvatar
-            >
+              ><QIcon name="science" size="28px" /></QAvatar>
             <div>
               <h3 class="title-medium q-ma-none">Water lab</h3>
               <p class="body-medium q-mt-xs q-mb-none">Samples from the morning tide</p>
@@ -187,8 +180,7 @@
                 {size}
                 {shape}
                 src={showImage ? asset("avatar-research-vessel.svg") : undefined}
-                aria-hidden="true">RT</QAvatar
-              >
+                aria-hidden="true">RT</QAvatar>
               <div>
                 <h3 class="title-large q-ma-none">RV Tern</h3>
                 <p class="body-medium q-mt-xs q-mb-none">Survey boat · Berth 04</p>
@@ -215,8 +207,7 @@
             shape="top-left-round"
             sources={[{ src: asset("cocktail.mp4"), type: "video/mp4" }]}
             bind:paused
-            aria-hidden="true"
-          >
+            aria-hidden="true">
             {#snippet videoAccessibility()}
               <p>A citrus drink being prepared in the galley.</p>
             {/snippet}
@@ -232,8 +223,7 @@
             variant="tonal"
             icon={paused ? "play_arrow" : "pause"}
             label={paused ? "Play clip" : "Pause clip"}
-            onclick={() => (paused = !paused)}
-          />
+            onclick={() => (paused = !paused)} />
         </div>
       </QDocsSection>
 
@@ -250,8 +240,7 @@
             <QAvatar
               src={asset("avatar-research-vessel.svg")}
               size="lg"
-              alt="Illustration of a yellow research boat at sea"
-            />
+              alt="Illustration of a yellow research boat at sea" />
             <span class="body-medium">An image with its own description</span>
           </div>
           <div class="identity-card flex no-wrap items-center q-gap-md bg-surface-container-low">

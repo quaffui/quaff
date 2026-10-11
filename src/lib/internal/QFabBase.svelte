@@ -62,8 +62,7 @@
   variant="filled"
   aria-label={accessibleName}
   class="q-fab"
-  {@attach captureTrigger}
->
+  {@attach captureTrigger}>
   <span class="q-fab__label">{label}</span>
 </QBtn>
 

@@ -104,8 +104,7 @@
       d="M6 4h12v17l-6-4-6 4V4Z"
       stroke="currentColor"
       stroke-width="2"
-      stroke-linejoin="round"
-    />
+      stroke-linejoin="round" />
   </svg>
 {/snippet}
 
@@ -156,8 +155,7 @@
               outlined
               icon="bookmark"
               label="Save note"
-              bind:selected={standardSelected}
-            />
+              bind:selected={standardSelected} />
             <p class="feedback body-small text-on-surface-variant q-ma-none q-mt-lg" role="status">
               {standardSelected ? "Selected" : "Not selected"}
             </p>
@@ -169,8 +167,7 @@
               outlined
               icon="bookmark"
               label="Save note"
-              bind:selected={expressiveSelected}
-            />
+              bind:selected={expressiveSelected} />
             <p class="feedback body-small text-on-surface-variant q-ma-none q-mt-lg" role="status">
               {expressiveSelected ? "Selected" : "Not selected"}
             </p>
@@ -203,8 +200,7 @@
               icon={ICONS[iconMode]}
               noRipple={rippleMode === "none"}
               rippleColor={rippleMode === "tertiary" ? "tertiary" : undefined}
-              onclick={() => (previewClicks += 1)}>Read issue</QBtn
-            >
+              onclick={() => (previewClicks += 1)}>Read issue</QBtn>
             <p class="body-small q-ma-none text-on-surface-variant" role="status">
               Pressed {previewClicks} times
             </p>
@@ -212,16 +208,14 @@
           <div
             class="settings items-start q-gap-lg q-pa-lg"
             role="group"
-            aria-label="Playground settings"
-          >
+            aria-label="Playground settings">
             <QSelect outlined label="Variant" options={VARIANTS} bind:value={variant} />
             <QSelect outlined label="Size" options={SIZES} bind:value={size} emitValue />
             <QSelect
               outlined
               label="Icon source"
               options={Object.keys(ICONS)}
-              bind:value={iconMode}
-            />
+              bind:value={iconMode} />
             <QSelect
               outlined
               label="Text color"
@@ -229,21 +223,18 @@
               bind:value={color}
               emitValue
               disabled={hasContainerColor}
-              displayValue={hasContainerColor ? "Variant default" : undefined}
-            />
+              displayValue={hasContainerColor ? "Variant default" : undefined} />
             <QSelect
               outlined
               label="Ripple"
               options={["default", "tertiary", "none"]}
-              bind:value={rippleMode}
-            />
+              bind:value={rippleMode} />
             {#if expressive}
               <QSelect
                 outlined
                 label="Expressive shape"
                 options={["round", "squared"]}
-                bind:value={shape}
-              />
+                bind:value={shape} />
             {:else}
               <QSwitch label="Rectangular shape" bind:value={rectangle} />
             {/if}
@@ -276,8 +267,7 @@
               label="Publish note"
               loading={publishing}
               aria-busy={publishing}
-              onclick={publish}
-            />
+              onclick={publish} />
             <QBtn outlined icon="schedule" label="Schedule note" disabled />
           </div>
           <p class="feedback body-small text-on-surface-variant q-ma-none q-mt-lg" role="status">
@@ -299,8 +289,7 @@
             name="title"
             bind:value={title}
             required
-            maxlength={48}
-          />
+            maxlength={48} />
           <div class="flex items-center q-gap-md q-mt-md">
             <QBtn type="submit" filled label="Save title" disabled={!title.trim()} />
             <QBtn type="reset" outlined label="Reset" />

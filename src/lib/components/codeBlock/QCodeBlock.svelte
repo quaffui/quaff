@@ -110,8 +110,7 @@
       class="q-code-block__title-section q-pb-sm"
       class:items-center={title}
       class:justify-between={title}
-      class:justify-end={!title}
-    >
+      class:justify-end={!title}>
       {#if title}
         <h4 class="q-ma-none">{title}</h4>
       {/if}
@@ -121,8 +120,7 @@
         size="sm"
         icon="content_copy"
         variant="outlined"
-        onclick={copyCode}
-      >
+        onclick={copyCode}>
         {copyButton.content}
       </QBtn>
     </div>

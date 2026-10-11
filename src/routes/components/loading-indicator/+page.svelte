@@ -116,8 +116,7 @@
 <QDocs>
   {#snippet display()}
     <div
-      class="example-frame loading-preview column no-wrap items-center q-gap-md full-width overflow-auto surface q-pa-lg text-center"
-    >
+      class="example-frame loading-preview column no-wrap items-center q-gap-md full-width overflow-auto surface q-pa-lg text-center">
       <QLoadingIndicator contained size="72px" aria-label="Loading files preview" />
       <h2 class="title-large q-ma-none">Loading your files</h2>
       <p class="body-medium text-on-surface-variant q-ma-none">
@@ -145,16 +144,14 @@
           label="Indicator size"
           bind:value={indicatorSize}
           options={SIZES}
-          outlined
-        />
+          outlined />
         <QSelect
           class="col-12 col-sm-4 min-width-0"
           label="Indicator color"
           bind:value={indicatorColor}
           options={COLORS}
           emitValue
-          outlined
-        />
+          outlined />
         <QSelect
           class="col-12 col-sm-4 min-width-0"
           label="Container color"
@@ -162,23 +159,20 @@
           options={CONTAINERS}
           emitValue
           disabled={!contained}
-          outlined
-        />
+          outlined />
       </div>
       <QSwitch label="Contained indicator" bind:value={contained} class="q-mb-md" />
       <div class="example-frame full-width bg-surface-container-low q-pa-lg">
         <div class="indicator-window overflow-auto">
           <div
             class="indicator-stage flex no-wrap flex-center"
-            style:min-width={`${indicatorSize}px`}
-          >
+            style:min-width={`${indicatorSize}px`}>
             <QLoadingIndicator
               size={indicatorSize}
               {contained}
               color={indicatorColor === "auto" ? undefined : indicatorColor}
               {containerColor}
-              aria-label="Loading indicator style preview"
-            />
+              aria-label="Loading indicator style preview" />
           </div>
         </div>
         <p class="body-medium q-ma-none text-center">Loading files…</p>
@@ -198,8 +192,7 @@
             variant="outlined"
             icon={isRefreshing ? "close" : "refresh"}
             label={isRefreshing ? "Cancel refresh" : "Refresh files"}
-            onclick={() => (isRefreshing ? cancelRefresh() : refreshFiles())}
-          />
+            onclick={() => (isRefreshing ? cancelRefresh() : refreshFiles())} />
         </div>
         <div class="file-content q-my-lg" aria-busy={isRefreshing}>
           {#if isRefreshing}
@@ -239,21 +232,21 @@
           oninput={updateTitleStatus}
           disabled={isSaving}
           maxlength={80}
-          outlined
-        />
+          outlined />
         <div class="flex items-center q-gap-sm q-my-lg">
           <QBtn
             variant="tonal"
             disabled={isSaving || !canSave}
             aria-busy={isSaving}
-            onclick={saveTitle}
-          >
+            onclick={saveTitle}>
             <span class="flex no-wrap items-center q-gap-sm">
               {#if isSaving}<QLoadingIndicator
                   size="24px"
                   color="primary"
-                  aria-hidden="true"
-                />{:else}<QIcon name="save" size="24px" aria-hidden="true" />{/if}
+                  aria-hidden="true" />{:else}<QIcon
+                  name="save"
+                  size="24px"
+                  aria-hidden="true" />{/if}
               <span class="min-width-0">Save changes</span>
             </span>
           </QBtn>

@@ -50,8 +50,7 @@ Separators divide groups of content with a horizontal or vertical line. Adjust s
   class="q-separator__wrapper"
   data-quaff
   style:--q-separator-color={parsedColor}
-  style:--q-separator-size={qSize?.style}
->
+  style:--q-separator-size={qSize?.style}>
   {#if text}
     {#if (vertical && textAlign !== "top") || (!vertical && textAlign !== "left")}
       {@render hr()}

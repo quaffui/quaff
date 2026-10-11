@@ -54,16 +54,14 @@
       collapse={!params.has("static")}
       reveal={params.has("reveal")}
       revealOffset={32}
-      {bordered}
-    >
+      {bordered}>
       {#if params.has("logo")}
         <img
           id="logo"
           src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Crect width='24' height='24' fill='blue'/%3E%3C/svg%3E"
           alt="City guide"
           width="24"
-          height="24"
-        />
+          height="24" />
       {:else if !params.has("title-first")}
         <QBtn
           id="back"
@@ -71,14 +69,12 @@
           flat
           icon="arrow_back"
           aria-label="Back"
-          color={params.has("colored") ? "#123456" : undefined}
-        />
+          color={params.has("colored") ? "#123456" : undefined} />
       {/if}
       <QHeaderTitle
         id="title"
         subtitle={hasSubtitle ? "Weekend collection" : undefined}
-        align={params.has("center") ? "center" : undefined}
-      >
+        align={params.has("center") ? "center" : undefined}>
         {#if params.has("input")}
           <input id="query" aria-label="Search" />
         {:else}
@@ -104,8 +100,7 @@
       class="animated"
       style="height: 400px;"
       view={inset ? "lhr lpr lfr" : undefined}
-      footer={params.has("footer") ? statusBar : undefined}
-    >
+      footer={params.has("footer") ? statusBar : undefined}>
       {#snippet header()}
         {#if visible}
           {@render appBar()}
@@ -118,8 +113,7 @@
             expanded={railExpanded}
             bordered={params.has("border")}
             side={railOnEnd ? "end" : "start"}
-            style="transition-timing-function: linear;"
-          />
+            style="transition-timing-function: linear;" />
         {/if}
       {/snippet}
       <div id="content" style:height={params.has("short") ? "310px" : "1400px"}>City guide</div>
@@ -127,15 +121,13 @@
   {/if}
   <button id="toggle-header" onclick={() => (visible = !visible)}>Toggle header</button>
   <button id="change-variant" onclick={() => (changingVariant = NEXT_VARIANT[changingVariant])}
-    >Change variant</button
-  >
+    >Change variant</button>
   <button id="toggle-rail" onclick={() => (railExpanded = !railExpanded)}>Toggle rail</button>
   <button id="switch-rail-side" onclick={() => (railOnEnd = !railOnEnd)}>Switch rail side</button>
   <button id="toggle-inset" onclick={() => (insetOverride = !inset)}>Toggle full-width bars</button>
   <button id="toggle-border" onclick={() => (borderOverride = !bordered)}>Toggle border</button>
   <button id="toggle-subtitle" onclick={() => (subtitleOverride = !hasSubtitle)}
-    >Toggle subtitle</button
-  >
+    >Toggle subtitle</button>
   <output id="selected">{selected}</output>
 </main>
 

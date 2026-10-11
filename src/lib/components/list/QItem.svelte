@@ -173,8 +173,7 @@ The QItem component is generally used inside lists to display related pieces of 
     onkeydown={handleKeydown}
     ondragstart={handleDragstart}
     ondragend={handleDragend}
-    {@attach ripple({ disabled: !isClickable || noRipple })}
-  >
+    {@attach ripple({ disabled: !isClickable || noRipple })}>
     {@render children?.()}
   </a>
   <!-- eslint-enable svelte/no-navigation-without-resolve -->
@@ -195,8 +194,7 @@ The QItem component is generally used inside lists to display related pieces of 
     onkeydown={handleKeydown}
     ondragstart={handleDragstart}
     ondragend={handleDragend}
-    {@attach ripple({ disabled: !isClickable || noRipple })}
-  >
+    {@attach ripple({ disabled: !isClickable || noRipple })}>
     {@render children?.()}
   </svelte:element>
 {/if}

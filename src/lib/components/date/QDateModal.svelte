@@ -129,8 +129,7 @@
     outlined
     oninput={(event) => state.updateDraftInput(event.currentTarget.value, part)}
     onkeydown={(event) => handleDateInputKeydown(event, part)}
-    onblur={() => state.validateDraftInput(part)}
-  />
+    onblur={() => state.validateDraftInput(part)} />
 {/snippet}
 
 {#snippet modalCalendar()}
@@ -143,8 +142,7 @@
       aria-controls={yearSelectionId}
       aria-label={`${state.resolvedLabels.selectYear}, ${state.monthYearLabel}`}
       title={`${state.resolvedLabels.selectMonth} / ${state.resolvedLabels.selectYear}`}
-      onclick={toggleYearView}
-    >
+      onclick={toggleYearView}>
       {state.monthYearLabel}
       <QIcon class="q-date__dropdown-icon" name="arrow_drop_down" size={18} />
     </QBtn>
@@ -160,8 +158,7 @@
           type="button"
           aria-label={state.resolvedLabels.previousMonth}
           disabled={!state.canNavigatePrevious}
-          onclick={() => state.changeMonth(-1)}
-        />
+          onclick={() => state.changeMonth(-1)} />
         <QIconBtn
           class="q-date__navigation-arrow"
           icon="chevron_right"
@@ -171,8 +168,7 @@
           type="button"
           aria-label={state.resolvedLabels.nextMonth}
           disabled={!state.canNavigateNext}
-          onclick={() => state.changeMonth(1)}
-        />
+          onclick={() => state.changeMonth(1)} />
       </div>
     {/if}
   </div>
@@ -189,8 +185,7 @@
         transition:slide={{
           duration: state.pickerMotionDuration(300),
           axis: "y",
-        }}
-      >
+        }}>
         {#each state.selectableYears as year (year)}
           <button
             class="q-date__year"
@@ -200,8 +195,7 @@
             tabindex={year === state.focusedYear ? 0 : -1}
             data-year={year}
             onclick={() => chooseYear(year)}
-            onkeydown={(event) => handleYearKeydown(event, year)}
-          >
+            onkeydown={(event) => handleYearKeydown(event, year)}>
             {state.formatters.year(year)}
           </button>
         {/each}
@@ -221,8 +215,7 @@
         size="lg"
         type="button"
         aria-label={state.resolvedLabels.closePicker}
-        onclick={cancel}
-      />
+        onclick={cancel} />
       {#if state.showActions}
         <QBtn
           class="q-date__save"
@@ -230,8 +223,7 @@
           type="button"
           label={saveLabel}
           disabled={!state.canConfirm}
-          onclick={() => state.commitSelection()}
-        />
+          onclick={() => state.commitSelection()} />
       {/if}
     </div>
   {/if}
@@ -255,8 +247,7 @@
         aria-label={state.displayMode === "calendar"
           ? state.resolvedLabels.switchToInput
           : state.resolvedLabels.switchToCalendar}
-        onclick={toggleDisplayMode}
-      />
+        onclick={toggleDisplayMode} />
     {/if}
   </header>
 
@@ -273,8 +264,7 @@
         out:fly={{
           y: mode === "input" ? 48 : -48,
           duration: state.pickerMotionDuration(200),
-        }}
-      >
+        }}>
         {#if mode === "calendar"}
           {@render modalCalendar()}
         {:else}
@@ -312,8 +302,7 @@
         type="button"
         label={confirmLabel}
         disabled={!state.canConfirm}
-        onclick={() => state.commitSelection()}
-      />
+        onclick={() => state.commitSelection()} />
     </footer>
   {/if}
 </div>

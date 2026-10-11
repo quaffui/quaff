@@ -8,8 +8,7 @@
 <QTooltip
   {target}
   class="q-api-type-tooltip q-pa-none transparent"
-  style="max-width: calc(100vw - 16px)"
->
+  style="max-width: calc(100vw - 16px)">
   <QCodeBlock {code} language="typescript" />
 </QTooltip>
 

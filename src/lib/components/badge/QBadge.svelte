@@ -30,8 +30,7 @@ Badges highlight notifications, counts, or status beside related content. Displa
   {...props}
   class="q-badge"
   role={props.role ?? (props["aria-label"] || props["aria-labelledby"] ? "img" : undefined)}
-  data-quaff
->
+  data-quaff>
   {#if label !== undefined}
     {displayedLabel}
   {:else}

@@ -269,18 +269,15 @@
   onpointermove={handlePointermove}
   onpointerup={handlePointerup}
   onpointercancel={handlePointercancel}
-  onlostpointercapture={handlePointercancel}
->
+  onlostpointercapture={handlePointercancel}>
   <span
     class="q-time__track"
     aria-hidden="true"
-    style={`--angle: ${visualAngle}deg; --hand-length: ${handLength}px;`}
-  ></span>
+    style={`--angle: ${visualAngle}deg; --hand-length: ${handLength}px;`}></span>
   <span
     class="q-time__hand"
     aria-hidden="true"
-    style={`--angle: ${visualAngle}deg; --hand-length: ${handLength}px;`}
-  ></span>
+    style={`--angle: ${visualAngle}deg; --hand-length: ${handLength}px;`}></span>
   <span class="q-time__center" aria-hidden="true"></span>
 
   {#each options as option, optionIndex (`${option.part}-${optionIndex}`)}
@@ -304,8 +301,7 @@
         easing: sineInOut,
       }}
       onclick={(event) => handleOptionClick(event, option)}
-      onkeydown={(event) => handleOptionKeydown(event, optionIndex)}
-    >
+      onkeydown={(event) => handleOptionKeydown(event, optionIndex)}>
       {option.label}
     </button>
   {/each}

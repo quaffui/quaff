@@ -105,9 +105,7 @@
       d="M3 10 5 3h14l2 7M5 10v11h14V10M3 10h18M9 21v-7h6v7"
       stroke="currentColor"
       stroke-width="2"
-      stroke-linejoin="round"
-    /></svg
-  >
+      stroke-linejoin="round" /></svg>
 {/snippet}
 
 <QDocs>
@@ -128,8 +126,7 @@
               <QNavItem
                 icon={destination.icon}
                 active={previewDestination === destination.id}
-                onclick={() => (previewDestination = destination.id)}>{destination.label}</QNavItem
-              >
+                onclick={() => (previewDestination = destination.id)}>{destination.label}</QNavItem>
             {/each}
           </QNavbar>
         {/snippet}
@@ -149,23 +146,21 @@
           label="Active indicator color"
           options={["secondary-container", "primary-container", "tertiary-container"]}
           bind:value={activeColor}
-          outlined
-        /><QSelect
+          outlined /><QSelect
           label="Bar minimum height"
           options={HEIGHTS}
           bind:value={height}
           emitValue
-          outlined
-        /><QSwitch label="Horizontal items" bind:value={horizontal} /><QSwitch
+          outlined /><QSwitch label="Horizontal items" bind:value={horizontal} /><QSwitch
           label="Top border"
-          bind:value={bordered}
-        /><QSwitch label="Custom stall icon" bind:value={shouldUseCustomIcon} /><QBtn
+          bind:value={bordered} /><QSwitch
+          label="Custom stall icon"
+          bind:value={shouldUseCustomIcon} /><QBtn
           variant="outlined"
           icon="notifications"
           label="Mark update unread"
           disabled={hasUnreadUpdate || selected === "updates"}
-          onclick={() => (hasUnreadUpdate = true)}
-        />
+          onclick={() => (hasUnreadUpdate = true)} />
       </div>
       <div class="market-window border overflow-hidden">
         <QLayout>
@@ -178,8 +173,7 @@
                 </h3>
               </div>
               {#if selected === "updates"}<article
-                  class="notice-card flex items-start q-gap-md q-pa-md tertiary-container"
-                >
+                  class="notice-card flex items-start q-gap-md q-pa-md tertiary-container">
                   <QIcon name="notifications" size={32} aria-hidden="true" />
                   <div class="min-width-0">
                     <p class="body-medium q-ma-none">Bookbinding demonstration at 19:00.</p>
@@ -190,8 +184,7 @@
                 </article>
               {:else if visibleStalls.length}<div class="column q-gap-md">
                   {#each visibleStalls as stall (stall.id)}<article
-                      class="stall-card bg-surface-container-low flex items-center q-gap-md q-pa-md"
-                    >
+                      class="stall-card bg-surface-container-low flex items-center q-gap-md q-pa-md">
                       <h4 class="stall-copy min-width-0 title-medium q-ma-none">{stall.name}</h4>
                       <QIconBtn
                         variant="tonal"
@@ -200,8 +193,7 @@
                         bind:selected={
                           () => savedIds.includes(stall.id),
                           (isSaved) => saveStall(stall.id, isSaved)
-                        }
-                      />
+                        } />
                     </article>{/each}
                 </div>
               {:else}<div class="empty-saved bg-surface-container-low q-pa-lg">
@@ -210,8 +202,7 @@
                     class="q-mt-lg"
                     variant="tonal"
                     label="Browse stalls"
-                    onclick={exploreMarket}
-                  />
+                    onclick={exploreMarket} />
                 </div>{/if}
             </div>
           {/snippet}
@@ -280,12 +271,16 @@
                 label="Bar"
                 to="/components/navbar"
                 activeClass="text-primary"
-                activeStyle="font-weight: 600;"
-              /><QNavItem icon="side_navigation" label="Rail" href="/components/railbar" /><QNavItem
+                activeStyle="font-weight: 600;" /><QNavItem
+                icon="side_navigation"
+                label="Rail"
+                href="/components/railbar" /><QNavItem
                 icon="menu"
                 label="Drawer"
-                to="/components/drawer"
-              /><QNavItem icon="confirmation_number" label="Tickets" disabled /></QNavbar
+                to="/components/drawer" /><QNavItem
+                icon="confirmation_number"
+                label="Tickets"
+                disabled /></QNavbar
             >{/snippet}
         </QLayout>
       </div>

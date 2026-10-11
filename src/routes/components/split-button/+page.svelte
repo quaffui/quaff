@@ -33,8 +33,7 @@
       label="Send"
       icon="send"
       menuLabel="More send options"
-      onclick={() => (previewStatus = "Message sent")}
-    >
+      onclick={() => (previewStatus = "Message sent")}>
       <QList role="presentation">
         <QItem clickable role="menuitem" onclick={() => (previewStatus = "Message scheduled")}>
           <QItemSection>Schedule send</QItemSection>
@@ -68,8 +67,7 @@
         icon="save"
         menuLabel="More save options"
         bind:expanded={isMenuExpanded}
-        onclick={() => (actionStatus = "Saved")}
-      >
+        onclick={() => (actionStatus = "Saved")}>
         <QList role="presentation">
           <QItem clickable role="menuitem" onclick={() => (actionStatus = "Saved a copy")}>
             <QItemSection>Save a copy</QItemSection>
@@ -96,14 +94,12 @@
             {variant}
             label={variant}
             menuLabel={`More ${variant} save options`}
-            onclick={() => (variantStatus = `Saved with ${variant}`)}
-          >
+            onclick={() => (variantStatus = `Saved with ${variant}`)}>
             <QList role="presentation">
               <QItem
                 clickable
                 role="menuitem"
-                onclick={() => (variantStatus = `Saved a copy with ${variant}`)}
-              >
+                onclick={() => (variantStatus = `Saved a copy with ${variant}`)}>
                 <QItemSection>Save a copy</QItemSection>
               </QItem>
             </QList>
@@ -131,14 +127,12 @@
                 label="Share"
                 icon="share"
                 menuLabel={`More ${size} sharing options`}
-                onclick={() => (sizeStatus = `Shared from ${size}`)}
-              >
+                onclick={() => (sizeStatus = `Shared from ${size}`)}>
                 <QList role="presentation">
                   <QItem
                     clickable
                     role="menuitem"
-                    onclick={() => (sizeStatus = `Link copied from ${size}`)}
-                  >
+                    onclick={() => (sizeStatus = `Link copied from ${size}`)}>
                     <QItemSection>Copy link</QItemSection>
                   </QItem>
                 </QList>
@@ -176,8 +170,7 @@
           icon="download"
           aria-label="Download file"
           menuLabel="More download options"
-          onclick={() => (stateStatus = "File downloaded")}
-        >
+          onclick={() => (stateStatus = "File downloaded")}>
           <QList role="presentation">
             <QItem clickable role="menuitem" onclick={() => (stateStatus = "PDF downloaded")}>
               <QItemSection>Download PDF</QItemSection>

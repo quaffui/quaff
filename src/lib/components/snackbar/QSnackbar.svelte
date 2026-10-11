@@ -144,8 +144,7 @@ Snackbars show brief updates without interrupting the current task. Display a me
     style:--q-snackbar-offset={resolvedOffset}
     transition:fly|global={{ y: 16, duration: browser && shouldReduceMotion() ? 0 : 200 }}
     onoutroend={handleHidden}
-    data-quaff-overlay
-  >
+    data-quaff-overlay>
     <div
       bind:this={snackbar}
       {...props}
@@ -153,8 +152,7 @@ Snackbars show brief updates without interrupting the current task. Display a me
       onkeydown={handleKeydown}
       onfocusin={handleFocusin}
       {onfocusout}
-      data-quaff
-    >
+      data-quaff>
       <div class="q-snackbar__message" role="status" aria-live="polite" aria-atomic="true">
         {#if message !== undefined}
           {message}
@@ -170,8 +168,7 @@ Snackbars show brief updates without interrupting the current task. Display a me
               class="q-snackbar__action"
               variant="flat"
               label={action.label}
-              onclick={handleAction}
-            />
+              onclick={handleAction} />
           {/if}
 
           {#if dismissible}
@@ -180,8 +177,7 @@ Snackbars show brief updates without interrupting the current task. Display a me
               variant="flat"
               icon="close"
               aria-label={dismissLabel}
-              onclick={() => hide("dismiss")}
-            />
+              onclick={() => hide("dismiss")} />
           {/if}
         </div>
       {/if}

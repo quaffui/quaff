@@ -340,7 +340,6 @@ Lists arrange related items in vertical rows. Combine text, icons, and actions, 
   onfocusin={handleFocusin}
   onfocusout={handleFocusout}
   onkeydown={handleKeydown}
-  data-quaff
->
+  data-quaff>
   {@render children?.()}
 </svelte:element>

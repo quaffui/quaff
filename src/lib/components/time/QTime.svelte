@@ -266,8 +266,7 @@ Time pickers combine a clock dial with numeric entry. Dialog and popup layouts s
     aria-expanded={open}
     aria-controls={overlayId}
     disabled={disabled || readonly}
-    onclick={handleButtonClick}
-  />
+    onclick={handleButtonClick} />
 {/snippet}
 
 {#if composed}
@@ -292,8 +291,7 @@ Time pickers combine a clock dial with numeric entry. Dialog and popup layouts s
     {disabled}
     readonly
     inputmode="none"
-    tabindex={disabled ? -1 : (fieldProps.tabindex ?? 0)}
-  />
+    tabindex={disabled ? -1 : (fieldProps.tabindex ?? 0)} />
 {/if}
 
 {#if docked}
@@ -306,8 +304,7 @@ Time pickers combine a clock dial with numeric entry. Dialog and popup layouts s
     id={dockedId}
     role="dialog"
     dir={picker.isRtl ? "rtl" : "ltr"}
-    aria-labelledby={titleId}
-  >
+    aria-labelledby={titleId}>
     <QTimePicker
       state={picker}
       {open}
@@ -321,8 +318,7 @@ Time pickers combine a clock dial with numeric entry. Dialog and popup layouts s
       {confirmLabel}
       {cancelLabel}
       {titleId}
-      cancel={hide}
-    />
+      cancel={hide} />
   </QMenu>
 {:else}
   <QDialog
@@ -331,8 +327,7 @@ Time pickers combine a clock dial with numeric entry. Dialog and popup layouts s
     id={dialogId}
     modal
     dir={picker.isRtl ? "rtl" : "ltr"}
-    aria-labelledby={titleId}
-  >
+    aria-labelledby={titleId}>
     <QTimePicker
       state={picker}
       {open}
@@ -346,7 +341,6 @@ Time pickers combine a clock dial with numeric entry. Dialog and popup layouts s
       {confirmLabel}
       {cancelLabel}
       {titleId}
-      cancel={hide}
-    />
+      cancel={hide} />
   </QDialog>
 {/if}

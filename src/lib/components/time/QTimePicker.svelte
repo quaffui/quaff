@@ -197,8 +197,7 @@
     <div
       class="q-time__period"
       role="radiogroup"
-      aria-label={`${state.resolvedLabels.am} / ${state.resolvedLabels.pm}`}
-    >
+      aria-label={`${state.resolvedLabels.am} / ${state.resolvedLabels.pm}`}>
       {#each PERIODS as period (period)}
         {@const selected = state.period === period}
         <button
@@ -209,8 +208,7 @@
           tabindex={selected ? 0 : -1}
           data-period={period}
           onclick={(event) => selectPeriod(period, event.currentTarget)}
-          onkeydown={(event) => handlePeriodKeydown(event, period)}
-        >
+          onkeydown={(event) => handlePeriodKeydown(event, period)}>
           {state.resolvedLabels[period]}
         </button>
       {/each}
@@ -230,8 +228,7 @@
         role="radio"
         aria-checked={state.activePart === "hour"}
         aria-label={`${state.resolvedLabels.selectHour}, ${state.displayHour}`}
-        onclick={() => selectPart("hour")}
-      >
+        onclick={() => selectPart("hour")}>
         {state.displayHour}
       </button>
       <span class="q-time__separator" aria-hidden="true">:</span>
@@ -244,8 +241,7 @@
         role="radio"
         aria-checked={state.activePart === "minute"}
         aria-label={`${state.resolvedLabels.selectMinute}, ${state.displayMinute}`}
-        onclick={() => selectPart("minute")}
-      >
+        onclick={() => selectPart("minute")}>
         {state.displayMinute}
       </button>
     </div>
@@ -266,8 +262,7 @@
       "q-time__input-field",
       state.activePart === part && "q-time__input-field--selected",
       invalid && "q-time__input-field--invalid",
-    ]}
-  >
+    ]}>
     <input
       class="q-time__input-control"
       id={inputId}
@@ -283,8 +278,7 @@
       onfocus={() => (state.activePart = part)}
       oninput={(event) => handleInput(event, part)}
       onkeydown={(event) => handleInputKeydown(event, part)}
-      onblur={() => handleInputBlur(part)}
-    />
+      onblur={() => handleInputBlur(part)} />
     <span class="q-time__input-label" id={labelId}>{label}</span>
   </label>
 {/snippet}
@@ -293,8 +287,7 @@
   <div
     class="q-time__controls q-time__controls--input"
     role="group"
-    aria-label={state.resolvedLabels.timeInput}
-  >
+    aria-label={state.resolvedLabels.timeInput}>
     <div class="q-time__input-fields">
       {@render timeInput("hour")}
       <span class="q-time__separator" aria-hidden="true">:</span>
@@ -306,8 +299,7 @@
       id={`${titleId}-input-error`}
       role="status"
       aria-live="polite"
-      aria-atomic="true"
-    >
+      aria-atomic="true">
       {state.inputValidationMessage}
     </div>
   </div>
@@ -346,8 +338,7 @@
           aria-label={state.displayMode === "dial"
             ? state.resolvedLabels.switchToInput
             : state.resolvedLabels.switchToDial}
-          onclick={toggleDisplayMode}
-        />
+          onclick={toggleDisplayMode} />
       {/if}
 
       {#if state.showActions}
@@ -358,8 +349,7 @@
             type="button"
             label={confirmLabel}
             disabled={!state.canConfirm}
-            onclick={() => state.commitSelection()}
-          />
+            onclick={() => state.commitSelection()} />
         </div>
       {/if}
     </footer>

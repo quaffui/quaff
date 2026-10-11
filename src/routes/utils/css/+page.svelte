@@ -74,8 +74,7 @@
 
 <QDocs
   docName="CSS Helpers"
-  docDescription="Compose layouts and common styles with shared classes."
->
+  docDescription="Compose layouts and common styles with shared classes.">
   {#snippet display()}
     <div class="surface-container-low full-width q-pa-lg">
       <h2 class="title-large q-mb-xs">Shared styles</h2>
@@ -106,8 +105,7 @@
   <div class="min-width-0">Content</div>
   <button>Action</button>
 </div>`}
-        copiable
-      />
+        copiable />
       <dl class="q-mt-lg">
         {#each HELPER_GROUPS as [name, classes, description] (name)}
           <dt class="title-small q-mt-md">{name}</dt>
@@ -145,8 +143,7 @@
         code={`<div class="flex q-pa-md q-mx-auto q-gap-x-md q-gap-y-sm">
   ...
 </div>`}
-        copiable
-      />
+        copiable />
     </QDocsSection>
 
     <QDocsSection title="Colors and Text" noCode>
@@ -182,8 +179,7 @@
         language="html"
         code={`<span class="lt-sm">Compact label</span>
 <span class="gt-xs">Full label</span>`}
-        copiable
-      />
+        copiable />
     </QDocsSection>
     <p>
       Using CSS pruning? Keep runtime-built names in your

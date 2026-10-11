@@ -173,8 +173,7 @@ Linear progress indicators show task completion along a horizontal track. Displa
   aria-valuemin="0"
   aria-valuemax="100"
   aria-valuenow={indeterminate ? undefined : percentage}
-  data-quaff
->
+  data-quaff>
   <svg
     class="q-linear-progress__svg"
     class:q-linear-progress__svg--wave={hasWave}
@@ -184,15 +183,13 @@ Linear progress indicators show task completion along a horizontal track. Displa
     style:--q-progress-wavelength="{wavelength}px"
     viewBox="0 0 {width || 240} {containerHeight}"
     preserveAspectRatio="none"
-    aria-hidden="true"
-  >
+    aria-hidden="true">
     <defs>
       <path
         id="{id}-active-path"
         class:q-linear-progress__wave={hasWave}
         d={activePath}
-        pathLength={activePathLength}
-      />
+        pathLength={activePathLength} />
     </defs>
 
     <mask
@@ -201,8 +198,7 @@ Linear progress indicators show task completion along a horizontal track. Displa
       x="0"
       y="0"
       width={width || 240}
-      height={containerHeight}
-    >
+      height={containerHeight}>
       <rect width="100%" height="100%" fill="white" />
 
       {#if indeterminate}
@@ -224,8 +220,7 @@ Linear progress indicators show task completion along a horizontal track. Displa
         stroke-linecap={noRound ? "butt" : "round"}
         style:opacity={indeterminate || trackLength > 0 ? 1 : 0}
         style:transition={trackTransition}
-        pathLength="100"
-      />
+        pathLength="100" />
     {/if}
 
     {@render active({})}
@@ -239,8 +234,7 @@ Linear progress indicators show task completion along a horizontal track. Displa
         width={stopSize}
         height={stopSize}
         rx={noRound ? 0 : stopSize / 2}
-        fill={parsedColor}
-      />
+        fill={parsedColor} />
     {/if}
   </svg>
 </div>
@@ -259,6 +253,5 @@ Linear progress indicators show task completion along a horizontal track. Displa
     stroke-dasharray={indeterminate ? undefined : `${activeLength}px ${activePathLength}px`}
     stroke-linecap={noRound ? "butt" : "round"}
     style:opacity={indeterminate || normalized > 0 ? 1 : 0}
-    style:transition={indeterminate ? undefined : activeTransition}
-  />
+    style:transition={indeterminate ? undefined : activeTransition} />
 {/snippet}

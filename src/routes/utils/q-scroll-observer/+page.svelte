@@ -25,14 +25,12 @@
 
 <QDocs
   docName="QScrollObserver"
-  docDescription="A utility to observe scroll events on a target element. It provides derived properties for various scroll metrics."
->
+  docDescription="A utility to observe scroll events on a target element. It provides derived properties for various scroll metrics.">
   {#snippet display()}
     <div
       id="display-observer"
       class="q-pa-md"
-      style="max-height: 100%; max-width: 40%; overflow: auto; justify-self: start;"
-    >
+      style="max-height: 100%; max-width: 40%; overflow: auto; justify-self: start;">
       <h6>Scroll me</h6>
 
       Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit ipsam, odio corrupti illum
@@ -151,8 +149,7 @@
         <div
           id="usage-observer"
           class="q-pa-md surface"
-          style="max-height: 400px; max-width: 40%; overflow: auto; justify-self: start;"
-        >
+          style="max-height: 400px; max-width: 40%; overflow: auto; justify-self: start;">
           <h6>Scroll me</h6>
 
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit ipsam, odio corrupti illum
@@ -187,8 +184,7 @@
         <QCodeBlock
           language="ts"
           code={JSON.stringify(usageObserverProperties, null, 2)}
-          class="q-mt-md"
-        />
+          class="q-mt-md" />
       </div>
     </QDocsSection>
   {/snippet}

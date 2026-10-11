@@ -105,8 +105,7 @@
             id="object-title"
             class="headline-small"
             tabindex="-1"
-            {@attach objectOpen ? focusDialogTitle : undefined}
-          >
+            {@attach objectOpen ? focusDialogTitle : undefined}>
             The River Keeps Going
           </h3>
           <p class="body-medium">Mara Wells · Screenprint on paper · 1987</p>
@@ -144,8 +143,7 @@
           </div>
           <p
             class="flex items-center q-gap-sm q-mt-lg q-mb-none body-medium text-on-surface-variant"
-            role="status"
-          >
+            role="status">
             <QIcon name={reviewed ? "check_circle" : "schedule"} aria-hidden="true" />
             {reviewed ? "Loan reviewed" : "Awaiting review"}
           </p>
@@ -156,8 +154,7 @@
             id="review-title"
             class="headline-small"
             tabindex="-1"
-            {@attach reviewOpen ? focusDialogTitle : undefined}
-          >
+            {@attach reviewOpen ? focusDialogTitle : undefined}>
             Review this loan
           </h3>
           <p class="body-medium">The River Keeps Going</p>
@@ -179,8 +176,7 @@
               onclick={() => {
                 reviewed = true;
                 reviewOpen = false;
-              }}
-            />
+              }} />
           </div>
         </QDialog>
       </QDocsSection>
@@ -202,13 +198,11 @@
             <QBtn
               label="Confirm collection"
               variant="tonal"
-              onclick={() => (collectionOpen = true)}
-            />
+              onclick={() => (collectionOpen = true)} />
           </div>
           <p
             class="flex items-center q-gap-sm q-mt-lg q-mb-none body-medium text-on-surface-variant"
-            role="status"
-          >
+            role="status">
             <QIcon name={collected ? "check_circle" : "inventory_2"} aria-hidden="true" />
             {collected ? "Collection recorded" : "Ready for collection"}
           </p>
@@ -219,8 +213,7 @@
             id="collection-title"
             class="headline-small"
             tabindex="-1"
-            {@attach collectionOpen ? focusDialogTitle : undefined}
-          >
+            {@attach collectionOpen ? focusDialogTitle : undefined}>
             Has the courier collected it?
           </h3>
           <p class="body-medium">
@@ -234,8 +227,7 @@
               onclick={() => {
                 collected = true;
                 collectionOpen = false;
-              }}
-            />
+              }} />
           </div>
         </QDialog>
       </QDocsSection>
@@ -260,27 +252,23 @@
             bind:value={position}
             emitValue
             disabled={positionedOpen}
-            class="position-select"
-          />
+            class="position-select" />
           <QBtn
             label="Open positioned dialog"
             variant="tonal"
-            onclick={() => (positionedOpen = true)}
-          />
+            onclick={() => (positionedOpen = true)} />
         </div>
 
         <QDialog
           bind:value={positionedOpen}
           {position}
           aria-labelledby="positioned-title"
-          class="positioned-dialog"
-        >
+          class="positioned-dialog">
           <h3
             id="positioned-title"
             class="headline-small"
             tabindex="-1"
-            {@attach positionedOpen ? focusDialogTitle : undefined}
-          >
+            {@attach positionedOpen ? focusDialogTitle : undefined}>
             Handling notes
           </h3>
           <p class="body-medium">Keep these notes nearby while preparing the loan.</p>
@@ -319,8 +307,7 @@
                 id="editor-title"
                 class="headline-medium q-ma-none"
                 tabindex="-1"
-                {@attach editorOpen ? focusDialogTitle : undefined}
-              >
+                {@attach editorOpen ? focusDialogTitle : undefined}>
                 Edit loan details
               </h3>
               <p class="body-large q-ma-none">The River Keeps Going · Collection record 014</p>
@@ -330,8 +317,7 @@
               <QSelect
                 label="Loan duration"
                 options={["Two weeks", "One month", "Three months"]}
-                bind:value={draftDuration}
-              />
+                bind:value={draftDuration} />
             </div>
             <p class="body-medium text-on-surface-variant q-ma-none">
               Changes stay in this draft until you save them.
@@ -341,14 +327,12 @@
                 label="Cancel edit"
                 type="button"
                 variant="flat"
-                onclick={() => (editorOpen = false)}
-              />
+                onclick={() => (editorOpen = false)} />
               <QBtn
                 label="Save details"
                 type="submit"
                 variant="flat"
-                disabled={!draftBorrower.trim()}
-              />
+                disabled={!draftBorrower.trim()} />
             </div>
           </form>
         </QDialog>
@@ -370,8 +354,7 @@
               onclick={(event) => {
                 event.stopPropagation();
                 guide?.show();
-              }}
-            />
+              }} />
             <QBtn label="hide()" variant="outlined" onclick={() => guide?.hide()} />
             <QBtn
               label="toggle()"
@@ -379,13 +362,11 @@
               onclick={(event) => {
                 event.stopPropagation();
                 guide?.toggle();
-              }}
-            />
+              }} />
           </div>
           <p
             class="flex items-center q-gap-sm q-mt-lg q-mb-none body-medium text-on-surface-variant"
-            role="status"
-          >
+            role="status">
             {guideOpen ? "Dialog open" : "Dialog closed"} · Closes: {guideCloses}
           </p>
         </div>
@@ -394,14 +375,12 @@
           bind:this={guide}
           bind:value={guideOpen}
           aria-labelledby="guide-title"
-          onclose={() => (guideCloses += 1)}
-        >
+          onclose={() => (guideCloses += 1)}>
           <h3
             id="guide-title"
             class="headline-small"
             tabindex="-1"
-            {@attach guideOpen ? focusDialogTitle : undefined}
-          >
+            {@attach guideOpen ? focusDialogTitle : undefined}>
             Loan desk guide
           </h3>
           <p class="body-medium">

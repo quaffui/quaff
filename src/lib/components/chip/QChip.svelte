@@ -194,8 +194,7 @@ Chips present compact actions, choices, or entered information alongside related
     size={Math.max(value?.length ?? 0, 1)}
     aria-label={label ?? value}
     onblur={() => (isEditing = false)}
-    onkeydown={onInputKeydown}
-  />
+    onkeydown={onInputKeydown} />
 {:else}
   <!-- svelte-ignore a11y_no_noninteractive_tabindex (only the button role receives a tabindex) -->
   <div
@@ -213,15 +212,13 @@ Chips present compact actions, choices, or entered information alongside related
     {onkeydown}
     onfocuscapture={(e) => handleFocusCapture(e, "focus")}
     onblurcapture={(e) => handleFocusCapture(e, "blur")}
-    data-quaff
-  >
+    data-quaff>
     {#snippet content()}
       <QIconSnippet
         class="q-chip__leading-icon"
         icon={kind === "filter" && selected ? "check" : icon || undefined}
         size={iconSize}
-        aria-hidden="true"
-      >
+        aria-hidden="true">
         {#snippet image(src)}
           <QAvatar class="q-chip__avatar" {src} aria-hidden="true" />
         {/snippet}
@@ -251,8 +248,7 @@ Chips present compact actions, choices, or entered information alongside related
         aria-haspopup={props["aria-haspopup"]}
         aria-expanded={props["aria-expanded"]}
         aria-controls={props["aria-controls"]}
-        aria-pressed={kind === "filter" ? selected : undefined}
-      >
+        aria-pressed={kind === "filter" ? selected : undefined}>
         <span class="q-chip__touch-target" aria-hidden="true"></span>
         {@render content()}
       </button>
@@ -264,14 +260,12 @@ Chips present compact actions, choices, or entered information alongside related
         {tabindex}
         aria-label={trailingIconLabel}
         aria-labelledby={trailingLabelledby}
-        onclick={(e) => handleClick(e, true)}
-      >
+        onclick={(e) => handleClick(e, true)}>
         <QIconSnippet
           class="q-chip__trailing-icon"
           icon={trailing}
           size={iconSize}
-          aria-hidden="true"
-        />
+          aria-hidden="true" />
       </button>
     {:else}
       <span class="q-chip__touch-target" aria-hidden="true"></span>
@@ -280,8 +274,7 @@ Chips present compact actions, choices, or entered information alongside related
         class="q-chip__trailing-icon"
         icon={trailing || undefined}
         size={iconSize}
-        aria-hidden="true"
-      />
+        aria-hidden="true" />
     {/if}
 
     {#if hasTrailingAction && !trailingIconLabel}

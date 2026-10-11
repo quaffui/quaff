@@ -119,14 +119,12 @@ Tables arrange records in rows and columns for comparison. Add sorting and forma
     role="region"
     aria-label={ariaLabel ?? i18n.labels.label}
     aria-labelledby={ariaLabelledby}
-    tabindex="0"
-  >
+    tabindex="0">
     <table
       class="q-table__table"
       aria-label={ariaLabel}
       aria-labelledby={ariaLabelledby}
-      aria-describedby={ariaDescribedby}
-    >
+      aria-describedby={ariaDescribedby}>
       <thead>
         <tr>
           {#each columns as column (column.name)}
@@ -134,22 +132,19 @@ Tables arrange records in rows and columns for comparison. Add sorting and forma
             <th
               scope="col"
               style={getCellStyle(column)}
-              aria-sort={isSorted ? sortDirection : undefined}
-            >
+              aria-sort={isSorted ? sortDirection : undefined}>
               {#if column.sortable}
                 <button
                   class="q-table__sort-button"
                   type="button"
                   aria-label={i18n.labels.sortBy(column.label)}
                   style:justify-content={column.align ?? "flex-start"}
-                  onclick={() => setSort(column)}
-                >
+                  onclick={() => setSort(column)}>
                   <span>{column.label}</span>
                   <QIcon
                     name={isSorted ? sortIcon : "unfold_more"}
                     style={column.align && column.align !== "left" ? "order: -1" : undefined}
-                    aria-hidden="true"
-                  />
+                    aria-hidden="true" />
                 </button>
               {:else}
                 {column.label}
@@ -193,13 +188,11 @@ Tables arrange records in rows and columns for comparison. Add sorting and forma
             page = 1;
           }
         }
-        aria-label={i18n.labels.recordsPerPage}
-      />
+        aria-label={i18n.labels.recordsPerPage} />
     </div>
     <div class="q-table__pagination">
       <span aria-live="polite" aria-atomic="true"
-        >{i18n.labels.pagination(numberFrom, numberTo, rows.length)}</span
-      >
+        >{i18n.labels.pagination(numberFrom, numberTo, rows.length)}</span>
       {#if lastPage > 1}
         <QBtn
           icon="chevron_left"
@@ -207,16 +200,14 @@ Tables arrange records in rows and columns for comparison. Add sorting and forma
           variant="flat"
           disabled={page === 1}
           aria-label={i18n.labels.previousPage}
-          onclick={() => page--}
-        />
+          onclick={() => page--} />
         <QBtn
           icon="chevron_right"
           class="q-table__page-button"
           variant="flat"
           disabled={page === lastPage}
           aria-label={i18n.labels.nextPage}
-          onclick={() => page++}
-        />
+          onclick={() => page++} />
       {/if}
     </div>
   </div>

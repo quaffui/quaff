@@ -26,8 +26,7 @@
   <div class="row">
     {#each cols as col (col)}
       <div
-        class="col-xs-12 col-md-6 col-lg-3 {col % 2 === 0 ? 'primary' : 'secondary'} text-center"
-      >
+        class="col-xs-12 col-md-6 col-lg-3 {col % 2 === 0 ? 'primary' : 'secondary'} text-center">
         col-xs-12 col-md-6 col-lg-3
       </div>
     {/each}

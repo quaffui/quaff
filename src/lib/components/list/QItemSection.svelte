@@ -74,8 +74,7 @@ The QItemSection component is used inside QItem to separate different types of i
   class="q-item__section"
   type={action ? "button" : undefined}
   {@attach ripple({ disabled: !action })}
-  data-quaff
->
+  data-quaff>
   {#if type === "content"}
     {#if action && leading}
       <div class="q-item__section--action-leading">{@render leading()}</div>

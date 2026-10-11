@@ -70,8 +70,7 @@ Avatars represent people or other entities using images, icons, or initials. Cho
       onpause={syncPaused}
       loop
       muted
-      playsinline
-    >
+      playsinline>
       {#if sources?.length}
         {#each sources as { src, type } (type)}
           <source {src} {type} />

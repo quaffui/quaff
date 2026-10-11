@@ -46,13 +46,11 @@
       }
       label="Dark preview"
       icons
-      class="q-mb-md"
-    />
+      class="q-mb-md" />
     <article
       class="pickup-card surface-container-low q-pa-lg q-mb-lg"
       style:color-scheme={previewMode}
-      aria-labelledby="pickup-heading"
-    >
+      aria-labelledby="pickup-heading">
       <div class="flex no-wrap items-start q-gap-md">
         <div class="parcel-icon primary-container flex flex-center" aria-hidden="true">
           <QIcon name="package_2" size="32px" />
@@ -79,8 +77,7 @@
   <p class="text-on-surface-variant">Locker 12 · Collect by Friday</p>
   <span class="success-container q-pa-sm">Ready for pickup</span>
 </article>`}
-      copiable
-    />
+      copiable />
     <p class="q-mt-md">
       Use <code class="q-docs-code">surface-container-lowest</code>,
       <code class="q-docs-code">-low</code>, <code class="q-docs-code">surface-container</code>,
@@ -134,8 +131,7 @@
 </div>
 
 <div class="border border-outline q-pa-md">Pickup instructions</div>`}
-      copiable
-    />
+      copiable />
     <h3 class="title-large q-mt-lg q-mb-md">Supported theme colors</h3>
     <ul class="role-reference column q-gap-md">
       <li>
@@ -201,8 +197,7 @@
 .route-marker {
   background-color: var(--color-teal-6);
 }`}
-      copiable
-    />
+      copiable />
   </section>
 
   <section aria-labelledby="palette-heading">
@@ -226,8 +221,7 @@
       code={`<span class="bg-teal-2 text-teal-10 q-pa-sm">
   Riverside route
 </span>`}
-      copiable
-    />
+      copiable />
     <div class="palette-grid q-gap-md q-mt-lg">
       {#each PALETTE_COLORS as color (color)}
         <section class="palette surface-container-low" aria-label={`${color} palette`}>

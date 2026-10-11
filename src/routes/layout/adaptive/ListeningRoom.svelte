@@ -104,8 +104,7 @@
       label={width.label}
       variant={previewWidth === width.value ? "tonal" : "flat"}
       aria-pressed={previewWidth === width.value}
-      onclick={() => (previewWidth = width.value)}
-    />
+      onclick={() => (previewWidth = width.value)} />
   {/each}
 </div>
 <p class="preview-status body-medium" aria-live="polite">
@@ -119,8 +118,7 @@
     class="room-window"
     bind:this={windowEl}
     bind:clientWidth={measuredWidth}
-    style:width={previewWidth ? `${previewWidth}px` : "100%"}
-  >
+    style:width={previewWidth ? `${previewWidth}px` : "100%"}>
     <QLayout>
       {#snippet navbar()}
         {#if screen.navigation === "navbar"}
@@ -139,8 +137,7 @@
       <div
         class="room-content"
         class:compact={screen.xs}
-        style:--list-width={screen.gt.md ? "412px" : "360px"}
-      >
+        style:--list-width={screen.gt.md ? "412px" : "360px"}>
         <header class="room-header">
           <span class="label-large">SIDE ROOM RECORDS</span>
           <h2 class="headline-small">Independent sounds.</h2>
@@ -150,8 +147,7 @@
             class="release-list"
             bind:this={listPane}
             hidden={!showList}
-            aria-label="Release collection"
-          >
+            aria-label="Release collection">
             <h3 class="title-large" bind:this={listHeading} tabindex="-1">Releases</h3>
             {#each visibleReleases as release (release.id)}
               <button
@@ -162,8 +158,7 @@
                 onclick={() => {
                   selectedId = release.id;
                   showDetail = true;
-                }}
-              >
+                }}>
                 <span class="mini-record" style:background={release.color} aria-hidden="true">
                   <span style:background={release.accent}></span>
                 </span>
@@ -178,15 +173,13 @@
             class="release-detail"
             bind:this={detailPane}
             hidden={!showDetails}
-            aria-label="Release details"
-          >
+            aria-label="Release details">
             {#if !screen.twoPane}
               <QBtn
                 data-collection-back
                 label="Back to releases"
                 variant="flat"
-                onclick={() => (showDetail = false)}
-              />
+                onclick={() => (showDetail = false)} />
             {/if}
             <h3 class="headline-small" bind:this={detailHeading} tabindex="-1">
               {selected?.title ?? "Choose a release"}
@@ -218,8 +211,7 @@
         genre = item.id;
         selectedId = undefined;
         showDetail = false;
-      }}
-    />
+      }} />
   {/each}
 {/snippet}
 

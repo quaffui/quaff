@@ -180,8 +180,7 @@
       class="seed-preview overflow-auto bg-surface-container-low q-pa-lg text-on-surface"
       role="region"
       aria-label="Seed exchange preview"
-      tabindex="0"
-    >
+      tabindex="0">
       <div class="label-medium text-primary">THE NEIGHBORHOOD SEED EXCHANGE</div>
       <h2 class="title-large q-mt-xs q-mb-md">Find seeds to share</h2>
       <QChip
@@ -190,8 +189,7 @@
         onclick={() => {
           catalog?.scrollIntoView({ block: "start" });
           catalog?.focus({ preventScroll: true });
-        }}
-      />
+        }} />
     </div>
   {/snippet}
 
@@ -206,8 +204,7 @@
         class="seed-catalog"
         aria-label="Community seed catalog"
         tabindex="-1"
-        bind:this={catalog}
-      >
+        bind:this={catalog}>
         <div class="catalog-heading flex items-center justify-between q-mb-lg">
           <div class="min-width-0">
             <div class="label-medium text-primary">SHARED BY LOCAL GROWERS</div>
@@ -218,22 +215,19 @@
         <div
           class="flex items-center q-gap-md q-mb-lg"
           role="group"
-          aria-label="Suggested seed collections"
-        >
+          aria-label="Suggested seed collections">
           <QChip
             kind="suggestion"
             label="A balcony herb garden"
             icon="balcony"
-            onclick={() => suggest("herbs")}
-          />
+            onclick={() => suggest("herbs")} />
           <QChip
             kind="suggestion"
             elevated
             class="tertiary-container"
             label="A sunny flower patch"
             icon="local_florist"
-            onclick={() => suggest("flowers")}
-          />
+            onclick={() => suggest("flowers")} />
         </div>
         <div class="flex items-center q-gap-md" role="group" aria-label="Filter seeds">
           {#each CATEGORIES as category (category.id)}
@@ -241,8 +235,7 @@
               kind="filter"
               label={category.label}
               icon={category.icon}
-              bind:selected={categories[category.id]}
-            />
+              bind:selected={categories[category.id]} />
           {/each}
           <QChip
             kind="filter"
@@ -252,8 +245,7 @@
             bind:selected={isSunnyOnly}
             trailingIcon="info"
             trailingIconLabel="About the sunny spot filter"
-            onTrailingIconClick={() => (hasSunDetails = !hasSunDetails)}
-          />
+            onTrailingIconClick={() => (hasSunDetails = !hasSunDetails)} />
         </div>
         {#if hasSunDetails}
           <p class="filter-note body-medium q-pa-md tertiary-container" role="status">
@@ -269,8 +261,7 @@
           {#each matchingSeeds as seed (seed.id)}
             {@const isInEnvelope = packets.some((packet) => packet.sourceId === seed.id)}
             <li
-              class="seed-result flex items-center justify-between no-border-radius q-gap-md q-py-md"
-            >
+              class="seed-result flex items-center justify-between no-border-radius q-gap-md q-py-md">
               <div class="min-width-0">
                 <span class="title-medium">{seed.name}</span>
                 <span class="body-medium text-on-surface-variant">
@@ -281,8 +272,7 @@
                 icon={isInEnvelope ? "check" : "add"}
                 label={getSeedActionLabel(seed, isInEnvelope)}
                 disabled={isInEnvelope || !seed.packets}
-                onclick={() => addPacket(seed.name, seed.id)}
-              />
+                onclick={() => addPacket(seed.name, seed.id)} />
             </li>
           {:else}
             <li class="body-medium q-py-md">
@@ -312,29 +302,25 @@
             event.preventDefault();
             addPacket(packetDraft);
             void focusAfterUpdate("seed-packet-name");
-          }}
-        >
+          }}>
           <QInput
             id="seed-packet-name"
             label="Name a seed packet"
             bind:value={packetDraft}
             maxlength={64}
             outlined
-            class="min-width-0"
-          />
+            class="min-width-0" />
           <QBtn
             type="submit"
             variant="tonal"
             icon="add"
             label="Add packet"
-            disabled={!packetDraft.trim()}
-          />
+            disabled={!packetDraft.trim()} />
         </form>
         <div
           class="flex items-center q-gap-md q-mb-lg"
           role="group"
-          aria-label="Packets in your envelope"
-        >
+          aria-label="Packets in your envelope">
           {#each packets as packet (packet.id)}
             <QChip
               id={`seed-packet-${packet.id}`}
@@ -345,8 +331,7 @@
               bind:value={packet.name}
               trailingIcon="close"
               trailingIconLabel={`Remove ${packet.name.trim() || "unnamed packet"}`}
-              onTrailingIconClick={() => removePacket(packet.id)}
-            />
+              onTrailingIconClick={() => removePacket(packet.id)} />
           {:else}<p class="body-medium q-ma-none">
               Your envelope is empty. Add a packet above or choose one from the catalog.
             </p>{/each}
@@ -356,16 +341,14 @@
             label="Packet label size"
             options={["sm", "md", "lg"]}
             bind:value={chipSize}
-            outlined
-          />
+            outlined />
           <QBtn
             id="seed-undo-removal"
             variant="flat"
             icon="undo"
             label="Undo last removal"
             disabled={!lastRemoved}
-            onclick={restorePacket}
-          />
+            onclick={restorePacket} />
         </div>
         <p class="body-medium q-mt-md q-mb-none" role="status">{packetStatus}</p>
         <div class="packing-note no-border-radius q-mt-lg">
@@ -377,16 +360,14 @@
               icon="inventory_2"
               label="Bring spare envelopes"
               trailingIcon="close"
-              onTrailingIconClick={toggleEnvelopeReminder}
-            />
+              onTrailingIconClick={toggleEnvelopeReminder} />
           {:else}
             <QChip
               id="seed-envelope-reminder"
               kind="suggestion"
               icon="add"
               label="Add envelope reminder"
-              onclick={toggleEnvelopeReminder}
-            />
+              onclick={toggleEnvelopeReminder} />
           {/if}
           <p class="body-small text-on-surface-variant q-mt-md q-mb-none">
             This reminder has no editable value. Its label and close icon form one removal action.
@@ -419,8 +400,7 @@
               bind:value={host}
               trailingIcon="close"
               trailingIconLabel="Remove swap partner"
-              onTrailingIconClick={togglePartner}
-            />
+              onTrailingIconClick={togglePartner} />
             <p class="body-medium text-on-surface-variant contact-value q-mt-md q-mb-none">
               {host || "Add your partner's name and address by editing the chip."}
             </p>
@@ -430,8 +410,7 @@
               kind="suggestion"
               icon="person_add"
               label="Restore swap partner"
-              onclick={togglePartner}
-            />
+              onclick={togglePartner} />
           {/if}
         </div>
         <div class="chip-example min-width-0 bg-surface-container-low q-pa-lg">
@@ -441,8 +420,7 @@
             class="primary-container"
             icon="location_on"
             label="Show swap location"
-            onclick={() => (actionStatus = "Community potting shed · Saturday 10:00–12:00.")}
-          />
+            onclick={() => (actionStatus = "Community potting shed · Saturday 10:00–12:00.")} />
           <p class="body-medium q-mt-md q-mb-none" role="status">{actionStatus}</p>
         </div>
       </div>

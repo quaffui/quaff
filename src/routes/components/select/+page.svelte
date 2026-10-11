@@ -146,8 +146,7 @@
                 bind:value={colorSelectValue}
                 options={objectOptions}
                 label="Choose a color"
-                emitValue
-              />
+                emitValue />
               <div class="q-mt-sm">
                 Selected value:
                 {colorSelectValue || "None"}
@@ -170,8 +169,7 @@
             label="Search animals"
             useInput
             filterable
-            noOptionText="No animals found"
-          />
+            noOptionText="No animals found" />
         </div>
       </QDocsSection>
 
@@ -188,8 +186,7 @@
             useInput
             inputDebounce={250}
             onFilter={filterCities}
-            noOptionText="No cities found"
-          />
+            noOptionText="No cities found" />
         </div>
       </QDocsSection>
 
@@ -219,8 +216,7 @@
             {displayValue}
             {options}
             label="Multiple with custom display"
-            multiple
-          />
+            multiple />
           <div class="q-mt-sm">
             <div>Selected values: {selectMultiple.join(", ") || "None"}</div>
             <div>Display value: {displayValue}</div>
@@ -282,8 +278,7 @@
             value={select}
             {options}
             label="Disabled select"
-            disabled={selectDisabled}
-          />
+            disabled={selectDisabled} />
           <div class="">
             <QBtn size="sm" label="Enable" onclick={() => (selectDisabled = false)} />
             <QBtn size="sm" label="Disable" onclick={() => (selectDisabled = true)} />
@@ -305,8 +300,7 @@
               bind:value={select}
               {options}
               label="With hint"
-              hint="Select your favorite animal"
-            />
+              hint="Select your favorite animal" />
           </div>
 
           <div class="col-xs-12 col-md-6">
@@ -315,8 +309,7 @@
               {options}
               label="Error state"
               error
-              errorMessage="Selection is required"
-            />
+              errorMessage="Selection is required" />
           </div>
         </div>
       </QDocsSection>
@@ -333,8 +326,7 @@
             bind:value={select}
             {options}
             label="With prepend icon"
-            class="col-xs-12 col-md-6"
-          >
+            class="col-xs-12 col-md-6">
             {#snippet prepend()}
               <QIcon name="pets" />
             {/snippet}
@@ -344,8 +336,7 @@
             bind:value={select}
             {options}
             label="With append icon"
-            class="col-xs-12 col-md-6"
-          >
+            class="col-xs-12 col-md-6">
             {#snippet append()}
               <QIcon name="favorite" />
             {/snippet}
@@ -355,8 +346,7 @@
             bind:value={select}
             {options}
             label="With before content"
-            class="col-xs-12 col-md-6"
-          >
+            class="col-xs-12 col-md-6">
             {#snippet before()}
               <div class="q-mr-sm">
                 <QIcon name="info" />
@@ -368,8 +358,7 @@
             bind:value={select}
             {options}
             label="With after content"
-            class="col-xs-12 col-md-6"
-          >
+            class="col-xs-12 col-md-6">
             {#snippet after()}
               <div class="q-ml-sm">
                 <QIcon name="help" />
@@ -414,8 +403,7 @@
               <QSelect
                 bind:value={dynamicSelect}
                 options={dynamicOptions}
-                label="Select a country"
-              />
+                label="Select a country" />
             </QCardSection>
 
             <QCardActions class="q-mt-md q-gap-sm flex" align="right">
@@ -423,8 +411,7 @@
               <QBtn
                 size="sm"
                 label="Reset countries"
-                onclick={() => (dynamicOptions = initialCountries)}
-              />
+                onclick={() => (dynamicOptions = initialCountries)} />
             </QCardActions>
           </QCard>
         </div>
@@ -444,8 +431,7 @@
             options={[]}
             label="Available options"
             outlined
-            style="max-width: 20rem"
-          />
+            style="max-width: 20rem" />
         </QLanguageExample>
       </QDocsSection>
 
@@ -499,8 +485,7 @@
               {options}
               label="Try keyboard navigation"
               hint="Use keyboard to interact with this select"
-              class="col-xs-12 col-sm-8 col-md-6"
-            />
+              class="col-xs-12 col-sm-8 col-md-6" />
           </div>
         </div>
       </QDocsSection>

@@ -65,8 +65,7 @@
 
 <QDocs
   docName="Notify"
-  docDescription="Create Material Design snackbars from code anywhere in your app."
->
+  docDescription="Create Material Design snackbars from code anywhere in your app.">
   {#snippet display()}
     <QBtn label="Notify me" onclick={() => replaceNotification("Message sent")} />
   {/snippet}
@@ -97,8 +96,7 @@
         code={`Notify.create({
   message: "Draft deleted",
   actions: [{ label: "Undo", handler: restoreDraft }]
-})`}
-      />
+})`} />
     </QDocsSection>
 
     <QDocsSection title="Notification Queue" noCode>
@@ -124,8 +122,7 @@
           label="Restore connection"
           variant="flat"
           disabled={!dismiss}
-          onclick={hidePersistent}
-        />
+          onclick={hidePersistent} />
       </div>
       <QCodeBlock
         language="ts"
@@ -135,8 +132,7 @@
 })
 
 // When the connection returns
-dismiss()`}
-      />
+dismiss()`} />
     </QDocsSection>
 
     <QDocsSection title="Defaults" noCode>
@@ -152,8 +148,8 @@ dismiss()`}
       {#snippet sectionDescription()}
         Notify supports one action and shows one snackbar at the bottom. It does not support extra
         positions, captions, or decorative icons because Material Design snackbars do not use them.
-        Use the <a class="q-docs-link" href={resolve("/components/snackbar")}>QSnackbar component</a
-        > when one component controls when it is shown.
+        Use the <a class="q-docs-link" href={resolve("/components/snackbar")}
+          >QSnackbar component</a> when one component controls when it is shown.
       {/snippet}
     </QDocsSection>
   {/snippet}

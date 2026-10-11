@@ -294,8 +294,7 @@ Tooltips explain controls or provide brief details on hover or focus. Attach the
     style:left="{coordinates.left}px"
     popover="manual"
     data-quaff-overlay
-    {@attach attachPopup}
-  >
+    {@attach attachPopup}>
     {@render children?.()}
   </div>
 {/if}

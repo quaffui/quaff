@@ -104,15 +104,13 @@
               icon="arrow_back"
               aria-label="Previous journal page"
               disabled={journalPageIndex === 0}
-              onclick={() => journalPageIndex--}
-            />
+              onclick={() => journalPageIndex--} />
             <QIconBtn
               icon="arrow_forward"
               variant="tonal"
               aria-label="Next journal page"
               disabled={journalPageIndex === JOURNAL_PAGES.length - 1}
-              onclick={() => journalPageIndex++}
-            />
+              onclick={() => journalPageIndex++} />
           </div>
         </QFooter>
       {/snippet}
@@ -174,8 +172,7 @@
               value={isStudioFooterVisible}
               bordered={hasStudioFooterBorder}
               height={128}
-              class="studio-footer column justify-center q-gap-sm"
-            >
+              class="studio-footer column justify-center q-gap-sm">
               <div class="studio-footer-main flex items-center justify-between">
                 <div class="flex items-center q-gap-sm">
                   <span class="studio-mark flex flex-center secondary" aria-hidden="true">
@@ -240,8 +237,7 @@
               <QBtn
                 variant="tonal"
                 label={isStayReserved ? "Cancel" : "Reserve"}
-                onclick={() => (isStayReserved = !isStayReserved)}
-              />
+                onclick={() => (isStayReserved = !isStayReserved)} />
             </QFooter>
           {/snippet}
         </QLayout>

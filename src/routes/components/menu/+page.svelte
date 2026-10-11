@@ -121,8 +121,7 @@
             <QBtn
               class="q-menu-docs__action"
               label="Open menu"
-              onclick={() => (isTargetMenuOpen = !isTargetMenuOpen)}
-            >
+              onclick={() => (isTargetMenuOpen = !isTargetMenuOpen)}>
               <QMenu bind:value={isTargetMenuOpen} target={customTarget}>
                 <QList dense>
                   <QItem clickable>
@@ -151,8 +150,7 @@
             <QBtn
               class="q-menu-docs__action"
               label="Bottom right"
-              onclick={() => (isRightMenuOpen = !isRightMenuOpen)}
-            >
+              onclick={() => (isRightMenuOpen = !isRightMenuOpen)}>
               <QMenu bind:value={isRightMenuOpen} anchor="bottom right" self="top right">
                 <QList dense>
                   <QItem clickable>
@@ -170,8 +168,7 @@
             <QBtn
               class="q-menu-docs__action"
               label="Fit to target"
-              onclick={() => (isFitMenuOpen = !isFitMenuOpen)}
-            >
+              onclick={() => (isFitMenuOpen = !isFitMenuOpen)}>
               <QMenu bind:value={isFitMenuOpen} fit>
                 <QList dense>
                   <QItem clickable>
@@ -198,8 +195,7 @@
             <QBtn
               class="q-menu-docs__action"
               label="Persistent content"
-              onclick={() => (isPersistentMenuOpen = !isPersistentMenuOpen)}
-            >
+              onclick={() => (isPersistentMenuOpen = !isPersistentMenuOpen)}>
               <QMenu bind:value={isPersistentMenuOpen} persistent autoClose={false}>
                 <QCard style="width: min(288px, calc(100vw - 32px));">
                   <QCardSection>

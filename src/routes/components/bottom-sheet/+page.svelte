@@ -100,8 +100,7 @@
           clickable
           aria-expanded={isPreviewOpen}
           aria-controls="preview-place-details"
-          onclick={() => (isPreviewOpen = true)}
-        >
+          onclick={() => (isPreviewOpen = true)}>
           <QItemSection type="side">
             <QAvatar class="tertiary" aria-hidden="true">
               <QIcon name="local_cafe" />
@@ -116,8 +115,7 @@
       <QBottomSheet
         id="preview-place-details"
         bind:value={isPreviewOpen}
-        aria-label="Place details"
-      >
+        aria-label="Place details">
         <h6 class="q-mb-sm">Riverside Café</h6>
         <div class="flex items-center q-gap-md q-mb-sm body-medium">
           <span class="flex items-center q-gap-xs">
@@ -169,20 +167,17 @@
                 variant="tonal"
                 label={isSaved ? "Saved" : "Save place"}
                 aria-pressed={isSaved}
-                onclick={() => (isSaved = !isSaved)}
-              />
+                onclick={() => (isSaved = !isSaved)} />
               <QBtn
                 variant="outlined"
                 label={isStandardOpen ? "Hide nearby places" : "Nearby places"}
-                onclick={() => (isStandardOpen = !isStandardOpen)}
-              />
+                onclick={() => (isStandardOpen = !isStandardOpen)} />
             </div>
           </div>
           <QBottomSheet
             bind:value={isStandardOpen}
             bind:expanded={isStandardExpanded}
-            aria-labelledby="nearby-places-title"
-          >
+            aria-labelledby="nearby-places-title">
             <h6 id="nearby-places-title" class="q-mb-sm">Nearby places</h6>
             <p>Good food, a little fresh air, and somewhere new.</p>
             <QList>
@@ -190,8 +185,7 @@
                 <QItem
                   clickable
                   active={selectedPlace === place.name}
-                  onclick={() => choosePlace(place.name)}
-                >
+                  onclick={() => choosePlace(place.name)}>
                   <QItemSection type="side">
                     <QAvatar class={place.color} aria-hidden="true">
                       <QIcon name={place.icon} />
@@ -228,8 +222,7 @@
               <QItem
                 clickable
                 active={selectedPlace === place.name}
-                onclick={() => choosePlace(place.name)}
-              >
+                onclick={() => choosePlace(place.name)}>
                 <QItemSection>{place.name}</QItemSection>
               </QItem>
             {/each}
@@ -246,13 +239,11 @@
         <QBtn
           variant="tonal"
           label="Travel preferences"
-          onclick={() => (isPreferencesOpen = true)}
-        />
+          onclick={() => (isPreferencesOpen = true)} />
         <QBottomSheet
           bind:value={isPreferencesOpen}
           modal
-          aria-labelledby="travel-preferences-title"
-        >
+          aria-labelledby="travel-preferences-title">
           <h6 id="travel-preferences-title" class="q-mb-lg">Travel preferences</h6>
           <div class="flex column q-gap-lg">
             <QCard fill="primary" class="flex items-center q-gap-md">
@@ -270,8 +261,7 @@
               options={TRAVEL_MODES}
               label="Travel mode"
               outlined
-              emitValue
-            />
+              emitValue />
             <QSwitch bind:value={hasNotifications} label="Journey reminders" />
             <p class="q-mb-none">
               {hasNotifications

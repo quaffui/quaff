@@ -185,7 +185,6 @@ Tabs organize related views and show the current selection. Choose primary, seco
   role="tablist"
   aria-orientation={variant === "vertical" ? "vertical" : "horizontal"}
   onfocusout={handleFocusout}
-  data-quaff
->
+  data-quaff>
   {@render children?.()}
 </nav>

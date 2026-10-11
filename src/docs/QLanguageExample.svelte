@@ -39,8 +39,7 @@
   emitValue
   outlined
   class="q-mb-lg"
-  style="max-width: 20rem"
-/>
+  style="max-width: 20rem" />
 
 <div lang={locale}>
   {@render children()}

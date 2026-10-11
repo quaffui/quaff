@@ -199,8 +199,7 @@ Dialogs focus attention on a task, decision, or message above the page. Choose a
   onclose={handleClose}
   onkeydown={handleKeydown}
   aria-hidden={!value || undefined}
-  data-quaff
->
+  data-quaff>
   {@render children?.()}
   <div class="q-dialog__overlay-root" data-quaff-overlay-root></div>
 </dialog>

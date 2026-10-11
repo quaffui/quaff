@@ -101,8 +101,7 @@
     <div class="rental-preview surface border overflow-auto">
       <div
         class="camera-art secondary-container items-center q-gap-y-sm q-gap-x-md"
-        aria-hidden="true"
-      >
+        aria-hidden="true">
         <span class="film-label label-medium">35 MM · MANUAL FOCUS</span>
         <QIcon name="photo_camera" size="48px" />
         <span class="frame-number label-medium">FRAME 01</span>
@@ -116,10 +115,9 @@
         <QDate range bind:value={rentalRange} label="Your rental dates" outlined />
         <div
           class="flex items-baseline justify-between q-gap-y-sm q-gap-x-md q-mt-md"
-          aria-live="polite"
-        >
-          <span class="body-medium">{rentalDays} days · {PRICE_FORMAT.format(dailyRate)} / day</span
-          >
+          aria-live="polite">
+          <span class="body-medium"
+            >{rentalDays} days · {PRICE_FORMAT.format(dailyRate)} / day</span>
           <strong class="headline-small">{rentalTotal}</strong>
         </div>
       </div>
@@ -161,8 +159,7 @@
               <dd class="q-ma-none">{describeDate(rentalRange?.end)}</dd>
             </div>
             <div
-              class="flex items-baseline justify-between q-gap-y-sm q-gap-x-md q-pt-md border-top border-outline-variant no-border-radius"
-            >
+              class="flex items-baseline justify-between q-gap-y-sm q-gap-x-md q-pt-md border-top border-outline-variant no-border-radius">
               <dt>{rentalDays} rental days</dt>
               <dd class="title-large q-ma-none">{rentalTotal}</dd>
             </div>
@@ -197,12 +194,10 @@
             defaultMode="input"
             locale="en-GB"
             labels={{ startDate: "Collection date", endDate: "Return date" }}
-            outlined
-          />
+            outlined />
           <div
             class="booking-note flex no-wrap items-center q-gap-md q-pa-md body-medium"
-            aria-live="polite"
-          >
+            aria-live="polite">
             <QIcon name="event_available" size="24px" aria-hidden="true" />
             <span class="min-width-0">{countDays(inputRange)} days reserved in your plan</span>
           </div>
@@ -242,15 +237,12 @@
             disabledDates={MAINTENANCE_DATES}
             firstDayOfWeek={1}
             locale="en-GB"
-            outlined
-          />
+            outlined />
           <div
-            class="booking-note flex no-wrap items-center q-gap-md q-pa-md tertiary-container body-medium"
-          >
+            class="booking-note flex no-wrap items-center q-gap-md q-pa-md tertiary-container body-medium">
             <QIcon name="build" size="24px" aria-hidden="true" />
             <span class="min-width-0"
-              >In the workshop 14–16 October. Rentals must fit either side of maintenance.</span
-            >
+              >In the workshop 14–16 October. Rentals must fit either side of maintenance.</span>
           </div>
           <p class="body-medium q-ma-none" aria-live="polite">
             Your plan: {describeDate(availableRange?.start)} – {describeDate(availableRange?.end)}
@@ -286,16 +278,14 @@
               hint="DD.MM.YYYY"
               error={!!dockedValidation}
               errorMessage={dockedValidation}
-              outlined
-            >
+              outlined>
               {#snippet append()}
                 <QDate
                   bind:value={dockedDate}
                   bind:validationMessage={dockedValidation}
                   variant="docked"
                   mask="DD.MM.YYYY"
-                  locale="de-DE"
-                />
+                  locale="de-DE" />
               {/snippet}
             </QInput>
             <p class="body-medium q-ma-none" aria-live="polite">
@@ -314,8 +304,7 @@
                 bind:validationMessage={adaptiveValidation}
                 variant="adaptive"
                 label="Choose equipment rental dates"
-                autoApply
-              />
+                autoApply />
             {/snippet}
             {#each RANGE_FIELDS as field (field.key)}
               <QInput
@@ -329,8 +318,7 @@
                 error={!!adaptiveValidation}
                 errorMessage={adaptiveValidation}
                 append={field.key === "end" ? adaptivePicker : undefined}
-                filled
-              />
+                filled />
             {/each}
             <p class="body-medium q-ma-none" aria-live="polite">
               {countDays(adaptiveRange)} days with the wide-angle lens
@@ -373,8 +361,7 @@
           <p>
             Switch languages to translate the picker labels, actions, and validation messages. See <a
               class="q-docs-link"
-              href={resolve("/utils/quaff#language")}>available locales</a
-            >
+              href={resolve("/utils/quaff#language")}>available locales</a>
             for setup instructions.
           </p>
         {/snippet}
@@ -386,8 +373,7 @@
               range
               value={{ start: "2026-11-09", end: "2026-11-13" }}
               outlined
-              class="full-width"
-            />
+              class="full-width" />
           </QLanguageExample>
         </div>
       </QDocsSection>
@@ -417,15 +403,13 @@
             cancelLabel="Keep dates"
             saveLabel="Update"
             labels={{ startDate: "Collect", endDate: "Return" }}
-            outlined
-          />
+            outlined />
           <div class="example-actions flex">
             <QBtn
               variant="tonal"
               icon="edit_calendar"
               label="Edit request"
-              onclick={controlledPicker?.show}
-            />
+              onclick={controlledPicker?.show} />
             <QBtn variant="outlined" label="Toggle picker" onclick={controlledPicker?.toggle} />
           </div>
           <p class="body-small text-on-surface-variant q-ma-none" aria-live="polite">

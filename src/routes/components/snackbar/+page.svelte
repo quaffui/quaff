@@ -103,8 +103,7 @@
         <QSnackbar
           bind:value={basicOpen}
           message="Preferences saved"
-          onHidden={handleSnackbarHidden}
-        />
+          onHidden={handleSnackbarHidden} />
       </QDocsSection>
 
       <QDocsSection title="Snackbar with Action">
@@ -121,8 +120,7 @@
           bind:value={actionOpen}
           message="Item removed"
           action={undoAction}
-          onHidden={handleSnackbarHidden}
-        />
+          onHidden={handleSnackbarHidden} />
       </QDocsSection>
 
       <QDocsSection title="Close Button">
@@ -136,8 +134,7 @@
           bind:value={dismissibleOpen}
           message="Your connection is restored"
           dismissible
-          onHidden={handleSnackbarHidden}
-        />
+          onHidden={handleSnackbarHidden} />
       </QDocsSection>
 
       <QDocsSection title="Longer Action">
@@ -152,8 +149,7 @@
           action={reviewAction}
           actionOnNewLine
           dismissible
-          onHidden={handleSnackbarHidden}
-        />
+          onHidden={handleSnackbarHidden} />
       </QDocsSection>
 
       <QDocsSection title="Placement" noCode>

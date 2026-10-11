@@ -86,13 +86,11 @@
           if (e.key === "Enter") {
             goto(util.href);
           }
-        }}
-      >
+        }}>
         <QCard
           class={["q-utils__card", util.hovered && "q-utils__card--hovered"]}
           style="height: 100%; transition: all 0.3s; overflow: hidden"
-          fill={util.hovered ? "primary" : undefined}
-        >
+          fill={util.hovered ? "primary" : undefined}>
           <QCardSection class="text-center headline-medium">
             {util.name}
           </QCardSection>

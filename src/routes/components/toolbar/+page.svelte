@@ -32,8 +32,7 @@
 <QDocs>
   {#snippet display()}
     <div
-      class="q-toolbar-docs__call flex column items-center q-gap-md q-pa-lg text-center tertiary-container"
-    >
+      class="q-toolbar-docs__call flex column items-center q-gap-md q-pa-lg text-center tertiary-container">
       <QAvatar size="64px" class="tertiary">AM</QAvatar>
       <span class="title-large">Design catch-up</span>
       <QToolbar floating vibrant aria-label="Call preview controls">
@@ -42,22 +41,19 @@
           icon={isMicrophoneOn ? "mic" : "mic_off"}
           bind:selected={isMicrophoneOn}
           aria-label="Microphone"
-          title="Microphone"
-        />
+          title="Microphone" />
         <QIconBtn
           expressive
           icon={isCameraOn ? "videocam" : "videocam_off"}
           bind:selected={isCameraOn}
           aria-label="Camera"
-          title="Camera"
-        />
+          title="Camera" />
         <QIconBtn
           expressive
           icon="front_hand"
           bind:selected={isHandRaised}
           aria-label="Raise hand"
-          title="Raise hand"
-        />
+          title="Raise hand" />
       </QToolbar>
       <span class="body-medium">
         {isMicrophoneOn ? "Mic on" : "Mic off"} · {isCameraOn ? "Camera on" : "Camera off"}
@@ -79,8 +75,7 @@
 
       <QSwitch bind:value={isVibrant} label="Vibrant colors" class="q-mb-md" />
       <div
-        class="q-toolbar-docs__call flex column items-center q-gap-md q-pa-lg text-center secondary-container"
-      >
+        class="q-toolbar-docs__call flex column items-center q-gap-md q-pa-lg text-center secondary-container">
         <QAvatar size="64px" class="tertiary">AM</QAvatar>
         <span class="title-medium">Alex Morgan</span>
         <QToolbar floating vibrant={isVibrant} aria-label="Call controls">
@@ -89,22 +84,19 @@
             icon={isMicrophoneOn ? "mic" : "mic_off"}
             bind:selected={isMicrophoneOn}
             aria-label="Microphone"
-            title="Microphone"
-          />
+            title="Microphone" />
           <QIconBtn
             expressive
             icon={isCameraOn ? "videocam" : "videocam_off"}
             bind:selected={isCameraOn}
             aria-label="Camera"
-            title="Camera"
-          />
+            title="Camera" />
           <QIconBtn
             expressive
             icon="front_hand"
             bind:selected={isHandRaised}
             aria-label="Raise hand"
-            title="Raise hand"
-          />
+            title="Raise hand" />
         </QToolbar>
         <span class="body-medium" aria-live="polite">
           {isMicrophoneOn ? "Mic on" : "Mic off"} · {isCameraOn ? "Camera on" : "Camera off"}
@@ -125,8 +117,7 @@
           <img
             src="/cocktail.jpg"
             alt="Colorful fruit cocktail"
-            style:transform={`scale(${zoom})`}
-          />
+            style:transform={`scale(${zoom})`} />
         </div>
         <QToolbar aria-label="Photo controls">
           <QIconBtn
@@ -135,23 +126,20 @@
             aria-label="Zoom out"
             title="Zoom out"
             disabled={zoom === 1}
-            onclick={() => (zoom -= 0.25)}
-          />
+            onclick={() => (zoom -= 0.25)} />
           <QIconBtn
             expressive
             icon="zoom_in"
             aria-label="Zoom in"
             title="Zoom in"
             disabled={zoom === 2}
-            onclick={() => (zoom += 0.25)}
-          />
+            onclick={() => (zoom += 0.25)} />
           <QIconBtn
             expressive
             icon="favorite"
             bind:selected={isFavorite}
             aria-label="Favorite photo"
-            title="Favorite photo"
-          />
+            title="Favorite photo" />
         </QToolbar>
       </div>
       <p class="body-medium q-mt-sm" aria-live="polite">
@@ -174,29 +162,25 @@
             icon="format_bold"
             bind:selected={isBold}
             aria-label="Bold"
-            title="Bold"
-          />
+            title="Bold" />
           <QIconBtn
             expressive
             icon="format_italic"
             bind:selected={isItalic}
             aria-label="Italic"
-            title="Italic"
-          />
+            title="Italic" />
           <QIconBtn
             expressive
             icon="format_underlined"
             bind:selected={isUnderlined}
             aria-label="Underline"
-            title="Underline"
-          />
+            title="Underline" />
         </QToolbar>
         <p
           class="title-large q-ma-none"
           class:text-bold={isBold}
           class:text-italic={isItalic}
-          style:text-decoration={isUnderlined ? "underline" : undefined}
-        >
+          style:text-decoration={isUnderlined ? "underline" : undefined}>
           Make room for good ideas.
         </p>
       </div>

@@ -84,15 +84,13 @@
           label="Disabled Outlined"
           class="q-mt-md"
           disabled
-          outlined
-        />
+          outlined />
         <QInput
           bind:value={disabledValue}
           label="Disabled Filled"
           class="q-mt-md"
           disabled
-          filled
-        />
+          filled />
       </QDocsSection>
 
       <QDocsSection title="Validation and Hints">
@@ -105,16 +103,14 @@
           bind:value={hintValue}
           label="With Hint"
           class="q-mt-md"
-          hint="Please enter your username"
-        />
+          hint="Please enter your username" />
         <QInput
           bind:value={errorValue}
           label="Error State"
           class="q-mt-md"
           error
           errorMessage="Username is already taken."
-          outlined
-        />
+          outlined />
         <QInput
           bind:value={errorValue}
           label="Error State with Hint"
@@ -122,8 +118,7 @@
           error
           hint="This hint is hidden"
           errorMessage="Only the error message shows."
-          filled
-        />
+          filled />
       </QDocsSection>
 
       <QDocsSection title="Native Input Attributes">
@@ -138,8 +133,7 @@
           step={1}
           label="Year"
           class="q-mt-md"
-          outlined
-        />
+          outlined />
         <QInput
           bind:value={handleValue}
           maxlength={16}
@@ -150,8 +144,7 @@
           outlined
           oninput={(event) => {
             lastInputValue = event.currentTarget.value;
-          }}
-        />
+          }} />
         <p class="q-mt-sm">Last input event value: {lastInputValue || "None"}</p>
       </QDocsSection>
 
@@ -175,8 +168,7 @@
           unmaskedValue
           label="Phone"
           class="q-mt-md"
-          outlined
-        />
+          outlined />
         <p class="q-mt-sm">Unmasked phone value: {phoneValue || "None"}</p>
         <QInput
           bind:value={batchCodeValue}
@@ -185,8 +177,7 @@
           fillMask
           label="Batch code"
           class="q-mt-md"
-          outlined
-        />
+          outlined />
         <p class="q-mt-sm">Masked batch code: {batchCodeValue || "None"}</p>
       </QDocsSection>
 
@@ -220,8 +211,7 @@
               outlined
               class="q-ml-sm"
               label="Go"
-              onclick={() => Notify.create("Button clicked!")}
-            />
+              onclick={() => Notify.create("Button clicked!")} />
           {/snippet}
         </QInput>
         <QInput bind:value={combinedValue} label="Combined Slots" class="q-mt-md" rounded>

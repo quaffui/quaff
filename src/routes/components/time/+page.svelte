@@ -43,15 +43,13 @@
       error={Boolean(basicValidationMessage)}
       errorMessage={basicValidationMessage}
       filled
-      style="width: min(352px, 100%)"
-    >
+      style="width: min(352px, 100%)">
       {#snippet append()}
         <QTime
           bind:value={basicTime}
           bind:validationMessage={basicValidationMessage}
           variant="adaptive"
-          autoApply
-        />
+          autoApply />
       {/snippet}
     </QInput>
   {/snippet}
@@ -78,8 +76,7 @@
               label="Arrival time"
               defaultMode="input"
               locale="de-DE"
-              filled
-            />
+              filled />
           </div>
         </div>
       </QDocsSection>
@@ -99,15 +96,13 @@
           error={Boolean(dockedValidationMessage)}
           errorMessage={dockedValidationMessage}
           outlined
-          style="max-width: 20rem"
-        >
+          style="max-width: 20rem">
           {#snippet append()}
             <QTime
               bind:value={dockedTime}
               bind:validationMessage={dockedValidationMessage}
               variant="docked"
-              format24h
-            />
+              format24h />
           {/snippet}
         </QInput>
       </QDocsSection>
@@ -127,14 +122,12 @@
           error={Boolean(adaptiveValidationMessage)}
           errorMessage={adaptiveValidationMessage}
           filled
-          style="max-width: 20rem"
-        >
+          style="max-width: 20rem">
           {#snippet append()}
             <QTime
               bind:value={adaptiveTime}
               bind:validationMessage={adaptiveValidationMessage}
-              variant="adaptive"
-            />
+              variant="adaptive" />
           {/snippet}
         </QInput>
       </QDocsSection>
@@ -157,15 +150,13 @@
             label="12-hour clock"
             locale="en-US"
             format24h={false}
-            outlined
-          />
+            outlined />
           <QTime
             bind:value={twentyFourHourTime}
             label="24-hour clock"
             locale="de-DE"
             format24h
-            outlined
-          />
+            outlined />
         </div>
       </QDocsSection>
 
@@ -220,8 +211,7 @@
             confirmLabel="Apply"
             cancelLabel="Back"
             labels={{ timeInput: "Appointment time", invalidTime: "Check the appointment time" }}
-            outlined
-          />
+            outlined />
 
           <div class="flex q-gap-sm q-mt-md">
             <QBtn size="sm" label="Show" onclick={controlledPicker?.show} />

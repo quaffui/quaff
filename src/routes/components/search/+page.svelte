@@ -226,8 +226,7 @@
       status={`${previewPlaces.length} places found`}
       placeholder="Find a little adventure"
       aria-label="Find a little adventure"
-      style="max-width: 28rem;"
-    >
+      style="max-width: 28rem;">
       {#snippet children({ close })}
         <p class="label-large q-px-md q-pt-sm">Somewhere nearby</p>
         <QList tag="ul" role="list" aria-label="Nearby places">
@@ -238,8 +237,7 @@
                 onclick={() => {
                   previewQuery = place.name;
                   close();
-                }}
-              >
+                }}>
                 {#snippet leading()}<QIcon aria-hidden="true" name={place.icon} />{/snippet}
                 {place.name}
                 {#snippet line1()}{place.distance}{/snippet}
@@ -273,8 +271,7 @@
             expressive={false}
             placeholder="Search places nearby"
             aria-label="Search places nearby"
-            status={`${matchingPlaces.length} places found`}
-          >
+            status={`${matchingPlaces.length} places found`}>
             {#snippet children({ close })}
               <div class="flex q-gap-sm q-pa-md" role="group" aria-label="Place categories">
                 {#each placeCategories as category (category)}
@@ -282,8 +279,7 @@
                     kind="filter"
                     label={category}
                     selected={placeCategory === category}
-                    onclick={(event) => handlePlaceCategory(event, category)}
-                  />
+                    onclick={(event) => handlePlaceCategory(event, category)} />
                 {/each}
               </div>
               <QList tag="ul" role="list" aria-label="Matching places">
@@ -298,8 +294,7 @@
                 {:else}
                   <QItem tag="li">
                     <QItemSection
-                      >No places found. Try a different category or a shorter search.</QItemSection
-                    >
+                      >No places found. Try a different category or a shorter search.</QItemSection>
                   </QItem>
                 {/each}
               </QList>
@@ -334,8 +329,7 @@
             aria-label="Search the notebook"
             status={submittedQuery
               ? `${matchingDocuments.length} documents found for ${submittedQuery}`
-              : "Choose a recent search or submit a query"}
-          >
+              : "Choose a recent search or submit a query"}>
             {#snippet children({ close, search })}
               {#if submittedQuery}
                 <p class="label-large q-px-md q-pt-md">Results for “{submittedQuery}”</p>
@@ -345,8 +339,7 @@
                       <QItemSection action onclick={() => handleSelectDocument(document, close)}>
                         {#snippet leading()}<QIcon
                             aria-hidden="true"
-                            name="description"
-                          />{/snippet}
+                            name="description" />{/snippet}
                         {document.title}
                         {#snippet line1()}{document.summary}{/snippet}
                         {#snippet line2()}{document.category} · {document.date}{/snippet}
@@ -356,8 +349,7 @@
                     <QItem tag="li">
                       <QItemSection
                         >No documents match “{submittedQuery}”. Try “design”, “research”, or
-                        “mobile”.</QItemSection
-                      >
+                        “mobile”.</QItemSection>
                     </QItem>
                   {/each}
                 </QList>
@@ -399,8 +391,7 @@
             expressive
             placeholder="Find a soundscape"
             aria-label="Find a soundscape"
-            status={`${matchingRecordings.length} recordings found`}
-          >
+            status={`${matchingRecordings.length} recordings found`}>
             {#snippet children({ close })}
               <div class="q-pa-md">
                 <h6 class="q-mb-sm">Listen a little closer.</h6>
@@ -413,8 +404,7 @@
                       {#snippet leading()}<QIcon
                           aria-hidden="true"
                           name={recording.icon}
-                          size={32}
-                        />{/snippet}
+                          size={32} />{/snippet}
                       {recording.title}
                       {#snippet line1()}{recording.location} · {recording.duration}{/snippet}
                     </QItemSection>
@@ -427,14 +417,13 @@
                         type="button"
                         aria-label={`Save ${recording.title}`}
                         selected={savedTitles.includes(recording.title)}
-                        onclick={(event) => handleBookmarkRecording(event, recording.title)}
-                      />
+                        onclick={(event) => handleBookmarkRecording(event, recording.title)} />
                     </QItemSection>
                   </QItem>
                 {:else}
                   <QItem tag="li">
-                    <QItemSection>Nothing here yet. Try “rain”, “harbour”, or “train”.</QItemSection
-                    >
+                    <QItemSection
+                      >Nothing here yet. Try “rain”, “harbour”, or “train”.</QItemSection>
                   </QItem>
                 {/each}
               </QList>
@@ -446,8 +435,7 @@
               <div class="title-medium">{selectedRecording.title}</div>
               <p class="q-my-sm">{selectedRecording.description}</p>
               <span class="label-medium"
-                >{selectedRecording.location} · {selectedRecording.duration}</span
-              >
+                >{selectedRecording.location} · {selectedRecording.duration}</span>
             </div>
           </div>
           <div class="q-mt-lg">
@@ -458,12 +446,10 @@
                   kind="input"
                   label={title}
                   trailingIcon="close"
-                  onTrailingIconClick={() => toggleSavedRecording(title)}
-                />
+                  onTrailingIconClick={() => toggleSavedRecording(title)} />
               {:else}
                 <span class="body-medium"
-                  >Open search and bookmark a recording to start your shortlist.</span
-                >
+                  >Open search and bookmark a recording to start your shortlist.</span>
               {/each}
             </div>
           </div>

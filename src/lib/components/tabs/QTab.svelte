@@ -122,8 +122,7 @@ Tabs allow creating navigational tabs, enabling users to switch between differen
   {onclick}
   {onkeydown}
   {onfocus}
-  data-quaff
->
+  data-quaff>
   <div class="q-tab__content">
     <QIconSnippet {icon} class="q-tab__icon" />
 

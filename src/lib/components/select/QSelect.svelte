@@ -372,15 +372,13 @@ Select fields let users choose one or more values from a dropdown. Typing and fi
       bind:this={menuTarget}
       for={inputId}
       class="q-field__wrapper"
-      onmousedown={handleBackgroundMousedown}
-    >
+      onmousedown={handleBackgroundMousedown}>
       {#if prepend}
         <!-- svelte-ignore a11y_no_static_element_interactions (Only background clicks activate the associated combobox.) -->
         <div
           class="q-field__snippet-prepend"
           bind:clientWidth={snippetPrependWidth}
-          onmousedown={handleBackgroundMousedown}
-        >
+          onmousedown={handleBackgroundMousedown}>
           {@render prepend()}
         </div>
       {/if}
@@ -407,8 +405,7 @@ Select fields let users choose one or more values from a dropdown. Typing and fi
         onkeydown={handleKeydown}
         {disabled}
         tabindex={disabled === true ? -1 : 0}
-        readonly={!useInput}
-      />
+        readonly={!useInput} />
 
       <span class="q-field__label"><span class="q-field__label-text">{label}</span></span>
 
@@ -419,8 +416,7 @@ Select fields let users choose one or more values from a dropdown. Typing and fi
         <QIcon
           class="q-select__arrow-toggle {append ? 'q-select__arrow-toggle--has-append' : ''}"
           name={`arrow_drop_${isMenuOpen ? "up" : "down"}`}
-          onmousedown={handleMousedown}
-        />
+          onmousedown={handleMousedown} />
       </div>
     </label>
 
@@ -432,8 +428,7 @@ Select fields let users choose one or more values from a dropdown. Typing and fi
       class="q-select__menu"
       id={listboxId}
       role="listbox"
-      aria-multiselectable={multiple ? "true" : undefined}
-    >
+      aria-multiselectable={multiple ? "true" : undefined}>
       <QList dense preserveTabOrder>
         {#each visibleOptions as option, idx (idx)}
           <QItem
@@ -447,8 +442,7 @@ Select fields let users choose one or more values from a dropdown. Typing and fi
             aria-selected={isOptionSelectedByIndex[idx] ? "true" : "false"}
             onmousedown={handleOptionMousedown}
             onmousemove={() => (focusedOptionIndex = idx)}
-            onclick={(e) => handleOptionClick(e, option, idx)}
-          >
+            onclick={(e) => handleOptionClick(e, option, idx)}>
             <QItemSection>{getOptionLabel(option, options)}</QItemSection>
           </QItem>
         {:else}

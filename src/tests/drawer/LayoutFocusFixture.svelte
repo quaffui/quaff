@@ -17,8 +17,7 @@
       overlay
       bordered
       noSwipe
-      aria-label="Navigation"
-    >
+      aria-label="Navigation">
       <div id="drawer-list" style="height: 200px; overflow: auto;">
         <button id="drawer-action">Drawer action</button>
         <div style="height: 800px;"></div>

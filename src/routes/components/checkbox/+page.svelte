@@ -93,8 +93,7 @@
     <div class="trunk-preview full-width overflow-auto surface q-pa-lg">
       <div
         class="mini-stage tertiary-container flex no-wrap items-center justify-between overflow-hidden"
-        aria-hidden="true"
-      >
+        aria-hidden="true">
         <span class="stage-curtain full-height tertiary"></span>
         <QIcon name="theater_comedy" size="48px" />
         <span class="stage-curtain full-height tertiary"></span>
@@ -104,8 +103,7 @@
       <QCheckbox
         label="Touring trunk checked"
         bind:value={isTrunkReady}
-        bind:indeterminate={isTrunkMixed}
-      />
+        bind:indeterminate={isTrunkMixed} />
       <p class="body-small q-mt-sm q-mb-none" role="status">
         {trunkStatus}
       </p>
@@ -116,8 +114,7 @@
         onclick={() => {
           isTrunkReady = false;
           isTrunkMixed = true;
-        }}
-      />
+        }} />
     </div>
   {/snippet}
 
@@ -142,14 +139,12 @@
             </div>
           </div>
           <div
-            class="checklist-summary secondary-container flex items-center justify-between q-gap-md q-pa-md q-mb-lg"
-          >
+            class="checklist-summary secondary-container flex items-center justify-between q-gap-md q-pa-md q-mb-lg">
             <QCheckbox
               label="All departments ready"
               value={isFullyPrepared}
               indeterminate={isPartlyPrepared}
-              onchange={selectAll}
-            />
+              onchange={selectAll} />
             <span class="label-large">{readyCount} / {CHECKS.length}</span>
           </div>
           <div class="flex column q-gap-lg">
@@ -160,8 +155,7 @@
                   <QCheckbox
                     label={check.title}
                     bind:value={prepared[index]}
-                    onchange={(event) => recordChange(event, check.title)}
-                  />
+                    onchange={(event) => recordChange(event, check.title)} />
                   <p class="body-medium text-on-surface-variant q-mt-xs q-mb-none">
                     {check.detail}
                   </p>
@@ -174,13 +168,11 @@
             <QIcon
               name={isFullyPrepared ? "task_alt" : "pending_actions"}
               class="text-primary"
-              aria-hidden="true"
-            />
+              aria-hidden="true" />
             <span class="title-medium"
               >{isFullyPrepared
                 ? "The stage is ready."
-                : `${CHECKS.length - readyCount} departments still to check.`}</span
-            >
+                : `${CHECKS.length - readyCount} departments still to check.`}</span>
           </div>
           <p class="body-small text-on-surface-variant q-mt-sm q-mb-none" role="status">
             {lastChange}
@@ -202,8 +194,7 @@
             label="I have reviewed the stage checklist"
             bind:value={isConfirmed}
             error={hasConfirmationError}
-            onchange={() => (isVenueOpen = false)}
-          />
+            onchange={() => (isVenueOpen = false)} />
           {#if hasConfirmationError}
             <p class="body-medium text-error q-mt-sm q-mb-none" role="alert">
               Confirm the handover before opening the doors.
@@ -215,15 +206,13 @@
               variant="tonal"
               icon="door_front"
               label={isVenueOpen ? "Doors are open" : "Open the doors"}
-              disabled={isVenueOpen}
-            />
+              disabled={isVenueOpen} />
             <QBtn
               type="button"
               variant="outlined"
               icon="restart_alt"
               label="Reset rehearsal"
-              onclick={resetRehearsal}
-            />
+              onclick={resetRehearsal} />
           </div>
           <p class="body-medium q-ma-none" role="status">
             {#if isVenueOpen}

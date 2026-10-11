@@ -387,8 +387,7 @@ Carousels let users browse items in a scrolling row or full-screen view. Add nav
   role={props.role ?? (props["aria-label"] || props["aria-labelledby"] ? "region" : "group")}
   aria-roledescription={text.carousel}
   onkeydown={handleKeydown}
-  data-quaff
->
+  data-quaff>
   <div
     bind:this={viewport}
     class="q-carousel__viewport"
@@ -407,21 +406,18 @@ Carousels let users browse items in a scrolling row or full-screen view. Add nav
     onpointerleave={() => !dragging && handlePointerEnd()}
     ondragstart={(event) => event.preventDefault()}
     onclickcapture={handleClickCapture}
-    {@attach observeViewport}
-  >
+    {@attach observeViewport}>
     <div
       class="q-carousel__rail"
       style:width={vertical ? "100%" : `${layout.length + leading}px`}
-      style:height={vertical ? `${layout.length}px` : "100%"}
-    >
+      style:height={vertical ? `${layout.length}px` : "100%"}>
       {#each items as item, index (index)}
         {@const frame = frames[index]}
         <span
           class="q-carousel__snap"
           aria-hidden="true"
           style:inset-inline-start={vertical ? "0" : `${layout.offsets[index]}px`}
-          style:top={vertical ? `${layout.offsets[index]}px` : "0"}
-        ></span>
+          style:top={vertical ? `${layout.offsets[index]}px` : "0"}></span>
         <svelte:element
           this={onselect ? "button" : "div"}
           class="q-carousel__item"
@@ -438,8 +434,7 @@ Carousels let users browse items in a scrolling row or full-screen view. Add nav
           style:height={vertical ? `${frame.size}px` : "100%"}
           style:--q-carousel-content-size={`${frame.contentSize}px`}
           onclick={onselect ? () => onselect?.(item, index) : undefined}
-          {@attach ripple({ disabled: !onselect })}
-        >
+          {@attach ripple({ disabled: !onselect })}>
           <div class="q-carousel__content">{@render children({ item, index })}</div>
           {#if onselect && !itemLabel}
             <span id={`${id}-${index}`} hidden>{text.position(index, items.length)}</span>
@@ -456,20 +451,17 @@ Carousels let users browse items in a scrolling row or full-screen view. Add nav
           icon={vertical ? "arrow_upward" : previousHorizontalIcon}
           aria-label={text.previous}
           disabled={previousIndex < 0}
-          onclick={() => navigateToIndex(previousIndex)}
-        />
+          onclick={() => navigateToIndex(previousIndex)} />
         <QIconBtn
           type="button"
           icon={vertical ? "arrow_downward" : nextHorizontalIcon}
           aria-label={text.next}
           disabled={nextIndex < 0}
-          onclick={() => navigateToIndex(nextIndex)}
-        />
+          onclick={() => navigateToIndex(nextIndex)} />
       {/if}
       {@render showAll?.()}
     </div>
   {/if}
   <span class="q-carousel__status" aria-live="polite" aria-atomic="true"
-    >{items.length ? text.position(current, items.length) : ""}</span
-  >
+    >{items.length ? text.position(current, items.length) : ""}</span>
 </section>

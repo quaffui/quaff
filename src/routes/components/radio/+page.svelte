@@ -59,22 +59,19 @@
             name="basic"
             value="option1"
             bind:selected={selectedValue}
-            label="Option 1"
-          />
+            label="Option 1" />
           <QRadio
             class="q-ma-sm"
             name="basic"
             value="option2"
             bind:selected={selectedValue}
-            label="Option 2"
-          />
+            label="Option 2" />
           <QRadio
             class="q-ma-sm"
             name="basic"
             value="option3"
             bind:selected={selectedValue}
-            label="Option 3"
-          />
+            label="Option 3" />
           <div class="q-mt-sm">Selected value: {selectedValue}</div>
         </div>
       </QDocsSection>
@@ -94,29 +91,25 @@
                 name="fruit"
                 value="apple"
                 bind:selected={selectedFruit}
-                label="Apple"
-              />
+                label="Apple" />
               <QRadio
                 class="q-ma-sm"
                 name="fruit"
                 value="banana"
                 bind:selected={selectedFruit}
-                label="Banana"
-              />
+                label="Banana" />
               <QRadio
                 class="q-ma-sm"
                 name="fruit"
                 value="orange"
                 bind:selected={selectedFruit}
-                label="Orange"
-              />
+                label="Orange" />
               <QRadio
                 class="q-ma-sm"
                 name="fruit"
                 value="strawberry"
                 bind:selected={selectedFruit}
-                label="Strawberry"
-              />
+                label="Strawberry" />
             </div>
           </QCardSection>
           <QCardSection>
@@ -139,8 +132,7 @@
             value="disabled-selected"
             selected="disabled-selected"
             label="Disabled and selected"
-            disabled
-          />
+            disabled />
         </div>
       </QDocsSection>
 
@@ -157,22 +149,19 @@
               name="color"
               value="red"
               bind:selected={selectedColor}
-              label="Red"
-            />
+              label="Red" />
             <QRadio
               class="q-ma-sm"
               name="color"
               value="green"
               bind:selected={selectedColor}
-              label="Green"
-            />
+              label="Green" />
             <QRadio
               class="q-ma-sm"
               name="color"
               value="blue"
               bind:selected={selectedColor}
-              label="Blue"
-            />
+              label="Blue" />
           </div>
 
           <div class="flex q-gap-md items-center">
@@ -183,8 +172,8 @@
           <div>
             <div
               style="width: 100px; height: 40px; background-color: {selectedColor}; 
-                border-radius: 4px; border: 1px solid var(--outline)"
-            ></div>
+                border-radius: 4px; border: 1px solid var(--outline)">
+            </div>
           </div>
         </div>
       </QDocsSection>
@@ -206,8 +195,7 @@
                       name="list-options"
                       value={option.value}
                       bind:selected={radioListValue}
-                      aria-label={option.label}
-                    />
+                      aria-label={option.label} />
                   </QItemSection>
                   <QItemSection>
                     {#snippet headline()}
@@ -233,8 +221,7 @@
                       value={option.value}
                       bind:selected={itemListValue}
                       aria-label={option.label}
-                      onclick={stopPropagation}
-                    />
+                      onclick={stopPropagation} />
                   </QItemSection>
                   <QItemSection>
                     {#snippet headline()}
@@ -267,8 +254,7 @@
                 name="programming-language"
                 value={language.toLowerCase()}
                 bind:selected={selectedProgrammingLanguage}
-                label={language}
-              />
+                label={language} />
             {/each}
             <div class="q-mt-sm">You selected: {selectedProgrammingLanguage || "Nothing yet"}</div>
           </QCard>
@@ -288,16 +274,14 @@
             value="event-option1"
             bind:selected={eventSelectedValue}
             label="Option with event handler"
-            onchange={() => Notify.create(`Changed to: ${eventSelectedValue}`)}
-          />
+            onchange={() => Notify.create(`Changed to: ${eventSelectedValue}`)} />
           <QRadio
             class="q-ma-sm"
             name="event-options"
             value="event-option2"
             bind:selected={eventSelectedValue}
             label="Another option"
-            onchange={() => Notify.create(`Changed to: ${eventSelectedValue}`)}
-          />
+            onchange={() => Notify.create(`Changed to: ${eventSelectedValue}`)} />
         </div>
       </QDocsSection>
 
@@ -315,26 +299,22 @@
           <div
             class="flex column q-gap-md"
             role="radiogroup"
-            aria-labelledby="notification-method-label"
-          >
+            aria-labelledby="notification-method-label">
             <QRadio
               name="notification-method"
               value="email"
               bind:selected={notificationMethod}
-              label="Email"
-            />
+              label="Email" />
             <QRadio
               name="notification-method"
               value="push"
               bind:selected={notificationMethod}
-              label="Push notification"
-            />
+              label="Push notification" />
             <QRadio
               name="notification-method"
               value="none"
               bind:selected={notificationMethod}
-              label="None"
-            />
+              label="None" />
           </div>
         </div>
       </QDocsSection>

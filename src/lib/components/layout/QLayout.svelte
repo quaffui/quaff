@@ -282,8 +282,7 @@ Layouts arrange content around headers, footers, drawers, and navigation. Config
   style:--left-railbar-z-index={view.charAt(0) === "h" ? 3 : 5}
   style:--right-railbar-z-index={view.charAt(2) === "h" ? 3 : 5}
   style:--left-drawer-z-index={view.charAt(0) === "h" ? 2 : 4}
-  style:--right-drawer-z-index={view.charAt(2) === "h" ? 2 : 4}
->
+  style:--right-drawer-z-index={view.charAt(2) === "h" ? 2 : 4}>
   {@render railbarStart?.()}
   {@render railbarEnd?.()}
   {@render drawerStart?.()}
@@ -310,8 +309,7 @@ Layouts arrange content around headers, footers, drawers, and navigation. Config
       rightRailbarCtx.symbol,
       leftDrawerCtx.symbol,
       rightDrawerCtx.symbol,
-    ]}
-  >
+    ]}>
     <div class="q-layout__content" {onscroll}>
       {#if content}
         {@render content()}

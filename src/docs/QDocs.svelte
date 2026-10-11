@@ -55,13 +55,11 @@
 <div
   class="q-docs full-width q-mx-auto"
   style="--q-hue-rotate: {hueRotate}deg; --q-brightness: {brightness}; max-width: {Quaff.screen
-    .sizes.lg}px;"
->
+    .sizes.lg}px;">
   <div class="q-docs__hero row q-gutter-lg" style="min-height: 400px">
     <QCard
       class="q-docs__heading primary-container col-sm-12 col-xs-12 col-lg-6"
-      style="min-height: 400px; align-content: center;"
-    >
+      style="min-height: 400px; align-content: center;">
       <h1 class={["justify-center", Quaff.screen.gt.xs ? "large" : "small"]}>
         {docName || principalDocument?.name}
       </h1>
@@ -74,21 +72,18 @@
     <QCard
       class="q-docs__preview overflow-hidden col-sm-12 col-xs-12 col-lg-6 q-mt-none q-pa-none"
       fill="primary"
-      style="min-height: 400px; --q-docs-heading-color: {QTheme.themeColors.primaryLight};"
-    >
+      style="min-height: 400px; --q-docs-heading-color: {QTheme.themeColors.primaryLight};">
       <div
         class="q-docs__art"
         aria-hidden="true"
-        style:animation-play-state={isBackgroundPaused ? "paused" : "running"}
-      >
+        style:animation-play-state={isBackgroundPaused ? "paused" : "running"}>
         <span class="q-docs__citrus"></span>
         <span class="q-docs__bubbles"></span>
       </div>
 
       <QCardSection
         class="flex flex-center column q-pa-lg fit overflow-hidden"
-        style="position: absolute; z-index: 1;"
-      >
+        style="position: absolute; z-index: 1;">
         {@render display?.()}
       </QCardSection>
 
@@ -98,8 +93,7 @@
         aria-label={isBackgroundPaused ? "Play background animation" : "Pause background animation"}
         color="inherit"
         expressive={false}
-        onclick={() => (isBackgroundPaused = !isBackgroundPaused)}
-      />
+        onclick={() => (isBackgroundPaused = !isBackgroundPaused)} />
     </QCard>
   </div>
 

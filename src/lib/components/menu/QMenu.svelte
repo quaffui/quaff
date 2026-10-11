@@ -386,8 +386,7 @@ Menus show contextual actions or popup content beside a trigger. Adjust their po
     style:max-width={menuMaxWidth}
     style:--q-menu-available-height={menuAvailableHeight}
     onclick={handleMenuClick}
-    ontoggle={handlePopoverToggle}
-  >
+    ontoggle={handlePopoverToggle}>
     {@render children?.()}
   </div>
 {/if}

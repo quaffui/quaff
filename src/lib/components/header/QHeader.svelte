@@ -162,8 +162,7 @@ Headers place navigation, titles, and actions at the top of an app. Choose compa
     {...props}
     class="q-header"
     style:--header-height={height === undefined ? undefined : `${height}px`}
-    data-quaff
-  >
+    data-quaff>
     {@render children?.()}
   </header>
 {:else}
@@ -172,8 +171,7 @@ Headers place navigation, titles, and actions at the top of an app. Choose compa
     {...props}
     class="q-header"
     style:--header-height={height === undefined ? undefined : `${height}px`}
-    data-quaff
-  >
+    data-quaff>
     {@render children?.()}
   </header>
 {/if}

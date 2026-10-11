@@ -31,8 +31,7 @@
 
 <QDocs
   docName="QProgress"
-  docDescription="Progress indicators show task completion or ongoing work. Choose a linear bar or circular indicator, with measured progress or an indeterminate animation."
->
+  docDescription="Progress indicators show task completion or ongoing work. Choose a linear bar or circular indicator, with measured progress or an indeterminate animation.">
   {#snippet display()}
     <QCard class="flex column q-gap-lg" style="width: 75%">
       <QLinearProgress value={75} color="primary" trackColor="secondary" size="8px" />
@@ -41,8 +40,7 @@
         value={75}
         color="primary"
         size="4em"
-        showValue
-      />
+        showValue />
     </QCard>
   {/snippet}
 
@@ -60,13 +58,11 @@
             <QBtn
               size="sm"
               label="Decrease"
-              onclick={() => (linearValue = Math.max(0, linearValue - 10))}
-            />
+              onclick={() => (linearValue = Math.max(0, linearValue - 10))} />
             <QBtn
               size="sm"
               label="Increase"
-              onclick={() => (linearValue = Math.min(100, linearValue + 10))}
-            />
+              onclick={() => (linearValue = Math.min(100, linearValue + 10))} />
           </div>
           <div>Current value: {linearValue}%</div>
         </div>
@@ -84,8 +80,7 @@
             <QBtn
               size="sm"
               label="Toggle indeterminate"
-              onclick={() => (indeterminateProgress = !indeterminateProgress)}
-            />
+              onclick={() => (indeterminateProgress = !indeterminateProgress)} />
           </div>
 
           <div>
@@ -211,13 +206,11 @@
                 <QBtn
                   size="sm"
                   label="Decrease"
-                  onclick={() => (circularValue = Math.max(0, circularValue - 10))}
-                />
+                  onclick={() => (circularValue = Math.max(0, circularValue - 10))} />
                 <QBtn
                   size="sm"
                   label="Increase"
-                  onclick={() => (circularValue = Math.min(100, circularValue + 10))}
-                />
+                  onclick={() => (circularValue = Math.min(100, circularValue + 10))} />
               </div>
               <div>Current value: {circularValue}%</div>
             </div>
@@ -405,8 +398,7 @@
               size="sm"
               label="Set to 10%"
               onclick={() => (circularValue = 10)}
-              class="q-mr-sm"
-            />
+              class="q-mr-sm" />
             <QBtn size="sm" label="Set to 90%" onclick={() => (circularValue = 90)} />
           </div>
         </div>

@@ -698,8 +698,7 @@
   onpointerup={handlePointerUp}
   onpointercancel={handlePointerCancel}
   onlostpointercapture={handleLostPointerCapture}
-  data-quaff
->
+  data-quaff>
   {#each normalizedValues as currentValue, index (index)}
     <!-- svelte-ignore a11y_autofocus (forwards the native input attribute to the first handle) -->
     <input
@@ -728,16 +727,14 @@
       onkeydown={(event) => handleKeyDown(event, index)}
       onkeyup={handleKeyUp}
       onfocus={(event) => handleFocus(event, index)}
-      onblur={handleBlur}
-    />
+      onblur={handleBlur} />
   {/each}
 
   <div
     class="q-slider__track"
     style:--q-slider-start-radius={getTrackCornerRadius(Math.min(...positions))}
     style:--q-slider-end-radius={getTrackCornerRadius(1 - Math.max(...positions))}
-    aria-hidden="true"
-  >
+    aria-hidden="true">
     {#each segments as segment, index (index)}
       <span
         class:active={segment.isActive}
@@ -749,8 +746,7 @@
         style:--q-slider-start={`${segment.start * 100}%`}
         style:--q-slider-end={`${segment.end * 100}%`}
         style:--q-slider-gap-start={getTrackGap(segment.start, segment.hasStartGap)}
-        style:--q-slider-gap-end={getTrackGap(segment.end, segment.hasEndGap)}
-      ></span>
+        style:--q-slider-gap-end={getTrackGap(segment.end, segment.hasEndGap)}></span>
     {/each}
 
     {#each stops as stop (stop.position)}
@@ -759,8 +755,7 @@
           class:active={stop.isActive}
           class:q-slider__stop--end={stop.position === 0 || stop.position === 1}
           class="q-slider__stop"
-          style:--q-slider-position={`${stop.position * 100}%`}
-        ></span>
+          style:--q-slider-position={`${stop.position * 100}%`}></span>
       {/if}
     {/each}
 
@@ -768,8 +763,7 @@
       {#if !isInTrackGap(position) && !isAtIcon(position)}
         <span
           class="q-slider__stop q-slider__stop--end"
-          style:--q-slider-position={`${position * 100}%`}
-        ></span>
+          style:--q-slider-position={`${position * 100}%`}></span>
       {/if}
     {/each}
 
@@ -778,8 +772,7 @@
         class:active={!isIconOnInactiveTrack}
         class:q-slider__icon--end={isIconAtEnd}
         class:q-slider__icon--start={!isIconAtEnd}
-        class="q-slider__icon"
-      >
+        class="q-slider__icon">
         <QIconSnippet {icon} size={resolvedSize === "xl" ? "32px" : "24px"} />
       </span>
     {/if}
@@ -795,8 +788,7 @@
       class="q-slider__handle"
       data-index={index}
       style:--q-slider-position={`${position * 100}%`}
-      aria-hidden="true"
-    >
+      aria-hidden="true">
       {#if label}
         <span class:visible={isHandleActive(index)} class="q-slider__label">
           {displayLabels[index]}

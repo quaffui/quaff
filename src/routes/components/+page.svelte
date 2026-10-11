@@ -339,8 +339,7 @@
 
 <QDocs
   docName="Components"
-  docDescription="Explore components for navigation, forms, content, and feedback. Each page includes practical examples and API details to help you build your interface."
->
+  docDescription="Explore components for navigation, forms, content, and feedback. Each page includes practical examples and API details to help you build your interface.">
   {#snippet display()}
     <div class="row q-gap-lg q-pa-lg items-center">
       <QSwitch value={true} class="col-3" />
@@ -360,8 +359,7 @@
           indeterminate
           class="col-5 full-width"
           trackColor="secondary"
-          color="on-secondary"
-        />
+          color="on-secondary" />
       {/if}
     </div>
     {#if Quaff.screen.ready && Quaff.screen.width <= Quaff.screen.sizes.sm}
@@ -370,8 +368,7 @@
           indeterminate
           class="col-xs-6 col-sm-7 full-width"
           trackColor="secondary"
-          color="on-secondary"
-        />
+          color="on-secondary" />
 
         <div class="col-1"></div>
 
@@ -405,14 +402,12 @@
             e.preventDefault();
             goto(resolveComponentPath(component.href));
           }
-        }}
-      >
+        }}>
         <QCard class="q-pa-none full-height overflow-hidden" style="transition: all 0.3s;">
           <div
             class="q-component-card__display q-pa-md flex flex-center secondary-container full-width overflow-hidden"
             style="height: 224px;"
-            inert
-          >
+            inert>
             {@render component.snippet()}
           </div>
 
@@ -459,8 +454,7 @@
 {#snippet bottomSheet()}
   <div
     class="surface full-width overflow-hidden"
-    style="position: relative; height: 192px; border-radius: 16px;"
-  >
+    style="position: relative; height: 192px; border-radius: 16px;">
     <QBottomSheet value aria-label="Place details" style="transition: none">
       <p class="title-medium q-mb-none">Riverside Café</p>
     </QBottomSheet>
@@ -491,8 +485,7 @@
     ]}
     value="week"
     variant="filled"
-    aria-label="Calendar view"
-  />
+    aria-label="Calendar view" />
 {/snippet}
 
 {#snippet splitButton()}
@@ -530,8 +523,7 @@
     height="160px"
     itemWidth={180}
     controls={false}
-    aria-label="Drink photos"
-  >
+    aria-label="Drink photos">
     {#snippet children({ item: src })}
       <img {src} alt="Drink" class="fit" style="object-fit: cover;" />
     {/snippet}
@@ -650,8 +642,7 @@
       icon="lock"
       label="Can I reset my password?"
       caption="Click for more info"
-      defaultOpened
-    >
+      defaultOpened>
       Yes you can! To reset your password, go to the login page and click on "Forgot password".
     </QExpansionItem>
     <QExpansionItem icon="help" label="What is this app?" />
@@ -782,8 +773,7 @@
         src="/cocktail.jpg"
         alt="Cocktail"
         width="100%"
-        style="aspect-ratio: 1; object-fit: cover"
-      />
+        style="aspect-ratio: 1; object-fit: cover" />
     </div>
 
     <QLinearProgress value={0.63} />

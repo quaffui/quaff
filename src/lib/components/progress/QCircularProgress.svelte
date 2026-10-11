@@ -109,8 +109,7 @@ The QCircularProgress component is used to display a circular progress bar, indi
   aria-valuemin={min}
   aria-valuemax={max}
   aria-valuenow={indeterminate ? undefined : normalized}
-  data-quaff
->
+  data-quaff>
   <svg
     class="q-circular-progress__svg"
     class:q-circular-progress__svg--wave={hasDeterminateWave}
@@ -119,15 +118,13 @@ The QCircularProgress component is used to display a circular progress bar, indi
     style:--q-progress-track-gap={trackGap}
     style:--q-progress-wave-path-offset="{wavePathOffset}px"
     viewBox="0 0 100 100"
-    aria-hidden="true"
-  >
+    aria-hidden="true">
     <defs>
       <path
         id="{id}-active-path"
         class:q-circular-progress__wave={waveAmplitude}
         d={activePath}
-        pathLength={activePathLength}
-      />
+        pathLength={activePathLength} />
     </defs>
 
     <g class="q-circular-progress__rotation">
@@ -145,8 +142,7 @@ The QCircularProgress component is used to display a circular progress bar, indi
           pathLength="100"
           cx="50"
           cy="50"
-          r={radius}
-        />
+          r={radius} />
       {/if}
 
       {@render active()}
@@ -156,8 +152,7 @@ The QCircularProgress component is used to display a circular progress bar, indi
   {#if showValue}
     <div
       class="q-circular-progress__text absolute-full flex flex-center"
-      style:font-size={fontSize}
-    >
+      style:font-size={fontSize}>
       {@render children()}
     </div>
   {/if}
@@ -178,6 +173,5 @@ The QCircularProgress component is used to display a circular progress bar, indi
     stroke-dasharray={indeterminate ? undefined : activeDasharray}
     stroke-linecap={noRound ? "butt" : "round"}
     style:opacity={indeterminate || percentage > 0 ? 1 : 0}
-    style:transition={activeTransition}
-  />
+    style:transition={activeTransition} />
 {/snippet}

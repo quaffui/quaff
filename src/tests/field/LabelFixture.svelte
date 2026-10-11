@@ -49,20 +49,17 @@
 
 <div
   dir={params.has("rtl") ? "rtl" : "ltr"}
-  style="width: {params.get('width') ?? (params.has('long') ? 240 : 320)}px; margin: 48px;"
->
+  style="width: {params.get('width') ?? (params.has('long') ? 240 : 320)}px; margin: 48px;">
   {#if params.has("select")}
     <QSelect
       {...fieldProps}
       options={["Home", "Office"]}
       prepend={params.has("prepend") ? prepend : undefined}
-      append={params.has("append") ? append : undefined}
-    />
+      append={params.has("append") ? append : undefined} />
   {:else}
     <QInput
       {...fieldProps}
       prepend={params.has("prepend") ? prepend : undefined}
-      append={params.has("append") ? append : undefined}
-    />
+      append={params.has("append") ? append : undefined} />
   {/if}
 </div>

@@ -14,8 +14,7 @@
 
 <QDocs
   docName="Asset Optimization"
-  docDescription="Help your app load faster by sending less CSS and smaller font files."
->
+  docDescription="Help your app load faster by sending less CSS and smaller font files.">
   {#snippet display()}
     <QCodeBlock language="ts" code="quaffAssets()" />
   {/snippet}
@@ -39,8 +38,7 @@ import { defineConfig } from "vite";
 export default defineConfig({
   plugins: [quaffAssets(), sveltekit()],
 });`}
-        copiable
-      />
+        copiable />
       <p class="q-mt-md">
         Remove any <code>@quaffui/quaff/css/index.css</code> import from
         <code>src/routes/+layout.svelte</code> so the plugin can choose which styles to include.
@@ -63,8 +61,7 @@ export default defineConfig({
     safelist: ["text-primary", /^q-pa-/],
   },
 });`}
-        copiable
-      />
+        copiable />
       <p class="q-mt-md">
         <code>css.safelist</code> keeps classes the plugin cannot detect. For example,
         <code>{'class={"q-pa-" + size}'}</code> builds a class name at runtime;
@@ -126,8 +123,7 @@ export default defineConfig({
     },
   },
 });`}
-        copiable
-      />
+        copiable />
       <p class="q-mt-md">
         Remove existing Roboto imports and Material Symbols <code>@font-face</code> rules from your
         app's stylesheet so the original fonts are not loaded alongside the optimized ones. In

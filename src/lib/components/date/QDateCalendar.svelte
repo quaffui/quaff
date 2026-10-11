@@ -152,8 +152,7 @@
                 : -1}
               data-date={cell.key}
               onclick={() => selectDate(cell.date)}
-              onkeydown={(event) => handleDayKeydown(event, cell.date)}
-            >
+              onkeydown={(event) => handleDayKeydown(event, cell.date)}>
               <span>{cell.number}</span>
             </button>
           {:else}
@@ -170,8 +169,7 @@
   role="presentation"
   onpointerdown={handlePointerdown}
   onpointerup={handlePointerup}
-  onpointercancel={() => (swipePointerId = undefined)}
->
+  onpointercancel={() => (swipePointerId = undefined)}>
   <div class="q-date__month-announcement" aria-live="polite" aria-atomic="true">
     {state.calendarPage.label}
   </div>
@@ -185,8 +183,7 @@
     aria-multiselectable={state.range || undefined}
     aria-describedby={state.rangeValidationMessage ? errorId : undefined}
     aria-hidden={inactive || undefined}
-    inert={inactive || undefined}
-  >
+    inert={inactive || undefined}>
     <div class="q-date__weekdays" role="row">
       {#each state.weekdayLabels as weekday (weekday.key)}
         <div class="q-date__weekday" role="columnheader" aria-label={weekday.long}>
@@ -207,8 +204,7 @@
           }}
           out:monthSlide={{
             direction: -state.monthMotionDirection * (state.isRtl ? -1 : 1),
-          }}
-        >
+          }}>
           {@render calendarDays(page)}
         </div>
       {/each}
