@@ -64,7 +64,7 @@ interface QSliderCommonProps extends Disableable {
   readonly?: boolean;
 
   /**
-   * Enables Material 3 Expressive sizes, orientation, and motion. When omitted, inherits the `Quaff.init()` setting (false by default). Set true or false to override it.
+   * Enables Material 3 Expressive sizes, vertical orientation, and inset icons. When omitted, inherits the `Quaff.init()` setting (false by default). Set true or false to override it.
    */
   expressive?: boolean;
 

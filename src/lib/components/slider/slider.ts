@@ -1,13 +1,13 @@
 export interface SliderSegment {
-  active: boolean;
+  isActive: boolean;
   end: number;
-  gapEnd?: boolean;
-  gapStart?: boolean;
+  hasEndGap?: boolean;
+  hasStartGap?: boolean;
   start: number;
 }
 
 export interface SliderStop {
-  active: boolean;
+  isActive: boolean;
   position: number;
 }
 
@@ -29,10 +29,10 @@ export function snapSliderValue(
   }
 
   const precision = Math.max(
-    decimalPlaces(min),
-    decimalPlaces(max),
-    decimalPlaces(origin),
-    decimalPlaces(step)
+    countDecimalPlaces(min),
+    countDecimalPlaces(max),
+    countDecimalPlaces(origin),
+    countDecimalPlaces(step)
   );
   const snapped = clampSliderValue(origin + Math.round((clamped - origin) / step) * step, min, max);
   const closest = [min, max].reduce(
@@ -42,14 +42,14 @@ export function snapSliderValue(
   return +closest.toFixed(precision);
 }
 
-export function sliderNativeStep(step: number, min: number, max: number) {
+export function getSliderNativeStep(step: number, min: number, max: number) {
   if (step <= 0 || !Number.isFinite(step)) {
     return "any";
   }
 
   const precision = Math.min(
     12,
-    Math.max(decimalPlaces(step), decimalPlaces(min), decimalPlaces(max))
+    Math.max(countDecimalPlaces(step), countDecimalPlaces(min), countDecimalPlaces(max))
   );
   const factor = 10 ** precision;
   const stepUnits = Math.abs(Math.round(step * factor));
@@ -59,18 +59,18 @@ export function sliderNativeStep(step: number, min: number, max: number) {
     return "any";
   }
 
-  return greatestCommonDivisor(stepUnits, spanUnits) / factor;
+  return getGreatestCommonDivisor(stepUnits, spanUnits) / factor;
 }
 
-export function sliderPosition(value: number, min: number, max: number, reverse: boolean) {
+export function getSliderPosition(value: number, min: number, max: number, isReversed: boolean) {
   const position = max === min ? 0 : (clampSliderValue(value, min, max) - min) / (max - min);
-  return reverse ? 1 - position : position;
+  return isReversed ? 1 - position : position;
 }
 
-export function sliderSegments(
+export function getSliderSegments(
   positions: number[],
-  centered: boolean,
-  reverse: boolean
+  isCentered: boolean,
+  isReversed: boolean
 ): SliderSegment[] {
   if (positions.length === 2) {
     const [start, end] = [...positions].sort((a, b) => a - b);
@@ -79,7 +79,12 @@ export function sliderSegments(
   }
 
   const position = positions[0];
-  const origin = centered ? 0.5 : reverse ? 1 : 0;
+  let origin = isReversed ? 1 : 0;
+
+  if (isCentered) {
+    origin = 0.5;
+  }
+
   const start = Math.min(position, origin);
   const end = Math.max(position, origin);
 
@@ -89,32 +94,32 @@ export function sliderSegments(
 function buildSliderSegments(
   start: number,
   end: number,
-  gapStart: boolean,
-  gapEnd: boolean,
-  includeActive = true
+  hasStartGap: boolean,
+  hasEndGap: boolean,
+  shouldIncludeActive = true
 ): SliderSegment[] {
   const segments: SliderSegment[] = [];
 
   if (start > 0) {
-    segments.push({ active: false, start: 0, end: start, gapEnd: gapStart });
+    segments.push({ isActive: false, start: 0, end: start, hasEndGap: hasStartGap });
   }
 
-  if (includeActive) {
-    segments.push({ active: true, start, end, gapStart, gapEnd });
+  if (shouldIncludeActive) {
+    segments.push({ isActive: true, start, end, hasStartGap, hasEndGap });
   }
 
   if (end < 1) {
-    segments.push({ active: false, start: end, end: 1, gapStart: gapEnd });
+    segments.push({ isActive: false, start: end, end: 1, hasStartGap: hasEndGap });
   }
 
   return segments;
 }
 
-export function sliderStops(
+export function buildSliderStops(
   min: number,
   max: number,
   interval: number,
-  reverse: boolean,
+  isReversed: boolean,
   activeStart: number,
   activeEnd: number
 ): SliderStop[] {
@@ -135,20 +140,20 @@ export function sliderStops(
   }
 
   return values.map((value) => {
-    const position = sliderPosition(value, min, max, reverse);
+    const position = getSliderPosition(value, min, max, isReversed);
     return {
       position,
-      active: position >= activeStart && position <= activeEnd,
+      isActive: position >= activeStart && position <= activeEnd,
     };
   });
 }
 
-function decimalPlaces(value: number) {
+function countDecimalPlaces(value: number) {
   const [coefficient, exponent = "0"] = String(value).toLowerCase().split("e");
   return Math.max(0, (coefficient.split(".")[1] ?? "").length - Number(exponent));
 }
 
-function greatestCommonDivisor(first: number, second: number) {
+function getGreatestCommonDivisor(first: number, second: number) {
   while (second !== 0) {
     [first, second] = [second, first % second];
   }
