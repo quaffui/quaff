@@ -8,11 +8,11 @@
   "scripts": {
     "dev": "tsc -p plugins/tsconfig.json && vite dev",
     "open": "tsc -p plugins/tsconfig.json && vite dev --open",
-    "build": "tsc -p plugins/tsconfig.json && svelte-kit sync && svelte-package && bun run build:css && publint",
+    "build": "tsc -p plugins/tsconfig.json && svelte-kit sync && svelte-package && bun scripts/generateAutoImports.ts && bun run build:css && publint",
     "build:css": "vite build --config vite.config.scss.ts",
-    "build:docs": "tsc -p plugins/tsconfig.json && bun scripts/docgenProps.ts && bun scripts/docgenSnippets.ts && svelte-kit sync && svelte-package && vite build --config vite.config.scss.ts && QUAFF_DOCS_ASSETS=true vite build",
+    "build:docs": "tsc -p plugins/tsconfig.json && bun scripts/docgenProps.ts && bun scripts/docgenSnippets.ts && svelte-kit sync && svelte-package && bun scripts/generateAutoImports.ts && vite build --config vite.config.scss.ts && QUAFF_DOCS_ASSETS=true vite build",
     "preview": "vite preview",
-    "package": "tsc -p plugins/tsconfig.json && svelte-kit sync && svelte-package && bun run build:css && publint",
+    "package": "tsc -p plugins/tsconfig.json && svelte-kit sync && svelte-package && bun scripts/generateAutoImports.ts && bun run build:css && publint",
     "check": "tsc -p plugins/tsconfig.json && svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "tsc -p plugins/tsconfig.json && svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
     "test:unit": "vitest",
@@ -28,6 +28,13 @@
     ".": {
       "types": "./dist/index.d.ts",
       "svelte": "./dist/index.js"
+    },
+    "./auto-imports": {
+      "types": "./dist/autoImports.d.ts",
+      "default": "./dist/autoImports.js"
+    },
+    "./auto-imports/globals": {
+      "types": "./dist/auto-imports-globals.d.ts"
     },
     "./components/*": {
       "types": "./dist/components/*.d.ts",
