@@ -27,7 +27,7 @@
     --q-expansion-toggle-width: 32px;
     --q-expansion-inner-shape: 4px;
     --q-expansion-shape-easing: #{mixins.spring-easing(spatial, fast, expressive)};
-    border-radius: 16px;
+    border-radius: 4px;
     background-color: transparent;
   }
 
@@ -83,13 +83,12 @@
     border-radius: 16px;
   }
 
-  &:where(:first-child),
-  :where(.q-separator__wrapper:first-child) + & {
+  &:where(:nth-child(1 of .q-item, .q-expansion-item)) {
     border-top-left-radius: inherit;
     border-top-right-radius: inherit;
   }
 
-  &:where(:last-child) {
+  &:where(:nth-last-child(1 of .q-item, .q-expansion-item)) {
     border-bottom-left-radius: inherit;
     border-bottom-right-radius: inherit;
   }
@@ -105,8 +104,7 @@
 
   & > &__item--whole {
     padding-inline-end: 16px;
-    border-start-start-radius: inherit;
-    border-start-end-radius: inherit;
+    border-radius: inherit;
     background-color: var(--q-expansion-container-color);
   }
 
@@ -138,17 +136,26 @@
       padding-inline-end: 0;
       flex: 1 1 auto;
       align-self: stretch;
+      border-radius: inherit;
     }
   }
 
-  &--expressive:not(.q-expansion-item--expanded, .q-expansion-item--no-round) > &__header {
-    border-radius: 4px;
-
+  &--expressive:not(.q-expansion-item--expanded, .q-expansion-item--no-round) {
     &:has(
       > .q-expansion-item__item:is(.q-link, .q-item--clickable):hover:not(
           [aria-disabled],
           .q-item--active,
-          .q-item--dragged
+          .q-item--dragged,
+          :focus-visible,
+          :active
+        ),
+      > .q-expansion-item__header
+        > .q-expansion-item__item:is(.q-link, .q-item--clickable):hover:not(
+          [aria-disabled],
+          .q-item--active,
+          .q-item--dragged,
+          :focus-visible,
+          :active
         )
     ) {
       border-radius: 12px;
@@ -156,7 +163,10 @@
 
     &:has(
       > .q-expansion-item__item:is(:focus-visible, :active):not([aria-disabled]),
-      > .q-expansion-item__item.q-item--active
+      > .q-expansion-item__item.q-item--active,
+      > .q-expansion-item__header
+        > .q-expansion-item__item:is(:focus-visible, :active):not([aria-disabled]),
+      > .q-expansion-item__header > .q-expansion-item__item.q-item--active
     ) {
       border-radius: 16px;
     }
@@ -166,7 +176,7 @@
     gap: 12px;
   }
 
-  &--expanded > &__header {
+  &--expanded > :is(&__header, &__item--whole) {
     border-end-start-radius: var(--q-expansion-inner-shape);
     border-end-end-radius: var(--q-expansion-inner-shape);
   }
@@ -292,7 +302,7 @@
       padding: 0;
     }
 
-    &--regular > .q-list:only-child {
+    & > .q-list:only-child {
       border-start-start-radius: var(--q-expansion-inner-shape);
       border-start-end-radius: var(--q-expansion-inner-shape);
     }
