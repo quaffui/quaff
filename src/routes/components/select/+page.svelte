@@ -1,13 +1,13 @@
 <script lang="ts">
   import { resolve } from "$app/paths";
-  import QLanguageExample from "$docs/QLanguageExample.svelte";
-  import { QSelectDocs } from "$components/select/docs";
-  import { QBtn, QCard, QCardActions, QCardSection, QIcon, QSelect } from "$lib";
-  import { QDocs, QDocsSection } from "$docs";
-  import type { QSelectFilterUpdate, QSelectOption } from "$components/select/props";
-  import { docsCtx } from "$docs/QDocs.svelte";
-  import { useMeta } from "$lib/meta";
-  import { pageMeta } from "$docs/metadata";
+  import QLanguageExample from "#docs/QLanguageExample.svelte";
+  import { QSelectDocs } from "#components/select/docs.js";
+  import { QBtn, QCard, QCardActions, QCardSection, QIcon, QSelect } from "#lib";
+  import { QDocs, QDocsSection } from "#docs";
+  import type { QSelectFilterUpdate, QSelectOption } from "#components/select/props.js";
+  import { docsCtx } from "#docs/QDocs.svelte";
+  import { useMeta } from "#lib/meta.js";
+  import { pageMeta } from "#docs/metadata.js";
   import snippets from "./docs.snippets";
 
   useMeta(

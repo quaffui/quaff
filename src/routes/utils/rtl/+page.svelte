@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { QDocs, QDocsSection } from "$docs";
+  import { QDocs, QDocsSection } from "#docs";
   import {
     QAvatar,
     QBtn,
@@ -19,9 +19,9 @@
     QList,
     QMenu,
     QNavItem,
-  } from "$lib";
-  import { useMeta } from "$lib/meta";
-  import { pageMeta } from "$docs/metadata";
+  } from "#lib";
+  import { useMeta } from "#lib/meta.js";
+  import { pageMeta } from "#docs/metadata.js";
 
   useMeta(
     pageMeta(

@@ -5,13 +5,13 @@ Expansion items reveal supporting content beneath a summary in a list. Group rel
 
 <script lang="ts">
   import { untrack } from "svelte";
-  import QIconBtn from "$components/button/QIconBtn.svelte";
-  import QIcon from "$components/icon/QIcon.svelte";
-  import QItem from "$components/list/QItem.svelte";
-  import QItemSection from "$components/list/QItemSection.svelte";
-  import { listCtx } from "$components/list/QList.svelte";
-  import QSeparator from "$components/separator/QSeparator.svelte";
-  import { isActivationKey, type QEvent } from "$utils";
+  import QIconBtn from "#components/button/QIconBtn.svelte";
+  import QIcon from "#components/icon/QIcon.svelte";
+  import QItem from "#components/list/QItem.svelte";
+  import QItemSection from "#components/list/QItemSection.svelte";
+  import { listCtx } from "#components/list/QList.svelte";
+  import QSeparator from "#components/separator/QSeparator.svelte";
+  import { isActivationKey, type QEvent } from "#utils";
   import type { QExpansionItemProps } from "./props";
 
   // #region:    --- Props

@@ -4,9 +4,9 @@ The QCircularProgress component is used to display a circular progress bar, indi
 -->
 
 <script lang="ts">
-  import { useColor, useSize } from "$composables";
-  import { useQuaffConfig } from "$internal/quaffConfig.svelte";
-  import { between } from "$utils";
+  import { useColor, useSize } from "#composables";
+  import { useQuaffConfig } from "#internal/quaffConfig.svelte.js";
+  import { between } from "#utils";
   import { circularWavePath } from "./waves";
   import type { QCircularProgressProps } from "./props";
 

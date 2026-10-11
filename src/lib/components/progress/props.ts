@@ -1,4 +1,4 @@
-import type { CssSizeable, CssValue, OptionalModel } from "$utils";
+import type { CssSizeable, CssValue, OptionalModel } from "#utils";
 import type { HTMLAttributes } from "svelte/elements";
 
 export interface QLinearProgressProps

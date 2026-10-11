@@ -4,13 +4,13 @@ Navigation items link to destinations in drawers, bars, and rails. Use labels, i
 -->
 
 <script lang="ts">
-  import { navigationCtx } from "$internal/navigationContext";
-  import { listCtx } from "$components/list/QList.svelte";
-  import { railbarNavigationCtx } from "$components/railbar/QRailbar.svelte";
-  import QBadge from "$components/badge/QBadge.svelte";
-  import QIconSnippet from "$internal/QIconSnippet.svelte";
-  import { ripple } from "$helpers";
-  import { getRouterInfo, handleActivationKeydown, type QEvent } from "$utils";
+  import { navigationCtx } from "#internal/navigationContext.js";
+  import { listCtx } from "#components/list/QList.svelte";
+  import { railbarNavigationCtx } from "#components/railbar/QRailbar.svelte";
+  import QBadge from "#components/badge/QBadge.svelte";
+  import QIconSnippet from "#internal/QIconSnippet.svelte";
+  import { ripple } from "#helpers";
+  import { getRouterInfo, handleActivationKeydown, type QEvent } from "#utils";
   import type { QNavItemProps } from "./props";
 
   type QNavItemElement = HTMLAnchorElement | HTMLButtonElement;

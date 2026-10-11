@@ -1,12 +1,12 @@
 <script lang="ts">
-  import Quaff from "$classes/Quaff.svelte";
-  import QBtn from "$components/button/QBtn.svelte";
-  import { copy, escape } from "$utils";
+  import Quaff from "#classes/Quaff.svelte.js";
+  import QBtn from "#components/button/QBtn.svelte";
+  import { copy, escape } from "#utils";
   import {
     getQuaffHighlighter,
     quaffShikiDarkTheme,
     quaffShikiLightTheme,
-  } from "$internal/shikiTheme";
+  } from "#internal/shikiTheme.js";
   import type { BundledTheme, ThemeRegistration } from "shiki";
   import type { QCodeBlockProps } from "./props";
 

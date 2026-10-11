@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { QDocs, QDocsSection } from "$docs";
-  import { QAvatar, QBtn, QCodeBlock, QIcon, QInput, QSelect, QSwitch } from "$lib";
-  import { useMeta } from "$lib/meta";
-  import { pageMeta } from "$docs/metadata";
+  import { QDocs, QDocsSection } from "#docs";
+  import { QAvatar, QBtn, QCodeBlock, QIcon, QInput, QSelect, QSwitch } from "#lib";
+  import { useMeta } from "#lib/meta.js";
+  import { pageMeta } from "#docs/metadata.js";
 
   useMeta(
     pageMeta(

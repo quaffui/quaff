@@ -1,12 +1,12 @@
 <script lang="ts">
   import { tick } from "svelte";
   import { asset } from "$app/paths";
-  import { QChipDocs } from "$components/chip/docs";
-  import { QDocs, QDocsSection } from "$docs";
-  import { docsCtx } from "$docs/QDocs.svelte";
-  import { QBtn, QChip, QInput, QSelect } from "$lib";
-  import { useMeta } from "$lib/meta";
-  import { pageMeta } from "$docs/metadata";
+  import { QChipDocs } from "#components/chip/docs.js";
+  import { QDocs, QDocsSection } from "#docs";
+  import { docsCtx } from "#docs/QDocs.svelte";
+  import { QBtn, QChip, QInput, QSelect } from "#lib";
+  import { useMeta } from "#lib/meta.js";
+  import { pageMeta } from "#docs/metadata.js";
   import snippets from "./docs.snippets";
 
   useMeta(

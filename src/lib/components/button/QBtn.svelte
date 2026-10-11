@@ -4,13 +4,13 @@ Buttons trigger actions such as saving changes or submitting forms. Choose a sty
 -->
 
 <script lang="ts">
-  import { useColor, useSize } from "$composables";
-  import { ripple } from "$helpers";
-  import { buttonGroupCtx } from "$components/button-group/QBtnGroup.svelte";
-  import { useQuaffConfig } from "$internal/quaffConfig.svelte";
-  import { getRouterInfo, handleActivationKeydown, type QEvent } from "$utils";
-  import QCircularProgress from "$components/progress/QCircularProgress.svelte";
-  import QIconSnippet from "$internal/QIconSnippet.svelte";
+  import { useColor, useSize } from "#composables";
+  import { ripple } from "#helpers";
+  import { buttonGroupCtx } from "#components/button-group/QBtnGroup.svelte";
+  import { useQuaffConfig } from "#internal/quaffConfig.svelte.js";
+  import { getRouterInfo, handleActivationKeydown, type QEvent } from "#utils";
+  import QCircularProgress from "#components/progress/QCircularProgress.svelte";
+  import QIconSnippet from "#internal/QIconSnippet.svelte";
   import type { QBtnProps, QBtnVariantOptions } from "./props";
 
   type ButtonEvent<T extends Event> = QEvent<T, HTMLElement>;

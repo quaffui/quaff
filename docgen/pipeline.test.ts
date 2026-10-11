@@ -191,7 +191,7 @@ describe("Rust-owned docgen pipeline", () => {
       "src/lib/internal/base/Base.svelte":
         '<script lang="ts">let { disabled = false } = $props();</script>',
       "src/lib/components/first/props.ts":
-        'import type { Shared } from "$types"; import type { BaseProps } from "$internal/base/props"; export interface FirstProps extends BaseProps { value?: Shared; }',
+        'import type { Shared } from "#types"; import type { BaseProps } from "#internal/base/props.js"; export interface FirstProps extends BaseProps { value?: Shared; }',
       "src/lib/components/second/props.ts":
         'import type { FirstProps } from "../first/props"; export interface SecondProps extends FirstProps {}',
       "src/lib/components/second/Second.svelte": "<p>Inherits defaults</p>",
@@ -243,7 +243,7 @@ describe("Rust-owned docgen pipeline", () => {
     await runDocgen({ projectRoot: root });
     const updated = await readFile(first, "utf8");
     expect(updated).not.toBe(original);
-    expect(updated).toContain("from '$docs'");
+    expect(updated).toContain("from '#docs'");
     expect((await stat(first)).mtimeMs).not.toBe(PREVIOUS_TIME.getTime());
   }, 60_000);
 

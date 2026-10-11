@@ -1,10 +1,10 @@
 import { onMount } from "svelte";
 import { innerHeight, innerWidth } from "svelte/reactivity/window";
-import { version } from "$helpers";
-import { initI18n } from "$internal/i18n.svelte";
-import { captureAppContext } from "$internal/appContext";
-import { initQuaffConfig, type QuaffConfig } from "$internal/quaffConfig.svelte";
-import { resolveScreen } from "$internal/breakpoints";
+import { version } from "#helpers";
+import { initI18n } from "#internal/i18n.svelte.js";
+import { captureAppContext } from "#internal/appContext.js";
+import { initQuaffConfig, type QuaffConfig } from "#internal/quaffConfig.svelte.js";
+import { resolveScreen } from "#internal/breakpoints.js";
 import { page } from "$app/state";
 
 type DisplayMode = "light" | "dark";

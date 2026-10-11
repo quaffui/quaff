@@ -1,6 +1,6 @@
 <script lang="ts">
-  import QRailbar from "$components/railbar/QRailbar.svelte";
-  import "$css/components/railbar.scss";
+  import QRailbar from "#components/railbar/QRailbar.svelte";
+  import "#css/components/railbar.scss";
 
   let expanded = $state(false);
   let modal = $state(true);

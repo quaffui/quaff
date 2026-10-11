@@ -4,7 +4,7 @@ Checkboxes select independent options or mark items as complete. An indeterminat
 -->
 
 <script lang="ts">
-  import { ripple } from "$helpers";
+  import { ripple } from "#helpers";
   import type { QCheckboxProps } from "./props";
 
   // #region:    --- Props

@@ -1,6 +1,6 @@
 <script lang="ts">
-  import QSnackbar from "$components/snackbar/QSnackbar.svelte";
-  import type { NotifyDismiss, NotifyRequest } from "$classes/Notify";
+  import QSnackbar from "#components/snackbar/QSnackbar.svelte";
+  import type { NotifyDismiss, NotifyRequest } from "#classes/Notify.js";
 
   type QueuedNotification = NotifyRequest & { id: symbol };
 

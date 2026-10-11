@@ -1,10 +1,10 @@
 <script lang="ts">
-  import { QSearchDocs } from "$components/search/docs";
-  import { QDocs, QDocsSection } from "$docs";
-  import { docsCtx } from "$docs/QDocs.svelte";
-  import { QChip, QIcon, QIconBtn, QItem, QItemSection, QList, QSearch } from "$lib";
-  import { useMeta } from "$lib/meta";
-  import { pageMeta } from "$docs/metadata";
+  import { QSearchDocs } from "#components/search/docs.js";
+  import { QDocs, QDocsSection } from "#docs";
+  import { docsCtx } from "#docs/QDocs.svelte";
+  import { QChip, QIcon, QIconBtn, QItem, QItemSection, QList, QSearch } from "#lib";
+  import { useMeta } from "#lib/meta.js";
+  import { pageMeta } from "#docs/metadata.js";
   import snippets from "./docs.snippets";
 
   useMeta(

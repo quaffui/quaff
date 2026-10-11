@@ -1,6 +1,6 @@
 <script lang="ts">
-  import QColorPicker from "$components/color-picker/QColorPicker.svelte";
-  import "$css/components/color-picker.scss";
+  import QColorPicker from "#components/color-picker/QColorPicker.svelte";
+  import "#css/components/color-picker.scss";
 
   const MASKS: Record<string, string> = { "6": String.raw`\#XXXXXX`, "8": String.raw`\#XXXXXXXX` };
   const params = new URLSearchParams(window.location.search);

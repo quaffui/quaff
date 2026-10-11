@@ -1,10 +1,10 @@
 <script lang="ts">
   import { tick } from "svelte";
   import { resolve } from "$app/paths";
-  import { QNavItemDocs } from "$components/nav-item/docs";
-  import { QRailbarDocs } from "$components/railbar/docs";
-  import { QDocs, QDocsSection } from "$docs";
-  import { docsCtx } from "$docs/QDocs.svelte";
+  import { QNavItemDocs } from "#components/nav-item/docs.js";
+  import { QRailbarDocs } from "#components/railbar/docs.js";
+  import { QDocs, QDocsSection } from "#docs";
+  import { docsCtx } from "#docs/QDocs.svelte";
   import {
     QBtn,
     QFooter,
@@ -16,9 +16,9 @@
     QRailbar,
     QSelect,
     QSwitch,
-  } from "$lib";
-  import { useMeta } from "$lib/meta";
-  import { pageMeta } from "$docs/metadata";
+  } from "#lib";
+  import { useMeta } from "#lib/meta.js";
+  import { pageMeta } from "#docs/metadata.js";
   import snippets from "./docs.snippets";
 
   useMeta(

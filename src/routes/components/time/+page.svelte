@@ -1,12 +1,12 @@
 <script lang="ts">
   import { resolve } from "$app/paths";
-  import { QTimeDocs } from "$components/time/docs";
-  import { docsCtx } from "$docs/QDocs.svelte";
-  import QLanguageExample from "$docs/QLanguageExample.svelte";
-  import { QBtn, QInput, QTime } from "$lib";
-  import { QDocs, QDocsSection } from "$docs";
-  import { useMeta } from "$lib/meta";
-  import { pageMeta } from "$docs/metadata";
+  import { QTimeDocs } from "#components/time/docs.js";
+  import { docsCtx } from "#docs/QDocs.svelte";
+  import QLanguageExample from "#docs/QLanguageExample.svelte";
+  import { QBtn, QInput, QTime } from "#lib";
+  import { QDocs, QDocsSection } from "#docs";
+  import { useMeta } from "#lib/meta.js";
+  import { pageMeta } from "#docs/metadata.js";
   import snippets from "./docs.snippets";
 
   useMeta(

@@ -6,8 +6,8 @@ export default defineConfig({
   plugins: [
     sveltekit({
       adapter: adapter(),
-      alias: { $lib: process.env.QUAFF_META_TEST_LIB },
     }),
   ],
+  resolve: { alias: { $lib: process.env.QUAFF_META_TEST_LIB } },
   cacheDir: ".vite",
 });

@@ -6,10 +6,10 @@ Side sheets present details, filters, or tools beside the main content. Keep the
 <script lang="ts">
   import { tick, untrack } from "svelte";
   import { on } from "svelte/events";
-  import QIconBtn from "$components/button/QIconBtn.svelte";
-  import { useSize } from "$composables";
-  import type { QEvent } from "$utils";
-  import { closeNestedOverlays } from "$utils/dom";
+  import QIconBtn from "#components/button/QIconBtn.svelte";
+  import { useSize } from "#composables";
+  import type { QEvent } from "#utils";
+  import { closeNestedOverlays } from "#utils/dom.js";
   import type { QSideSheetProps } from "./props";
 
   // #region:    --- Props

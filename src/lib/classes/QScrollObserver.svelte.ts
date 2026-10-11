@@ -1,7 +1,7 @@
 import { onMount } from "svelte";
 import { on } from "svelte/events";
 import { scrollX, scrollY } from "svelte/reactivity/window";
-import { elFromSelector } from "$utils";
+import { elFromSelector } from "#utils";
 
 type Direction = "up" | "right" | "down" | "left";
 

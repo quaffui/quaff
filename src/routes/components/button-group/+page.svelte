@@ -1,11 +1,11 @@
 <script lang="ts">
-  import { QBtnGroupDocs, QBtnToggleDocs } from "$components/button-group/docs";
-  import type { QBtnGroupProps, QBtnToggleProps } from "$components/button-group/props";
-  import { QDocs, QDocsSection } from "$docs";
-  import { docsCtx } from "$docs/QDocs.svelte";
-  import { QBtn, QBtnGroup, QBtnToggle, QIconBtn, QSelect, QSwitch } from "$lib";
-  import { useMeta } from "$lib/meta";
-  import { pageMeta } from "$docs/metadata";
+  import { QBtnGroupDocs, QBtnToggleDocs } from "#components/button-group/docs.js";
+  import type { QBtnGroupProps, QBtnToggleProps } from "#components/button-group/props.js";
+  import { QDocs, QDocsSection } from "#docs";
+  import { docsCtx } from "#docs/QDocs.svelte";
+  import { QBtn, QBtnGroup, QBtnToggle, QIconBtn, QSelect, QSwitch } from "#lib";
+  import { useMeta } from "#lib/meta.js";
+  import { pageMeta } from "#docs/metadata.js";
   import snippets from "./docs.snippets";
 
   useMeta(

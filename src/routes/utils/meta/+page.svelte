@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { QBtn, QCard, QCodeBlock, QInput } from "$lib";
-  import { useMeta } from "$lib/meta";
-  import { QDocs, QDocsSection } from "$docs";
-  import { pageMeta } from "$docs/metadata";
+  import { QBtn, QCard, QCodeBlock, QInput } from "#lib";
+  import { useMeta } from "#lib/meta.js";
+  import { QDocs, QDocsSection } from "#docs";
+  import { pageMeta } from "#docs/metadata.js";
   import { setupExample, pageExample } from "./examples";
 
   const DEFAULT_TITLE = "Page Metadata";

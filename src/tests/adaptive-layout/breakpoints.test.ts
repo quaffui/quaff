@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { resolveScreen } from "$internal/breakpoints";
+import { resolveScreen } from "#internal/breakpoints.js";
 
 describe("MD3 layout recommendations", () => {
   it.each([

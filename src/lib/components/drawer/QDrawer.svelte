@@ -7,11 +7,11 @@ Drawers place navigation or supporting content beside the page. They can share s
   import { onMount, untrack } from "svelte";
   import { on } from "svelte/events";
   import { innerWidth } from "svelte/reactivity/window";
-  import { containsWithPortals } from "$internal/portalParent";
-  import { navigationCtx } from "$internal/navigationContext";
-  import { BREAKPOINTS } from "$internal/breakpoints";
+  import { containsWithPortals } from "#internal/portalParent.js";
+  import { navigationCtx } from "#internal/navigationContext.js";
+  import { BREAKPOINTS } from "#internal/breakpoints.js";
   import { navigating } from "$app/state";
-  import { useSize } from "$composables/useSize";
+  import { useSize } from "#composables/useSize.js";
   import {
     startDrawerCtx,
     endDrawerCtx,

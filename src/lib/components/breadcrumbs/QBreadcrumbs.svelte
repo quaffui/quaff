@@ -4,7 +4,7 @@ Breadcrumbs show the current location within a hierarchy and link to earlier lev
 -->
 
 <script lang="ts" module>
-  import { QContext } from "$utils/context";
+  import { QContext } from "#utils/context.js";
   import type { QBreadcrumbsProps } from "./props";
 
   export const breadcrumbsCtx = QContext<{
@@ -16,7 +16,7 @@ Breadcrumbs show the current location within a hierarchy and link to earlier lev
 </script>
 
 <script lang="ts">
-  import { useColor } from "$composables";
+  import { useColor } from "#composables";
 
   // #region:    --- Props
   let {

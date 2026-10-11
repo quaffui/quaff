@@ -6,9 +6,9 @@ Snackbars show brief updates without interrupting the current task. Display a me
 <script lang="ts">
   import { fly } from "svelte/transition";
   import { BROWSER as browser } from "esm-env";
-  import QBtn from "$components/button/QBtn.svelte";
-  import QIconBtn from "$components/button/QIconBtn.svelte";
-  import { shouldReduceMotion } from "$utils";
+  import QBtn from "#components/button/QBtn.svelte";
+  import QIconBtn from "#components/button/QIconBtn.svelte";
+  import { shouldReduceMotion } from "#utils";
   import type { QSnackbarDismissReason, QSnackbarProps } from "./props";
 
   let {

@@ -1,6 +1,6 @@
-import QDateState from "$components/date/dateState.svelte";
-import type { QDateStateSource } from "$components/date/calendar";
-import type { QDateValue } from "$components/date/props";
+import QDateState from "#components/date/dateState.svelte.js";
+import type { QDateStateSource } from "#components/date/calendar.js";
+import type { QDateValue } from "#components/date/props.js";
 
 type StateOptions = {
   [Key in Exclude<keyof QDateStateSource, "commit">]: ReturnType<QDateStateSource[Key]>;

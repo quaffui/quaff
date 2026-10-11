@@ -6,7 +6,7 @@ Bottom sheets present supporting content and actions at the bottom of the screen
 <script lang="ts">
   import { getAbortSignal, tick, untrack } from "svelte";
   import { on } from "svelte/events";
-  import type { QEvent } from "$utils";
+  import type { QEvent } from "#utils";
   import type { QBottomSheetProps } from "./props";
 
   // #region:    --- Props

@@ -79,7 +79,7 @@ fn follows_both_extract_svelte_scripts_barrels_cycles_and_inherited_component_so
         "export type { BaseProps } from './props';",
     );
     fixture.write("src/lib/internal/base/QCommon.svelte", "<p>Unrelated</p>");
-    let props = fixture.write("src/lib/components/child/props.ts", "import type { BaseProps } from '$internal/base'; export interface ChildProps extends BaseProps {}");
+    let props = fixture.write("src/lib/components/child/props.ts", "import type { BaseProps } from '#internal/base'; export interface ChildProps extends BaseProps {}");
     let child = fixture.write("src/lib/components/child/Child.svelte", "<p>Child</p>");
     let files = SourceGraph::new(&fixture.0).collect_source_files(std::slice::from_ref(&props))?;
     assert_eq!(

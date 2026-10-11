@@ -1,4 +1,4 @@
-import type { Borderable, OptionalModel } from "$utils";
+import type { Borderable, OptionalModel } from "#utils";
 import type { HTMLAttributes } from "svelte/elements";
 
 export interface QFooterProps

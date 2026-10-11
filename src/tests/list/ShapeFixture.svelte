@@ -1,8 +1,8 @@
 <script lang="ts">
-  import QList from "$components/list/QList.svelte";
-  import QItem from "$components/list/QItem.svelte";
-  import QItemSection from "$components/list/QItemSection.svelte";
-  import QExpansionItem from "$components/expansion-item/QExpansionItem.svelte";
+  import QList from "#components/list/QList.svelte";
+  import QItem from "#components/list/QItem.svelte";
+  import QItemSection from "#components/list/QItemSection.svelte";
+  import QExpansionItem from "#components/expansion-item/QExpansionItem.svelte";
 
   let {
     expressive = true,

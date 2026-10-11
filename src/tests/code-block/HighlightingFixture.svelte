@@ -1,9 +1,9 @@
 <script lang="ts">
-  import QApi from "$docs/QApi.svelte";
-  import { docsCtx } from "$docs/QDocs.svelte";
-  import QDocsSection from "$docs/QDocsSection.svelte";
-  import type { QComponentDocs } from "$docs/types";
-  import Quaff from "$classes/Quaff.svelte";
+  import QApi from "#docs/QApi.svelte";
+  import { docsCtx } from "#docs/QDocs.svelte";
+  import QDocsSection from "#docs/QDocsSection.svelte";
+  import type { QComponentDocs } from "#docs/types.js";
+  import Quaff from "#classes/Quaff.svelte.js";
 
   const DOCS: QComponentDocs = {
     name: "Example",

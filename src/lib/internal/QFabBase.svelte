@@ -1,9 +1,9 @@
 <script lang="ts">
-  import QBtn from "$components/button/QBtn.svelte";
-  import QTooltip from "$components/tooltip/QTooltip.svelte";
-  import type { QExtendedFabProps } from "$components/fab/props";
-  import { buttonGroupCtx } from "$components/button-group/QBtnGroup.svelte";
-  import { useQuaffConfig } from "$internal/quaffConfig.svelte";
+  import QBtn from "#components/button/QBtn.svelte";
+  import QTooltip from "#components/tooltip/QTooltip.svelte";
+  import type { QExtendedFabProps } from "#components/fab/props.js";
+  import { buttonGroupCtx } from "#components/button-group/QBtnGroup.svelte";
+  import { useQuaffConfig } from "#internal/quaffConfig.svelte.js";
 
   interface Props extends Omit<QExtendedFabProps, "label"> {
     label?: string;

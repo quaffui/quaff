@@ -1,10 +1,10 @@
 <script lang="ts">
-  import { docsCtx } from "$docs/QDocs.svelte";
-  import { QRadioDocs } from "$components/radio/docs";
-  import { Notify, QBtn, QCard, QCardSection, QItem, QItemSection, QList, QRadio } from "$lib";
-  import { QDocs, QDocsSection } from "$docs";
-  import { useMeta } from "$lib/meta";
-  import { pageMeta } from "$docs/metadata";
+  import { docsCtx } from "#docs/QDocs.svelte";
+  import { QRadioDocs } from "#components/radio/docs.js";
+  import { Notify, QBtn, QCard, QCardSection, QItem, QItemSection, QList, QRadio } from "#lib";
+  import { QDocs, QDocsSection } from "#docs";
+  import { useMeta } from "#lib/meta.js";
+  import { pageMeta } from "#docs/metadata.js";
   import snippets from "./docs.snippets";
 
   useMeta(

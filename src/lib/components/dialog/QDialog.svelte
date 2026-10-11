@@ -10,7 +10,7 @@ Dialogs focus attention on a task, decision, or message above the page. Choose a
 
 <script lang="ts">
   import { on } from "svelte/events";
-  import type { QEvent } from "$utils";
+  import type { QEvent } from "#utils";
   import type { QDialogProps } from "./props";
 
   type QDialogEvent<T extends Event> = QEvent<T, HTMLDialogElement>;

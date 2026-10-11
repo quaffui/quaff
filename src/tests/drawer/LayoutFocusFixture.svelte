@@ -1,9 +1,9 @@
 <script lang="ts">
-  import QLayout from "$components/layout/QLayout.svelte";
-  import QDrawer from "$components/drawer/QDrawer.svelte";
-  import "$css/base.scss";
-  import "$css/components/layout.scss";
-  import "$css/components/drawer.scss";
+  import QLayout from "#components/layout/QLayout.svelte";
+  import QDrawer from "#components/drawer/QDrawer.svelte";
+  import "#css/base.scss";
+  import "#css/components/layout.scss";
+  import "#css/components/drawer.scss";
 
   let isOpen = $state(false);
 </script>

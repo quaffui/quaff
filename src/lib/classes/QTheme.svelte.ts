@@ -1,7 +1,7 @@
 import { Variant } from "@quaffui/material-color-utilities";
 import { untrack } from "svelte";
-import { DEFAULT_THEME_COLORS, DEFAULT_THEME_SOURCE_COLOR } from "$internal/defaultTheme";
-import { convertCase, generateColors, type HexValue, type Mode, type QuaffColors } from "$utils";
+import { DEFAULT_THEME_COLORS, DEFAULT_THEME_SOURCE_COLOR } from "#internal/defaultTheme.js";
+import { convertCase, generateColors, type HexValue, type Mode, type QuaffColors } from "#utils";
 
 type ThemeColor = keyof QuaffColors;
 type ThemeColorKey = `${ThemeColor}${Capitalize<Mode>}`;

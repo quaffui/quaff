@@ -1,4 +1,4 @@
-import { SITE_URL } from "$docs/metadata";
+import { SITE_URL } from "#docs/metadata.js";
 
 export const prerender = true;
 

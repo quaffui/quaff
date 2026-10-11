@@ -1,7 +1,7 @@
 import { describe, expect, expectTypeOf, it, vi } from "vitest";
-import { getDateConstraints, getDateRangeValidation } from "$components/date/calendar";
-import { parseDateValue } from "$components/date/date";
-import type { QDateProps, QDateRangeValue } from "$components/date/props";
+import { getDateConstraints, getDateRangeValidation } from "#components/date/calendar.js";
+import { parseDateValue } from "#components/date/date.js";
+import type { QDateProps, QDateRangeValue } from "#components/date/props.js";
 
 function date(value: string) {
   return parseDateValue(value)!;

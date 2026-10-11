@@ -1,4 +1,4 @@
-import type { Clickable, Labelable, Linkable, QSize } from "$utils";
+import type { Clickable, Labelable, Linkable, QSize } from "#utils";
 import type { MaterialSymbol } from "material-symbols";
 import type { Snippet } from "svelte";
 import type { HTMLButtonAttributes } from "svelte/elements";

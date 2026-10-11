@@ -1,12 +1,12 @@
 <script lang="ts">
   import { asset } from "$app/paths";
-  import { QIconDocs } from "$components/icon/docs";
-  import type { QIconSizeOptions, QIconTypeOptions } from "$components/icon/props";
-  import { QDocs, QDocsSection } from "$docs";
-  import { docsCtx } from "$docs/QDocs.svelte";
-  import { QBtn, QIcon, QSelect, QSwitch } from "$lib";
-  import { useMeta } from "$lib/meta";
-  import { pageMeta } from "$docs/metadata";
+  import { QIconDocs } from "#components/icon/docs.js";
+  import type { QIconSizeOptions, QIconTypeOptions } from "#components/icon/props.js";
+  import { QDocs, QDocsSection } from "#docs";
+  import { docsCtx } from "#docs/QDocs.svelte";
+  import { QBtn, QIcon, QSelect, QSwitch } from "#lib";
+  import { useMeta } from "#lib/meta.js";
+  import { pageMeta } from "#docs/metadata.js";
   import snippets from "./docs.snippets";
 
   useMeta(

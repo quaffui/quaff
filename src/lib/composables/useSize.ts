@@ -1,4 +1,4 @@
-import { isNumeric, type CssUnit, type QSize } from "$utils";
+import { isNumeric, type CssUnit, type QSize } from "#utils";
 
 export const sizes: QSize[] = ["none", "xs", "sm", "md", "lg", "xl"];
 

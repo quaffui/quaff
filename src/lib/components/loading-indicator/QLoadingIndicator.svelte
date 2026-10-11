@@ -4,7 +4,7 @@ Loading indicators animate shapes to show ongoing work when progress is unknown.
 -->
 
 <script lang="ts">
-  import { useColor, useSize } from "$composables";
+  import { useColor, useSize } from "#composables";
   import type { QLoadingIndicatorProps } from "./props";
 
   // #region:    --- Props

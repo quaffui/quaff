@@ -24,6 +24,23 @@
     "docgen-snippets": "bun scripts/docgenSnippets.ts",
     "gen:plugins": "tsc -p plugins/tsconfig.json"
   },
+  "imports": {
+    "#lib": "./src/lib/index.js",
+    "#lib/*": "./src/lib/*",
+    "#utils": "./src/lib/utils/index.js",
+    "#utils/*": "./src/lib/utils/*",
+    "#docs": "./src/docs/index.js",
+    "#docs/*": "./src/docs/*",
+    "#internal/*": "./src/lib/internal/*",
+    "#components": "./src/lib/components/index.js",
+    "#components/*": "./src/lib/components/*",
+    "#helpers": "./src/lib/helpers/index.js",
+    "#helpers/*": "./src/lib/helpers/*",
+    "#composables": "./src/lib/composables/index.js",
+    "#composables/*": "./src/lib/composables/*",
+    "#classes/*": "./src/lib/classes/*",
+    "#css/*": "./src/lib/css/*"
+  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",

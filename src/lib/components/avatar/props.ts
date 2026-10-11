@@ -1,4 +1,4 @@
-import type { Sizeable } from "$utils/types/props/design";
+import type { Sizeable } from "#utils/types/props/design.js";
 import type { Snippet } from "svelte";
 import type { HTMLAttributes } from "svelte/elements";
 

@@ -1,5 +1,5 @@
 <script lang="ts" module>
-  import { QContext } from "$lib/utils";
+  import { QContext } from "#lib/utils/index.js";
 
   interface Props {
     children?: Snippet;
@@ -19,9 +19,9 @@
 </script>
 
 <script lang="ts">
-  import { QCard, QCardSection, QIconBtn, QTheme, Quaff } from "$lib";
-  import { QColors } from "$utils";
-  import type { QComponentDocs } from "$docs";
+  import { QCard, QCardSection, QIconBtn, QTheme, Quaff } from "#lib";
+  import { QColors } from "#utils";
+  import type { QComponentDocs } from "#docs";
   import QApi from "./QApi.svelte";
   import type { Snippet } from "svelte";
 

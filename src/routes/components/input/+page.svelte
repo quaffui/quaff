@@ -1,10 +1,10 @@
 <script lang="ts">
-  import { QInputDocs } from "$components/input/docs";
-  import { docsCtx } from "$docs/QDocs.svelte";
-  import { Notify, QBtn, QIcon, QInput } from "$lib";
-  import { QDocs, QDocsSection } from "$docs";
-  import { useMeta } from "$lib/meta";
-  import { pageMeta } from "$docs/metadata";
+  import { QInputDocs } from "#components/input/docs.js";
+  import { docsCtx } from "#docs/QDocs.svelte";
+  import { Notify, QBtn, QIcon, QInput } from "#lib";
+  import { QDocs, QDocsSection } from "#docs";
+  import { useMeta } from "#lib/meta.js";
+  import { pageMeta } from "#docs/metadata.js";
   import snippets from "./docs.snippets";
 
   useMeta(

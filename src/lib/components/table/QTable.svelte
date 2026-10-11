@@ -4,11 +4,11 @@ Tables arrange records in rows and columns for comparison. Add sorting and forma
 -->
 
 <script lang="ts">
-  import { useI18n } from "$internal/i18n.svelte";
-  import QBtn from "$components/button/QBtn.svelte";
-  import QIcon from "$components/icon/QIcon.svelte";
-  import QSelect from "$components/select/QSelect.svelte";
-  import { capitalize } from "$utils";
+  import { useI18n } from "#internal/i18n.svelte.js";
+  import QBtn from "#components/button/QBtn.svelte";
+  import QIcon from "#components/icon/QIcon.svelte";
+  import QSelect from "#components/select/QSelect.svelte";
+  import { capitalize } from "#utils";
   import type { QTableProps, QTableColumn, QTableRow } from "./props";
 
   const i18n = useI18n("table");

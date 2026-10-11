@@ -5,7 +5,7 @@ Headers place navigation, titles, and actions at the top of an app. Choose compa
 
 <script lang="ts">
   import { onMount } from "svelte";
-  import { useRevealScrollObserver } from "$composables";
+  import { useRevealScrollObserver } from "#composables";
   import { headerCtx } from "../layout/QLayout.svelte";
   import type { QHeaderProps } from "./props";
 

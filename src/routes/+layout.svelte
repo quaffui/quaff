@@ -3,8 +3,8 @@
 
   import { afterNavigate } from "$app/navigation";
   import { page } from "$app/state";
-  import { initMeta, QMetaHead } from "$lib/meta";
-  import { formatPageTitle, getCanonicalUrl } from "$docs/metadata";
+  import { initMeta, QMetaHead } from "#lib/meta.js";
+  import { formatPageTitle, getCanonicalUrl } from "#docs/metadata.js";
   import {
     QAvatar,
     QBtn,
@@ -18,12 +18,12 @@
     QRailbar,
     QTheme,
     Quaff,
-  } from "$lib";
-  import { isRouteActive } from "$utils";
+  } from "#lib";
+  import { isRouteActive } from "#utils";
   import QDocsNavigation, {
     getNavigationLinks,
     type NavigationItem,
-  } from "$docs/QDocsNavigation.svelte";
+  } from "#docs/QDocsNavigation.svelte";
   import type { MaterialSymbol } from "material-symbols";
   import type { Snapshot } from "@sveltejs/kit";
 

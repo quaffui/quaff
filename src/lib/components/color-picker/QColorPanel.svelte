@@ -1,9 +1,9 @@
 <script lang="ts">
   import { untrack } from "svelte";
-  import QBtn from "$components/button/QBtn.svelte";
-  import QBtnToggle from "$components/button-group/QBtnToggle.svelte";
-  import QInput from "$components/input/QInput.svelte";
-  import QSlider from "$components/slider/QSlider.svelte";
+  import QBtn from "#components/button/QBtn.svelte";
+  import QBtnToggle from "#components/button-group/QBtnToggle.svelte";
+  import QInput from "#components/input/QInput.svelte";
+  import QSlider from "#components/slider/QSlider.svelte";
   import QColorField from "./QColorField.svelte";
   import { colorToRgb, formatColor, parseColor, type Color } from "./color";
   import type { QColorFormat, QColorPickerLabels } from "./props";

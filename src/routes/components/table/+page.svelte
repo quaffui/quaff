@@ -1,13 +1,13 @@
 <script lang="ts">
   import { resolve } from "$app/paths";
-  import { QTableDocs } from "$components/table/docs";
-  import type { QTableColumn, QTableRow } from "$components/table/props";
-  import { QDocs, QDocsSection } from "$docs";
-  import QLanguageExample from "$docs/QLanguageExample.svelte";
-  import { docsCtx } from "$docs/QDocs.svelte";
-  import { pageMeta } from "$docs/metadata";
-  import { useMeta } from "$lib/meta";
-  import { QBtn, QCheckbox, QIcon, QInput, QSelect, QSwitch, QTable } from "$lib";
+  import { QTableDocs } from "#components/table/docs.js";
+  import type { QTableColumn, QTableRow } from "#components/table/props.js";
+  import { QDocs, QDocsSection } from "#docs";
+  import QLanguageExample from "#docs/QLanguageExample.svelte";
+  import { docsCtx } from "#docs/QDocs.svelte";
+  import { pageMeta } from "#docs/metadata.js";
+  import { useMeta } from "#lib/meta.js";
+  import { QBtn, QCheckbox, QIcon, QInput, QSelect, QSwitch, QTable } from "#lib";
   import snippets from "./docs.snippets";
 
   useMeta(

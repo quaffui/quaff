@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { QHeaderDocs, QHeaderTitleDocs } from "$components/header/docs";
-  import { QDocs, QDocsSection } from "$docs";
-  import { docsCtx } from "$docs/QDocs.svelte";
+  import { QHeaderDocs, QHeaderTitleDocs } from "#components/header/docs.js";
+  import { QDocs, QDocsSection } from "#docs";
+  import { docsCtx } from "#docs/QDocs.svelte";
   import {
     QAvatar,
     QBtn,
@@ -12,9 +12,9 @@
     QInput,
     QLayout,
     QSwitch,
-  } from "$lib";
-  import { useMeta } from "$lib/meta";
-  import { pageMeta } from "$docs/metadata";
+  } from "#lib";
+  import { useMeta } from "#lib/meta.js";
+  import { pageMeta } from "#docs/metadata.js";
   import snippets from "./docs.snippets";
 
   useMeta(

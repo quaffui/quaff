@@ -1,4 +1,4 @@
-import type { Borderable, OptionalModel } from "$utils";
+import type { Borderable, OptionalModel } from "#utils";
 import type { HTMLAttributes } from "svelte/elements";
 
 export type QDrawerSideOptions = "start" | "end" | "left" | "right";

@@ -4,8 +4,8 @@ Text fields collect and edit text with clear labels. Supporting hints and valida
 -->
 
 <script lang="ts">
-  import { type QEvent } from "$utils";
-  import QFieldMessage from "$internal/QFieldMessage.svelte";
+  import { type QEvent } from "#utils";
+  import QFieldMessage from "#internal/QFieldMessage.svelte";
   import { deleteMaskedToken, maskCaretPosition, maskValue, unmaskValue } from "./mask";
   import type { QInputProps } from "./props";
 

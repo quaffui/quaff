@@ -1,9 +1,9 @@
 <script lang="ts">
-  import QDrawer from "$components/drawer/QDrawer.svelte";
-  import QLayout from "$components/layout/QLayout.svelte";
-  import QNavbar from "$components/navbar/QNavbar.svelte";
-  import QNavItem from "$components/nav-item/QNavItem.svelte";
-  import QRailbar from "$components/railbar/QRailbar.svelte";
+  import QDrawer from "#components/drawer/QDrawer.svelte";
+  import QLayout from "#components/layout/QLayout.svelte";
+  import QNavbar from "#components/navbar/QNavbar.svelte";
+  import QNavItem from "#components/nav-item/QNavItem.svelte";
+  import QRailbar from "#components/railbar/QRailbar.svelte";
 
   let { expanded }: { expanded: boolean } = $props();
 </script>

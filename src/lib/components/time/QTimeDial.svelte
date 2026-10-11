@@ -2,7 +2,7 @@
   import { untrack } from "svelte";
   import { sineInOut } from "svelte/easing";
   import { fade } from "svelte/transition";
-  import type { QEvent } from "$utils";
+  import type { QEvent } from "#utils";
   import { to12Hour } from "./time";
   import type QTimeState from "./timeState.svelte";
 

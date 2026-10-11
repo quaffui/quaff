@@ -4,7 +4,7 @@ Icons represent actions, content, or status with a compact symbol. Use Material 
 -->
 
 <script lang="ts">
-  import { useSize, useColor } from "$composables";
+  import { useSize, useColor } from "#composables";
   import type { QIconProps } from "./props";
 
   // #region:    --- Props

@@ -12,10 +12,10 @@
     QTabs,
     QTooltip,
     QBtn,
-  } from "$lib";
-  import { capitalize, escape } from "$utils";
-  import type { QComponentDocs } from "$docs";
-  import { COMPONENT_PARENT_FOLDER } from "$internal/componentRegistry";
+  } from "#lib";
+  import { capitalize, escape } from "#utils";
+  import type { QComponentDocs } from "#docs";
+  import { COMPONENT_PARENT_FOLDER } from "#internal/componentRegistry.js";
   import { getOwnTypeDefinition } from "./QApi.utils";
   import { docsCtx } from "./QDocs.svelte";
   import QApiTypeTooltip from "./QApiTypeTooltip.svelte";

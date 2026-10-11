@@ -5,9 +5,9 @@ Linear progress indicators show task completion along a horizontal track. Displa
 
 <script lang="ts">
   import { onMount } from "svelte";
-  import { useColor, useSize } from "$composables";
-  import { useQuaffConfig } from "$internal/quaffConfig.svelte";
-  import { between } from "$utils";
+  import { useColor, useSize } from "#composables";
+  import { useQuaffConfig } from "#internal/quaffConfig.svelte.js";
+  import { between } from "#utils";
   import { linearWavePath } from "./waves";
   import type { QLinearProgressProps } from "./props";
 

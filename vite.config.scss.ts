@@ -13,9 +13,7 @@ const cssEntries = Object.fromEntries([
 export default defineConfig({
   resolve: {
     alias: {
-      $lib: resolve(import.meta.dirname, "src/lib"),
       $components: resolve(import.meta.dirname, "./src/lib/components"),
-      $classes: resolve(import.meta.dirname, "./src/lib/classes"),
       $css: resolve(import.meta.dirname, "./src/lib/css"),
     },
   },

@@ -1,6 +1,6 @@
 import { tick } from "svelte";
 import { on } from "svelte/events";
-import { containsWithPortals } from "$internal/portalParent";
+import { containsWithPortals } from "#internal/portalParent.js";
 
 const FOCUSABLE_SELECTOR =
   'a[href], area[href], button, input, select, textarea, summary, iframe, [tabindex], [contenteditable]:not([contenteditable="false"])';

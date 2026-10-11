@@ -1,7 +1,7 @@
 <script lang="ts">
-  import QNavItem from "$components/nav-item/QNavItem.svelte";
-  import QRailbar from "$components/railbar/QRailbar.svelte";
-  import type { QRailbarProps } from "$components/railbar/props";
+  import QNavItem from "#components/nav-item/QNavItem.svelte";
+  import QRailbar from "#components/railbar/QRailbar.svelte";
+  import type { QRailbarProps } from "#components/railbar/props.js";
 
   let { railbar = {} }: { railbar?: Omit<QRailbarProps, "children"> } = $props();
   let filter = $state("Unread");

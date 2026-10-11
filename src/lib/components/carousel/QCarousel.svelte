@@ -5,9 +5,9 @@ Carousels let users browse items in a scrolling row or full-screen view. Add nav
 
 <script lang="ts" generics="T">
   import { untrack } from "svelte";
-  import QIconBtn from "$components/button/QIconBtn.svelte";
-  import { ripple } from "$helpers/ripple";
-  import { getFocusableChildren, isFocusable, shouldReduceMotion } from "$utils/dom";
+  import QIconBtn from "#components/button/QIconBtn.svelte";
+  import { ripple } from "#helpers/ripple.js";
+  import { getFocusableChildren, isFocusable, shouldReduceMotion } from "#utils/dom.js";
   import { createCarouselLayout } from "./carousel";
   import type { QCarouselProps } from "./props";
 

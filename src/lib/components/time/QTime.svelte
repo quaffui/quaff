@@ -6,13 +6,13 @@ Time pickers combine a clock dial with numeric entry. Dialog and popup layouts s
 <script lang="ts">
   import { onDestroy, untrack } from "svelte";
   import { innerHeight, innerWidth } from "svelte/reactivity/window";
-  import { useI18n } from "$internal/i18n.svelte";
-  import Quaff from "$classes/Quaff.svelte";
-  import QIconBtn from "$components/button/QIconBtn.svelte";
-  import QDialog from "$components/dialog/QDialog.svelte";
-  import QInput from "$components/input/QInput.svelte";
-  import QMenu from "$components/menu/QMenu.svelte";
-  import { isActivationKey, type QEvent } from "$utils";
+  import { useI18n } from "#internal/i18n.svelte.js";
+  import Quaff from "#classes/Quaff.svelte.js";
+  import QIconBtn from "#components/button/QIconBtn.svelte";
+  import QDialog from "#components/dialog/QDialog.svelte";
+  import QInput from "#components/input/QInput.svelte";
+  import QMenu from "#components/menu/QMenu.svelte";
+  import { isActivationKey, type QEvent } from "#utils";
   import createTimeFocus from "./timeFocus";
   import QTimePicker from "./QTimePicker.svelte";
   import QTimeState, { type QTimeStateSource } from "./timeState.svelte";

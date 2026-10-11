@@ -4,7 +4,7 @@ Lists arrange related items in vertical rows. Combine text, icons, and actions, 
 -->
 
 <script lang="ts" module>
-  import { QContext } from "$utils/context";
+  import { QContext } from "#utils/context.js";
   import type { QListProps } from "./props";
 
   interface QListContext {
@@ -25,9 +25,9 @@ Lists arrange related items in vertical rows. Combine text, icons, and actions, 
 
 <script lang="ts">
   import { onMount, tick } from "svelte";
-  import { useQuaffConfig } from "$internal/quaffConfig.svelte";
-  import { menuCtx } from "$internal/menuContext";
-  import { getDirection, isArrowKey } from "$utils";
+  import { useQuaffConfig } from "#internal/quaffConfig.svelte.js";
+  import { menuCtx } from "#internal/menuContext.js";
+  import { getDirection, isArrowKey } from "#utils";
 
   // #region:    --- Props
   let {

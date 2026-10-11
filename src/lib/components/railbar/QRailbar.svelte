@@ -4,7 +4,7 @@ Navigation rails keep primary destinations beside the page in a vertical bar. Ex
 -->
 
 <script module lang="ts">
-  import { QContext } from "$utils/context";
+  import { QContext } from "#utils/context.js";
 
   interface RailbarContext {
     readonly expanded: boolean;
@@ -16,11 +16,11 @@ Navigation rails keep primary destinations beside the page in a vertical bar. Ex
 <script lang="ts">
   import { tick } from "svelte";
   import { on } from "svelte/events";
-  import { navigationCtx } from "$internal/navigationContext";
+  import { navigationCtx } from "#internal/navigationContext.js";
 
-  import { useColor } from "$composables";
-  import type { QEvent } from "$utils";
-  import { closeNestedOverlays } from "$utils/dom";
+  import { useColor } from "#composables";
+  import type { QEvent } from "#utils";
+  import { closeNestedOverlays } from "#utils/dom.js";
   import {
     startRailbarCtx,
     endRailbarCtx,

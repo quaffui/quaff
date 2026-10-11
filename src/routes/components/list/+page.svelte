@@ -1,9 +1,9 @@
 <script lang="ts">
   import { tick } from "svelte";
   import { asset } from "$app/paths";
-  import { QItemDocs, QItemSectionDocs, QListDocs } from "$components/list/docs";
-  import { docsCtx } from "$docs/QDocs.svelte";
-  import { pageMeta } from "$docs/metadata";
+  import { QItemDocs, QItemSectionDocs, QListDocs } from "#components/list/docs.js";
+  import { docsCtx } from "#docs/QDocs.svelte";
+  import { pageMeta } from "#docs/metadata.js";
   import {
     QAvatar,
     QCheckbox,
@@ -15,9 +15,9 @@
     QList,
     QRadio,
     QSwitch,
-  } from "$lib";
-  import { QDocs, QDocsSection } from "$docs";
-  import { useMeta } from "$lib/meta";
+  } from "#lib";
+  import { QDocs, QDocsSection } from "#docs";
+  import { useMeta } from "#lib/meta.js";
   import snippets from "./docs.snippets";
 
   useMeta(

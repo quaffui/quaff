@@ -1,9 +1,9 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
-  import { QCard, QCardSection } from "$components";
-  import QDocs from "$docs/QDocs.svelte";
-  import { useMeta } from "$lib/meta";
-  import { pageMeta } from "$docs/metadata";
+  import { QCard, QCardSection } from "#components";
+  import QDocs from "#docs/QDocs.svelte";
+  import { useMeta } from "#lib/meta.js";
+  import { pageMeta } from "#docs/metadata.js";
 
   useMeta(
     pageMeta(

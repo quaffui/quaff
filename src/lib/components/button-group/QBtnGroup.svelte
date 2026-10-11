@@ -4,8 +4,8 @@ Button groups arrange related actions with consistent sizing and spacing. Keep b
 -->
 
 <script module lang="ts">
-  import { QContext } from "$utils/context";
-  import type { QBtnSizeOptions } from "$components/button/props";
+  import { QContext } from "#utils/context.js";
+  import type { QBtnSizeOptions } from "#components/button/props.js";
 
   interface ButtonGroupContext {
     readonly isExpressive: boolean;
@@ -18,8 +18,8 @@ Button groups arrange related actions with consistent sizing and spacing. Keep b
 </script>
 
 <script lang="ts">
-  import { useQuaffConfig } from "$internal/quaffConfig.svelte";
-  import { buttonGroupPress } from "$internal/buttonGroupPress";
+  import { useQuaffConfig } from "#internal/quaffConfig.svelte.js";
+  import { buttonGroupPress } from "#internal/buttonGroupPress.js";
   import type { QBtnGroupProps } from "./props";
 
   let {

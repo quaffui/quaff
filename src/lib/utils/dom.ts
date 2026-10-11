@@ -1,4 +1,4 @@
-import { portalParents } from "$internal/portalParent";
+import { portalParents } from "#internal/portalParent.js";
 import type { Direction } from "./events";
 import type { Attachment } from "svelte/attachments";
 

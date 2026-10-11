@@ -1,8 +1,8 @@
 import { render } from "svelte/server";
 import { describe, expect, it } from "vitest";
-import QColorPicker from "$components/color-picker/QColorPicker.svelte";
-import QInput from "$components/input/QInput.svelte";
-import QSelect from "$components/select/QSelect.svelte";
+import QColorPicker from "#components/color-picker/QColorPicker.svelte";
+import QInput from "#components/input/QInput.svelte";
+import QSelect from "#components/select/QSelect.svelte";
 
 const HEX_MASK = String.raw`\#XXXXXX`;
 

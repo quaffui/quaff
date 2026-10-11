@@ -4,9 +4,9 @@ Collapsible groups of navigation destinations inside a drawer.
 -->
 
 <script lang="ts">
-  import QExpansionItem from "$components/expansion-item/QExpansionItem.svelte";
-  import QList, { listCtx } from "$components/list/QList.svelte";
-  import { navigationCtx } from "$internal/navigationContext";
+  import QExpansionItem from "#components/expansion-item/QExpansionItem.svelte";
+  import QList, { listCtx } from "#components/list/QList.svelte";
+  import { navigationCtx } from "#internal/navigationContext.js";
   import type { QNavGroupProps } from "./props";
 
   let {

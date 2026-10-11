@@ -1,9 +1,9 @@
 <script lang="ts">
   import { Spring, prefersReducedMotion } from "svelte/motion";
-  import { useColor } from "$composables";
-  import QIconSnippet from "$internal/QIconSnippet.svelte";
-  import { useQuaffConfig } from "$internal/quaffConfig.svelte";
-  import type { QEvent } from "$utils";
+  import { useColor } from "#composables";
+  import QIconSnippet from "#internal/QIconSnippet.svelte";
+  import { useQuaffConfig } from "#internal/quaffConfig.svelte.js";
+  import type { QEvent } from "#utils";
   import {
     getSliderNativeStep,
     getSliderPosition,
