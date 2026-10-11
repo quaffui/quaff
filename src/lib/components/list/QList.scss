@@ -29,6 +29,17 @@
     border-bottom-right-radius: inherit;
   }
 
+  // Ignore separator siblings and let QItem's interaction states override these corners.
+  &--expressive > :where(.q-item:nth-child(1 of .q-item, .q-expansion-item)) {
+    border-start-start-radius: inherit;
+    border-start-end-radius: inherit;
+  }
+
+  &--expressive > :where(.q-item:nth-last-child(1 of .q-item, .q-expansion-item)) {
+    border-end-start-radius: inherit;
+    border-end-end-radius: inherit;
+  }
+
   & > .q-separator__wrapper:first-child {
     display: none !important;
   }
