@@ -22,8 +22,8 @@
   let steppedValue = $state(40);
   let textSize = $state(3);
   let volume = $state(65);
-  const sizes = ["xs", "sm", "md", "lg", "xl"] as const;
-  const textSizeLabels = ["Extra small", "Small", "Medium", "Large", "Extra large"] as const;
+  const SIZES = ["xs", "sm", "md", "lg", "xl"] as const;
+  const TEXT_SIZE_LABELS = ["Extra small", "Small", "Medium", "Large", "Extra large"] as const;
 </script>
 
 <QDocs
@@ -100,7 +100,7 @@
             step={1}
             markers
             label
-            labelValue={textSizeLabels[textSize - 1]}
+            labelValue={TEXT_SIZE_LABELS[textSize - 1]}
             aria-label="Text size"
           />
         </div>
@@ -108,14 +108,14 @@
 
       <QDocsSection title="Expressive Sliders">
         {#snippet sectionDescription()}
-          Enable <code>expressive</code> for expanded sizes, vertical orientation, inset icons, and
-          expressive motion, or pass <code>{`{ expressive: true }`}</code> to
+          Enable <code>expressive</code> for expanded sizes, vertical orientation, and inset icons,
+          or pass <code>{`{ expressive: true }`}</code> to
           <code>Quaff.init()</code> for global expressive styling. Material 3 recommends keeping range
           sliders horizontal to reduce cognitive load.
         {/snippet}
 
         <div class="flex column q-gap-lg">
-          {#each sizes as size (size)}
+          {#each SIZES as size (size)}
             <div class="flex items-center q-gap-md">
               <span class="label-large" style="width: 32px;">{size.toUpperCase()}</span>
               <QSlider

@@ -1,19 +1,30 @@
 <script lang="ts">
-  import { onMount } from "svelte";
+  import { Spring, prefersReducedMotion } from "svelte/motion";
   import { useColor } from "$composables";
   import QIconSnippet from "$internal/QIconSnippet.svelte";
   import { useQuaffConfig } from "$internal/quaffConfig.svelte";
   import type { QEvent } from "$utils";
   import {
-    sliderNativeStep,
-    sliderPosition,
-    sliderSegments,
-    sliderStops,
+    getSliderNativeStep,
+    getSliderPosition,
+    getSliderSegments,
+    buildSliderStops,
     snapSliderValue,
   } from "./slider";
   import type { QSliderProps } from "./props";
 
   type SliderInputEvent<T extends Event> = QEvent<T, HTMLInputElement>;
+
+  const ADJUSTMENT_KEYS = [
+    "ArrowDown",
+    "ArrowLeft",
+    "ArrowRight",
+    "ArrowUp",
+    "End",
+    "Home",
+    "PageDown",
+    "PageUp",
+  ];
 
   interface Props extends Omit<QSliderProps, "centered" | "labelValue" | "value"> {
     ariaLabels?: (string | undefined)[];
@@ -67,24 +78,25 @@
   let inputs = $state<HTMLInputElement[]>([]);
   let activeIndex = $state(0);
   let focusVisibleIndex = $state<number>();
-  let pressed = $state(false);
-  let dragging = $state(false);
+  // Retain the input mode after blur to choose the indicator's exit motion.
+  let hasKeyboardInteraction = $state(false);
+  let isPressed = $state(false);
+  let isDragging = $state(false);
   let pointerId: number | undefined;
   let pointerBounds: DOMRect | undefined;
-  let pointerRtl = false;
-  let pointerScrollIntent = false;
+  let isPointerRtl = false;
+  let hasPointerScrollIntent = false;
   let pointerStart: PointerSample | undefined;
-  let pendingPointer: PointerSample | undefined;
-  let pointerFrame: number | undefined;
   let pointerType: string | undefined;
   let pointerGrabOffset = 0;
-  let pointerRangeOverlap = false;
-  let pointerStartedOnHandle = false;
+  let hasPointerOverlap = false;
+  let hasPointerStartedOnHandle = false;
   let pointerValueInitial: number | undefined;
   let pointerValueLast: number | undefined;
   let pointerVisualValue = $state<number>();
-  let rootLength = $state(0);
-  let spacePressed = false;
+  let rootWidth = $state(0);
+  let rootHeight = $state(0);
+  let isSpacePressed = false;
 
   interface PointerSample {
     clientX: number;
@@ -97,6 +109,7 @@
   const isExpressive = $derived(expressive ?? quaffConfig.expressive);
   const resolvedSize = $derived(isExpressive ? size : "xs");
   const isVertical = $derived(isExpressive && vertical);
+  const rootLength = $derived(isVertical ? rootHeight : rootWidth);
   const hasIcon = $derived(
     isExpressive &&
       !range &&
@@ -104,9 +117,13 @@
       icon !== undefined &&
       (resolvedSize === "md" || resolvedSize === "lg" || resolvedSize === "xl")
   );
-  const markerInterval = $derived(
-    Math.max(0, typeof markers === "number" ? markers : markers ? effectiveStep : 0)
-  );
+  const markerInterval = $derived.by(() => {
+    if (typeof markers === "number") {
+      return Math.max(0, markers);
+    }
+
+    return markers ? effectiveStep : 0;
+  });
   const valueStep = $derived(markerInterval || effectiveStep);
 
   const normalizedValues = $derived.by(() => {
@@ -122,14 +139,23 @@
 
     return next;
   });
+  const targetPositions = $derived(
+    visualValues.map((value) => getSliderPosition(value, min, effectiveMax, reverse))
+  );
+  // Smooth the shared geometry, keeping input events and bound values immediate.
+  const positionMotion = Spring.of(() => targetPositions, {
+    stiffness: 0.5,
+    damping: 1,
+    precision: 0.0001,
+  });
   const positions = $derived(
-    visualValues.map((value) => sliderPosition(value, min, effectiveMax, reverse))
+    prefersReducedMotion.current ? targetPositions : positionMotion.current
   );
   const displayLabels = $derived(normalizedValues.map((value, index) => labels[index] ?? value));
-  const segments = $derived(sliderSegments(positions, centered && !range, reverse));
-  const activeSegment = $derived(segments.find((segment) => segment.active));
+  const segments = $derived(getSliderSegments(positions, centered && !range, reverse));
+  const activeSegment = $derived(segments.find((segment) => segment.isActive));
   const stops = $derived(
-    sliderStops(
+    buildSliderStops(
       min,
       effectiveMax,
       markerInterval,
@@ -142,21 +168,22 @@
     markerInterval > 0
       ? []
       : segments
-          .filter((segment) => !segment.active)
+          .filter((segment) => !segment.isActive)
           .flatMap((segment) => [
             ...(segment.start === 0 ? [0] : []),
             ...(segment.end === 1 ? [1] : []),
           ])
   );
-  const iconOnInactiveTrack = $derived(
+  const activeTrackFraction = $derived(reverse ? 1 - positions[0] : positions[0]);
+  const iconRequiredSpace = $derived(resolvedSize === "xl" ? 32 + 8 + 8 : 24 + 6 + 8);
+  const isIconOnInactiveTrack = $derived(
     hasIcon &&
       (rootLength > 0
-        ? rootLength * ((visualValues[0] - min) / (effectiveMax - min)) <
-          (resolvedSize === "xl" ? 32 + 8 + 6 : 24 + 6 + 6)
-        : (visualValues[0] - min) / (effectiveMax - min) < 0.25)
+        ? rootLength * activeTrackFraction < iconRequiredSpace
+        : activeTrackFraction < 0.25)
   );
-  const iconAtEnd = $derived(iconOnInactiveTrack !== reverse);
-  const handlesOverlap = $derived(
+  const isIconAtEnd = $derived(isIconOnInactiveTrack !== reverse);
+  const hasOverlappingHandles = $derived(
     range &&
       positions.length === 2 &&
       (rootLength > 0
@@ -167,20 +194,6 @@
   const parsedColor = $derived(useColor(color));
   const parsedTrackColor = $derived(useColor(trackColor));
 
-  onMount(() => {
-    const updateRootLength = () => {
-      rootLength = isVertical ? root.clientHeight : root.clientWidth;
-    };
-
-    updateRootLength();
-    const observer = new ResizeObserver(updateRootLength);
-    observer.observe(root);
-    return () => {
-      observer.disconnect();
-      cancelPointerFrame();
-    };
-  });
-
   function constrainValue(index: number, value: number, stepValue = valueStep) {
     const next = [...normalizedValues];
     const lower = range && index === 1 ? next[0] : min;
@@ -188,10 +201,10 @@
     return snapSliderValue(value, lower, upper, stepValue, min);
   }
 
-  function nativeStepValue(index: number) {
+  function getNativeStep(index: number) {
     const lower = range && index === 1 ? normalizedValues[0] : min;
     const upper = range && index === 0 ? normalizedValues[1] : effectiveMax;
-    return sliderNativeStep(valueStep, lower, upper);
+    return getSliderNativeStep(valueStep, lower, upper);
   }
 
   function setValue(index: number, value: number) {
@@ -212,7 +225,7 @@
     input.dispatchEvent(new Event(type, { bubbles: true }));
   }
 
-  function onNativeInput(event: SliderInputEvent<Event>, index: number) {
+  function handleNativeInput(event: SliderInputEvent<Event>, index: number) {
     if (readonly || disabled) {
       event.currentTarget.value = String(normalizedValues[index]);
       return;
@@ -223,14 +236,14 @@
     let next = constrainValue(index, attempted);
 
     if (valueStep > 0 && attempted !== current && next === current) {
-      next = nextKeyboardValue(index, attempted > current ? 1 : -1);
+      next = getNextKeyboardValue(index, attempted > current ? 1 : -1);
     }
 
     event.currentTarget.value = String(setValue(index, next));
     oninput?.(event as Parameters<NonNullable<typeof oninput>>[0]);
   }
 
-  function onNativeChange(event: SliderInputEvent<Event>) {
+  function handleNativeChange(event: SliderInputEvent<Event>) {
     if (readonly || disabled) {
       return;
     }
@@ -238,9 +251,9 @@
     onchange?.(event as Parameters<NonNullable<typeof onchange>>[0]);
   }
 
-  function onPointerDown(event: PointerEvent) {
+  function handlePointerDown(event: PointerEvent) {
     if (
-      pressed ||
+      isPressed ||
       !event.isPrimary ||
       disabled ||
       (event.pointerType === "mouse" && event.button !== 0)
@@ -248,22 +261,19 @@
       return;
     }
 
-    const sample = latestPointerSample(event);
-    const pointerDownValue = pointerValue(sample);
+    const sample = getLatestPointerSample(event);
+    const pointerDownValue = getPointerValue(sample);
     const handle =
       event.target instanceof Element
         ? event.target.closest<HTMLElement>(".q-slider__handle")
         : null;
     const handleIndex = handle ? Number(handle.dataset.index) : NaN;
-    pointerStartedOnHandle =
+    hasPointerStartedOnHandle =
       Number.isInteger(handleIndex) && handleIndex >= 0 && handleIndex < normalizedValues.length;
-    activeIndex = range
-      ? closestHandle(pointerDownValue)
-      : pointerStartedOnHandle
-        ? handleIndex
-        : 0;
-    focusVisibleIndex = undefined;
+    activeIndex = findClosestHandle(pointerDownValue);
     inputs[activeIndex]?.focus({ preventScroll: true });
+    focusVisibleIndex = undefined;
+    hasKeyboardInteraction = false;
 
     if (readonly) {
       return;
@@ -276,96 +286,88 @@
     pointerId = event.pointerId;
     pointerType = event.pointerType;
     pointerBounds = root.getBoundingClientRect();
-    pointerRtl = getComputedStyle(root).direction === "rtl";
-    pointerScrollIntent = false;
+    isPointerRtl = getComputedStyle(root).direction === "rtl";
+    hasPointerScrollIntent = false;
     pointerStart = sample;
-    pointerRangeOverlap =
-      pointerStartedOnHandle &&
-      range &&
-      normalizedValues.length === 2 &&
-      normalizedValues[0] === normalizedValues[1];
-    pointerGrabOffset = pointerStartedOnHandle
-      ? pointerDownValue - normalizedValues[activeIndex]
-      : 0;
+    hasPointerOverlap =
+      hasPointerStartedOnHandle && range && positions.length === 2 && positions[0] === positions[1];
+    const handlePosition = reverse ? 1 - positions[activeIndex] : positions[activeIndex];
+    const handleValue = min + handlePosition * (effectiveMax - min);
+    pointerGrabOffset = hasPointerStartedOnHandle ? pointerDownValue - handleValue : 0;
     pointerValueInitial = normalizedValues[activeIndex];
     pointerValueLast = pointerValueInitial;
-    pressed = true;
-    dragging = false;
+    isPressed = true;
+    isDragging = false;
     root.setPointerCapture(event.pointerId);
 
-    if (pointerType !== "touch" && !pointerStartedOnHandle) {
+    if (pointerType !== "touch" && !hasPointerStartedOnHandle) {
       updateFromPointer(sample);
     }
   }
 
-  function onPointerMove(event: PointerEvent) {
-    if (!pressed || event.pointerId !== pointerId) {
+  function handlePointerMove(event: PointerEvent) {
+    if (!isPressed || event.pointerId !== pointerId) {
       return;
     }
 
-    const sample = latestPointerSample(event);
+    const sample = getLatestPointerSample(event);
 
-    if (pointerScrollIntent) {
+    if (hasPointerScrollIntent) {
       return;
     }
 
-    if (!dragging && pointerStart) {
+    if (!isDragging && pointerStart) {
       const deltaX = sample.clientX - pointerStart.clientX;
       const deltaY = sample.clientY - pointerStart.clientY;
       const dragSlop = pointerType === "touch" ? 8 : 2;
 
-      if (Math.hypot(deltaX, deltaY) < dragSlop) {
+      if (!hasPointerStartedOnHandle && Math.hypot(deltaX, deltaY) < dragSlop) {
         return;
       }
 
       const axisDelta = Math.abs(isVertical ? deltaY : deltaX);
       const crossAxisDelta = Math.abs(isVertical ? deltaX : deltaY);
 
-      if (pointerType === "touch" && crossAxisDelta > axisDelta) {
-        pointerScrollIntent = true;
+      if (pointerType === "touch" && !hasPointerStartedOnHandle && crossAxisDelta > axisDelta) {
+        hasPointerScrollIntent = true;
+        return;
+      }
+    }
+
+    if (hasPointerOverlap && pointerStart) {
+      const direction = getPointerValue(sample) - getPointerValue(pointerStart);
+
+      if (direction === 0) {
         return;
       }
 
-      if (pointerRangeOverlap) {
-        const direction = pointerValue(sample) - normalizedValues[activeIndex];
-
-        if (direction === 0) {
-          return;
-        }
-
-        activeIndex = direction < 0 ? 0 : 1;
-        pointerRangeOverlap = false;
-        inputs[activeIndex]?.focus({ preventScroll: true });
-      }
+      activeIndex = direction < 0 ? 0 : 1;
+      hasPointerOverlap = false;
+      inputs[activeIndex]?.focus({ preventScroll: true });
+      focusVisibleIndex = undefined;
     }
 
     event.preventDefault();
-    dragging = true;
-    pendingPointer = sample;
-
-    if (pointerFrame === undefined) {
-      pointerFrame = requestAnimationFrame(flushPointerFrame);
-    }
+    isDragging = true;
+    updateFromPointer(sample);
   }
 
-  function onPointerUp(event: PointerEvent) {
-    if (!pressed || event.pointerId !== pointerId) {
+  function handlePointerUp(event: PointerEvent) {
+    if (!isPressed || event.pointerId !== pointerId) {
       return;
     }
 
-    if (pointerScrollIntent) {
+    if (hasPointerScrollIntent) {
       resetPointer();
       return;
     }
 
-    cancelPointerFrame();
-
-    if (pointerStartedOnHandle && !dragging) {
+    if (hasPointerStartedOnHandle && !isDragging) {
       resetPointer();
       return;
     }
 
-    const value = updateFromPointer(latestPointerSample(event));
+    const value = updateFromPointer(getLatestPointerSample(event));
 
     if (value !== pointerValueInitial) {
       dispatchInput(activeIndex, value, "change");
@@ -374,14 +376,14 @@
     resetPointer();
   }
 
-  function onPointerCancel(event: PointerEvent) {
+  function handlePointerCancel(event: PointerEvent) {
     if (event.pointerId === pointerId) {
       commitInterruptedPointer();
       resetPointer();
     }
   }
 
-  function onLostPointerCapture(event: PointerEvent) {
+  function handleLostPointerCapture(event: PointerEvent) {
     if (event.pointerId === pointerId) {
       commitInterruptedPointer();
       resetPointer();
@@ -398,27 +400,8 @@
     }
   }
 
-  function flushPointerFrame() {
-    pointerFrame = undefined;
-    const sample = pendingPointer;
-    pendingPointer = undefined;
-
-    if (sample && pressed) {
-      updateFromPointer(sample);
-    }
-  }
-
-  function cancelPointerFrame() {
-    if (pointerFrame !== undefined) {
-      cancelAnimationFrame(pointerFrame);
-      pointerFrame = undefined;
-    }
-
-    pendingPointer = undefined;
-  }
-
   function updateFromPointer(sample: PointerSample) {
-    const value = pointerValue(sample);
+    const value = getPointerValue(sample);
     pointerVisualValue = constrainValue(activeIndex, value, markerInterval);
     const next = constrainValue(activeIndex, value);
 
@@ -431,28 +414,27 @@
   }
 
   function resetPointer() {
-    cancelPointerFrame();
-    pressed = false;
-    dragging = false;
+    isPressed = false;
+    isDragging = false;
     pointerId = undefined;
     pointerType = undefined;
     pointerGrabOffset = 0;
-    pointerRangeOverlap = false;
-    pointerStartedOnHandle = false;
+    hasPointerOverlap = false;
+    hasPointerStartedOnHandle = false;
     pointerBounds = undefined;
-    pointerScrollIntent = false;
+    hasPointerScrollIntent = false;
     pointerStart = undefined;
     pointerValueInitial = undefined;
     pointerValueLast = undefined;
     pointerVisualValue = undefined;
   }
 
-  function latestPointerSample(event: PointerEvent): PointerSample {
+  function getLatestPointerSample(event: PointerEvent): PointerSample {
     const latest = event.getCoalescedEvents?.().at(-1) ?? event;
     return { clientX: latest.clientX, clientY: latest.clientY };
   }
 
-  function pointerValue(sample: PointerSample) {
+  function getPointerValue(sample: PointerSample) {
     const bounds = pointerBounds ?? root.getBoundingClientRect();
     let position: number;
 
@@ -461,7 +443,7 @@
     } else {
       position = (sample.clientX - bounds.left) / bounds.width;
 
-      if (pointerBounds ? pointerRtl : getComputedStyle(root).direction === "rtl") {
+      if (pointerBounds ? isPointerRtl : getComputedStyle(root).direction === "rtl") {
         position = 1 - position;
       }
     }
@@ -473,58 +455,49 @@
     return min + position * (effectiveMax - min) - pointerGrabOffset;
   }
 
-  function closestHandle(value: number) {
+  function findClosestHandle(value: number) {
     if (!range) {
       return 0;
     }
 
-    const firstDistance = Math.abs(value - normalizedValues[0]);
-    const secondDistance = Math.abs(value - normalizedValues[1]);
-    return firstDistance === secondDistance
-      ? value < normalizedValues[0]
-        ? 0
-        : 1
-      : firstDistance < secondDistance
-        ? 0
-        : 1;
+    const position = getSliderPosition(value, min, effectiveMax, reverse);
+    const firstDistance = Math.abs(position - positions[0]);
+    const secondDistance = Math.abs(position - positions[1]);
+
+    if (firstDistance === secondDistance) {
+      const isBeforeFirst = reverse ? position > positions[0] : position < positions[0];
+      return isBeforeFirst ? 0 : 1;
+    }
+
+    return firstDistance < secondDistance ? 0 : 1;
   }
 
-  function onKeyDown(event: SliderInputEvent<KeyboardEvent>, index: number) {
+  function handleKeyDown(event: SliderInputEvent<KeyboardEvent>, index: number) {
     focusVisibleIndex = index;
+    hasKeyboardInteraction = true;
     onkeydown?.(event as Parameters<NonNullable<typeof onkeydown>>[0]);
 
     if (event.defaultPrevented) {
       return;
     }
 
-    const adjustmentKey = [
-      "ArrowDown",
-      "ArrowLeft",
-      "ArrowRight",
-      "ArrowUp",
-      "End",
-      "Home",
-      "PageDown",
-      "PageUp",
-    ];
-
-    if (readonly && adjustmentKey.includes(event.key)) {
+    if (readonly && ADJUSTMENT_KEYS.includes(event.key)) {
       event.preventDefault();
       return;
     }
 
     if (event.key === " ") {
-      spacePressed = true;
+      isSpacePressed = true;
       event.preventDefault();
       return;
     }
 
     if (event.key.startsWith("Arrow")) {
       event.preventDefault();
-      const direction = keyboardDirection(event.key);
-      const next = spacePressed
-        ? largerKeyboardValue(index, direction)
-        : nextKeyboardValue(index, direction);
+      const direction = getKeyboardDirection(event.key);
+      const next = isSpacePressed
+        ? getLargerKeyboardValue(index, direction)
+        : getNextKeyboardValue(index, direction);
       dispatchKeyboardValue(index, next);
       return;
     }
@@ -539,11 +512,11 @@
     if (event.key === "PageDown" || event.key === "PageUp") {
       event.preventDefault();
       const direction = event.key === "PageUp" ? 1 : -1;
-      dispatchKeyboardValue(index, largerKeyboardValue(index, direction));
+      dispatchKeyboardValue(index, getLargerKeyboardValue(index, direction));
     }
   }
 
-  function nextKeyboardValue(index: number, direction: number) {
+  function getNextKeyboardValue(index: number, direction: number) {
     const current = normalizedValues[index];
 
     if (valueStep <= 0) {
@@ -554,22 +527,23 @@
     const nearest = Math.round(relative);
     const isAligned =
       Math.abs(relative - nearest) <= Number.EPSILON * Math.max(1, Math.abs(relative)) * 4;
-    const nextIndex = isAligned
-      ? nearest + direction
-      : direction > 0
-        ? Math.ceil(relative)
-        : Math.floor(relative);
+    let nextIndex = direction > 0 ? Math.ceil(relative) : Math.floor(relative);
+
+    if (isAligned) {
+      nextIndex = nearest + direction;
+    }
+
     return constrainValue(index, min + nextIndex * valueStep);
   }
 
-  function largerKeyboardValue(index: number, direction: number) {
+  function getLargerKeyboardValue(index: number, direction: number) {
     if (markerInterval > 0) {
-      return nextKeyboardValue(index, direction);
+      return getNextKeyboardValue(index, direction);
     }
 
     const interval = Math.max(valueStep || 1, (effectiveMax - min) / 10);
     const next = constrainValue(index, normalizedValues[index] + direction * interval);
-    return next === normalizedValues[index] ? nextKeyboardValue(index, direction) : next;
+    return next === normalizedValues[index] ? getNextKeyboardValue(index, direction) : next;
   }
 
   function dispatchKeyboardValue(index: number, value: number) {
@@ -581,7 +555,7 @@
     dispatchInput(index, value, "change");
   }
 
-  function keyboardDirection(key: string) {
+  function getKeyboardDirection(key: string) {
     let direction = key === "ArrowRight" || key === "ArrowUp" ? 1 : -1;
 
     if (!isVertical && (key === "ArrowLeft" || key === "ArrowRight") && isRtl()) {
@@ -599,41 +573,106 @@
     return getComputedStyle(root).direction === "rtl";
   }
 
-  function onKeyUp(event: SliderInputEvent<KeyboardEvent>) {
+  function handleKeyUp(event: SliderInputEvent<KeyboardEvent>) {
     if (event.key === " ") {
-      spacePressed = false;
+      isSpacePressed = false;
     }
 
     onkeyup?.(event as Parameters<NonNullable<typeof onkeyup>>[0]);
   }
 
-  function onFocus(event: SliderInputEvent<FocusEvent>, index: number) {
+  function handleFocus(event: SliderInputEvent<FocusEvent>, index: number) {
     activeIndex = index;
     focusVisibleIndex = event.currentTarget.matches(":focus-visible") ? index : undefined;
+    hasKeyboardInteraction = focusVisibleIndex !== undefined;
     onfocus?.(event as Parameters<NonNullable<typeof onfocus>>[0]);
   }
 
-  function onBlur(event: SliderInputEvent<FocusEvent>) {
+  function handleBlur(event: SliderInputEvent<FocusEvent>) {
     focusVisibleIndex = undefined;
-    spacePressed = false;
+    isSpacePressed = false;
     onblur?.(event as Parameters<NonNullable<typeof onblur>>[0]);
   }
 
-  function isAtHandle(position: number) {
-    return positions.some((handlePosition) => Math.abs(position - handlePosition) < 0.0001);
+  function isInTrackGap(position: number) {
+    const centerClearance = rootLength > 0 ? 4 / rootLength : 0;
+
+    if (centered && !range && Math.abs(position - 0.5) <= centerClearance) {
+      return true;
+    }
+
+    if (!rootLength) {
+      return positions.some((handlePosition) => Math.abs(position - handlePosition) < 0.0001);
+    }
+
+    let stopOffset = position * rootLength;
+
+    if (position === 0) {
+      stopOffset = 6;
+    }
+
+    if (position === 1) {
+      stopOffset = rootLength - 6;
+    }
+
+    // Keep the 4px stop outside the 6px gap and the widest (4px) handle.
+    return positions.some(
+      (handlePosition) => Math.abs(stopOffset - handlePosition * rootLength) <= 10
+    );
   }
 
   function isAtIcon(position: number) {
-    return hasIcon && (iconAtEnd ? position === 1 : position === 0);
+    return hasIcon && (isIconAtEnd ? position === 1 : position === 0);
+  }
+
+  function isHandleActive(index: number) {
+    return focusVisibleIndex === index || (isPressed && activeIndex === index);
+  }
+
+  function getTrackGap(position: number, hasHandleGap = false) {
+    if (!hasHandleGap && (!centered || range || position !== 0.5)) {
+      return undefined;
+    }
+
+    // Overlapping handles need enough space for the wider, unpressed handle.
+    const isCurrentHandleOnly = positions.every(
+      (handlePosition, index) => handlePosition !== position || activeIndex === index
+    );
+    const width = isCurrentHandleOnly
+      ? "--q-slider-interactive-handle-width"
+      : "--q-slider-handle-width";
+    const handleOffset = `calc(var(--q-slider-handle-track-gap) + var(${width}) / 2)`;
+
+    if (hasHandleGap) {
+      return handleOffset;
+    }
+
+    if (!rootLength) {
+      return "2px";
+    }
+
+    // Merge the neutral gap with the handle gap when they meet.
+    const distance = Math.abs(position - positions[0]) * rootLength;
+    return `max(2px, calc(${handleOffset} - ${distance}px))`;
+  }
+
+  function getTrackCornerRadius(position: number) {
+    if (!rootLength) {
+      return "var(--q-slider-outer-radius)";
+    }
+
+    return `clamp(var(--q-slider-inner-radius), ${position * rootLength}px, var(--q-slider-outer-radius))`;
   }
 
   Q.classes("q-slider", {
     bemClasses: {
+      active: isPressed || focusVisibleIndex !== undefined,
       centered: centered && !range,
       disabled,
-      dragging,
+      dragging: isDragging,
       expressive: isExpressive,
-      pressed,
+      keyboard: hasKeyboardInteraction,
+      pressed: isPressed,
       range,
       readonly,
       reverse,
@@ -647,16 +686,18 @@
 <!-- svelte-ignore a11y_no_static_element_interactions (the native range inputs provide slider semantics) -->
 <div
   bind:this={root}
+  bind:clientWidth={rootWidth}
+  bind:clientHeight={rootHeight}
   dir={inputProps.dir}
   class="q-slider"
   {style}
   style:--q-slider-active-color={parsedColor}
   style:--q-slider-inactive-color={parsedTrackColor}
-  onpointerdown={onPointerDown}
-  onpointermove={onPointerMove}
-  onpointerup={onPointerUp}
-  onpointercancel={onPointerCancel}
-  onlostpointercapture={onLostPointerCapture}
+  onpointerdown={handlePointerDown}
+  onpointermove={handlePointerMove}
+  onpointerup={handlePointerUp}
+  onpointercancel={handlePointerCancel}
+  onlostpointercapture={handleLostPointerCapture}
   data-quaff
 >
   {#each normalizedValues as currentValue, index (index)}
@@ -667,10 +708,10 @@
       class="q-slider__input"
       style:--q-slider-position={`${positions[index] * 100}%`}
       type="range"
-      id={range && id ? `${id}-${index === 0 ? "min" : "max"}` : id}
+      id={range && id ? `${id}-${["min", "max"][index]}` : id}
       min={range && index === 1 ? normalizedValues[0] : min}
       max={range && index === 0 ? normalizedValues[1] : effectiveMax}
-      step={nativeStepValue(index)}
+      step={getNativeStep(index)}
       value={currentValue}
       {name}
       {disabled}
@@ -682,33 +723,40 @@
       aria-orientation={isVertical ? "vertical" : "horizontal"}
       aria-readonly={readonly || undefined}
       aria-valuetext={labels[index] === undefined ? undefined : String(displayLabels[index])}
-      oninput={(event) => onNativeInput(event, index)}
-      onchange={onNativeChange}
-      onkeydown={(event) => onKeyDown(event, index)}
-      onkeyup={onKeyUp}
-      onfocus={(event) => onFocus(event, index)}
-      onblur={onBlur}
+      oninput={(event) => handleNativeInput(event, index)}
+      onchange={handleNativeChange}
+      onkeydown={(event) => handleKeyDown(event, index)}
+      onkeyup={handleKeyUp}
+      onfocus={(event) => handleFocus(event, index)}
+      onblur={handleBlur}
     />
   {/each}
 
-  <div class="q-slider__track" aria-hidden="true">
+  <div
+    class="q-slider__track"
+    style:--q-slider-start-radius={getTrackCornerRadius(Math.min(...positions))}
+    style:--q-slider-end-radius={getTrackCornerRadius(1 - Math.max(...positions))}
+    aria-hidden="true"
+  >
     {#each segments as segment, index (index)}
       <span
-        class:active={segment.active}
+        class:active={segment.isActive}
         class:at-start={segment.start === 0}
         class:at-end={segment.end === 1}
-        class:gap-start={segment.gapStart}
-        class:gap-end={segment.gapEnd}
+        class:gap-start={segment.hasStartGap}
+        class:gap-end={segment.hasEndGap}
         class="q-slider__segment"
         style:--q-slider-start={`${segment.start * 100}%`}
         style:--q-slider-end={`${segment.end * 100}%`}
+        style:--q-slider-gap-start={getTrackGap(segment.start, segment.hasStartGap)}
+        style:--q-slider-gap-end={getTrackGap(segment.end, segment.hasEndGap)}
       ></span>
     {/each}
 
     {#each stops as stop (stop.position)}
-      {#if !isAtHandle(stop.position) && !isAtIcon(stop.position)}
+      {#if !isInTrackGap(stop.position) && !isAtIcon(stop.position)}
         <span
-          class:active={stop.active}
+          class:active={stop.isActive}
           class:q-slider__stop--end={stop.position === 0 || stop.position === 1}
           class="q-slider__stop"
           style:--q-slider-position={`${stop.position * 100}%`}
@@ -717,7 +765,7 @@
     {/each}
 
     {#each endStops as position (position)}
-      {#if !isAtHandle(position) && !isAtIcon(position)}
+      {#if !isInTrackGap(position) && !isAtIcon(position)}
         <span
           class="q-slider__stop q-slider__stop--end"
           style:--q-slider-position={`${position * 100}%`}
@@ -727,9 +775,9 @@
 
     {#if hasIcon}
       <span
-        class:active={!iconOnInactiveTrack}
-        class:q-slider__icon--end={iconAtEnd}
-        class:q-slider__icon--start={!iconAtEnd}
+        class:active={!isIconOnInactiveTrack}
+        class:q-slider__icon--end={isIconAtEnd}
+        class:q-slider__icon--start={!isIconAtEnd}
         class="q-slider__icon"
       >
         <QIconSnippet {icon} size={resolvedSize === "xl" ? "32px" : "24px"} />
@@ -739,10 +787,10 @@
 
   {#each positions as position, index (index)}
     <span
-      class:active={focusVisibleIndex === index || (pressed && activeIndex === index)}
+      class:active={isHandleActive(index)}
       class:focus-visible={focusVisibleIndex === index}
-      class:pressed={pressed && activeIndex === index}
-      class:overlap={handlesOverlap}
+      class:pressed={isPressed && activeIndex === index}
+      class:overlap={hasOverlappingHandles}
       class:top={activeIndex === index}
       class="q-slider__handle"
       data-index={index}
@@ -750,10 +798,7 @@
       aria-hidden="true"
     >
       {#if label}
-        <span
-          class:visible={focusVisibleIndex === index || (pressed && activeIndex === index)}
-          class="q-slider__label"
-        >
+        <span class:visible={isHandleActive(index)} class="q-slider__label">
           {displayLabels[index]}
         </span>
       {/if}
