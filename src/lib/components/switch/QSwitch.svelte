@@ -107,8 +107,7 @@ Switches turn settings on or off, with changes taking effect immediately. Clear 
   aria-checked={!!value}
   aria-labelledby={props["aria-labelledby"] ??
     (!props["aria-label"] && label ? labelId : undefined)}
-  data-quaff
->
+  data-quaff>
   <span class="q-switch__inner" aria-hidden="true">
     <input bind:checked={value} type="checkbox" hidden {disabled} />
     <span class="q-switch__track">
@@ -136,7 +135,6 @@ Switches turn settings on or off, with changes taking effect immediately. Clear 
     <QIconSnippet
       icon={type === "unchecked" ? uncheckedIcon : checkedIcon}
       defaultIcon={type === "unchecked" ? "close" : "check"}
-      size="16px"
-    />
+      size="16px" />
   </span>
 {/snippet}

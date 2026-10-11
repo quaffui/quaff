@@ -76,9 +76,7 @@
       d="M2 8h6m1 8h6m1-10h6"
       stroke="currentColor"
       stroke-width="4"
-      stroke-linecap="round"
-    /></svg
-  >
+      stroke-linecap="round" /></svg>
 {/snippet}
 
 <QDocs>
@@ -88,8 +86,7 @@
       class="radio-preview surface q-pa-lg text-on-surface text-center"
       role="region"
       aria-label="Radio controls preview"
-      tabindex="0"
-    >
+      tabindex="0">
       <div class="label-medium text-tertiary">BOROUGH 92 · COMMUNITY RADIO</div>
       <h2 class="title-large q-mt-xs q-mb-lg">Play or pause</h2>
       <QIconBtn
@@ -98,8 +95,7 @@
         size="lg"
         icon={isPlaying ? "pause" : "play_arrow"}
         aria-label={isPlaying ? "Pause rehearsal preview" : "Play rehearsal preview"}
-        onclick={() => (isPlaying = !isPlaying)}
-      />
+        onclick={() => (isPlaying = !isPlaying)} />
       <p class="body-medium q-mt-md q-mb-none" role="status">{isPlaying ? "Playing" : "Paused"}</p>
     </div>
   {/snippet}
@@ -122,26 +118,22 @@
             filled
             icon={isPlaying ? "pause" : "play_arrow"}
             aria-label={isPlaying ? "Pause rehearsal" : "Play rehearsal"}
-            onclick={() => (isPlaying = !isPlaying)}
-          />
+            onclick={() => (isPlaying = !isPlaying)} />
           <QIconBtn
             icon="skip_next"
             aria-label="Next segment"
-            onclick={() => (segmentIndex = (segmentIndex + 1) % SEGMENTS.length)}
-          />
+            onclick={() => (segmentIndex = (segmentIndex + 1) % SEGMENTS.length)} />
           <QIconBtn
             tonal
             icon="headphones"
             aria-label="Headphone monitor"
-            bind:selected={isMonitoring}
-          />
+            bind:selected={isMonitoring} />
           <QIconBtn
             expressive
             outlined
             icon="volume_off"
             aria-label="Mute desk output"
-            bind:selected={isMuted}
-          />
+            bind:selected={isMuted} />
           <QIconBtn icon="bookmark" aria-label="Bookmark rehearsal" bind:selected={isBookmarked} />
         </div>
         <p class="body-medium text-on-surface-variant q-mt-lg q-mb-none" role="status">
@@ -174,36 +166,31 @@
           options={["narrow", "default", "wide"]}
           bind:value={width}
           disabled={!expressive}
-          outlined
-        />
+          outlined />
         <QSelect
           label="Button shape"
           options={["round", "squared"]}
           bind:value={shape}
           disabled={!expressive}
-          outlined
-        />
+          outlined />
         <QSelect
           label="Icon color"
           options={["primary", "secondary", "tertiary"]}
           bind:value={color}
           disabled={hasContainerColor}
-          outlined
-        />
+          outlined />
         <QSelect
           label="Ripple feedback"
           options={RIPPLE_MODES}
           bind:value={rippleMode}
           emitValue
-          outlined
-        />
+          outlined />
         <QSwitch label="Expressive styling" bind:value={expressive} />
         <QSwitch label="Use a custom icon" bind:value={shouldUseCustomIcon} />
         <QSwitch
           label="Remove elevation"
           bind:value={isUnelevated}
-          disabled={variant !== "elevated"}
-        />
+          disabled={variant !== "elevated"} />
       </div>
       <div class="cue-console flex items-center q-gap-lg q-pa-lg text-on-surface">
         <div class="cue-button-stage q-pa-md">
@@ -219,8 +206,7 @@
             noRipple={rippleMode === "off"}
             rippleColor={rippleMode === "tertiary" ? "tertiary" : undefined}
             aria-label="Try icon button"
-            onclick={() => (previewClickCount += 1)}
-          />
+            onclick={() => (previewClickCount += 1)} />
         </div>
         <p class="body-medium q-ma-none" role="status">Pressed {previewClickCount} times</p>
       </div>
@@ -253,22 +239,19 @@
             onclick={() => {
               isSheetReady = false;
               isPreparingSheet = true;
-            }}
-          />
+            }} />
           <QIconBtn
             icon="description"
             aria-label="View cue sheet status"
             href="#radio-cue-sheet"
-            disabled={!isSheetReady}
-          />
+            disabled={!isSheetReady} />
           <QIconBtn icon="help" aria-label="Read button documentation" to="/components/button" />
         </div>
         <p
           id="radio-cue-sheet"
           class="cue-sheet body-medium q-mt-md q-mb-none"
           role="status"
-          tabindex="-1"
-        >
+          tabindex="-1">
           {sheetStatus}
         </p>
       </div>

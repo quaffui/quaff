@@ -76,8 +76,7 @@
 
 <QDocs
   docName="Typography"
-  docDescription="Give every word its place. Add emphasis where it matters."
->
+  docDescription="Give every word its place. Add emphasis where it matters.">
   {#snippet display()}
     <div class="type-poster surface">
       <div class="poster-top label-medium-emphasized">
@@ -122,8 +121,7 @@
           </div>
           <h2
             id="event-title"
-            class={emphasizeHeadline ? "headline-large-emphasized" : "headline-large"}
-          >
+            class={emphasizeHeadline ? "headline-large-emphasized" : "headline-large"}>
             A different side<br />of the city.
           </h2>
           <p class="body-large text-on-surface-variant">
@@ -131,11 +129,10 @@
             discovery.
           </p>
           <div class="event-facts body-medium">
-            <span><QIcon name="schedule" size="20px" aria-hidden="true" /> Friday, 18:00–23:00</span
-            >
             <span
-              ><QIcon name="location_on" size="20px" aria-hidden="true" /> The Dockside Quarter</span
-            >
+              ><QIcon name="schedule" size="20px" aria-hidden="true" /> Friday, 18:00–23:00</span>
+            <span
+              ><QIcon name="location_on" size="20px" aria-hidden="true" /> The Dockside Quarter</span>
           </div>
           <div class="event-actions">
             <QBtn
@@ -144,8 +141,7 @@
               label={saved ? "Saved to your evening" : "Save for Friday"}
               bind:selected={saved}
               expressive={false}
-              class="label-large-emphasized"
-            />
+              class="label-large-emphasized" />
             <span class="body-small text-on-surface-variant">Free entry · All welcome</span>
           </div>
         </div>
@@ -156,8 +152,7 @@
         copiable
         code={`<p class="label-medium">FRIDAY EDIT · ART & CULTURE</p>
 <h2 class="headline-large-emphasized">A different side of the city.</h2>
-<p class="body-large">Step inside working studios and meet local makers.</p>`}
-      />
+<p class="body-large">Step inside working studios and meet local makers.</p>`} />
     </QDocsSection>
 
     <QDocsSection title="Make a State Stand Out" noCode>
@@ -185,19 +180,16 @@
                 class="update-row"
                 aria-pressed={isUnread}
                 aria-label={`${update.title}. ${isUnread ? "Unread. Mark as read" : "Read. Mark as unread"}`}
-                onclick={() => toggleRead(update.id)}
-              >
+                onclick={() => toggleRead(update.id)}>
                 <QAvatar
                   size="sm"
                   class={isUnread ? "primary-container" : "surface-container-high"}
-                  aria-hidden="true"
-                >
+                  aria-hidden="true">
                   <QIcon name={update.icon} />
                 </QAvatar>
                 <span class="update-copy">
                   <span class={isUnread ? "title-medium-emphasized" : "title-medium"}
-                    >{update.title}</span
-                  >
+                    >{update.title}</span>
                   <span class="body-medium text-on-surface-variant">{update.detail}</span>
                 </span>
                 <span class="update-status label-small text-on-surface-variant">
@@ -213,8 +205,7 @@
         class="example-code"
         language="svelte"
         copiable
-        code={'<span class={unread ? "title-medium-emphasized" : "title-medium"}>\n  The studios are staying open\n</span>'}
-      />
+        code={'<span class={unread ? "title-medium-emphasized" : "title-medium"}>\n  The studios are staying open\n</span>'} />
     </QDocsSection>
 
     <QDocsSection title="Explore the Scale" noCode>
@@ -228,8 +219,7 @@
           options={ROLE_OPTIONS}
           bind:value={selectedRole}
           emitValue
-          outlined
-        />
+          outlined />
         <QInput label="Try your own text" bind:value={previewText} outlined />
       </div>
       <div class="scale-comparison">
@@ -268,14 +258,12 @@
         code={`/* Change a font for this role. Load your font separately. */
 :root {
   --typescale-headline-large-emphasized-font-family-name: "Your Brand", sans-serif;
-}`}
-      />
+}`} />
       <p class="body-medium q-mt-md">
         Use semantic headings for page structure; classes control their appearance. See the <a
           class="q-docs-link"
           href="https://m3.material.io/styles/typography/type-scale-tokens#0429784f-5344-4a4a-a482-3a902918d4b1"
-          >Material type scale</a
-        >
+          >Material type scale</a>
         for the full guidance.
       </p>
     </QDocsSection>

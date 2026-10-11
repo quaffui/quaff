@@ -393,20 +393,19 @@ Navigation rails keep primary destinations beside the page in a vertical bar. Ex
   ontransitionend={handleTransition}
   ontransitioncancel={handleTransition}
   data-quaff-overlay={isModal || undefined}
-  data-quaff
->
+  data-quaff>
   <nav
     {...isModal ? {} : navigationProps}
     class="q-railbar__content"
     {onfocus}
     {onblur}
     {onscroll}
-    {onscrollend}
-  >
+    {onscrollend}>
     <div
       class="q-railbar__items"
-      style:--q-railbar-content-width={contentWidth === undefined ? undefined : `${contentWidth}px`}
-    >
+      style:--q-railbar-content-width={contentWidth === undefined
+        ? undefined
+        : `${contentWidth}px`}>
       {@render children?.()}
     </div>
   </nav>

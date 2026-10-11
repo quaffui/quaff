@@ -225,8 +225,7 @@
                 icon={destination.icon}
                 label={destination.id === "programme" ? "Tonight" : destination.label}
                 active={previewPage === destination.id}
-                onclick={() => (previewPage = destination.id)}
-              />
+                onclick={() => (previewPage = destination.id)} />
             {/each}
           </QRailbar>
         {/snippet}
@@ -235,8 +234,7 @@
           bind:this={previewContent}
           tabindex="-1"
           role="region"
-          aria-label="Preview content"
-        >
+          aria-label="Preview content">
           <div class="label-small text-on-surface-variant">FRAMEHOUSE</div>
           {#if previewPage === "programme" || (previewPage === "saved" && previewSaved)}
             <div class="preview-art flex flex-center primary-container" aria-hidden="true">
@@ -250,15 +248,13 @@
               icon={previewSaved ? "bookmark_added" : "bookmark_add"}
               label={previewSaved ? "Saved" : "Save film"}
               aria-pressed={previewSaved}
-              onclick={togglePreviewSaved}
-            />
+              onclick={togglePreviewSaved} />
           {:else}
             <QIcon
               name={previewPage === "saved" ? "bookmark" : "local_activity"}
               size="40px"
               class="text-primary q-mt-lg"
-              aria-hidden="true"
-            />
+              aria-hidden="true" />
             <h2 class="title-medium q-my-sm">
               {previewPage === "saved" ? "Your next great film" : "Make a night of it"}
             </h2>
@@ -275,8 +271,7 @@
                 previewPage = "programme";
                 await tick();
                 previewContent?.focus();
-              }}
-            />
+              }} />
           {/if}
         </div>
       </QLayout>
@@ -303,24 +298,21 @@
             size="sm"
             label={programmeExpanded ? "Collapse rail" : "Expand rail"}
             onclick={() =>
-              programmeExpanded ? programmeRail?.collapse() : programmeRail?.expand()}
-          />
+              programmeExpanded ? programmeRail?.collapse() : programmeRail?.expand()} />
         </div>
         <!-- svelte-ignore a11y_no_noninteractive_tabindex (The workspace scrolls horizontally and needs keyboard access.) -->
         <div
           class="cinema-viewport border"
           role="region"
           aria-label="Framehouse programme workspace"
-          tabindex="0"
-        >
+          tabindex="0">
           <div class="cinema-stage surface">
             <QLayout view="hhh lpr fff">
               {#snippet header()}
                 <QHeader class="surface-container-low" height={Math.max(64, programmeHeaderHeight)}>
                   <div
                     class="app-heading flex items-center q-pa-md"
-                    {@attach measureBarHeight((height) => (programmeHeaderHeight = height))}
-                  >
+                    {@attach measureBarHeight((height) => (programmeHeaderHeight = height))}>
                     <QIcon name="theaters" aria-hidden="true" />
                     <span class="title-medium">Framehouse</span>
                     <span class="label-medium text-on-surface-variant">Friday programme</span>
@@ -333,8 +325,7 @@
                   bind:this={programmeRail}
                   bind:expanded={programmeExpanded}
                   aria-label="Programme navigation"
-                  bordered
-                >
+                  bordered>
                   <div class="rail-menu flex justify-center">
                     <QIconBtn
                       icon="menu"
@@ -342,8 +333,7 @@
                       aria-label="Toggle programme navigation"
                       aria-expanded={programmeExpanded}
                       aria-controls="programme-rail"
-                      onclick={() => programmeRail?.toggle()}
-                    />
+                      onclick={() => programmeRail?.toggle()} />
                   </div>
                   {#each DESTINATIONS as destination (destination.id)}
                     {@const badge = programmeBadges[destination.id]}
@@ -354,8 +344,7 @@
                       active={programmePage === destination.id}
                       badge={badge?.count ? countBadge : undefined}
                       badgeAriaLabel={badge?.count ? badge.label : undefined}
-                      onclick={() => (programmePage = destination.id)}
-                    />
+                      onclick={() => (programmePage = destination.id)} />
                   {/each}
                 </QRailbar>
               {/snippet}
@@ -368,14 +357,12 @@
                     <h6
                       bind:this={programmeHeading}
                       tabindex="-1"
-                      class="title-large q-mt-xs q-mb-none"
-                    >
+                      class="title-large q-mt-xs q-mb-none">
                       {programmeTitle}
                     </h6>
                   </div>
                   <span class="film-count label-medium text-no-wrap"
-                    >{visibleFilms.length} {visibleFilms.length === 1 ? "film" : "films"}</span
-                  >
+                    >{visibleFilms.length} {visibleFilms.length === 1 ? "film" : "films"}</span>
                 </div>
                 {#if visibleFilms.length}
                   <ul class="film-list q-ma-none q-pa-none">
@@ -399,14 +386,12 @@
                             flat
                             aria-label={`${isSaved ? "Unsave" : "Save"} ${film.title}`}
                             aria-pressed={isSaved}
-                            onclick={() => toggleSaved(film.id, film.title)}
-                          />
+                            onclick={() => toggleSaved(film.id, film.title)} />
                           <QBtn
                             variant={isReserved ? "outlined" : "tonal"}
                             size="sm"
                             label={isReserved ? "Cancel reservation" : "Reserve seat"}
-                            onclick={() => toggleTicket(film.id, film.title)}
-                          />
+                            onclick={() => toggleTicket(film.id, film.title)} />
                         </div>
                       </li>
                     {/each}
@@ -416,8 +401,7 @@
                     <QIcon
                       name={programmePage === "saved" ? "bookmark" : "local_activity"}
                       size="40px"
-                      aria-hidden="true"
-                    />
+                      aria-hidden="true" />
                     <h6 class="title-medium q-my-sm">
                       {programmePage === "saved"
                         ? "A shortlist worth keeping"
@@ -434,14 +418,12 @@
                       onclick={() => {
                         programmePage = "programme";
                         void focusProgrammeHeading();
-                      }}
-                    />
+                      }} />
                   </div>
                 {/if}
                 <p
                   class="body-small text-on-surface-variant action-message q-mt-md q-mb-none"
-                  role="status"
-                >
+                  role="status">
                   {programmeMessage}
                 </p>
               </div>
@@ -468,8 +450,7 @@
                 modal
                 aria-label="Festival guide navigation"
                 activeColor="primary-container"
-                bordered
-              >
+                bordered>
                 <div class="rail-menu flex justify-center">
                   <QIconBtn
                     icon={guideExpanded ? "close" : "menu"}
@@ -479,8 +460,7 @@
                       : "Open festival navigation"}
                     aria-expanded={guideExpanded}
                     aria-controls="festival-rail"
-                    onclick={() => (guideExpanded = !guideExpanded)}
-                  />
+                    onclick={() => (guideExpanded = !guideExpanded)} />
                 </div>
                 {#each GUIDE_SECTIONS as destination (destination.id)}
                   {@const hasUnreadUpdates = destination.id === "updates" && unreadUpdates}
@@ -491,8 +471,7 @@
                     active={guidePage === destination.id}
                     badge={hasUnreadUpdates ? unreadBadge : undefined}
                     badgeAriaLabel={hasUnreadUpdates ? "Unread festival update" : undefined}
-                    onclick={() => chooseGuidePage(destination.id)}
-                  />
+                    onclick={() => chooseGuidePage(destination.id)} />
                 {/each}
               </QRailbar>
             {/snippet}
@@ -514,8 +493,7 @@
                   bind:value={guideDay}
                   options={["Friday", "Saturday"]}
                   outlined
-                  dense
-                />
+                  dense />
                 <ul class="guide-list q-ma-none q-pa-none q-mt-md">
                   {#each guideFilms as film (film.id)}
                     <li class="flex items-start q-py-md border-bottom border-outline-variant">
@@ -556,8 +534,7 @@
                     guidePage = "screenings";
                     await tick();
                     guideHeading?.focus();
-                  }}
-                />
+                  }} />
               {/if}
             </div>
           </QLayout>
@@ -594,24 +571,21 @@
               bind:value={railWidth}
               emitValue
               outlined
-              dense
-            />
+              dense />
             <QSelect
               label="Expanded width"
               options={EXPANDED_WIDTHS}
               bind:value={expandedRailWidth}
               emitValue
               outlined
-              dense
-            />
+              dense />
             <QSelect
               label="Active indicator"
               options={COLORS}
               bind:value={indicatorColor}
               emitValue
               outlined
-              dense
-            />
+              dense />
           </div>
         </div>
         <!-- svelte-ignore a11y_no_noninteractive_tabindex (The workspace scrolls horizontally and needs keyboard access.) -->
@@ -619,16 +593,14 @@
           class="cinema-viewport border"
           role="region"
           aria-label="Framehouse projection workspace"
-          tabindex="0"
-        >
+          tabindex="0">
           <div class="cinema-stage projection-stage surface">
             <QLayout view={deskView}>
               {#snippet header()}
                 <QHeader class="surface-container-low" height={Math.max(64, deskHeaderHeight)}>
                   <div
                     class="app-heading flex items-center q-pa-md"
-                    {@attach measureBarHeight((height) => (deskHeaderHeight = height))}
-                  >
+                    {@attach measureBarHeight((height) => (deskHeaderHeight = height))}>
                     <QIcon name="videocam" aria-hidden="true" />
                     <span class="title-medium">Projection desk</span>
                     <span class="label-medium text-on-surface-variant">Screen 1</span>
@@ -644,8 +616,7 @@
                   bind:expanded={deskExpanded}
                   bordered={deskBordered}
                   activeColor={indicatorColor}
-                  aria-label="Projection navigation"
-                >
+                  aria-label="Projection navigation">
                   <div class="rail-menu flex justify-center" style:width="{railWidth}px">
                     <QIconBtn
                       icon="menu"
@@ -653,35 +624,30 @@
                       aria-label="Toggle projection navigation"
                       aria-expanded={deskExpanded}
                       aria-controls="projection-rail"
-                      onclick={() => (deskExpanded = !deskExpanded)}
-                    />
+                      onclick={() => (deskExpanded = !deskExpanded)} />
                   </div>
                   <QNavItem
                     icon="video_library"
                     label="Queue"
                     active={deskPage === "queue"}
-                    onclick={() => (deskPage = "queue")}
-                  />
+                    onclick={() => (deskPage = "queue")} />
                   <QNavItem
                     icon="subtitles"
                     label="Captions"
                     active={deskPage === "captions"}
-                    onclick={() => (deskPage = "captions")}
-                  />
+                    onclick={() => (deskPage = "captions")} />
                   <QNavItem
                     icon="description"
                     label="Notes"
                     active={deskPage === "notes"}
-                    onclick={() => (deskPage = "notes")}
-                  />
+                    onclick={() => (deskPage = "notes")} />
                 </QRailbar>
               {/snippet}
               {#snippet footer()}
                 <QFooter class="surface-container-low" height={Math.max(80, deskFooterHeight)}>
                   <div
                     class="projection-status flex items-center q-gap-sm q-px-md body-small"
-                    {@attach measureBarHeight((height) => (deskFooterHeight = height))}
-                  >
+                    {@attach measureBarHeight((height) => (deskFooterHeight = height))}>
                     <span class="status-light bg-primary" aria-hidden="true"></span>
                     <span>{queuedFilm.title} · {subtitles ? "Subtitles on" : "Subtitles off"}</span>
                   </div>
@@ -701,8 +667,7 @@
                         icon={selectedFilm === film.id ? "check_circle" : "play_circle"}
                         label={`${film.time} · ${film.title}`}
                         aria-pressed={selectedFilm === film.id}
-                        onclick={() => (selectedFilm = film.id)}
-                      />
+                        onclick={() => (selectedFilm = film.id)} />
                     {/each}
                   </div>
                 {:else if deskPage === "captions"}

@@ -75,8 +75,7 @@
     aria-expanded={open}
     aria-controls={overlayId}
     disabled={inactive}
-    onclick={handleButtonClick}
-  />
+    onclick={handleButtonClick} />
 {/snippet}
 
 {#if composed}
@@ -94,8 +93,7 @@
       aria-expanded={open}
       aria-controls={overlayId}
       disabled={inactive}
-      onclick={handleButtonClick}
-    />
+      onclick={handleButtonClick} />
   </span>
 {:else}
   <QInput
@@ -115,6 +113,5 @@
     {disabled}
     readonly
     inputmode="none"
-    tabindex={disabled ? -1 : (fieldProps.tabindex ?? 0)}
-  />
+    tabindex={disabled ? -1 : (fieldProps.tabindex ?? 0)} />
 {/if}

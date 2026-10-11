@@ -191,8 +191,7 @@ Buttons trigger actions such as saving changes or submitting forms. Choose a sty
   onclick={handleClick}
   onkeydown={handleKeydown}
   {@attach ripple({ disabled: noRipple || isDisabled, color: rippleColor })}
-  data-quaff
->
+  data-quaff>
   {#if loading}
     <QCircularProgress
       expressive={isExpressive}
@@ -200,8 +199,7 @@ Buttons trigger actions such as saving changes or submitting forms. Choose a sty
       trackColor="transparent"
       color={color ?? "currentColor"}
       size={iconSize}
-      class="q-btn__loader"
-    />
+      class="q-btn__loader" />
   {:else if displayedIcon}
     {#if isBaselineGroup && selected && !hasContent}
       <QIconSnippet icon="check" size={iconSize} aria-hidden="true" class="q-btn__icon" />
@@ -211,8 +209,7 @@ Buttons trigger actions such as saving changes or submitting forms. Choose a sty
       size={iconSize}
       filled={fillIcon}
       aria-hidden={hasContent || undefined}
-      class="q-btn__icon"
-    >
+      class="q-btn__icon">
       {#snippet image(src)}
         <img {src} alt="" class="q-btn__img" />
       {/snippet}

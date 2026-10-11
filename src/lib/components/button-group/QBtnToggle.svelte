@@ -63,7 +63,6 @@ Choose one or several values with connected or standard button groups, including
       variant={isExpressive ? variant : "outlined"}
       bind:selected={
         () => isSelected(option), (isOptionSelected) => setSelected(option, isOptionSelected)
-      }
-    />
+      } />
   {/each}
 </QBtnGroup>

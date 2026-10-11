@@ -61,8 +61,7 @@ A single breadcrumb element to be used within a QBreadcrumbs container.
   {style}
   aria-label={routerInfo.hasLink ? undefined : ariaLabel}
   aria-labelledby={routerInfo.hasLink ? undefined : ariaLabelledby}
-  aria-describedby={routerInfo.hasLink ? undefined : ariaDescribedby}
->
+  aria-describedby={routerInfo.hasLink ? undefined : ariaDescribedby}>
   <span class="q-breadcrumbs__separator" aria-hidden="true">
     {#if typeof ctx.separator === "string"}
       {#if ctx.separator.startsWith("icon:")}
@@ -84,15 +83,13 @@ A single breadcrumb element to be used within a QBreadcrumbs container.
     aria-describedby={ariaDescribedby}
     aria-current={ariaCurrent ??
       (routerInfo.linkAttributes.href === page.url.pathname ? "page" : undefined)}
-    data-quaff
-  >
+    data-quaff>
     {#if icon !== undefined}
       <QIcon
         size="sm"
         name={typeof icon === "string" ? icon : undefined}
         children={typeof icon === "string" ? undefined : icon}
-        aria-hidden={hideIcon}
-      />
+        aria-hidden={hideIcon} />
     {/if}
 
     <span class="q-breadcrumbs__label">

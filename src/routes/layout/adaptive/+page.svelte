@@ -40,8 +40,7 @@
           <tr
             ><th scope="row"><code class="q-docs-code">{key}</code></th><td>{width}</td><td
               >{name}</td
-            ></tr
-          >
+            ></tr>
         {/each}
       </tbody>
     </table>
@@ -54,12 +53,10 @@ Quaff.screen.name;       // "xs" | "sm" | "md" | "lg" | "xl"
 Quaff.screen.gt.md;      // Above the md class: at least 1200px
 !Quaff.screen.lt.md;     // md or wider: at least 840px
 Quaff.screen.navigation; // "navbar" below 600px, otherwise "railbar"
-Quaff.screen.twoPane;    // true from 840px`}
-  />
+Quaff.screen.twoPane;    // true from 840px`} />
   <p>
     <a class="q-docs-link" href={resolve("/utils/quaff")}
-      ><code class="q-docs-code">Quaff.screen</code></a
-    >
+      ><code class="q-docs-code">Quaff.screen</code></a>
     provides reactive, read-only viewport dimensions and size flags. Its
     <code class="q-docs-code">gt.md</code>
     flag means above the entire md class, while <code class="q-docs-code">!Quaff.screen.lt.md</code> includes
@@ -99,8 +96,7 @@ Quaff.screen.twoPane;    // true from 840px`}
     {/if}
   {/snippet}
   <!-- Application content -->
-</QLayout>`}
-  />
+</QLayout>`} />
 
   <h2>List and detail</h2>
   <p>
@@ -113,8 +109,7 @@ Quaff.screen.twoPane;    // true from 840px`}
     code={`import { Quaff } from "@quaffui/quaff";
 
 let showDetail = $state(false); // Set true on selection; false on Back.
-const twoPane = $derived(Quaff.screen.twoPane);`}
-  />
+const twoPane = $derived(Quaff.screen.twoPane);`} />
   <QCodeBlock
     language="svelte"
     code={`<div class="row q-gutter-lg">
@@ -124,8 +119,7 @@ const twoPane = $derived(Quaff.screen.twoPane);`}
   <section class="col-xs-12 col-md-6" hidden={!twoPane && !showDetail}>
     <!-- Selected item or empty state -->
   </section>
-</div>`}
-  />
+</div>`} />
   <p>
     This demo uses 16px margins on compact windows, 24px margins and pane gaps above that, and a
     360px list pane from 840px (412px from 1200px). Adapt the arrangement to your content. Show list
@@ -140,12 +134,10 @@ const twoPane = $derived(Quaff.screen.twoPane);`}
     code={`import { Quaff } from "@quaffui/quaff";
 
 let width = $state<number>();
-const screen = $derived(Quaff.getScreen(width));`}
-  />
+const screen = $derived(Quaff.getScreen(width));`} />
   <QCodeBlock
     language="svelte"
-    code={"<div bind:clientWidth={width}><!-- Use screen here. --></div>"}
-  />
+    code={"<div bind:clientWidth={width}><!-- Use screen here. --></div>"} />
   <p>
     <code class="q-docs-code">getScreen</code> returns the same
     <code class="q-docs-code">ScreenState</code>

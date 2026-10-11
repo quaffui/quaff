@@ -71,8 +71,7 @@
             mask="\#XXXXXX"
             format="rgb"
             fillMask
-            outlined
-          />
+            outlined />
           <p class="value-preview">
             Saved value: <code>{maskedColor ?? "No color selected"}</code>
           </p>
@@ -91,27 +90,23 @@
           <QColorPicker bind:value={clubColor} inline label="Cycling club accent" />
           <article
             class="ride-poster column no-wrap q-gap-lg q-pa-lg"
-            style:--club-accent={clubColor ?? "#E4653D"}
-          >
+            style:--club-accent={clubColor ?? "#E4653D"}>
             <p class="poster-eyebrow q-ma-none">Sunday cycle club · No. 07</p>
             <h6 class="poster-title q-ma-none">Long way.<br />Good company.</h6>
             <svg
               class="ride-art block full-width"
               viewBox="0 0 360 170"
               fill="none"
-              aria-hidden="true"
-            >
+              aria-hidden="true">
               <g
                 stroke="var(--club-accent)"
                 stroke-width="9"
                 stroke-linecap="round"
-                stroke-linejoin="round"
-              >
+                stroke-linejoin="round">
                 <circle cx="80" cy="112" r="45" />
                 <circle cx="280" cy="112" r="45" />
                 <path
-                  d="M80 112 133 37 180 112H80M133 37h115l-68 75M280 112 243 21h-24M133 37l-6-12"
-                />
+                  d="M80 112 133 37 180 112H80M133 37h115l-68 75M280 112 243 21h-24M133 37l-6-12" />
               </g>
               <path d="M111 17h32c5 0 6 7 1 8l-16 4-17-5c-4-1-4-7 0-7Z" fill="var(--club-accent)" />
               <circle cx="180" cy="112" r="10" fill="#242824" />
@@ -144,20 +139,18 @@
             inline
             alpha
             format="rgb"
-            label="Photo annotation color"
-          />
+            label="Photo annotation color" />
           <figure class="annotation-preview q-ma-none overflow-hidden border surface-container-low">
             <div class="annotation-photo relative-position">
               <img
                 class="block full-width"
                 src="/cocktail.jpg"
-                alt="A citrus cocktail with ice and mint"
-              />
+                alt="A citrus cocktail with ice and mint" />
               <div
                 class="annotation-highlight absolute"
                 style:background-color={annotationColor ?? "transparent"}
-                aria-hidden="true"
-              ></div>
+                aria-hidden="true">
+              </div>
               <span class="annotation-label absolute q-py-xs q-px-sm">Selected region</span>
             </div>
             <figcaption class="column no-wrap items-start q-gap-sm q-pa-md">
@@ -185,8 +178,7 @@
             mask="\#XXXXXX"
             outlined
             rounded
-            labels={{ chooseColor: "Choose campaign accent", apply: "Use accent" }}
-          />
+            labels={{ chooseColor: "Choose campaign accent", apply: "Use accent" }} />
           <QColorPicker value="#A9B7A3" label="Disabled" disabled filled />
           <QColorPicker value="#6750A4" label="Readonly" readonly outlined />
         </div>

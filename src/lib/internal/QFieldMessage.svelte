@@ -8,7 +8,6 @@
   class:q-field__error={!!message && error}
   class:q-field__hint={!!message && !error}
   aria-live="polite"
-  aria-atomic="true"
->
+  aria-atomic="true">
   {message ?? ""}
 </div>

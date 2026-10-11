@@ -61,8 +61,7 @@ Split buttons pair a primary action with a menu of alternatives. Keep the common
     {noRipple}
     {rippleColor}
     expressive
-    class="q-split-btn__leading"
-  />
+    class="q-split-btn__leading" />
   <QIconBtn
     id={`${id}-trigger`}
     type="button"
@@ -79,8 +78,7 @@ Split buttons pair a primary action with a menu of alternatives. Keep the common
     aria-controls={menu.isExpanded ? menu.id : undefined}
     onclick={menu.toggleMenu}
     onkeydown={menu.handleTriggerKeydown}
-    {@attach menu.captureTrigger}
-  >
+    {@attach menu.captureTrigger}>
     <QIcon name="keyboard_arrow_down" class="q-btn__icon" aria-hidden="true" />
   </QIconBtn>
   <QMenu
@@ -95,8 +93,7 @@ Split buttons pair a primary action with a menu of alternatives. Keep the common
     expressive
     aria-labelledby={`${id}-trigger`}
     onkeydown={menu.handleMenuKeydown}
-    {@attach menu.focusMenu}
-  >
+    {@attach menu.focusMenu}>
     {@render children()}
   </QMenu>
 </div>

@@ -92,8 +92,7 @@
           bind:this={displayLeftDrawerElement}
           width={150}
           persistent
-          behavior="desktop"
-        >
+          behavior="desktop">
           <QList dense>
             <QItem to="#">
               <QIcon name="home" />
@@ -191,8 +190,7 @@
             drawerLeft={leftDrawer ? drawerLeft : undefined}
             railbarRight={rightRailbar ? railbarRight : undefined}
             drawerRight={rightDrawer ? drawerRight : undefined}
-            footer={showFooter ? footer : undefined}
-          >
+            footer={showFooter ? footer : undefined}>
             {#snippet content()}
               <div class="flex items-center q-mx-auto" style="height: 60vh; max-width: 12rem">
                 <QList style="text-align: center;">
@@ -249,8 +247,7 @@
         icon="menu"
         variant="flat"
         onclick={leftDrawerElement?.toggle}
-        aria-label="Toggle left drawer"
-      />
+        aria-label="Toggle left drawer" />
     {/if}
     <div class="flex column">
       <QRadio bind:selected={viewArr[0][0]} value="h" label="h" />
@@ -262,8 +259,7 @@
         style="width: fit-content; margin: 0"
         bind:selected={viewArr[0][1]}
         value="H"
-        label="H"
-      />
+        label="H" />
     </div>
     <div class="flex column">
       <QRadio bind:selected={viewArr[0][2]} value="h" label="h" />
@@ -274,8 +270,7 @@
         icon="menu"
         variant="flat"
         onclick={rightDrawerElement?.toggle}
-        aria-label="Toggle right drawer"
-      />
+        aria-label="Toggle right drawer" />
     {/if}
   </QHeader>
 {/snippet}
@@ -305,8 +300,7 @@
     persistent={Quaff.screen.gt.sm}
     bind:value={leftDrawerShown}
     bind:this={leftDrawerElement}
-    aria-label="Primary navigation"
-  >
+    aria-label="Primary navigation">
     <QList>
       <QItem to="#">
         <QIcon name="home" />
@@ -336,8 +330,7 @@
     width={160}
     bind:value={rightDrawerShown}
     bind:this={rightDrawerElement}
-    aria-label="Secondary navigation"
-  >
+    aria-label="Secondary navigation">
     <QList>
       <QItem to="#">
         <QIcon name="home" />
@@ -366,8 +359,7 @@
         icon="menu"
         variant="flat"
         onclick={leftDrawerElement?.toggle}
-        aria-label="Toggle left drawer"
-      />
+        aria-label="Toggle left drawer" />
     {/if}
     <div class="flex column">
       <QRadio bind:selected={viewArr[2][0]} value="f" label="f" />
@@ -379,8 +371,7 @@
         style="width: fit-content; margin: 0"
         bind:selected={viewArr[2][1]}
         value="F"
-        label="F"
-      />
+        label="F" />
     </div>
     <div class="flex column">
       <QRadio bind:selected={viewArr[2][2]} value="f" label="f" />
@@ -391,8 +382,7 @@
         icon="menu"
         variant="flat"
         onclick={rightDrawerElement?.toggle}
-        aria-label="Toggle right drawer"
-      />
+        aria-label="Toggle right drawer" />
     {/if}
   </QFooter>
 {/snippet}

@@ -82,8 +82,7 @@
 
 <QDocs
   docName="Button groups"
-  docDescription="Button groups organize related actions or choices. Keep buttons separate or connected, with single or multiple selection for groups that represent values."
->
+  docDescription="Button groups organize related actions or choices. Keep buttons separate or connected, with single or multiple selection for groups that represent values.">
   {#snippet display()}
     <div class="group-preview surface q-pa-lg">
       <p class="label-medium text-tertiary q-mt-none q-mb-md">ROOFTOP FORECAST · UNITS</p>
@@ -92,8 +91,7 @@
           expressive={false}
           options={UNITS}
           bind:value={unit}
-          aria-label="Temperature unit"
-        />
+          aria-label="Temperature unit" />
       </div>
       <p class="body-medium q-mt-md q-mb-none" role="status">Temperature unit: {unitLabel}</p>
     </div>
@@ -119,22 +117,19 @@
             bind:value={size}
             options={SIZES}
             disabled={!expressive}
-            outlined
-          />
+            outlined />
           <QSelect
             label="Button shape"
             bind:value={shape}
             options={["round", "squared"]}
             disabled={!expressive}
-            outlined
-          />
+            outlined />
           <QSelect
             label="Button variant"
             bind:value={variant}
             options={VARIANTS}
             disabled={!expressive}
-            outlined
-          />
+            outlined />
         </div>
         <div class="group-example surface q-pa-lg">
           <div class="group-scroll q-pa-sm">
@@ -147,8 +142,7 @@
               {variant}
               options={PERIODS}
               bind:value={period}
-              aria-label="Forecast period"
-            />
+              aria-label="Forecast period" />
           </div>
           <p class="body-medium q-mt-md q-mb-none" role="status">
             {forecast.label}: {temperature}{unitLabel}
@@ -174,8 +168,7 @@
           label="Allow an empty selection"
           bind:value={canClearSelection}
           onchange={keepRequiredMetric}
-          class="q-mb-md"
-        />
+          class="q-mb-md" />
         <div class="group-example surface q-pa-lg">
           <div class="group-scroll q-pa-sm">
             <QBtnToggle
@@ -184,8 +177,7 @@
               clearable={canClearSelection}
               options={METRICS}
               bind:value={selectedMetrics}
-              aria-label="Visible weather readings"
-            />
+              aria-label="Visible weather readings" />
           </div>
           <p class="body-medium q-mt-md q-mb-none" role="status">
             Readings: {visibleMetrics.map((metric) => metric.label).join(", ") || "None selected"}
@@ -199,8 +191,7 @@
               spread={false}
               options={LAYERS}
               bind:value={layer}
-              aria-label="Optional weather layer"
-            />
+              aria-label="Optional weather layer" />
           </div>
           <p class="body-medium q-mt-md q-mb-none" role="status">{layerDetail}</p>
           <p class="body-small text-on-surface-variant q-mt-md q-mb-none">
@@ -230,28 +221,24 @@
               shape="squared"
               disabled={isStationLocked}
               aria-label="Observation actions"
-              style="min-width: max-content"
-            >
+              style="min-width: max-content">
               <QBtn
                 label="Log reading"
                 icon="add"
                 variant="filled"
                 disabled={loggedReadingCount === 5}
-                onclick={() => (loggedReadingCount += 1)}
-              />
+                onclick={() => (loggedReadingCount += 1)} />
               <QIconBtn
                 icon="keep"
                 variant="tonal"
                 aria-label="Pin observation log"
-                bind:selected={isLogPinned}
-              />
+                bind:selected={isLogPinned} />
               <QIconBtn
                 icon="delete"
                 variant="outlined"
                 aria-label="Clear observation log"
                 disabled={loggedReadingCount === 0}
-                onclick={() => (loggedReadingCount = 0)}
-              />
+                onclick={() => (loggedReadingCount = 0)} />
             </QBtnGroup>
           </div>
           <p class="body-medium q-mt-md q-mb-none" role="status">
@@ -271,8 +258,7 @@
           group with <code>aria-label</code>. The container itself is not a focus stop. See the
           Material guidance for
           <a class="q-docs-link" href="https://m3.material.io/components/button-groups/overview"
-            >button groups</a
-          >
+            >button groups</a>
           and
           <a class="q-docs-link" href="https://m3.material.io/components/segmented-buttons/overview"
             >segmented buttons</a

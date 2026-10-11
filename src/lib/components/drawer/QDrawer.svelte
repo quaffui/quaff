@@ -408,8 +408,7 @@ Drawers place navigation or supporting content beside the page. They can share s
     disabled={persistent}
     class="q-drawer__scrim"
     class:q-drawer__scrim--active={value}
-    onclick={persistent ? undefined : hide}
-  ></button>
+    onclick={persistent ? undefined : hide}></button>
 {/if}
 
 <div
@@ -422,8 +421,7 @@ Drawers place navigation or supporting content beside the page. They can share s
   role={isModal ? "dialog" : props.role}
   aria-modal={isModal && value ? true : undefined}
   data-quaff-overlay={isModal || undefined}
-  data-quaff
->
+  data-quaff>
   {@render children?.()}
 </div>
 
@@ -432,6 +430,6 @@ Drawers place navigation or supporting content beside the page. They can share s
     bind:this={swipeAreaEl}
     role="presentation"
     class="q-drawer__swipearea q-drawer__swipearea--{side}"
-    onpointerdown={handlePointerDown}
-  ></div>
+    onpointerdown={handlePointerDown}>
+  </div>
 {/if}

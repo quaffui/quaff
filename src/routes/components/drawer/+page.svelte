@@ -103,8 +103,7 @@
 
         <QLayout
           view="hHh LpR fFf"
-          style="height: 350px; width: 100%; border: 1px solid var(--outline);"
-        >
+          style="height: 350px; width: 100%; border: 1px solid var(--outline);">
           {#snippet header()}
             <QHeader>
               <QIconBtn flat icon="menu" onclick={() => (basicDrawerOpen = !basicDrawerOpen)} />
@@ -144,16 +143,14 @@
           Group related pages under an expandable heading. Expand Projects to choose a workspace, or
           collapse it to keep the navigation compact. See <a
             class="q-docs-link"
-            href={resolve("/components/nav-item")}
-          >
+            href={resolve("/components/nav-item")}>
             QNavItem and QNavGroup
           </a> for navigation options.
         {/snippet}
 
         <QLayout
           view="hHh LpR fFf"
-          style="height: 416px; width: 100%; border: 1px solid var(--outline);"
-        >
+          style="height: 416px; width: 100%; border: 1px solid var(--outline);">
           {#snippet header()}
             <QHeader>
               <QIconBtn
@@ -162,8 +159,7 @@
                 aria-label="Toggle workspace navigation"
                 aria-expanded={isNavigationDrawerOpen}
                 aria-controls="expandable-navigation-drawer"
-                onclick={() => (isNavigationDrawerOpen = !isNavigationDrawerOpen)}
-              />
+                onclick={() => (isNavigationDrawerOpen = !isNavigationDrawerOpen)} />
               <h6 class="q-ml-sm q-my-none">Workspace</h6>
             </QHeader>
           {/snippet}
@@ -175,16 +171,14 @@
               behavior="desktop"
               overlay
               aria-label="Workspace navigation"
-              style="max-width: 100%;"
-            >
+              style="max-width: 100%;">
               <div class="flex items-center justify-between">
                 <h6 class="q-drawer__headline">Workspace</h6>
                 <QIconBtn
                   flat
                   icon="close"
                   aria-label="Close workspace navigation"
-                  onclick={() => (isNavigationDrawerOpen = false)}
-                />
+                  onclick={() => (isNavigationDrawerOpen = false)} />
               </div>
               <QList tag="nav" aria-label="Workspace" expressive={false} preserveTabOrder>
                 <QNavItem label="Overview" {...getNavigationProps("Overview")} />
@@ -216,8 +210,7 @@
 
         <QLayout
           view="hHh LpR fFf"
-          style="height: 300px; width: 100%; border: 1px solid var(--outline);"
-        >
+          style="height: 300px; width: 100%; border: 1px solid var(--outline);">
           {#snippet header()}
             <QHeader class="justify-between">
               <QIconBtn flat icon="menu" onclick={() => (leftDrawerOpen = !leftDrawerOpen)} />
@@ -252,8 +245,7 @@
               <QBtn label="Toggle Left Drawer" onclick={() => (leftDrawerOpen = !leftDrawerOpen)} />
               <QBtn
                 label="Toggle Right Drawer"
-                onclick={() => (rightDrawerOpen = !rightDrawerOpen)}
-              />
+                onclick={() => (rightDrawerOpen = !rightDrawerOpen)} />
             </div>
           </div>
         </QLayout>
@@ -268,8 +260,7 @@
 
         <QLayout
           view="hHh LpR fFf"
-          style="height: 300px; width: 100%; border: 1px solid var(--outline);"
-        >
+          style="height: 300px; width: 100%; border: 1px solid var(--outline);">
           {#snippet header()}
             <QHeader>
               <QIconBtn flat icon="menu" onclick={() => (overlayDrawerOpen = !overlayDrawerOpen)} />
@@ -293,8 +284,7 @@
             <p>Click the menu button to open the overlay drawer:</p>
             <QBtn
               label="Toggle Overlay Drawer"
-              onclick={() => (overlayDrawerOpen = !overlayDrawerOpen)}
-            />
+              onclick={() => (overlayDrawerOpen = !overlayDrawerOpen)} />
             <p class="q-mt-md">Notice how the content doesn't move when the drawer opens.</p>
           </div>
         </QLayout>
@@ -308,15 +298,13 @@
 
         <QLayout
           view="hHh LpR fFf"
-          style="height: 300px; width: 100%; border: 1px solid var(--outline);"
-        >
+          style="height: 300px; width: 100%; border: 1px solid var(--outline);">
           {#snippet header()}
             <QHeader>
               <QIconBtn
                 flat
                 icon="menu"
-                onclick={() => (persistentDrawerOpen = !persistentDrawerOpen)}
-              />
+                onclick={() => (persistentDrawerOpen = !persistentDrawerOpen)} />
               <h6 class="q-ml-sm q-my-none">Persistent Drawer</h6>
             </QHeader>
           {/snippet}
@@ -338,8 +326,7 @@
             <p>Click the menu button to open the persistent drawer:</p>
             <QBtn
               label="Toggle Persistent Drawer"
-              onclick={() => (persistentDrawerOpen = !persistentDrawerOpen)}
-            />
+              onclick={() => (persistentDrawerOpen = !persistentDrawerOpen)} />
             <p class="q-mt-md">Try clicking here - the drawer will stay open.</p>
           </div>
         </QLayout>
@@ -353,15 +340,13 @@
 
         <QLayout
           view="hHh LpR fFf"
-          style="height: 300px; width: 100%; border: 1px solid var(--outline);"
-        >
+          style="height: 300px; width: 100%; border: 1px solid var(--outline);">
           {#snippet header()}
             <QHeader>
               <QIconBtn
                 flat
                 icon="menu"
-                onclick={() => (borderedDrawerOpen = !borderedDrawerOpen)}
-              />
+                onclick={() => (borderedDrawerOpen = !borderedDrawerOpen)} />
               <h6 class="q-ml-sm q-my-none">Bordered Drawer</h6>
             </QHeader>
           {/snippet}
@@ -380,8 +365,7 @@
             <p>Click the menu button to toggle the bordered drawer:</p>
             <QBtn
               label="Toggle Bordered Drawer"
-              onclick={() => (borderedDrawerOpen = !borderedDrawerOpen)}
-            />
+              onclick={() => (borderedDrawerOpen = !borderedDrawerOpen)} />
           </div>
         </QLayout>
       </QDocsSection>
@@ -394,15 +378,13 @@
 
         <QLayout
           view="hHh LpR fFf"
-          style="height: 300px; width: 100%; border: 1px solid var(--outline);"
-        >
+          style="height: 300px; width: 100%; border: 1px solid var(--outline);">
           {#snippet header()}
             <QHeader>
               <QIconBtn
                 flat
                 icon="menu"
-                onclick={() => (customWidthDrawerOpen = !customWidthDrawerOpen)}
-              />
+                onclick={() => (customWidthDrawerOpen = !customWidthDrawerOpen)} />
               <h6 class="q-ml-sm q-my-none">Custom Width</h6>
             </QHeader>
           {/snippet}
@@ -423,8 +405,7 @@
             <p>Click the menu button to toggle the wide drawer:</p>
             <QBtn
               label="Toggle Wide Drawer"
-              onclick={() => (customWidthDrawerOpen = !customWidthDrawerOpen)}
-            />
+              onclick={() => (customWidthDrawerOpen = !customWidthDrawerOpen)} />
           </div>
         </QLayout>
       </QDocsSection>
@@ -438,8 +419,7 @@
 
         <QLayout
           view="hHh LpR fFf"
-          style="height: 300px; width: 100%; border: 1px solid var(--outline);"
-        >
+          style="height: 300px; width: 100%; border: 1px solid var(--outline);">
           {#snippet header()}
             <QHeader>
               <h6 class="q-my-none">Programmatic Control</h6>
@@ -450,8 +430,7 @@
             <QDrawer
               bind:this={drawerRef}
               bind:value={programmaticDrawerState}
-              aria-label="Navigation"
-            >
+              aria-label="Navigation">
               <div class="q-pa-md">
                 <h6 class="q-mb-md">Drawer Content</h6>
                 <p class="q-mb-md">This drawer is controlled programmatically.</p>
@@ -481,8 +460,7 @@
 
         <QLayout
           view="lHh Lpr lff"
-          style="height: 350px; width: 100%; border: 1px solid var(--outline);"
-        >
+          style="height: 350px; width: 100%; border: 1px solid var(--outline);">
           {#snippet header()}
             <QHeader>
               <QIconBtn flat icon="menu" onclick={() => (layoutDrawerOpen = !layoutDrawerOpen)} />
@@ -525,8 +503,7 @@
             </ul>
             <QBtn
               label="Toggle Navigation"
-              onclick={() => (layoutDrawerOpen = !layoutDrawerOpen)}
-            />
+              onclick={() => (layoutDrawerOpen = !layoutDrawerOpen)} />
           </div>
         </QLayout>
       </QDocsSection>

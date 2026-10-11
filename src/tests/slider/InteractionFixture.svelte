@@ -17,8 +17,7 @@
     step={0}
     expressive
     vertical
-    aria-label="Vertical level"
-  />
+    aria-label="Vertical level" />
   <QRange
     id="range"
     class="range"
@@ -26,8 +25,7 @@
     step={5}
     label
     minAriaLabel="Minimum"
-    maxAriaLabel="Maximum"
-  />
+    maxAriaLabel="Maximum" />
   <QSlider id="rtl" class="rtl" value={40} dir="rtl" aria-label="RTL level" />
   <QSlider id="reversed" class="reversed" value={40} reverse aria-label="Reversed level" />
   <QSlider id="readonly" class="readonly" value={40} readonly aria-label="Read only level" />
@@ -38,24 +36,21 @@
     step={20}
     markers
     disabled
-    aria-label="Disabled level"
-  />
+    aria-label="Disabled level" />
   <QSlider
     class="readonly-vertical"
     value={40}
     expressive
     vertical
     readonly
-    aria-label="Read only vertical level"
-  />
+    aria-label="Read only vertical level" />
   <QSlider
     class="disabled-vertical"
     value={40}
     expressive
     vertical
     disabled
-    aria-label="Disabled vertical level"
-  />
+    aria-label="Disabled vertical level" />
 
   {#each SIZES as size (size)}
     {#snippet icon()}
@@ -64,8 +59,7 @@
         height={size === "xl" ? 32 : 24}
         viewBox="0 0 24 24"
         fill="currentColor"
-        aria-hidden="true"><path d="M3 9v6h4l5 4V5L7 9Z" /></svg
-      >
+        aria-hidden="true"><path d="M3 9v6h4l5 4V5L7 9Z" /></svg>
     {/snippet}
 
     <QSlider
@@ -75,8 +69,7 @@
       expressive
       {size}
       {icon}
-      aria-label={`${size} level`}
-    />
+      aria-label={`${size} level`} />
   {/each}
 
   <QSlider class="dense-markers" value={41} markers aria-label="Fine adjustments" />

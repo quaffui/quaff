@@ -72,8 +72,7 @@
       class="observatory surface overflow-auto"
       role="region"
       aria-label="Night Atlas preview"
-      tabindex="0"
-    >
+      tabindex="0">
       <div class="sky-art primary-container relative-position overflow-hidden" aria-hidden="true">
         <span class="orbit absolute border"></span>
         <QIcon name="nightlight" size={64} color="primary" filled />
@@ -102,8 +101,7 @@
               type={iconType}
               size={iconSize}
               color={iconColor}
-              filled={isFilled}
-            />
+              filled={isFilled} />
           </div>
           <div class="label-small text-primary q-mt-lg">TONIGHT'S TARGET</div>
           <h3 class="headline-small q-mt-xs q-mb-sm">{target.name}</h3>
@@ -115,28 +113,24 @@
             label="Observation"
             options={TARGETS.map((item) => item.name)}
             bind:value={targetName}
-            outlined
-          />
+            outlined />
           <QSelect
             label="Icon family"
             options={["outlined", "rounded", "sharp"]}
             bind:value={iconType}
-            outlined
-          />
+            outlined />
           <QSelect
             label="Icon size"
             options={ICON_SIZES}
             bind:value={iconSize}
             emitValue
-            outlined
-          />
+            outlined />
           <QSelect
             label="Icon color"
             options={ICON_COLORS}
             bind:value={iconColor}
             emitValue
-            outlined
-          />
+            outlined />
           <QSwitch label="Filled symbol" bind:value={isFilled} />
         </div>
       </div>
@@ -183,8 +177,7 @@
           <QIcon
             img={asset("docs/observatory-patch.svg")}
             size={56}
-            imgAttributes={{ alt: "Night Atlas observatory emblem", width: 56, height: 56 }}
-          />
+            imgAttributes={{ alt: "Night Atlas observatory emblem", width: 56, height: 56 }} />
           <div class="min-width-0">
             <h3 class="title-medium q-ma-none">The observatory patch</h3>
             <p class="body-medium text-on-surface-variant q-mt-xs q-mb-none">
@@ -200,8 +193,7 @@
                 d="m24 30-8 14m8-14 8 14m-8-14v14"
                 stroke="currentColor"
                 stroke-width="3"
-                stroke-linecap="round"
-              />
+                stroke-linecap="round" />
             </svg>
           </QIcon>
           <div class="min-width-0">
@@ -229,8 +221,7 @@
         label the button and hide the decorative icon with <code>aria-hidden</code>.
       {/snippet}
       <div
-        class="log-entry bg-surface-container-low flex items-center justify-between q-gap-lg q-pa-lg"
-      >
+        class="log-entry bg-surface-container-low flex items-center justify-between q-gap-lg q-pa-lg">
         <div class="entry-title flex no-wrap items-center min-width-0 q-gap-md">
           <QIcon name="cloud_off" size="lg" color="primary" aria-label="Clear sky" />
           <div>
@@ -244,8 +235,7 @@
           <QIcon
             name={isSaved ? "bookmark_added" : "bookmark_add"}
             filled={isSaved}
-            aria-hidden="true"
-          />
+            aria-hidden="true" />
         </QBtn>
         <p class="save-status body-medium q-ma-none" role="status">
           {isSaved

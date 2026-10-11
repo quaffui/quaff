@@ -49,14 +49,12 @@
       stroke="currentColor"
       stroke-width="2"
       stroke-linecap="round"
-      stroke-linejoin="round"
-    />
+      stroke-linejoin="round" />
   </svg>
 {/snippet}
 {#snippet renderStopIcon()}
   <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"
-    ><rect x="4" y="4" width="8" height="8" rx="1" fill="currentColor" /></svg
-  >
+    ><rect x="4" y="4" width="8" height="8" rx="1" fill="currentColor" /></svg>
 {/snippet}
 
 <QDocs>
@@ -83,14 +81,12 @@
             bind:value={hasPlatformLights}
             label="Platform lamps"
             labelPosition={shouldPlaceLabelsLeft ? "left" : "right"}
-            icons
-          />
+            icons />
           <QSwitch
             bind:value={shouldUseHilltopRoute}
             label="Use hilltop loop"
             labelPosition={shouldPlaceLabelsLeft ? "left" : "right"}
-            showOnlyCheckedIcon
-          />
+            showOnlyCheckedIcon />
         </div>
         <p class="scene-status body-medium" role="status">
           <strong>{route}</strong> · Signal: {signal.toLowerCase()} · Platform lamps {hasPlatformLights
@@ -120,8 +116,7 @@
             class:success-container={isSignalClear}
             class:bg-surface-container-highest={!hasTrackPower}
             class:text-on-surface-variant={!hasTrackPower}
-            aria-hidden="true"
-          >
+            aria-hidden="true">
             <QIcon name={isSignalClear ? "check" : "stop"} size="32px" />
           </div>
           <div class="signal-copy min-width-0">
@@ -139,15 +134,13 @@
             uncheckedIcon={renderStopIcon}
             onclick={() => recordEvent("click")}
             oninput={() => recordEvent("input")}
-            onchange={() => recordEvent("change")}
-          />
+            onchange={() => recordEvent("change")} />
           <QBtn
             variant="tonal"
             icon="touch_app"
             label="Operate desk lever"
             disabled={!hasTrackPower}
-            onclick={() => departureSwitch?.toggle()}
-          />
+            onclick={() => departureSwitch?.toggle()} />
         </div>
         <p class="body-medium text-on-surface-variant q-mt-md q-mb-none">
           {hasTrackPower
@@ -164,8 +157,7 @@
             class="event-list body-medium flex q-gap-y-sm q-pa-none q-ma-none"
             aria-label="Latest switch events"
             aria-live="polite"
-            aria-relevant="additions text"
-          >
+            aria-relevant="additions text">
             {#each leverEvents as event, index (index)}
               <li><code>{event}</code></li>
             {:else}<li>Operate the lever to see its events.</li>{/each}
@@ -183,8 +175,7 @@
       <div class="cabinet-grid items-start q-gap-lg">
         <section
           class="cabinet border min-width-0 bg-surface-container-low"
-          aria-labelledby="railway-supply-heading"
-        >
+          aria-labelledby="railway-supply-heading">
           <h3 id="railway-supply-heading" class="title-large cabinet-title">Supply cabinet</h3>
           <QList preserveTabOrder>
             <QItem
@@ -192,8 +183,7 @@
               role="switch"
               aria-checked={hasTrackPower}
               aria-label="Track power"
-              onclick={() => (hasTrackPower = !hasTrackPower)}
-            >
+              onclick={() => (hasTrackPower = !hasTrackPower)}>
               <QItemSection>
                 {#snippet headline()}Track power{/snippet}
                 {#snippet line1()}Supply the locomotive and departure signal.{/snippet}
@@ -204,8 +194,7 @@
                   checkedIcon="power_settings_new"
                   uncheckedIcon="power_off"
                   inert
-                  aria-hidden="true"
-                />
+                  aria-hidden="true" />
               </QItemSection>
             </QItem>
             <QItem
@@ -213,22 +202,19 @@
               role="switch"
               aria-checked={hasStationSigns}
               aria-label="Station signs"
-              onclick={() => (hasStationSigns = !hasStationSigns)}
-            >
+              onclick={() => (hasStationSigns = !hasStationSigns)}>
               <QItemSection>
                 {#snippet headline()}Station signs{/snippet}
                 {#snippet line1()}Show the nameboard on station displays.{/snippet}
               </QItemSection>
               <QItemSection type="toggle"
-                ><QSwitch value={hasStationSigns} inert aria-hidden="true" /></QItemSection
-              >
+                ><QSwitch value={hasStationSigns} inert aria-hidden="true" /></QItemSection>
             </QItem>
           </QList>
         </section>
         <section
           class="cabinet border min-width-0 bg-surface-container-low"
-          aria-labelledby="railway-trackside-heading"
-        >
+          aria-labelledby="railway-trackside-heading">
           <h3 id="railway-trackside-heading" class="title-large cabinet-title">
             Trackside details
           </h3>
@@ -243,9 +229,7 @@
                   bind:value={hasTunnelLights}
                   aria-label="Tunnel lamps"
                   checkedIcon="light_mode"
-                  uncheckedIcon="dark_mode"
-                /></QItemSection
-              >
+                  uncheckedIcon="dark_mode" /></QItemSection>
             </QItem>
             <QItem>
               <QItemSection>
@@ -253,8 +237,7 @@
                 {#snippet line1()}Always enabled during visiting hours.{/snippet}
               </QItemSection>
               <QItemSection type="toggle"
-                ><QSwitch value={true} icons disabled aria-label="Crossing gate" /></QItemSection
-              >
+                ><QSwitch value={true} icons disabled aria-label="Crossing gate" /></QItemSection>
             </QItem>
             <QItem>
               <QItemSection>
@@ -262,8 +245,7 @@
                 {#snippet line1()}Closed while its track is being repaired.{/snippet}
               </QItemSection>
               <QItemSection type="toggle"
-                ><QSwitch value={false} disabled aria-label="Workshop spur" /></QItemSection
-              >
+                ><QSwitch value={false} disabled aria-label="Workshop spur" /></QItemSection>
             </QItem>
           </QList>
         </section>

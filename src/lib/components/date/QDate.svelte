@@ -236,8 +236,7 @@ Date pickers support single dates and ranges through a calendar or text entry. D
   {overlayId}
   {disabled}
   inactive={disabled || readonly}
-  {toggle}
-/>
+  {toggle} />
 
 {#if docked}
   <QMenu
@@ -250,16 +249,14 @@ Date pickers support single dates and ranges through a calendar or text entry. D
     role="dialog"
     dir={picker.isRtl ? "rtl" : "ltr"}
     aria-label={title}
-    onkeydown={handleOverlayKeydown}
-  >
+    onkeydown={handleOverlayKeydown}>
     <QDateDocked
       state={picker}
       {focus}
       focusId={dockedId}
       {confirmLabel}
       {cancelLabel}
-      cancel={hide}
-    />
+      cancel={hide} />
   </QMenu>
 {:else}
   <QDialog
@@ -271,8 +268,7 @@ Date pickers support single dates and ranges through a calendar or text entry. D
     dir={picker.isRtl ? "rtl" : "ltr"}
     aria-labelledby={dialogTitleId}
     onclick={handleDialogClick}
-    onkeydown={handleOverlayKeydown}
-  >
+    onkeydown={handleOverlayKeydown}>
     <QDateModal
       state={picker}
       {focus}
@@ -284,7 +280,6 @@ Date pickers support single dates and ranges through a calendar or text entry. D
       {cancelLabel}
       {saveLabel}
       {dialogTitleId}
-      cancel={hide}
-    />
+      cancel={hide} />
   </QDialog>
 {/if}

@@ -68,14 +68,12 @@
 
 <QDocs
   docName="QTheme"
-  docDescription="The QTheme class allows you to easily manage the color theme of your app."
->
+  docDescription="The QTheme class allows you to easily manage the color theme of your app.">
   {#snippet display()}
     <QBtn
       icon="palette"
       label="Random color theme"
-      onclick={() => QTheme.setTheme(getRandomHexColor())}
-    />
+      onclick={() => QTheme.setTheme(getRandomHexColor())} />
   {/snippet}
 
   {#snippet usage()}
@@ -106,8 +104,7 @@
         <QCodeBlock
           code={JSON.stringify(QTheme.themeColors, null, 2)}
           language="json"
-          style="max-height: 300px; overflow: auto;"
-        />
+          style="max-height: 300px; overflow: auto;" />
       </div>
     </QDocsSection>
 
@@ -127,8 +124,7 @@
           label="Change theme variant"
           outlined
           emitValue
-          style="max-width: 20rem;"
-        />
+          style="max-width: 20rem;" />
 
         <QCodeBlock language="ts" code={`QTheme.setThemeVariant('${variant}')`} />
       </div>
@@ -158,8 +154,7 @@
           min="-1"
           max="1"
           step="0.1"
-          style="max-width: 20rem; min-width: 10rem;"
-        />
+          style="max-width: 20rem; min-width: 10rem;" />
 
         <QCodeBlock language="ts" code={`QTheme.setContrastLevel(${contrast})`} />
       </div>
@@ -197,8 +192,7 @@
           icon="palette"
           label="Set color theme"
           onclick={() => QTheme.setTheme(hexColor)}
-          disabled={!hexColor}
-        />
+          disabled={!hexColor} />
 
         {#if hexColor}
           <QCodeBlock language="ts" code="QTheme.setTheme('{hexColor}')" />
@@ -228,8 +222,7 @@
       <div class="flex items-center q-gap-md">
         <QBtn
           label="Generate new HEX color"
-          onclick={() => (customPrimary = getRandomHexColor())}
-        />
+          onclick={() => (customPrimary = getRandomHexColor())} />
         <span
           style="background: {customPrimary}; height: 16px; width: 32px; border-radius: 5px; border: 1px solid var(--outline)"
         ></span>
@@ -241,13 +234,11 @@
           icon="palette"
           label="Set primary color"
           onclick={changeColors}
-          disabled={!customPrimary}
-        />
+          disabled={!customPrimary} />
 
         <QCodeBlock
           language="ts"
-          code={`QTheme.updateThemeColors({ primaryLight: '${customPrimary}', primaryDark: '${customPrimary}' })`}
-        />
+          code={`QTheme.updateThemeColors({ primaryLight: '${customPrimary}', primaryDark: '${customPrimary}' })`} />
       </div>
 
       <QBtn class="q-mt-md" icon="undo" label="Reset" onclick={resetTheme} />

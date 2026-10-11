@@ -252,8 +252,7 @@ Side sheets present details, filters, or tools beside the main content. Keep the
   oncancel={handleCancel}
   onclose={handleClose}
   data-quaff-overlay
-  data-quaff
->
+  data-quaff>
   <div class="q-side-sheet__container">
     <header class="q-side-sheet__header">
       {#if headline}
@@ -266,8 +265,7 @@ Side sheets present details, filters, or tools beside the main content. Keep the
         color="on-surface-variant"
         aria-label={closeLabel}
         class="q-side-sheet__close"
-        onclick={hide}
-      />
+        onclick={hide} />
     </header>
     <div class="q-side-sheet__content">
       {@render children?.()}

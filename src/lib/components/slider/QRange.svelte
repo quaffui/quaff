@@ -29,5 +29,4 @@ QRange selects a lower and upper value from the same range with two independentl
   {labels}
   ariaLabels={[minAriaLabel, maxAriaLabel]}
   range
-  {...props}
-/>
+  {...props} />

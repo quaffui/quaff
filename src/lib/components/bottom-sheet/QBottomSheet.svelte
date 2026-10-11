@@ -319,8 +319,7 @@ Bottom sheets present supporting content and actions at the bottom of the screen
   oncancel={handleCancel}
   onclose={handleClose}
   data-quaff
-  data-quaff-overlay
->
+  data-quaff-overlay>
   <button
     type="button"
     class="q-bottom-sheet__handle"
@@ -332,8 +331,7 @@ Bottom sheets present supporting content and actions at the bottom of the screen
     onpointermove={moveDrag}
     onpointerup={finishDrag}
     onpointercancel={cancelDrag}
-    onlostpointercapture={cancelDrag}><span></span></button
-  >
+    onlostpointercapture={cancelDrag}><span></span></button>
   <div id={contentId} class="q-bottom-sheet__content">
     {@render children?.()}
   </div>

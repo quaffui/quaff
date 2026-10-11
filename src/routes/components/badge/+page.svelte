@@ -87,8 +87,7 @@
             <QIconBtn
               aria-label="Review requests"
               aria-describedby={unreadCount ? "toolshed-request-count" : undefined}
-              onclick={reviewRequests}
-            >
+              onclick={reviewRequests}>
               <span class="badge-anchor">
                 <QIcon name="assignment" aria-hidden="true" />
                 {#if unreadCount}
@@ -97,16 +96,14 @@
                     floating
                     label={showCounts ? unreadCount : undefined}
                     aria-label={`${unreadCount} unread requests`}
-                    aria-hidden="true"
-                  />
+                    aria-hidden="true" />
                 {/if}
               </span>
             </QIconBtn>
             <QIconBtn
               aria-label="Review new arrivals"
               aria-describedby={hasArrival ? "toolshed-new-arrival" : undefined}
-              onclick={reviewArrivals}
-            >
+              onclick={reviewArrivals}>
               <span class="badge-anchor">
                 <QIcon name="inventory_2" aria-hidden="true" />
                 {#if hasArrival}
@@ -114,8 +111,7 @@
                     id="toolshed-new-arrival"
                     floating
                     aria-label="New tool on the shelf"
-                    aria-hidden="true"
-                  />
+                    aria-hidden="true" />
                 {/if}
               </span>
             </QIconBtn>
@@ -143,8 +139,7 @@
           options={REPORTS}
           bind:value={reportCount}
           emitValue
-          outlined
-        />
+          outlined />
         <div class="report-card flex items-center q-pa-lg">
           <div class="report-icon primary-container" aria-hidden="true">
             <QIcon name="recycling" size="32px" />

@@ -452,16 +452,14 @@
           variant="flat"
           aria-label="Open section navigation"
           disabled={!drawerContent.length}
-          onclick={drawerLeftEl?.toggle}
-        />
+          onclick={drawerLeftEl?.toggle} />
       {/if}
 
       <QHeaderTitle>Quaff</QHeaderTitle>
       <QIconBtn
         icon={Quaff.darkMode.isActive ? "light_mode" : "dark_mode"}
         variant="flat"
-        onclick={Quaff.darkMode.toggle}
-      />
+        onclick={Quaff.darkMode.toggle} />
       <QIconBtn icon="palette" variant="flat" onclick={drawerRightEl?.toggle} />
     </QHeader>
   {/snippet}
@@ -477,13 +475,11 @@
                 chosenColor = index;
                 QTheme.setTheme(color);
               }}
-              disabled={chosenColor === index}
-            >
+              disabled={chosenColor === index}>
               <QAvatar
                 class={chosenColor === index ? "chosen" : ""}
                 size="40px"
-                style="background-color:{color}; border: solid 1px var(--outline)"
-              />
+                style="background-color:{color}; border: solid 1px var(--outline)" />
             </QIconBtn>
           {/each}
         </div>
@@ -523,8 +519,7 @@
       label={name}
       {to}
       active={to === "/layout/pages" ? isRouteActive("/layout") : undefined}
-      {noRipple}
-    />
+      {noRipple} />
   {/each}
 {/snippet}
 
@@ -549,8 +544,7 @@
     bind:this={drawerLeftEl}
     aria-label="Section navigation"
     width={220}
-    bordered
-  >
+    bordered>
     <QDocsNavigation items={drawerContent} label="Section navigation" dense />
   </QDrawer>
 {/snippet}

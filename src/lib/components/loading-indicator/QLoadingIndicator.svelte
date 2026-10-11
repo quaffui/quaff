@@ -37,8 +37,7 @@ Loading indicators animate shapes to show ongoing work when progress is unknown.
   style:--q-loading-indicator-container-color={parsedContainerColor}
   role="progressbar"
   aria-valuenow={undefined}
-  data-quaff
->
+  data-quaff>
   <span class="q-loading-indicator__rotation" aria-hidden="true">
     <span class="q-loading-indicator__shape"></span>
   </span>

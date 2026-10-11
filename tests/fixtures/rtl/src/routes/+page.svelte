@@ -76,8 +76,7 @@
     <QLayout
       id="layout"
       view="lhh lpr lff"
-      style="width: 800px; height: 320px; margin-inline: auto;"
-    >
+      style="width: 800px; height: 320px; margin-inline: auto;">
       {#snippet header()}<QHeader height={56} />{/snippet}
       {#snippet footer()}<QFooter height={40} />{/snippet}
       {#snippet railbarStart()}<QRailbar id="start-rail" width={64} />{/snippet}
@@ -90,8 +89,7 @@
             width={160}
             value
             behavior="desktop"
-            persistent
-          />
+            persistent />
         {/if}
       {/snippet}
       {#snippet drawerLeft()}
@@ -102,8 +100,7 @@
             width={100}
             value
             behavior="desktop"
-            persistent
-          />
+            persistent />
         {/if}
       {/snippet}
       Content
@@ -125,8 +122,7 @@
       id="config-notify"
       onclick={() =>
         Notify.create({ message: "Settings preview", timeout: 0, actions: [{ label: "Undo" }] })}
-      >Notify</button
-    >
+      >Notify</button>
     <QBtn id="config-button" label="Action" />
     <QBtn id="config-override" expressive={false} label="Baseline" />
     <button
@@ -135,17 +131,14 @@
         config.expressive = !config.expressive;
         config.rtl = config.expressive;
         config.language = config.expressive ? de : en;
-      }}>Update settings</button
-    >
+      }}>Update settings</button>
     <QTable
       columns={[{ name: "name", label: "Name", field: "name" }]}
-      rows={Array.from({ length: 6 }, (_, i) => ({ name: `Row ${i + 1}` }))}
-    />
+      rows={Array.from({ length: 6 }, (_, i) => ({ name: `Row ${i + 1}` }))} />
   {:else if scene === "table"}
     <QTable
       columns={[{ name: "name", label: "Name", field: "name" }]}
-      rows={Array.from({ length: 6 }, (_, i) => ({ name: `Row ${i + 1}` }))}
-    />
+      rows={Array.from({ length: 6 }, (_, i) => ({ name: `Row ${i + 1}` }))} />
   {:else if scene === "progress"}
     {#each ["ar", "he-IL", "iw"] as lang (lang)}
       <section {lang}>
@@ -170,8 +163,7 @@
         aria-label="Trigger"
         bind:this={target}
         bind:value={inputValue}
-        onfocus={() => (popup === "menu" ? menu?.show() : tooltip?.show())}
-      />
+        onfocus={() => (popup === "menu" ? menu?.show() : tooltip?.show())} />
     {:else if editable === "textarea"}
       <textarea
         id="trigger"
@@ -184,8 +176,7 @@
       <button
         id="trigger"
         bind:this={target}
-        onclick={() => (popup === "menu" ? menu?.show() : tooltip?.show())}>Open</button
-      >
+        onclick={() => (popup === "menu" ? menu?.show() : tooltip?.show())}>Open</button>
     {/if}
     {#if popup === "menu"}
       <QMenu
@@ -196,12 +187,10 @@
         anchor={physical ? "bottom left" : undefined}
         self={physical ? "top left" : undefined}
         autoClose={!growing && !globalDirection}
-        style={growing ? undefined : "width: 220px; height: 40px;"}
-      >
+        style={growing ? undefined : "width: 220px; height: 40px;"}>
         {#if globalDirection}
           <button id="toggle-direction" onclick={() => (config.rtl = !config.rtl)}
-            >Change direction</button
-          >
+            >Change direction</button>
         {:else if growing}
           <button id="grow-menu" onclick={() => (expanded = true)}>
             {expanded ? "Additional menu actions that become available after loading" : "Expand"}
@@ -218,12 +207,10 @@
         dir={popupDir}
         delay={0}
         hideDelay={0}
-        role={globalDirection ? "dialog" : "tooltip"}
-      >
+        role={globalDirection ? "dialog" : "tooltip"}>
         {#if globalDirection}
           <button id="toggle-direction" onclick={() => (config.rtl = !config.rtl)}
-            >Change direction</button
-          >
+            >Change direction</button>
         {:else}
           {popupDir ? "مرحبا" : "Tooltip"}
         {/if}

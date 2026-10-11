@@ -336,8 +336,7 @@ Search bars open a dedicated view for queries, suggestions, and results. Choose 
   ]}
   {style}
   dir={props.dir}
-  data-quaff
->
+  data-quaff>
   <div bind:this={barEl} class="q-search__bar q-field__wrapper" inert={disabled}>
     {#if leading}
       <div class="q-search__accessory">{@render leading()}</div>
@@ -360,15 +359,13 @@ Search bars open a dedicated view for queries, suggestions, and results. Choose 
         disabled: !!disabled,
         color: "on-surface",
         effectTarget: ".q-search__state",
-      })}
-    >
+      })}>
       <span class="q-search__state" aria-hidden="true"></span>
       {#if !leading}
         <span class="q-search__icon"><QIcon name="search" size="24px" /></span>
       {/if}
       <span id={`${id}-query`} class="q-search__text" class:q-search__text--placeholder={!value}
-        >{value || placeholder}</span
-      >
+        >{value || placeholder}</span>
     </button>
 
     {#if trailing}
@@ -387,8 +384,7 @@ Search bars open a dedicated view for queries, suggestions, and results. Choose 
     aria-label={accessibleLabel}
     aria-labelledby={props["aria-labelledby"]}
     onclose={handleClose}
-    oncancel={handleCancel}
-  >
+    oncancel={handleCancel}>
     <div bind:this={contentEl} class="q-search__content">
       <div class="q-search__header q-field__wrapper">
         <span class="q-search__divider" aria-hidden="true"></span>
@@ -398,8 +394,7 @@ Search bars open a dedicated view for queries, suggestions, and results. Choose 
           expressive={false}
           size="md"
           aria-label={resolvedLabels.back}
-          onclick={hide}
-        >
+          onclick={hide}>
           {#snippet icon()}
             <QIcon name="arrow_back" class="q-search__back-glyph" aria-hidden="true" />
             {#if !leading}
@@ -421,8 +416,7 @@ Search bars open a dedicated view for queries, suggestions, and results. Choose 
           aria-label={accessibleLabel}
           {oninput}
           onkeydown={handleKeydown}
-          oninvalid={handleInvalid}
-        />
+          oninvalid={handleInvalid} />
         {#if value && !readonly}
           <QIconBtn
             type="button"
@@ -431,8 +425,7 @@ Search bars open a dedicated view for queries, suggestions, and results. Choose 
             expressive={false}
             size="md"
             aria-label={resolvedLabels.clear}
-            onclick={handleClear}
-          />
+            onclick={handleClear} />
         {/if}
       </div>
 
@@ -443,8 +436,7 @@ Search bars open a dedicated view for queries, suggestions, and results. Choose 
             size="2px"
             expressive={false}
             aria-hidden="true"
-            class="q-search__progress"
-          />
+            class="q-search__progress" />
         {/if}
         <div
           bind:this={resultsEl}
@@ -452,8 +444,7 @@ Search bars open a dedicated view for queries, suggestions, and results. Choose 
           role="region"
           tabindex="-1"
           aria-label={resolvedLabels.results}
-          aria-busy={loading}
-        >
+          aria-busy={loading}>
           <div bind:this={resultsContentEl} class="q-search__results-content">
             {@render children?.({ value, close: hide, search })}
           </div>

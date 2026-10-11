@@ -70,6 +70,5 @@
     timeout={current.timeout}
     offset={current.offset}
     onDismiss={current.onDismiss}
-    onHidden={handleHidden}
-  />
+    onHidden={handleHidden} />
 {/if}

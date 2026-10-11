@@ -44,7 +44,6 @@ Toolbars group related actions near the content they control. Choose a docked or
     keyboard.onfocusin(event);
   }}
   {@attach keyboard.attach}
-  data-quaff
->
+  data-quaff>
   {@render children?.()}
 </div>

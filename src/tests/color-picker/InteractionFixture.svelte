@@ -15,8 +15,7 @@
   format={params.get("format") === "hex" ? "hex" : "rgb"}
   alpha={params.get("alpha") === "true"}
   mask={MASKS[params.get("mask") ?? "6"]}
-  fillMask={params.get("fill") !== "false"}
-/>
+  fillMask={params.get("fill") !== "false"} />
 <output id="value">{JSON.stringify(value)}</output>
 <input id="external" aria-label="External value" bind:value={externalValue} />
 <button id="update" onclick={() => (value = externalValue)}>Update externally</button>

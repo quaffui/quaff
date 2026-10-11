@@ -29,8 +29,7 @@
         target: event.target === event.currentTarget,
         currentTarget: event.currentTarget.id,
         expanded,
-      })}
-  >
+      })}>
     <p id="description">Choose a destination.</p>
     <button id="collapse" onclick={() => (expanded = false)}>Collapse</button>
     <button id="standard" onclick={() => (modal = false)}>Standard</button>

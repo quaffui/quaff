@@ -73,7 +73,6 @@ Navigation bars place three to five primary destinations at the bottom of a layo
   style:--q-navbar-min-height="{height}px"
   style:--q-nav-item-active-indicator-color={parsedActiveColor}
   aria-label={props["aria-label"] ?? "Primary navigation"}
-  data-quaff
->
+  data-quaff>
   {@render children?.()}
 </nav>

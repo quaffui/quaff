@@ -98,8 +98,7 @@
       <QBreadcrumbs
         separator="icon:chevron_right"
         separatorColor="on-surface-variant"
-        aria-label="Archive preview"
-      >
+        aria-label="Archive preview">
         <QBreadcrumbsEl href="#browse-a-collection" label="Archive" />
         <QBreadcrumbsEl label="Maps" />
       </QBreadcrumbs>
@@ -120,23 +119,20 @@
             {separator}
             {gutter}
             separatorColor="on-surface-variant"
-            aria-label="Archive location"
-          >
+            aria-label="Archive location">
             <QBreadcrumbsEl
               tag={collection ? "button" : "span"}
               label="Archive"
               icon={showIcons ? "inventory_2" : undefined}
               aria-current={collection ? undefined : "location"}
-              onclick={collection ? () => openLocation() : undefined}
-            />
+              onclick={collection ? () => openLocation() : undefined} />
             {#if collection}
               <QBreadcrumbsEl
                 tag={record ? "button" : "span"}
                 label={collection.title}
                 icon={showIcons ? collection.icon : undefined}
                 aria-current={record ? undefined : "location"}
-                onclick={record ? () => openLocation(collection.id) : undefined}
-              />
+                onclick={record ? () => openLocation(collection.id) : undefined} />
             {/if}
             {#if record}<QBreadcrumbsEl label={record.title} aria-current="location" />{/if}
           </QBreadcrumbs>
@@ -162,14 +158,12 @@
                   <button
                     class="catalogue-item flex items-center q-gap-md q-pa-md text-on-surface"
                     type="button"
-                    onclick={() => openLocation(collection.id, item.id)}
-                  >
+                    onclick={() => openLocation(collection.id, item.id)}>
                     <QIcon name={item.icon} size="lg" color="tertiary" aria-hidden="true" />
                     <span
                       ><span class="title-medium">{item.title}</span><span
                         class="body-small text-on-surface-variant">{item.date}</span
-                      ></span
-                    >
+                      ></span>
                     <QIcon name="chevron_right" aria-hidden="true" />
                   </button>
                 {/each}
@@ -184,15 +178,13 @@
                   <button
                     class="catalogue-item flex items-center q-gap-md q-pa-md text-on-surface"
                     type="button"
-                    onclick={() => openLocation(item.id)}
-                  >
+                    onclick={() => openLocation(item.id)}>
                     <QIcon name={item.icon} size="lg" color="tertiary" aria-hidden="true" />
                     <span
                       ><span class="title-medium">{item.title}</span><span
                         class="body-small text-on-surface-variant"
                         >{item.records.length} records</span
-                      ></span
-                    >
+                      ></span>
                     <QIcon name="chevron_right" aria-hidden="true" />
                   </button>
                 {/each}
@@ -209,14 +201,12 @@
             options={SEPARATORS}
             bind:value={separator}
             emitValue
-            outlined
-          />
+            outlined />
           <QSelect
             label="Trail spacing"
             options={["none", "sm", "md", "lg"]}
             bind:value={gutter}
-            outlined
-          />
+            outlined />
           <QSwitch label="Show collection icons" bind:value={showIcons} />
         </div>
       </div>
@@ -237,16 +227,14 @@
                 ><path d="M4 7h16v13H4zM3 3h18v4H3z" stroke="currentColor" stroke-width="2" /><path
                   d="M9 11h6"
                   stroke="currentColor"
-                  stroke-width="2"
-                /></svg
+                  stroke-width="2" /></svg
               >{/snippet}
           </QBreadcrumbsEl>
           <QBreadcrumbsEl label="Maps" />
           <QBreadcrumbsEl tag="strong" aria-current="location">
             <span class="flex items-center q-gap-sm">
               <span class="record-code tertiary-container q-py-xs q-px-sm text-weight-regular"
-                >MAP 024</span
-              >
+                >MAP 024</span>
               <span>Coastal survey</span>
             </span>
           </QBreadcrumbsEl>
@@ -272,15 +260,13 @@
           separator="icon:chevron_right"
           activeClass={emphasizeCurrent ? "text-bold" : undefined}
           activeStyle={emphasizeCurrent ? "font-style: italic" : undefined}
-          aria-label="Documentation path"
-        >
+          aria-label="Documentation path">
           <QBreadcrumbsEl
             to="/components"
             label="Components"
             icon="widgets"
             activeClass=""
-            activeStyle=""
-          />
+            activeStyle="" />
           <QBreadcrumbsEl to="/components/breadcrumbs/" label="Breadcrumbs" />
         </QBreadcrumbs>
         <div class="controls link-controls q-gap-md">
@@ -288,14 +274,12 @@
             label="Active link color"
             options={["primary", "secondary", "tertiary"]}
             bind:value={activeColor}
-            outlined
-          />
+            outlined />
           <QSelect
             label="Separator color"
             options={["on-surface-variant", "primary", "tertiary"]}
             bind:value={separatorColor}
-            outlined
-          />
+            outlined />
           <QSwitch label="Emphasize current page" bind:value={emphasizeCurrent} />
         </div>
       </div>

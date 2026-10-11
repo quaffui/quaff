@@ -38,8 +38,7 @@
         label="Item {index + 1}"
         {expandIconToggle}
         {href}
-        defaultOpened={index === openedIndex}
-      >
+        defaultOpened={index === openedIndex}>
         <QList {expressive} {segmented} {dense} aria-label="Nested items">
           <QItem clickable><QItemSection>Nested first</QItemSection></QItem>
           <QItem clickable><QItemSection>Nested last</QItemSection></QItem>

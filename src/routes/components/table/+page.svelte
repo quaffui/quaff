@@ -94,8 +94,7 @@
 <QDocs>
   {#snippet display()}
     <div
-      class="table-preview full-width overflow-auto bg-surface-container-low q-pa-md text-on-surface"
-    >
+      class="table-preview full-width overflow-auto bg-surface-container-low q-pa-md text-on-surface">
       <p class="label-large text-on-surface-variant q-ma-none q-mb-md">
         ATLAS · SPECIMEN CATALOGUE
       </p>
@@ -105,8 +104,7 @@
         flat
         bordered
         dense
-        aria-label="Featured specimens"
-      />
+        aria-label="Featured specimens" />
     </div>
   {/snippet}
 
@@ -147,8 +145,7 @@
             { id: "AT-031", name: "Pale Summit", kind: "Stone" },
             { id: "AT-032", name: "Ember Field", kind: "Iron" },
           ]}
-          aria-label="Specimen catalogue"
-        />
+          aria-label="Specimen catalogue" />
         <p class="body-small text-on-surface-variant q-ma-none q-mt-md">
           On narrow screens, scroll the table sideways. Its scroll area and sort buttons are
           keyboard accessible.
@@ -194,8 +191,7 @@
           rows={SPECIMENS}
           flat
           bordered
-          aria-label="Specimen measurements and storage"
-        />
+          aria-label="Specimen measurements and storage" />
         <dl class="column-notes flex q-gap-md q-mt-lg body-small">
           <div>
             <dt class="text-weight-medium q-mb-xs">Class</dt>
@@ -239,8 +235,7 @@
           {dense}
           {flat}
           {bordered}
-          aria-label="Table appearance preview"
-        />
+          aria-label="Table appearance preview" />
       </div>
     </QDocsSection>
 
@@ -262,24 +257,21 @@
             label={received ? "Specimen added" : "Add specimen"}
             variant="tonal"
             disabled={received}
-            onclick={receiveSpecimen}
-          />
+            onclick={receiveSpecimen} />
         </div>
         <div class="filter-controls q-gap-md q-mb-md">
           <QInput
             bind:value={query}
             label="Search specimens"
             outlined
-            placeholder="Name or accession"
-          >
+            placeholder="Name or accession">
             {#snippet prepend()}<QIcon name="search" aria-hidden="true" />{/snippet}
           </QInput>
           <QSelect
             bind:value={kind}
             options={["All classes", ...KINDS]}
             label="Meteorite class"
-            outlined
-          />
+            outlined />
         </div>
         <div class="flex justify-between items-center q-gap-md q-mb-lg">
           <p class="body-small q-ma-none" role="status">
@@ -292,8 +284,7 @@
           rows={filteredRows}
           flat
           bordered
-          aria-label="Selectable specimens"
-        >
+          aria-label="Selectable specimens">
           {#snippet bodyCell({ row, column, style })}
             <td {style}>{row[String(column.field)]}</td>
           {/snippet}
@@ -304,8 +295,7 @@
                 bind:value={
                   () => selectedIds.includes(String(row.id)),
                   (value) => setSelected(String(row.id), !!value)
-                }
-              />
+                } />
             </td>
           {/snippet}
         </QTable>
@@ -320,8 +310,7 @@
             label="Clear selection"
             variant="outlined"
             disabled={!selectedIds.length}
-            onclick={() => (selectedIds = [])}
-          />
+            onclick={() => (selectedIds = [])} />
         </div>
       </div>
     </QDocsSection>
@@ -331,8 +320,7 @@
         Choose a language to translate pagination, sorting labels and announcements. Column headings
         and specimen names remain your content. The language chooser is scoped to this example; see <a
           class="q-docs-link"
-          href={resolve("/utils/quaff#language")}>language setup</a
-        > for application configuration.
+          href={resolve("/utils/quaff#language")}>language setup</a> for application configuration.
       {/snippet}
 
       <div class="demo-panel min-width-0 bg-surface-container-low q-pa-lg">
@@ -342,8 +330,7 @@
             rows={SPECIMENS}
             flat
             bordered
-            aria-label="Localized specimen catalogue"
-          />
+            aria-label="Localized specimen catalogue" />
         </QLanguageExample>
       </div>
     </QDocsSection>

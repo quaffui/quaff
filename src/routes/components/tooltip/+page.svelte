@@ -194,8 +194,7 @@
       <QDocsSection title="Custom Target">
         {#snippet sectionDescription()}
           Instead of a trigger snippet, you can attach a tooltip to an existing element using the <code
-            >target</code
-          > prop with either a DOM element or a CSS selector.
+            >target</code> prop with either a DOM element or a CSS selector.
         {/snippet}
 
         <div class="flex q-gap-md q-ma-sm">
@@ -213,8 +212,7 @@
         {#snippet sectionDescription()}
           Tooltips can contain rich content, not just text. You can include icons, formatted text,
           and interactive elements. For interactive content, use a labelled <code
-            >role="dialog"</code
-          >
+            >role="dialog"</code>
           and press Tab from the trigger to reach its actions.
         {/snippet}
 

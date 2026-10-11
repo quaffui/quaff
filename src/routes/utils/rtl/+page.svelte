@@ -127,8 +127,7 @@
     ]}
     aria-label={label}
     dir="ltr"
-    expressive={false}
-  />
+    expressive={false} />
 {/snippet}
 
 {#snippet route()}
@@ -170,8 +169,7 @@
       <div class="boarding-pass surface" dir={direction} lang={language}>
         <div class="brand-row">
           <span class="brand-mark primary-container"
-            ><QIcon name="flight_takeoff" aria-hidden="true" /></span
-          >
+            ><QIcon name="flight_takeoff" aria-hidden="true" /></span>
           <strong class="title-medium">{copy.brand}</strong>
           <span class="body-small text-on-surface-variant">{copy.boarding}</span>
         </div>
@@ -197,8 +195,7 @@
           variant="flat"
           icon="menu_open"
           label="Open drawer"
-          onclick={() => (drawerOpen = true)}
-        />
+          onclick={() => (drawerOpen = true)} />
       </div>
       <div class="travel-frame">
         <QLayout id="rtl-layout-demo" dir={direction} lang={language} class="surface-container-low">
@@ -210,12 +207,10 @@
                 aria-label={copy.navigation}
                 aria-expanded={drawerOpen}
                 aria-controls="rtl-travel-drawer"
-                onclick={() => (drawerOpen = !drawerOpen)}
-              />
+                onclick={() => (drawerOpen = !drawerOpen)} />
               <QHeaderTitle class="justify-start">{copy.brand}</QHeaderTitle>
               <QAvatar size="xs" class="secondary-container" aria-label={copy.traveler}
-                >{rtl ? "لن" : "LN"}</QAvatar
-              >
+                >{rtl ? "لن" : "LN"}</QAvatar>
             </QHeader>
           {/snippet}
           {#snippet drawerStart()}
@@ -227,41 +222,35 @@
               behavior="desktop"
               overlay
               persistent
-              inert={!drawerOpen}
-            >
+              inert={!drawerOpen}>
               <div class="drawer-heading">
                 <strong class="title-large">{copy.brand}</strong>
                 <QIconBtn
                   icon="close"
                   variant="flat"
                   aria-label={copy.close}
-                  onclick={() => (drawerOpen = false)}
-                />
+                  onclick={() => (drawerOpen = false)} />
               </div>
               <QList tag="nav" aria-label={copy.brand} expressive={false} preserveTabOrder>
                 <QNavItem
                   icon="luggage"
                   label={copy.trips}
                   active={destination === "trips"}
-                  onclick={() => navigate("trips")}
-                />
+                  onclick={() => navigate("trips")} />
                 <QNavItem
                   icon="confirmation_number"
                   label={copy.tickets}
                   active={destination === "tickets"}
-                  onclick={() => navigate("tickets")}
-                />
+                  onclick={() => navigate("tickets")} />
                 <QNavItem
                   icon="bookmark"
                   label={copy.saved}
                   active={destination === "saved"}
-                  onclick={() => navigate("saved")}
-                />
+                  onclick={() => navigate("saved")} />
               </QList>
               <div class="drawer-profile body-medium">
                 <QAvatar class="tertiary-container" size="sm" aria-hidden="true"
-                  >{rtl ? "لن" : "LN"}</QAvatar
-                >
+                  >{rtl ? "لن" : "LN"}</QAvatar>
                 <span>{copy.traveler}</span>
               </div>
             </QDrawer>
@@ -282,23 +271,19 @@
                   variant="tonal"
                   icon="bookmark_add"
                   label={copy.save}
-                  onclick={() => (saved = true)}
-                />
+                  onclick={() => (saved = true)} />
               </div>
             {:else}
               <QCard class="itinerary-card" bordered>
                 <div class="trip-banner secondary-container">
                   <div class="brand-row">
                     <span class="label-large"
-                      >{destination === "tickets" ? copy.boarding : copy.upcoming}</span
-                    >
+                      >{destination === "tickets" ? copy.boarding : copy.upcoming}</span>
                     <span class="status body-small"
                       ><QIcon
                         name="check_circle"
                         size="18px"
-                        aria-hidden="true"
-                      />{copy.confirmed}</span
-                    >
+                        aria-hidden="true" />{copy.confirmed}</span>
                   </div>
                   {@render route()}
                 </div>
@@ -317,8 +302,7 @@
                       <QBtn
                         variant="tonal"
                         label={copy.viewTicket}
-                        onclick={() => (destination = "tickets")}
-                      />
+                        onclick={() => (destination = "tickets")} />
                     </div>
                   {/if}
                 </div>
@@ -339,8 +323,7 @@
     </QDrawer>
   {/snippet}
   <!-- Page content -->
-</QLayout>`}
-      />
+</QLayout>`} />
     </QDocsSection>
 
     <QDocsSection title="Mixed-direction text" noCode>
@@ -353,8 +336,7 @@
         id="rtl-local-demo"
         class="traveler-card surface-container-low"
         dir={direction}
-        lang={language}
-      >
+        lang={language}>
         <div class="section-heading">
           <div>
             <h6 class="title-large q-ma-none">{copy.profile}</h6>
@@ -376,25 +358,22 @@
   <QInput label="الاسم الكامل" dir="auto" bind:value={name} />
   <QInput label="البريد الإلكتروني" dir="ltr" type="email" bind:value={email} />
   <span>رقم الحجز: <bdi dir="ltr">RH7K2Q</bdi></span>
-</div>`}
-      />
+</div>`} />
     </QDocsSection>
 
     <QDocsSection title="Popup direction" noCode>
       {#snippet sectionDescription()}
         Open the trip options and change language inside the menu. Reactive <code>dir</code>/<code
-          >lang</code
-        >
+          >lang</code>
         props keep an open popup in sync with local changes.
       {/snippet}
       <div class="booking-summary surface-container-low" dir={direction} lang={language}>
-        <span class="brand-mark tertiary-container"><QIcon name="flight" aria-hidden="true" /></span
-        >
+        <span class="brand-mark tertiary-container"
+          ><QIcon name="flight" aria-hidden="true" /></span>
         <div class="booking-title">
           <h6 class="title-medium q-ma-none">{copy.riyadh} – {copy.dubai}</h6>
           <span class="body-medium text-on-surface-variant"
-            >{copy.reference}: <bdi dir="ltr">RH7K2Q</bdi></span
-          >
+            >{copy.reference}: <bdi dir="ltr">RH7K2Q</bdi></span>
         </div>
         <QBtn
           id="rtl-menu-trigger"
@@ -403,8 +382,7 @@
           variant="flat"
           aria-label={copy.actions}
           aria-expanded={menuOpen}
-          onclick={() => (menuOpen = !menuOpen)}
-        >
+          onclick={() => (menuOpen = !menuOpen)}>
           <QMenu
             id="rtl-menu-demo"
             bind:value={menuOpen}
@@ -412,8 +390,7 @@
             lang={language}
             autoClose={false}
             anchor="bottom end"
-            self="top end"
-          >
+            self="top end">
             <div class="menu-language">
               <span class="label-medium">{copy.language}</span>{@render languagePicker(
                 copy.language
@@ -422,8 +399,7 @@
             <QList>
               <QItem clickable onclick={() => (saved = !saved)}>
                 <QItemSection type="icon"
-                  ><QIcon name={saved ? "bookmark_remove" : "bookmark_add"} /></QItemSection
-                >
+                  ><QIcon name={saved ? "bookmark_remove" : "bookmark_add"} /></QItemSection>
                 <QItemSection>{saved ? copy.unsave : copy.save}</QItemSection>
               </QItem>
               <QItem
@@ -431,8 +407,7 @@
                 onclick={() => {
                   showDetails = !showDetails;
                   menuOpen = false;
-                }}
-              >
+                }}>
                 <QItemSection type="icon"><QIcon name="confirmation_number" /></QItemSection>
                 <QItemSection>{showDetails ? copy.hideDetails : copy.details}</QItemSection>
               </QItem>
@@ -450,8 +425,7 @@
         code={`<QMenu dir={rtl ? "rtl" : "ltr"} lang={language}
   anchor="bottom end" self="top end" bind:value={open}>
   <!-- Trip options -->
-</QMenu>`}
-      />
+</QMenu>`} />
       <p class="body-medium">
         Popups inherit their trigger's direction when opening. Global <code>config.rtl</code> changes
         also update open popups.
@@ -468,8 +442,7 @@
         copiable
         code={`import { Quaff } from "@quaffui/quaff";
 
-Quaff.init({ rtl: true });`}
-      />
+Quaff.init({ rtl: true });`} />
       <p class="body-medium">For runtime changes, use this setup instead:</p>
       <QCodeBlock
         language="ts"
@@ -478,8 +451,7 @@ Quaff.init({ rtl: true });`}
 Quaff.init(config);
 
 // When the language changes:
-config.rtl = false;`}
-      />
+config.rtl = false;`} />
       <p class="body-medium">
         For SSR, set the matching initial <code>dir</code> and <code>lang</code> on
         <code>html</code>. Language packs do not set these attributes. The same reactive pattern

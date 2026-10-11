@@ -41,8 +41,7 @@ Open a menu of related actions from a floating action button.
     onkeydown?.(event);
     menu.handleTriggerKeydown(event);
   }}
-  {@attach menu.captureTrigger}
-/>
+  {@attach menu.captureTrigger} />
 <QMenu
   id={menu.id}
   bind:value={() => menu.isExpanded, menu.setExpanded}
@@ -55,7 +54,6 @@ Open a menu of related actions from a floating action button.
   expressive={false}
   aria-labelledby={triggerId}
   onkeydown={menu.handleMenuKeydown}
-  {@attach menu.focusMenu}
->
+  {@attach menu.focusMenu}>
   {@render children()}
 </QMenu>

@@ -32,16 +32,14 @@ Checkboxes select independent options or mark items as complete. An indeterminat
   {...props}
   class="q-checkbox"
   aria-disabled={disabled || undefined}
-  data-quaff
->
+  data-quaff>
   <input
     type="checkbox"
     bind:checked={value}
     bind:indeterminate
     {disabled}
     aria-checked={indeterminate ? "mixed" : undefined}
-    aria-invalid={error || undefined}
-  />
+    aria-invalid={error || undefined} />
   <span class="q-checkbox__control" aria-hidden="true"></span>
   {#if label}<span class="q-checkbox__label">{label}</span>{/if}
 </label>

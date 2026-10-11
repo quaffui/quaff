@@ -125,8 +125,7 @@
     role="listbox"
     aria-label={kind === "month"
       ? state.resolvedLabels.monthSelection
-      : state.resolvedLabels.yearSelection}
-  >
+      : state.resolvedLabels.yearSelection}>
     {#each options as option (option.value)}
       <button
         class="q-date__selection-option"
@@ -140,8 +139,7 @@
         data-month={kind === "month" ? option.value : undefined}
         data-year={kind === "year" ? option.value : undefined}
         onclick={() => (kind === "month" ? chooseMonth(option.value) : chooseYear(option.value))}
-        onkeydown={(event) => handleListKeydown(event, values, option.value, kind)}
-      >
+        onkeydown={(event) => handleListKeydown(event, values, option.value, kind)}>
         <span class="q-date__selection-check">
           {#if option.selected}
             <QIcon name="check" aria-hidden="true" />
@@ -168,8 +166,7 @@
     type="button"
     aria-label={label}
     {disabled}
-    onclick={action}
-  />
+    onclick={action} />
 {/snippet}
 
 {#snippet selector(kind: SelectionKind)}
@@ -188,8 +185,7 @@
     }`}
     title={months ? state.resolvedLabels.selectMonth : state.resolvedLabels.selectYear}
     disabled={state.calendarView === (months ? "years" : "months")}
-    onclick={() => toggleCalendarView(months ? "months" : "years")}
-  >
+    onclick={() => toggleCalendarView(months ? "months" : "years")}>
     <span>{months ? state.monthLabel : state.formatters.year(state.displayedMonth.year)}</span>
     {#if state.calendarView !== (months ? "years" : "months")}
       <QIcon class="q-date__dropdown-icon" name="arrow_drop_down" size={18} />
@@ -248,8 +244,7 @@
         type="button"
         label={confirmLabel}
         disabled={!state.canConfirm}
-        onclick={() => state.commitSelection()}
-      />
+        onclick={() => state.commitSelection()} />
     </footer>
   {/if}
 </div>

@@ -16,8 +16,7 @@
 <div>
   <QDocs
     docName="The Quaff class"
-    docDescription="The Quaff class is the main class of the Quaff framework. It provides methods and properties to manage the framework's state and behavior."
-  >
+    docDescription="The Quaff class is the main class of the Quaff framework. It provides methods and properties to manage the framework's state and behavior.">
     {#snippet display()}
       <QBtn label="Toggle dark mode" onclick={Quaff.darkMode.toggle} />
     {/snippet}
@@ -52,8 +51,7 @@
           code={`import { Quaff } from "@quaffui/quaff";
 import frFR from "@quaffui/quaff/locales/fr-FR";
 
-Quaff.init({ language: frFR });`}
-        />
+Quaff.init({ language: frFR });`} />
 
         <p>
           Each pack is a separate import, so unused languages stay out of your bundle. Available BCP
@@ -134,8 +132,7 @@ Quaff.init({ language: frFR });`}
           <QChip
             kind="assist"
             icon={Quaff.darkMode.isActive ? "dark_mode" : "light_mode"}
-            label="Dark mode is {Quaff.darkMode.isActive ? 'enabled' : 'disabled'}"
-          />
+            label="Dark mode is {Quaff.darkMode.isActive ? 'enabled' : 'disabled'}" />
 
           <QBtn label="Toggle dark mode" onclick={Quaff.darkMode.toggle} />
         </div>
@@ -164,8 +161,7 @@ Quaff.screen.ready;      // Whether viewport measurements are available
 Quaff.screen.navigation; // "navbar" below 600px, otherwise "railbar"
 Quaff.screen.twoPane;    // true from 840px
 
-const expanded = $derived(!Quaff.screen.lt.md); // md or wider: at least 840px`}
-        />
+const expanded = $derived(!Quaff.screen.lt.md); // md or wider: at least 840px`} />
         <p>
           The <code>xs</code>, <code>sm</code>, <code>md</code>, <code>lg</code>, and
           <code>xl</code> flags each match exactly one size class. <code>lt</code> supports
@@ -209,8 +205,7 @@ screen.sizes.md;                      // Was breakpoints.md (now 840px)
 !screen.lt.md;                         // Was isMoreThan("md", true)
 screen.width > screen.sizes.md;        // Was isMoreThan("md")
 screen.lt.sm;                         // Was isLessThan("sm")
-screen.width <= screen.sizes.sm;       // Was isLessThan("sm", true)`}
-        />
+screen.width <= screen.sizes.sm;       // Was isLessThan("sm", true)`} />
         <p>
           The old methods compared against a class's starting width. <code>screen.gt.md</code>
           instead means above the whole md class, starting at 1200px. To keep comparisons false before

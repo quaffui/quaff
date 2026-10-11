@@ -151,8 +151,7 @@ Navigation items link to destinations in drawers, bars, and rails. Use labels, i
     color: rippleColor,
     effectTarget: ".q-nav-item__target",
   })}
-  data-quaff
->
+  data-quaff>
   <span class="q-nav-item__target">
     <span class="q-nav-item__indicator" aria-hidden="true"></span>
 

@@ -126,8 +126,7 @@
     labelValue={`${Math.round(color.hue)}°`}
     {disabled}
     {readonly}
-    oninput={(event) => updateColor({ ...color, hue: event.currentTarget.valueAsNumber })}
-  />
+    oninput={(event) => updateColor({ ...color, hue: event.currentTarget.valueAsNumber })} />
 </div>
 
 {#if alpha}
@@ -142,8 +141,8 @@
       dir="ltr"
       {disabled}
       {readonly}
-      oninput={(event) => updateColor({ ...color, alpha: event.currentTarget.valueAsNumber / 100 })}
-    />
+      oninput={(event) =>
+        updateColor({ ...color, alpha: event.currentTarget.valueAsNumber / 100 })} />
   </div>
 {/if}
 
@@ -154,8 +153,7 @@
     bind:value={() => entryFormat, setEntryFormat}
     expressive={false}
     {disabled}
-    aria-label={labels.format}
-  />
+    aria-label={labels.format} />
 </div>
 
 {#if entryFormat === "hex"}
@@ -172,8 +170,7 @@
     aria-describedby={hasInputError ? errorId : undefined}
     error={hasInputError}
     onchange={commitText}
-    onkeydown={handleTextKeydown}
-  />
+    onkeydown={handleTextKeydown} />
 {:else}
   <div class="q-color-picker__channels">
     {#each channelLabels as label, index (label)}
@@ -192,8 +189,7 @@
         aria-describedby={hasInputError ? errorId : undefined}
         error={hasInputError}
         onchange={commitText}
-        onkeydown={handleTextKeydown}
-      />
+        onkeydown={handleTextKeydown} />
     {/each}
   </div>
 {/if}
@@ -210,8 +206,7 @@
       flat
       label={labels.cancel}
       onpointerdown={(event) => event.preventDefault()}
-      onclick={oncancel}
-    />
+      onclick={oncancel} />
     <QBtn
       type="button"
       flat
@@ -224,7 +219,6 @@
         if (!hasInputError) {
           onapply?.();
         }
-      }}
-    />
+      }} />
   </div>
 {/if}

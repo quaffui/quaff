@@ -86,8 +86,7 @@
       class="expansion-preview min-width-0 overflow-auto surface-container-low"
       role="region"
       aria-label="Repair notes preview"
-      tabindex="0"
-    >
+      tabindex="0">
       <h2 class="title-large q-mt-none q-mb-md">Repair notes</h2>
       <QList role="group" expressive segmented aria-label="Repair notes">
         <QExpansionItem label="Jacket pocket" caption="Loose seam" icon="apparel" defaultOpened>
@@ -123,8 +122,7 @@
               caption="Loose seam"
               icon="apparel"
               defaultOpened
-              {noRipple}
-            >
+              {noRipple}>
               <div class="panel-copy q-px-md q-pt-sm q-pb-md">
                 <p class="q-ma-none">Match the thread and reinforce the loose corner.</p>
               </div>
@@ -133,8 +131,7 @@
               label="Bicycle bell"
               caption="Sticking lever"
               icon="pedal_bike"
-              {noRipple}
-            >
+              {noRipple}>
               <div class="panel-copy q-px-md q-pt-sm q-pb-md">
                 <p class="q-ma-none">Clean the lever before checking its spring.</p>
               </div>
@@ -167,8 +164,7 @@
                   label={repair.label}
                   icon={repair.icon}
                   name={isExclusive ? "repairs" : undefined}
-                  defaultOpened={index === 0}
-                >
+                  defaultOpened={index === 0}>
                   <div class="panel-copy q-px-md q-pt-sm q-pb-md">
                     <p class="q-ma-none">{repair.detail}</p>
                   </div>
@@ -183,8 +179,7 @@
                 label="Thread"
                 icon="palette"
                 name={isExclusive ? "repairs" : undefined}
-                defaultOpened
-              >
+                defaultOpened>
                 <div class="panel-copy q-px-md q-pt-sm q-pb-md">
                   <p class="q-ma-none">Choose a matching colour and medium-weight thread.</p>
                 </div>
@@ -192,8 +187,7 @@
               <QExpansionItem
                 label="Backing board"
                 icon="crop_square"
-                name={isExclusive ? "repairs" : undefined}
-              >
+                name={isExclusive ? "repairs" : undefined}>
                 <div class="panel-copy q-px-md q-pt-sm q-pb-md">
                   <p class="q-ma-none">Cut a backing board to the frame's inside dimensions.</p>
                 </div>
@@ -222,16 +216,14 @@
               outlined
               label="Disclosure icon"
               options={ICON_OPTIONS}
-              bind:value={iconStyle}
-            />
+              bind:value={iconStyle} />
             <QSelect
               class="min-width-0"
               outlined
               label="Animation duration"
               options={DURATIONS}
               bind:value={duration}
-              emitValue
-            />
+              emitValue />
           </div>
           <QList
             role="group"
@@ -240,8 +232,7 @@
             {dense}
             bordered={!expressive}
             separator={!expressive}
-            aria-label="Expansion appearance"
-          >
+            aria-label="Expansion appearance">
             <QExpansionItem
               label="Picture frame"
               caption="Loose corner"
@@ -250,8 +241,7 @@
               expandedIcon={iconPreset.expandedIcon}
               noRotateExpandIcon={iconPreset.noRotateExpandIcon}
               hideExpandIcon={iconPreset.hideExpandIcon}
-              duration={animationDuration}
-            >
+              duration={animationDuration}>
               <div class="panel-copy q-px-md q-pt-sm q-pb-md">
                 <p class="q-ma-none">Square the corners before fitting a new backing.</p>
               </div>
@@ -264,8 +254,7 @@
               expandedIcon={iconPreset.expandedIcon}
               noRotateExpandIcon={iconPreset.noRotateExpandIcon}
               hideExpandIcon={iconPreset.hideExpandIcon}
-              duration={animationDuration}
-            >
+              duration={animationDuration}>
               <div class="panel-copy q-px-md q-pt-sm q-pb-md">
                 <p class="q-ma-none">Check the lever and spring after cleaning.</p>
               </div>
@@ -300,8 +289,7 @@
               bind:value={isPanelOpen}
               label="Repair checklist"
               icon="checklist"
-              ontoggle={(event) => (lastChange = `Panel ${event.newState}.`)}
-            >
+              ontoggle={(event) => (lastChange = `Panel ${event.newState}.`)}>
               <div class="panel-copy q-px-md q-pt-sm q-pb-md">
                 <QCheckbox label="Tools packed" bind:value={isPrepared} />
               </div>
@@ -355,8 +343,7 @@
             expressive={false}
             bordered
             separator
-            aria-label="Linked repair notes"
-          >
+            aria-label="Linked repair notes">
             <QExpansionItem
               label="Repair materials"
               caption="to: jump to the materials note"
@@ -365,8 +352,7 @@
               toggleAriaLabel="Toggle repair materials details"
               expandIcon="add"
               expandedIcon="remove"
-              onExpandIconClick={() => (detailsClicks += 1)}
-            >
+              onExpandIconClick={() => (detailsClicks += 1)}>
               <div class="panel-copy q-px-md q-pt-sm q-pb-md">
                 <p class="q-ma-none">Read the note below for the material list.</p>
               </div>
@@ -377,8 +363,7 @@
               icon="handyman"
               href="#repair-tools"
               toggleAriaLabel="Toggle repair tools details"
-              onExpandIconClick={() => (detailsClicks += 1)}
-            >
+              onExpandIconClick={() => (detailsClicks += 1)}>
               <div class="panel-copy q-px-md q-pt-sm q-pb-md">
                 <p class="q-ma-none">Read the note below for the tool list.</p>
               </div>
@@ -389,8 +374,7 @@
               icon="shelves"
               expandIconToggle
               toggleAriaLabel="Toggle storage note"
-              onExpandIconClick={() => (detailsClicks += 1)}
-            >
+              onExpandIconClick={() => (detailsClicks += 1)}>
               <div class="panel-copy q-px-md q-pt-sm q-pb-md">
                 <p class="q-ma-none">Keep small parts together in a labelled container.</p>
               </div>
@@ -402,16 +386,14 @@
           <section
             class="link-target border q-mt-lg q-pa-md"
             id="repair-materials"
-            aria-label="Repair materials note"
-          >
+            aria-label="Repair materials note">
             <h3 class="title-medium q-mt-none q-mb-sm">Materials</h3>
             <p class="q-ma-none">Matching thread and a backing board.</p>
           </section>
           <section
             class="link-target border q-mt-lg q-pa-md"
             id="repair-tools"
-            aria-label="Repair tools note"
-          >
+            aria-label="Repair tools note">
             <h3 class="title-medium q-mt-none q-mb-sm">Tools</h3>
             <p class="q-ma-none">A needle, screwdriver and corner clamp.</p>
           </section>

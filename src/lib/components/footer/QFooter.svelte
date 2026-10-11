@@ -135,8 +135,7 @@ Footers place navigation and actions at the bottom of a layout. Keep them visibl
       isCollapsed = false;
       props.onfocusin?.(event);
     }}
-    data-quaff
-  >
+    data-quaff>
     {@render children?.()}
   </footer>
 {/if}

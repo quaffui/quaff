@@ -70,8 +70,7 @@
         icon={item.icon}
         bind:value={
           () => expandedGroups[item.name] ?? false, (value) => (expandedGroups[item.name] = value)
-        }
-      >
+        }>
         {@render navigationItems(item.children)}
       </QNavGroup>
     {:else}

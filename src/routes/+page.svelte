@@ -29,8 +29,7 @@
       alt="Quaff logo, a cocktail with a slice of orange"
       width="252"
       height="252"
-      fetchpriority="high"
-    />
+      fetchpriority="high" />
   </div>
   <h1 class="page-home__teaser">Quaff is a UI Component Framework built on top of SvelteKit.</h1>
   <ul class="page-home__get-started-list">
@@ -40,8 +39,7 @@
         icon={copied ? "check" : "copy_all"}
         onclick={copyNpmCommandToClipboard}
         title="Copy to clipboard"
-        size="sm"
-      />
+        size="sm" />
     </li>
     <li>
       Check our <a class="q-docs-link" href="/components">components</a> and familiarize yourself

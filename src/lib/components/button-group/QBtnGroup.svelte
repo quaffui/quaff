@@ -63,7 +63,6 @@ Button groups arrange related actions with consistent sizing and spacing. Keep b
   class="q-btn-group"
   role={props.role ?? "group"}
   {@attach isExpressive && !isConnected ? buttonGroupPress : undefined}
-  data-quaff
->
+  data-quaff>
   {@render children?.()}
 </div>

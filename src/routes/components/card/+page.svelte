@@ -66,8 +66,7 @@
     <QCard class="workshop-card">
       <div
         class="print-art secondary-container flex flex-center overflow-hidden q-mb-md"
-        aria-hidden="true"
-      >
+        aria-hidden="true">
         <span class="print-sheet secondary"><QIcon name="filter_vintage" size="48px" /></span>
         <span class="print-sheet primary"><QIcon name="wb_sunny" size="48px" /></span>
         <span class="print-sheet tertiary"><QIcon name="waves" size="48px" /></span>
@@ -83,8 +82,7 @@
           variant="tonal"
           icon={isWorkshopSaved ? "bookmark_added" : "bookmark_add"}
           label="Save"
-          bind:selected={isWorkshopSaved}
-        />
+          bind:selected={isWorkshopSaved} />
       </QCardActions>
     </QCard>
   {/snippet}
@@ -125,11 +123,9 @@
             </QCardSection>
             <div class="packing-list flex body-medium">
               <span class="flex items-center q-gap-xs"
-                ><QIcon name="check" size="18px" aria-hidden="true" /> Water bottle</span
-              >
+                ><QIcon name="check" size="18px" aria-hidden="true" /> Water bottle</span>
               <span class="flex items-center q-gap-xs"
-                ><QIcon name="check" size="18px" aria-hidden="true" /> A good book</span
-              >
+                ><QIcon name="check" size="18px" aria-hidden="true" /> A good book</span>
             </div>
           </QCard>
 
@@ -165,8 +161,7 @@
                 alt="A green drink garnished with fresh mint and a slice of lime"
                 width="1229"
                 height="1536"
-                loading="lazy"
-              />
+                loading="lazy" />
             </div>
             <div class="col-12 col-sm-8">
               <div class="label-medium text-tertiary">SOMETHING REFRESHING</div>
@@ -176,26 +171,22 @@
               </p>
               <div class="flex items-center q-gap-lg q-my-lg body-medium">
                 <span class="flex items-center q-gap-xs"
-                  ><QIcon name="schedule" size="20px" aria-hidden="true" /> 5 minutes</span
-                >
+                  ><QIcon name="schedule" size="20px" aria-hidden="true" /> 5 minutes</span>
                 <span class="flex items-center q-gap-xs"
-                  ><QIcon name="local_bar" size="20px" aria-hidden="true" /> Serves one</span
-                >
+                  ><QIcon name="local_bar" size="20px" aria-hidden="true" /> Serves one</span>
               </div>
               <QBtn
                 variant="tonal"
                 label={isRecipeVisible ? "Hide recipe" : "Show recipe"}
                 aria-expanded={isRecipeVisible}
                 aria-controls="card-cooler-recipe"
-                onclick={() => (isRecipeVisible = !isRecipeVisible)}
-              />
+                onclick={() => (isRecipeVisible = !isRecipeVisible)} />
             </div>
           </QCardSection>
           <QCardSection
             id="card-cooler-recipe"
             hidden={!isRecipeVisible}
-            class="q-mt-lg body-medium"
-          >
+            class="q-mt-lg body-medium">
             <ol class="recipe-steps q-ma-none">
               <li>Gently muddle six mint leaves with the juice of half a lime.</li>
               <li class="q-mt-sm">Add ice and a teaspoon of sugar syrup.</li>
@@ -232,16 +223,14 @@
               variant="flat"
               color="inherit"
               label={isStoryLiked ? "Unlike" : "Like"}
-              onclick={() => (isStoryLiked = !isStoryLiked)}
-            >
+              onclick={() => (isStoryLiked = !isStoryLiked)}>
               {#snippet icon()}
                 <QIcon
                   name="favorite"
                   filled={isStoryLiked}
                   class="q-btn__icon"
                   size="20px"
-                  aria-hidden="true"
-                />
+                  aria-hidden="true" />
               {/snippet}
             </QBtn>
           </QCardActions>
@@ -283,8 +272,7 @@
               options={ALIGNMENTS}
               bind:value={actionAlignment}
               outlined
-              emitValue
-            />
+              emitValue />
             <QSwitch label="Vertical actions" bind:value={hasVerticalActions} />
             <QSwitch label="Rounded corners" bind:value={hasRoundedCorners} />
           </div>
@@ -307,19 +295,16 @@
             <QCardActions
               align={actionAlignment}
               vertical={hasVerticalActions}
-              aria-label="Shopping actions"
-            >
+              aria-label="Shopping actions">
               <QBtn
                 variant="flat"
                 label={isBagSaved ? "Unsave" : "Save for later"}
-                onclick={() => (isBagSaved = !isBagSaved)}
-              />
+                onclick={() => (isBagSaved = !isBagSaved)} />
               <QBtn
                 variant="tonal"
                 icon={isInBasket ? "remove_shopping_cart" : "add_shopping_cart"}
                 label={isInBasket ? "Remove from basket" : "Add to basket"}
-                onclick={() => (isInBasket = !isInBasket)}
-              />
+                onclick={() => (isInBasket = !isInBasket)} />
             </QCardActions>
           </QCard>
         </div>

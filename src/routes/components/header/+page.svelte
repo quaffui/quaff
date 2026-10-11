@@ -121,22 +121,18 @@
             icon="notifications"
             variant="flat"
             aria-label="Class reminders"
-            bind:selected={hasClassReminders}
-          />
+            bind:selected={hasClassReminders} />
         </QHeader>
       {/snippet}
       {#snippet content()}
         <div class="q-pa-md">
           <div class="workout-art flex items-end justify-center" aria-hidden="true">
             <span class="flex flex-center primary-container"
-              ><QIcon name="directions_run" size="40px" /></span
-            >
+              ><QIcon name="directions_run" size="40px" /></span>
             <span class="flex flex-center tertiary-container"
-              ><QIcon name="fitness_center" size="48px" /></span
-            >
+              ><QIcon name="fitness_center" size="48px" /></span>
             <span class="flex flex-center secondary-container"
-              ><QIcon name="sports_gymnastics" size="40px" /></span
-            >
+              ><QIcon name="sports_gymnastics" size="40px" /></span>
           </div>
           <div class="label-medium text-on-surface-variant q-mt-md">TONIGHT'S CLASS</div>
           <h2 class="headline-small q-my-sm">Strength circuit</h2>
@@ -168,16 +164,14 @@
               variant="flat"
               aria-label="Previous note"
               disabled={noteIndex === 0}
-              onclick={() => noteIndex--}
-            />
+              onclick={() => noteIndex--} />
             <QHeaderTitle>Reading room</QHeaderTitle>
             <QIconBtn
               icon="arrow_forward"
               variant="flat"
               aria-label="Next note"
               disabled={noteIndex === NOTES.length - 1}
-              onclick={() => noteIndex++}
-            />
+              onclick={() => noteIndex++} />
           </QHeader>
           <div class="flex items-center q-gap-lg q-pa-lg" aria-live="polite">
             <QAvatar size="64px" class={currentNote.color} aria-hidden="true">
@@ -212,30 +206,24 @@
             <QHeaderTitle
               align={hasCenteredAppBar ? "center" : "start"}
               subtitle={hasAppBarSubtitle ? "A weekend behind closed doors" : undefined}
-              >Open House</QHeaderTitle
-            >
+              >Open House</QHeaderTitle>
             <QIconBtn
               icon="bookmark"
               variant="flat"
               aria-label="Save Open House weekend"
-              bind:selected={hasSavedWeekend}
-            />
+              bind:selected={hasSavedWeekend} />
           </QHeader>
           <div class="q-pt-md q-px-lg q-pb-lg">
             <div
               class="city-art flex items-end justify-center q-px-md overflow-hidden"
-              aria-hidden="true"
-            >
+              aria-hidden="true">
               <span class="city-sun tertiary-container"></span>
               <span class="city-building flex flex-center secondary-container"
-                ><QIcon name="window" size="40px" /></span
-              >
+                ><QIcon name="window" size="40px" /></span>
               <span class="city-building flex flex-center primary-container"
-                ><QIcon name="door_front" size="48px" /></span
-              >
+                ><QIcon name="door_front" size="48px" /></span>
               <span class="city-building flex flex-center tertiary-container"
-                ><QIcon name="window" size="40px" /></span
-              >
+                ><QIcon name="window" size="40px" /></span>
             </div>
             <div class="flex items-end justify-between q-gap-md q-pt-lg">
               <div>
@@ -284,8 +272,7 @@
                     label={reservedSession === session ? "Cancel" : "Reserve"}
                     aria-label={`${reservedSession === session ? "Cancel" : "Reserve"} ${session} session`}
                     onclick={() =>
-                      (reservedSession = reservedSession === session ? undefined : session)}
-                  />
+                      (reservedSession = reservedSession === session ? undefined : session)} />
                 </div>
               {/each}
               <p class="body-medium text-on-surface-variant q-mb-none" aria-live="polite">
@@ -313,8 +300,7 @@
                 icon="bookmark"
                 variant="flat"
                 aria-label="Save harbor walk"
-                bind:selected={hasSavedWalk}
-              />
+                bind:selected={hasSavedWalk} />
             </QHeader>
           {/snippet}
           {#snippet content()}
@@ -327,8 +313,7 @@
                 <article class="harbor-stop q-gap-md">
                   <div class="stop-marker flex justify-center" aria-hidden="true">
                     <span class="flex flex-center {stop.color}"
-                      ><QIcon name={stop.icon} size="28px" /></span
-                    >
+                      ><QIcon name={stop.icon} size="28px" /></span>
                   </div>
                   <div>
                     <div class="label-medium text-on-surface-variant">
@@ -413,8 +398,7 @@
                 aria-label="Find a note"
                 dense
                 rounded
-                style="width: 100%"
-              >
+                style="width: 100%">
                 {#snippet prepend()}<QIcon name="search" aria-hidden="true" />{/snippet}
               </QInput>
             </QHeaderTitle>
@@ -423,8 +407,7 @@
               variant="flat"
               aria-label="Clear search"
               disabled={!searchQuery}
-              onclick={() => (searchQuery = "")}
-            />
+              onclick={() => (searchQuery = "")} />
           </QHeader>
           <div class="search-results" aria-live="polite">
             {#each matchingNotes as note (note.title)}

@@ -195,8 +195,7 @@ Color pickers support visual selection and precise HEX or RGB entry. Display the
       role="group"
       id={fieldProps.id}
       aria-label={fieldProps["aria-label"] ?? fieldProps.label ?? labels.chooseColor}
-      aria-describedby={fieldProps["aria-describedby"]}
-    >
+      aria-describedby={fieldProps["aria-describedby"]}>
       <QColorPanel bind:value {format} {alpha} {disabled} {readonly} {labels} />
     </div>
   {:else}
@@ -214,8 +213,7 @@ Color pickers support visual selection and precise HEX or RGB entry. Display the
       spellcheck={false}
       autocomplete="off"
       onchange={commitField}
-      onkeydown={handleFieldKeydown}
-    >
+      onkeydown={handleFieldKeydown}>
       {#snippet append()}
         <QIconBtn
           type="button"
@@ -230,14 +228,12 @@ Color pickers support visual selection and precise HEX or RGB entry. Display the
           onclick={(event) => {
             event.preventDefault();
             open ? hide() : show();
-          }}
-        >
+          }}>
           {#snippet icon()}
             <span
               class="q-color-picker__swatch"
               style:--q-color-preview={preview}
-              aria-hidden="true"
-            ></span>
+              aria-hidden="true"></span>
           {/snippet}
         </QIconBtn>
       {/snippet}
@@ -253,8 +249,7 @@ Color pickers support visual selection and precise HEX or RGB entry. Display the
       class="q-color-picker__popup"
       autoClose={false}
       flip
-      onfocusout={handlePopupFocusout}
-    >
+      onfocusout={handlePopupFocusout}>
       <div class="q-color-picker__panel">
         <h2 id={titleId} class="q-color-picker__title">{labels.chooseColor}</h2>
         <QColorPanel
@@ -265,8 +260,7 @@ Color pickers support visual selection and precise HEX or RGB entry. Display the
           {readonly}
           {labels}
           onapply={applyDraft}
-          oncancel={hide}
-        />
+          oncancel={hide} />
       </div>
     </QMenu>
   {/if}

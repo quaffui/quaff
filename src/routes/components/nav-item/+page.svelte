@@ -52,8 +52,7 @@
 
 <QDocs
   docName="Navigation Items"
-  docDescription="Navigation items link to destinations in drawers, bars, and rails. Add active indicators and badges, or organize drawer links under expandable headings."
->
+  docDescription="Navigation items link to destinations in drawers, bars, and rails. Add active indicators and badges, or organize drawer links under expandable headings.">
   {#snippet display()}
     <QLayout class="mail-preview border">
       {#snippet drawerLeft()}
@@ -71,25 +70,21 @@
               active={mailbox === "Inbox"}
               badge={hasUnreadMessages ? inboxBadge : undefined}
               badgeAriaLabel="3 unread messages"
-              onclick={() => selectMailbox("Inbox")}
-            />
+              onclick={() => selectMailbox("Inbox")} />
             <QNavItem
               icon="star"
               label="Starred"
               active={mailbox === "Starred"}
-              onclick={() => selectMailbox("Starred")}
-            />
+              onclick={() => selectMailbox("Starred")} />
             <QNavItem
               icon="draft"
               label="Drafts"
               active={mailbox === "Drafts"}
-              onclick={() => selectMailbox("Drafts")}
-            />
+              onclick={() => selectMailbox("Drafts")} />
           </QList>
           <p
             class="label-medium q-mx-md q-mt-md q-mb-none text-on-surface-variant"
-            aria-live="polite"
-          >
+            aria-live="polite">
             Viewing {mailbox.toLowerCase()}
           </p>
         </QDrawer>
@@ -116,8 +111,7 @@
               tag="nav"
               aria-label="Navigation documentation"
               expressive={false}
-              preserveTabOrder
-            >
+              preserveTabOrder>
               <QNavItem label="Navigation items" to="/components/nav-item" />
               <QNavItem label="Drawer" to="/components/drawer" />
               <QNavItem label="Navigation bar" to="/components/navbar" />
@@ -145,33 +139,28 @@
               width={320}
               behavior="desktop"
               persistent
-              style="max-width: 100%;"
-            >
+              style="max-width: 100%;">
               <h6 class="q-drawer__headline">Tempo studio</h6>
               <QList
                 tag="nav"
                 aria-label="Tempo studio"
                 dense={isDense}
                 expressive={false}
-                preserveTabOrder
-              >
+                preserveTabOrder>
                 <QNavItem
                   label="Overview"
                   icon="dashboard"
                   active={destination === "Overview"}
-                  onclick={() => (destination = "Overview")}
-                />
+                  onclick={() => (destination = "Overview")} />
                 <QNavGroup label="Schedule" icon="calendar_month" defaultOpened>
                   <QNavItem
                     label="Classes"
                     active={destination === "Classes"}
-                    onclick={() => (destination = "Classes")}
-                  />
+                    onclick={() => (destination = "Classes")} />
                   <QNavItem
                     label="Bookings"
                     active={destination === "Bookings"}
-                    onclick={() => (destination = "Bookings")}
-                  />
+                    onclick={() => (destination = "Bookings")} />
                 </QNavGroup>
                 <QNavItem label="Team" icon="group" disabled />
               </QList>
@@ -180,8 +169,7 @@
         </QLayout>
         <section
           class="studio-summary column no-wrap items-start justify-center q-gap-md q-pa-lg tertiary-container"
-          aria-live="polite"
-        >
+          aria-live="polite">
           <span class="label-large">TEMPO STUDIO</span>
           <QIcon name={selectedPage.icon} size="48px" aria-hidden="true" />
           <h5 class="q-ma-none">{destination}</h5>

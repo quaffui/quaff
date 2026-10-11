@@ -100,8 +100,7 @@
             name={category.name}
             icon={category.icon}
             id={`media-tab-${category.name}`}
-            aria-controls={`media-panel-${category.name}`}>{category.label}</QTab
-          >
+            aria-controls={`media-panel-${category.name}`}>{category.label}</QTab>
         {/each}
       </QTabs>
       {#each MEDIA as category (category.name)}
@@ -111,12 +110,10 @@
           aria-labelledby={`media-tab-${category.name}`}
           hidden={mediaTab !== category.name}
           tabindex="0"
-          class="q-pa-md"
-        >
+          class="q-pa-md">
           <div
             class="media-art flex flex-center overflow-hidden {category.color}"
-            aria-hidden="true"
-          >
+            aria-hidden="true">
             <QIcon name={category.icon} size="48px" />
           </div>
           <h3 class="title-large q-mt-md q-mb-xs">{category.title}</h3>
@@ -152,8 +149,7 @@
             bind:value={assetTab}
             inlineLabel={hasInlineLabels}
             noSeparator={!hasSeparator}
-            aria-label="Project assets"
-          >
+            aria-label="Project assets">
             {#each ASSET_GROUPS as group (group.name)}
               {#snippet label()}{group.label}{/snippet}
               <QTab
@@ -162,8 +158,7 @@
                 id={`asset-tab-${group.name}`}
                 aria-controls={`asset-panel-${group.name}`}
                 aria-label={group.label}
-                children={hasLabels ? label : undefined}
-              />
+                children={hasLabels ? label : undefined} />
             {/each}
           </QTabs>
           {#each ASSET_GROUPS as group (group.name)}
@@ -173,8 +168,7 @@
               aria-labelledby={`asset-tab-${group.name}`}
               hidden={assetTab !== group.name}
               tabindex="0"
-              class="q-pa-md"
-            >
+              class="q-pa-md">
               <ul class="asset-list q-gap-md q-pa-none q-ma-none">
                 {#each group.files as file (file.name)}
                   <li class="asset-row flex items-center q-gap-md">
@@ -214,14 +208,12 @@
               name="tracking"
               icon="route"
               id="order-tab-tracking"
-              aria-controls="order-panel-tracking">Tracking</QTab
-            >
+              aria-controls="order-panel-tracking">Tracking</QTab>
             <QTab
               name="items"
               icon="inventory_2"
               id="order-tab-items"
-              aria-controls="order-panel-items">Items</QTab
-            >
+              aria-controls="order-panel-items">Items</QTab>
           </QTabs>
           <div
             id="order-panel-tracking"
@@ -229,8 +221,7 @@
             aria-labelledby="order-tab-tracking"
             hidden={orderTab !== "tracking"}
             tabindex="0"
-            class="q-pa-md"
-          >
+            class="q-pa-md">
             <div class="delivery-banner flex items-center q-gap-md q-pa-md tertiary-container">
               <QIcon name="delivery_truck_speed" size="40px" aria-hidden="true" />
               <div>
@@ -246,8 +237,7 @@
             aria-labelledby="order-tab-items"
             hidden={orderTab !== "items"}
             tabindex="0"
-            class="q-pa-md"
-          >
+            class="q-pa-md">
             <dl class="order-details q-gap-md q-ma-none">
               <div class="flex justify-between">
                 <dt>Club racket</dt>
@@ -277,14 +267,11 @@
           <div class="settings-layout">
             <QTabs bind:value={settingsTab} variant="vertical" aria-label="Workspace settings">
               <QTab name="profile" id="settings-tab-profile" aria-controls="settings-panel-profile"
-                >Profile</QTab
-              >
+                >Profile</QTab>
               <QTab name="alerts" id="settings-tab-alerts" aria-controls="settings-panel-alerts"
-                >Alerts</QTab
-              >
+                >Alerts</QTab>
               <QTab name="privacy" id="settings-tab-privacy" aria-controls="settings-panel-privacy"
-                >Privacy</QTab
-              >
+                >Privacy</QTab>
             </QTabs>
             <div class="settings-panels">
               <div
@@ -293,8 +280,7 @@
                 aria-labelledby="settings-tab-profile"
                 hidden={settingsTab !== "profile"}
                 tabindex="0"
-                class="q-pa-md"
-              >
+                class="q-pa-md">
                 <div class="profile-preview flex items-center q-gap-md q-mb-md">
                   <QAvatar class="tertiary-container" aria-hidden="true">
                     {displayName.trim().charAt(0).toUpperCase() || "?"}
@@ -309,8 +295,7 @@
                 aria-labelledby="settings-tab-alerts"
                 hidden={settingsTab !== "alerts"}
                 tabindex="0"
-                class="q-pa-md"
-              >
+                class="q-pa-md">
                 <div class="settings-options q-gap-md">
                   <QSwitch label="Email alerts" bind:value={hasEmailAlerts} />
                   <QSwitch label="Weekly summary" bind:value={hasWeeklySummary} />
@@ -322,8 +307,7 @@
                 aria-labelledby="settings-tab-privacy"
                 hidden={settingsTab !== "privacy"}
                 tabindex="0"
-                class="q-pa-md"
-              >
+                class="q-pa-md">
                 <QSwitch label="Online status" bind:value={isOnlineVisible} />
                 <p class="body-medium text-on-surface-variant q-mb-none" aria-live="polite">
                   {isOnlineVisible

@@ -44,8 +44,7 @@ Icons represent actions, content, or status with a compact symbol. Use Material 
   class="q-icon"
   style:--size={qSize.style}
   style:color={parsedColor}
-  data-quaff
->
+  data-quaff>
   {#if name !== undefined}
     {name}
   {:else if img !== undefined}

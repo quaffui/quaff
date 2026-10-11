@@ -47,8 +47,7 @@ Breadcrumbs show the current location within a hierarchy and link to earlier lev
   aria-label={props["aria-label"] ?? "Breadcrumbs"}
   data-quaff
   style:--q-separator-color={useColor(separatorColor)}
-  style:--q-active-color={useColor(activeColor)}
->
+  style:--q-active-color={useColor(activeColor)}>
   <ol class="q-breadcrumbs__list">
     {@render children?.()}
   </ol>

@@ -113,8 +113,7 @@
             <QItem
               clickable
               onclick={() => (isPreviewOpen = true)}
-              aria-label="Open launch checklist"
-            >
+              aria-label="Open launch checklist">
               <QItemSection>
                 {#snippet headline()}
                   <QIcon name="rocket_launch" class="q-mb-md" aria-hidden="true" />
@@ -149,8 +148,7 @@
             filled
             size="sm"
             expressive={false}
-            onclick={() => (isPreviewOpen = false)}
-          />
+            onclick={() => (isPreviewOpen = false)} />
         {/snippet}
       </QSideSheet>
     </div>
@@ -185,8 +183,7 @@
                   onclick={() => {
                     selectedFileIndex = index;
                     isFileSheetOpen = true;
-                  }}
-                >
+                  }}>
                   <QItemSection type="avatar">
                     <QAvatar size="md" class={file.color}>
                       <QIcon name={file.icon} aria-hidden="true" />
@@ -231,8 +228,7 @@
                 filled
                 size="sm"
                 expressive={false}
-                onclick={() => (isFileSheetOpen = false)}
-              />
+                onclick={() => (isFileSheetOpen = false)} />
             {/snippet}
           </QSideSheet>
         </div>
@@ -302,8 +298,7 @@
                 search = draftSearch;
                 isOnlineOnly = isDraftOnlineOnly;
                 isFilterSheetOpen = false;
-              }}
-            />
+              }} />
             <QBtn
               label="Clear"
               flat
@@ -312,8 +307,7 @@
               onclick={() => {
                 draftSearch = "";
                 isDraftOnlineOnly = false;
-              }}
-            />
+              }} />
           {/snippet}
         </QSideSheet>
       </QDocsSection>
@@ -329,8 +323,7 @@
         <div
           class="placement-demo flex overflow-hidden border"
           class:sheet-open={isPreferencesSheetOpen}
-          dir={isRightToLeft ? "rtl" : "ltr"}
-        >
+          dir={isRightToLeft ? "rtl" : "ltr"}>
           <div class="placement-main column items-start justify-center">
             <QIcon name="auto_stories" size="32px" class="text-primary" aria-hidden="true" />
             <h2 class="title-large q-ma-none">Your reading space</h2>
@@ -338,15 +331,13 @@
             <QBtn
               label="Reading preferences"
               outlined
-              onclick={() => (isPreferencesSheetOpen = true)}
-            />
+              onclick={() => (isPreferencesSheetOpen = true)} />
           </div>
           <QSideSheet
             bind:value={isPreferencesSheetOpen}
             headline="Preferences"
             side="start"
-            detached
-          >
+            detached>
             <div class="sheet-content flex column">
               <QSwitch bind:value={hasReadingHints} label="Reading hints" />
               <p class="body-small text-on-surface-variant">Show helpful notes while you read.</p>

@@ -41,8 +41,7 @@
       <QDialog
         bind:value={isCodeOpen}
         modal
-        class="q-docs-section__code-dialog column overflow-hidden"
-      >
+        class="q-docs-section__code-dialog column overflow-hidden">
         {#if isCodeOpen}
           <QCodeBlock {code} language="svelte" {title} copiable />
         {/if}

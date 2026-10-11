@@ -31,8 +31,7 @@ Radio buttons select one option from a visible set of alternatives. Related butt
   {...props}
   class="q-radio"
   aria-disabled={disabled || undefined}
-  data-quaff
->
+  data-quaff>
   <input type="radio" bind:group={selected} {value} {name} {disabled} />
   <span class="q-radio__control" aria-hidden="true">
     <span class="q-radio__icon"></span>

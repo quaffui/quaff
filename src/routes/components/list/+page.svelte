@@ -143,8 +143,7 @@
       class="list-preview surface-container-low overflow-auto q-pa-md"
       role="region"
       aria-label="Bar seating preview"
-      tabindex="0"
-    >
+      tabindex="0">
       <h2 class="title-medium">At the bar</h2>
       <QList expressive segmented role="list" aria-label="Seating areas">
         {#each BAR_AREAS as area (area.id)}
@@ -219,8 +218,7 @@
             separator={!expressive && separator}
             separatorOptions={{ inset }}
             role="list"
-            aria-label="List appearance preview"
-          >
+            aria-label="List appearance preview">
             <QItem role="listitem">
               <QItemSection type="icon">
                 <QIcon name="door_open" aria-hidden="true" />
@@ -295,8 +293,7 @@
                       bind:selected={
                         () => savedAreaIds.includes(area.id),
                         (isSelected) => setSavedArea(area.id, isSelected)
-                      }
-                    />
+                      } />
                   </QItemSection>
                 {/if}
               </QItem>
@@ -330,13 +327,11 @@
               () => !shouldUseControls || shouldToggleWholeRow,
               (isEnabled) => (shouldToggleWholeRow = isEnabled)
             }
-            disabled={!shouldUseControls}
-          />
+            disabled={!shouldUseControls} />
           <QSwitch
             label="Disable item ripples"
             bind:value={noRipple}
-            disabled={shouldUseControls}
-          />
+            disabled={shouldUseControls} />
         </div>
         <div id="booking-selection" class="selection-grid q-gap-lg">
           <div class="min-width-0">
@@ -347,14 +342,12 @@
               role={shouldUseControls ? "radiogroup" : undefined}
               aria-label="Booking time"
               expressive
-              segmented
-            >
+              segmented>
               {#each BOOKING_TIMES as time (time)}
                 {#if shouldUseControls}
                   <QItem
                     class={shouldToggleWholeRow && time !== "20:00" ? "cursor-pointer" : undefined}
-                    onclick={shouldToggleWholeRow ? activateRowControl : undefined}
-                  >
+                    onclick={shouldToggleWholeRow ? activateRowControl : undefined}>
                     <QItemSection>
                       <QRadio
                         class="full-width"
@@ -362,8 +355,7 @@
                         value={time}
                         bind:selected={bookingTime}
                         label={time === "20:00" ? "20:00 · Already booked" : time}
-                        disabled={time === "20:00"}
-                      />
+                        disabled={time === "20:00"} />
                     </QItemSection>
                   </QItem>
                 {:else}
@@ -372,15 +364,13 @@
                     active={bookingTime === time}
                     disabled={time === "20:00"}
                     {noRipple}
-                    onclick={() => (bookingTime = time)}
-                  >
+                    onclick={() => (bookingTime = time)}>
                     <QItemSection type="icon">
                       <QIcon
                         name={bookingTime === time
                           ? "radio_button_checked"
                           : "radio_button_unchecked"}
-                        aria-hidden="true"
-                      />
+                        aria-hidden="true" />
                     </QItemSection>
                     <QItemSection>
                       {time}
@@ -401,14 +391,12 @@
               role={shouldUseControls ? "group" : undefined}
               aria-label="Table requests"
               expressive
-              segmented
-            >
+              segmented>
               {#each TABLE_REQUESTS as request (request)}
                 {#if shouldUseControls}
                   <QItem
                     class={shouldToggleWholeRow ? "cursor-pointer" : undefined}
-                    onclick={shouldToggleWholeRow ? activateRowControl : undefined}
-                  >
+                    onclick={shouldToggleWholeRow ? activateRowControl : undefined}>
                     <QItemSection>
                       <QCheckbox
                         class="full-width"
@@ -416,8 +404,7 @@
                         bind:value={
                           () => tableRequests.includes(request),
                           (isSelected) => setTableRequest(request, isSelected)
-                        }
-                      />
+                        } />
                     </QItemSection>
                   </QItem>
                 {:else}
@@ -425,15 +412,13 @@
                     clickable
                     active={tableRequests.includes(request)}
                     {noRipple}
-                    onclick={() => setTableRequest(request, !tableRequests.includes(request))}
-                  >
+                    onclick={() => setTableRequest(request, !tableRequests.includes(request))}>
                     <QItemSection type="icon">
                       <QIcon
                         name={tableRequests.includes(request)
                           ? "check_box"
                           : "check_box_outline_blank"}
-                        aria-hidden="true"
-                      />
+                        aria-hidden="true" />
                     </QItemSection>
                     <QItemSection>{request}</QItemSection>
                   </QItem>
@@ -482,8 +467,7 @@
                   label="Booking name"
                   outlined
                   dense
-                  maxlength={40}
-                />
+                  maxlength={40} />
               </QItemSection>
             </QItem>
           </QList>
@@ -505,8 +489,7 @@
             expressive
             segmented
             class="task-list q-ma-none q-pa-none"
-            aria-label="Task order"
-          >
+            aria-label="Task order">
             {#each tasks as task, index (task)}
               <QItem
                 tag="li"
@@ -521,8 +504,7 @@
                     event.preventDefault();
                   }
                 }}
-                ondrop={(event) => dropTask(event, task)}
-              >
+                ondrop={(event) => dropTask(event, task)}>
                 <QItemSection type="icon" dragHandle>
                   <QIcon name="drag_indicator" aria-hidden="true" />
                 </QItemSection>
@@ -534,8 +516,7 @@
                   <QIconBtn
                     icon="vertical_align_top"
                     aria-label={"Move " + task + " to first"}
-                    onclick={(event) => prioritizeTask(task, event.currentTarget)}
-                  />
+                    onclick={(event) => prioritizeTask(task, event.currentTarget)} />
                 </QItemSection>
               </QItem>
             {/each}
@@ -566,8 +547,7 @@
                   alt=""
                   width="56"
                   height="56"
-                  loading="lazy"
-                />
+                  loading="lazy" />
               </QItemSection>
               <QItemSection>
                 {#snippet headline()}Getting the ice right{/snippet}
@@ -583,8 +563,7 @@
                   alt=""
                   width="56"
                   height="56"
-                  loading="lazy"
-                />
+                  loading="lazy" />
               </QItemSection>
               <QItemSection>
                 {#snippet headline()}Citrus finishing touches{/snippet}

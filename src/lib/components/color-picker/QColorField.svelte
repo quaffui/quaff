@@ -115,8 +115,7 @@
   onpointercancel={finishPointer}
   onlostpointercapture={() => {
     pointerId = undefined;
-  }}
->
+  }}>
   {#each axes as axis, index (axis.key)}
     <input
       {@attach (element) => {
@@ -143,8 +142,7 @@
         }
 
         oncolor({ ...color, [axis.key]: event.currentTarget.valueAsNumber });
-      }}
-    />
+      }} />
   {/each}
   <span class="q-color-picker__thumb" aria-hidden="true"></span>
 </div>

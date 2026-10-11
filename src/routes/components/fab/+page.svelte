@@ -101,8 +101,7 @@
 
 <QDocs
   docName="Floating action buttons"
-  docDescription="Floating action buttons highlight a screen's primary action. Use an icon, a visible label, or a menu for related actions."
->
+  docDescription="Floating action buttons highlight a screen's primary action. Use an icon, a visible label, or a menu for related actions.">
   {#snippet display()}
     <div class="fab-placement fab-notebook border text-on-surface">
       <div class="fab-demo-heading flex items-center q-gap-sm">
@@ -121,8 +120,7 @@
         color="tertiary"
         aria-label="Write a note"
         class="fab-placement-action"
-        onclick={composeNote}
-      />
+        onclick={composeNote} />
     </div>
   {/snippet}
 
@@ -151,8 +149,7 @@
                 {size}
                 icon="edit"
                 aria-label="Compose"
-                onclick={() => (fabStatus = `Draft created with ${size} FAB`)}
-              />
+                onclick={() => (fabStatus = `Draft created with ${size} FAB`)} />
               <span>{size} · {(expressive ? EXPRESSIVE_HEIGHTS : BASELINE_HEIGHTS)[size]}px</span>
             </div>
           {/each}
@@ -176,8 +173,7 @@
               {color}
               icon="add"
               aria-label="Create"
-              onclick={() => (colorStatus = `Created with ${color} FAB`)}
-            />
+              onclick={() => (colorStatus = `Created with ${color} FAB`)} />
             <code>{color}</code>
           </div>
         {/each}
@@ -210,8 +206,7 @@
               icon="edit"
               label="Compose"
               collapsed={isCollapsed}
-              onclick={() => (extendedStatus = `Draft created with ${size} extended FAB`)}
-            />
+              onclick={() => (extendedStatus = `Draft created with ${size} extended FAB`)} />
             <span>{size} · {EXPRESSIVE_HEIGHTS[size]}px</span>
           </div>
         {/each}
@@ -223,14 +218,12 @@
           icon="edit"
           label="Compose"
           collapsed={isCollapsed}
-          onclick={() => (extendedStatus = "New draft created")}
-        />
+          onclick={() => (extendedStatus = "New draft created")} />
         <QExtendedFab
           expressive={false}
           label="Create account"
           collapsed={isCollapsed}
-          onclick={() => (extendedStatus = "Account created")}
-        />
+          onclick={() => (extendedStatus = "Account created")} />
       </div>
       <p class="q-mt-xl" aria-live="polite">{extendedStatus}</p>
     </QDocsSection>
@@ -258,23 +251,20 @@
         <div class="fab-file-grid q-gap-md">
           <div class="fab-file flex column items-start q-pa-md">
             <span class="fab-file-icon flex-center primary-container"
-              ><QIcon name="description" aria-hidden="true" /></span
-            >
+              ><QIcon name="description" aria-hidden="true" /></span>
             <strong>A little escape</strong>
             <span class="text-on-surface-variant">Trip notes · Today</span>
           </div>
           <div class="fab-file flex column items-start q-pa-md">
             <span class="fab-file-icon flex-center tertiary-container"
-              ><QIcon name="draw" aria-hidden="true" /></span
-            >
+              ><QIcon name="draw" aria-hidden="true" /></span>
             <strong>By the water</strong>
             <span class="text-on-surface-variant">Sketch · Yesterday</span>
           </div>
           {#if createdItem}
             <div class="fab-file flex column items-start q-pa-md">
               <span class="fab-file-icon flex-center primary-container"
-                ><QIcon name={createdItem.icon} aria-hidden="true" /></span
-              >
+                ><QIcon name={createdItem.icon} aria-hidden="true" /></span>
               <strong>Untitled {createdItem.label.toLowerCase()}</strong>
               <span class="text-on-surface-variant">Just created</span>
             </div>
@@ -285,8 +275,7 @@
             {#each menuActions as action (action.label)}
               <QItem clickable role="menuitem" onclick={() => (createdItem = action)}>
                 <QItemSection type="icon"
-                  ><QIcon name={action.icon} aria-hidden="true" /></QItemSection
-                >
+                  ><QIcon name={action.icon} aria-hidden="true" /></QItemSection>
                 <QItemSection>{action.label}</QItemSection>
               </QItem>
             {/each}
@@ -316,8 +305,7 @@
             {#if savedNote}
               <li class="flex items-center q-gap-md q-py-md border-bottom border-outline-variant">
                 <span class="fab-file-icon flex-center primary-container"
-                  ><QIcon name="edit_note" aria-hidden="true" /></span
-                >
+                  ><QIcon name="edit_note" aria-hidden="true" /></span>
                 <div>
                   <strong>{savedNote}</strong>
                   <p class="q-ma-none text-on-surface-variant">Saved just now</p>
@@ -327,8 +315,7 @@
             {#each notes as note (note.title)}
               <li class="flex items-center q-gap-md q-py-md border-bottom border-outline-variant">
                 <span class="fab-file-icon flex-center {note.color}-container"
-                  ><QIcon name={note.icon} aria-hidden="true" /></span
-                >
+                  ><QIcon name={note.icon} aria-hidden="true" /></span>
                 <div>
                   <strong>{note.title}</strong>
                   <p class="q-ma-none text-on-surface-variant">{note.detail}</p>
@@ -342,8 +329,7 @@
           icon="edit"
           aria-label="Write a note in the notebook"
           class="fab-placement-action"
-          onclick={composeNote}
-        />
+          onclick={composeNote} />
       </div>
       <p class="q-mt-md" aria-live="polite">
         {savedNote ? `Saved “${savedNote}”` : "A little space for your ideas."}
@@ -356,15 +342,13 @@
             label="What would you like to remember?"
             bind:value={noteTitle}
             maxlength={60}
-            required
-          />
+            required />
           <div class="flex justify-end q-gap-sm">
             <QBtn
               type="button"
               variant="flat"
               label="Cancel"
-              onclick={() => (isComposerOpen = false)}
-            />
+              onclick={() => (isComposerOpen = false)} />
             <QBtn type="submit" variant="filled" label="Save note" disabled={!noteTitle.trim()} />
           </div>
         </form>
@@ -378,23 +362,21 @@
           name describing the action. Tab focuses the button; Space or Enter activates it. Keep
           nearby controls and their focus indicators visible when positioning a FAB.
         </p>
+        <!-- prettier-ignore -->
         <p>
           See the Material 3 specifications for
           <a
             class="q-docs-link"
-            href="https://m3.material.io/components/floating-action-button/specs">FABs</a
-          >,
-          <a class="q-docs-link" href="https://m3.material.io/components/extended-fab/specs"
-            >extended FABs</a
-          >, and
-          <a class="q-docs-link" href="https://m3.material.io/components/fab-menu/specs"
-            >FAB menus</a
-          >, plus the
+            href="https://m3.material.io/components/floating-action-button/specs">FABs</a>,
           <a
             class="q-docs-link"
-            href="https://m3.material.io/components/floating-action-button/accessibility"
-            >accessibility guidance</a
-          >.
+            href="https://m3.material.io/components/extended-fab/specs">extended FABs</a>, and
+          <a
+            class="q-docs-link"
+            href="https://m3.material.io/components/fab-menu/specs">FAB menus</a>, plus the
+          <a
+            class="q-docs-link"
+            href="https://m3.material.io/components/floating-action-button/accessibility">accessibility guidance</a>.
         </p>
       {/snippet}
     </QDocsSection>

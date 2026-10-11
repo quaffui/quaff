@@ -28,8 +28,7 @@
 
 <QDocs
   docName="QSlider"
-  docDescription="Sliders adjust a single value or the bounds of a range. Continuous movement, fixed steps, and value indicators help users make precise selections."
->
+  docDescription="Sliders adjust a single value or the bounds of a range. Continuous movement, fixed steps, and value indicators help users make precise selections.">
   {#snippet display()}
     <QCard class="flex column q-gap-lg" style="width: min(448px, 80%);">
       <QSlider value={64} aria-label="Preview value" />
@@ -64,8 +63,7 @@
             max={100}
             centered
             label
-            aria-labelledby="balance-label"
-          />
+            aria-labelledby="balance-label" />
         </div>
       </QDocsSection>
 
@@ -80,8 +78,7 @@
             bind:value={range}
             minAriaLabel="Minimum price"
             maxAriaLabel="Maximum price"
-            label
-          />
+            label />
         </div>
       </QDocsSection>
 
@@ -101,8 +98,7 @@
             markers
             label
             labelValue={TEXT_SIZE_LABELS[textSize - 1]}
-            aria-label="Text size"
-          />
+            aria-label="Text size" />
         </div>
       </QDocsSection>
 
@@ -123,8 +119,7 @@
                 expressive
                 {size}
                 aria-label={`${size} slider`}
-                style="max-width: 32rem;"
-              />
+                style="max-width: 32rem;" />
             </div>
           {/each}
 
@@ -136,8 +131,7 @@
               icon="volume_up"
               label
               aria-label="Volume with inset icon"
-              style="max-width: 32rem;"
-            />
+              style="max-width: 32rem;" />
             <QSlider value={70} expressive vertical size="md" label aria-label="Vertical level" />
           </div>
         </div>
@@ -151,19 +145,18 @@
 
         <div style="display: grid; max-width: 36rem;">
           <div class="flex items-center q-gap-md">
-            <span id="reversed-slider-label" class="label-large" style="width: 96px;">Reversed</span
-            >
+            <span id="reversed-slider-label" class="label-large" style="width: 96px;"
+              >Reversed</span>
             <QSlider value={30} reverse aria-labelledby="reversed-slider-label" />
           </div>
           <div class="flex items-center q-gap-md">
             <span id="readonly-slider-label" class="label-large" style="width: 96px;"
-              >Read-only</span
-            >
+              >Read-only</span>
             <QSlider value={55} readonly aria-labelledby="readonly-slider-label" />
           </div>
           <div class="flex items-center q-gap-md">
-            <span id="disabled-slider-label" class="label-large" style="width: 96px;">Disabled</span
-            >
+            <span id="disabled-slider-label" class="label-large" style="width: 96px;"
+              >Disabled</span>
             <QSlider value={70} disabled aria-labelledby="disabled-slider-label" />
           </div>
         </div>

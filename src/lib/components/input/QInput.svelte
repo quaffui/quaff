@@ -191,8 +191,7 @@ Text fields collect and edit text with clear labels. Supporting hints and valida
   {style}
   style:--snippet-prepend-width="{snippetPrependWidth}px"
   aria-disabled={disabled || undefined}
-  data-quaff
->
+  data-quaff>
   {#if before}
     <div class="q-field__snippet-before">
       {@render before()}
@@ -220,8 +219,7 @@ Text fields collect and edit text with clear labels. Supporting hints and valida
         onfocus={onFocus}
         onblur={onBlur}
         {disabled}
-        tabindex={disabled === true ? -1 : (tabindex ?? 0)}
-      />
+        tabindex={disabled === true ? -1 : (tabindex ?? 0)} />
       <span class="q-field__label"><span class="q-field__label-text">{label}</span></span>
 
       {#if append}
