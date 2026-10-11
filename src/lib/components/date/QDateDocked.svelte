@@ -1,8 +1,8 @@
 <script lang="ts">
-  import QBtn from "$components/button/QBtn.svelte";
-  import QIconBtn from "$components/button/QIconBtn.svelte";
-  import QIcon from "$components/icon/QIcon.svelte";
-  import type { QEvent } from "$utils";
+  import QBtn from "#components/button/QBtn.svelte";
+  import QIconBtn from "#components/button/QIconBtn.svelte";
+  import QIcon from "#components/icon/QIcon.svelte";
+  import type { QEvent } from "#utils";
   import QDateCalendar from "./QDateCalendar.svelte";
   import { getOptionTarget } from "./calendar";
   import type { QDateFocus } from "./dateFocus";

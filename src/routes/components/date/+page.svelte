@@ -1,14 +1,14 @@
 <script lang="ts">
   import { resolve } from "$app/paths";
-  import { createUtcDate, parseDateValue } from "$components/date/date";
-  import { QDateDocs } from "$components/date/docs";
-  import type { QDateRangeValue } from "$components/date/props";
-  import { QDocs, QDocsSection } from "$docs";
-  import { docsCtx } from "$docs/QDocs.svelte";
-  import QLanguageExample from "$docs/QLanguageExample.svelte";
-  import { QBtn, QDate, QIcon, QInput, QSwitch } from "$lib";
-  import { useMeta } from "$lib/meta";
-  import { pageMeta } from "$docs/metadata";
+  import { createUtcDate, parseDateValue } from "#components/date/date.js";
+  import { QDateDocs } from "#components/date/docs.js";
+  import type { QDateRangeValue } from "#components/date/props.js";
+  import { QDocs, QDocsSection } from "#docs";
+  import { docsCtx } from "#docs/QDocs.svelte";
+  import QLanguageExample from "#docs/QLanguageExample.svelte";
+  import { QBtn, QDate, QIcon, QInput, QSwitch } from "#lib";
+  import { useMeta } from "#lib/meta.js";
+  import { pageMeta } from "#docs/metadata.js";
   import snippets from "./docs.snippets";
 
   useMeta(

@@ -1,5 +1,5 @@
-import type { Disableable, OptionalModel } from "$utils";
-import type { QInputProps } from "$components/input/props";
+import type { Disableable, OptionalModel } from "#utils";
+import type { QInputProps } from "#components/input/props.js";
 
 export interface QDateRangeValue {
   start: string;

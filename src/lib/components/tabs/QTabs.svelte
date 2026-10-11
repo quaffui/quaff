@@ -4,7 +4,7 @@ Tabs organize related views and show the current selection. Choose primary, seco
 -->
 
 <script module lang="ts">
-  import { QContext } from "$utils/context";
+  import { QContext } from "#utils/context.js";
   import type { QTabsProps } from "./props";
 
   interface QTabsContext {
@@ -22,7 +22,7 @@ Tabs organize related views and show the current selection. Choose primary, seco
 
 <script lang="ts">
   import { untrack } from "svelte";
-  import { shouldReduceMotion } from "$utils";
+  import { shouldReduceMotion } from "#utils";
 
   // #region:    --- Props
   let {

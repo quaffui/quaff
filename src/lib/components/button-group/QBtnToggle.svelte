@@ -4,8 +4,8 @@ Choose one or several values with connected or standard button groups, including
 -->
 
 <script lang="ts">
-  import { useQuaffConfig } from "$internal/quaffConfig.svelte";
-  import QBtn from "$components/button/QBtn.svelte";
+  import { useQuaffConfig } from "#internal/quaffConfig.svelte.js";
+  import QBtn from "#components/button/QBtn.svelte";
   import QBtnGroup from "./QBtnGroup.svelte";
   import type { QBtnToggleOption, QBtnToggleProps } from "./props";
 

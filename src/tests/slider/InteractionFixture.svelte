@@ -1,6 +1,6 @@
 <script lang="ts">
-  import QSlider from "$components/slider/QSlider.svelte";
-  import QRange from "$components/slider/QRange.svelte";
+  import QSlider from "#components/slider/QSlider.svelte";
+  import QRange from "#components/slider/QRange.svelte";
 
   const SIZES = ["xs", "sm", "md", "lg", "xl"] as const;
   let value = $state(40);

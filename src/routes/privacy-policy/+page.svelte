@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { useMeta } from "$lib/meta";
+  import { useMeta } from "#lib/meta.js";
 
   useMeta({
     title: "Privacy Policy",

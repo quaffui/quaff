@@ -84,14 +84,26 @@ fn resolves_nested_export_stars_and_ignores_cycles() -> crate::Result<()> {
 }
 
 #[test]
-fn resolves_svelte_typescript_suffixes_and_lib_alias() -> crate::Result<()> {
+fn resolves_svelte_typescript_suffixes_and_local_aliases() -> crate::Result<()> {
     let fixture = Fixture::new();
     fixture.write("lib/state.svelte.ts", "export type Value = number;");
-    let props = fixture.write("lib/components/props.ts", "import type { Value } from '$lib/state.svelte'; export interface TestProps { value: Value }");
-    let parsed = props.parse_props(&PathResolver(&props))?;
-    assert_eq!(
-        parsed["TestProps"].type_definitions["Value"],
-        "type Value = number;"
+    fixture.write(
+        "lib/internal/state.svelte.ts",
+        "export type Value = number;",
     );
+    fixture.write(
+        "lib/types/index.ts",
+        "export type { Value } from '#internal/state.svelte.js';",
+    );
+
+    for source in ["$lib/state.svelte", "#types"] {
+        let props = fixture.write("lib/components/props.ts", &format!("import type {{ Value }} from '{source}'; export interface TestProps {{ value: Value }}"));
+        let parsed = props.parse_props(&PathResolver(&props))?;
+        assert_eq!(
+            parsed["TestProps"].type_definitions["Value"],
+            "type Value = number;"
+        );
+    }
+
     Ok(())
 }

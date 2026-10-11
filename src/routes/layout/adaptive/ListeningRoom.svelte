@@ -1,6 +1,6 @@
 <script lang="ts">
   import { tick } from "svelte";
-  import { Quaff, QBtn, QLayout, QNavbar, QNavItem, QRailbar } from "$lib";
+  import { Quaff, QBtn, QLayout, QNavbar, QNavItem, QRailbar } from "#lib";
   import type { MaterialSymbol } from "material-symbols";
 
   const RELEASES = [

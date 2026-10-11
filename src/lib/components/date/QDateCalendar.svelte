@@ -1,6 +1,6 @@
 <script lang="ts">
   import { cubicOut } from "svelte/easing";
-  import { isActivationKey, type QEvent } from "$utils";
+  import { isActivationKey, type QEvent } from "#utils";
   import {
     addCalendarDays,
     addCalendarMonths,

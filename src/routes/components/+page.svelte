@@ -50,11 +50,11 @@
     QTabs,
     QTime,
     QToolbar,
-  } from "$components";
-  import QDocs from "$docs/QDocs.svelte";
-  import { Quaff } from "$lib";
-  import { useMeta } from "$lib/meta";
-  import { pageMeta } from "$docs/metadata";
+  } from "#components";
+  import QDocs from "#docs/QDocs.svelte";
+  import { Quaff } from "#lib";
+  import { useMeta } from "#lib/meta.js";
+  import { pageMeta } from "#docs/metadata.js";
   import type { RouteId } from "$app/types";
   import type { Snippet } from "svelte";
 

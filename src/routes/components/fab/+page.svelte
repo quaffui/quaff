@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { QExtendedFabDocs, QFabDocs, QFabMenuDocs } from "$components/fab/docs";
-  import { QDocs, QDocsSection } from "$docs";
-  import { docsCtx } from "$docs/QDocs.svelte";
+  import { QExtendedFabDocs, QFabDocs, QFabMenuDocs } from "#components/fab/docs.js";
+  import { QDocs, QDocsSection } from "#docs";
+  import { docsCtx } from "#docs/QDocs.svelte";
   import {
     QBtn,
     QDialog,
@@ -14,9 +14,9 @@
     QItemSection,
     QList,
     QSwitch,
-  } from "$lib";
-  import { useMeta } from "$lib/meta";
-  import { pageMeta } from "$docs/metadata";
+  } from "#lib";
+  import { useMeta } from "#lib/meta.js";
+  import { pageMeta } from "#docs/metadata.js";
   import snippets from "./docs.snippets";
 
   useMeta(

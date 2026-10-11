@@ -16,8 +16,8 @@
 </script>
 
 <script lang="ts">
-  import QInput from "$components/input/QInput.svelte";
-  import QSelect from "$components/select/QSelect.svelte";
+  import QInput from "#components/input/QInput.svelte";
+  import QSelect from "#components/select/QSelect.svelte";
 
   let { query = "" }: { query?: string } = $props();
   const params = new URLSearchParams(untrack(() => query));

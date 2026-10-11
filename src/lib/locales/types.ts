@@ -1,7 +1,7 @@
-import type { QColorPickerLabels } from "$components/color-picker/props.js";
-import type { QDateLabels, QDateProps } from "$components/date/props.js";
-import type { QSearchLabels } from "$components/search/props.js";
-import type { QTimeLabels, QTimeProps } from "$components/time/props.js";
+import type { QColorPickerLabels } from "#components/color-picker/props.js";
+import type { QDateLabels, QDateProps } from "#components/date/props.js";
+import type { QSearchLabels } from "#components/search/props.js";
+import type { QTimeLabels, QTimeProps } from "#components/time/props.js";
 
 export interface QuaffTranslations {
   table: {

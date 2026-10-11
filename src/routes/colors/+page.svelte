@@ -1,9 +1,9 @@
 <script lang="ts">
   import { resolve } from "$app/paths";
-  import { QCodeBlock, QIcon, QSwitch, Quaff } from "$lib";
-  import { useMeta } from "$lib/meta";
-  import { pageMeta } from "$docs/metadata";
-  import { PALETTE_COLORS } from "$docs/colorPalette";
+  import { QCodeBlock, QIcon, QSwitch, Quaff } from "#lib";
+  import { useMeta } from "#lib/meta.js";
+  import { pageMeta } from "#docs/metadata.js";
+  import { PALETTE_COLORS } from "#docs/colorPalette.js";
 
   useMeta(
     pageMeta(

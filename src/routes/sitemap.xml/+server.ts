@@ -1,4 +1,4 @@
-import { getCanonicalUrl } from "$docs/metadata";
+import { getCanonicalUrl } from "#docs/metadata.js";
 
 export const prerender = true;
 

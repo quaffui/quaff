@@ -1,12 +1,12 @@
 <script lang="ts">
   import { asset } from "$app/paths";
-  import { QCardActionsDocs, QCardDocs, QCardSectionDocs } from "$components/card/docs";
-  import type { QCardActionsProps } from "$components/card/props";
-  import { docsCtx } from "$docs/QDocs.svelte";
-  import { QAvatar, QBtn, QCard, QCardActions, QCardSection, QIcon, QSelect, QSwitch } from "$lib";
-  import { QDocs, QDocsSection } from "$docs";
-  import { useMeta } from "$lib/meta";
-  import { pageMeta } from "$docs/metadata";
+  import { QCardActionsDocs, QCardDocs, QCardSectionDocs } from "#components/card/docs.js";
+  import type { QCardActionsProps } from "#components/card/props.js";
+  import { docsCtx } from "#docs/QDocs.svelte";
+  import { QAvatar, QBtn, QCard, QCardActions, QCardSection, QIcon, QSelect, QSwitch } from "#lib";
+  import { QDocs, QDocsSection } from "#docs";
+  import { useMeta } from "#lib/meta.js";
+  import { pageMeta } from "#docs/metadata.js";
   import snippets from "./docs.snippets";
 
   useMeta(

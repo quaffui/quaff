@@ -1,4 +1,4 @@
-import type { OptionalModel } from "$utils";
+import type { OptionalModel } from "#utils";
 import type { Snippet } from "svelte";
 import type { HTMLAttributes } from "svelte/elements";
 

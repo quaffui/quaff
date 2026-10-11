@@ -1,4 +1,4 @@
-import type { Disableable, Labelable, QSizeable } from "$utils";
+import type { Disableable, Labelable, QSizeable } from "#utils";
 import type { MaterialSymbol } from "material-symbols";
 import type { HTMLAttributes, MouseEventHandler } from "svelte/elements";
 

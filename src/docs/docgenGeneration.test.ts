@@ -65,7 +65,7 @@ describe("generated TypeScript documentation", () => {
     const imports = parsed.statements.filter(ts.isImportDeclaration);
     expect(imports).toHaveLength(1);
     expect(imports[0].importClause?.isTypeOnly).toBe(true);
-    expect(imports[0].moduleSpecifier.getText(parsed)).toBe('"$docs"');
+    expect(imports[0].moduleSpecifier.getText(parsed)).toBe('"#docs"');
     expect(docs.name).toBe("QExample");
     expect(docs.componentName).toBeUndefined();
     expect(docs.description).toBe(description);

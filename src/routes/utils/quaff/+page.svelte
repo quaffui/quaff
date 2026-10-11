@@ -1,9 +1,9 @@
 <script lang="ts">
   import { resolve } from "$app/paths";
-  import { QDocs, QDocsSection } from "$docs";
-  import { Quaff, QBtn, QChip, QCodeBlock } from "$lib";
-  import { useMeta } from "$lib/meta";
-  import { pageMeta } from "$docs/metadata";
+  import { QDocs, QDocsSection } from "#docs";
+  import { Quaff, QBtn, QChip, QCodeBlock } from "#lib";
+  import { useMeta } from "#lib/meta.js";
+  import { pageMeta } from "#docs/metadata.js";
 
   useMeta(
     pageMeta(

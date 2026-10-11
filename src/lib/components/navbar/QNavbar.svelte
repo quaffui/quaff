@@ -5,9 +5,9 @@ Navigation bars place three to five primary destinations at the bottom of a layo
 
 <script lang="ts">
   import { onMount } from "svelte";
-  import { navigationCtx } from "$internal/navigationContext";
+  import { navigationCtx } from "#internal/navigationContext.js";
 
-  import { useColor } from "$composables";
+  import { useColor } from "#composables";
   import { navbarCtx } from "../layout/QLayout.svelte";
   import type { QNavbarProps } from "./props";
 

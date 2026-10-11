@@ -91,6 +91,14 @@ export default [
           ],
           pathGroups: [
             {
+              pattern: "#**",
+              group: "internal",
+            },
+            {
+              pattern: "#*/**",
+              group: "internal",
+            },
+            {
               pattern: "$**",
               group: "internal",
             },
@@ -146,9 +154,9 @@ export default [
         {
           patterns: [
             {
-              group: ["$lib", "$lib/*"],
+              group: ["#lib", "#lib/*", "$lib", "$lib/*"],
               message:
-                "Library internals must not import through the public $lib barrel. Use a specific alias such as $components, $classes, $utils, or $helpers.",
+                "Library internals must not import through the public #lib barrel. Use a specific alias such as #components, #classes, #utils, or #helpers.",
             },
           ],
         },

@@ -1,10 +1,10 @@
 <script lang="ts">
-  import { QCheckboxDocs } from "$components/checkbox/docs";
-  import { QDocs, QDocsSection } from "$docs";
-  import { docsCtx } from "$docs/QDocs.svelte";
-  import { QBtn, QCheckbox, QIcon, QSeparator } from "$lib";
-  import { useMeta } from "$lib/meta";
-  import { pageMeta } from "$docs/metadata";
+  import { QCheckboxDocs } from "#components/checkbox/docs.js";
+  import { QDocs, QDocsSection } from "#docs";
+  import { docsCtx } from "#docs/QDocs.svelte";
+  import { QBtn, QCheckbox, QIcon, QSeparator } from "#lib";
+  import { useMeta } from "#lib/meta.js";
+  import { pageMeta } from "#docs/metadata.js";
   import snippets from "./docs.snippets";
 
   useMeta(

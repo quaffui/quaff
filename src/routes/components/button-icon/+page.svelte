@@ -1,11 +1,11 @@
 <script lang="ts">
-  import { QIconBtnDocs } from "$components/button/docs";
-  import type { QIconBtnProps } from "$components/button/props";
-  import { docsCtx } from "$docs/QDocs.svelte";
-  import { QIconBtn, QSelect, QSwitch } from "$lib";
-  import { QDocs, QDocsSection } from "$docs";
-  import { useMeta } from "$lib/meta";
-  import { pageMeta } from "$docs/metadata";
+  import { QIconBtnDocs } from "#components/button/docs.js";
+  import type { QIconBtnProps } from "#components/button/props.js";
+  import { docsCtx } from "#docs/QDocs.svelte";
+  import { QIconBtn, QSelect, QSwitch } from "#lib";
+  import { QDocs, QDocsSection } from "#docs";
+  import { useMeta } from "#lib/meta.js";
+  import { pageMeta } from "#docs/metadata.js";
   import snippets from "./docs.snippets";
 
   useMeta(

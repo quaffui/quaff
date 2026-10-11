@@ -1,13 +1,13 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import { page } from "$app/state";
-  import QBtn from "$components/button/QBtn.svelte";
-  import QFooter from "$components/footer/QFooter.svelte";
-  import QHeader from "$components/header/QHeader.svelte";
-  import QHeaderTitle from "$components/header/QHeaderTitle.svelte";
-  import QLayout from "$components/layout/QLayout.svelte";
-  import QRailbar from "$components/railbar/QRailbar.svelte";
-  import "$css/index.scss";
+  import QBtn from "$lib/components/button/QBtn.svelte";
+  import QFooter from "$lib/components/footer/QFooter.svelte";
+  import QHeader from "$lib/components/header/QHeader.svelte";
+  import QHeaderTitle from "$lib/components/header/QHeaderTitle.svelte";
+  import QLayout from "$lib/components/layout/QLayout.svelte";
+  import QRailbar from "$lib/components/railbar/QRailbar.svelte";
+  import "$lib/css/index.scss";
   import "material-symbols/outlined.css";
 
   const NEXT_VARIANT = { medium: "small", small: "large", large: "medium" } as const;

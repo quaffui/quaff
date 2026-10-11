@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { parseDateValue } from "$components/date/date";
-import { defaultDateLabels } from "$components/date/props";
+import { parseDateValue } from "#components/date/date.js";
+import { defaultDateLabels } from "#components/date/props.js";
 import { createDateState } from "./stateFixture.svelte";
 
 function date(value: string) {

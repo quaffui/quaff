@@ -1,4 +1,4 @@
-import type { Disableable, Labelable, Linkable, OptionalModel } from "$utils";
+import type { Disableable, Labelable, Linkable, OptionalModel } from "#utils";
 import type { MaterialSymbol } from "material-symbols";
 import type { Snippet } from "svelte";
 import type { HTMLAttributes, KeyboardEventHandler, MouseEventHandler } from "svelte/elements";

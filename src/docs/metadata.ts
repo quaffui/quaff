@@ -1,4 +1,4 @@
-import type { MetaOptions } from "$lib/meta";
+import type { MetaOptions } from "#lib/meta.js";
 
 export const SITE_URL = "https://quaff.dev";
 

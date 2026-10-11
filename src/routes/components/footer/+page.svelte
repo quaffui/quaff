@@ -1,10 +1,10 @@
 <script lang="ts">
-  import { QFooterDocs } from "$components/footer/docs";
-  import { docsCtx } from "$docs/QDocs.svelte";
-  import { QBtn, QCard, QFooter, QIcon, QIconBtn, QLayout, QSwitch } from "$lib";
-  import { QDocs, QDocsSection } from "$docs";
-  import { useMeta } from "$lib/meta";
-  import { pageMeta } from "$docs/metadata";
+  import { QFooterDocs } from "#components/footer/docs.js";
+  import { docsCtx } from "#docs/QDocs.svelte";
+  import { QBtn, QCard, QFooter, QIcon, QIconBtn, QLayout, QSwitch } from "#lib";
+  import { QDocs, QDocsSection } from "#docs";
+  import { useMeta } from "#lib/meta.js";
+  import { pageMeta } from "#docs/metadata.js";
   import snippets from "./docs.snippets";
 
   useMeta(

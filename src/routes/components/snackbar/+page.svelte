@@ -1,11 +1,11 @@
 <script lang="ts">
   import { resolve } from "$app/paths";
-  import { QSnackbarDocs } from "$components/snackbar/docs";
-  import { docsCtx } from "$docs/QDocs.svelte";
-  import { QDocs, QDocsSection } from "$docs";
-  import { QBtn, QSnackbar } from "$lib";
-  import { useMeta } from "$lib/meta";
-  import { pageMeta } from "$docs/metadata";
+  import { QSnackbarDocs } from "#components/snackbar/docs.js";
+  import { docsCtx } from "#docs/QDocs.svelte";
+  import { QDocs, QDocsSection } from "#docs";
+  import { QBtn, QSnackbar } from "#lib";
+  import { useMeta } from "#lib/meta.js";
+  import { pageMeta } from "#docs/metadata.js";
   import snippets from "./docs.snippets";
 
   useMeta(

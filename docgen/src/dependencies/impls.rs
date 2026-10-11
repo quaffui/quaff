@@ -72,9 +72,7 @@ impl SourceGraph {
 
             for script in scripts {
                 for import in scan_imports(script) {
-                    if (import.starts_with('.')
-                        || import.starts_with('$')
-                        || Path::new(&import).is_absolute())
+                    if (import.starts_with(['.', '$', '#']) || Path::new(&import).is_absolute())
                         && let Some(dependency) = resolve(&import, file)?
                         && is_source_file(&dependency)
                     {

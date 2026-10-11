@@ -1,13 +1,13 @@
 <script lang="ts">
   import { tick, type Snippet } from "svelte";
   import { resolve } from "$app/paths";
-  import { QNavbarDocs } from "$components/navbar/docs";
-  import { QNavItemDocs } from "$components/nav-item/docs";
-  import { QDocs, QDocsSection } from "$docs";
-  import { docsCtx } from "$docs/QDocs.svelte";
-  import { QBtn, QIcon, QIconBtn, QLayout, QNavbar, QNavItem, QSelect, QSwitch } from "$lib";
-  import { useMeta } from "$lib/meta";
-  import { pageMeta } from "$docs/metadata";
+  import { QNavbarDocs } from "#components/navbar/docs.js";
+  import { QNavItemDocs } from "#components/nav-item/docs.js";
+  import { QDocs, QDocsSection } from "#docs";
+  import { docsCtx } from "#docs/QDocs.svelte";
+  import { QBtn, QIcon, QIconBtn, QLayout, QNavbar, QNavItem, QSelect, QSwitch } from "#lib";
+  import { useMeta } from "#lib/meta.js";
+  import { pageMeta } from "#docs/metadata.js";
   import snippets from "./docs.snippets";
 
   useMeta(

@@ -1,10 +1,10 @@
 <script lang="ts">
-  import { docsCtx } from "$docs/QDocs.svelte";
-  import { QSeparatorHorizontalDocs, QSeparatorVerticalDocs } from "$components/separator/docs";
-  import { QCard, QCardSection, QSeparator } from "$lib";
-  import { QDocs, QDocsSection } from "$docs";
-  import { useMeta } from "$lib/meta";
-  import { pageMeta } from "$docs/metadata";
+  import { docsCtx } from "#docs/QDocs.svelte";
+  import { QSeparatorHorizontalDocs, QSeparatorVerticalDocs } from "#components/separator/docs.js";
+  import { QCard, QCardSection, QSeparator } from "#lib";
+  import { QDocs, QDocsSection } from "#docs";
+  import { useMeta } from "#lib/meta.js";
+  import { pageMeta } from "#docs/metadata.js";
   import snippets from "./docs.snippets";
 
   useMeta(

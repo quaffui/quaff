@@ -1,8 +1,8 @@
 <script lang="ts">
-  import QBtn from "$components/button/QBtn.svelte";
-  import { copy } from "$utils";
-  import { useMeta } from "$lib/meta";
-  import { pageMeta } from "$docs/metadata";
+  import QBtn from "#components/button/QBtn.svelte";
+  import { copy } from "#utils";
+  import { useMeta } from "#lib/meta.js";
+  import { pageMeta } from "#docs/metadata.js";
 
   useMeta(
     pageMeta(

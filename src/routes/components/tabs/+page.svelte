@@ -1,10 +1,10 @@
 <script lang="ts">
-  import { QTabDocs, QTabsDocs } from "$components/tabs/docs";
-  import { QDocs, QDocsSection } from "$docs";
-  import { docsCtx } from "$docs/QDocs.svelte";
-  import { QAvatar, QIcon, QInput, QSwitch, QTab, QTabs } from "$lib";
-  import { useMeta } from "$lib/meta";
-  import { pageMeta } from "$docs/metadata";
+  import { QTabDocs, QTabsDocs } from "#components/tabs/docs.js";
+  import { QDocs, QDocsSection } from "#docs";
+  import { docsCtx } from "#docs/QDocs.svelte";
+  import { QAvatar, QIcon, QInput, QSwitch, QTab, QTabs } from "#lib";
+  import { useMeta } from "#lib/meta.js";
+  import { pageMeta } from "#docs/metadata.js";
   import snippets from "./docs.snippets";
 
   useMeta(

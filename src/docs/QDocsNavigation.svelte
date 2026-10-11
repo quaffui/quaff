@@ -14,7 +14,7 @@
 
 <script lang="ts">
   import { untrack } from "svelte";
-  import { QList, QNavGroup, QNavItem, Quaff } from "$lib";
+  import { QList, QNavGroup, QNavItem, Quaff } from "#lib";
 
   let {
     items,

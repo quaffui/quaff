@@ -1,6 +1,6 @@
 <script lang="ts">
-  import QCodeBlock from "$components/codeBlock/QCodeBlock.svelte";
-  import QTooltip from "$components/tooltip/QTooltip.svelte";
+  import QCodeBlock from "#components/codeBlock/QCodeBlock.svelte";
+  import QTooltip from "#components/tooltip/QTooltip.svelte";
 
   let { target, code }: { target: HTMLElement; code: string } = $props();
 </script>

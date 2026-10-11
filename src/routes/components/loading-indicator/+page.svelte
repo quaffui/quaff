@@ -1,12 +1,12 @@
 <script lang="ts">
   import { onDestroy } from "svelte";
   import { resolve } from "$app/paths";
-  import { QLoadingIndicatorDocs } from "$components/loading-indicator/docs";
-  import { QDocs, QDocsSection } from "$docs";
-  import { docsCtx } from "$docs/QDocs.svelte";
-  import { QBtn, QIcon, QInput, QLoadingIndicator, QSelect, QSwitch } from "$lib";
-  import { useMeta } from "$lib/meta";
-  import { pageMeta } from "$docs/metadata";
+  import { QLoadingIndicatorDocs } from "#components/loading-indicator/docs.js";
+  import { QDocs, QDocsSection } from "#docs";
+  import { docsCtx } from "#docs/QDocs.svelte";
+  import { QBtn, QIcon, QInput, QLoadingIndicator, QSelect, QSwitch } from "#lib";
+  import { useMeta } from "#lib/meta.js";
+  import { pageMeta } from "#docs/metadata.js";
   import snippets from "./docs.snippets";
 
   useMeta(

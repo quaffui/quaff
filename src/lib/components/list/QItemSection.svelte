@@ -4,7 +4,7 @@ The QItemSection component is used inside QItem to separate different types of i
 -->
 
 <script lang="ts">
-  import { ripple } from "$helpers";
+  import { ripple } from "#helpers";
   import { itemCtx } from "./QItem.svelte";
   import { listCtx } from "./QList.svelte";
   import type { Snippet } from "svelte";

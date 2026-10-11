@@ -10,20 +10,6 @@ import { DOCS_ASSET_OPTIONS } from "./src/dev/docsAssets.ts";
 import { createDocsAssetsPlugin } from "./src/dev/docsAssetsPlugin.ts";
 import type { PluginOption } from "vite";
 
-const aliases = {
-  $lib: path.resolve(import.meta.dirname, "./src/lib"),
-  $components: path.resolve(import.meta.dirname, "./src/lib/components"),
-  $classes: path.resolve(import.meta.dirname, "./src/lib/classes"),
-  $composables: path.resolve(import.meta.dirname, "./src/lib/composables"),
-  $utils: path.resolve(import.meta.dirname, "./src/lib/utils"),
-  $css: path.resolve(import.meta.dirname, "./src/lib/css"),
-  $stores: path.resolve(import.meta.dirname, "./src/lib/stores"),
-  $helpers: path.resolve(import.meta.dirname, "./src/lib/helpers"),
-  $docgen: path.resolve(import.meta.dirname, "./docgen"),
-  $internal: path.resolve(import.meta.dirname, "./src/lib/internal"),
-  $docs: path.resolve(import.meta.dirname, "./src/docs"),
-};
-
 export default defineConfig(async ({ command, mode }) => {
   // SvelteKit also loads build config during sync, before dist exists.
   const isDocsDev = command === "serve" && mode !== "test";
@@ -53,7 +39,6 @@ export default defineConfig(async ({ command, mode }) => {
         precompress: true,
       }),
       prerender: { entries: ["*"] },
-      alias: aliases,
     })
   );
 
@@ -67,7 +52,8 @@ export default defineConfig(async ({ command, mode }) => {
         ...(!shouldOptimizeDocs && {
           "virtual:quaff.css": path.resolve(import.meta.dirname, "./src/dev/docsStyles.ts"),
         }),
-        ...aliases,
+        $components: path.resolve(import.meta.dirname, "./src/lib/components"),
+        $css: path.resolve(import.meta.dirname, "./src/lib/css"),
       },
     },
   };

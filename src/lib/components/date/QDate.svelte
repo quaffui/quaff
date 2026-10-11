@@ -5,11 +5,11 @@ Date pickers support single dates and ranges through a calendar or text entry. D
 
 <script lang="ts" generics="Range extends boolean = false">
   import { onDestroy, untrack } from "svelte";
-  import { useI18n } from "$internal/i18n.svelte";
-  import Quaff from "$classes/Quaff.svelte";
-  import QDialog from "$components/dialog/QDialog.svelte";
-  import QMenu from "$components/menu/QMenu.svelte";
-  import type { QEvent } from "$utils";
+  import { useI18n } from "#internal/i18n.svelte.js";
+  import Quaff from "#classes/Quaff.svelte.js";
+  import QDialog from "#components/dialog/QDialog.svelte";
+  import QMenu from "#components/menu/QMenu.svelte";
+  import type { QEvent } from "#utils";
   import QDateDocked from "./QDateDocked.svelte";
   import QDateModal from "./QDateModal.svelte";
   import QDateTrigger from "./QDateTrigger.svelte";

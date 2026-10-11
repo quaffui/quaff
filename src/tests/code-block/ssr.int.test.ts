@@ -1,6 +1,6 @@
 import { render } from "svelte/server";
 import { describe, expect, it } from "vitest";
-import QCodeBlock from "$components/codeBlock/QCodeBlock.svelte";
+import QCodeBlock from "#components/codeBlock/QCodeBlock.svelte";
 
 describe("code block server rendering", () => {
   it("renders escaped source with its whitespace before client highlighting", () => {

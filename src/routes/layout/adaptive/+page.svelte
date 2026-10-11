@@ -1,8 +1,8 @@
 <script lang="ts">
   import { resolve } from "$app/paths";
-  import { QCodeBlock } from "$lib";
-  import { useMeta } from "$lib/meta";
-  import { pageMeta } from "$docs/metadata";
+  import { QCodeBlock } from "#lib";
+  import { useMeta } from "#lib/meta.js";
+  import { pageMeta } from "#docs/metadata.js";
   import ListeningRoom from "./ListeningRoom.svelte";
 
   useMeta(

@@ -1,8 +1,8 @@
 <script lang="ts">
   import { untrack } from "svelte";
-  import QBtn from "$components/button/QBtn.svelte";
-  import QIconBtn from "$components/button/QIconBtn.svelte";
-  import type { QEvent } from "$utils";
+  import QBtn from "#components/button/QBtn.svelte";
+  import QIconBtn from "#components/button/QIconBtn.svelte";
+  import type { QEvent } from "#utils";
   import { measureTimeDial, type QTimeDialMeasurement } from "./timeFit";
   import QTimeDial from "./QTimeDial.svelte";
   import type { QTimeFocus } from "./timeFocus";

@@ -7,14 +7,14 @@ Search bars open a dedicated view for queries, suggestions, and results. Choose 
   import { onDestroy, tick, untrack } from "svelte";
   import { on } from "svelte/events";
   import { innerWidth, innerHeight } from "svelte/reactivity/window";
-  import QDialog from "$components/dialog/QDialog.svelte";
-  import QIcon from "$components/icon/QIcon.svelte";
-  import QIconBtn from "$components/button/QIconBtn.svelte";
-  import QLinearProgress from "$components/progress/QLinearProgress.svelte";
-  import { ripple } from "$helpers";
-  import { useI18n } from "$internal/i18n.svelte";
-  import { useQuaffConfig } from "$internal/quaffConfig.svelte";
-  import { getClosestFocusableChild, shouldReduceMotion, type QEvent } from "$utils";
+  import QDialog from "#components/dialog/QDialog.svelte";
+  import QIcon from "#components/icon/QIcon.svelte";
+  import QIconBtn from "#components/button/QIconBtn.svelte";
+  import QLinearProgress from "#components/progress/QLinearProgress.svelte";
+  import { ripple } from "#helpers";
+  import { useI18n } from "#internal/i18n.svelte.js";
+  import { useQuaffConfig } from "#internal/quaffConfig.svelte.js";
+  import { getClosestFocusableChild, shouldReduceMotion, type QEvent } from "#utils";
   import { prepareSearchMotion, type SearchMotion } from "./searchMotion";
   import type { QSearchProps } from "./props";
 

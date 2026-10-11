@@ -1,10 +1,10 @@
 <script lang="ts">
-  import { docsCtx } from "$docs/QDocs.svelte";
-  import { QTooltipDocs } from "$components/tooltip/docs";
-  import { QBtn, QCard, QCardActions, QCardSection, QIcon, QTooltip } from "$lib";
-  import { QDocs, QDocsSection } from "$docs";
-  import { useMeta } from "$lib/meta";
-  import { pageMeta } from "$docs/metadata";
+  import { docsCtx } from "#docs/QDocs.svelte";
+  import { QTooltipDocs } from "#components/tooltip/docs.js";
+  import { QBtn, QCard, QCardActions, QCardSection, QIcon, QTooltip } from "#lib";
+  import { QDocs, QDocsSection } from "#docs";
+  import { useMeta } from "#lib/meta.js";
+  import { pageMeta } from "#docs/metadata.js";
   import snippets from "./docs.snippets";
 
   useMeta(

@@ -6,7 +6,7 @@ Footers place navigation and actions at the bottom of a layout. Keep them visibl
 <script lang="ts">
   import { onMount } from "svelte";
   import { on } from "svelte/events";
-  import { useRevealScrollObserver } from "$composables";
+  import { useRevealScrollObserver } from "#composables";
   import { footerCtx } from "../layout/QLayout.svelte";
   import type { QFooterProps } from "./props";
 

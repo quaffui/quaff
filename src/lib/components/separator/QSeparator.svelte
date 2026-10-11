@@ -4,7 +4,7 @@ Separators divide groups of content with a horizontal or vertical line. Adjust s
 -->
 
 <script lang="ts">
-  import { useColor, useSize } from "$composables";
+  import { useColor, useSize } from "#composables";
   import type { QSeparatorProps } from "./props";
 
   // #region:    --- Props

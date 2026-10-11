@@ -7,9 +7,9 @@ Tooltips explain controls or provide brief details on hover or focus. Attach the
   import { onMount } from "svelte";
   import { on } from "svelte/events";
   import { type Attachment, createAttachmentKey } from "svelte/attachments";
-  import { getOverlayPortalTarget, portal } from "$utils";
-  import { syncOverlayDirection } from "$internal/overlayDirection";
-  import { useQuaffConfig } from "$internal/quaffConfig.svelte";
+  import { getOverlayPortalTarget, portal } from "#utils";
+  import { syncOverlayDirection } from "#internal/overlayDirection.js";
+  import { useQuaffConfig } from "#internal/quaffConfig.svelte.js";
   import type { QTooltipProps } from "./props";
 
   // #region:    --- Props

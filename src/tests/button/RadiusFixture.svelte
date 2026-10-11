@@ -1,8 +1,8 @@
 <script lang="ts">
-  import QBtn from "$components/button/QBtn.svelte";
-  import QIconBtn from "$components/button/QIconBtn.svelte";
-  import QBtnGroup from "$components/button-group/QBtnGroup.svelte";
-  import QToolbar from "$components/toolbar/QToolbar.svelte";
+  import QBtn from "#components/button/QBtn.svelte";
+  import QIconBtn from "#components/button/QIconBtn.svelte";
+  import QBtnGroup from "#components/button-group/QBtnGroup.svelte";
+  import QToolbar from "#components/toolbar/QToolbar.svelte";
 
   const SIZES = ["xs", "sm", "md", "lg", "xl"] as const;
   let selected = $state(true);

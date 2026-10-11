@@ -1,4 +1,4 @@
-import type { Disableable, Linkable, WithActiveAttrs } from "$utils";
+import type { Disableable, Linkable, WithActiveAttrs } from "#utils";
 import type { Snippet } from "svelte";
 import type { QSeparatorHorizontalProps } from "../separator/props";
 import type { HTMLAnchorAttributes, HTMLAttributes } from "svelte/elements";

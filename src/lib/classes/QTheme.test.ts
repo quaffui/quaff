@@ -1,12 +1,12 @@
 import { readFile } from "node:fs/promises";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { DEFAULT_THEME_COLORS, DEFAULT_THEME_SOURCE_COLOR } from "$internal/defaultTheme";
-import { generateColors } from "$utils";
+import { DEFAULT_THEME_COLORS, DEFAULT_THEME_SOURCE_COLOR } from "#internal/defaultTheme.js";
+import { generateColors } from "#utils";
 import { generateColors as calculateColors, type HexValue } from "../utils/colors";
 import { convertCase } from "../utils/string";
 
-vi.mock("$utils", async (importOriginal) => {
-  const utils = await importOriginal<typeof import("$utils")>();
+vi.mock("#utils", async (importOriginal) => {
+  const utils = await importOriginal<typeof import("#utils")>();
   return { ...utils, generateColors: vi.fn(utils.generateColors) };
 });
 
@@ -63,7 +63,7 @@ describe("theme defaults", () => {
 
   it("keeps edits separate from the shared default palette", async () => {
     const { default: theme } = await import("./QTheme.svelte");
-    const { DEFAULT_THEME_COLORS: defaultColors } = await import("$internal/defaultTheme");
+    const { DEFAULT_THEME_COLORS: defaultColors } = await import("#internal/defaultTheme.js");
     vi.stubGlobal("document", { documentElement: { style: { setProperty: vi.fn() } } });
     const originalPrimary = defaultColors.primaryLight;
 

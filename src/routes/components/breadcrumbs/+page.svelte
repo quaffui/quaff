@@ -1,12 +1,12 @@
 <script lang="ts">
   import { tick } from "svelte";
-  import { QBreadcrumbsDocs, QBreadcrumbsElDocs } from "$components/breadcrumbs/docs";
-  import type { QBreadcrumbsGutterOptions } from "$components/breadcrumbs/props";
-  import { QDocs, QDocsSection } from "$docs";
-  import { docsCtx } from "$docs/QDocs.svelte";
-  import { QBreadcrumbs, QBreadcrumbsEl, QIcon, QSelect, QSwitch } from "$lib";
-  import { useMeta } from "$lib/meta";
-  import { pageMeta } from "$docs/metadata";
+  import { QBreadcrumbsDocs, QBreadcrumbsElDocs } from "#components/breadcrumbs/docs.js";
+  import type { QBreadcrumbsGutterOptions } from "#components/breadcrumbs/props.js";
+  import { QDocs, QDocsSection } from "#docs";
+  import { docsCtx } from "#docs/QDocs.svelte";
+  import { QBreadcrumbs, QBreadcrumbsEl, QIcon, QSelect, QSwitch } from "#lib";
+  import { useMeta } from "#lib/meta.js";
+  import { pageMeta } from "#docs/metadata.js";
   import snippets from "./docs.snippets";
 
   useMeta(

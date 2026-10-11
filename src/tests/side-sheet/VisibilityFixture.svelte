@@ -1,6 +1,6 @@
 <script lang="ts">
   import { untrack } from "svelte";
-  import QSideSheet from "$components/side-sheet/QSideSheet.svelte";
+  import QSideSheet from "#components/side-sheet/QSideSheet.svelte";
 
   let { query = "" }: { query?: string } = $props();
   const params = new URLSearchParams(untrack(() => query));

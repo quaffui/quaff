@@ -4,7 +4,7 @@ The QItem component is generally used inside lists to display related pieces of 
 -->
 
 <script lang="ts" module>
-  import { QContext } from "$utils/context";
+  import { QContext } from "#utils/context.js";
 
   interface QItemContext {
     readonly activeClass: string | undefined;
@@ -15,8 +15,8 @@ The QItem component is generally used inside lists to display related pieces of 
 </script>
 
 <script lang="ts">
-  import { ripple } from "$helpers";
-  import { getRouterInfo, handleActivationKeydown } from "$utils";
+  import { ripple } from "#helpers";
+  import { getRouterInfo, handleActivationKeydown } from "#utils";
   import QSeparator from "../separator/QSeparator.svelte";
   import { listCtx } from "./QList.svelte";
   import type { QItemProps } from "./props";

@@ -16,7 +16,7 @@ pub(super) fn resolve_export(
     visited: &mut BTreeSet<(PathBuf, String)>,
     callback: &mut dyn for<'a> FnMut(ResolvedReference<'a>, &PathResolver<'a>) -> Result<()>,
 ) -> Result<bool> {
-    if !source.starts_with('.') && !source.starts_with('$') {
+    if !source.starts_with(['.', '$', '#']) {
         return Ok(false);
     }
 

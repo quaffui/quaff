@@ -1,4 +1,4 @@
-import type { Labelable, Linkable, QSize, StringWithSuggestions, WithActiveAttrs } from "$utils";
+import type { Labelable, Linkable, QSize, StringWithSuggestions, WithActiveAttrs } from "#utils";
 import type { MaterialSymbol } from "material-symbols";
 import type { Snippet } from "svelte";
 import type { HTMLAttributes } from "svelte/elements";

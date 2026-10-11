@@ -1,10 +1,10 @@
 <script lang="ts">
-  import { QSwitchDocs } from "$components/switch/docs";
-  import { QDocs, QDocsSection } from "$docs";
-  import { docsCtx } from "$docs/QDocs.svelte";
-  import { QBtn, QIcon, QItem, QItemSection, QList, QSwitch } from "$lib";
-  import { useMeta } from "$lib/meta";
-  import { pageMeta } from "$docs/metadata";
+  import { QSwitchDocs } from "#components/switch/docs.js";
+  import { QDocs, QDocsSection } from "#docs";
+  import { docsCtx } from "#docs/QDocs.svelte";
+  import { QBtn, QIcon, QItem, QItemSection, QList, QSwitch } from "#lib";
+  import { useMeta } from "#lib/meta.js";
+  import { pageMeta } from "#docs/metadata.js";
   import snippets from "./docs.snippets";
 
   useMeta(

@@ -1,7 +1,7 @@
 <script lang="ts">
   import { resolve } from "$app/paths";
-  import { useMeta } from "$lib/meta";
-  import { pageMeta } from "$docs/metadata";
+  import { useMeta } from "#lib/meta.js";
+  import { pageMeta } from "#docs/metadata.js";
 
   useMeta(
     pageMeta(

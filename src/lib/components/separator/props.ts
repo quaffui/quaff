@@ -1,4 +1,4 @@
-import type { CssSizeable, QSize } from "$utils";
+import type { CssSizeable, QSize } from "#utils";
 import type { HTMLAttributes } from "svelte/elements";
 
 export type QSeparatorInset = boolean | "left" | "right" | "both";

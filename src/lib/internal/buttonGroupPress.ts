@@ -1,5 +1,5 @@
 import { on } from "svelte/events";
-import { shouldReduceMotion } from "$utils/dom";
+import { shouldReduceMotion } from "#utils/dom.js";
 
 type ButtonWidth = { element: HTMLElement; width: number; labelWidth?: number };
 type PressEvent = PointerEvent | KeyboardEvent;

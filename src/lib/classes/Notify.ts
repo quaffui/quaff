@@ -1,7 +1,7 @@
 import { mount } from "svelte";
-import QNotifyHost from "$internal/QNotifyHost.svelte";
-import { getAppContext } from "$internal/appContext";
-import type { QSnackbarAction, QSnackbarDismissReason } from "$components/snackbar/props";
+import QNotifyHost from "#internal/QNotifyHost.svelte";
+import { getAppContext } from "#internal/appContext.js";
+import type { QSnackbarAction, QSnackbarDismissReason } from "#components/snackbar/props.js";
 
 export interface NotifyOptions {
   /**

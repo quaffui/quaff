@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { QSideSheetDocs } from "$components/side-sheet/docs";
-  import { QDocs, QDocsSection } from "$docs";
-  import { docsCtx } from "$docs/QDocs.svelte";
+  import { QSideSheetDocs } from "#components/side-sheet/docs.js";
+  import { QDocs, QDocsSection } from "#docs";
+  import { docsCtx } from "#docs/QDocs.svelte";
   import {
     QAvatar,
     QBtn,
@@ -14,9 +14,9 @@
     QList,
     QSideSheet,
     QSwitch,
-  } from "$lib";
-  import { useMeta } from "$lib/meta";
-  import { pageMeta } from "$docs/metadata";
+  } from "#lib";
+  import { useMeta } from "#lib/meta.js";
+  import { pageMeta } from "#docs/metadata.js";
   import snippets from "./docs.snippets";
 
   useMeta(

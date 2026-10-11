@@ -4,8 +4,8 @@ Avatars represent people or other entities using images, icons, or initials. Cho
 -->
 
 <script lang="ts">
-  import { useSize } from "$composables/useSize";
-  import type { QEvent } from "$utils/types/quaff";
+  import { useSize } from "#composables/useSize.js";
+  import type { QEvent } from "#utils/types/quaff.js";
   import type { QAvatarProps } from "./props";
 
   // #region:    --- Props

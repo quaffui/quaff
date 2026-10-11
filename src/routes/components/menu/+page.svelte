@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { QMenuDocs } from "$components/menu/docs";
-  import { docsCtx } from "$docs/QDocs.svelte";
+  import { QMenuDocs } from "#components/menu/docs.js";
+  import { docsCtx } from "#docs/QDocs.svelte";
   import {
     QBtn,
     QCard,
@@ -12,10 +12,10 @@
     QItemSection,
     QList,
     QMenu,
-  } from "$lib";
-  import { QDocs, QDocsSection } from "$docs";
-  import { useMeta } from "$lib/meta";
-  import { pageMeta } from "$docs/metadata";
+  } from "#lib";
+  import { QDocs, QDocsSection } from "#docs";
+  import { useMeta } from "#lib/meta.js";
+  import { pageMeta } from "#docs/metadata.js";
   import snippets from "./docs.snippets";
 
   useMeta(

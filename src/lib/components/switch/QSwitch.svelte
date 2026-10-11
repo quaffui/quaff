@@ -4,9 +4,9 @@ Switches turn settings on or off, with changes taking effect immediately. Clear 
 -->
 
 <script lang="ts">
-  import { ripple } from "$helpers";
-  import QIconSnippet from "$internal/QIconSnippet.svelte";
-  import { isActivationKey, type QEvent } from "$utils";
+  import { ripple } from "#helpers";
+  import QIconSnippet from "#internal/QIconSnippet.svelte";
+  import { isActivationKey, type QEvent } from "#utils";
   import type { QSwitchProps } from "./props";
 
   type QSwitchEvent<T extends Event> = QEvent<T, HTMLDivElement>;

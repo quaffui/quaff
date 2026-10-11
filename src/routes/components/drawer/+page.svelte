@@ -1,7 +1,7 @@
 <script lang="ts">
   import { resolve } from "$app/paths";
-  import { QDrawerDocs } from "$components/drawer/docs";
-  import { docsCtx } from "$docs/QDocs.svelte";
+  import { QDrawerDocs } from "#components/drawer/docs.js";
+  import { docsCtx } from "#docs/QDocs.svelte";
   import {
     QBtn,
     QIconBtn,
@@ -15,11 +15,11 @@
     QList,
     QNavGroup,
     QNavItem,
-  } from "$lib";
-  import { QDocs, QDocsSection } from "$docs";
+  } from "#lib";
+  import { QDocs, QDocsSection } from "#docs";
 
-  import { useMeta } from "$lib/meta";
-  import { pageMeta } from "$docs/metadata";
+  import { useMeta } from "#lib/meta.js";
+  import { pageMeta } from "#docs/metadata.js";
   import snippets from "./docs.snippets";
 
   useMeta(

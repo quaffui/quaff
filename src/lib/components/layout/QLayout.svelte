@@ -5,9 +5,9 @@ Layouts arrange content around headers, footers, drawers, and navigation. Config
 
 <script module lang="ts">
   import { onMount } from "svelte";
-  import { navigationCtx } from "$internal/navigationContext";
-  import ContextResetter from "$internal/ContextResetter.svelte";
-  import { QContext } from "$utils/context";
+  import { navigationCtx } from "#internal/navigationContext.js";
+  import ContextResetter from "#internal/ContextResetter.svelte";
+  import { QContext } from "#utils/context.js";
   import type { QLayoutProps } from "./props";
 
   interface AppbarContext {

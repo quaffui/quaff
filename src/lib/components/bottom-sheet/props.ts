@@ -1,4 +1,4 @@
-import type { OptionalModel } from "$utils";
+import type { OptionalModel } from "#utils";
 import type { HTMLAttributes } from "svelte/elements";
 
 export interface QBottomSheetProps extends OptionalModel<boolean>, HTMLAttributes<HTMLElement> {

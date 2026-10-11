@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { docsCtx } from "$docs/QDocs.svelte";
-  import { QCircularProgressDocs, QLinearProgressDocs } from "$components/progress/docs";
+  import { docsCtx } from "#docs/QDocs.svelte";
+  import { QCircularProgressDocs, QLinearProgressDocs } from "#components/progress/docs.js";
   import {
     QBtn,
     QCard,
@@ -8,11 +8,11 @@
     QCardSection,
     QCircularProgress,
     QLinearProgress,
-  } from "$lib";
-  import { QDocs, QDocsSection } from "$docs";
+  } from "#lib";
+  import { QDocs, QDocsSection } from "#docs";
 
-  import { useMeta } from "$lib/meta";
-  import { pageMeta } from "$docs/metadata";
+  import { useMeta } from "#lib/meta.js";
+  import { pageMeta } from "#docs/metadata.js";
   import snippets from "./docs.snippets";
 
   useMeta(

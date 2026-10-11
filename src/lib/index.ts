@@ -27,7 +27,7 @@ export type {
 } from "./components/snackbar/props.js";
 
 // Reexport your entry components here
-export * from "$components";
+export * from "#components";
 
 export { Quaff, QTheme, QScrollObserver, Notify };
 

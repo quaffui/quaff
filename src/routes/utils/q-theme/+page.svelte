@@ -1,13 +1,13 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { QDocs, QDocsSection } from "$docs";
-  import { QBtn, QCodeBlock, QTheme, Quaff } from "$lib";
-  import QSelect from "$components/select/QSelect.svelte";
-  import type { HexValue } from "$utils";
-  import type { ThemeVariant } from "$classes/QTheme.svelte";
-  import QInput from "$components/input/QInput.svelte";
-  import { useMeta } from "$lib/meta";
-  import { pageMeta } from "$docs/metadata";
+  import { QDocs, QDocsSection } from "#docs";
+  import { QBtn, QCodeBlock, QTheme, Quaff } from "#lib";
+  import QSelect from "#components/select/QSelect.svelte";
+  import type { HexValue } from "#utils";
+  import type { ThemeVariant } from "#classes/QTheme.svelte.js";
+  import QInput from "#components/input/QInput.svelte";
+  import { useMeta } from "#lib/meta.js";
+  import { pageMeta } from "#docs/metadata.js";
 
   useMeta(
     pageMeta(

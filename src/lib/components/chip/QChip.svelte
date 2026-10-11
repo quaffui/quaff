@@ -5,10 +5,10 @@ Chips present compact actions, choices, or entered information alongside related
 
 <script lang="ts">
   import { tick } from "svelte";
-  import QAvatar from "$components/avatar/QAvatar.svelte";
-  import QIconSnippet from "$internal/QIconSnippet.svelte";
-  import { ripple } from "$helpers";
-  import { handleActivationKeydown, type QEvent } from "$utils";
+  import QAvatar from "#components/avatar/QAvatar.svelte";
+  import QIconSnippet from "#internal/QIconSnippet.svelte";
+  import { ripple } from "#helpers";
+  import { handleActivationKeydown, type QEvent } from "#utils";
   import type { QChipProps } from "./props";
 
   type QChipMouseEvent = QEvent<MouseEvent, HTMLElement>;

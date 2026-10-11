@@ -1,4 +1,4 @@
-import type { CssValue, QSize, Sizeable } from "$utils";
+import type { CssValue, QSize, Sizeable } from "#utils";
 import type { HTMLAttributes, HTMLImgAttributes } from "svelte/elements";
 import type { MaterialSymbol } from "material-symbols";
 

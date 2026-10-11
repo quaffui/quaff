@@ -1,8 +1,8 @@
 <!-- Renders icons, image sources, or snippets supplied through component props. -->
 <script lang="ts">
-  import QIcon from "$components/icon/QIcon.svelte";
-  import type { QIconProps } from "$components/icon/props";
-  import { extractImgSrc } from "$utils/string";
+  import QIcon from "#components/icon/QIcon.svelte";
+  import type { QIconProps } from "#components/icon/props.js";
+  import { extractImgSrc } from "#utils/string.js";
   import type { MaterialSymbol } from "material-symbols";
   import type { Snippet } from "svelte";
 

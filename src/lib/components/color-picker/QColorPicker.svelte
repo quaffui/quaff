@@ -5,11 +5,11 @@ Color pickers support visual selection and precise HEX or RGB entry. Display the
 
 <script lang="ts">
   import { tick, untrack } from "svelte";
-  import QIconBtn from "$components/button/QIconBtn.svelte";
-  import QInput from "$components/input/QInput.svelte";
-  import { maskValue, unmaskValue } from "$components/input/mask";
-  import QMenu from "$components/menu/QMenu.svelte";
-  import { useI18n } from "$internal/i18n.svelte";
+  import QIconBtn from "#components/button/QIconBtn.svelte";
+  import QInput from "#components/input/QInput.svelte";
+  import { maskValue, unmaskValue } from "#components/input/mask.js";
+  import QMenu from "#components/menu/QMenu.svelte";
+  import { useI18n } from "#internal/i18n.svelte.js";
   import QColorPanel from "./QColorPanel.svelte";
   import { formatColor, parseColor } from "./color";
   import type { QColorPickerProps } from "./props";

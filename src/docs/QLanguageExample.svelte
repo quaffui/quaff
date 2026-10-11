@@ -1,11 +1,11 @@
 <script lang="ts">
-  import { QSelect, type QuaffLanguage } from "$lib";
-  import { initI18n } from "$internal/i18n.svelte";
-  import enUS from "$lib/locales/en-US";
-  import deDE from "$lib/locales/de-DE";
-  import frFR from "$lib/locales/fr-FR";
-  import esES from "$lib/locales/es-ES";
-  import jaJP from "$lib/locales/ja-JP";
+  import { QSelect, type QuaffLanguage } from "#lib";
+  import { initI18n } from "#internal/i18n.svelte.js";
+  import enUS from "#lib/locales/en-US.js";
+  import deDE from "#lib/locales/de-DE.js";
+  import frFR from "#lib/locales/fr-FR.js";
+  import esES from "#lib/locales/es-ES.js";
+  import jaJP from "#lib/locales/ja-JP.js";
   import type { Snippet } from "svelte";
 
   let { children }: { children: Snippet } = $props();

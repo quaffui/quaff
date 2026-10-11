@@ -1,11 +1,11 @@
 <script lang="ts">
-  import { QDialogDocs } from "$components/dialog/docs";
-  import type { QDialogPositionOptions } from "$components/dialog/props";
-  import { QDocs, QDocsSection } from "$docs";
-  import { docsCtx } from "$docs/QDocs.svelte";
-  import { pageMeta } from "$docs/metadata";
-  import { QBtn, QDialog, QIcon, QInput, QSelect } from "$lib";
-  import { useMeta } from "$lib/meta";
+  import { QDialogDocs } from "#components/dialog/docs.js";
+  import type { QDialogPositionOptions } from "#components/dialog/props.js";
+  import { QDocs, QDocsSection } from "#docs";
+  import { docsCtx } from "#docs/QDocs.svelte";
+  import { pageMeta } from "#docs/metadata.js";
+  import { QBtn, QDialog, QIcon, QInput, QSelect } from "#lib";
+  import { useMeta } from "#lib/meta.js";
   import snippets from "./docs.snippets";
 
   useMeta(

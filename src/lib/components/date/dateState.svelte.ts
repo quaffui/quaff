@@ -1,4 +1,4 @@
-import { shouldReduceMotion } from "$utils";
+import { shouldReduceMotion } from "#utils";
 import {
   addCalendarMonths,
   compareCalendarDates,

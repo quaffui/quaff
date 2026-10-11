@@ -4,7 +4,7 @@ Radio buttons select one option from a visible set of alternatives. Related butt
 -->
 
 <script lang="ts">
-  import { ripple } from "$helpers";
+  import { ripple } from "#helpers";
   import type { QRadioProps } from "./props";
 
   // #region:    --- Props

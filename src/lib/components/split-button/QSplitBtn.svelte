@@ -4,12 +4,12 @@ Split buttons pair a primary action with a menu of alternatives. Keep the common
 -->
 
 <script lang="ts">
-  import QBtn from "$components/button/QBtn.svelte";
-  import QIconBtn from "$components/button/QIconBtn.svelte";
-  import QIcon from "$components/icon/QIcon.svelte";
-  import QMenu from "$components/menu/QMenu.svelte";
-  import { buttonGroupCtx } from "$components/button-group/QBtnGroup.svelte";
-  import { createMenuTrigger } from "$internal/menuTrigger.svelte";
+  import QBtn from "#components/button/QBtn.svelte";
+  import QIconBtn from "#components/button/QIconBtn.svelte";
+  import QIcon from "#components/icon/QIcon.svelte";
+  import QMenu from "#components/menu/QMenu.svelte";
+  import { buttonGroupCtx } from "#components/button-group/QBtnGroup.svelte";
+  import { createMenuTrigger } from "#internal/menuTrigger.svelte.js";
   import type { QSplitBtnProps } from "./props";
 
   // #region:    --- Props

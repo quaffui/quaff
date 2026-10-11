@@ -1,5 +1,5 @@
-import { defaultDateLabels } from "$components/date/props.js";
-import { defaultTimeLabels } from "$components/time/props.js";
+import { defaultDateLabels } from "#components/date/props.js";
+import { defaultTimeLabels } from "#components/time/props.js";
 
 import type { QuaffLanguage } from "./types.js";
 

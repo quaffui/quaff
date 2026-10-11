@@ -4,8 +4,8 @@ Icon buttons present familiar actions in a compact form. They can trigger an act
 -->
 
 <script lang="ts">
-  import { buttonGroupCtx } from "$components/button-group/QBtnGroup.svelte";
-  import { useQuaffConfig } from "$internal/quaffConfig.svelte";
+  import { buttonGroupCtx } from "#components/button-group/QBtnGroup.svelte";
+  import { useQuaffConfig } from "#internal/quaffConfig.svelte.js";
   import QBtn from "./QBtn.svelte";
   import type { QIconBtnProps } from "./props";
 

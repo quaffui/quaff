@@ -5,14 +5,14 @@ Select fields let users choose one or more values from a dropdown. Typing and fi
 
 <script lang="ts">
   import { onDestroy, tick } from "svelte";
-  import QFieldMessage from "$internal/QFieldMessage.svelte";
-  import { useI18n } from "$internal/i18n.svelte";
-  import { isActivationKey, type QEvent } from "$utils";
-  import QIcon from "$components/icon/QIcon.svelte";
-  import QItem from "$components/list/QItem.svelte";
-  import QItemSection from "$components/list/QItemSection.svelte";
-  import QList from "$components/list/QList.svelte";
-  import QMenu from "$components/menu/QMenu.svelte";
+  import QFieldMessage from "#internal/QFieldMessage.svelte";
+  import { useI18n } from "#internal/i18n.svelte.js";
+  import { isActivationKey, type QEvent } from "#utils";
+  import QIcon from "#components/icon/QIcon.svelte";
+  import QItem from "#components/list/QItem.svelte";
+  import QItemSection from "#components/list/QItemSection.svelte";
+  import QList from "#components/list/QList.svelte";
+  import QMenu from "#components/menu/QMenu.svelte";
   import { createFilterRunner, getFilteredOptions, getInputValue } from "./filter";
   import {
     doValuesMatch,

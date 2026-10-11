@@ -5,8 +5,8 @@ A single breadcrumb element to be used within a QBreadcrumbs container.
 
 <script lang="ts">
   import { page } from "$app/state";
-  import { getRouterInfo } from "$utils/router";
-  import QIcon from "$components/icon/QIcon.svelte";
+  import { getRouterInfo } from "#utils/router.js";
+  import QIcon from "#components/icon/QIcon.svelte";
   import { breadcrumbsCtx } from "./QBreadcrumbs.svelte";
   import type { MaterialSymbol } from "material-symbols";
   import type { QBreadcrumbsElProps } from "./props";

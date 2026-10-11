@@ -1,7 +1,7 @@
 <script lang="ts">
-  import QIconBtn from "$components/button/QIconBtn.svelte";
-  import QInput from "$components/input/QInput.svelte";
-  import { isActivationKey, type QEvent } from "$utils";
+  import QIconBtn from "#components/button/QIconBtn.svelte";
+  import QInput from "#components/input/QInput.svelte";
+  import { isActivationKey, type QEvent } from "#utils";
   import type { QDateFocus } from "./dateFocus";
   import type QDateState from "./dateState.svelte";
   import type { QDateInputProps } from "./props";

@@ -1,12 +1,12 @@
 <script lang="ts">
   import { asset } from "$app/paths";
-  import { QAvatarDocs } from "$components/avatar/docs";
-  import type { QAvatarProps } from "$components/avatar/props";
-  import { docsCtx } from "$docs/QDocs.svelte";
-  import { QAvatar, QBtn, QIcon, QSelect, QSwitch } from "$lib";
-  import { QDocs, QDocsSection } from "$docs";
-  import { useMeta } from "$lib/meta";
-  import { pageMeta } from "$docs/metadata";
+  import { QAvatarDocs } from "#components/avatar/docs.js";
+  import type { QAvatarProps } from "#components/avatar/props.js";
+  import { docsCtx } from "#docs/QDocs.svelte";
+  import { QAvatar, QBtn, QIcon, QSelect, QSwitch } from "#lib";
+  import { QDocs, QDocsSection } from "#docs";
+  import { useMeta } from "#lib/meta.js";
+  import { pageMeta } from "#docs/metadata.js";
   import snippets from "./docs.snippets";
 
   useMeta(

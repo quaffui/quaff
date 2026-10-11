@@ -15,21 +15,6 @@ export default defineConfig({
     sveltekit({
       preprocess: [preprocessContext(), vitePreprocess(), preprocessClasses("Q")],
       adapter: adapter(),
-      alias: {
-        $lib: path.join(root, "src/lib"),
-        ...Object.fromEntries(
-          [
-            "components",
-            "classes",
-            "composables",
-            "utils",
-            "css",
-            "stores",
-            "helpers",
-            "internal",
-          ].map((name) => [`$${name}`, path.join(root, "src/lib", name)])
-        ),
-      },
     }),
     // Match Quaff's CSS build after SvelteKit applies its defaults.
     {
@@ -37,5 +22,12 @@ export default defineConfig({
       config: { order: "post", handler: () => ({ build: { cssMinify: "esbuild" } }) },
     },
   ],
+  resolve: {
+    alias: {
+      $lib: path.join(root, "src/lib"),
+      $components: path.join(root, "src/lib/components"),
+      $css: path.join(root, "src/lib/css"),
+    },
+  },
   cacheDir: ".vite",
 });

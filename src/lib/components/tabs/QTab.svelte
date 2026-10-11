@@ -4,9 +4,9 @@ Tabs allow creating navigational tabs, enabling users to switch between differen
 -->
 
 <script lang="ts">
-  import { ripple } from "$helpers";
-  import { getRouterInfo, handleActivationKeydown, type QEvent } from "$utils";
-  import QIconSnippet from "$internal/QIconSnippet.svelte";
+  import { ripple } from "#helpers";
+  import { getRouterInfo, handleActivationKeydown, type QEvent } from "#utils";
+  import QIconSnippet from "#internal/QIconSnippet.svelte";
   import { tabsCtx } from "./QTabs.svelte";
   import type { QTabProps } from "./props";
 

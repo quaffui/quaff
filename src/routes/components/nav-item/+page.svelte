@@ -1,11 +1,11 @@
 <script lang="ts">
   import { resolve } from "$app/paths";
-  import { QNavGroupDocs, QNavItemDocs } from "$components/nav-item/docs";
-  import { QDocs, QDocsSection } from "$docs";
-  import { docsCtx } from "$docs/QDocs.svelte";
-  import { QDrawer, QIcon, QLayout, QList, QNavGroup, QNavItem, QSwitch } from "$lib";
-  import { useMeta } from "$lib/meta";
-  import { pageMeta } from "$docs/metadata";
+  import { QNavGroupDocs, QNavItemDocs } from "#components/nav-item/docs.js";
+  import { QDocs, QDocsSection } from "#docs";
+  import { docsCtx } from "#docs/QDocs.svelte";
+  import { QDrawer, QIcon, QLayout, QList, QNavGroup, QNavItem, QSwitch } from "#lib";
+  import { useMeta } from "#lib/meta.js";
+  import { pageMeta } from "#docs/metadata.js";
   import snippets from "./docs.snippets";
 
   useMeta(

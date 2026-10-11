@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { QLayoutDocs } from "$components/layout/docs";
+  import { QLayoutDocs } from "#components/layout/docs.js";
   import {
     QBtn,
     QCard,
@@ -18,12 +18,12 @@
     QRailbar,
     QSwitch,
     Quaff,
-  } from "$lib";
-  import { QDocs, QDocsSection } from "$docs";
-  import type { QLayoutProps } from "$components/layout/props";
-  import { docsCtx } from "$docs/QDocs.svelte";
-  import { useMeta } from "$lib/meta";
-  import { pageMeta } from "$docs/metadata";
+  } from "#lib";
+  import { QDocs, QDocsSection } from "#docs";
+  import type { QLayoutProps } from "#components/layout/props.js";
+  import { docsCtx } from "#docs/QDocs.svelte";
+  import { useMeta } from "#lib/meta.js";
+  import { pageMeta } from "#docs/metadata.js";
   import { snippet } from "./docs.snippets";
 
   useMeta(

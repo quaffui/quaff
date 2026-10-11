@@ -98,7 +98,7 @@ fn render_component(
         (primary, Reverse(interface.name.clone()))
     });
     let mut source = format!(
-        "// AUTO GENERATED FILE - DO NOT MODIFY OR DELETE\n\n// @quaffHash {hash}\n\nimport type {{ QComponentDocs }} from \"$docs\";\n\n"
+        "// AUTO GENERATED FILE - DO NOT MODIFY OR DELETE\n\n// @quaffHash {hash}\n\nimport type {{ QComponentDocs }} from \"#docs\";\n\n"
     );
 
     for interface in component.interfaces {

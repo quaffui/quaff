@@ -1,6 +1,6 @@
 import { render } from "svelte/server";
 import { describe, expect, it, vi } from "vitest";
-import QDrawer from "$components/drawer/QDrawer.svelte";
+import QDrawer from "#components/drawer/QDrawer.svelte";
 
 vi.mock("$app/state", () => ({ navigating: { type: null } }));
 

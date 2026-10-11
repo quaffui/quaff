@@ -7,7 +7,9 @@ use super::PathResolver;
 impl PathResolver<'_> {
     /// Resolves a local TypeScript module, including Quaff aliases and directory indexes.
     pub fn resolve(&self, path_str: &str) -> Result<PathBuf> {
-        if !path_str.starts_with('$') && !path_str.starts_with("./") && !path_str.starts_with("../")
+        if !path_str.starts_with(['$', '#'])
+            && !path_str.starts_with("./")
+            && !path_str.starts_with("../")
         {
             return Err(format!("Cannot resolve external module: {path_str}").into());
         }
@@ -27,7 +29,7 @@ impl PathResolver<'_> {
         path_str: &str,
         lib_root: Option<&Path>,
     ) -> Result<Option<PathBuf>> {
-        let path = if let Some(alias) = path_str.strip_prefix('$') {
+        let path = if let Some(alias) = path_str.strip_prefix(['$', '#']) {
             let lib = lib_root
                 .or_else(|| self.0.ancestors().find(|path| path.ends_with("lib")))
                 .ok_or_else(|| format!("Could not find lib from {}", self.0.display()))?;

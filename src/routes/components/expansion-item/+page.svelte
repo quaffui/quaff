@@ -1,6 +1,6 @@
 <script lang="ts">
   import { resolve } from "$app/paths";
-  import { QExpansionItemDocs } from "$components/expansion-item/docs";
+  import { QExpansionItemDocs } from "#components/expansion-item/docs.js";
   import {
     QBtn,
     QCheckbox,
@@ -10,11 +10,11 @@
     QList,
     QSelect,
     QSwitch,
-  } from "$lib";
-  import { QDocs, QDocsSection } from "$docs";
-  import { docsCtx } from "$docs/QDocs.svelte";
-  import { useMeta } from "$lib/meta";
-  import { pageMeta } from "$docs/metadata";
+  } from "#lib";
+  import { QDocs, QDocsSection } from "#docs";
+  import { docsCtx } from "#docs/QDocs.svelte";
+  import { useMeta } from "#lib/meta.js";
+  import { pageMeta } from "#docs/metadata.js";
   import snippets from "./docs.snippets";
 
   useMeta(
