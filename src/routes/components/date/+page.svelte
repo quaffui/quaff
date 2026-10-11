@@ -373,7 +373,7 @@
           <p>
             Switch languages to translate the picker labels, actions, and validation messages. See <a
               class="q-docs-link"
-              href={resolve("/utils/quaff#language", {})}>available locales</a
+              href={resolve("/utils/quaff#language")}>available locales</a
             >
             for setup instructions.
           </p>

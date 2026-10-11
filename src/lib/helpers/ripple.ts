@@ -1,6 +1,6 @@
-import { Attachment } from "svelte/attachments";
 import { on } from "svelte/events";
 import { isActivationKey } from "$utils";
+import type { Attachment } from "svelte/attachments";
 
 interface RippleOptions {
   /**

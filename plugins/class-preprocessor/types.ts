@@ -1,4 +1,4 @@
-import { Node as EstreeNode, NodeMap } from "estree";
+import type { Node as EstreeNode, NodeMap } from "estree";
 import type { AST } from "svelte/compiler";
 
 export type Script = NonNullable<AST.Root["instance"]>;

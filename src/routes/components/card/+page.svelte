@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { base } from "$app/paths";
+  import { asset } from "$app/paths";
   import { QCardActionsDocs, QCardDocs, QCardSectionDocs } from "$components/card/docs";
   import type { QCardActionsProps } from "$components/card/props";
   import { docsCtx } from "$docs/QDocs.svelte";
@@ -161,7 +161,7 @@
             <div class="col-12 col-sm-4">
               <img
                 class="recipe-image"
-                src={`${base}/lime-mint-drink.jpg`}
+                src={asset("lime-mint-drink.jpg")}
                 alt="A green drink garnished with fresh mint and a slice of lime"
                 width="1229"
                 height="1536"

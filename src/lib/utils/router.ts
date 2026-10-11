@@ -4,6 +4,9 @@ import type { Linkable, WithActiveAttrs } from "./types";
 
 interface RouterProps extends Linkable, WithActiveAttrs {}
 
+// Library links can point to paths outside the current app's generated route types.
+const resolvePath = resolve as (pathname: string, params?: Record<string, string>) => string;
+
 export function isRouteActive(route?: string) {
   if (!route) {
     return;
@@ -20,7 +23,7 @@ export function isRouteActive(route?: string) {
 export function getRouterInfo<T extends RouterProps>(props: T) {
   const href = props.to || props.href;
   const hasLink = href !== undefined;
-  const resolvedHref = href?.startsWith("/") ? resolve(href, {}) : href;
+  const resolvedHref = href?.startsWith("/") ? resolvePath(href, {}) : href;
   const isActive = isRouteActive(resolvedHref);
 
   const linkAttributes = {

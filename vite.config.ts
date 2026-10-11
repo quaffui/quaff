@@ -1,11 +1,28 @@
 import path from "path";
+import adapter from "@sveltejs/adapter-static";
 import { sveltekit } from "@sveltejs/kit/vite";
+import { vitePreprocess } from "@sveltejs/vite-plugin-svelte";
 import { defineConfig } from "vitest/config";
+import { preprocessClasses, preprocessContext } from "./plugins/dist/index.js";
 import docgenPlugin from "./src/dev/docgenPlugin.ts";
 import { createCssMinifierPlugin } from "./src/lib/plugins/assets.ts";
 import { DOCS_ASSET_OPTIONS } from "./src/dev/docsAssets.ts";
 import { createDocsAssetsPlugin } from "./src/dev/docsAssetsPlugin.ts";
 import type { PluginOption } from "vite";
+
+const aliases = {
+  $lib: path.resolve(import.meta.dirname, "./src/lib"),
+  $components: path.resolve(import.meta.dirname, "./src/lib/components"),
+  $classes: path.resolve(import.meta.dirname, "./src/lib/classes"),
+  $composables: path.resolve(import.meta.dirname, "./src/lib/composables"),
+  $utils: path.resolve(import.meta.dirname, "./src/lib/utils"),
+  $css: path.resolve(import.meta.dirname, "./src/lib/css"),
+  $stores: path.resolve(import.meta.dirname, "./src/lib/stores"),
+  $helpers: path.resolve(import.meta.dirname, "./src/lib/helpers"),
+  $docgen: path.resolve(import.meta.dirname, "./docgen"),
+  $internal: path.resolve(import.meta.dirname, "./src/lib/internal"),
+  $docs: path.resolve(import.meta.dirname, "./src/docs"),
+};
 
 export default defineConfig(async ({ command, mode }) => {
   // SvelteKit also loads build config during sync, before dist exists.
@@ -26,7 +43,19 @@ export default defineConfig(async ({ command, mode }) => {
     plugins.push(cssMinifierPlugin);
   }
 
-  plugins.push(sveltekit());
+  plugins.push(
+    sveltekit({
+      preprocess: [preprocessContext(), vitePreprocess(), preprocessClasses("Q")],
+      adapter: adapter({
+        pages: "build",
+        assets: "build",
+        fallback: "404.html",
+        precompress: true,
+      }),
+      prerender: { entries: ["*"] },
+      alias: aliases,
+    })
+  );
 
   return {
     plugins,
@@ -38,17 +67,7 @@ export default defineConfig(async ({ command, mode }) => {
         ...(!shouldOptimizeDocs && {
           "virtual:quaff.css": path.resolve(import.meta.dirname, "./src/dev/docsStyles.ts"),
         }),
-        $lib: path.resolve(import.meta.dirname, "./src/lib"),
-        $components: path.resolve(import.meta.dirname, "./src/lib/components"),
-        $classes: path.resolve(import.meta.dirname, "./src/lib/classes"),
-        $composables: path.resolve(import.meta.dirname, "./src/lib/composables"),
-        $utils: path.resolve(import.meta.dirname, "./src/lib/utils"),
-        $css: path.resolve(import.meta.dirname, "./src/lib/css"),
-        $stores: path.resolve(import.meta.dirname, "./src/lib/stores"),
-        $helpers: path.resolve(import.meta.dirname, "./src/lib/helpers"),
-        $docgen: path.resolve(import.meta.dirname, "./docgen"),
-        $internal: path.resolve(import.meta.dirname, "./src/lib/internal"),
-        $docs: path.resolve(import.meta.dirname, "./src/docs"),
+        ...aliases,
       },
     },
   };

@@ -293,9 +293,9 @@
     <QDocsSection title="Keep Navigation Predictable" noCode>
       {#snippet sectionDescription()}
         Use the bar for destinations, with actions inside their content. For wider layouts, consider
-        <a class="q-docs-link" href={resolve("/components/railbar", {})}>QRailbar</a>; for drawer
+        <a class="q-docs-link" href={resolve("/components/railbar")}>QRailbar</a>; for drawer
         destinations and expandable groups, see
-        <a class="q-docs-link" href={resolve("/components/nav-item", {})}>QNavItem</a>.
+        <a class="q-docs-link" href={resolve("/components/nav-item")}>QNavItem</a>.
       {/snippet}
     </QDocsSection>
     <QDocsSection title="Accessibility" noCode>

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { base } from "$app/paths";
+  import { asset } from "$app/paths";
   import { QAvatarDocs } from "$components/avatar/docs";
   import type { QAvatarProps } from "$components/avatar/props";
   import { docsCtx } from "$docs/QDocs.svelte";
@@ -77,7 +77,7 @@
     <div
       class="station-preview full-width overflow-auto bg-surface-container-low text-on-surface text-center"
     >
-      <QAvatar src={`${base}/avatar-research-vessel.svg`} size="80px" />
+      <QAvatar src={asset("avatar-research-vessel.svg")} size="80px" />
       <div class="label-medium q-mt-lg">TIDEPOOL FIELD STATION</div>
       <h2 class="title-large q-mt-xs q-mb-sm">A small crew. A big blue world.</h2>
       <div
@@ -141,7 +141,7 @@
 
         <div class="identity-grid q-gap-md">
           <div class="identity-card flex no-wrap items-center q-gap-md bg-surface-container-low">
-            <QAvatar src={`${base}/avatar-research-vessel.svg`} size="xl" />
+            <QAvatar src={asset("avatar-research-vessel.svg")} size="xl" />
             <div>
               <h3 class="title-medium q-ma-none">RV Tern</h3>
               <p class="body-medium q-mt-xs q-mb-none">Our floating field lab</p>
@@ -186,7 +186,7 @@
               <QAvatar
                 {size}
                 {shape}
-                src={showImage ? `${base}/avatar-research-vessel.svg` : undefined}
+                src={showImage ? asset("avatar-research-vessel.svg") : undefined}
                 aria-hidden="true">RT</QAvatar
               >
               <div>
@@ -213,7 +213,7 @@
             video
             size="80px"
             shape="top-left-round"
-            sources={[{ src: `${base}/cocktail.mp4`, type: "video/mp4" }]}
+            sources={[{ src: asset("cocktail.mp4"), type: "video/mp4" }]}
             bind:paused
             aria-hidden="true"
           >
@@ -248,7 +248,7 @@
         <div class="identity-grid q-gap-md">
           <div class="identity-card flex no-wrap items-center q-gap-md bg-surface-container-low">
             <QAvatar
-              src={`${base}/avatar-research-vessel.svg`}
+              src={asset("avatar-research-vessel.svg")}
               size="lg"
               alt="Illustration of a yellow research boat at sea"
             />

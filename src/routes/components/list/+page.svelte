@@ -1,6 +1,6 @@
 <script lang="ts">
   import { tick } from "svelte";
-  import { base } from "$app/paths";
+  import { asset } from "$app/paths";
   import { QItemDocs, QItemSectionDocs, QListDocs } from "$components/list/docs";
   import { docsCtx } from "$docs/QDocs.svelte";
   import { pageMeta } from "$docs/metadata";
@@ -562,7 +562,7 @@
             <QItem role="listitem">
               <QItemSection type="thumbnail">
                 <img
-                  src={base + "/cocktail-close-up.jpg"}
+                  src={asset("cocktail-close-up.jpg")}
                   alt=""
                   width="56"
                   height="56"
@@ -579,7 +579,7 @@
             <QItem role="listitem">
               <QItemSection type="thumbnail">
                 <img
-                  src={base + "/iced-lime-drink.jpg"}
+                  src={asset("iced-lime-drink.jpg")}
                   alt=""
                   width="56"
                   height="56"

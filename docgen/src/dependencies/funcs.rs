@@ -65,7 +65,7 @@ pub(super) fn scan_interfaces(source: &str) -> Vec<String> {
     let allocator = Allocator::default();
     let parsed = Parser::new(&allocator, source, SourceType::ts()).parse();
 
-    if !parsed.panicked {
+    if !parsed.fatal_error {
         return parsed
             .program
             .body

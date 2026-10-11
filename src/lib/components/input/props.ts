@@ -1,4 +1,4 @@
-import { Disableable, Labelable, OptionalModel } from "$utils";
+import type { Disableable, Labelable, OptionalModel } from "$utils";
 import type { Snippet } from "svelte";
 import type { HTMLAttributes, HTMLInputAttributes } from "svelte/elements";
 import type { QInputFillMask } from "./mask";

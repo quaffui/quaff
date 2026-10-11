@@ -1,4 +1,4 @@
-import { Disableable, Labelable, OptionalModel } from "$utils";
+import type { Disableable, Labelable, OptionalModel } from "$utils";
 import type { HTMLAttributes } from "svelte/elements";
 
 export interface QCheckboxProps

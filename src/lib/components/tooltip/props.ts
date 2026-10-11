@@ -1,6 +1,6 @@
-import { Snippet } from "svelte";
-import { Attachment } from "svelte/attachments";
-import { OptionalModel } from "$utils";
+import type { OptionalModel } from "$utils";
+import type { Snippet } from "svelte";
+import type { Attachment } from "svelte/attachments";
 import type { HTMLAttributes } from "svelte/elements";
 
 export type QTooltipPosition =

@@ -1,5 +1,5 @@
 import type { UseAlignProps } from "$composables";
-import { Borderable } from "$utils";
+import type { Borderable } from "$utils";
 import type { HTMLAttributes } from "svelte/elements";
 
 export type QCardFillColors = "primary" | "secondary" | "tertiary";

@@ -16,7 +16,6 @@ it("prerenders loaded page metadata into the static HTML head", async () => {
   try {
     await cp(fixture, directory, { recursive: true });
     // Enable the fixture configs only in the temporary project.
-    await rename(path.join(directory, "svelteConfig.js"), path.join(directory, "svelte.config.js"));
     await rename(path.join(directory, "viteConfig.js"), path.join(directory, "vite.config.js"));
     await symlink(
       path.join(projectRoot, "node_modules"),

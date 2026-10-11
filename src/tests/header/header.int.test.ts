@@ -26,7 +26,6 @@ let baseUrl: string;
 beforeAll(async () => {
   directory = await mkdtemp(path.join(tmpdir(), "quaff-header-"));
   await cp(fixture, directory, { recursive: true });
-  await rename(path.join(directory, "svelteConfig.js"), path.join(directory, "svelte.config.js"));
   await rename(path.join(directory, "viteConfig.js"), path.join(directory, "vite.config.js"));
   await symlink(
     path.join(projectRoot, "node_modules"),
