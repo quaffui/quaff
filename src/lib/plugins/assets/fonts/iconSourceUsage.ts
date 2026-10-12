@@ -53,6 +53,14 @@ const ICON_CLASS_PATTERN =
 const SCRIPT_WRAPPER_LENGTH = '<script lang="ts">\n'.length;
 const PRIVATE_GLYPH_PATTERN = /[\uE000-\uF8FF]/;
 const COMPONENTS_BY_CLASS = createComponentClassIndex();
+const MAX_PROJECTION_DEPTH = 12;
+const ARRAY_INDEX_PATTERN = /^(?:0|[1-9]\d*)$/;
+const ARRAY_SELECTION_RESULTS: ReadonlyMap<string, "array" | "item"> = new Map([
+  ["filter", "array"],
+  ["find", "item"],
+  ["slice", "array"],
+  ["at", "item"],
+]);
 
 /** Collect icon consumers, leaving arbitrary runtime values to the explicit safelist. */
 export async function collectIconSourceUsage(
@@ -94,6 +102,9 @@ export async function collectIconSourceUsage(
 
 class SourceIconCollector {
   private readonly evaluator: ReturnType<typeof createFiniteIconEvaluator>;
+  private readonly templateSources: WeakMap<SyntaxNode, SyntaxNode>;
+  private readonly escapingExpressions: (SyntaxNode | undefined)[];
+  private readonly escapedBindings = new WeakMap<SyntaxNode, boolean>();
   private readonly imports = new Map<unknown, ImportTarget>();
   private readonly iconClasses = new Set<string>();
   private readonly offset: number;
@@ -106,6 +117,7 @@ class SourceIconCollector {
     private readonly isLibrary: boolean
   ) {
     this.evaluator = createFiniteIconEvaluator(root);
+    this.templateSources = collectTemplateSources(this.evaluator.nodes);
     this.offset = /\.(?:svelte|html)$/.test(file) ? 0 : SCRIPT_WRAPPER_LENGTH;
 
     if (root.css) {
@@ -113,6 +125,7 @@ class SourceIconCollector {
     }
 
     this.collectImportsAndStyles();
+    this.escapingExpressions = this.evaluator.nodes.flatMap((node) => this.readNodeEscapes(node));
   }
 
   collect() {
@@ -252,7 +265,7 @@ class SourceIconCollector {
     path: readonly string[],
     depth = 0
   ): FiniteIconValues {
-    if (!expression || depth > 12) {
+    if (!expression || depth > MAX_PROJECTION_DEPTH) {
       return { values: new Set(), complete: false };
     }
 
@@ -271,11 +284,17 @@ class SourceIconCollector {
       return this.projectIdentifier(expression, context, path, depth);
     }
 
-    if (expression.type === "ConditionalExpression") {
-      return mergeIconValues([
-        read(expression.consequent as SyntaxNode),
-        read(expression.alternate as SyntaxNode),
-      ]);
+    if (["ConditionalExpression", "LogicalExpression"].includes(expression.type)) {
+      const branches =
+        expression.type === "ConditionalExpression"
+          ? [expression.consequent, expression.alternate]
+          : [expression.left, expression.right];
+
+      return mergeIconValues(branches.map((branch) => read(branch as SyntaxNode)));
+    }
+
+    if (expression.type === "CallExpression") {
+      return this.projectCall(expression, context, path, depth);
     }
 
     if (expression.type === "MemberExpression") {
@@ -286,14 +305,8 @@ class SourceIconCollector {
       return this.evaluator.getValues(expression, context);
     }
 
-    const [field, ...rest] = path;
-
-    if (expression.type === "ArrayExpression" && field === "*") {
-      return mergeIconValues(
-        (expression.elements as (SyntaxNode | null)[])
-          .filter((element): element is SyntaxNode => !!element)
-          .map((element) => read(element, rest))
-      );
+    if (expression.type === "ArrayExpression") {
+      return this.projectArray(expression, context, path, depth);
     }
 
     if (expression.type === "ObjectExpression") {
@@ -301,6 +314,142 @@ class SourceIconCollector {
     }
 
     return { values: new Set(), complete: false };
+  }
+
+  private projectArray(
+    expression: SyntaxNode,
+    context: SyntaxNode,
+    path: readonly string[],
+    depth: number
+  ): FiniteIconValues {
+    const [field, ...rest] = path;
+    const elements = expression.elements as (SyntaxNode | null)[];
+    const hasSpread = elements.some((element) => element?.type === "SpreadElement");
+    const isIndex = ARRAY_INDEX_PATTERN.test(field);
+
+    if (isIndex && !hasSpread) {
+      const value = elements[Number(field)];
+
+      return value
+        ? this.projectValues(value, value, rest, depth + 1)
+        : { values: new Set(), complete: false };
+    }
+
+    if (field !== "*" && !isIndex) {
+      return { values: new Set(), complete: false };
+    }
+
+    const projectedValues = elements.flatMap(
+      (element) => this.projectArrayElement(element, context, rest, depth) ?? []
+    );
+
+    return mergeIconValues(projectedValues, !isIndex);
+  }
+
+  private projectArrayElement(
+    element: SyntaxNode | null,
+    context: SyntaxNode,
+    path: readonly string[],
+    depth: number
+  ): FiniteIconValues | undefined {
+    if (!element) {
+      return;
+    }
+
+    const isSpread = element.type === "SpreadElement";
+    const value = isSpread ? (element.argument as SyntaxNode) : element;
+
+    if (isSpread && !this.isArraySource(value, value ?? context, depth + 1)) {
+      return { values: new Set(), complete: false };
+    }
+
+    return this.projectValues(value, value ?? context, isSpread ? ["*", ...path] : path, depth + 1);
+  }
+
+  private projectCall(
+    expression: SyntaxNode,
+    context: SyntaxNode,
+    path: readonly string[],
+    depth: number
+  ): FiniteIconValues {
+    const callee = expression.callee as SyntaxNode;
+    const argumentNodes = expression.arguments as SyntaxNode[];
+
+    if (this.isReactiveCall(callee, context)) {
+      const value = argumentNodes[0];
+      const result = this.projectValues(value, value ?? context, path, depth + 1);
+
+      return { ...result, complete: result.complete && callee.name !== "$state" };
+    }
+
+    const selection = readArraySelection(expression);
+
+    if (!selection || !this.isArraySource(selection.receiver, context, depth + 1)) {
+      return path.length
+        ? { values: new Set(), complete: false }
+        : this.evaluator.getValues(expression, context);
+    }
+
+    const { isArrayResult, receiver } = selection;
+    const sourcePath = isArrayResult ? ["*", ...path.slice(1)] : ["*", ...path];
+    const result = this.projectValues(receiver, receiver ?? context, sourcePath, depth + 1);
+
+    // Select from the source candidates; callbacks and method overrides remain unverified.
+    return { ...result, complete: false };
+  }
+
+  private isArraySource(
+    expression: SyntaxNode | undefined,
+    context: SyntaxNode,
+    depth: number
+  ): boolean {
+    if (!expression || depth > MAX_PROJECTION_DEPTH) {
+      return false;
+    }
+
+    if (expression.type === "ArrayExpression") {
+      return true;
+    }
+
+    let value: SyntaxNode | undefined;
+
+    if (TYPE_WRAPPERS.has(expression.type)) {
+      value = expression.expression as SyntaxNode;
+    } else if (expression.type === "Identifier") {
+      const binding = this.evaluator.getBinding(String(expression.name), context);
+      const declaration = binding && this.evaluator.parents.get(binding);
+
+      if (
+        declaration?.type !== "VariableDeclarator" ||
+        this.evaluator.parents.get(declaration)?.kind !== "const"
+      ) {
+        return false;
+      }
+
+      value = declaration.init as SyntaxNode;
+    } else if (expression.type === "CallExpression") {
+      const callee = expression.callee as SyntaxNode;
+      value = this.isReactiveCall(callee, context)
+        ? (expression.arguments as SyntaxNode[])[0]
+        : undefined;
+      const selection = readArraySelection(expression);
+
+      if (selection?.isArrayResult) {
+        value = selection.receiver;
+      }
+    }
+
+    return !!value && this.isArraySource(value, value, depth + 1);
+  }
+
+  private isReactiveCall(callee: SyntaxNode, context: SyntaxNode) {
+    const name = String(callee.name);
+
+    return (
+      callee.type === "Identifier" &&
+      ["$derived", "$state"].includes(name) &&
+      !this.evaluator.getBinding(name, context)
+    );
   }
 
   private projectIdentifier(
@@ -322,8 +471,10 @@ class SourceIconCollector {
       return iteration;
     }
 
-    if (!path.length) {
-      return this.evaluator.getValues(expression, context);
+    const finiteValues = path.length ? undefined : this.evaluator.getValues(expression, context);
+
+    if (finiteValues?.complete) {
+      return finiteValues;
     }
 
     if (
@@ -331,7 +482,7 @@ class SourceIconCollector {
       declaration?.type !== "VariableDeclarator" ||
       this.evaluator.parents.get(declaration)?.kind !== "const"
     ) {
-      return { values: new Set(), complete: false };
+      return finiteValues ?? { values: new Set(), complete: false };
     }
 
     const value = declaration.init as SyntaxNode | undefined;
@@ -341,7 +492,7 @@ class SourceIconCollector {
       !!owner && this.evaluator.parents.get(owner)?.type === "ExportNamedDeclaration";
 
     return {
-      ...result,
+      values: new Set([...(finiteValues?.values ?? []), ...result.values]),
       complete: result.complete && !this.isBindingEscaped(binding) && !isExported,
     };
   }
@@ -390,13 +541,21 @@ class SourceIconCollector {
     depth: number
   ): FiniteIconValues {
     const property = expression.property as SyntaxNode;
-    const keys = expression.computed
-      ? this.evaluator.getValues(property, context)
-      : { values: new Set([String(property.name)]), complete: true };
+    const isNumericIndex = property.type === "Literal" && typeof property.value === "number";
+    let keys: FiniteIconValues;
+
+    if (isNumericIndex) {
+      keys = { values: new Set([String(property.value)]), complete: true };
+    } else if (expression.computed) {
+      keys = this.evaluator.getValues(property, context);
+    } else {
+      keys = { values: new Set([String(property.name)]), complete: true };
+    }
+
     const object = expression.object as SyntaxNode;
     const read = (key: string) => this.projectValues(object, object, [key, ...path], depth + 1);
 
-    if (!keys.complete) {
+    if (!keys.complete || !keys.values.size) {
       return { ...read("*"), complete: false };
     }
 
@@ -409,17 +568,25 @@ class SourceIconCollector {
     path: readonly string[],
     depth: number
   ): FiniteIconValues {
-    const properties = (expression.properties as SyntaxNode[]).filter(
-      (property) =>
-        property.type === "SpreadElement" ||
-        property.computed ||
-        path[0] === "*" ||
-        readPropertyName(property) === path[0]
-    );
+    const values: FiniteIconValues[] = [];
+    let hasAccessor = false;
 
-    return mergeIconValues(
-      properties.map((property) => this.projectProperty(property, context, path, depth))
-    );
+    for (const property of expression.properties as SyntaxNode[]) {
+      hasAccessor ||= property.kind === "get" || property.kind === "set";
+
+      if (
+        property.type !== "SpreadElement" &&
+        !property.computed &&
+        path[0] !== "*" &&
+        readPropertyName(property) !== path[0]
+      ) {
+        continue;
+      }
+
+      values.push(this.projectProperty(property, context, path, depth));
+    }
+
+    return mergeIconValues(values, !hasAccessor);
   }
 
   private projectProperty(
@@ -453,53 +620,75 @@ class SourceIconCollector {
   }
 
   private isBindingEscaped(binding: SyntaxNode) {
-    return this.evaluator.nodes.some((node) => {
-      const isMutation = ["AssignmentExpression", "UpdateExpression"].includes(node.type);
-      const target = (node.left ?? node.argument) as SyntaxNode | undefined;
-      const isCall = ["CallExpression", "NewExpression"].includes(node.type);
-      const arguments_ = isCall ? (node.arguments as SyntaxNode[]) : [];
-      const alias =
-        node.type === "VariableDeclarator" ? (node.init as SyntaxNode | undefined) : undefined;
-      const callee = isCall ? (node.callee as SyntaxNode) : undefined;
+    const cached = this.escapedBindings.get(binding);
 
-      return (
-        (isMutation && this.doesReferenceBinding(target, node, binding)) ||
-        [...arguments_, alias, callee].some((argument) =>
-          this.doesReferenceBinding(argument, node, binding)
-        )
-      );
+    if (cached !== undefined) {
+      return cached;
+    }
+
+    const isEscaped = this.escapingExpressions.some((expression) =>
+      this.doesReferenceBinding(expression, binding)
+    );
+    this.escapedBindings.set(binding, isEscaped);
+
+    return isEscaped;
+  }
+
+  private readNodeEscapes(node: SyntaxNode) {
+    const isComponent = ["Component", "SvelteComponent", "SvelteSelf", "SvelteElement"].includes(
+      node.type
+    );
+    const isCustomElement = node.type === "RegularElement" && String(node.name).includes("-");
+
+    if (!isComponent && !isCustomElement) {
+      return readEscapingExpressions(node);
+    }
+
+    const component =
+      node.type === "Component" ? this.getTarget(String(node.name), node)?.component : undefined;
+    const iconProps = component ? getIconProps(component).map((path) => path.split(".")[0]) : [];
+
+    return ((node.attributes ?? []) as SyntaxNode[]).flatMap((attribute) => {
+      // Registered icon props are handled by Quaff's known icon consumers.
+      if (attribute.type === "Attribute" && iconProps.includes(String(attribute.name))) {
+        return [];
+      }
+
+      return readSyntaxChildren(attribute);
     });
   }
 
   private doesReferenceBinding(
     expression: SyntaxNode | undefined,
-    context: SyntaxNode,
     binding: SyntaxNode,
     depth = 0
   ): boolean {
-    if (!expression || depth > 12) {
+    if (!expression || depth > MAX_PROJECTION_DEPTH) {
       return !!expression;
     }
 
     if (expression.type === "Identifier") {
-      return this.evaluator.getBinding(String(expression.name), context) === binding;
+      const reference = this.evaluator.getBinding(String(expression.name), expression);
+
+      if (reference === binding) {
+        return true;
+      }
+
+      const source = reference && this.templateSources.get(reference);
+
+      return this.doesReferenceBinding(source, binding, depth + 1);
     }
 
     if (expression.type === "MemberExpression") {
-      return this.doesReferenceBinding(
-        expression.object as SyntaxNode,
-        context,
-        binding,
-        depth + 1
-      );
+      return this.doesReferenceBinding(expression.object as SyntaxNode, binding, depth + 1);
     }
 
     if (expression.type === "Property") {
-      return this.doesReferenceBinding(expression.value as SyntaxNode, context, binding, depth + 1);
+      return this.doesReferenceBinding(expression.value as SyntaxNode, binding, depth + 1);
     }
 
     return readSyntaxChildren(expression).some((child) =>
-      this.doesReferenceBinding(child, context, binding, depth + 1)
+      this.doesReferenceBinding(child, binding, depth + 1)
     );
   }
 
@@ -828,6 +1017,112 @@ class SourceIconCollector {
 
     return !source.startsWith("@quaffui/quaff") && !source.startsWith("#components/");
   }
+}
+
+function collectTemplateSources(nodes: SyntaxNode[]) {
+  const sources = new WeakMap<SyntaxNode, SyntaxNode>();
+
+  for (const node of nodes) {
+    if (!["EachBlock", "AwaitBlock"].includes(node.type)) {
+      continue;
+    }
+
+    const patterns = node.type === "EachBlock" ? [node.context] : [node.value, node.error];
+    const bindings = patterns.flatMap((pattern) =>
+      readPatternBindings(pattern as SyntaxNode | undefined)
+    );
+
+    for (const binding of bindings) {
+      sources.set(binding, node.expression as SyntaxNode);
+    }
+  }
+
+  return sources;
+}
+
+function readPatternBindings(pattern: SyntaxNode | undefined): SyntaxNode[] {
+  switch (pattern?.type) {
+    case "Identifier":
+      return [pattern];
+    case "Property":
+      return readPatternBindings(pattern.value as SyntaxNode);
+    case "AssignmentPattern":
+      return readPatternBindings(pattern.left as SyntaxNode);
+    case "RestElement":
+      return readPatternBindings(pattern.argument as SyntaxNode);
+    case "ObjectPattern":
+    case "ArrayPattern":
+      return readSyntaxChildren(pattern).flatMap(readPatternBindings);
+    default:
+      return [];
+  }
+}
+
+function readEscapingExpressions(node: SyntaxNode): (SyntaxNode | undefined)[] {
+  switch (node.type) {
+    case "ExportNamedDeclaration":
+      return readLocalExports(node);
+    case "ExportDefaultDeclaration":
+      return [node.declaration as SyntaxNode];
+    case "VariableDeclarator":
+      return [node.init as SyntaxNode | undefined];
+    case "AssignmentExpression":
+      return [node.left, node.right] as SyntaxNode[];
+    case "AssignmentPattern":
+    case "ForOfStatement":
+      return [node.right as SyntaxNode];
+    case "BindDirective":
+    case "UseDirective":
+    case "TransitionDirective":
+    case "AnimateDirective":
+      return [node.expression as SyntaxNode];
+    case "UpdateExpression":
+    case "ReturnStatement":
+    case "YieldExpression":
+    case "ThrowStatement":
+      return [node.argument as SyntaxNode | undefined];
+    case "CallExpression":
+    case "NewExpression":
+      return [node.callee as SyntaxNode, ...(node.arguments as SyntaxNode[])];
+    case "ArrowFunctionExpression": {
+      const body = node.body as SyntaxNode;
+
+      return body.type === "BlockStatement" ? [] : [body];
+    }
+    case "PropertyDefinition":
+      return [node.value as SyntaxNode | undefined];
+    case "TaggedTemplateExpression":
+      return [node.tag, node.quasi] as SyntaxNode[];
+    default:
+      return [];
+  }
+}
+
+function readLocalExports(node: SyntaxNode): SyntaxNode[] {
+  if (node.source || node.exportKind === "type") {
+    return [];
+  }
+
+  return (node.specifiers as SyntaxNode[]).flatMap((specifier) =>
+    specifier.exportKind === "type" ? [] : [specifier.local as SyntaxNode]
+  );
+}
+
+function readArraySelection(expression: SyntaxNode) {
+  const callee = expression.callee as SyntaxNode;
+
+  if (callee.type !== "MemberExpression" || callee.computed) {
+    return;
+  }
+
+  const method = String((callee.property as SyntaxNode).name);
+  const resultKind = ARRAY_SELECTION_RESULTS.get(method);
+
+  if (!resultKind) {
+    return;
+  }
+
+  return { isArrayResult: resultKind === "array", receiver: callee.object as SyntaxNode };
 }
 
 function isNonFontExpression(expression: SyntaxNode) {
