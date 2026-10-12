@@ -29,19 +29,8 @@ export const DOCS_ASSET_OPTIONS = {
     icons: {
       stripUnused: true,
       strategy: "hard",
-      // These examples select icons through filters, lookups and forwarded snippets.
-      safelist: [
-        "air",
-        "directions_bike",
-        "location_city",
-        "psychiatry",
-        "rainy",
-        "slideshow",
-        "table_chart",
-        "train",
-        "tram",
-        "wb_twilight",
-      ],
+      // Add runtime icon names not inferred from local source here.
+      safelist: [],
     },
   },
 } satisfies QuaffAssetsOptions;

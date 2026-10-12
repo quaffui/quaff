@@ -284,4 +284,283 @@ describe("precise icon source usage", () => {
     expect(usage.unresolved).toHaveLength(1);
     expect(usage.unresolved[0].reason).toContain("include");
   });
+
+  it("projects readonly array indices, spreads, derived values and fallback candidates", async () => {
+    const usage = await collect(`
+      <script>const options = $derived([{icon: "home"}]);</script>
+      <QBtnToggle {options}/>
+      <QIcon name={["menu", "unused"][0]}/>
+      {#each [...["save"], "delete"] as name}<QIcon {name}/>{/each}
+      <QBtn {...({icon: "cloud"} ?? {icon: "star"})}/>
+    `);
+
+    expect(usage.names).toEqual(new Set(["home", "menu", "save", "delete", "cloud", "star"]));
+    expect(usage.unresolved).toEqual([]);
+  });
+
+  it("keeps selection source candidates while warning about unverified calls", async () => {
+    for (const expression of [
+      "rows.find(row => row.id === selected)?.icon",
+      "rows.filter(row => row.enabled)[0]?.icon",
+      "rows.slice(1)[0]?.icon",
+      "rows.at(-1)?.icon",
+      "rows.find(predicate)?.icon",
+      "rows.filter(row => row.enabled).slice(1)[0]?.icon",
+      "rows[index]?.icon",
+    ]) {
+      const usage = await collect(`
+        <script>const rows = [{icon: "home"}, {icon: "save"}];</script>
+        <QIcon name={${expression}}/>
+      `);
+
+      expect(usage.names, expression).toEqual(new Set(["home", "save"]));
+      expect(usage.unresolved, expression).toHaveLength(1);
+    }
+  });
+
+  it("keeps state initializers and mutated selection candidates incomplete", async () => {
+    const usage = await collect(`
+      <script>
+        const rows = [{icon: "home"}];
+        const options = $state([{icon: "menu"}]);
+      </script>
+      <QIcon name={rows.find(row => {row.icon = external; return true})?.icon}/>
+      <QBtnToggle {options}/>
+    `);
+
+    expect(usage.names).toEqual(new Set(["home", "menu"]));
+    expect(usage.unresolved).toHaveLength(2);
+  });
+
+  it("warns when array elements escape through loop bindings", async () => {
+    for (const script of [
+      'for (const row of rows) row.icon = "save";',
+      'let row; for (row of rows) row.icon = "save";',
+      'for (const [row] of [rows]) row.icon = "save";',
+      'async function updateRows() { for await (const row of rows) row.icon = "save"; }',
+    ]) {
+      const usage = await collect(`
+        <script>const rows = [{icon: "home"}]; ${script}</script>
+        <QIcon name={rows[0].icon}/>
+      `);
+
+      expect(usage.names, script).toEqual(new Set(["home"]));
+      expect(usage.unresolved, script).toHaveLength(1);
+    }
+  });
+
+  it("warns when script aliases can expose array elements to mutation", async () => {
+    for (const script of [
+      'let row; row = rows[0]; row.icon = "save";',
+      'let row; [row] = rows; row.icon = "save";',
+      'let row; ({ row } = { row: rows[0] }); row.icon = "save";',
+      'let row; row ??= rows[0]; row.icon = "save";',
+      'function getRow() { return rows[0]; } getRow().icon = "save";',
+      'function edit(row = rows[0]) { row.icon = "save"; } edit();',
+      'function* getRows() { yield rows[0]; } getRows().next().value.icon = "save";',
+      'try { throw rows[0]; } catch (row) { row.icon = "save"; }',
+      'class Editor { row = rows[0]; } new Editor().row.icon = "save";',
+      'function edit(strings, row) { row.icon = "save"; } edit`${rows[0]}`;',
+    ]) {
+      const usage = await collect(`
+        <script>const rows = [{icon: "home"}]; ${script}</script>
+        <QIcon name={rows[0].icon}/>
+      `);
+
+      expect(usage.names, script).toEqual(new Set(["home"]));
+      expect(usage.unresolved, script).toHaveLength(1);
+    }
+  });
+
+  it("keeps readonly array indices complete when escapes reference shadowed arrays", async () => {
+    const usage = await collect(`
+      <script>
+        const rows = [{icon: "home"}];
+        {
+          const rows = [{icon: "menu"}];
+          for (const row of rows) row.icon = "save";
+          let row;
+          row = rows[0];
+          row.icon = "save";
+          function getRow() { return rows[0]; }
+          function edit(row = rows[0]) { row.icon = "save"; }
+          getRow().icon = "save";
+          edit();
+        }
+      </script>
+      <QIcon name={rows[0].icon}/>
+    `);
+
+    expect(usage.names).toEqual(new Set(["home"]));
+    expect(usage.unresolved).toEqual([]);
+  });
+
+  it("warns when separate module exports expose mutable icon data", async () => {
+    for (const declaration of ["export {rows};", "export {rows as icons};"]) {
+      const usage = await collect(`
+        <script module>const rows = [{icon: "home"}]; ${declaration}</script>
+        <QIcon name={rows[0].icon}/>
+      `);
+
+      expect(usage.names, declaration).toEqual(new Set(["home"]));
+      expect(usage.unresolved, declaration).toHaveLength(1);
+    }
+  });
+
+  it("keeps private icon data complete across re-exports, types and instance shadowing", async () => {
+    for (const [declaration, instance] of [
+      ['export {rows} from "./other.js";', ""],
+      ["export type {rows};", ""],
+      ["export {type rows};", ""],
+      ["export {rows};", 'const rows = [{icon: "home"}];'],
+    ]) {
+      const usage = await collect(`
+        <script module lang="ts">const rows = [{icon: "home"}]; ${declaration}</script>
+        <script>${instance}</script>
+        <QIcon name={rows[0].icon}/>
+      `);
+
+      expect(usage.names, declaration).toEqual(new Set(["home"]));
+      expect(usage.unresolved, declaration).toEqual([]);
+    }
+  });
+
+  it("warns when Svelte bindings can mutate indexed icon values", async () => {
+    for (const [tag, expression] of [
+      ["input", "names[0]"],
+      ["QInput", "names[0]"],
+      ["input", "rows[0].icon"],
+    ]) {
+      const markup = `<${tag} bind:value={${expression}}/><span class="q-icon">{${expression}}</span>`;
+      const usage = await collect(`
+        <script>const names = ["home"]; const rows = [{icon: "home"}];</script>
+        ${markup}
+      `);
+
+      expect(usage.names, markup).toEqual(new Set(["home"]));
+      expect(usage.unresolved, markup).toHaveLength(1);
+    }
+  });
+
+  it("keeps readonly icon arrays complete when bindings reference a shadowed name", async () => {
+    const usage = await collect(`
+      <script>const names = ["home"];</script>
+      {#each [["menu"]] as names}<input bind:value={names[0]}/>{/each}
+      <span class="q-icon">{names[0]}</span>
+    `);
+
+    expect(usage.names).toEqual(new Set(["home"]));
+    expect(usage.unresolved).toEqual([]);
+  });
+
+  it("warns when mutable template aliases expose the source array", async () => {
+    for (const markup of [
+      "{#each rows as row}<input bind:value={row.icon}/>{/each}",
+      '{#each rows as row}<button onclick={() => row.icon = "save"}>Save</button>{/each}',
+      "{#each [rows] as group}{#each group as row}<input bind:value={row.icon}/>{/each}{/each}",
+      "{#each [{rows}] as {rows: group}}{#each group as row}<input bind:value={row.icon}/>{/each}{/each}",
+      "{#await rows[0] then row}<input bind:value={row.icon}/>{/await}",
+    ]) {
+      const usage = await collect(`
+        <script>const rows = [{icon: "home"}];</script>
+        ${markup}<span class="q-icon">{rows[0].icon}</span>
+      `);
+
+      expect(usage.names, markup).toEqual(new Set(["home"]));
+      expect(usage.unresolved, markup).toHaveLength(1);
+    }
+  });
+
+  it("warns when external component props or action parameters expose array items", async () => {
+    for (const markup of [
+      "<Editor row={rows[0]}/>",
+      "<Editor {rows}/>",
+      "<Editor {...{row: rows[0]}}/>",
+      "<QTable {rows}/>",
+      "{#each rows as row}<Editor {row}/>{/each}",
+      "<row-editor row={rows[0]}/>",
+      "<div use:edit={rows[0]}/>",
+    ]) {
+      const usage = await collect(`
+        <script>import Editor from "./Editor.svelte"; const rows = [{icon: "home"}];</script>
+        ${markup}<span class="q-icon">{rows[0].icon}</span>
+      `);
+
+      expect(usage.names, markup).toEqual(new Set(["home"]));
+      expect(usage.unresolved, markup).toHaveLength(1);
+    }
+  });
+
+  it("keeps read-only template aliases and native attributes complete", async () => {
+    const usage = await collect(`
+      <script>const rows = [{icon: "home"}];</script>
+      {#each rows as row}<QIcon name={row.icon}/><input value={row.icon}/>{/each}
+      {#each [{icon: "menu"}] as rows}<input bind:value={rows.icon}/>{/each}
+      <span class="q-icon">{rows[0].icon}</span>
+    `);
+
+    expect(usage.names).toEqual(new Set(["home"]));
+    expect(usage.unresolved).toEqual([]);
+  });
+
+  it("leaves objects with accessors incomplete even when projecting another field", async () => {
+    const usage = await collect(`
+      <script>
+        const rows = [{icon: "home", get label() {this.icon = "save"; return "Edit";}}];
+      </script>
+      <QBtnToggle options={rows}/><span class="q-icon">{rows[0].icon}</span>
+    `);
+
+    expect(usage.names).toEqual(new Set(["home"]));
+    expect(usage.unresolved).toHaveLength(2);
+  });
+
+  it("follows scalar aliases of selected fields and derived fallbacks", async () => {
+    const usage = await collect(`
+      <script>
+        const rows = [{icon: "home"}, {icon: "menu"}];
+        const name = rows.find(row => row.id === selected)?.icon ?? "save";
+        const icon = $derived(rows.filter(row => row.enabled)[0]?.icon || "star");
+      </script>
+      <QIcon {name}/><QBtn {icon}/>
+    `);
+
+    expect(usage.names).toEqual(new Set(["home", "menu", "save", "star"]));
+    expect(usage.unresolved).toHaveLength(2);
+  });
+
+  it("leaves custom iterators and missing array indices incomplete", async () => {
+    for (const [expression, expectedNames] of [
+      ['[...{*[Symbol.iterator]() {throw new Error("must not execute")}}][0]', []],
+      ["[][0]", []],
+      ["[,][0]", []],
+      ['[...["save"]][3]', ["save"]],
+    ] as const) {
+      const usage = await collect(`
+        <script>Array.prototype[0] = "home"; Array.prototype[3] = "home";</script>
+        <QIcon name={${expression}}/>
+      `);
+
+      expect(usage.names, expression).toEqual(new Set(expectedNames));
+      expect(usage.unresolved, expression).toHaveLength(1);
+    }
+  });
+
+  it("leaves getters, custom methods, imported arrays and shadowed runes unresolved", async () => {
+    for (const script of [
+      'const rows = [{get icon() {throw new Error("must not execute")}}];',
+      'const rows = {find() {throw new Error("must not execute")}, icon: "delete"};',
+      'import rows from "./icons.js";',
+      'function $derived() {return [{icon: "star"}]} const rows = $derived([]);',
+      'function $state() {return [{icon: "star"}]} const rows = $state([]);',
+      "const rows = other; const other = rows;",
+    ]) {
+      const usage = await collect(
+        `<script>${script}</script><QIcon name={rows.find(predicate)?.icon}/>`
+      );
+
+      expect(usage.names, script).toEqual(new Set());
+      expect(usage.unresolved, script).toHaveLength(1);
+    }
+  });
 });
