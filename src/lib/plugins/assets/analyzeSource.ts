@@ -2,6 +2,7 @@ import { parse, preprocess, type AST } from "svelte/compiler";
 import { COMPONENT_DEFINITIONS } from "../../internal/componentRegistry.js";
 import { canCollectNamespaceComponents } from "./namespaceUsage.js";
 import { collectTemplateCandidates } from "./templateValues.js";
+import type { IconSourceUsage } from "./fonts/iconSourceUsage.js";
 
 export interface SourceUsage {
   candidates: Set<string>;
@@ -9,6 +10,7 @@ export interface SourceUsage {
   hasFullCssImport: boolean;
   instanceScriptContentStart?: number;
   hasVirtualCssImport: boolean;
+  iconUsage?: IconSourceUsage;
 }
 
 const CANDIDATE_PATTERN = /[A-Za-z0-9_-]+/g;
@@ -31,16 +33,11 @@ const WILDCARD_EXPORT_PATTERN = new RegExp(
 export async function analyzeSource(
   code: string,
   isRootLayout = false,
-  includeTemplates = false
+  includeTemplates = false,
+  iconOptions?: { file: string; isLibrary?: boolean }
 ): Promise<SourceUsage> {
-  const candidates = new Set(code.match(CANDIDATE_PATTERN) ?? []);
+  const candidates = collectSourceCandidates(code, includeTemplates);
   const componentPaths = new Set<string>();
-
-  if (includeTemplates) {
-    for (const candidate of collectTemplateCandidates(code)) {
-      candidates.add(candidate);
-    }
-  }
 
   for (const match of code.matchAll(DIRECT_COMPONENT_PATTERN)) {
     componentPaths.add(match[1]);
@@ -64,6 +61,15 @@ export async function analyzeSource(
   const instanceScript = layout?.instance?.content as
     (AST.Script["content"] & { start: number }) | undefined;
   const imports = collectLayoutImports(layout);
+  let iconUsage: IconSourceUsage | undefined;
+
+  if (iconOptions) {
+    const { collectIconSourceUsage } = await import("./fonts/iconSourceUsage.js");
+    iconUsage = await collectIconSourceUsage(code, iconOptions.file, {
+      isLibrary: iconOptions.isLibrary,
+      syntax: layout,
+    });
+  }
 
   return {
     candidates,
@@ -71,7 +77,20 @@ export async function analyzeSource(
     hasFullCssImport: imports.has("@quaffui/quaff/css/index.css"),
     hasVirtualCssImport: imports.has("virtual:quaff.css") || imports.has("virtual:quaff/css"),
     instanceScriptContentStart: instanceScript?.start,
+    ...(iconUsage && { iconUsage }),
   };
+}
+
+function collectSourceCandidates(code: string, includeTemplates: boolean) {
+  const candidates = new Set(code.match(CANDIDATE_PATTERN) ?? []);
+
+  if (includeTemplates) {
+    for (const candidate of collectTemplateCandidates(code)) {
+      candidates.add(candidate);
+    }
+  }
+
+  return candidates;
 }
 
 function collectLayoutImports(layout: AST.Root | undefined) {

@@ -10,25 +10,33 @@ const COMPONENT_REGISTRY = {
     QBottomSheet: component("q-bottom-sheet"),
   }),
   breadcrumbs: group("components/breadcrumbs", {
-    QBreadcrumbs: component("q-breadcrumbs"),
+    QBreadcrumbs: component("q-breadcrumbs", { iconProps: ["separator"], iconPrefix: "icon:" }),
     QBreadcrumbsEl: component("q-breadcrumbs", {
       keep: ["q-px-none", "q-px-sm", "q-px-md", "q-px-lg"],
       uses: ["QIcon"],
+      iconProps: ["icon"],
     }),
   }),
   button: group("components/button", {
     QBtn: component("q-btn", {
       uses: ["QCircularProgress", "QIcon"],
       keep: ["q-ripple"],
+      iconProps: ["icon"],
     }),
-    QIconBtn: component("q-icon-btn", { uses: ["QBtn"] }),
+    QIconBtn: component("q-icon-btn", { uses: ["QBtn"], iconProps: ["icon", "children"] }),
   }),
   "button-group": group("components/button-group", {
     QBtnGroup: component("q-btn-group"),
-    QBtnToggle: component("q-btn-group", { uses: ["QBtnGroup", "QBtn"] }),
+    QBtnToggle: component("q-btn-group", {
+      uses: ["QBtnGroup", "QBtn"],
+      iconProps: ["options.*.icon"],
+    }),
   }),
   "split-button": group("components/split-button", {
-    QSplitBtn: component("q-split-btn", { uses: ["QBtn", "QIconBtn", "QIcon", "QMenu"] }),
+    QSplitBtn: component("q-split-btn", {
+      uses: ["QBtn", "QIconBtn", "QIcon", "QMenu"],
+      iconProps: ["icon"],
+    }),
   }),
   card: group("components/card", {
     QCard: component("q-card"),
@@ -55,7 +63,11 @@ const COMPONENT_REGISTRY = {
     QCheckbox: component("q-checkbox", { keep: ["q-ripple"] }),
   }),
   chip: group("components/chip", {
-    QChip: component("q-chip", { uses: ["QAvatar", "QIcon"], keep: ["q-ripple"] }),
+    QChip: component("q-chip", {
+      uses: ["QAvatar", "QIcon"],
+      keep: ["q-ripple"],
+      iconProps: ["icon", "trailingIcon"],
+    }),
   }),
   codeBlock: group(undefined, {
     QCodeBlock: component([], {
@@ -90,12 +102,19 @@ const COMPONENT_REGISTRY = {
   "expansion-item": group("components/expansion-item", {
     QExpansionItem: component("q-expansion-item", {
       uses: ["QIconBtn", "QIcon", "QItem", "QItemSection", "QSeparator"],
+      iconProps: ["icon", "expandIcon", "expandedIcon"],
     }),
   }),
   fab: group("components/fab", {
-    QFab: component("q-fab", { uses: ["QBtn", "QTooltip"] }),
-    QExtendedFab: component(["q-fab", "q-extended-fab"], { uses: ["QBtn", "QTooltip"] }),
-    QFabMenu: component("q-fab", { uses: ["QBtn", "QTooltip", "QMenu"] }),
+    QFab: component("q-fab", { uses: ["QBtn", "QTooltip"], iconProps: ["icon"] }),
+    QExtendedFab: component(["q-fab", "q-extended-fab"], {
+      uses: ["QBtn", "QTooltip"],
+      iconProps: ["icon"],
+    }),
+    QFabMenu: component("q-fab", {
+      uses: ["QBtn", "QTooltip", "QMenu"],
+      iconProps: ["icon"],
+    }),
   }),
   field: group("shared/field", {}),
   footer: group("components/footer", { QFooter: component("q-footer") }),
@@ -103,7 +122,9 @@ const COMPONENT_REGISTRY = {
     QHeader: component("q-header"),
     QHeaderTitle: component("q-header-title"),
   }),
-  icon: group("components/icon", { QIcon: component("q-icon") }),
+  icon: group("components/icon", {
+    QIcon: component("q-icon", { iconProps: ["name", "children"] }),
+  }),
   input: group(undefined, { QInput: component("q-field", { css: ["shared/field"] }) }),
   layout: group("components/layout", { QLayout: component("q-layout") }),
   list: group("components/list", {
@@ -118,10 +139,14 @@ const COMPONENT_REGISTRY = {
   meta: group(undefined, { QMetaHead: component([]) }),
   navbar: group("components/navbar", { QNavbar: component("q-navbar") }),
   "nav-item": group("components/nav-item", {
-    QNavGroup: component([], { uses: ["QExpansionItem", "QList"] }),
+    QNavGroup: component([], {
+      uses: ["QExpansionItem", "QList"],
+      iconProps: ["icon", "expandIcon", "expandedIcon"],
+    }),
     QNavItem: component("q-nav-item", {
       uses: ["QIcon", "QBadge"],
       keep: ["q-ripple", "q-railbar"],
+      iconProps: ["icon"],
     }),
   }),
   progress: group("components/progress", {
@@ -150,8 +175,8 @@ const COMPONENT_REGISTRY = {
     QSideSheet: component("q-side-sheet", { uses: ["QIconBtn"] }),
   }),
   slider: group("components/slider", {
-    QRange: component("q-slider", { uses: ["QIcon"] }),
-    QSlider: component("q-slider", { uses: ["QIcon"] }),
+    QRange: component("q-slider", { uses: ["QIcon"], iconProps: ["icon"] }),
+    QSlider: component("q-slider", { uses: ["QIcon"], iconProps: ["icon"] }),
   }),
   snackbar: group("components/snackbar", {
     QSnackbar: component(["q-snackbar", "q-snackbar-positioner"], {
@@ -162,14 +187,18 @@ const COMPONENT_REGISTRY = {
     QSeparator: component("q-separator", { keep: ["q-px-sm", "q-py-sm"] }),
   }),
   switch: group("components/switch", {
-    QSwitch: component("q-switch", { uses: ["QIcon"], keep: ["q-ripple"] }),
+    QSwitch: component("q-switch", {
+      uses: ["QIcon"],
+      keep: ["q-ripple"],
+      iconProps: ["checkedIcon", "uncheckedIcon"],
+    }),
   }),
   table: group("components/table", {
     QTable: component("q-table", { uses: ["QBtn", "QIcon", "QSelect"] }),
   }),
   tabs: group("components/tabs", {
     QTabs: component("q-tabs"),
-    QTab: component("q-tab", { uses: ["QIcon"], keep: ["q-ripple"] }),
+    QTab: component("q-tab", { uses: ["QIcon"], keep: ["q-ripple"], iconProps: ["icon"] }),
   }),
   time: group("components/time", {
     QTime: component("q-time", { uses: ["QIconBtn", "QDialog", "QInput", "QMenu", "QBtn"] }),
@@ -179,15 +208,20 @@ const COMPONENT_REGISTRY = {
 } as const;
 
 type Registry = typeof COMPONENT_REGISTRY;
+
 export type ComponentName = {
   [Path in keyof Registry]: keyof Registry[Path]["components"];
 }[keyof Registry];
+
 export type ComponentCssName = NonNullable<Registry[keyof Registry]["css"]>;
 
 interface ComponentOptions<Css extends string = string> {
   css?: readonly Css[];
   keep?: readonly string[];
   uses?: readonly string[];
+  /** Dot-separated icon prop paths; * visits every option in an array. */
+  iconProps?: readonly string[];
+  iconPrefix?: string;
 }
 
 interface ComponentDefinition extends ComponentOptions<ComponentCssName> {

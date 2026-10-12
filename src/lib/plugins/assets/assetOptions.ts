@@ -4,13 +4,19 @@ import type {
 } from "../../internal/componentRegistry.js";
 
 type CssExportName = ComponentName | keyof typeof UTILITY_COMPONENT_DEPENDENCIES;
+
 type SafelistValue = RegExp | string;
+
 type DevelopmentCssMode = "exact" | "full";
 
 export type FontFormat = "woff2" | "woff";
+
 export type FontDisplay = "auto" | "block" | "swap" | "fallback" | "optional";
+
 export type MaterialSymbolStyle = "outlined" | "rounded" | "sharp";
+
 export type RobotoWeight = 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900;
+
 export type RobotoSubset =
   | "cyrillic-ext"
   | "cyrillic"
@@ -33,6 +39,8 @@ export interface QuaffIconFontOptions {
   styles?: readonly MaterialSymbolStyle[];
   /** Keep detected icon glyphs and component defaults, preserving all variable axes. */
   stripUnused?: boolean;
+  /** Soft matches source text (default); hard parses icon values and needs runtime safelists. */
+  strategy?: "soft" | "hard";
   /** Include icon names supplied by runtime data or code outside sourceDir. */
   safelist?: readonly string[];
   display?: FontDisplay;
