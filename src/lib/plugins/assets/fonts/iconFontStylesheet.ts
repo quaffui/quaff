@@ -7,13 +7,15 @@ import { analyzeSource, type SourceUsage } from "../analyzeSource.js";
 import { getOrCreateCachedValue } from "../promiseCache.js";
 import { getFontDisplay, selectFontValues } from "./fontOptions.js";
 import type { FontAssetStore } from "./fontAssetStore.js";
-import type { QuaffIconFontOptions } from "../assetOptions.js";
+import type { MaterialSymbolStyle, QuaffIconFontOptions } from "../assetOptions.js";
 import type { ComponentName } from "../../../internal/componentRegistry.js";
 
 const STYLE_LABELS = { outlined: "Outlined", rounded: "Rounded", sharp: "Sharp" } as const;
 const STYLES = ["outlined", "rounded", "sharp"] as const;
 const DECODER = new TextDecoder();
 const MAX_STYLESHEET_SELECTIONS = 16;
+
+type IconPruningStrategy = NonNullable<QuaffIconFontOptions["strategy"]>;
 
 export interface FontSourceUsage {
   sources: readonly SourceUsage[];
@@ -23,16 +25,24 @@ export interface FontSourceUsage {
 export class IconFontStylesheet {
   private readonly styles;
   private readonly display;
+  private readonly strategy;
   private availableNames: Promise<Set<string>> | undefined;
   private readonly selections = new WeakMap<FontSourceUsage, Promise<Set<string>>>();
   private readonly stylesheets = new Map<string, Promise<string>>();
 
   constructor(
     private readonly assets: FontAssetStore,
-    private readonly options: QuaffIconFontOptions
+    private readonly options: QuaffIconFontOptions,
+    private readonly warn?: (message: string) => void
   ) {
     this.styles = selectFontValues(options.styles, STYLES, STYLES, "Material Symbols styles");
     this.display = getFontDisplay(options.display, "block");
+    this.strategy = selectFontValues(
+      options.strategy === undefined ? undefined : [options.strategy],
+      ["soft"],
+      ["soft", "hard"],
+      "icon pruning strategy"
+    )[0];
   }
 
   async getStylesheet(usage?: FontSourceUsage) {
@@ -73,7 +83,9 @@ export class IconFontStylesheet {
         usage.sources,
         availableNames,
         this.options.safelist ?? [],
-        usage.components
+        usage.components,
+        this.strategy,
+        this.warn
       );
     });
   }
@@ -87,26 +99,28 @@ export class IconFontStylesheet {
     const selectedNames = names ? [...names] : undefined;
 
     for (const style of this.styles) {
-      const name = `material-symbols-${style}.woff2`;
-      const original = await this.assets.readAsset(`material-symbols/${name}`);
-      let bytes = original;
-
-      if (selectedNames) {
-        bytes = await this.assets.getOrCreateSubset(original, selectedNames, async () => {
-          const { subsetIconFont } = await import("./subsetIconFont.js");
-
-          return subsetIconFont(original, selectedNames);
-        });
-      }
-
-      const url = await this.assets.writeAsset(name, bytes);
-
-      declarations.push(
-        `@font-face{font-family:"Material Symbols ${STYLE_LABELS[style]}";src:url("${url}") format("woff2");font-style:normal;font-weight:100 700;font-display:${this.display};}`
-      );
+      declarations.push(await this.createFontFace(style, selectedNames));
     }
 
     return declarations.join("\n");
+  }
+
+  private async createFontFace(style: MaterialSymbolStyle, names: readonly string[] | undefined) {
+    const name = `material-symbols-${style}.woff2`;
+    const original = await this.assets.readAsset(`material-symbols/${name}`);
+    let bytes = original;
+
+    if (names) {
+      bytes = await this.assets.getOrCreateSubset(original, names, async () => {
+        const { subsetIconFont } = await import("./subsetIconFont.js");
+
+        return subsetIconFont(original, names);
+      });
+    }
+
+    const url = await this.assets.writeAsset(name, bytes);
+
+    return `@font-face{font-family:"Material Symbols ${STYLE_LABELS[style]}";src:url("${url}") format("woff2");font-style:normal;font-weight:100 700;font-display:${this.display};}`;
   }
 
   private async readAvailableNames() {
@@ -141,7 +155,9 @@ export async function collectIconNames(
   sources: Iterable<SourceUsage>,
   availableNames: ReadonlySet<string>,
   safelist: readonly string[],
-  componentNames: ReadonlySet<ComponentName>
+  componentNames: ReadonlySet<ComponentName>,
+  strategy: IconPruningStrategy = "soft",
+  warn?: (message: string) => void
 ): Promise<Set<string>> {
   const usages = [...sources];
   const names = new Set<string>();
@@ -161,14 +177,14 @@ export async function collectIconNames(
   for (const directory of directories) {
     const componentSources = await getOrCreateCachedValue(
       componentSourceCache,
-      directory,
-      async () => readComponentSources(directory)
+      `${strategy}:${directory}`,
+      () => readComponentSources(directory, strategy)
     );
     usages.push(...componentSources);
   }
 
   for (const usage of usages) {
-    addMatchingCandidates(usage, availableNames, names);
+    addMatchingCandidates(usage, availableNames, names, strategy, warn);
   }
 
   return new Set([...names].sort());
@@ -187,9 +203,21 @@ function collectComponentDependencies(components: ReadonlySet<ComponentName>) {
 function addMatchingCandidates(
   usage: SourceUsage,
   availableNames: ReadonlySet<string>,
-  names: Set<string>
+  names: Set<string>,
+  strategy: IconPruningStrategy,
+  warn?: (message: string) => void
 ) {
-  for (const candidate of usage.candidates) {
+  const candidates = strategy === "soft" ? usage.candidates : usage.iconUsage?.names;
+
+  if (!candidates) {
+    throw new Error("[quaff:fonts] The hard strategy requires parsed icon sources.");
+  }
+
+  if (strategy === "hard") {
+    reportUnresolvedIcons(usage, warn);
+  }
+
+  for (const candidate of candidates) {
     if (availableNames.has(candidate)) {
       names.add(candidate);
     }
@@ -208,7 +236,23 @@ function isComponentName(name: string): name is ComponentName {
   return Object.hasOwn(COMPONENT_DEFINITIONS, name);
 }
 
-async function readComponentSources(directory: string): Promise<SourceUsage[]> {
+function reportUnresolvedIcons(usage: SourceUsage, warn: ((message: string) => void) | undefined) {
+  if (!warn || !usage.iconUsage?.unresolved.length) {
+    return;
+  }
+
+  const { file, unresolved } = usage.iconUsage;
+  const expressions = [...new Set(unresolved.map(({ expression }) => expression))];
+
+  warn(
+    `[quaff:fonts] Cannot determine every icon in ${file ?? "source"}: ${expressions.join(", ")}. Use include for dynamically selected Quaff components, and fonts.icons.safelist for constructed or externally supplied icon names.`
+  );
+}
+
+async function readComponentSources(
+  directory: string,
+  strategy: IconPruningStrategy
+): Promise<SourceUsage[]> {
   const root = new URL(`../../../${directory}/`, import.meta.url);
   const sources: SourceUsage[] = [];
 
@@ -223,7 +267,13 @@ async function readComponentSources(directory: string): Promise<SourceUsage[]> {
 
     const sourceFile = new URL(entry.name, root);
     const code = await readFile(sourceFile, "utf8");
-    sources.push(await analyzeSource(code, false, true));
+    let iconOptions;
+
+    if (strategy === "hard") {
+      iconOptions = { file: sourceFile.pathname, isLibrary: true };
+    }
+
+    sources.push(await analyzeSource(code, false, true, iconOptions));
   }
 
   return sources;

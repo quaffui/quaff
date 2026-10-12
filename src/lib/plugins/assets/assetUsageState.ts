@@ -189,7 +189,17 @@ export class AssetUsageState {
   private async createFontUsage(): Promise<FontSourceUsage> {
     const sources = [...this.sources.values()];
     const safelisted = await this.getSafelistSelection();
-    const selection = createCssSelection(sources, this.options, safelisted);
+    let fontSources = sources;
+
+    if (this.shouldParseIconUsage()) {
+      fontSources = sources.map((source) => ({
+        ...source,
+        candidates: new Set(source.iconUsage?.components ?? []),
+        componentPaths: new Set(),
+      }));
+    }
+
+    const selection = createCssSelection(fontSources, this.options, safelisted);
     addCandidateComponentCss(selection);
     const styles = await Promise.all([...selection.css].map((name) => this.readCssUsage(name)));
 
@@ -324,7 +334,8 @@ export class AssetUsageState {
       const usage = await analyzeSource(
         code,
         this.isRootLayout(realFile),
-        this.shouldCollectFontTemplates()
+        this.shouldCollectFontTemplates(),
+        this.getIconSourceOptions(file)
       );
       this.setSourceUsage(file, realFile, usage, code);
     } catch (error) {
@@ -517,7 +528,7 @@ export class AssetUsageState {
     return getOrCreateCachedValue(this.cssUsageCache, name, async () => {
       const css = await this.readCssAsset(name);
 
-      return analyzeSource(css);
+      return analyzeSource(css, false, false, this.getIconSourceOptions(`${name}.css`));
     });
   }
 
@@ -569,7 +580,8 @@ export class AssetUsageState {
     const usage = await analyzeSource(
       code,
       this.isRootLayout(realFile),
-      this.shouldCollectFontTemplates()
+      this.shouldCollectFontTemplates(),
+      this.getIconSourceOptions(file)
     );
     this.setSourceUsage(file, realFile, usage, code);
   }
@@ -704,6 +716,18 @@ export class AssetUsageState {
 
     return !!(icons && icons.stripUnused);
   }
+
+  private shouldParseIconUsage() {
+    const icons = this.options.fonts?.icons;
+
+    return !!(icons && icons.stripUnused && icons.strategy === "hard");
+  }
+
+  private getIconSourceOptions(file: string) {
+    if (this.shouldParseIconUsage()) {
+      return { file };
+    }
+  }
 }
 
 async function waitForUpdate(update: Promise<boolean>) {
@@ -742,13 +766,27 @@ function hasFontUsageChanged(previous: SourceUsage | undefined, next: SourceUsag
     return previous !== next;
   }
 
+  if (previous.iconUsage && next.iconUsage) {
+    return (
+      !hasSameValues(previous.iconUsage.names, next.iconUsage.names) ||
+      !hasSameValues(previous.iconUsage.components, next.iconUsage.components) ||
+      getUnresolvedIconKey(previous) !== getUnresolvedIconKey(next)
+    );
+  }
+
   return (
     !hasSameValues(previous.candidates, next.candidates) ||
     !hasSameValues(previous.componentPaths, next.componentPaths)
   );
 }
 
-function hasSameValues(values: Set<string>, other: Set<string>) {
+function getUnresolvedIconKey(source: SourceUsage) {
+  return JSON.stringify(
+    source.iconUsage?.unresolved.map(({ expression, reason }) => [expression, reason])
+  );
+}
+
+function hasSameValues(values: ReadonlySet<string>, other: ReadonlySet<string>) {
   return values.size === other.size && [...values].every((value) => other.has(value));
 }
 

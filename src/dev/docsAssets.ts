@@ -28,8 +28,20 @@ export const DOCS_ASSET_OPTIONS = {
     roboto: { formats: ["woff2"] },
     icons: {
       stripUnused: true,
-      // Current names are detected in source; add external or generated names here.
-      safelist: [],
+      strategy: "hard",
+      // These examples select icons through filters, lookups and forwarded snippets.
+      safelist: [
+        "air",
+        "directions_bike",
+        "location_city",
+        "psychiatry",
+        "rainy",
+        "slideshow",
+        "table_chart",
+        "train",
+        "tram",
+        "wb_twilight",
+      ],
     },
   },
 } satisfies QuaffAssetsOptions;

@@ -11,7 +11,7 @@ export class FontStylesheet {
   private roboto: Promise<string> | undefined;
 
   constructor(
-    config: Pick<ResolvedConfig, "root" | "cacheDir">,
+    config: Pick<ResolvedConfig, "root" | "cacheDir"> & Partial<Pick<ResolvedConfig, "logger">>,
     private readonly options: QuaffFontsOptions
   ) {
     this.assets = new FontAssetStore(config);
@@ -19,7 +19,9 @@ export class FontStylesheet {
     this.icons =
       options.icons === false
         ? undefined
-        : new IconFontStylesheet(this.assets, options.icons ?? {});
+        : new IconFontStylesheet(this.assets, options.icons ?? {}, (message) =>
+            config.logger?.warn(message)
+          );
   }
 
   async getStylesheet(usage?: FontSourceUsage) {

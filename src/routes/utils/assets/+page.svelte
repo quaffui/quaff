@@ -140,6 +140,13 @@ export default defineConfig({
         <code>fonts.icons.safelist</code>, as shown with <code>bookmark</code> above.
       </p>
       <p class="q-mt-md">
+        Set <code>fonts.icons.strategy: "hard"</code> to select icons from component props and CSS
+        content rather than matching words throughout source. It resolves finite local expressions;
+        safelist names built by complex code or supplied at runtime. The default
+        <code>"soft"</code> strategy retains broader matches. Use <code>include</code> for components
+        selected dynamically.
+      </p>
+      <p class="q-mt-md">
         Include the character groups your content needs. When you enable <code>fonts</code>, omitted
         options default to Roboto weights 400/500/700, all character groups, WOFF2/WOFF, and all
         three icon styles. To supply your own fonts, set <code>roboto: false</code> or
