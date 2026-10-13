@@ -75,6 +75,16 @@
       --q-expansion-panel-size var(--q-expansion-duration) var(--q-expansion-shape-easing);
   }
 
+  // Nested parents follow their children's layout instead of restarting a measured spring.
+  &--expressive#{&}--measured:has(.q-expansion-item) {
+    margin-block-end: 0;
+    transition-property: border-radius;
+
+    > .q-expansion-item__panel {
+      height: auto;
+    }
+  }
+
   &--expressive#{&}--measured#{&}--panel-raised {
     z-index: 2;
   }
