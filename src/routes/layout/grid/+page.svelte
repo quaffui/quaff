@@ -17,9 +17,9 @@
   <h1 class="q-mb-xl">Grid system</h1>
 
   <p>
-    Quaff provides a responsive 12-column CSS grid. Use <code class="q-docs-code">row</code> for the
-    container and <code class="q-docs-code">col-*</code> for its children. For flex layouts,
-    alignment, sizing, and spacing, see
+    Quaff provides a responsive 12-column CSS grid. Use <code>row</code> for the container and
+    <code>col-*</code>
+    for its children. For flex layouts, alignment, sizing, and spacing, see
     <a class="q-docs-link" href={resolve("/utils/css")}>CSS helpers</a>.
   </p>
 
@@ -36,12 +36,11 @@
   <h2 class="q-my-lg">Gutter</h2>
 
   <p>
-    You can add space between your columns using the <code class="q-docs-code">q-gutter-*</code>
+    You can add space between your columns using the <code>q-gutter-*</code>
     classes, where * is either xs, sm, md, lg, xl or none. Use
-    <code class="q-docs-code">q-gutter-x-*</code> or
-    <code class="q-docs-code">q-gutter-y-*</code> when spacing should only apply in one axis. The
-    <code class="q-docs-code">q-col-gutter-*</code> names are supported as compatibility aliases for row
-    grids.
+    <code>q-gutter-x-*</code> or
+    <code>q-gutter-y-*</code> when spacing should only apply in one axis. The
+    <code>q-col-gutter-*</code> names are supported as compatibility aliases for row grids.
   </p>
 
   {#each ["xs", "sm", "md", "lg", "xl", "none"] as size (size)}
@@ -63,8 +62,8 @@
   <h3 class="q-my-lg">Directional Gutter</h3>
 
   <p>
-    The following example uses <code class="q-docs-code">q-col-gutter-x-md</code> with
-    <code class="q-docs-code">q-col-gutter-y-sm</code>:
+    The following example uses <code>q-col-gutter-x-md</code> with
+    <code>q-col-gutter-y-sm</code>:
   </p>
 
   <div class="row q-col-gutter-x-md q-col-gutter-y-sm">
@@ -77,9 +76,7 @@
   <h2 class="q-my-lg">Breakpoints</h2>
 
   <p>
-    Grid classes use the MD3 window sizes below, matching <code class="q-docs-code"
-      >Quaff.screen</code
-    >. See
+    Grid classes use the MD3 window sizes below, matching <code>Quaff.screen</code>. See
     <a class="q-docs-link" href={resolve("/layout/adaptive")}>adaptive layouts</a> for navigation and
     list/detail examples.
   </p>

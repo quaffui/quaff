@@ -112,7 +112,7 @@
         {#each HELPER_GROUPS as [name, classes, description] (name)}
           <dt class="title-small q-mt-md">{name}</dt>
           <dd>
-            <code class="q-docs-code">{classes}</code>
+            <code>{classes}</code>
             <p class="body-medium q-mt-xs">{description}</p>
           </dd>
         {/each}

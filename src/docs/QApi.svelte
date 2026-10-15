@@ -387,6 +387,11 @@
     border-radius: 0;
   }
 
+  :global(.q-api .q-api__doc-heading > code) {
+    font-family: inherit;
+    padding-block: 4px;
+  }
+
   :global(.q-api .q-api__doc-heading pre) {
     margin: 0;
   }
