@@ -25,19 +25,18 @@
   <section aria-labelledby="theme-roles-heading" class="q-mb-xl">
     <h2 id="theme-roles-heading" class="headline-medium q-mb-md">Theme roles</h2>
     <p class="q-mb-md">
-      <code class="q-docs-code">primary</code>, <code class="q-docs-code">secondary</code> and
-      <code class="q-docs-code">tertiary</code>
+      <code>primary</code>, <code>secondary</code> and
+      <code>tertiary</code>
       are accent colors. Use
-      <code class="q-docs-code">surface</code>
-      and <code class="q-docs-code">surface-container-*</code> for content, and
-      <code class="q-docs-code">error</code>, <code class="q-docs-code">success</code> or
-      <code class="q-docs-code">warning</code> for status.
+      <code>surface</code>
+      and <code>surface-container-*</code> for content, and
+      <code>error</code>, <code>success</code> or
+      <code>warning</code> for status.
     </p>
     <p class="q-mb-lg">
-      Paired classes such as <code class="q-docs-code">primary-container</code> set a background and
-      its matching
-      <code class="q-docs-code">on-*</code> text color. Theme roles adapt to light and dark mode. Change
-      the preview below without changing the rest of the site.
+      Paired classes such as <code>primary-container</code> set a background and its matching
+      <code>on-*</code> text color. Theme roles adapt to light and dark mode. Change the preview below
+      without changing the rest of the site.
     </p>
     <QSwitch
       bind:value={
@@ -82,12 +81,11 @@
       copiable
     />
     <p class="q-mt-md">
-      Use <code class="q-docs-code">surface-container-lowest</code>,
-      <code class="q-docs-code">-low</code>, <code class="q-docs-code">surface-container</code>,
-      <code class="q-docs-code">-high</code> and <code class="q-docs-code">-highest</code> for
-      different surface levels. They pair with
-      <code class="q-docs-code">on-surface</code>; use
-      <code class="q-docs-code">text-on-surface-variant</code>
+      Use <code>surface-container-lowest</code>,
+      <code>-low</code>, <code>surface-container</code>,
+      <code>-high</code> and <code>-highest</code> for different surface levels. They pair with
+      <code>on-surface</code>; use
+      <code>text-on-surface-variant</code>
       for supporting text. See
       <a class="q-docs-link" href={resolve("/utils/q-theme")}>QTheme</a>
       to change the theme and <a class="q-docs-link" href={resolve("/utils/quaff")}>Quaff</a> to set the
@@ -98,31 +96,29 @@
   <section aria-labelledby="color-classes-heading" class="q-mb-xl">
     <h2 id="color-classes-heading" class="headline-medium q-mb-md">Color classes</h2>
     <p class="q-mb-lg">
-      Replace <code class="q-docs-code">&lt;color&gt;</code> with a theme color or palette name,
-      such as
-      <code class="q-docs-code">primary</code>, <code class="q-docs-code">on-surface</code>,
-      <code class="q-docs-code">blue</code>
-      or <code class="q-docs-code">blue-3</code>.
+      Replace <code>&lt;color&gt;</code> with a theme color or palette name, such as
+      <code>primary</code>, <code>on-surface</code>,
+      <code>blue</code>
+      or <code>blue-3</code>.
     </p>
     <dl class="class-reference q-gap-y-md q-gap-x-lg q-mb-lg">
-      <dt><code class="q-docs-code">primary-container</code></dt>
+      <dt><code>primary-container</code></dt>
       <dd class="q-ma-none">Paired theme class: background and matching text.</dd>
-      <dt><code class="q-docs-code">bg-&lt;color&gt;</code></dt>
+      <dt><code>bg-&lt;color&gt;</code></dt>
       <dd class="q-ma-none">
-        Background only: <code class="q-docs-code">bg-primary</code>,
-        <code class="q-docs-code">bg-blue</code>, <code class="q-docs-code">bg-blue-3</code>.
+        Background only: <code>bg-primary</code>,
+        <code>bg-blue</code>, <code>bg-blue-3</code>.
       </dd>
-      <dt><code class="q-docs-code">text-&lt;color&gt;</code></dt>
+      <dt><code>text-&lt;color&gt;</code></dt>
       <dd class="q-ma-none">
-        Text only: <code class="q-docs-code">text-on-surface</code>,
-        <code class="q-docs-code">text-blue</code>, <code class="q-docs-code">text-blue-10</code>.
+        Text only: <code>text-on-surface</code>,
+        <code>text-blue</code>, <code>text-blue-10</code>.
       </dd>
-      <dt><code class="q-docs-code">border-&lt;color&gt;</code></dt>
+      <dt><code>border-&lt;color&gt;</code></dt>
       <dd class="q-ma-none">
-        Border color: <code class="q-docs-code">border-outline</code>,
-        <code class="q-docs-code">border-blue</code>,
-        <code class="q-docs-code">border-blue-6</code>. Add <code class="q-docs-code">border</code> for
-        a visible border.
+        Border color: <code>border-outline</code>,
+        <code>border-blue</code>,
+        <code>border-blue-6</code>. Add <code>border</code> for a visible border.
       </dd>
     </dl>
     <QCodeBlock
@@ -139,43 +135,43 @@
     <h3 class="title-large q-mt-lg q-mb-md">Supported theme colors</h3>
     <ul class="role-reference column q-gap-md">
       <li>
-        <strong>Accents and status:</strong> <code class="q-docs-code">primary</code>,
-        <code class="q-docs-code">secondary</code>,
-        <code class="q-docs-code">tertiary</code>, <code class="q-docs-code">error</code>,
-        <code class="q-docs-code">success</code>, <code class="q-docs-code">warning</code>. Each has
-        <code class="q-docs-code">on-&lt;name&gt;</code>,
-        <code class="q-docs-code">&lt;name&gt;-container</code>
+        <strong>Accents and status:</strong> <code>primary</code>,
+        <code>secondary</code>,
+        <code>tertiary</code>, <code>error</code>,
+        <code>success</code>, <code>warning</code>. Each has
+        <code>on-&lt;name&gt;</code>,
+        <code>&lt;name&gt;-container</code>
         and
-        <code class="q-docs-code">on-&lt;name&gt;-container</code> colors.
+        <code>on-&lt;name&gt;-container</code> colors.
       </li>
       <li>
-        <strong>Surfaces:</strong> <code class="q-docs-code">background</code>,
-        <code class="q-docs-code">surface</code>,
-        <code class="q-docs-code">surface-variant</code> and their
-        <code class="q-docs-code">on-&lt;name&gt;</code>
+        <strong>Surfaces:</strong> <code>background</code>,
+        <code>surface</code>,
+        <code>surface-variant</code> and their
+        <code>on-&lt;name&gt;</code>
         colors;
-        <code class="q-docs-code">surface-dim</code> and
-        <code class="q-docs-code">surface-bright</code>.
+        <code>surface-dim</code> and
+        <code>surface-bright</code>.
       </li>
       <li>
-        <strong>Containers:</strong> <code class="q-docs-code">surface-container</code>,
-        <code class="q-docs-code">surface-container-lowest</code>,
-        <code class="q-docs-code">surface-container-low</code>,
-        <code class="q-docs-code">surface-container-high</code>,
-        <code class="q-docs-code">surface-container-highest</code>.
+        <strong>Containers:</strong> <code>surface-container</code>,
+        <code>surface-container-lowest</code>,
+        <code>surface-container-low</code>,
+        <code>surface-container-high</code>,
+        <code>surface-container-highest</code>.
       </li>
       <li>
-        <strong>Outlines:</strong> <code class="q-docs-code">outline</code>,
-        <code class="q-docs-code">outline-variant</code>.
+        <strong>Outlines:</strong> <code>outline</code>,
+        <code>outline-variant</code>.
       </li>
       <li>
-        <strong>Inverse colors:</strong> <code class="q-docs-code">inverse-surface</code>,
-        <code class="q-docs-code">inverse-on-surface</code>,
-        <code class="q-docs-code">inverse-primary</code>.
+        <strong>Inverse colors:</strong> <code>inverse-surface</code>,
+        <code>inverse-on-surface</code>,
+        <code>inverse-primary</code>.
       </li>
       <li>
-        <strong>Other:</strong> <code class="q-docs-code">shadow</code>,
-        <code class="q-docs-code">scrim</code>, <code class="q-docs-code">surface-tint</code>.
+        <strong>Other:</strong> <code>shadow</code>,
+        <code>scrim</code>, <code>surface-tint</code>.
       </li>
     </ul>
   </section>
@@ -183,12 +179,11 @@
   <section aria-labelledby="css-variables-heading" class="q-mb-xl">
     <h2 id="css-variables-heading" class="headline-medium q-mb-md">CSS variables</h2>
     <p class="q-mb-md">
-      Theme variables use the role name, such as <code class="q-docs-code">--primary-container</code
-      >. Palette variables use the <code class="q-docs-code">--color-</code> prefix, such as
-      <code class="q-docs-code">--color-teal-6</code>. Some tokens, such as
-      <code class="q-docs-code">--primary-fixed</code>
-      and <code class="q-docs-code">--primary-dim</code>, have no helper class; use their CSS
-      variables directly.
+      Theme variables use the role name, such as <code>--primary-container</code>. Palette variables
+      use the <code>--color-</code> prefix, such as
+      <code>--color-teal-6</code>. Some tokens, such as
+      <code>--primary-fixed</code>
+      and <code>--primary-dim</code>, have no helper class; use their CSS variables directly.
     </p>
     <QCodeBlock
       language="css"
@@ -208,18 +203,17 @@
   <section aria-labelledby="palette-heading">
     <h2 id="palette-heading" class="headline-medium q-mb-md">Fixed palette</h2>
     <p class="q-mb-md">
-      Each palette has ten shades: <code class="q-docs-code">1</code> is the lightest and
-      <code class="q-docs-code">10</code>
-      the darkest. Without a number, <code class="q-docs-code">bg-teal</code>,
-      <code class="q-docs-code">text-teal</code>
-      and <code class="q-docs-code">border-teal</code> use shade <code class="q-docs-code">6</code>.
-      For example, <code class="q-docs-code">text-teal</code> is
-      <code class="q-docs-code">text-teal-6</code>.
+      Each palette has ten shades: <code>1</code> is the lightest and
+      <code>10</code>
+      the darkest. Without a number, <code>bg-teal</code>,
+      <code>text-teal</code>
+      and <code>border-teal</code> use shade <code>6</code>. For example, <code>text-teal</code> is
+      <code>text-teal-6</code>.
     </p>
     <p class="q-mb-lg">
-      Use <code class="q-docs-code">bg-teal-2</code>, <code class="q-docs-code">text-teal-10</code>
-      or <code class="q-docs-code">border-teal-6</code>. Palette colors stay fixed when the theme or
-      display mode changes. Choose the text color separately and check its contrast.
+      Use <code>bg-teal-2</code>, <code>text-teal-10</code>
+      or <code>border-teal-6</code>. Palette colors stay fixed when the theme or display mode
+      changes. Choose the text color separately and check its contrast.
     </p>
     <QCodeBlock
       language="html"

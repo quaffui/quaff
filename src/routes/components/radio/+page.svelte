@@ -90,7 +90,7 @@
           <p class="body-medium text-on-surface-variant q-ma-none" role="status">{selectionNote}</p>
         </div>
         <p class="selection-result body-medium secondary-container q-pa-md q-mt-lg q-mb-none">
-          Selected value: <code class="q-docs-code">{sessionLength}</code>
+          Selected value: <code>{sessionLength}</code>
         </p>
       </div>
     </QDocsSection>
@@ -168,7 +168,7 @@
           class="selection-result body-medium secondary-container q-pa-md q-mt-lg q-mb-none"
           role="status"
         >
-          Selected value: <code class="q-docs-code">{String(isRecurringBooking)}</code> (boolean)
+          Selected value: <code>{String(isRecurringBooking)}</code> (boolean)
         </p>
       </div>
     </QDocsSection>
@@ -200,7 +200,7 @@
         <QBtn type="submit" variant="tonal" label="Submit preferences" />
         <p class="body-medium text-on-surface-variant q-ma-none" role="status">
           {#if submittedContactMethod}
-            Submitted value: <code class="q-docs-code">{submittedContactMethod}</code>
+            Submitted value: <code>{submittedContactMethod}</code>
           {:else}
             Submit to read the selected value.
           {/if}

@@ -39,8 +39,8 @@
   <h1 class="q-mb-xl">Pages</h1>
 
   <p>
-    Use <code class="q-docs-code">q-page</code> on the main content container for a screen. It provides
-    responsive horizontal padding, centers the content, and keeps wide screens readable.
+    Use <code>q-page</code> on the main content container for a screen. It provides responsive horizontal
+    padding, centers the content, and keeps wide screens readable.
   </p>
 
   <QCodeBlock class="q-my-lg" language="svelte" code={basicPage} />
@@ -49,8 +49,7 @@
 
   <p>
     QLayout handles app bars, drawers, railbars, and footers. Put
-    <code class="q-docs-code">q-page</code> inside the content area so the page itself owns the page width
-    and spacing.
+    <code>q-page</code> inside the content area so the page itself owns the page width and spacing.
   </p>
 
   <QCodeBlock class="q-my-lg" language="svelte" code={layoutPage} />
@@ -59,21 +58,19 @@
 
   <p>
     Text follows your browser's font size. Spacing and icons keep their size, while controls grow to
-    fit larger text. Changing the root <code class="q-docs-code">--size</code> adjusts text without scaling
-    the whole layout.
+    fit larger text. Changing the root <code>--size</code> adjusts text without scaling the whole layout.
   </p>
 
   <p>
-    Use <code class="q-docs-code">rem</code> for text and <code class="q-docs-code">em</code> for sizes
-    that follow nearby text. Keep design spacing in pixels, or use Quaff's spacing classes. Numeric sizing
-    props use pixels; props that accept CSS lengths keep the unit you provide.
+    Use <code>rem</code> for text and <code>em</code> for sizes that follow nearby text. Keep design spacing
+    in pixels, or use Quaff's spacing classes. Numeric sizing props use pixels; props that accept CSS
+    lengths keep the unit you provide.
   </p>
 
   <h2 class="q-my-lg">Page Grid</h2>
 
   <p>
-    Combine <code class="q-docs-code">q-page</code> with the row and column classes when a page needs
-    responsive sections.
+    Combine <code>q-page</code> with the row and column classes when a page needs responsive sections.
   </p>
 
   <QCodeBlock class="q-my-lg" language="svelte" code={pageGrid} />

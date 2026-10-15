@@ -37,11 +37,7 @@
       <thead><tr><th>Key</th><th>Width</th><th>MD3 size</th></tr></thead>
       <tbody>
         {#each BREAKPOINTS as [key, width, name] (key)}
-          <tr
-            ><th scope="row"><code class="q-docs-code">{key}</code></th><td>{width}</td><td
-              >{name}</td
-            ></tr
-          >
+          <tr><th scope="row"><code>{key}</code></th><td>{width}</td><td>{name}</td></tr>
         {/each}
       </tbody>
     </table>
@@ -57,21 +53,18 @@ Quaff.screen.navigation; // "navbar" below 600px, otherwise "railbar"
 Quaff.screen.twoPane;    // true from 840px`}
   />
   <p>
-    <a class="q-docs-link" href={resolve("/utils/quaff")}
-      ><code class="q-docs-code">Quaff.screen</code></a
-    >
+    <a class="q-docs-link" href={resolve("/utils/quaff")}><code>Quaff.screen</code></a>
     provides reactive, read-only viewport dimensions and size flags. Its
-    <code class="q-docs-code">gt.md</code>
-    flag means above the entire md class, while <code class="q-docs-code">!Quaff.screen.lt.md</code> includes
-    md.
+    <code>gt.md</code>
+    flag means above the entire md class, while <code>!Quaff.screen.lt.md</code> includes md.
   </p>
   <p>
-    Call <code class="q-docs-code">Quaff.init()</code> once during root layout setup, including in
-    client-only apps. Until the root mounts, the viewport is <code class="q-docs-code">0 × 0</code>,
-    <code class="q-docs-code">name</code>
+    Call <code>Quaff.init()</code> once during root layout setup, including in client-only apps.
+    Until the root mounts, the viewport is <code>0 × 0</code>,
+    <code>name</code>
     is
-    <code class="q-docs-code">"xs"</code>, and <code class="q-docs-code">ready</code> is false. Live measurements
-    begin on mount, keeping the initial server render and hydration consistent.
+    <code>"xs"</code>, and <code>ready</code> is false. Live measurements begin on mount, keeping the
+    initial server render and hydration consistent.
   </p>
 
   <h2>Navigation</h2>
@@ -147,14 +140,14 @@ const screen = $derived(Quaff.getScreen(width));`}
     code={"<div bind:clientWidth={width}><!-- Use screen here. --></div>"}
   />
   <p>
-    <code class="q-docs-code">getScreen</code> returns the same
-    <code class="q-docs-code">ScreenState</code>
-    shape and accepts an optional height, defaulting to <code class="q-docs-code">0</code>. It is
-    pure and needs no <code class="q-docs-code">Quaff.init()</code>. Its
-    <code class="q-docs-code">ready</code> flag is false until width is a valid measurement;
-    <code class="q-docs-code">0</code>
-    is valid, while <code class="q-docs-code">undefined</code> means unavailable. Grid classes and Sass
-    media queries always follow the viewport, not this container.
+    <code>getScreen</code> returns the same
+    <code>ScreenState</code>
+    shape and accepts an optional height, defaulting to <code>0</code>. It is pure and needs no
+    <code>Quaff.init()</code>. Its
+    <code>ready</code> flag is false until width is a valid measurement;
+    <code>0</code>
+    is valid, while <code>undefined</code> means unavailable. Grid classes and Sass media queries always
+    follow the viewport, not this container.
   </p>
   <p>
     See the <a class="q-docs-link" href={resolve("/layout/grid")}>grid utilities</a> and

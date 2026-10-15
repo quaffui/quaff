@@ -259,12 +259,6 @@
       padding: 0 !important;
     }
 
-    :global(code:not(pre > code)) {
-      background-color: var(--surface-container);
-      padding: 4px 8px;
-      border-radius: 4px;
-    }
-
     :global(.q-docs__preview) {
       display: flex !important;
       flex-direction: column;

@@ -573,11 +573,9 @@
     color: white;
   }
 
-  :global(.q-docs-code) {
-    display: inline-flex;
-    align-items: center;
+  :global(code:not(pre code)) {
     max-width: 100%;
-    padding: 4px 8px;
+    padding: 2px 8px;
     border-radius: 8px;
     background-color: var(--surface-container);
     color: inherit;

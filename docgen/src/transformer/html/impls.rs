@@ -32,8 +32,8 @@ impl HtmlItem {
     /// Renders an escaped property name with the API heading styles.
     pub fn prop_name(name: &str) -> String {
         Self::new("")
-            .tag("span")
-            .class("q-docs-code q-mr-xs")
+            .tag("code")
+            .class("q-mr-xs")
             .child_html(Self::new(name).tag("b"))
             .create_item()
     }
