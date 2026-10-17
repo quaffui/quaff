@@ -10,6 +10,7 @@ Dialogs focus attention on a task, decision, or message above the page. Choose a
 
 <script lang="ts">
   import { on } from "svelte/events";
+  import { isDialogClick, markDialogClick } from "#internal/dialogClicks.js";
   import type { QEvent } from "#utils";
   import type { QDialogProps } from "./props";
 
@@ -116,7 +117,7 @@ Dialogs focus attention on a task, decision, or message above the page. Choose a
       return;
     }
 
-    e.stopPropagation();
+    markDialogClick(e);
   }
 
   function handleKeydown(e: QDialogEvent<KeyboardEvent>) {
@@ -151,7 +152,7 @@ Dialogs focus attention on a task, decision, or message above the page. Choose a
     const blockedByModal =
       topModal && topModal !== dialogEl && (modal || !topModal.contains(dialogEl ?? null));
 
-    if (e.defaultPrevented || dismissedEvents.has(e) || blockedByModal) {
+    if (e.defaultPrevented || dismissedEvents.has(e) || isDialogClick(e) || blockedByModal) {
       return;
     }
 

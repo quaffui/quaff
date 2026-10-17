@@ -8,6 +8,7 @@ Drawers place navigation or supporting content beside the page. They can share s
   import { on } from "svelte/events";
   import { innerWidth } from "svelte/reactivity/window";
   import { containsWithPortals } from "#internal/portalParent.js";
+  import { isDialogClick } from "#internal/dialogClicks.js";
   import { navigationCtx } from "#internal/navigationContext.js";
   import { BREAKPOINTS } from "#internal/breakpoints.js";
   import { navigating } from "$app/state";
@@ -215,7 +216,7 @@ Drawers place navigation or supporting content beside the page. They can share s
 
   // #region:    --- Functions
   function tryClose(e: MouseEvent) {
-    if (!drawerEl || (isModal && !isActiveModalDrawer(drawerEl))) {
+    if (!drawerEl || isDialogClick(e) || (isModal && !isActiveModalDrawer(drawerEl))) {
       return;
     }
 
