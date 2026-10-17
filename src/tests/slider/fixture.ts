@@ -4,7 +4,7 @@ import { getCssAsset } from "../assets/cssFixture";
 const FIXTURE_PATH = "/slider-test";
 
 export async function startFixture() {
-  const css = ["base", "components/slider"].map(getCssAsset).join("\n");
+  const css = ["base", "components/icon", "components/slider"].map(getCssAsset).join("\n");
   const document = `<!doctype html><html><head>
     <link rel="icon" href="data:,">
     <style>${css}</style>

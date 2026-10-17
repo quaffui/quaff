@@ -37,6 +37,71 @@ async function readValue(input: Locator) {
   return Number(await input.inputValue());
 }
 
+async function readStopLayout(slider: Locator, isVertical: boolean) {
+  return slider.evaluate((element, isVertical) => {
+    const bounds = element.querySelector(".q-slider__axis")!.getBoundingClientRect();
+    const offsets = [...element.querySelectorAll(".q-slider__stop")]
+      .map((stop) => {
+        const bounds = stop.getBoundingClientRect();
+        return isVertical ? bounds.top : bounds.left;
+      })
+      .sort((first, second) => first - second);
+    const spacings = offsets.slice(1).map((offset, index) => offset - offsets[index]);
+    const endSpacings = spacings.slice(-3);
+
+    return {
+      count: offsets.length,
+      length: isVertical ? bounds.height : bounds.width,
+      minimumSpacing: Math.min(...spacings),
+      endSpacingVariation: Math.max(...endSpacings) - Math.min(...endSpacings),
+    };
+  }, isVertical);
+}
+
+async function setSliderLength(slider: Locator, isVertical: boolean, length: number) {
+  await slider.evaluate(
+    (element, { isVertical, length }) => {
+      (element as HTMLElement).style[isVertical ? "height" : "width"] = `${length}px`;
+    },
+    { isVertical, length }
+  );
+  await expect
+    .poll(async () => (await readStopLayout(slider, isVertical)).length)
+    .toBe(length - 12);
+}
+
+async function readStopTargets(slider: Locator, isReversed = false) {
+  await slider.scrollIntoViewIfNeeded();
+
+  return slider.locator(".q-slider__stop").evaluateAll(
+    (elements, isReversed) =>
+      elements.map((element) => {
+        const bounds = element.getBoundingClientRect();
+        const position = parseFloat(
+          (element as HTMLElement).style.getPropertyValue("--q-slider-position")
+        );
+
+        return {
+          x: bounds.x + bounds.width / 2,
+          y: bounds.y + bounds.height / 2,
+          value: isReversed ? 100 - position : position,
+        };
+      }),
+    isReversed
+  );
+}
+
+async function expectStopSelection(
+  input: Locator,
+  stops: Awaited<ReturnType<typeof readStopTargets>>
+) {
+  for (const stop of stops) {
+    await input.press("End");
+    await page.mouse.click(stop.x, stop.y);
+    expect(await readValue(input)).toBeCloseTo(stop.value, 8);
+  }
+}
+
 async function expectBubbleMotion(
   label: Locator,
   frames: [time: number, scale: number][],
@@ -78,7 +143,7 @@ it.each([false, true])(
   async (isVertical) => {
     const slider = page.locator(isVertical ? ".vertical" : ".single");
     const handle = (await slider.locator(".q-slider__handle").boundingBox())!;
-    const bounds = (await slider.boundingBox())!;
+    const bounds = (await slider.locator(".q-slider__axis").boundingBox())!;
     const x = handle.x + handle.width / 2;
     const y = handle.y + handle.height / 2;
     const session = await page.context().newCDPSession(page);
@@ -157,7 +222,7 @@ it("smooths shared geometry while updating values immediately, and respects redu
   await page.clock.pauseAt(new Date(Date.now() + 1000));
   const slider = page.locator(".single");
   const handle = (await slider.locator(".q-slider__handle").boundingBox())!;
-  const bounds = (await slider.boundingBox())!;
+  const bounds = (await slider.locator(".q-slider__axis").boundingBox())!;
   const x = handle.x + handle.width / 2;
   const y = handle.y + handle.height / 2;
   await page.mouse.move(x, y);
@@ -229,7 +294,7 @@ it("uses the same reversed and RTL direction for keyboard and pointer input", as
     await input.focus();
     await input.press("ArrowRight");
     expect(await input.inputValue()).toBe("39");
-    const bounds = (await slider.boundingBox())!;
+    const bounds = (await slider.locator(".q-slider__axis").boundingBox())!;
     await page.mouse.click(bounds.x + bounds.width / 4, bounds.y + bounds.height / 2);
     expect(await input.inputValue()).toBe("75");
   }
@@ -260,6 +325,7 @@ async function readGeometry(slider: Locator, shouldFinishAnimations = true) {
     }
 
     const handle = element.querySelector(".q-slider__handle")!;
+    const axis = element.querySelector(".q-slider__axis")!.getBoundingClientRect();
     const hitTarget = handle.getBoundingClientRect();
     const bar = getComputedStyle(handle, "::before");
     const barWidth = parseFloat(bar.width);
@@ -271,7 +337,7 @@ async function readGeometry(slider: Locator, shouldFinishAnimations = true) {
     const trailing = segments.find((segment) => segment.left >= center)!;
 
     return {
-      position: (center - element.getBoundingClientRect().left) / element.clientWidth,
+      position: (center - axis.left) / axis.width,
       trackHeight: element.querySelector(".q-slider__track")!.getBoundingClientRect().height,
       barWidth,
       barHeight: parseFloat(bar.height),
@@ -383,7 +449,7 @@ it("leaves a 4px neutral gap on centered sliders and keeps stops out of it", asy
     return { gap: segments[1].left - segments[0].right, hasValidStopPositions };
   });
   expect(geometry).toEqual({ gap: 4, hasValidStopPositions: true });
-  const bounds = (await slider.boundingBox())!;
+  const bounds = (await slider.locator(".q-slider__axis").boundingBox())!;
   const input = slider.locator("input");
   await page.mouse.click(bounds.x + bounds.width * 0.49, bounds.y + bounds.height / 2);
 
@@ -435,8 +501,8 @@ it("matches all five sizes, handle gaps and targets, and only insets icons when 
       continue;
     }
 
-    const bounds = (await slider.boundingBox())!;
-    const cutoff = size === "xl" ? 48 : 38;
+    const bounds = (await slider.locator(".q-slider__axis").boundingBox())!;
+    const cutoff = size === "xl" ? 42 : 32;
     const icon = slider.locator(".q-slider__icon");
     await page.mouse.click(bounds.x + cutoff - 1, bounds.y + bounds.height / 2);
     expect(await icon.getAttribute("class")).not.toMatch(/\bactive\b/);
@@ -494,4 +560,135 @@ it("outlines the visible handle and keeps stops legible and clear of the handle 
     });
   });
   expect(hasValidStopPositions).toBe(true);
+});
+
+it.each([false, true])(
+  "limits stops after resizing without changing input precision (vertical: %s)",
+  async (isVertical) => {
+    const slider = page.locator(isVertical ? ".dense-markers-vertical" : ".dense-markers");
+
+    await slider.locator("input").press(isVertical ? "ArrowUp" : "ArrowRight");
+    expect(await readValue(slider.locator("input"))).toBe(isVertical ? 41.1 : 42);
+
+    for (const length of [160, 1000]) {
+      await setSliderLength(slider, isVertical, length);
+      await expect
+        .poll(async () => (await readStopLayout(slider, isVertical)).count)
+        .toBeLessThanOrEqual(Math.floor((length - 12) / 8) + 1);
+      await expect
+        .poll(async () => (await readStopLayout(slider, isVertical)).count)
+        .toBeGreaterThan(2);
+      await expect
+        .poll(async () => (await readStopLayout(slider, isVertical)).minimumSpacing)
+        .toBeGreaterThanOrEqual(7.9);
+      const layout = await readStopLayout(slider, isVertical);
+
+      expect(layout.length).toBe(length - 12);
+      expect(layout.endSpacingVariation).toBeLessThan(0.05);
+    }
+  }
+);
+
+it.each(["horizontal", "vertical", "reversed", "rtl"])(
+  "keeps visible ticks aligned with selectable values before and after limiting (%s)",
+  async (direction) => {
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    const slider = page.locator(`.marker-values-${direction}`);
+    const input = slider.locator("input");
+    const isVertical = direction === "vertical";
+    const isReversed = direction === "reversed";
+
+    for (const length of [448, 160]) {
+      await setSliderLength(slider, isVertical, length);
+      await input.press("End");
+      const stops = await readStopTargets(slider, isReversed);
+      const interior = stops.filter((stop) => stop.value > 0 && stop.value < 100).slice(0, 2);
+
+      expect(
+        stops.every((stop) => Math.abs(stop.value / 2 - Math.round(stop.value / 2)) < 0.0001)
+      ).toBe(true);
+
+      if (length === 448) {
+        expect(interior.map((stop) => stop.value)).toEqual([expect.closeTo(2), expect.closeTo(4)]);
+      }
+
+      await expectStopSelection(input, interior);
+    }
+
+    const endpoints = (await readStopTargets(slider, isReversed)).filter(
+      (stop) => stop.value === 0 || stop.value === 100
+    );
+    expect(endpoints.map((stop) => stop.value)).toEqual([0, 100]);
+    await expectStopSelection(input, endpoints);
+  }
+);
+
+it("selects range values at the visible interior ticks", async () => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  const slider = page.locator(".marker-values-range");
+  await setSliderLength(slider, false, 448);
+  const input = slider.locator("input").first();
+  const stops = (await readStopTargets(slider)).slice(1, 3);
+
+  expect(stops.map((stop) => stop.value)).toEqual([expect.closeTo(2), expect.closeTo(4)]);
+
+  await expectStopSelection(input, stops);
+});
+
+it.each([false, true])(
+  "keeps vertical icons inset and clear of the handle (reverse: %s)",
+  async (isReversed) => {
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    const slider = page.locator(`.vertical-icon-${isReversed}`);
+    await slider.scrollIntoViewIfNeeded();
+    const axis = (await slider.locator(".q-slider__axis").boundingBox())!;
+
+    for (const offset of [31, 32.5]) {
+      await slider.locator("input").press("Home");
+      const y = isReversed ? axis.y + offset : axis.y + axis.height - offset;
+      await page.mouse.click(axis.x + axis.width / 2, y);
+      const geometry = await readVerticalIconGeometry(slider);
+
+      expect(geometry.isActive).toBe(offset > 32);
+      expect(geometry.padding).toBe(6);
+
+      if (geometry.isActive) {
+        expect(geometry.clearance).toBeGreaterThanOrEqual(8);
+        expect(geometry.isOnTrack).toBe(true);
+      }
+    }
+  }
+);
+
+async function readVerticalIconGeometry(slider: Locator) {
+  return slider.evaluate((element) => {
+    const root = element.getBoundingClientRect();
+    const icon = element.querySelector(".q-slider__icon")!;
+    const bounds = icon.getBoundingClientRect();
+    const handle = element.querySelector(".q-slider__handle")!.getBoundingClientRect();
+    const center = handle.y + handle.height / 2;
+    const track = element.querySelector(".q-slider__segment.active")!.getBoundingClientRect();
+    const isAtEnd = icon.classList.contains("q-slider__icon--end");
+
+    return {
+      isActive: icon.classList.contains("active"),
+      padding: isAtEnd ? bounds.top - root.top : root.bottom - bounds.bottom,
+      clearance: Math.min(Math.abs(bounds.top - center), Math.abs(bounds.bottom - center)),
+      isOnTrack: bounds.top >= track.top && bounds.bottom <= track.bottom,
+    };
+  });
+}
+
+it("keeps fine-step stops clear of the inset icon", async () => {
+  await page.locator(".dense-markers .q-slider__stop").first().waitFor();
+  const hasOverlappingStops = await page.locator(".dense-markers").evaluate((element) => {
+    const icon = element.querySelector(".q-slider__icon")!.getBoundingClientRect();
+
+    return [...element.querySelectorAll(".q-slider__stop")].some((stop) => {
+      const bounds = stop.getBoundingClientRect();
+      return bounds.left < icon.right && bounds.right > icon.left;
+    });
+  });
+
+  expect(hasOverlappingStops).toBe(false);
 });

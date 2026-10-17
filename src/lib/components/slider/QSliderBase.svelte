@@ -15,6 +15,7 @@
 
   type SliderInputEvent<T extends Event> = QEvent<T, HTMLInputElement>;
 
+  const AXIS_INSET = 6;
   const ADJUSTMENT_KEYS = [
     "ArrowDown",
     "ArrowLeft",
@@ -74,7 +75,7 @@
     ...inputProps
   }: Props = $props();
 
-  let root: HTMLDivElement;
+  let axis: HTMLDivElement;
   let inputs = $state<HTMLInputElement[]>([]);
   let activeIndex = $state(0);
   let focusVisibleIndex = $state<number>();
@@ -94,8 +95,8 @@
   let pointerValueInitial: number | undefined;
   let pointerValueLast: number | undefined;
   let pointerVisualValue = $state<number>();
-  let rootWidth = $state(0);
-  let rootHeight = $state(0);
+  let axisWidth = $state(0);
+  let axisHeight = $state(0);
   let isSpacePressed = false;
 
   interface PointerSample {
@@ -109,7 +110,7 @@
   const isExpressive = $derived(expressive ?? quaffConfig.expressive);
   const resolvedSize = $derived(isExpressive ? size : "xs");
   const isVertical = $derived(isExpressive && vertical);
-  const rootLength = $derived(isVertical ? rootHeight : rootWidth);
+  const axisLength = $derived(isVertical ? axisHeight : axisWidth);
   const hasIcon = $derived(
     isExpressive &&
       !range &&
@@ -161,7 +162,8 @@
       markerInterval,
       reverse,
       activeSegment?.start ?? positions[0],
-      activeSegment?.end ?? positions[0]
+      activeSegment?.end ?? positions[0],
+      axisLength
     )
   );
   const endStops = $derived(
@@ -175,19 +177,21 @@
           ])
   );
   const activeTrackFraction = $derived(reverse ? 1 - positions[0] : positions[0]);
-  const iconRequiredSpace = $derived(resolvedSize === "xl" ? 32 + 8 + 8 : 24 + 6 + 8);
+  const iconRequiredSpace = $derived(
+    (resolvedSize === "xl" ? 32 + 8 + 8 : 24 + 6 + 8) - AXIS_INSET
+  );
   const isIconOnInactiveTrack = $derived(
     hasIcon &&
-      (rootLength > 0
-        ? rootLength * activeTrackFraction < iconRequiredSpace
+      (axisLength > 0
+        ? axisLength * activeTrackFraction < iconRequiredSpace
         : activeTrackFraction < 0.25)
   );
   const isIconAtEnd = $derived(isIconOnInactiveTrack !== reverse);
   const hasOverlappingHandles = $derived(
     range &&
       positions.length === 2 &&
-      (rootLength > 0
-        ? Math.abs(positions[0] - positions[1]) * rootLength < 4
+      (axisLength > 0
+        ? Math.abs(positions[0] - positions[1]) * axisLength < 4
         : Math.abs(positions[0] - positions[1]) < 0.0001)
   );
 
@@ -285,8 +289,8 @@
 
     pointerId = event.pointerId;
     pointerType = event.pointerType;
-    pointerBounds = root.getBoundingClientRect();
-    isPointerRtl = getComputedStyle(root).direction === "rtl";
+    pointerBounds = axis.getBoundingClientRect();
+    isPointerRtl = getComputedStyle(axis).direction === "rtl";
     hasPointerScrollIntent = false;
     pointerStart = sample;
     hasPointerOverlap =
@@ -298,7 +302,7 @@
     pointerValueLast = pointerValueInitial;
     isPressed = true;
     isDragging = false;
-    root.setPointerCapture(event.pointerId);
+    axis.setPointerCapture(event.pointerId);
 
     if (pointerType !== "touch" && !hasPointerStartedOnHandle) {
       updateFromPointer(sample);
@@ -435,7 +439,7 @@
   }
 
   function getPointerValue(sample: PointerSample) {
-    const bounds = pointerBounds ?? root.getBoundingClientRect();
+    const bounds = pointerBounds ?? axis.getBoundingClientRect();
     let position: number;
 
     if (isVertical) {
@@ -443,7 +447,7 @@
     } else {
       position = (sample.clientX - bounds.left) / bounds.width;
 
-      if (pointerBounds ? isPointerRtl : getComputedStyle(root).direction === "rtl") {
+      if (pointerBounds ? isPointerRtl : getComputedStyle(axis).direction === "rtl") {
         position = 1 - position;
       }
     }
@@ -570,7 +574,7 @@
   }
 
   function isRtl() {
-    return getComputedStyle(root).direction === "rtl";
+    return getComputedStyle(axis).direction === "rtl";
   }
 
   function handleKeyUp(event: SliderInputEvent<KeyboardEvent>) {
@@ -595,34 +599,31 @@
   }
 
   function isInTrackGap(position: number) {
-    const centerClearance = rootLength > 0 ? 4 / rootLength : 0;
+    const centerClearance = axisLength > 0 ? 4 / axisLength : 0;
 
     if (centered && !range && Math.abs(position - 0.5) <= centerClearance) {
       return true;
     }
 
-    if (!rootLength) {
+    if (!axisLength) {
       return positions.some((handlePosition) => Math.abs(position - handlePosition) < 0.0001);
     }
 
-    let stopOffset = position * rootLength;
-
-    if (position === 0) {
-      stopOffset = 6;
-    }
-
-    if (position === 1) {
-      stopOffset = rootLength - 6;
-    }
+    const stopOffset = position * axisLength;
 
     // Keep the 4px stop outside the 6px gap and the widest (4px) handle.
     return positions.some(
-      (handlePosition) => Math.abs(stopOffset - handlePosition * rootLength) <= 10
+      (handlePosition) => Math.abs(stopOffset - handlePosition * axisLength) <= 10
     );
   }
 
   function isAtIcon(position: number) {
-    return hasIcon && (isIconAtEnd ? position === 1 : position === 0);
+    if (!hasIcon) {
+      return false;
+    }
+
+    const iconDistance = isIconAtEnd ? 1 - position : position;
+    return axisLength > 0 ? iconDistance * axisLength < iconRequiredSpace : iconDistance === 0;
   }
 
   function isHandleActive(index: number) {
@@ -647,21 +648,21 @@
       return handleOffset;
     }
 
-    if (!rootLength) {
+    if (!axisLength) {
       return "2px";
     }
 
     // Merge the neutral gap with the handle gap when they meet.
-    const distance = Math.abs(position - positions[0]) * rootLength;
+    const distance = Math.abs(position - positions[0]) * axisLength;
     return `max(2px, calc(${handleOffset} - ${distance}px))`;
   }
 
   function getTrackCornerRadius(position: number) {
-    if (!rootLength) {
+    if (!axisLength) {
       return "var(--q-slider-outer-radius)";
     }
 
-    return `clamp(var(--q-slider-inner-radius), ${position * rootLength}px, var(--q-slider-outer-radius))`;
+    return `clamp(var(--q-slider-inner-radius), ${position * axisLength}px, var(--q-slider-outer-radius))`;
   }
 
   Q.classes("q-slider", {
@@ -685,14 +686,12 @@
 
 <!-- svelte-ignore a11y_no_static_element_interactions (the native range inputs provide slider semantics) -->
 <div
-  bind:this={root}
-  bind:clientWidth={rootWidth}
-  bind:clientHeight={rootHeight}
   dir={inputProps.dir}
   class="q-slider"
   {style}
   style:--q-slider-active-color={parsedColor}
   style:--q-slider-inactive-color={parsedTrackColor}
+  style:--q-slider-axis-inset={`${AXIS_INSET}px`}
   onpointerdown={handlePointerDown}
   onpointermove={handlePointerMove}
   onpointerup={handlePointerUp}
@@ -700,108 +699,111 @@
   onlostpointercapture={handleLostPointerCapture}
   data-quaff
 >
-  {#each normalizedValues as currentValue, index (index)}
-    <!-- svelte-ignore a11y_autofocus (forwards the native input attribute to the first handle) -->
-    <input
-      bind:this={inputs[index]}
-      {...inputProps}
-      class="q-slider__input"
-      style:--q-slider-position={`${positions[index] * 100}%`}
-      type="range"
-      id={range && id ? `${id}-${["min", "max"][index]}` : id}
-      min={range && index === 1 ? normalizedValues[0] : min}
-      max={range && index === 0 ? normalizedValues[1] : effectiveMax}
-      step={getNativeStep(index)}
-      value={currentValue}
-      {name}
-      {disabled}
-      autofocus={autofocus && index === 0}
-      tabindex={disabled ? -1 : tabindex}
-      aria-label={ariaLabels[index] ?? ariaLabel}
-      aria-labelledby={ariaLabelledby}
-      aria-describedby={ariaDescribedby}
-      aria-orientation={isVertical ? "vertical" : "horizontal"}
-      aria-readonly={readonly || undefined}
-      aria-valuetext={labels[index] === undefined ? undefined : String(displayLabels[index])}
-      oninput={(event) => handleNativeInput(event, index)}
-      onchange={handleNativeChange}
-      onkeydown={(event) => handleKeyDown(event, index)}
-      onkeyup={handleKeyUp}
-      onfocus={(event) => handleFocus(event, index)}
-      onblur={handleBlur}
-    />
-  {/each}
-
   <div
-    class="q-slider__track"
-    style:--q-slider-start-radius={getTrackCornerRadius(Math.min(...positions))}
-    style:--q-slider-end-radius={getTrackCornerRadius(1 - Math.max(...positions))}
-    aria-hidden="true"
+    bind:this={axis}
+    bind:clientWidth={axisWidth}
+    bind:clientHeight={axisHeight}
+    class="q-slider__axis"
   >
-    {#each segments as segment, index (index)}
-      <span
-        class:active={segment.isActive}
-        class:at-start={segment.start === 0}
-        class:at-end={segment.end === 1}
-        class:gap-start={segment.hasStartGap}
-        class:gap-end={segment.hasEndGap}
-        class="q-slider__segment"
-        style:--q-slider-start={`${segment.start * 100}%`}
-        style:--q-slider-end={`${segment.end * 100}%`}
-        style:--q-slider-gap-start={getTrackGap(segment.start, segment.hasStartGap)}
-        style:--q-slider-gap-end={getTrackGap(segment.end, segment.hasEndGap)}
-      ></span>
+    {#each normalizedValues as currentValue, index (index)}
+      <!-- svelte-ignore a11y_autofocus (forwards the native input attribute to the first handle) -->
+      <input
+        bind:this={inputs[index]}
+        {...inputProps}
+        class="q-slider__input"
+        style:--q-slider-position={`${positions[index] * 100}%`}
+        type="range"
+        id={range && id ? `${id}-${["min", "max"][index]}` : id}
+        min={range && index === 1 ? normalizedValues[0] : min}
+        max={range && index === 0 ? normalizedValues[1] : effectiveMax}
+        step={getNativeStep(index)}
+        value={currentValue}
+        {name}
+        {disabled}
+        autofocus={autofocus && index === 0}
+        tabindex={disabled ? -1 : tabindex}
+        aria-label={ariaLabels[index] ?? ariaLabel}
+        aria-labelledby={ariaLabelledby}
+        aria-describedby={ariaDescribedby}
+        aria-orientation={isVertical ? "vertical" : "horizontal"}
+        aria-readonly={readonly || undefined}
+        aria-valuetext={labels[index] === undefined ? undefined : String(displayLabels[index])}
+        oninput={(event) => handleNativeInput(event, index)}
+        onchange={handleNativeChange}
+        onkeydown={(event) => handleKeyDown(event, index)}
+        onkeyup={handleKeyUp}
+        onfocus={(event) => handleFocus(event, index)}
+        onblur={handleBlur}
+      />
     {/each}
 
-    {#each stops as stop (stop.position)}
-      {#if !isInTrackGap(stop.position) && !isAtIcon(stop.position)}
-        <span
-          class:active={stop.isActive}
-          class:q-slider__stop--end={stop.position === 0 || stop.position === 1}
-          class="q-slider__stop"
-          style:--q-slider-position={`${stop.position * 100}%`}
-        ></span>
-      {/if}
-    {/each}
-
-    {#each endStops as position (position)}
-      {#if !isInTrackGap(position) && !isAtIcon(position)}
-        <span
-          class="q-slider__stop q-slider__stop--end"
-          style:--q-slider-position={`${position * 100}%`}
-        ></span>
-      {/if}
-    {/each}
-
-    {#if hasIcon}
-      <span
-        class:active={!isIconOnInactiveTrack}
-        class:q-slider__icon--end={isIconAtEnd}
-        class:q-slider__icon--start={!isIconAtEnd}
-        class="q-slider__icon"
-      >
-        <QIconSnippet {icon} size={resolvedSize === "xl" ? "32px" : "24px"} />
-      </span>
-    {/if}
-  </div>
-
-  {#each positions as position, index (index)}
-    <span
-      class:active={isHandleActive(index)}
-      class:focus-visible={focusVisibleIndex === index}
-      class:pressed={isPressed && activeIndex === index}
-      class:overlap={hasOverlappingHandles}
-      class:top={activeIndex === index}
-      class="q-slider__handle"
-      data-index={index}
-      style:--q-slider-position={`${position * 100}%`}
+    <div
+      class="q-slider__track"
+      style:--q-slider-start-radius={getTrackCornerRadius(Math.min(...positions))}
+      style:--q-slider-end-radius={getTrackCornerRadius(1 - Math.max(...positions))}
       aria-hidden="true"
     >
-      {#if label}
-        <span class:visible={isHandleActive(index)} class="q-slider__label">
-          {displayLabels[index]}
+      {#each segments as segment, index (index)}
+        <span
+          class:active={segment.isActive}
+          class:at-start={segment.start === 0}
+          class:at-end={segment.end === 1}
+          class:gap-start={segment.hasStartGap}
+          class:gap-end={segment.hasEndGap}
+          class="q-slider__segment"
+          style:--q-slider-start={`${segment.start * 100}%`}
+          style:--q-slider-end={`${segment.end * 100}%`}
+          style:--q-slider-gap-start={getTrackGap(segment.start, segment.hasStartGap)}
+          style:--q-slider-gap-end={getTrackGap(segment.end, segment.hasEndGap)}
+        ></span>
+      {/each}
+
+      {#each stops as stop (stop.position)}
+        {#if !isInTrackGap(stop.position) && !isAtIcon(stop.position)}
+          <span
+            class:active={stop.isActive}
+            class="q-slider__stop"
+            style:--q-slider-position={`${stop.position * 100}%`}
+          ></span>
+        {/if}
+      {/each}
+
+      {#each endStops as position (position)}
+        {#if !isInTrackGap(position) && !isAtIcon(position)}
+          <span class="q-slider__stop" style:--q-slider-position={`${position * 100}%`}></span>
+        {/if}
+      {/each}
+
+      {#if hasIcon}
+        <span
+          class:active={!isIconOnInactiveTrack}
+          class:q-slider__icon--end={isIconAtEnd}
+          class:q-slider__icon--start={!isIconAtEnd}
+          class="q-slider__icon"
+        >
+          <QIconSnippet {icon} size={resolvedSize === "xl" ? "32px" : "24px"} />
         </span>
       {/if}
-    </span>
-  {/each}
+    </div>
+
+    {#each positions as position, index (index)}
+      <span
+        class:active={isHandleActive(index)}
+        class:focus-visible={focusVisibleIndex === index}
+        class:pressed={isPressed && activeIndex === index}
+        class:overlap={hasOverlappingHandles}
+        class:top={activeIndex === index}
+        class="q-slider__handle"
+        data-index={index}
+        style:--q-slider-position={`${position * 100}%`}
+        aria-hidden="true"
+      >
+        {#if label}
+          <span class:visible={isHandleActive(index)} class="q-slider__label">
+            {displayLabels[index]}
+          </span>
+        {/if}
+      </span>
+    {/each}
+  </div>
 </div>

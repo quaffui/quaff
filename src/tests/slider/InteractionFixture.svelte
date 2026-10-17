@@ -3,6 +3,7 @@
   import QRange from "#components/slider/QRange.svelte";
 
   const SIZES = ["xs", "sm", "md", "lg", "xl"] as const;
+  const MARKER_DIRECTIONS = ["horizontal", "vertical", "reversed", "rtl"] as const;
   let value = $state(40);
   let verticalValue = $state(40);
   let rangeValue = $state<[number, number]>([25, 75]);
@@ -79,8 +80,61 @@
     />
   {/each}
 
-  <QSlider class="dense-markers" value={41} markers aria-label="Fine adjustments" />
+  <QSlider
+    class="dense-markers"
+    value={41}
+    markers
+    expressive
+    size="md"
+    icon="volume_up"
+    aria-label="Fine adjustments"
+  />
+  <QSlider
+    class="dense-markers-vertical"
+    value={41}
+    step={0.1}
+    markers
+    expressive
+    vertical
+    aria-label="Fine vertical adjustments"
+  />
+
+  {#each [false, true] as reverse (reverse)}
+    <QSlider
+      class={`vertical-icon-${reverse}`}
+      value={50}
+      step={0}
+      expressive
+      vertical
+      size="md"
+      icon="volume_up"
+      {reverse}
+      aria-label="Vertical volume"
+    />
+  {/each}
+
   <QSlider class="centered" value={75} centered markers aria-label="Balance" />
+
+  {#each MARKER_DIRECTIONS as direction (direction)}
+    <QSlider
+      class={`marker-values-${direction}`}
+      value={50}
+      markers={2}
+      expressive
+      vertical={direction === "vertical"}
+      reverse={direction === "reversed"}
+      dir={direction === "rtl" ? "rtl" : undefined}
+      aria-label={`${direction} marked level`}
+    />
+  {/each}
+
+  <QRange
+    class="marker-values-range"
+    value={[30, 70]}
+    markers={2}
+    minAriaLabel="Marked minimum"
+    maxAriaLabel="Marked maximum"
+  />
 
   <output id="values">{JSON.stringify({ value, verticalValue, rangeValue })}</output>
 </main>

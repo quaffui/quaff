@@ -11,6 +11,8 @@ export interface SliderStop {
   position: number;
 }
 
+const MIN_STOP_SPACING = 8;
+
 export function clampSliderValue(value: number, min: number, max: number) {
   return Math.min(max, Math.max(min, value));
 }
@@ -121,31 +123,66 @@ export function buildSliderStops(
   interval: number,
   isReversed: boolean,
   activeStart: number,
-  activeEnd: number
+  activeEnd: number,
+  trackLength: number
 ): SliderStop[] {
-  if (interval <= 0 || max <= min) {
+  if (interval <= 0 || max <= min || trackLength < MIN_STOP_SPACING) {
     return [];
   }
 
-  const intervalCount = Math.floor((max - min) / interval);
-
-  if (intervalCount > 1000) {
-    return [];
-  }
-
-  const values = Array.from({ length: intervalCount + 1 }, (_, index) => min + index * interval);
-
-  if (Math.abs((values.at(-1) ?? min) - max) > Number.EPSILON * Math.max(1, Math.abs(max))) {
-    values.push(max);
-  }
-
-  return values.map((value) => {
+  return collectSliderStopValues(min, max, interval, trackLength).map((value) => {
     const position = getSliderPosition(value, min, max, isReversed);
+
     return {
       position,
       isActive: position >= activeStart && position <= activeEnd,
     };
   });
+}
+
+function collectSliderStopValues(min: number, max: number, interval: number, trackLength: number) {
+  const intervalRatio = (max - min) / interval;
+  const roundedIntervalCount = Math.round(intervalRatio);
+  const hasFinalInterval =
+    roundedIntervalCount === 0 ||
+    Math.abs(intervalRatio - roundedIntervalCount) > Number.EPSILON * Math.max(1, intervalRatio);
+  const intervalCount = hasFinalInterval ? Math.floor(intervalRatio) : roundedIntervalCount;
+
+  if (!Number.isSafeInteger(intervalCount)) {
+    return [min, max];
+  }
+
+  const steppedLength = ((intervalCount * interval) / (max - min)) * trackLength;
+  const visibleIntervalCount = limitSliderStopIntervals(intervalCount, steppedLength);
+  const stride = visibleIntervalCount > 0 ? intervalCount / visibleIntervalCount : 0;
+  const values = Array.from(
+    { length: visibleIntervalCount + 1 },
+    (_, index) => min + index * stride * interval
+  );
+
+  if (!hasFinalInterval) {
+    values[values.length - 1] = max;
+    return values;
+  }
+
+  const finalSpacing = ((max - values[values.length - 1]) / (max - min)) * trackLength;
+
+  if (finalSpacing < MIN_STOP_SPACING) {
+    values.pop();
+  }
+
+  values.push(max);
+  return values;
+}
+
+function limitSliderStopIntervals(intervalCount: number, trackLength: number) {
+  let visibleIntervalCount = Math.min(intervalCount, Math.floor(trackLength / MIN_STOP_SPACING));
+
+  while (visibleIntervalCount > 0 && intervalCount % visibleIntervalCount !== 0) {
+    visibleIntervalCount--;
+  }
+
+  return visibleIntervalCount;
 }
 
 function countDecimalPlaces(value: number) {
