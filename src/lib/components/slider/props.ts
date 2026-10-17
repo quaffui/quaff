@@ -29,7 +29,7 @@ interface QSliderCommonProps extends Disableable {
   step?: number;
 
   /**
-   * Shows stop indicators. A number sets both their interval and the snapping increment; true uses the step interval.
+   * Shows stop indicators, limiting their density to fit the track. A number sets both their interval and the snapping increment; true uses the step interval.
    *
    * @default false
    */

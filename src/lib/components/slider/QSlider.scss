@@ -18,7 +18,6 @@
     --q-slider-handle-track-offset: calc(
       var(--q-slider-handle-track-gap) + var(--q-slider-handle-width) / 2
     );
-    --q-slider-end-stop-inset: 6px;
     --q-slider-outer-radius: 8px;
     --q-slider-inner-radius: 2px;
     --q-slider-axis-center: 50%;
@@ -103,6 +102,12 @@
       color: var(--on-surface);
     }
 
+    &__axis {
+      position: absolute;
+      inset-block: 0;
+      inset-inline: var(--q-slider-axis-inset);
+    }
+
     &__input {
       position: absolute;
       inset-block-start: var(--q-slider-axis-center);
@@ -159,11 +164,15 @@
       }
 
       &.at-start:not(.gap-start) {
+        --q-slider-gap-start: calc(-1 * var(--q-slider-axis-inset));
+
         border-start-start-radius: var(--q-slider-start-radius);
         border-end-start-radius: var(--q-slider-start-radius);
       }
 
       &.at-end:not(.gap-end) {
+        --q-slider-gap-end: calc(-1 * var(--q-slider-axis-inset));
+
         border-start-end-radius: var(--q-slider-end-radius);
         border-end-end-radius: var(--q-slider-end-radius);
       }
@@ -180,20 +189,12 @@
       background: var(--on-secondary-container);
       translate: -50% -50%;
 
-      &:dir(rtl) {
+      :where(.q-slider:dir(rtl)) & {
         translate: 50% -50%;
       }
 
       &.active {
         background: var(--on-primary);
-      }
-
-      &--end {
-        inset-inline-start: clamp(
-          var(--q-slider-end-stop-inset),
-          var(--q-slider-position),
-          calc(100% - var(--q-slider-end-stop-inset))
-        );
       }
     }
 
@@ -286,11 +287,11 @@
       translate: 0 -50%;
 
       &--start {
-        inset-inline-start: var(--q-slider-icon-padding);
+        inset-inline-start: calc(var(--q-slider-icon-padding) - var(--q-slider-axis-inset));
       }
 
       &--end {
-        inset-inline-end: var(--q-slider-icon-padding);
+        inset-inline-end: calc(var(--q-slider-icon-padding) - var(--q-slider-axis-inset));
       }
 
       &.active {
@@ -307,6 +308,11 @@
     }
 
     &--vertical {
+      .q-slider__axis {
+        inset-inline: 0;
+        inset-block: var(--q-slider-axis-inset);
+      }
+
       .q-slider__input {
         inset-block-start: auto;
         inset-block-end: var(--q-slider-position);
@@ -360,14 +366,6 @@
         inset-inline: 0;
         margin-inline: auto;
         translate: 0 50%;
-
-        &--end {
-          inset-block-end: clamp(
-            var(--q-slider-end-stop-inset),
-            var(--q-slider-position),
-            calc(100% - var(--q-slider-end-stop-inset))
-          );
-        }
       }
 
       .q-slider__handle {
@@ -409,12 +407,12 @@
         translate: 0;
 
         &--start {
-          inset-block-end: var(--q-slider-icon-padding);
+          inset-block-end: calc(var(--q-slider-icon-padding) - var(--q-slider-axis-inset));
           inset-block-start: auto;
         }
 
         &--end {
-          inset-block-start: var(--q-slider-icon-padding);
+          inset-block-start: calc(var(--q-slider-icon-padding) - var(--q-slider-axis-inset));
           inset-block-end: auto;
         }
       }
