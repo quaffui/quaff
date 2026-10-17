@@ -1,27 +1,13 @@
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { DOCS_ASSET_OPTIONS } from "../../dev/docsAssets";
-import {
-  cleanupCssFixtures,
-  createCssFixture,
-  getCssAsset,
-  hasSelector,
-  readCssAsset,
-} from "./cssFixture";
+import { createCssFixture, getCssAsset, hasSelector } from "./cssFixture";
 import type { QuaffAssetsOptions } from "../../lib/plugins/assets";
 
 vi.mock("node:fs/promises", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("node:fs/promises")>();
+  const { mockCssAssetReads } = await import("./cssAssetReads");
 
-  return {
-    ...actual,
-    readFile: (...args: Parameters<typeof actual.readFile>) => {
-      const css = readCssAsset(args[0]);
-      return css === undefined ? actual.readFile(...args) : Promise.resolve(css);
-    },
-  };
+  return mockCssAssetReads(importOriginal);
 });
-
-afterEach(cleanupCssFixtures);
 
 function createComponentSource(...names: string[]) {
   return `<script>import { ${names.join(", ")} } from "@quaffui/quaff";</script>`;

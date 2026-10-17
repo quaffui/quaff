@@ -1,13 +1,14 @@
 <script lang="ts">
+  import { untrack } from "svelte";
   import QExpansionItem from "#components/expansion-item/QExpansionItem.svelte";
   import QList from "#components/list/QList.svelte";
   import QItem from "#components/list/QItem.svelte";
   import QItemSection from "#components/list/QItemSection.svelte";
 
-  let {
-    expressive = true,
-    defaultOpened = true,
-  }: { expressive?: boolean; defaultOpened?: boolean } = $props();
+  let { query = "" }: { query?: string } = $props();
+  const params = new URLSearchParams(untrack(() => query));
+  const expressive = !params.has("standard");
+  const defaultOpened = !params.has("closed");
 </script>
 
 <main style="width: 480px; margin: 24px;">

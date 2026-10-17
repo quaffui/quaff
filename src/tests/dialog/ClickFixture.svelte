@@ -1,13 +1,11 @@
 <script lang="ts">
+  import { untrack } from "svelte";
   import QDialog from "#components/dialog/QDialog.svelte";
   import QDrawer from "#components/drawer/QDrawer.svelte";
   import QMenu from "#components/menu/QMenu.svelte";
-  import "#css/base.scss";
-  import "#css/components/dialog.scss";
-  import "#css/components/drawer.scss";
-  import "#css/components/menu.scss";
 
-  const params = new URLSearchParams(window.location.search);
+  let { query = "" }: { query?: string } = $props();
+  const params = new URLSearchParams(untrack(() => query));
   let dialog = $state(!params.has("menu"));
   let otherDialog = $state(params.has("other"));
   let drawer = $state(params.has("drawer"));

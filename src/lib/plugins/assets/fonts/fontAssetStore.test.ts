@@ -1,20 +1,14 @@
-import { mkdtemp, mkdir, readdir, readFile, rm, stat, writeFile } from "node:fs/promises";
-import { tmpdir } from "node:os";
+import { mkdir, readdir, readFile, stat, writeFile } from "node:fs/promises";
 import { join } from "node:path";
-import { afterEach, describe, expect, it } from "vitest";
+import { describe, expect, it, onTestFinished } from "vitest";
+import {
+  createTemporaryDirectory,
+  removeDirectory,
+} from "../../../../tests/support/temporaryDirectory.js";
 import { FontAssetStore } from "./fontAssetStore.js";
 
-const FIXTURES: string[] = [];
-
-afterEach(async () => {
-  await Promise.all(
-    FIXTURES.splice(0).map((directory) => rm(directory, { recursive: true, force: true }))
-  );
-});
-
 async function createFixture(directoryName = "cache") {
-  const root = await mkdtemp(join(tmpdir(), "quaff-font-assets-"));
-  FIXTURES.push(root);
+  const root = await createTemporaryDirectory("font-assets");
 
   return { root, cacheDir: join(root, directoryName) };
 }
@@ -59,7 +53,7 @@ describe("font assets", () => {
     async (directoryName) => {
       const config = await createFixture(directoryName);
       const assets = new FontAssetStore(config);
-      FIXTURES.push(assets.directory);
+      onTestFinished(() => removeDirectory(assets.directory));
       const repeated = new FontAssetStore(config);
       const other = new FontAssetStore({ ...config, cacheDir: `${config.cacheDir}-other` });
       const url = await assets.writeAsset("roboto.woff2", new Uint8Array([1]));

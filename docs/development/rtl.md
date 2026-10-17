@@ -28,6 +28,6 @@ Use this reference when changing direction-sensitive components. Material guidan
 
 ## Focused checks
 
-Use existing Vitest conventions: `.test.ts` for unit tests and `.int.test.ts` for integrations. Test actual DOM behavior when direction inheritance or mounting matters; use the small browser integration fixture for CSS geometry, portals, and gestures. It runs in Vitest with Playwright’s Chromium library, not a separate E2E runner. Install the browser once with `bunx playwright install chromium --only-shell`, then run `bun run test:unit --run src/tests/rtl`. CI installs the same headless browser.
+Use the existing Vitest conventions: `.test.ts` for unit tests, `.ssr.test.ts` for server rendering and `.browser.test.ts` for browser tests. Test actual DOM behavior when direction inheritance or mounting matters; use the small browser fixture for CSS geometry, portals, and gestures. It runs in Vitest with Playwright’s Chromium library, not a separate E2E runner. Install the browser once with `bunx playwright install chromium --only-shell`, then run `bun run test:browser --run src/tests/rtl`. CI installs the same headless browser.
 
 Cover LTR, Arabic RTL, Hebrew RTL, nested opposite directions, direction changes, explicit overrides, popup opening, drawer edges and offsets, and table navigation. Keep the existing RTL keyboard behavior in tabs, sliders, carousels, and date/time pickers. See [Sizing and text scaling](sizing.md) when geometry changes.

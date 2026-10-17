@@ -2,7 +2,7 @@ import path from "path";
 import adapter from "@sveltejs/adapter-static";
 import { sveltekit } from "@sveltejs/kit/vite";
 import { vitePreprocess } from "@sveltejs/vite-plugin-svelte";
-import { defineConfig } from "vitest/config";
+import { configDefaults, defineConfig } from "vitest/config";
 import { preprocessClasses, preprocessContext } from "./plugins/dist/index.js";
 import docgenPlugin from "./src/dev/docgenPlugin.ts";
 import { createCssMinifierPlugin } from "./src/lib/plugins/assets.ts";
@@ -45,7 +45,39 @@ export default defineConfig(async ({ command, mode }) => {
   return {
     plugins,
     test: {
-      include: ["src/**/*.{test,spec}.{js,ts}", "docgen/**/*.{test,spec}.{js,ts}"],
+      projects: [
+        {
+          extends: true,
+          test: {
+            name: "unit",
+            include: ["{src,docgen}/**/*.test.ts"],
+            exclude: [...configDefaults.exclude, "**/*.{ssr,build,browser}.test.ts"],
+          },
+        },
+        {
+          extends: true,
+          test: { name: "ssr", include: ["src/**/*.ssr.test.ts"] },
+        },
+        {
+          extends: true,
+          test: {
+            name: "build",
+            include: ["{src,docgen}/**/*.build.test.ts"],
+            testTimeout: 60_000,
+            hookTimeout: 60_000,
+          },
+        },
+        {
+          extends: true,
+          // Fixture servers and app builds start in hooks; interactions stay short.
+          test: {
+            name: "browser",
+            include: ["src/**/*.browser.test.ts"],
+            testTimeout: 15_000,
+            hookTimeout: 90_000,
+          },
+        },
+      ],
     },
     resolve: {
       alias: {

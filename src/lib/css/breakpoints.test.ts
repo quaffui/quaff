@@ -9,7 +9,7 @@ function compileStyle(source: string) {
   return compileString(source, { loadPaths: [CSS_DIRECTORY] }).css;
 }
 
-function mediaQueries(css: string) {
+function collectMediaQueries(css: string) {
   return [...css.matchAll(/@media\s+([^{}]+)/g)].map((match) => match[1].trim());
 }
 
@@ -40,7 +40,7 @@ describe("breakpoint styles", () => {
       .xl { @include responsive.xl { color: red; } }
     `);
 
-    expect(mediaQueries(css)).toEqual([
+    expect(collectMediaQueries(css)).toEqual([
       `only screen and (width < ${BREAKPOINTS.sm}px)`,
       `only screen and (min-width: ${BREAKPOINTS.sm}px) and (width < ${BREAKPOINTS.md}px)`,
       `only screen and (min-width: ${BREAKPOINTS.md}px) and (width < ${BREAKPOINTS.lg}px)`,
@@ -58,7 +58,7 @@ describe("breakpoint styles", () => {
       .xl { @include responsive.up-to-xl { color: red; } }
     `);
 
-    expect(mediaQueries(css)).toEqual(
+    expect(collectMediaQueries(css)).toEqual(
       [BREAKPOINTS.sm, BREAKPOINTS.md, BREAKPOINTS.lg, BREAKPOINTS.xl].map(
         (width) => `only screen and (width < ${width}px)`
       )
@@ -74,13 +74,13 @@ describe("breakpoint styles", () => {
     ].map(([, width, name]) => [name, Number(width)]);
 
     expect(columns).toEqual(Object.entries(BREAKPOINTS));
-    expect(mediaQueries(css)).toHaveLength(Object.keys(BREAKPOINTS).length);
+    expect(collectMediaQueries(css)).toHaveLength(Object.keys(BREAKPOINTS).length);
   });
 
   it("changes page spacing at the shared small and large boundaries", () => {
     const css = compileStyle('@use "theme/page";');
 
-    expect(mediaQueries(css)).toEqual([
+    expect(collectMediaQueries(css)).toEqual([
       `only screen and (min-width: ${BREAKPOINTS.sm}px)`,
       `only screen and (min-width: ${BREAKPOINTS.lg}px)`,
     ]);
