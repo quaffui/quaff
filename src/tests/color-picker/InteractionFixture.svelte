@@ -1,9 +1,10 @@
 <script lang="ts">
+  import { untrack } from "svelte";
   import QColorPicker from "#components/color-picker/QColorPicker.svelte";
-  import "#css/components/color-picker.scss";
 
   const MASKS: Record<string, string> = { "6": String.raw`\#XXXXXX`, "8": String.raw`\#XXXXXXXX` };
-  const params = new URLSearchParams(window.location.search);
+  let { query = "" }: { query?: string } = $props();
+  const params = new URLSearchParams(untrack(() => query));
   let value = $state<string | null>(params.get("value"));
   let externalValue = $state("rgb(17, 34, 51)");
 </script>

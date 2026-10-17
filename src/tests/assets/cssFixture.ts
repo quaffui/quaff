@@ -1,10 +1,10 @@
-import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
-import { tmpdir } from "node:os";
+import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import { dirname, join, relative, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { compile } from "sass";
 import { parse } from "postcss";
 import { AssetUsageState } from "../../lib/plugins/assets/assetUsageState";
+import { createTemporaryDirectory } from "../support/temporaryDirectory";
 import type { QuaffAssetsOptions } from "../../lib/plugins/assets";
 import type { ResolvedConfig } from "vite";
 
@@ -12,7 +12,6 @@ const LIB_ROOT = fileURLToPath(new URL("../../lib/", import.meta.url));
 const CSS_ROOT = join(LIB_ROOT, "css");
 const cssCache = new Map<string, string>();
 const selectorCache = new Map<string, Set<string>>();
-const directories = new Set<string>();
 
 // Stand in only for the package's built CSS assets. Compile the actual source once,
 // so these tests can run in a clean checkout without a preceding package build.
@@ -55,8 +54,7 @@ export async function createCssFixture(
   files: Record<string, string> = {},
   options: QuaffAssetsOptions = {}
 ) {
-  const root = await mkdtemp(join(tmpdir(), "quaff-css-"));
-  directories.add(root);
+  const root = await createTemporaryDirectory("css");
   const source = join(root, "src");
   await mkdir(source);
 
@@ -90,13 +88,6 @@ export async function createCssFixture(
       return state.updateFile("delete", path, () => readFile(path, "utf8"));
     },
   };
-}
-
-export async function cleanupCssFixtures() {
-  await Promise.all(
-    [...directories].map((directory) => rm(directory, { recursive: true, force: true }))
-  );
-  directories.clear();
 }
 
 export function hasSelector(css: string, selector: string) {

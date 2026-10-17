@@ -28,6 +28,7 @@
 - Quaff is Svelte 5 only. Use runes-style component code (`$props`, `$state`, `$derived`, snippets) and avoid adding legacy Svelte 4 patterns.
 - Avoid observers whenever possible. When observation is necessary, prefer Svelte's built-in bindings and reactive utilities over custom observers.
 - Use `bun run check` and `bun run build` for full validation. `bun run format` currently also sees untracked local files, so verify the worktree before trusting a format failure.
+- Name tests by what they need: `*.test.ts` (unit), `*.ssr.test.ts`, `*.build.test.ts` and `*.browser.test.ts`, each run by `bun run test:<type>`. Write browser tests with `createComponentTest`, `createAppTest` or `createBrowserTest` from `src/tests/support/browserTest.ts`, pass `page` to file helpers, and do not `.extend()` the returned test. Use `createTemporaryDirectory` for temporary files.
 - Component API `docs.ts` files are generated and ignored by Git. Edit descriptions in Svelte `@component` comments and props in `props.ts`; run `bun run docgen-props` to regenerate descriptions, inherited defaults, snippets, and methods.
 - Use `q-docs-link` for docs prose hyperlinks so they share theme color, underline, and keyboard focus styles. Keep component and demo navigation links on their own styles.
 - Docs development and builds prune CSS and icon fonts. Add runtime-generated or externally supplied classes and icon names to the matching safelists in `src/dev/docsAssets.ts`; verify examples with `bun run dev` and `bun run build:docs`.

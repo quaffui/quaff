@@ -12,23 +12,29 @@ jobs:
     with:
       report-name: rustsec-checks
 
-  run-checks:
+  static-checks:
     needs: rust-audit
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v7.0.1
 
-      - uses: oven-sh/setup-bun@v2.2.0
-        with:
-          bun-version: 1.4.3
+      - uses: ./.github/actions/setup-project
 
       - uses: dtolnay/rust-toolchain@1.99.0
         with:
           components: clippy, rustfmt
 
-      - name: Install Dependencies
-        run: bun install --frozen-lockfile
+      - name: Cache Rust builds
+        uses: actions/cache@v6.1.0
+        with:
+          path: |
+            ~/.cargo/registry/index
+            ~/.cargo/registry/cache
+            ~/.cargo/git/db
+            docgen/target
+          key: cargo-checks-${{ runner.os }}-${{ hashFiles('docgen/Cargo.lock') }}
+          restore-keys: cargo-checks-${{ runner.os }}-
 
       - name: Check Rust docgen
         run: |
@@ -38,18 +44,78 @@ jobs:
 
       - name: Generate docs
         run: |
-          bun run gen:plugins
           bun run docgen-props
           bun run docgen-snippets
-
-      - name: Install Chromium
-        run: bunx playwright install --with-deps --only-shell chromium
-
-      - name: Run Tests
-        run: bun run test:unit --run
 
       - name: Run Type Check
         run: bun run check
 
       - name: Run Lint
         run: bun run lint
+
+  unit-tests:
+    needs: rust-audit
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v7.0.1
+
+      - uses: ./.github/actions/setup-project
+
+      - name: Run Unit Tests
+        run: bun run test:unit --run
+
+      - name: Run SSR Tests
+        run: bun run test:ssr --run
+
+  build-tests:
+    needs: rust-audit
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v7.0.1
+
+      - uses: ./.github/actions/setup-project
+
+      # Docgen tests run the release build of the Rust generator.
+      - uses: dtolnay/rust-toolchain@1.99.0
+
+      - name: Cache Rust builds
+        uses: actions/cache@v6.1.0
+        with:
+          path: |
+            ~/.cargo/registry/index
+            ~/.cargo/registry/cache
+            ~/.cargo/git/db
+            docgen/target
+          key: cargo-release-${{ runner.os }}-${{ hashFiles('docgen/Cargo.lock') }}
+          restore-keys: cargo-release-${{ runner.os }}-
+
+      - name: Run Build Tests
+        run: bun run test:build --run
+
+  browser-tests:
+    needs: rust-audit
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v7.0.1
+
+      - uses: ./.github/actions/setup-project
+
+      - name: Read Playwright version
+        id: playwright
+        run: echo "version=$(jq -r .version node_modules/playwright/package.json)" >> "$GITHUB_OUTPUT"
+
+      - name: Cache Chromium
+        uses: actions/cache@v6.1.0
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ steps.playwright.outputs.version }}-chromium-headless-shell
+
+      # Skips the download when the cache restored this Playwright version's browser.
+      - name: Install Chromium
+        run: bunx playwright install --with-deps --only-shell chromium
+
+      - name: Run Browser Tests
+        run: bun run test:browser --run

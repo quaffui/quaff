@@ -111,6 +111,8 @@ export default [
       ],
       "no-undef": ["off"],
       "object-shorthand": "error",
+      // Vitest fixtures without dependencies take an empty context pattern.
+      "no-empty-pattern": ["error", { allowObjectPatternsAsParameters: true }],
       "svelte/html-self-closing": ["error", "default"],
       "svelte/valid-compile": ["error", { ignoreWarnings: true }],
       "svelte/no-at-html-tags": ["warn"],

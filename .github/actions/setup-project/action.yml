@@ -1,0 +1,24 @@
+name: Set up project
+description: Install Bun with cached dependencies and build the preprocessors.
+
+runs:
+  using: composite
+  steps:
+    - uses: oven-sh/setup-bun@v2.2.0
+      with:
+        bun-version: 1.4.3
+
+    - name: Cache Bun packages
+      uses: actions/cache@v6.1.0
+      with:
+        path: ~/.bun/install/cache
+        key: bun-${{ runner.os }}-${{ hashFiles('bun.lock') }}
+        restore-keys: bun-${{ runner.os }}-
+
+    - name: Install Dependencies
+      shell: bash
+      run: bun install --frozen-lockfile
+
+    - name: Build preprocessors
+      shell: bash
+      run: bun run gen:plugins

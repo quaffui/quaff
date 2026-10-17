@@ -57,12 +57,22 @@ Common commands:
 - `bun run build` builds the package and its CSS bundles
 - `bun run build:docs` generates and builds the documentation site
 
-The test suite includes browser integration tests. Install Chromium once before running it:
+Tests are grouped by file suffix, and each group runs on its own:
+
+- `bun run test:unit` runs `*.test.ts` logic tests
+- `bun run test:ssr` runs `*.ssr.test.ts` server rendering tests
+- `bun run test:build` runs `*.build.test.ts` tests that build Vite, SvelteKit or docgen fixtures
+- `bun run test:browser` runs `*.browser.test.ts` tests in Chromium
+- `bun run test` runs every group
+
+Add `--run` to run once without watching. Install Chromium once before running browser tests:
 
 ```sh
 bunx playwright install chromium --only-shell
-bun run test:unit --run
+bun run test:browser --run
 ```
+
+To use an installed Google Chrome instead, set `QUAFF_BROWSER_CHANNEL=chrome`. CI uses Playwright's pinned Chromium, so exact geometry can differ slightly.
 
 ## Repository Layout
 

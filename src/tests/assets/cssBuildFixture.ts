@@ -1,14 +1,15 @@
-import { mkdir, mkdtemp, rm, symlink, writeFile } from "node:fs/promises";
-import { tmpdir } from "node:os";
+import { mkdir, symlink, writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { svelte } from "@sveltejs/vite-plugin-svelte";
 import { build, createServer } from "vite";
+import { onTestFinished } from "vitest";
 import { preprocessClasses } from "../../../plugins/dist/index.js";
 import { createAssetsPlugin } from "../../lib/plugins/assets/assetPlugin.js";
+import { createTemporaryDirectory } from "../support/temporaryDirectory.js";
 import { readCssAsset } from "./cssFixture.js";
 import type { QuaffAssetsCssOptions } from "../../lib/plugins/assets/assetOptions.js";
-import type { InlineConfig, Manifest, Rollup, ViteDevServer } from "vite";
+import type { InlineConfig, Manifest, Rollup } from "vite";
 
 const MODULES_ROOT = fileURLToPath(new URL("../../../node_modules/", import.meta.url));
 const LIB_ROOT = fileURLToPath(new URL("../../lib/", import.meta.url));
@@ -18,8 +19,6 @@ const FIELDS_SOURCE =
   '<button class="q-btn">Apply</button><label class="q-checkbox">Enabled</label>';
 export const CHIP_SOURCE =
   '<div class="q-chip q-chip--md"><div class="q-avatar q-avatar--md q-chip__avatar"><svg></svg></div></div>';
-const directories = new Set<string>();
-const servers = new Set<ViteDevServer>();
 
 export async function buildCssFixture({
   cssCodeSplit,
@@ -36,8 +35,7 @@ export async function buildCssFixture({
   hasServerReport?: boolean;
   dev?: QuaffAssetsCssOptions["dev"];
 } = {}) {
-  const root = await mkdtemp(join(tmpdir(), "quaff-css-build-"));
-  directories.add(root);
+  const root = await createTemporaryDirectory("css-build");
   await symlink(MODULES_ROOT, join(root, "node_modules"), "dir");
 
   if (isSourceSymlink) {
@@ -176,7 +174,7 @@ export async function buildCssFixture({
     readSsrCss,
     async start() {
       const server = await createServer(config);
-      servers.add(server);
+      onTestFinished(() => server.close());
       await server.listen();
       const address = server.httpServer?.address();
 
@@ -236,11 +234,4 @@ function readManifestCss(manifest: Manifest, stylesheets: Map<string, string>, e
   }
 
   return [...cssFiles].map((file) => stylesheets.get(file)).join("\n");
-}
-
-export async function cleanupCssBuildFixtures() {
-  await Promise.all([...servers].map((server) => server.close()));
-  servers.clear();
-  await Promise.all([...directories].map((root) => rm(root, { recursive: true, force: true })));
-  directories.clear();
 }

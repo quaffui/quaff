@@ -1,22 +1,17 @@
-import { mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
-import { tmpdir } from "node:os";
+import { mkdir, rm, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { afterEach, describe, expect, it, vi } from "vitest";
+import { createTemporaryDirectory } from "../../../../tests/support/temporaryDirectory.js";
 import { analyzeSource } from "../analyzeSource.js";
 import { FontAssetStore } from "./fontAssetStore.js";
 import { IconFontStylesheet, type FontSourceUsage } from "./iconFontStylesheet.js";
 
-const directories = new Set<string>();
-
-afterEach(async () => {
+afterEach(() => {
   vi.restoreAllMocks();
-  await Promise.all([...directories].map((dir) => rm(dir, { recursive: true, force: true })));
-  directories.clear();
 });
 
 async function createStore() {
-  const root = await mkdtemp(join(tmpdir(), "quaff-font-recovery-"));
-  directories.add(root);
+  const root = await createTemporaryDirectory("font-recovery");
 
   return new FontAssetStore({ root, cacheDir: join(root, ".vite") });
 }

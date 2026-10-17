@@ -33,7 +33,7 @@ const css = compileString(
   SASS_OPTIONS
 ).css;
 
-function declarations(selector: string): Record<string, string> {
+function readDeclarations(selector: string): Record<string, string> {
   const rules = [...css.matchAll(/([^{}]+)\{([^{}]+)\}/g)].filter(([, selectors]) =>
     selectors.trim().split(/,\s*/).includes(selector)
   );
@@ -47,13 +47,13 @@ function declarations(selector: string): Record<string, string> {
   );
 }
 
-function rem(px: number) {
+function convertToRem(px: number) {
   return px === 0 ? "0" : `${px / 16}rem`;
 }
 
 describe("Material type scale", () => {
   it("emits all 15 emphasized styles with the specified weight and tracking", () => {
-    const tokens = declarations(":root");
+    const tokens = readDeclarations(":root");
 
     for (const [role, family, size, height, tracking, , weight] of SPEC) {
       const prefix = `--typescale-${role}-emphasized`;
@@ -62,9 +62,9 @@ describe("Material type scale", () => {
         [`${prefix}-font-family-name`]: `var(--typescale-font-family-${family})`,
         [`${prefix}-font-family-style`]: "normal",
         [`${prefix}-font-weight`]: String(weight),
-        [`${prefix}-font-size`]: rem(size),
-        [`${prefix}-line-height`]: rem(height),
-        [`${prefix}-letter-spacing`]: rem(tracking),
+        [`${prefix}-font-size`]: convertToRem(size),
+        [`${prefix}-line-height`]: convertToRem(height),
+        [`${prefix}-letter-spacing`]: convertToRem(tracking),
       });
     }
   });
@@ -77,7 +77,7 @@ describe("Material type scale", () => {
     for (const [role] of SPEC) {
       const prefix = `--typescale-${role}-emphasized`;
 
-      expect(declarations(`.${role}-emphasized`)).toEqual({
+      expect(readDeclarations(`.${role}-emphasized`)).toEqual({
         "font-family": `var(${prefix}-font-family-name)`,
         "font-style": `var(${prefix}-font-family-style)`,
         "font-weight": `var(${prefix}-font-weight)`,
@@ -89,33 +89,35 @@ describe("Material type scale", () => {
   });
 
   it("keeps standard styles, headings and legacy aliases unchanged", () => {
-    const tokens = declarations(":root");
+    const tokens = readDeclarations(":root");
 
     for (const [role, , size, height, tracking, weight] of SPEC) {
       expect(tokens).toMatchObject({
         [`--typescale-${role}-font-weight`]: String(weight),
-        [`--typescale-${role}-font-size`]: rem(size),
-        [`--typescale-${role}-line-height`]: rem(height),
-        [`--typescale-${role}-letter-spacing`]: rem(tracking),
+        [`--typescale-${role}-font-size`]: convertToRem(size),
+        [`--typescale-${role}-line-height`]: convertToRem(height),
+        [`--typescale-${role}-letter-spacing`]: convertToRem(tracking),
       });
-      expect(declarations(`.${role}`)["font-weight"]).toBe(`var(--typescale-${role}-font-weight)`);
+      expect(readDeclarations(`.${role}`)["font-weight"]).toBe(
+        `var(--typescale-${role}-font-weight)`
+      );
     }
 
     for (const [index, [role]] of SPEC.slice(0, 6).entries()) {
-      expect(declarations(`h${index + 1}`)["font-weight"]).toBe(
+      expect(readDeclarations(`h${index + 1}`)["font-weight"]).toBe(
         `var(--typescale-${role}-font-weight)`
       );
-      expect(declarations(`.text-h${index + 1}`)).toEqual(declarations(`.${role}`));
+      expect(readDeclarations(`.text-h${index + 1}`)).toEqual(readDeclarations(`.${role}`));
     }
 
-    expect(declarations("body")).toEqual(declarations(".body-medium"));
-    expect(declarations(".text-subtitle1")).toEqual(declarations(".title-medium"));
-    expect(declarations(".text-subtitle2")).toEqual(declarations(".title-small"));
-    expect(declarations(".text-body1")).toEqual(declarations(".body-large"));
-    expect(declarations(".text-body2")).toEqual(declarations(".body-medium"));
-    expect(declarations(".text-caption")).toEqual(declarations(".body-small"));
-    expect(declarations(".text-overline")).toEqual({
-      ...declarations(".label-medium"),
+    expect(readDeclarations("body")).toEqual(readDeclarations(".body-medium"));
+    expect(readDeclarations(".text-subtitle1")).toEqual(readDeclarations(".title-medium"));
+    expect(readDeclarations(".text-subtitle2")).toEqual(readDeclarations(".title-small"));
+    expect(readDeclarations(".text-body1")).toEqual(readDeclarations(".body-large"));
+    expect(readDeclarations(".text-body2")).toEqual(readDeclarations(".body-medium"));
+    expect(readDeclarations(".text-caption")).toEqual(readDeclarations(".body-small"));
+    expect(readDeclarations(".text-overline")).toEqual({
+      ...readDeclarations(".label-medium"),
       "text-transform": "uppercase",
     });
     expect(tokens["--typescale-label-large-font-weight-prominent"]).toBe("700");

@@ -1,25 +1,23 @@
-import { mkdir, mkdtemp, rm, symlink, writeFile } from "node:fs/promises";
-import { tmpdir } from "node:os";
+import { mkdir, symlink, writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { svelte } from "@sveltejs/vite-plugin-svelte";
 import { build, createServer } from "vite";
+import { onTestFinished } from "vitest";
 import { quaffAssets } from "../../lib/plugins/assets.js";
+import { createTemporaryDirectory } from "../support/temporaryDirectory.js";
 import { getCssAsset } from "./cssFixture.js";
 import type { QuaffAssetsOptions } from "../../lib/plugins/assets.js";
 import type { InlineConfig, Plugin, Rollup, ViteDevServer } from "vite";
 
 const MODULES_ROOT = fileURLToPath(new URL("../../../node_modules/", import.meta.url));
-const directories = new Set<string>();
-const servers = new Set<ViteDevServer>();
 
 export async function createFontFixture(
   files: Record<string, string>,
   options: QuaffAssetsOptions,
   base = "/"
 ) {
-  const root = await mkdtemp(join(tmpdir(), "quaff-font-integration-"));
-  directories.add(root);
+  const root = await createTemporaryDirectory("font-integration");
   await symlink(MODULES_ROOT, join(root, "node_modules"), "dir");
   await writeFile(join(root, "package.json"), '{"type":"module"}');
   await writeFile(
@@ -78,7 +76,7 @@ export async function createFontFixture(
     },
     async start() {
       const server = await createServer(config);
-      servers.add(server);
+      onTestFinished(() => server.close());
       await server.environments.client.pluginContainer.buildStart({});
       await server.transformRequest("/@quaff/virtual.css");
 
@@ -104,13 +102,6 @@ function collectBuildAssets(output: readonly (Rollup.OutputAsset | Rollup.Output
   }
 
   return { css: css.join("\n"), fontAssets };
-}
-
-export async function cleanupFontFixtures() {
-  await Promise.all([...servers].map((server) => server.close()));
-  servers.clear();
-  await Promise.all([...directories].map((root) => rm(root, { recursive: true, force: true })));
-  directories.clear();
 }
 
 export async function readDevelopmentCss(server: ViteDevServer) {
