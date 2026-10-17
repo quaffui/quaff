@@ -61,7 +61,9 @@ Search bars open a dedicated view for queries, suggestions, and results. Choose 
   let inputEl = $state<HTMLInputElement>();
   let contentEl = $state<HTMLDivElement>();
   let resultsEl = $state<HTMLDivElement>();
-  let resultsContentEl = $state<HTMLDivElement>();
+  let barWidth = $state(0);
+  let barHeight = $state(0);
+  let resultsContentHeight = $state(0);
   let position = $state({ top: 0, left: 0, width: 360, height: 240 });
   let isDialogOpen = $state(false);
   let activeMotion: SearchMotion | undefined;
@@ -95,14 +97,23 @@ Search bars open a dedicated view for queries, suggestions, and results. Choose 
 
     updatePosition();
 
-    const observer = new ResizeObserver(updatePosition);
-    observer.observe(barEl);
-    const removeScrollListener = on(window, "scroll", updatePosition, { capture: true });
+    return on(window, "scroll", updatePosition, { capture: true });
+  });
 
-    return () => {
-      observer.disconnect();
-      removeScrollListener();
-    };
+  $effect(() => {
+    // Keep the dialog anchored while the bar resizes, without restarting its motion.
+    void barWidth;
+    void barHeight;
+
+    if (isDialogOpen && !isFullscreen) {
+      untrack(updatePosition);
+    }
+  });
+
+  $effect(() => {
+    // Follow results that load or resize while the dialog opens.
+    void resultsContentHeight;
+    untrack(() => activeMotion?.retarget());
   });
 
   onDestroy(cancelAnimations);
@@ -164,7 +175,6 @@ Search bars open a dedicated view for queries, suggestions, and results. Choose 
     const motion = prepared.start({
       expressive: isExpressive,
       fullscreen: isFullscreen,
-      resultsContent: resultsContentEl,
       isCurrent,
     });
     activeMotion = motion;
@@ -174,7 +184,6 @@ Search bars open a dedicated view for queries, suggestions, and results. Choose 
     }
 
     await motion.wait();
-    motion.stopObserving();
 
     if (!isCurrent()) {
       return;
@@ -338,7 +347,13 @@ Search bars open a dedicated view for queries, suggestions, and results. Choose 
   dir={props.dir}
   data-quaff
 >
-  <div bind:this={barEl} class="q-search__bar q-field__wrapper" inert={disabled}>
+  <div
+    bind:this={barEl}
+    bind:offsetWidth={barWidth}
+    bind:offsetHeight={barHeight}
+    class="q-search__bar q-field__wrapper"
+    inert={disabled}
+  >
     {#if leading}
       <div class="q-search__accessory">{@render leading()}</div>
     {/if}
@@ -454,7 +469,7 @@ Search bars open a dedicated view for queries, suggestions, and results. Choose 
           aria-label={resolvedLabels.results}
           aria-busy={loading}
         >
-          <div bind:this={resultsContentEl} class="q-search__results-content">
+          <div bind:offsetHeight={resultsContentHeight} class="q-search__results-content">
             {@render children?.({ value, close: hide, search })}
           </div>
         </div>

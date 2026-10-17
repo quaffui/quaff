@@ -11,7 +11,8 @@ type SpatialAnimations = Record<"dialog" | "header" | "panel", Animation>;
 
 export type SearchMotion = {
   wait: () => Promise<unknown>;
-  stopObserving: () => void;
+  /** Retargets a running opening motion to the current results size. */
+  retarget: () => void;
   cancel: () => void;
 };
 
@@ -125,8 +126,7 @@ function captureFades({ dialog, header, panel, divider }: SearchElements, openin
   return [...content, ...glyphs];
 }
 
-function observeContentResize(
-  resultsContent: HTMLElement,
+function createRetargeting(
   elements: SearchElements,
   spatial: SpatialAnimations,
   readFrames: () => ReturnType<typeof getExpandedFrames>,
@@ -139,7 +139,7 @@ function observeContentResize(
     animation: spatial[name],
     effect: spatial[name].effect as KeyframeEffect,
   }));
-  const observer = new ResizeObserver(() => {
+  return () => {
     if (!isCurrent() || parts.some(({ animation }) => animation.playState !== "running")) {
       return;
     }
@@ -167,10 +167,7 @@ function observeContentResize(
       effect.setKeyframes([from[name], to[name]]);
       effect.updateTiming({ duration: remaining });
     });
-  });
-  observer.observe(resultsContent);
-
-  return observer;
+  };
 }
 
 /** Capture the visible state before canceling an interrupted search animation. */
@@ -186,10 +183,9 @@ export function prepareSearchMotion(
 
   return {
     start({
-      resultsContent,
       isCurrent,
       ...currentLayout
-    }: SearchLayout & { resultsContent?: HTMLElement; isCurrent: () => boolean }): SearchMotion {
+    }: SearchLayout & { isCurrent: () => boolean }): SearchMotion {
       const to = opening ? readFrames() : collapsed;
       const options = getMotionOptions(dialog, currentLayout);
       const fadeOptions = {
@@ -208,25 +204,14 @@ export function prepareSearchMotion(
           element.animate([{ opacity: from }, { opacity: to }], fadeOptions)
         ),
       ];
-      const shouldObserve = opening && !currentLayout.fullscreen && resultsContent;
-      const observer = shouldObserve
-        ? observeContentResize(
-            resultsContent,
-            elements,
-            spatial,
-            readFrames,
-            to.dialog.height,
-            isCurrent
-          )
-        : undefined;
-
-      const stopObserving = () => observer?.disconnect();
+      const canRetarget = opening && !currentLayout.fullscreen;
 
       return {
         wait: () => Promise.allSettled(animations.map((animation) => animation.finished)),
-        stopObserving,
+        retarget: canRetarget
+          ? createRetargeting(elements, spatial, readFrames, to.dialog.height, isCurrent)
+          : () => {},
         cancel() {
-          stopObserving();
           animations.forEach((animation) => animation.cancel());
         },
       };

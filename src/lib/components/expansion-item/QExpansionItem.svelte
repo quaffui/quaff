@@ -67,6 +67,7 @@ Expansion items reveal supporting content beneath a summary in a list. Group rel
   // #region:    --- Reactive variables
   let hasOpened = $state(value);
   let contentHeight = $state(0);
+  let contentBoxSize = $state<readonly ResizeObserverSize[]>();
   let panelOpen = $state(value);
   let panelMeasured = $state(false);
   let panelMotionReady = $state(false);
@@ -111,7 +112,6 @@ Expansion items reveal supporting content beneath a summary in a list. Group rel
   $effect(() => {
     if (
       !ctx.expressive ||
-      typeof ResizeObserver === "undefined" ||
       typeof CSS === "undefined" ||
       typeof CSS.registerProperty !== "function"
     ) {
@@ -121,30 +121,23 @@ Expansion items reveal supporting content beneath a summary in a list. Group rel
       return;
     }
 
-    let active = true;
-    const measureContent = (entry?: ResizeObserverEntry) => {
-      if (active) {
-        contentHeight = entry?.borderBoxSize[0]?.blockSize ?? contentEl.scrollHeight;
-      }
-    };
-
-    measureContent();
+    contentHeight = contentEl.scrollHeight;
     panelMeasured = true;
 
-    const observer = new ResizeObserver(([entry]) => measureContent(entry));
-    observer.observe(contentEl);
-
     const frameId = requestAnimationFrame(() => {
-      if (active) {
-        panelMotionReady = true;
-      }
+      panelMotionReady = true;
     });
 
-    return () => {
-      active = false;
-      cancelAnimationFrame(frameId);
-      observer.disconnect();
-    };
+    return () => cancelAnimationFrame(frameId);
+  });
+
+  $effect(() => {
+    // Follow content size changes, such as nested items opening, while the height drives motion.
+    const blockSize = contentBoxSize?.[0]?.blockSize;
+
+    if (panelMeasured && blockSize !== undefined) {
+      contentHeight = blockSize;
+    }
   });
 
   $effect(() => {
@@ -400,6 +393,7 @@ Expansion items reveal supporting content beneath a summary in a list. Group rel
     <div class="q-expansion-item__panel-clip">
       <div
         bind:this={contentEl}
+        bind:borderBoxSize={contentBoxSize}
         class="q-expansion-item__content"
         class:q-expansion-item__content--regular={!isDense}
         class:q-expansion-item__content--expressive={ctx.expressive}

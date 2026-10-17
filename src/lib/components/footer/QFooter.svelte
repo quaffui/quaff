@@ -5,9 +5,8 @@ Footers place navigation and actions at the bottom of a layout. Keep them visibl
 
 <script lang="ts">
   import { onMount } from "svelte";
-  import { on } from "svelte/events";
   import { useRevealScrollObserver } from "#composables";
-  import { footerCtx } from "../layout/QLayout.svelte";
+  import { footerCtx, layoutSizeCtx } from "../layout/QLayout.svelte";
   import type { QFooterProps } from "./props";
 
   // #region:    --- Props
@@ -28,9 +27,9 @@ Footers place navigation and actions at the bottom of a layout. Keep them visibl
 
   // #region:    --- Reactive variables
   let footerEl = $state<HTMLElement>();
-  let scrollRange = $state(0);
 
   const footerContext = footerCtx.assertGet("QFooter should be used inside QLayout");
+  const layoutSize = layoutSizeCtx.get();
   // #endregion: --- Reactive variables
 
   // #region:    --- Derived values
@@ -48,7 +47,7 @@ Footers place navigation and actions at the bottom of a layout. Keep them visibl
       return false;
     }
 
-    const isBeforeRevealThreshold = revealScroll.position + revealOffset < scrollRange;
+    const isBeforeRevealThreshold = revealScroll.position + revealOffset < readScrollRange();
     return isBeforeRevealThreshold && !footerEl?.matches(":focus-within");
   });
   // #endregion: --- Derived values
@@ -66,38 +65,6 @@ Footers place navigation and actions at the bottom of a layout. Keep them visibl
       ready: true,
     });
   });
-
-  $effect(() => {
-    const footer = footerEl;
-
-    if (!reveal || !footer) {
-      return;
-    }
-
-    const content = footer.parentElement?.querySelector<HTMLElement>(":scope > .q-layout__content");
-
-    if (!content) {
-      return;
-    }
-
-    const updateScrollRange = () => {
-      const availableHeight = footer.offsetTop + footer.offsetHeight - content.offsetTop;
-      scrollRange = content.scrollHeight - availableHeight;
-    };
-    let resizeFrame = 0;
-    const observer = new ResizeObserver(() => {
-      cancelAnimationFrame(resizeFrame);
-      resizeFrame = requestAnimationFrame(updateScrollRange);
-    });
-    const stopScroll = on(content, "scroll", updateScrollRange);
-    observer.observe(content);
-
-    return () => {
-      observer.disconnect();
-      cancelAnimationFrame(resizeFrame);
-      stopScroll();
-    };
-  });
   // #endregion: --- Effects
 
   // #region:    --- Lifecycle
@@ -112,6 +79,24 @@ Footers place navigation and actions at the bottom of a layout. Keep them visibl
     }
   });
   // #endregion: --- Lifecycle
+
+  // #region:    --- Functions
+  // Measure while scrolling down; the bound content height reevaluates it after resizes.
+  function readScrollRange() {
+    void layoutSize?.contentHeight;
+    const content = footerEl?.parentElement?.querySelector<HTMLElement>(
+      ":scope > .q-layout__content"
+    );
+
+    if (!footerEl || !content) {
+      return 0;
+    }
+
+    const availableHeight = footerEl.offsetTop + footerEl.offsetHeight - content.offsetTop;
+
+    return content.scrollHeight - availableHeight;
+  }
+  // #endregion: --- Functions
 
   Q.classes("q-footer", {
     bemClasses: {

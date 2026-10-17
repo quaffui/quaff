@@ -61,6 +61,7 @@ export function toolbarKeyboard(isVertical: () => boolean) {
   function attach(element: HTMLDivElement) {
     toolbar = element;
     sync();
+    // Slotted controls change without a Svelte signal, but Tab needs exactly one stop beforehand.
     const observer = new MutationObserver(sync);
     observer.observe(element, {
       childList: true,
