@@ -4,10 +4,12 @@ Carousels let users browse items in a scrolling row or full-screen view. Add nav
 -->
 
 <script lang="ts" generics="T">
-  import { untrack } from "svelte";
+  import { onDestroy, untrack } from "svelte";
+  import { prefersReducedMotion } from "svelte/motion";
   import QIconBtn from "#components/button/QIconBtn.svelte";
   import { ripple } from "#helpers/ripple.js";
-  import { getFocusableChildren, isFocusable, shouldReduceMotion } from "#utils/dom.js";
+  import { useQuaffConfig } from "#internal/quaffConfig.svelte.js";
+  import { getFocusableChildren, isFocusable } from "#utils/dom.js";
   import { createCarouselLayout } from "./carousel";
   import type { QCarouselProps } from "./props";
 
@@ -39,7 +41,6 @@ Carousels let users browse items in a scrolling row or full-screen view. Add nav
   let width = $state(0);
   let itemHeight = $state(0);
   let offset = $state(0);
-  let reducedMotion = $state(false);
   let rtl = $state(false);
   let dragging = $state(false);
   let scrollTarget = $state<number>();
@@ -51,6 +52,8 @@ Carousels let users browse items in a scrolling row or full-screen view. Add nav
   let suppressClick = false;
 
   const vertical = $derived(variant === "full-screen");
+  const quaffConfig = useQuaffConfig();
+  const reducedMotion = $derived(prefersReducedMotion.current);
   const uncontained = $derived(variant.startsWith("uncontained") || reducedMotion);
   const leading = $derived(!vertical && uncontained ? 16 : 0);
   const snapping = $derived(vertical || (snap ?? !variant.startsWith("uncontained")));
@@ -115,32 +118,17 @@ Carousels let users browse items in a scrolling row or full-screen view. Add nav
     });
   });
 
-  function observeViewport(element: HTMLDivElement) {
-    const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const updateMotion = () => (reducedMotion = shouldReduceMotion());
-    const updateDirection = () => (rtl = getComputedStyle(element).direction === "rtl");
-    const direction = new MutationObserver(updateDirection);
-    const resize = new ResizeObserver(() => {
-      width = element.clientWidth;
-      itemHeight = element.clientHeight;
-      updateDirection();
-    });
-
-    for (let ancestor = element.parentElement; ancestor; ancestor = ancestor.parentElement) {
-      direction.observe(ancestor, { attributes: true, attributeFilter: ["dir", "class", "style"] });
-    }
-
+  $effect(() => {
+    // Track global and local direction changes; interactions read the inherited direction again.
+    void quaffConfig.rtl;
+    void props.dir;
     updateDirection();
-    updateMotion();
-    motion.addEventListener("change", updateMotion);
-    resize.observe(element);
+  });
 
-    return () => {
-      resize.disconnect();
-      direction.disconnect();
-      motion.removeEventListener("change", updateMotion);
-      clearTimeout(settleTimer);
-    };
+  onDestroy(() => clearTimeout(settleTimer));
+
+  function updateDirection() {
+    rtl = getComputedStyle(viewport).direction === "rtl";
   }
 
   function normalizeIndex(index: number) {
@@ -149,7 +137,7 @@ Carousels let users browse items in a scrolling row or full-screen view. Add nav
   }
 
   function scrollToOffset(position: number, behavior: ScrollBehavior) {
-    rtl = getComputedStyle(viewport).direction === "rtl";
+    updateDirection();
     const direction = rtl ? -1 : 1;
     const scrollPosition = vertical
       ? { top: position, behavior }
@@ -223,7 +211,7 @@ Carousels let users browse items in a scrolling row or full-screen view. Add nav
     }
 
     const index = Number(item.dataset.carouselIndex);
-    rtl = getComputedStyle(viewport).direction === "rtl";
+    updateDirection();
     let previousKey = rtl ? "ArrowRight" : "ArrowLeft";
     let nextKey = rtl ? "ArrowLeft" : "ArrowRight";
 
@@ -317,6 +305,8 @@ Carousels let users browse items in a scrolling row or full-screen view. Add nav
       return;
     }
 
+    updateDirection();
+
     pointer = { id: event.pointerId, position: vertical ? event.clientY : event.clientX, offset };
   }
 
@@ -407,7 +397,8 @@ Carousels let users browse items in a scrolling row or full-screen view. Add nav
     onpointerleave={() => !dragging && handlePointerEnd()}
     ondragstart={(event) => event.preventDefault()}
     onclickcapture={handleClickCapture}
-    {@attach observeViewport}
+    bind:clientWidth={width}
+    bind:clientHeight={itemHeight}
   >
     <div
       class="q-carousel__rail"

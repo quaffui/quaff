@@ -20,8 +20,11 @@ function settle(page: Page) {
   return settleAnimations(page.locator("#rail"));
 }
 
-async function sampleWidths(page: Page) {
-  return page.locator("#rail").evaluate(async (element) => {
+// Click in the page, so busy machines cannot finish the transition before it is sampled.
+async function clickAndSampleWidths(page: Page, control: string) {
+  return page.locator("#rail").evaluate(async (element, control) => {
+    document.querySelector<HTMLElement>(control)!.click();
+    await new Promise(requestAnimationFrame);
     const transition = element
       .getAnimations()
       .find(
@@ -38,7 +41,7 @@ async function sampleWidths(page: Page) {
 
     for (const fraction of [0.25, 0.5, 0.75]) {
       transition.currentTime = Number(transition.effect!.getComputedTiming().duration) * fraction;
-      // ResizeObserver updates the content width after the animated layout changes.
+      // Let the seeked layout render before measuring it.
       await new Promise(requestAnimationFrame);
       await new Promise(requestAnimationFrame);
       samples.push({
@@ -49,7 +52,7 @@ async function sampleWidths(page: Page) {
 
     transition.finish();
     return samples;
-  });
+  }, control);
 }
 
 it.for([false, true])(
@@ -59,8 +62,7 @@ it.for([false, true])(
       await page.locator("#standard").click();
     }
 
-    await page.locator("#expand").click();
-    const expanding = await sampleWidths(page);
+    const expanding = await clickAndSampleWidths(page, "#expand");
 
     for (const sample of expanding) {
       expect(sample.rail).toBeGreaterThan(80);
@@ -70,8 +72,7 @@ it.for([false, true])(
 
     expect(expanding[0].rail).toBeLessThan(expanding.at(-1)!.rail);
     await settle(page);
-    await page.locator("#collapse").dispatchEvent("click");
-    const samples = await sampleWidths(page);
+    const samples = await clickAndSampleWidths(page, "#collapse");
 
     for (const sample of samples) {
       expect(sample.rail).toBeGreaterThan(80);

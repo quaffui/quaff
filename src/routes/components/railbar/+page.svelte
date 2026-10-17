@@ -151,23 +151,6 @@
     return deskOnRight ? "hhr lpr ffr" : "lhh lpr lff";
   });
 
-  function measureBarHeight(updateHeight: (height: number) => void) {
-    return (element: HTMLElement) => {
-      let frame = 0;
-      const observer = new ResizeObserver(() => {
-        cancelAnimationFrame(frame);
-        // Update layout offsets after the current resize observation has finished.
-        frame = requestAnimationFrame(() => updateHeight(element.offsetHeight));
-      });
-      observer.observe(element, { box: "border-box" });
-
-      return () => {
-        observer.disconnect();
-        cancelAnimationFrame(frame);
-      };
-    };
-  }
-
   function toggleSaved(id: string, title: string) {
     const wasSaved = savedIds.includes(id);
     savedIds = wasSaved ? savedIds.filter((savedId) => savedId !== id) : [...savedIds, id];
@@ -319,7 +302,7 @@
                 <QHeader class="surface-container-low" height={Math.max(64, programmeHeaderHeight)}>
                   <div
                     class="app-heading flex items-center q-pa-md"
-                    {@attach measureBarHeight((height) => (programmeHeaderHeight = height))}
+                    bind:offsetHeight={programmeHeaderHeight}
                   >
                     <QIcon name="theaters" aria-hidden="true" />
                     <span class="title-medium">Framehouse</span>
@@ -627,7 +610,7 @@
                 <QHeader class="surface-container-low" height={Math.max(64, deskHeaderHeight)}>
                   <div
                     class="app-heading flex items-center q-pa-md"
-                    {@attach measureBarHeight((height) => (deskHeaderHeight = height))}
+                    bind:offsetHeight={deskHeaderHeight}
                   >
                     <QIcon name="videocam" aria-hidden="true" />
                     <span class="title-medium">Projection desk</span>
@@ -680,7 +663,7 @@
                 <QFooter class="surface-container-low" height={Math.max(80, deskFooterHeight)}>
                   <div
                     class="projection-status flex items-center q-gap-sm q-px-md body-small"
-                    {@attach measureBarHeight((height) => (deskFooterHeight = height))}
+                    bind:offsetHeight={deskFooterHeight}
                   >
                     <span class="status-light bg-primary" aria-hidden="true"></span>
                     <span>{queuedFilm.title} · {subtitles ? "Subtitles on" : "Subtitles off"}</span>

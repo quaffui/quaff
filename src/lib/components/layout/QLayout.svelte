@@ -29,9 +29,16 @@ Layouts arrange content around headers, footers, drawers, and navigation. Config
     ready: boolean;
   }
 
+  /** Lets layout parts follow layout resizes that do not change their own props. */
+  interface LayoutSizeContext {
+    /** Height of the scrolling content area. */
+    readonly contentHeight: number;
+  }
+
   export const headerCtx = QContext<AppbarContext>("QHeader");
   export const footerCtx = QContext<AppbarContext>("QFooter");
   export const navbarCtx = QContext<NavbarContext>("QNavbar");
+  export const layoutSizeCtx = QContext<LayoutSizeContext>("QLayoutSize");
 
   export const startRailbarCtx = QContext<DrawerContext>("QRailbarStart");
   export const endRailbarCtx = QContext<DrawerContext>("QRailbarEnd");
@@ -68,6 +75,7 @@ Layouts arrange content around headers, footers, drawers, and navigation. Config
 
   // #region:    --- Reactive variables
   let layoutEl = $state<HTMLDivElement>();
+  let contentHeight = $state(0);
   let isAnimated = $state(false);
 
   const headerInfo = $state({
@@ -173,6 +181,7 @@ Layouts arrange content around headers, footers, drawers, and navigation. Config
     height: navbarInfo.height,
     ready: navbarInfo.ready,
   });
+  layoutSizeCtx.set({ contentHeight });
 
   startRailbarCtx.set({
     width: startRailbarInfo.width,
@@ -302,6 +311,7 @@ Layouts arrange content around headers, footers, drawers, and navigation. Config
       headerCtx.symbol,
       footerCtx.symbol,
       navbarCtx.symbol,
+      layoutSizeCtx.symbol,
       startRailbarCtx.symbol,
       endRailbarCtx.symbol,
       startDrawerCtx.symbol,
@@ -312,7 +322,7 @@ Layouts arrange content around headers, footers, drawers, and navigation. Config
       rightDrawerCtx.symbol,
     ]}
   >
-    <div class="q-layout__content" {onscroll}>
+    <div class="q-layout__content" bind:clientHeight={contentHeight} {onscroll}>
       {#if content}
         {@render content()}
       {:else}

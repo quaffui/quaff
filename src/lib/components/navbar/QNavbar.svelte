@@ -25,7 +25,7 @@ Navigation bars place three to five primary destinations at the bottom of a layo
   // #endregion: --- Props
 
   // #region:    --- Reactive variables
-  let navbarEl = $state<HTMLElement>();
+  let measuredHeight = $state<number>();
 
   const layoutContext = navbarCtx.get();
   const parsedActiveColor = $derived(
@@ -33,27 +33,21 @@ Navigation bars place three to five primary destinations at the bottom of a layo
   );
   // #endregion: --- Reactive variables
 
-  // #region:    --- Lifecycle
-  onMount(() => {
-    if (!layoutContext || !navbarEl) {
+  // #region:    --- Effects
+  $effect.pre(() => {
+    if (!layoutContext || measuredHeight === undefined) {
       return;
     }
 
-    const updateLayout = () => {
-      navbarCtx.updateEntries(layoutContext, {
-        height: navbarEl?.getBoundingClientRect().height ?? 0,
-        ready: true,
-      });
-    };
-    const resizeObserver = new ResizeObserver(updateLayout);
+    navbarCtx.updateEntries(layoutContext, { height: measuredHeight, ready: true });
+  });
+  // #endregion: --- Effects
 
-    updateLayout();
-    resizeObserver.observe(navbarEl);
-
-    return () => {
-      resizeObserver.disconnect();
+  // #region:    --- Lifecycle
+  onMount(() => () => {
+    if (layoutContext) {
       navbarCtx.updateEntries(layoutContext, { height: 0, ready: false });
-    };
+    }
   });
   // #endregion: --- Lifecycle
 
@@ -67,7 +61,7 @@ Navigation bars place three to five primary destinations at the bottom of a layo
 </script>
 
 <nav
-  bind:this={navbarEl}
+  bind:offsetHeight={measuredHeight}
   {...props}
   class="q-navbar"
   style:--q-navbar-min-height="{height}px"
