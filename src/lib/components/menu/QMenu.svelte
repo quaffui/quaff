@@ -8,6 +8,7 @@ Menus show contextual actions or popup content beside a trigger. Adjust their po
   import { on } from "svelte/events";
   import { innerHeight, innerWidth } from "svelte/reactivity/window";
   import { BROWSER as browser } from "esm-env";
+  import { isDialogClick } from "#internal/dialogClicks.js";
   import { useQuaffConfig } from "#internal/quaffConfig.svelte.js";
   import { menuCtx } from "#internal/menuContext.js";
   import { syncOverlayDirection } from "#internal/overlayDirection.js";
@@ -350,7 +351,7 @@ Menus show contextual actions or popup content beside a trigger. Adjust their po
   function handleMenuClick(event: QEvent<MouseEvent, HTMLDivElement>) {
     onclick?.(event);
 
-    if (!event.defaultPrevented && autoClose) {
+    if (!event.defaultPrevented && autoClose && !isDialogClick(event)) {
       hide();
     }
   }
