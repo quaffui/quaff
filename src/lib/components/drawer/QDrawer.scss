@@ -18,6 +18,13 @@
 
   overflow: auto;
 
+  &.q-drawer--animated {
+    transition:
+      top variables.$speed3,
+      bottom variables.$speed3,
+      transform variables.$speed3;
+  }
+
   &.q-drawer--overlay {
     z-index: 6;
     max-width: 100%;

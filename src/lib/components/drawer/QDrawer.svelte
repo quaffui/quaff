@@ -43,7 +43,6 @@ Drawers place navigation or supporting content beside the page. They can share s
 
   // #region:    --- Non-reactive variables
   const PEEK_THRESHOLD = 30; // How far the drawer peeks out when cursor is near the edge
-  const TRANSITION = "top 0.3s, bottom 0.3s, transform 0.3s";
 
   let releaseModalFocus: ((restoreFocus: boolean) => void) | undefined;
   let clickTimer: ReturnType<typeof setTimeout> | undefined;
@@ -58,12 +57,14 @@ Drawers place navigation or supporting content beside the page. They can share s
   let dragOffset = 0;
   let swipeWidth = 0;
   let swipeSide: "left" | "right" = "left";
+  let swipeTransition = "";
   // #endregion: --- Non-reactive variables
 
   // #region:    --- Reactive variables
   let drawerEl = $state<HTMLDivElement>();
   let swipeAreaEl = $state<HTMLDivElement>();
   let mounted = $state(false);
+  let isAnimated = $state(false);
   // #endregion: --- Reactive variables
 
   // #region:    --- Derived values
@@ -101,11 +102,12 @@ Drawers place navigation or supporting content beside the page. They can share s
   onMount(() => {
     mounted = true;
 
-    setTimeout(() => {
-      drawerEl?.style.setProperty("transition", TRANSITION);
+    const animationTimer = setTimeout(() => {
+      isAnimated = true;
     }, 100);
 
     return () => {
+      clearTimeout(animationTimer);
       releaseModalFocus?.(true);
       clearClickListener();
       clearPointerdownListener();
@@ -249,6 +251,7 @@ Drawers place navigation or supporting content beside the page. They can share s
 
   function handlePointerDown(e: PointerEvent) {
     if (
+      isSwiping ||
       noSwipe ||
       !isBelowBreakpoint ||
       !drawerEl ||
@@ -302,6 +305,7 @@ Drawers place navigation or supporting content beside the page. They can share s
     document.body.style.setProperty("cursor", "grabbing");
     document.body.style.setProperty("user-select", "none"); // Disable text selection
 
+    swipeTransition = drawerEl.style.transition;
     drawerEl.style.transition = "none"; // Disable CSS transitions for smooth dragging
     drawerEl.style.touchAction = "none"; // Disable touch actions
 
@@ -355,7 +359,7 @@ Drawers place navigation or supporting content beside the page. They can share s
 
     resetBodyStyles();
 
-    drawerEl.style.transition = TRANSITION;
+    drawerEl.style.transition = swipeTransition;
     drawerEl.style.transform = "";
     drawerEl.style.touchAction = ""; // Re-enable touch actions
 
@@ -393,6 +397,7 @@ Drawers place navigation or supporting content beside the page. They can share s
     bemClasses: {
       [side]: true,
       active: value,
+      animated: isAnimated,
       overlay: isModal,
       bordered,
     },
