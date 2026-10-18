@@ -8,19 +8,19 @@
     QDrawer,
     QFooter,
     QHeader,
+    QHeaderTitle,
     QIcon,
-    QItem,
-    QItemSection,
     QLayout,
     QList,
     QNavGroup,
     QNavItem,
+    QSlider,
+    QSwitch,
   } from "#lib";
   import { QDocs, QDocsSection } from "#docs";
-
   import { useMeta } from "#lib/meta.js";
   import { pageMeta } from "#docs/metadata.js";
-  import snippets from "./docs.snippets";
+  import snippets from "./docs.snippets.js";
 
   useMeta(
     pageMeta(
@@ -31,20 +31,19 @@
 
   docsCtx.set({ snippets, componentDocs: QDrawerDocs });
 
-  let displayDrawerOpen = $state(false);
-  let basicDrawerOpen = $state(false);
+  let isPreviewDrawerOpen = $state(false);
+  let isBasicDrawerOpen = $state(false);
   let isNavigationDrawerOpen = $state(false);
   let navigationDestination = $state("Website");
-
-  let leftDrawerOpen = $state(false);
-  let rightDrawerOpen = $state(false);
-  let overlayDrawerOpen = $state(false);
-  let persistentDrawerOpen = $state(false);
-  let borderedDrawerOpen = $state(false);
-  let customWidthDrawerOpen = $state(false);
-  let programmaticDrawerState = $state(false);
-  let layoutDrawerOpen = $state(false);
-
+  let isStartDrawerOpen = $state(false);
+  let isEndDrawerOpen = $state(false);
+  let isBehaviorDrawerOpen = $state(false);
+  let overlay = $state(true);
+  let persistent = $state(false);
+  let bordered = $state(false);
+  let drawerWidth = $state(320);
+  let isControlledDrawerOpen = $state(false);
+  let isLayoutDrawerOpen = $state(false);
   let drawerRef = $state<QDrawer>();
 
   function getNavigationProps(destination: string) {
@@ -62,474 +61,438 @@
 
 <QDocs>
   {#snippet display()}
-    <QLayout view="hHh LpR fFf" style="height: 300px;">
+    <QLayout class="drawer-preview surface full-width" view="hHh LpR fFf">
+      {#snippet header()}
+        <QHeader>
+          <QIconBtn
+            flat
+            icon="menu"
+            aria-label="Open preview navigation"
+            aria-expanded={isPreviewDrawerOpen}
+            aria-controls="preview-navigation"
+            onclick={() => (isPreviewDrawerOpen = !isPreviewDrawerOpen)}
+          />
+          <QHeaderTitle align="start">Workspace</QHeaderTitle>
+        </QHeader>
+      {/snippet}
       {#snippet drawerStart()}
-        <QDrawer bind:value={displayDrawerOpen} overlay aria-label="Navigation">
-          <h6 class="q-drawer__headline">Navigation</h6>
-          <QList>
-            <QItem to="#" active>
-              <QItemSection type="avatar">
-                <QIcon name="home" />
-              </QItemSection>
-              <QItemSection>Home</QItemSection>
-            </QItem>
-            <QItem to="#">
-              <QItemSection type="avatar">
-                <QIcon name="settings" />
-              </QItemSection>
-              <QItemSection>Settings</QItemSection>
-              <QItemSection type="trailingText">3</QItemSection>
-            </QItem>
+        <QDrawer
+          id="preview-navigation"
+          bind:value={isPreviewDrawerOpen}
+          width={240}
+          overlay
+          aria-label="Preview navigation"
+          class="drawer-panel"
+        >
+          <div class="flex items-center justify-between q-px-sm">
+            <h2 class="title-medium q-ma-md">Workspace</h2>
+            <QIconBtn
+              icon="close"
+              flat
+              aria-label="Close preview navigation"
+              onclick={() => (isPreviewDrawerOpen = false)}
+            />
+          </div>
+          <QList tag="nav" aria-label="Preview pages" expressive={false} preserveTabOrder>
+            <QNavItem
+              label="Overview"
+              icon="home"
+              active
+              onclick={() => (isPreviewDrawerOpen = false)}
+            />
+            <QNavItem
+              label="Projects"
+              icon="folder"
+              onclick={() => (isPreviewDrawerOpen = false)}
+            />
+            <QNavItem
+              label="Settings"
+              icon="settings"
+              onclick={() => (isPreviewDrawerOpen = false)}
+            />
           </QList>
         </QDrawer>
       {/snippet}
-
-      <div class="flex flex-center" style="height: 100%;">
-        <QBtn label="Open drawer" onclick={() => (displayDrawerOpen = !displayDrawerOpen)} />
+      <div class="column items-center q-gap-md q-pa-lg text-center">
+        <QIcon name="folder" size="40px" class="text-primary" />
+        <h2 class="title-large q-ma-none">Everything in its place</h2>
+        <p class="body-medium q-ma-none">Open the drawer to explore your workspace.</p>
+        <QBtn
+          label="Open navigation"
+          variant="tonal"
+          onclick={() => (isPreviewDrawerOpen = true)}
+        />
       </div>
     </QLayout>
   {/snippet}
 
   {#snippet usage()}
-    <div>
-      <QDocsSection title="Basic Drawer">
-        {#snippet sectionDescription()}
-          QDrawer is a side navigation component that can be toggled open and closed. It's typically
-          used for navigation menus, filtering options, or additional content. The drawer is
-          controlled with the <code>value</code> prop which determines if it's open or closed. Modal
-          drawers keep keyboard focus inside and return it when closed. Escape closes non-persistent
-          drawers. Give the drawer an <code>aria-label</code> or <code>aria-labelledby</code>.
+    <QDocsSection title="Basic Usage">
+      {#snippet sectionDescription()}
+        Place QDrawer in QLayout's <code>drawerStart</code> snippet and bind <code>value</code> to control
+        it. The drawer shares space with content on wide screens and becomes modal below its breakpoint.
+      {/snippet}
+      <QLayout class="drawer-example surface-container-low border full-width" view="hHh LpR fFf">
+        {#snippet header()}
+          <QHeader>
+            <QIconBtn
+              flat
+              icon="menu"
+              aria-label="Toggle basic navigation"
+              aria-expanded={isBasicDrawerOpen}
+              aria-controls="basic-navigation"
+              onclick={() => (isBasicDrawerOpen = !isBasicDrawerOpen)}
+            />
+            <QHeaderTitle align="start">My workspace</QHeaderTitle>
+          </QHeader>
         {/snippet}
-
-        <QLayout
-          view="hHh LpR fFf"
-          style="height: 350px; width: 100%; border: 1px solid var(--outline);"
-        >
-          {#snippet header()}
-            <QHeader>
-              <QIconBtn flat icon="menu" onclick={() => (basicDrawerOpen = !basicDrawerOpen)} />
-              <h6 class="q-ml-sm q-my-none">App Title</h6>
-            </QHeader>
-          {/snippet}
-
-          {#snippet drawerStart()}
-            <QDrawer bind:value={basicDrawerOpen} aria-label="Navigation">
-              <h6 class="q-drawer__headline">Navigation</h6>
-              <QList>
-                <QItem to="#" active>
-                  <QItemSection type="avatar">
-                    <QIcon name="home" />
-                  </QItemSection>
-                  <QItemSection>Home</QItemSection>
-                </QItem>
-                <QItem to="#">
-                  <QItemSection type="avatar">
-                    <QIcon name="settings" />
-                  </QItemSection>
-                  <QItemSection>Settings</QItemSection>
-                </QItem>
-              </QList>
-            </QDrawer>
-          {/snippet}
-
-          <div class="q-pa-md">
-            <p class="q-mb-md">Click the menu button to toggle the drawer:</p>
-            <QBtn label="Toggle Drawer" onclick={() => (basicDrawerOpen = !basicDrawerOpen)} />
-          </div>
-        </QLayout>
-      </QDocsSection>
-
-      <QDocsSection title="Expandable navigation">
-        {#snippet sectionDescription()}
-          Group related pages under an expandable heading. Expand Projects to choose a workspace, or
-          collapse it to keep the navigation compact. See <a
-            class="q-docs-link"
-            href={resolve("/components/nav-item")}
+        {#snippet drawerStart()}
+          <QDrawer
+            id="basic-navigation"
+            bind:value={isBasicDrawerOpen}
+            aria-label="Basic navigation"
+            class="drawer-panel"
           >
-            QNavItem and QNavGroup
-          </a> for navigation options.
-        {/snippet}
-
-        <QLayout
-          view="hHh LpR fFf"
-          style="height: 416px; width: 100%; border: 1px solid var(--outline);"
-        >
-          {#snippet header()}
-            <QHeader>
+            <div class="flex items-center justify-between q-px-sm">
+              <h2 class="title-medium q-ma-md">Navigation</h2>
               <QIconBtn
                 flat
-                icon="menu"
-                aria-label="Toggle workspace navigation"
-                aria-expanded={isNavigationDrawerOpen}
-                aria-controls="expandable-navigation-drawer"
-                onclick={() => (isNavigationDrawerOpen = !isNavigationDrawerOpen)}
+                icon="close"
+                aria-label="Close basic navigation"
+                onclick={() => (isBasicDrawerOpen = false)}
               />
-              <h6 class="q-ml-sm q-my-none">Workspace</h6>
-            </QHeader>
-          {/snippet}
+            </div>
+            <QList tag="nav" aria-label="Workspace pages" expressive={false} preserveTabOrder>
+              <QNavItem
+                label="Home"
+                icon="home"
+                active
+                onclick={() => (isBasicDrawerOpen = false)}
+              />
+              <QNavItem
+                label="Settings"
+                icon="settings"
+                onclick={() => (isBasicDrawerOpen = false)}
+              />
+            </QList>
+          </QDrawer>
+        {/snippet}
+        <div class="q-pa-lg">
+          <h3 class="title-large q-mt-none q-mb-sm">Home</h3>
+          <p class="body-medium q-ma-none">Use the menu button to open or close navigation.</p>
+        </div>
+      </QLayout>
+    </QDocsSection>
 
-          {#snippet drawerLeft()}
-            <QDrawer
-              id="expandable-navigation-drawer"
-              bind:value={isNavigationDrawerOpen}
-              behavior="desktop"
-              overlay
-              aria-label="Workspace navigation"
-              style="max-width: 100%;"
-            >
-              <div class="flex items-center justify-between">
-                <h6 class="q-drawer__headline">Workspace</h6>
-                <QIconBtn
-                  flat
-                  icon="close"
-                  aria-label="Close workspace navigation"
-                  onclick={() => (isNavigationDrawerOpen = false)}
+    <QDocsSection title="Expandable Navigation">
+      {#snippet sectionDescription()}
+        Group related destinations with QNavGroup. Selecting a page here updates the content and
+        closes the drawer. Use raw <code>to</code> paths for app navigation; see
+        <a class="q-docs-link" href={resolve("/components/nav-item")}>QNavItem and QNavGroup</a>.
+      {/snippet}
+      <QLayout class="drawer-example surface-container-low border full-width" view="hHh LpR fFf">
+        {#snippet header()}
+          <QHeader>
+            <QIconBtn
+              flat
+              icon="menu"
+              aria-label="Toggle project navigation"
+              aria-expanded={isNavigationDrawerOpen}
+              aria-controls="project-navigation"
+              onclick={() => (isNavigationDrawerOpen = !isNavigationDrawerOpen)}
+            />
+            <QHeaderTitle align="start">Projects</QHeaderTitle>
+          </QHeader>
+        {/snippet}
+        {#snippet drawerStart()}
+          <QDrawer
+            id="project-navigation"
+            bind:value={isNavigationDrawerOpen}
+            overlay
+            aria-label="Project navigation"
+            class="drawer-panel"
+          >
+            <div class="flex items-center justify-between q-px-sm">
+              <h2 class="title-medium q-ma-md">Workspace</h2>
+              <QIconBtn
+                flat
+                icon="close"
+                aria-label="Close project navigation"
+                onclick={() => (isNavigationDrawerOpen = false)}
+              />
+            </div>
+            <QList tag="nav" aria-label="Projects" expressive={false} preserveTabOrder>
+              <QNavItem label="Overview" icon="home" {...getNavigationProps("Overview")} />
+              <QNavGroup label="Projects" icon="folder" defaultOpened>
+                {#each ["Website", "Mobile app"] as destination (destination)}
+                  <QNavItem label={destination} {...getNavigationProps(destination)} />
+                {/each}
+              </QNavGroup>
+              <QNavItem label="Settings" icon="settings" {...getNavigationProps("Settings")} />
+            </QList>
+          </QDrawer>
+        {/snippet}
+        <div class="q-pa-lg" aria-live="polite">
+          <p class="label-medium q-mt-none q-mb-sm">Current page</p>
+          <h3 class="title-large q-mt-none q-mb-md">{navigationDestination}</h3>
+          <QBtn
+            label="Choose a page"
+            variant="tonal"
+            onclick={() => (isNavigationDrawerOpen = true)}
+          />
+        </div>
+      </QLayout>
+    </QDocsSection>
+
+    <QDocsSection title="Drawer Sides">
+      {#snippet sectionDescription()}
+        <code>side="start"</code> follows the reading direction; <code>side="end"</code> uses the
+        opposite edge. Match them with QLayout's <code>drawerStart</code> and <code>drawerEnd</code>
+        snippets. Use <code>left</code> or <code>right</code> when an edge must stay physical.
+      {/snippet}
+      <div class="flex q-gap-sm q-mb-lg">
+        <QBtn label="Open start drawer" onclick={() => (isStartDrawerOpen = true)} />
+        <QBtn label="Open end drawer" variant="outlined" onclick={() => (isEndDrawerOpen = true)} />
+      </div>
+      <QLayout class="drawer-example surface-container-low border full-width" view="hHh LpR fFf">
+        {#snippet drawerStart()}
+          <QDrawer
+            bind:value={isStartDrawerOpen}
+            side="start"
+            overlay
+            aria-label="Start drawer"
+            class="drawer-panel"
+          >
+            <div class="q-pa-lg">
+              <h3 class="title-large q-mt-none q-mb-md">Navigation</h3>
+              <p class="body-medium q-mb-lg">The start edge follows the page direction.</p>
+              <QBtn
+                label="Close start drawer"
+                variant="outlined"
+                onclick={() => (isStartDrawerOpen = false)}
+              />
+            </div>
+          </QDrawer>
+        {/snippet}
+        {#snippet drawerEnd()}
+          <QDrawer
+            bind:value={isEndDrawerOpen}
+            side="end"
+            overlay
+            aria-label="End drawer"
+            class="drawer-panel"
+          >
+            <div class="q-pa-lg">
+              <h3 class="title-large q-mt-none q-mb-md">Page details</h3>
+              <p class="body-medium q-mb-lg">Supporting content can use the opposite edge.</p>
+              <QBtn
+                label="Close end drawer"
+                variant="outlined"
+                onclick={() => (isEndDrawerOpen = false)}
+              />
+            </div>
+          </QDrawer>
+        {/snippet}
+        <div class="column flex-center fit q-pa-lg text-center">
+          <QIcon name="view_sidebar" size="40px" class="text-primary q-mb-md" />
+          <p class="body-medium q-ma-none">Navigation on one side, details on the other.</p>
+        </div>
+      </QLayout>
+    </QDocsSection>
+
+    <QDocsSection title="Behavior and Appearance">
+      {#snippet sectionDescription()}
+        <code>overlay</code> opens above content with a scrim. <code>persistent</code> prevents
+        outside clicks, Escape, and swipes from dismissing it, so provide a close button.
+        <code>bordered</code> adds an edge border; numeric <code>width</code> uses pixels and
+        defaults to 360. The default responsive breakpoint is 840px; <code>behavior="desktop"</code>
+        or
+        <code>"mobile"</code> forces one presentation. Open the drawer to adjust its width.
+      {/snippet}
+      <div class="flex items-center q-gap-lg q-mb-lg">
+        <QSwitch label="Overlay" bind:value={overlay} />
+        <QSwitch label="Persistent" bind:value={persistent} />
+        <QSwitch label="Bordered" bind:value={bordered} />
+      </div>
+      <QLayout class="drawer-example surface-container-low border full-width" view="hHh LpR fFf">
+        {#snippet header()}
+          <QHeader>
+            <QIconBtn
+              flat
+              icon="menu"
+              aria-label="Toggle configurable drawer"
+              aria-expanded={isBehaviorDrawerOpen}
+              aria-controls="configurable-drawer"
+              onclick={() => (isBehaviorDrawerOpen = !isBehaviorDrawerOpen)}
+            />
+            <QHeaderTitle align="start">Drawer settings</QHeaderTitle>
+          </QHeader>
+        {/snippet}
+        {#snippet drawerStart()}
+          <QDrawer
+            id="configurable-drawer"
+            bind:value={isBehaviorDrawerOpen}
+            {overlay}
+            {persistent}
+            {bordered}
+            width={drawerWidth}
+            noSwipe
+            aria-label="Configurable drawer"
+            class="drawer-panel"
+          >
+            <div class="q-pa-lg">
+              <h3 class="title-large q-mt-none q-mb-md">Drawer settings</h3>
+              <div class="q-mb-md">
+                <label for="drawer-width" class="label-large">Drawer width: {drawerWidth}px</label>
+                <QSlider
+                  id="drawer-width"
+                  bind:value={drawerWidth}
+                  min={240}
+                  max={400}
+                  step={40}
+                  label
                 />
               </div>
-              <QList tag="nav" aria-label="Workspace" expressive={false} preserveTabOrder>
-                <QNavItem label="Overview" {...getNavigationProps("Overview")} />
-                <QNavGroup label="Projects" defaultOpened>
-                  {#each ["Website", "Mobile app"] as destination (destination)}
-                    <QNavItem label={destination} {...getNavigationProps(destination)} />
-                  {/each}
-                </QNavGroup>
-                <QNavItem label="Settings" {...getNavigationProps("Settings")} />
-              </QList>
-            </QDrawer>
-          {/snippet}
-
-          <div class="q-pa-md" aria-live="polite">
-            <h6>{navigationDestination}</h6>
-            <p class="q-my-md">Open the navigation to switch between workspace pages.</p>
-            <QBtn label="Open navigation" onclick={() => (isNavigationDrawerOpen = true)} />
-          </div>
-        </QLayout>
-      </QDocsSection>
-
-      <QDocsSection title="Drawer Sides">
-        {#snippet sectionDescription()}
-          The default <code>side="start"</code> opens from the left in LTR and the right in RTL.
-          <code>side="end"</code> uses the opposite edge. In QLayout, use the matching
-          <code>drawerStart</code> or <code>drawerEnd</code> snippet. Explicit
-          <code>left</code> and <code>right</code> stay fixed when direction changes.
-        {/snippet}
-
-        <QLayout
-          view="hHh LpR fFf"
-          style="height: 300px; width: 100%; border: 1px solid var(--outline);"
-        >
-          {#snippet header()}
-            <QHeader class="justify-between">
-              <QIconBtn flat icon="menu" onclick={() => (leftDrawerOpen = !leftDrawerOpen)} />
-              <h6 class="q-ml-sm q-my-none">App Title</h6>
-              <QIconBtn flat icon="settings" onclick={() => (rightDrawerOpen = !rightDrawerOpen)} />
-            </QHeader>
-          {/snippet}
-
-          {#snippet drawerLeft()}
-            <QDrawer bind:value={leftDrawerOpen} side="left" aria-label="Navigation">
-              <div class="q-pa-md">
-                <h6 class="q-mb-md">Left Drawer</h6>
-                <p class="q-mb-md">This drawer opens from the left side.</p>
-                <QBtn label="Close" onclick={() => (leftDrawerOpen = false)} />
-              </div>
-            </QDrawer>
-          {/snippet}
-
-          {#snippet drawerRight()}
-            <QDrawer bind:value={rightDrawerOpen} side="right" aria-label="Navigation">
-              <div class="q-pa-md">
-                <h6 class="q-mb-md">Right Drawer</h6>
-                <p class="q-mb-md">This drawer opens from the right side.</p>
-                <QBtn label="Close" onclick={() => (rightDrawerOpen = false)} />
-              </div>
-            </QDrawer>
-          {/snippet}
-
-          <div class="q-pa-md flex column flex-center">
-            <p class="q-mb-md">Click the buttons to toggle the drawers:</p>
-            <div class="flex q-gap-md">
-              <QBtn label="Toggle Left Drawer" onclick={() => (leftDrawerOpen = !leftDrawerOpen)} />
               <QBtn
-                label="Toggle Right Drawer"
-                onclick={() => (rightDrawerOpen = !rightDrawerOpen)}
+                label="Close drawer"
+                variant="outlined"
+                onclick={() => (isBehaviorDrawerOpen = false)}
               />
             </div>
-          </div>
-        </QLayout>
-      </QDocsSection>
-
-      <QDocsSection title="Overlay Mode">
-        {#snippet sectionDescription()}
-          By default, QDrawer behaves as a standard navigation drawer and moves the content when
-          opened. With the <code>overlay</code> prop, it becomes a modal drawer with a scrim and does
-          not affect the layout.
+          </QDrawer>
         {/snippet}
+        <div class="q-pa-lg">
+          <h3 class="title-large q-mt-none q-mb-sm">Page content</h3>
+          <p class="body-medium q-ma-none">
+            Compare overlay and standard behavior on a wide screen.
+          </p>
+        </div>
+      </QLayout>
+    </QDocsSection>
 
-        <QLayout
-          view="hHh LpR fFf"
-          style="height: 300px; width: 100%; border: 1px solid var(--outline);"
-        >
-          {#snippet header()}
-            <QHeader>
-              <QIconBtn flat icon="menu" onclick={() => (overlayDrawerOpen = !overlayDrawerOpen)} />
-              <h6 class="q-ml-sm q-my-none">Overlay Drawer</h6>
-            </QHeader>
-          {/snippet}
-
-          {#snippet drawerLeft()}
-            <QDrawer bind:value={overlayDrawerOpen} overlay aria-label="Navigation">
-              <div class="q-pa-md">
-                <h6 class="q-mb-md">Overlay Drawer</h6>
-                <p class="q-mb-md">
-                  This drawer appears over the content instead of pushing it aside.
-                </p>
-                <QBtn label="Close" onclick={() => (overlayDrawerOpen = false)} />
-              </div>
-            </QDrawer>
-          {/snippet}
-
-          <div class="q-pa-md">
-            <p>Click the menu button to open the overlay drawer:</p>
-            <QBtn
-              label="Toggle Overlay Drawer"
-              onclick={() => (overlayDrawerOpen = !overlayDrawerOpen)}
-            />
-            <p class="q-mt-md">Notice how the content doesn't move when the drawer opens.</p>
-          </div>
-        </QLayout>
-      </QDocsSection>
-
-      <QDocsSection title="Persistent Drawer">
-        {#snippet sectionDescription()}
-          A persistent drawer won't close when clicking outside it. This is useful when you need the
-          drawer to stay open until explicitly closed by the user.
-        {/snippet}
-
-        <QLayout
-          view="hHh LpR fFf"
-          style="height: 300px; width: 100%; border: 1px solid var(--outline);"
-        >
-          {#snippet header()}
-            <QHeader>
-              <QIconBtn
-                flat
-                icon="menu"
-                onclick={() => (persistentDrawerOpen = !persistentDrawerOpen)}
-              />
-              <h6 class="q-ml-sm q-my-none">Persistent Drawer</h6>
-            </QHeader>
-          {/snippet}
-
-          {#snippet drawerLeft()}
-            <QDrawer bind:value={persistentDrawerOpen} persistent aria-label="Navigation">
-              <div class="q-pa-md">
-                <h6 class="q-mb-md">Persistent Drawer</h6>
-                <p>This drawer won't close when clicking outside it. Try it!</p>
-                <p class="q-mb-md">
-                  You need to use the button below or in the header to close it.
-                </p>
-                <QBtn label="Close Drawer" onclick={() => (persistentDrawerOpen = false)} />
-              </div>
-            </QDrawer>
-          {/snippet}
-
-          <div class="q-pa-md">
-            <p>Click the menu button to open the persistent drawer:</p>
-            <QBtn
-              label="Toggle Persistent Drawer"
-              onclick={() => (persistentDrawerOpen = !persistentDrawerOpen)}
-            />
-            <p class="q-mt-md">Try clicking here - the drawer will stay open.</p>
-          </div>
-        </QLayout>
-      </QDocsSection>
-
-      <QDocsSection title="Bordered Drawer">
-        {#snippet sectionDescription()}
-          You can add a border to the drawer using the <code>bordered</code> prop, which helps visually
-          separate it from the main content.
-        {/snippet}
-
-        <QLayout
-          view="hHh LpR fFf"
-          style="height: 300px; width: 100%; border: 1px solid var(--outline);"
-        >
-          {#snippet header()}
-            <QHeader>
-              <QIconBtn
-                flat
-                icon="menu"
-                onclick={() => (borderedDrawerOpen = !borderedDrawerOpen)}
-              />
-              <h6 class="q-ml-sm q-my-none">Bordered Drawer</h6>
-            </QHeader>
-          {/snippet}
-
-          {#snippet drawerLeft()}
-            <QDrawer bind:value={borderedDrawerOpen} bordered aria-label="Navigation">
-              <div class="q-pa-md">
-                <h6 class="q-mb-md">Bordered Drawer</h6>
-                <p class="q-mb-md">This drawer has a border on its edge.</p>
-                <QBtn label="Close" onclick={() => (borderedDrawerOpen = false)} />
-              </div>
-            </QDrawer>
-          {/snippet}
-
-          <div class="q-pa-md">
-            <p>Click the menu button to toggle the bordered drawer:</p>
-            <QBtn
-              label="Toggle Bordered Drawer"
-              onclick={() => (borderedDrawerOpen = !borderedDrawerOpen)}
-            />
-          </div>
-        </QLayout>
-      </QDocsSection>
-
-      <QDocsSection title="Custom Width">
-        {#snippet sectionDescription()}
-          You can customize the width of the drawer using the <code>width</code> prop. The default width
-          is 360px. If specified as a number, it's interpreted as pixels.
-        {/snippet}
-
-        <QLayout
-          view="hHh LpR fFf"
-          style="height: 300px; width: 100%; border: 1px solid var(--outline);"
-        >
-          {#snippet header()}
-            <QHeader>
-              <QIconBtn
-                flat
-                icon="menu"
-                onclick={() => (customWidthDrawerOpen = !customWidthDrawerOpen)}
-              />
-              <h6 class="q-ml-sm q-my-none">Custom Width</h6>
-            </QHeader>
-          {/snippet}
-
-          {#snippet drawerLeft()}
-            <QDrawer bind:value={customWidthDrawerOpen} width={400} aria-label="Navigation">
-              <div class="q-pa-md">
-                <h6 class="q-mb-md">Wide Drawer (400px)</h6>
-                <p class="q-mb-md">
-                  This drawer has a custom width of 400px instead of the default 360px.
-                </p>
-                <QBtn label="Close" onclick={() => (customWidthDrawerOpen = false)} />
-              </div>
-            </QDrawer>
-          {/snippet}
-
-          <div class="q-pa-md">
-            <p>Click the menu button to toggle the wide drawer:</p>
-            <QBtn
-              label="Toggle Wide Drawer"
-              onclick={() => (customWidthDrawerOpen = !customWidthDrawerOpen)}
-            />
-          </div>
-        </QLayout>
-      </QDocsSection>
-
-      <QDocsSection title="Programmatic Control">
-        {#snippet sectionDescription()}
-          QDrawer provides methods for programmatic control: <code>show</code>(),
-          <code>hide</code>(), and <code>toggle</code>(). These can be accessed by binding to the
-          component with <code>bind</code>:this.
-        {/snippet}
-
-        <QLayout
-          view="hHh LpR fFf"
-          style="height: 300px; width: 100%; border: 1px solid var(--outline);"
-        >
-          {#snippet header()}
-            <QHeader>
-              <h6 class="q-my-none">Programmatic Control</h6>
-            </QHeader>
-          {/snippet}
-
-          {#snippet drawerLeft()}
-            <QDrawer
-              bind:this={drawerRef}
-              bind:value={programmaticDrawerState}
-              aria-label="Navigation"
-            >
-              <div class="q-pa-md">
-                <h6 class="q-mb-md">Drawer Content</h6>
-                <p class="q-mb-md">This drawer is controlled programmatically.</p>
-                <QBtn label="Close with hide()" onclick={drawerRef?.hide} />
-              </div>
-            </QDrawer>
-          {/snippet}
-
-          <div class="q-pa-md">
-            <p>Control the drawer with these buttons:</p>
-            <div class="flex q-gap-md">
-              <QBtn label="Show Drawer" onclick={drawerRef?.show} />
-              <QBtn label="Hide Drawer" onclick={drawerRef?.hide} />
-              <QBtn label="Toggle Drawer" onclick={drawerRef?.toggle} />
+    <QDocsSection title="Programmatic Control">
+      {#snippet sectionDescription()}
+        Use <code>bind:this</code> to call <code>show()</code>, <code>hide()</code>, or
+        <code>toggle()</code>. Bind <code>value</code> when the rest of the page also needs the open state.
+      {/snippet}
+      <div class="flex q-gap-sm q-mb-lg">
+        <QBtn label="Show" onclick={drawerRef?.show} />
+        <QBtn label="Hide" variant="outlined" onclick={drawerRef?.hide} />
+        <QBtn label="Toggle" variant="outlined" onclick={drawerRef?.toggle} />
+      </div>
+      <QLayout class="drawer-example surface-container-low border full-width" view="hHh LpR fFf">
+        {#snippet drawerStart()}
+          <QDrawer
+            bind:this={drawerRef}
+            bind:value={isControlledDrawerOpen}
+            overlay
+            aria-label="Controlled drawer"
+            class="drawer-panel"
+          >
+            <div class="q-pa-lg">
+              <h3 class="title-large q-mt-none q-mb-md">Controlled drawer</h3>
+              <QBtn label="Close with hide()" variant="outlined" onclick={drawerRef?.hide} />
             </div>
-          </div>
-        </QLayout>
-      </QDocsSection>
-
-      <QDocsSection title="Working with QLayout">
-        {#snippet sectionDescription()}
-          QDrawer is designed to work with QLayout. The view prop of QLayout controls how the drawer
-          relates to headers and footers. The format "hHh LpR fFf" defines the layout structure,
-          where L and R represent left and right drawers, and their casing determines how they
-          interact with other elements.
+          </QDrawer>
         {/snippet}
+        <div class="q-pa-lg" aria-live="polite">
+          <p class="body-medium q-ma-none">
+            Drawer state: {isControlledDrawerOpen ? "Open" : "Closed"}
+          </p>
+        </div>
+      </QLayout>
+    </QDocsSection>
 
-        <QLayout
-          view="lHh Lpr lff"
-          style="height: 350px; width: 100%; border: 1px solid var(--outline);"
-        >
-          {#snippet header()}
-            <QHeader>
-              <QIconBtn flat icon="menu" onclick={() => (layoutDrawerOpen = !layoutDrawerOpen)} />
-              <h6 class="q-ml-sm q-my-none">App with Layout</h6>
-            </QHeader>
-          {/snippet}
-
-          {#snippet drawerLeft()}
-            <QDrawer bind:value={layoutDrawerOpen} bordered aria-label="Navigation">
-              <h6 class="q-drawer__headline">Navigation</h6>
-              <QList>
-                <QItem to="#" active>
-                  <QItemSection type="avatar">
-                    <QIcon name="home" />
-                  </QItemSection>
-                  <QItemSection>Home</QItemSection>
-                </QItem>
-                <QItem to="#">
-                  <QItemSection type="avatar">
-                    <QIcon name="person" />
-                  </QItemSection>
-                  <QItemSection>Profile</QItemSection>
-                </QItem>
-              </QList>
-            </QDrawer>
-          {/snippet}
-
-          {#snippet footer()}
-            <QFooter>
-              <div class="q-px-md q-py-sm text-center">Footer content</div>
-            </QFooter>
-          {/snippet}
-
-          <div class="q-pa-md">
-            <p>This example shows a complete layout with:</p>
-            <ul class="q-ma-md">
-              <li>Header at the top</li>
-              <li>Navigation drawer on the left</li>
-              <li>Footer at the bottom</li>
-            </ul>
-            <QBtn
-              label="Toggle Navigation"
-              onclick={() => (layoutDrawerOpen = !layoutDrawerOpen)}
+    <QDocsSection title="Working with QLayout">
+      {#snippet sectionDescription()}
+        QLayout's <code>view</code> controls how drawers share space with headers and footers. This
+        example lets the start drawer extend beside both bars. See
+        <a class="q-docs-link" href={resolve("/components/layout")}>QLayout</a> for view combinations.
+      {/snippet}
+      <QLayout class="drawer-example surface-container-low border full-width" view="lHh Lpr lff">
+        {#snippet header()}
+          <QHeader>
+            <QIconBtn
+              flat
+              icon="menu"
+              aria-label="Toggle layout navigation"
+              aria-expanded={isLayoutDrawerOpen}
+              aria-controls="layout-navigation"
+              onclick={() => (isLayoutDrawerOpen = !isLayoutDrawerOpen)}
             />
-          </div>
-        </QLayout>
-      </QDocsSection>
-    </div>
+            <QHeaderTitle align="start">App layout</QHeaderTitle>
+          </QHeader>
+        {/snippet}
+        {#snippet drawerStart()}
+          <QDrawer
+            id="layout-navigation"
+            bind:value={isLayoutDrawerOpen}
+            bordered
+            aria-label="Layout navigation"
+            class="drawer-panel"
+          >
+            <div class="flex items-center justify-between q-px-sm">
+              <h2 class="title-medium q-ma-md">Navigation</h2>
+              <QIconBtn
+                flat
+                icon="close"
+                aria-label="Close layout navigation"
+                onclick={() => (isLayoutDrawerOpen = false)}
+              />
+            </div>
+            <QList tag="nav" aria-label="Layout pages" expressive={false} preserveTabOrder>
+              <QNavItem
+                label="Home"
+                icon="home"
+                active
+                onclick={() => (isLayoutDrawerOpen = false)}
+              />
+              <QNavItem
+                label="Profile"
+                icon="person"
+                onclick={() => (isLayoutDrawerOpen = false)}
+              />
+            </QList>
+          </QDrawer>
+        {/snippet}
+        {#snippet footer()}
+          <QFooter>
+            <p class="body-small q-px-md q-py-sm q-ma-none">Workspace · All changes saved</p>
+          </QFooter>
+        {/snippet}
+        <div class="q-pa-lg">
+          <h3 class="title-large q-mt-none q-mb-sm">Page content</h3>
+          <p class="body-medium q-ma-none">Header, drawer, and footer share one layout.</p>
+        </div>
+      </QLayout>
+    </QDocsSection>
+
+    <QDocsSection title="Accessibility" noCode>
+      {#snippet sectionDescription()}
+        Name each drawer with <code>aria-label</code> or <code>aria-labelledby</code>, and label its
+        toggle button. Modal drawers contain focus and return it when closed; Escape dismisses them
+        unless <code>persistent</code> is set. Always provide a close action, and use real links for destinations
+        in your app.
+      {/snippet}
+    </QDocsSection>
   {/snippet}
 </QDocs>
+
+<style>
+  :global(.drawer-preview),
+  :global(.drawer-example) {
+    border-radius: 24px;
+  }
+
+  :global(.drawer-preview) {
+    height: 300px;
+  }
+
+  :global(.drawer-example) {
+    height: 360px;
+  }
+
+  :global(.drawer-panel) {
+    max-width: 100%;
+  }
+</style>
