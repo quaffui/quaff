@@ -200,36 +200,45 @@ Text fields collect and edit text with clear labels. Supporting hints and valida
   {/if}
 
   <div class="q-field__inner">
-    <label for={inputId} class="q-field__wrapper">
-      {#if prepend}
-        <div class="q-field__snippet-prepend" bind:clientWidth={snippetPrependWidth}>
-          {@render prepend()}
-        </div>
-      {/if}
-      <input
-        {...inputProps}
-        id={inputId}
-        aria-describedby={describedBy}
-        aria-invalid={inputProps["aria-invalid"] ?? (error || undefined)}
-        class="q-field__input"
-        value={displayValue}
-        {placeholder}
-        type={inputType}
-        oninput={onInput}
-        onbeforeinput={onBeforeInput}
-        onfocus={onFocus}
-        onblur={onBlur}
-        {disabled}
-        tabindex={disabled === true ? -1 : (tabindex ?? 0)}
-      />
-      <span class="q-field__label"><span class="q-field__label-text">{label}</span></span>
+    <div class="q-field__control">
+      <label for={inputId} class="q-field__wrapper">
+        {#if prepend}
+          <div class="q-field__snippet-prepend" bind:clientWidth={snippetPrependWidth}>
+            {@render prepend()}
+          </div>
+        {/if}
+        <input
+          {...inputProps}
+          id={inputId}
+          aria-describedby={describedBy}
+          aria-invalid={inputProps["aria-invalid"] ?? (error || undefined)}
+          class="q-field__input"
+          value={displayValue}
+          {placeholder}
+          type={inputType}
+          oninput={onInput}
+          onbeforeinput={onBeforeInput}
+          onfocus={onFocus}
+          onblur={onBlur}
+          {disabled}
+          tabindex={disabled === true ? -1 : (tabindex ?? 0)}
+        />
+        <span class="q-field__label"><span class="q-field__label-text">{label}</span></span>
 
-      {#if append}
-        <div class="q-field__snippet-append">
-          {@render append()}
-        </div>
+        {#if append}
+          <div class="q-field__snippet-append">
+            {@render append()}
+          </div>
+        {/if}
+      </label>
+
+      {#if outlined || rounded}
+        <!-- Keep the decorative fieldset out of the surrounding form's controls. -->
+        <fieldset class="q-field__outline" form="" aria-hidden="true">
+          <legend><span>{label || "\u200b"}</span></legend>
+        </fieldset>
       {/if}
-    </label>
+    </div>
 
     <QFieldMessage id={messageId} message={supportingText} error={error && !!errorMessage} />
   </div>

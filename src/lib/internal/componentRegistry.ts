@@ -166,7 +166,7 @@ const COMPONENT_REGISTRY = {
     }),
   }),
   select: group("components/select", {
-    QSelect: component("q-select", {
+    QSelect: component(["q-select", "q-field"], {
       uses: ["QIcon", "QItem", "QItemSection", "QList", "QMenu"],
       css: ["shared/field"],
     }),

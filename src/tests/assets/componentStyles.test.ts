@@ -50,12 +50,18 @@ describe("component styles", () => {
       selectors: [
         ".q-select__menu",
         ".q-field",
+        ".q-field__control",
+        ".q-field__outline",
         ".q-list",
         ".q-item",
         ".q-menu",
         ".q-icon",
         ".q-separator",
       ],
+    },
+    {
+      component: "QInput",
+      selectors: [".q-field", ".q-field__control", ".q-field__outline"],
     },
     {
       component: "QDate",
