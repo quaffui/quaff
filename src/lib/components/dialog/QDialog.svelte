@@ -9,6 +9,7 @@ Dialogs focus attention on a task, decision, or message above the page. Choose a
 </script>
 
 <script lang="ts">
+  import { onDestroy } from "svelte";
   import { on } from "svelte/events";
   import { isDialogClick, markDialogClick } from "#internal/dialogClicks.js";
   import type { QEvent } from "#utils";
@@ -73,6 +74,8 @@ Dialogs focus attention on a task, decision, or message above the page. Choose a
     };
   });
   // #endregion: --- Effects
+
+  onDestroy(() => dialogEl?.close());
 
   // #region:    --- Methods
   /** Closes the dialog. */
