@@ -367,62 +367,71 @@ Select fields let users choose one or more values from a dropdown. Typing and fi
   {/if}
 
   <div class="q-field__inner">
-    <!-- svelte-ignore a11y_no_noninteractive_element_interactions (The associated input provides keyboard interaction.) -->
-    <label
-      bind:this={menuTarget}
-      for={inputId}
-      class="q-field__wrapper"
-      onmousedown={handleBackgroundMousedown}
-    >
-      {#if prepend}
-        <!-- svelte-ignore a11y_no_static_element_interactions (Only background clicks activate the associated combobox.) -->
-        <div
-          class="q-field__snippet-prepend"
-          bind:clientWidth={snippetPrependWidth}
-          onmousedown={handleBackgroundMousedown}
-        >
-          {@render prepend()}
-        </div>
-      {/if}
+    <div class="q-field__control">
+      <!-- svelte-ignore a11y_no_noninteractive_element_interactions (The associated input provides keyboard interaction.) -->
+      <label
+        bind:this={menuTarget}
+        for={inputId}
+        class="q-field__wrapper"
+        onmousedown={handleBackgroundMousedown}
+      >
+        {#if prepend}
+          <!-- svelte-ignore a11y_no_static_element_interactions (Only background clicks activate the associated combobox.) -->
+          <div
+            class="q-field__snippet-prepend"
+            bind:clientWidth={snippetPrependWidth}
+            onmousedown={handleBackgroundMousedown}
+          >
+            {@render prepend()}
+          </div>
+        {/if}
 
-      <input
-        id={inputId}
-        class="q-field__input"
-        value={inputValue}
-        placeholder=""
-        role="combobox"
-        aria-autocomplete={useInput ? "list" : "none"}
-        aria-controls={listboxId}
-        aria-expanded={isMenuOpen}
-        aria-haspopup="listbox"
-        aria-label={ariaLabel ?? label}
-        aria-describedby={describedBy}
-        aria-invalid={ariaInvalid ?? (error || undefined)}
-        aria-activedescendant={activeOptionId}
-        aria-readonly={useInput ? undefined : "true"}
-        onfocus={handleFocus}
-        onblur={handleBlur}
-        oninput={handleInput}
-        onmousedown={handleMousedown}
-        onkeydown={handleKeydown}
-        {disabled}
-        tabindex={disabled === true ? -1 : 0}
-        readonly={!useInput}
-      />
-
-      <span class="q-field__label"><span class="q-field__label-text">{label}</span></span>
-
-      <!-- svelte-ignore a11y_no_static_element_interactions (Only background clicks activate the associated combobox.) -->
-      <div class="q-field__snippet-append" onmousedown={handleBackgroundMousedown}>
-        {@render append?.()}
-
-        <QIcon
-          class="q-select__arrow-toggle {append ? 'q-select__arrow-toggle--has-append' : ''}"
-          name={`arrow_drop_${isMenuOpen ? "up" : "down"}`}
+        <input
+          id={inputId}
+          class="q-field__input"
+          value={inputValue}
+          placeholder=""
+          role="combobox"
+          aria-autocomplete={useInput ? "list" : "none"}
+          aria-controls={listboxId}
+          aria-expanded={isMenuOpen}
+          aria-haspopup="listbox"
+          aria-label={ariaLabel ?? label}
+          aria-describedby={describedBy}
+          aria-invalid={ariaInvalid ?? (error || undefined)}
+          aria-activedescendant={activeOptionId}
+          aria-readonly={useInput ? undefined : "true"}
+          onfocus={handleFocus}
+          onblur={handleBlur}
+          oninput={handleInput}
           onmousedown={handleMousedown}
+          onkeydown={handleKeydown}
+          {disabled}
+          tabindex={disabled === true ? -1 : 0}
+          readonly={!useInput}
         />
-      </div>
-    </label>
+
+        <span class="q-field__label"><span class="q-field__label-text">{label}</span></span>
+
+        <!-- svelte-ignore a11y_no_static_element_interactions (Only background clicks activate the associated combobox.) -->
+        <div class="q-field__snippet-append" onmousedown={handleBackgroundMousedown}>
+          {@render append?.()}
+
+          <QIcon
+            class="q-select__arrow-toggle {append ? 'q-select__arrow-toggle--has-append' : ''}"
+            name={`arrow_drop_${isMenuOpen ? "up" : "down"}`}
+            onmousedown={handleMousedown}
+          />
+        </div>
+      </label>
+
+      {#if outlined || rounded}
+        <!-- Keep the decorative fieldset out of the surrounding form's controls. -->
+        <fieldset class="q-field__outline" form="" aria-hidden="true">
+          <legend><span>{label || "\u200b"}</span></legend>
+        </fieldset>
+      {/if}
+    </div>
 
     <QMenu
       bind:value={isMenuOpen}

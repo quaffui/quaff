@@ -26,8 +26,15 @@
     max-width: 100%;
   }
 
-  &__wrapper {
+  &__control {
     --decorator-color: var(--outline);
+    position: relative;
+    min-width: 0;
+    max-width: 100%;
+    border-radius: 0px;
+  }
+
+  &__wrapper {
     display: flex;
     position: relative;
     min-height: $wrapper-height;
@@ -51,26 +58,21 @@
   }
 
   &--has-border &__wrapper {
-    border: 1px solid var(--decorator-color);
+    border: 1px solid transparent;
   }
 
-  &--focus#{&}--has-border &__wrapper {
-    box-shadow:
-      inset 2px 0 0 var(--decorator-color),
-      inset -2px 0 0 var(--decorator-color),
-      inset 0 2px 0 0 var(--decorator-color),
-      inset 0 -2px 0 0 var(--decorator-color);
-  }
-
-  &--rounded &__wrapper {
+  &--rounded &__wrapper,
+  &--rounded &__control {
     border-radius: math.div($wrapper-height, 2);
   }
 
-  &--rounded#{&}--dense &__wrapper {
+  &--rounded#{&}--dense &__wrapper,
+  &--rounded#{&}--dense &__control {
     border-radius: math.div($wrapper-height-dense, 2);
   }
 
-  &--outlined &__wrapper {
+  &--outlined &__wrapper,
+  &--outlined &__control {
     border-radius: 4px;
   }
 
@@ -83,25 +85,57 @@
     border-top-right-radius: 4px;
   }
 
-  &--label#{&}--active#{&}--has-border &__wrapper {
-    border-top-color: transparent;
-    box-shadow: none;
+  // One border paints the corners and the line beside the floating label together.
+  &__outline {
+    position: absolute;
+    inset: calc(var(--typescale-body-small-line-height) / -2) 0 0;
+    min-width: 0;
+    margin: 0;
+    padding: 0 11px;
+    border: 1px solid var(--decorator-color);
+    border-radius: inherit;
+    pointer-events: none;
+
+    legend {
+      @include mixins.typography("body-small");
+      height: var(--typescale-body-small-line-height);
+      max-width: 0.01px;
+      padding: 0;
+      overflow: hidden;
+      white-space: nowrap;
+      visibility: hidden;
+    }
+
+    span {
+      padding-inline: 4px;
+    }
   }
 
-  &--label#{&}--focus#{&}--outlined &__wrapper {
-    box-shadow:
-      inset 2px 0 0 var(--decorator-color),
-      inset -2px 0 0 var(--decorator-color),
-      inset 0 -2px 0 0 var(--decorator-color);
+  &--label#{&}--active &__outline legend {
+    max-width: 100%;
   }
 
-  &--label#{&}--active#{&}--rounded &__wrapper {
-    border-inline-color: transparent;
-    @include mixins.border-substitute("rounded");
+  &--focus &__outline {
+    // Fieldsets center the top stroke on the legend; grow the focus stroke inward.
+    top: calc(var(--typescale-body-small-line-height) / -2 + 1px);
+    border-width: 3px;
+    padding-inline: 9px;
   }
 
-  &--label#{&}--active#{&}--outlined &__wrapper {
-    @include mixins.border-substitute("outlined");
+  &--rounded &__outline {
+    padding-inline: 27px;
+  }
+
+  &--rounded#{&}--focus &__outline {
+    padding-inline: 25px;
+  }
+
+  &--rounded#{&}--dense &__outline {
+    padding-inline: 19px;
+  }
+
+  &--rounded#{&}--dense#{&}--focus &__outline {
+    padding-inline: 17px;
   }
 
   &__input,
@@ -147,59 +181,12 @@
       letter-spacing $transition-duration ease 0s;
   }
 
-  &--label#{&}--outlined#{&}--focus &__wrapper {
-    &::before,
-    &::after {
-      box-shadow: inset 0 2px 0 var(--decorator-color);
-    }
-  }
-
-  &--label#{&}--active#{&}--focus#{&}--rounded &__wrapper {
-    box-shadow: inset 0 -2px 0 var(--decorator-color);
-
-    &::before {
-      box-shadow:
-        inset 2px 0 0 var(--decorator-color),
-        inset 0 2px 0 var(--decorator-color),
-        inset 0 -2px 0 var(--decorator-color);
-    }
-
-    &::after {
-      box-shadow:
-        inset -2px 0 0 var(--decorator-color),
-        inset 0 2px 0 var(--decorator-color),
-        inset 0 -2px 0 var(--decorator-color);
-    }
-  }
-
-  &--active#{&}--has-border &__label::after {
-    align-self: flex-start;
-    content: "";
-    margin-inline-start: 4px;
-    flex-grow: 1;
-    border-top: 1px solid var(--decorator-color);
-    min-width: 10px;
-    transition: border-color $transition-duration ease 0s;
-    transform: translateY(-1px);
-  }
-
   &--active#{&}--has-border &__label-text {
     transform: translateY(-1px);
   }
 
-  &--active#{&}--has-border#{&}--dense &__wrapper {
-    &::before,
-    &::after {
-      width: math.div($wrapper-height-dense, 2);
-    }
-  }
-
-  &--focus &__wrapper {
+  &--focus &__control {
     --decorator-color: var(--primary);
-  }
-
-  &--focus#{&}--has-border &__label::after {
-    border-top-width: 3px;
   }
 
   &__input {
@@ -371,10 +358,8 @@
   &--label#{&}--active#{&}--has-border &__label {
     --q-field-label-resting: 0;
     grid-column: 1 / 4;
-
-    &::after {
-      margin-block-start: 0.5lh;
-    }
+    // Retain the former trailing border segment's minimum space for wrapped labels.
+    padding-inline-end: 14px;
   }
 
   &--label#{&}--active#{&}--outlined &__label {
@@ -413,7 +398,7 @@
     color: var(--error);
   }
 
-  &--error &__wrapper {
+  &--error &__control {
     --decorator-color: var(--error);
   }
 
