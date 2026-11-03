@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { attachNotifyPortal } from "#internal/notifyPortal.js";
   import QSnackbar from "#components/snackbar/QSnackbar.svelte";
   import type { NotifyDismiss, NotifyRequest } from "#classes/Notify.js";
 
@@ -60,16 +61,23 @@
 </script>
 
 {#if current}
-  <QSnackbar
-    bind:value={visible}
-    message={current.message}
-    action={current.action}
-    dismissible={current.dismissible}
-    dismissLabel={current.dismissLabel}
-    actionOnNewLine={current.actionOnNewLine}
-    timeout={current.timeout}
-    offset={current.offset}
-    onDismiss={current.onDismiss}
-    onHidden={handleHidden}
-  />
+  <div
+    data-quaff-notify-host
+    popover="manual"
+    style="position: fixed; inset: 0; margin: 0; padding: 0; border: 0; background: transparent; overflow: visible; pointer-events: none;"
+    {@attach attachNotifyPortal}
+  >
+    <QSnackbar
+      bind:value={visible}
+      message={current.message}
+      action={current.action}
+      dismissible={current.dismissible}
+      dismissLabel={current.dismissLabel}
+      actionOnNewLine={current.actionOnNewLine}
+      timeout={current.timeout}
+      offset={current.offset}
+      onDismiss={current.onDismiss}
+      onHidden={handleHidden}
+    />
+  </div>
 {/if}
