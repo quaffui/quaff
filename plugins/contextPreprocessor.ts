@@ -2,7 +2,7 @@ import { parse } from "@typescript-eslint/parser";
 import MagicString from "magic-string";
 import { format } from "prettier";
 import { TSESTree as AST } from "@typescript-eslint/types";
-import type { PreprocessorGroup } from "svelte/compiler";
+import { preprocess, type PreprocessorGroup } from "svelte/compiler";
 
 interface Context {
   members: ContextMember[];
@@ -39,9 +39,7 @@ interface ContextInfo {
   expressionRange: AST.Range;
 }
 
-let processedFile: string | undefined;
-
-let context: Record<string, Context> = {};
+type Contexts = Record<string, Context>;
 
 /**
  * Preprocessor to ease the use of Svelte contexts.
@@ -90,26 +88,33 @@ let context: Record<string, Context> = {};
 export function preprocessContext(): PreprocessorGroup {
   return {
     name: "quaff-context-preprocessor",
-    async script({ content, filename }) {
-      if (filename !== processedFile) {
-        resetContextForNewFile(filename);
+    async script({ content, attributes, markup, filename }) {
+      // Compilers may preprocess the scripts of several files in any order,
+      // so each call reads the module script's declarations from the whole file itself.
+      const context: Contexts = {};
+
+      if (!isModuleScript(attributes) && markup.includes("QContext")) {
+        const moduleScript = await findModuleScript(markup, filename);
+
+        if (moduleScript?.includes("QContext")) {
+          collectContextDeclarations(parseContent(moduleScript, filename), context);
+        }
       }
 
-      if (!usesContext(content)) {
+      if (!usesContext(content, context)) {
         return;
       }
 
-      const initialInfoCount = getContextInfoCount();
       const ast = parseContent(content, filename);
 
-      processASTNodes(ast);
+      processASTNodes(ast, context);
 
-      if (getContextInfoCount() === initialInfoCount) {
+      if (getContextInfoCount(context) === 0) {
         return;
       }
 
       const source = new MagicString(content);
-      transformSourceCode(source);
+      transformSourceCode(source, context);
 
       const code = await formatCode(source.toString(), filename);
 
@@ -122,7 +127,7 @@ export function preprocessContext(): PreprocessorGroup {
   };
 }
 
-function usesContext(content: string) {
+function usesContext(content: string, context: Contexts) {
   return (
     content.includes("QContext") ||
     Object.keys(context).some((contextVarName) => content.includes(`${contextVarName}.set`))
@@ -130,11 +135,31 @@ function usesContext(content: string) {
 }
 
 /**
- * Reset context variables for a new file
+ * Check if script tag attributes mark a module script
  */
-function resetContextForNewFile(filename: string | undefined) {
-  processedFile = filename;
-  context = {};
+function isModuleScript(attributes: Record<string, string | boolean>) {
+  return attributes.module === true || attributes.context === "module";
+}
+
+/**
+ * Find the module script content of a component, matching script tags the same way Svelte does
+ */
+async function findModuleScript(markup: string, filename: string | undefined) {
+  let moduleScript: string | undefined;
+
+  await preprocess(
+    markup,
+    {
+      script({ content, attributes }) {
+        if (isModuleScript(attributes)) {
+          moduleScript = content;
+        }
+      },
+    },
+    { filename }
+  );
+
+  return moduleScript;
 }
 
 /**
@@ -149,17 +174,29 @@ function parseContent(content: string, filename: string | undefined): AST.Progra
 }
 
 /**
- * Process all AST nodes
+ * Collect context declarations without collecting context settings
  */
-function processASTNodes(ast: AST.Program) {
+function collectContextDeclarations(ast: AST.Program, context: Contexts) {
   const contextInterfaces: AST.TSInterfaceDeclaration[] = [];
 
   ast.body.forEach((node) => {
     handleContextInterfaces(node, contextInterfaces);
-    handleContextMembers(node, contextInterfaces);
+    handleContextMembers(node, contextInterfaces, context);
+  });
+}
+
+/**
+ * Process all AST nodes
+ */
+function processASTNodes(ast: AST.Program, context: Contexts) {
+  const contextInterfaces: AST.TSInterfaceDeclaration[] = [];
+
+  ast.body.forEach((node) => {
+    handleContextInterfaces(node, contextInterfaces);
+    handleContextMembers(node, contextInterfaces, context);
 
     for (const variable in context) {
-      handleContextSetting(node, variable);
+      handleContextSetting(node, variable, context);
     }
   });
 }
@@ -175,23 +212,23 @@ function isContextInterface(node: AST.ProgramStatement): node is AST.TSInterface
   );
 }
 
-function getContextInfoCount() {
+function getContextInfoCount(context: Contexts) {
   return Object.values(context).reduce((count, current) => count + current.infos.length, 0);
 }
 
 /**
  * Transform source code with getters and setters
  */
-function transformSourceCode(source: MagicString) {
+function transformSourceCode(source: MagicString, context: Contexts) {
   for (const contextVarName in context) {
-    transformContextMembers(source, contextVarName);
+    transformContextMembers(source, contextVarName, context);
   }
 }
 
 /**
  * Transform context members for a specific context variable
  */
-function transformContextMembers(source: MagicString, contextVarName: string) {
+function transformContextMembers(source: MagicString, contextVarName: string, context: Contexts) {
   for (const info of context[contextVarName].infos) {
     const { key, valueRange, expressionRange } = info;
     const value = source.slice(...valueRange);
@@ -229,7 +266,8 @@ function handleContextInterfaces(
  */
 function handleContextMembers(
   node: AST.ProgramStatement,
-  contextInterfaces: AST.TSInterfaceDeclaration[]
+  contextInterfaces: AST.TSInterfaceDeclaration[],
+  context: Contexts
 ) {
   if (!isExportedVariableDeclaration(node)) {
     return;
@@ -246,7 +284,7 @@ function handleContextMembers(
     return;
   }
 
-  initializeContext(id.name);
+  initializeContext(id.name, context);
 
   const typeArg = extractTypeArgument(init);
   if (!typeArg) {
@@ -258,7 +296,7 @@ function handleContextMembers(
     return;
   }
 
-  processTypeMembers(typeMembers, id.name, typeArg);
+  processTypeMembers(typeMembers, id.name, typeArg, context);
 }
 
 /**
@@ -314,7 +352,7 @@ function isQContextCall(init: AST.Expression | null): init is AST.CallExpression
 /**
  * Initialize context for variable name
  */
-function initializeContext(varName: string) {
+function initializeContext(varName: string, context: Contexts) {
   context[varName] = {
     members: [],
     infos: [],
@@ -386,7 +424,8 @@ function extractMembersFromTypeReference(
 function processTypeMembers(
   typeMembers: AST.TypeElement[],
   varName: string,
-  typeArg: AST.TypeNode
+  typeArg: AST.TypeNode,
+  context: Contexts
 ) {
   const typeName = getTypeName(typeArg);
 
@@ -438,8 +477,12 @@ function isValidIdentifierKey(key: AST.Expression): key is AST.Identifier {
 /**
  * Handle context setting
  */
-function handleContextSetting(node: AST.ProgramStatement, contextVarName: string) {
-  if (!isValidContextSettingNode(node, contextVarName)) {
+function handleContextSetting(
+  node: AST.ProgramStatement,
+  contextVarName: string,
+  context: Contexts
+) {
+  if (!isValidContextSettingNode(node, contextVarName, context)) {
     return;
   }
 
@@ -461,7 +504,7 @@ function handleContextSetting(node: AST.ProgramStatement, contextVarName: string
     return;
   }
 
-  processContextProperties(argument.properties, contextVarName, property.name);
+  processContextProperties(argument.properties, contextVarName, property.name, context);
 }
 
 /**
@@ -469,7 +512,8 @@ function handleContextSetting(node: AST.ProgramStatement, contextVarName: string
  */
 function isValidContextSettingNode(
   node: AST.ProgramStatement,
-  contextVarName: string
+  contextVarName: string,
+  context: Contexts
 ): node is AST.ExpressionStatement {
   return (
     (contextVarName &&
@@ -534,14 +578,15 @@ function isValidObjectExpression(
 function processContextProperties(
   properties: AST.ObjectLiteralElement[],
   contextVarName: string,
-  propertyName: string
+  propertyName: string,
+  context: Contexts
 ) {
-  if (!hasValidPropertyCount(properties, contextVarName, propertyName)) {
+  if (!hasValidPropertyCount(properties, contextVarName, propertyName, context)) {
     return;
   }
 
   for (const prop of properties) {
-    if (!processContextProperty(prop, contextVarName)) {
+    if (!processContextProperty(prop, contextVarName, context)) {
       return;
     }
   }
@@ -553,7 +598,8 @@ function processContextProperties(
 function hasValidPropertyCount(
   properties: AST.ObjectLiteralElement[],
   contextVarName: string,
-  propertyName: string
+  propertyName: string,
+  context: Contexts
 ) {
   if (properties.length !== context[contextVarName].members.length) {
     console.warn(
@@ -567,7 +613,11 @@ function hasValidPropertyCount(
 /**
  * Process a single context property
  */
-function processContextProperty(prop: AST.ObjectLiteralElement, contextVarName: string) {
+function processContextProperty(
+  prop: AST.ObjectLiteralElement,
+  contextVarName: string,
+  context: Contexts
+) {
   if (!isValidProperty(prop)) {
     return false;
   }
@@ -578,13 +628,13 @@ function processContextProperty(prop: AST.ObjectLiteralElement, contextVarName: 
     return false;
   }
 
-  const member = findContextMember(contextVarName, key.name);
+  const member = findContextMember(contextVarName, key.name, context);
   if (!member) {
     console.warn(`Context setting property ${key.name} is not defined in the context interface.`);
     return false;
   }
 
-  addContextInfo(contextVarName, member, value, prop);
+  addContextInfo(contextVarName, member, value, prop, context);
   return true;
 }
 
@@ -617,7 +667,7 @@ function isValidPropertyKey(key: AST.Expression): key is AST.Identifier {
 /**
  * Find context member by key
  */
-function findContextMember(contextVarName: string, keyName: string) {
+function findContextMember(contextVarName: string, keyName: string, context: Contexts) {
   return context[contextVarName].members.find((m) => m.key === keyName);
 }
 
@@ -628,7 +678,8 @@ function addContextInfo<T extends { range: AST.Range }>(
   contextVarName: string,
   member: ContextMember,
   value: T,
-  prop: AST.Property
+  prop: AST.Property,
+  context: Contexts
 ) {
   context[contextVarName].infos.push({
     readonly: member.readonly,
