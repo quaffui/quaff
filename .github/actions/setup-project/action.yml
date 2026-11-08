@@ -6,7 +6,7 @@ runs:
   steps:
     - uses: oven-sh/setup-bun@v2.2.0
       with:
-        bun-version: 1.4.3
+        bun-version: 1.4.4
 
     - name: Cache Bun packages
       uses: actions/cache@v6.1.0
