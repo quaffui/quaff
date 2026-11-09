@@ -1,3 +1,12 @@
 [install]
 minimumReleaseAge = 259200
-minimumReleaseAgeExcludes = ["@quaffui/material-color-utilities"]
+minimumReleaseAgeExcludes = [
+  "@quaffui/material-color-utilities",
+  "@rsvelte/vite-plugin-svelte",
+  "@rsvelte/vite-plugin-svelte-native",
+  "@rsvelte/vite-plugin-svelte-native-darwin-arm64",
+  "@rsvelte/vite-plugin-svelte-native-darwin-x64",
+  "@rsvelte/vite-plugin-svelte-native-linux-arm64-gnu",
+  "@rsvelte/vite-plugin-svelte-native-linux-x64-gnu",
+  "@rsvelte/vite-plugin-svelte-native-win32-x64-msvc",
+]
