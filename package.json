@@ -146,5 +146,8 @@
     "purgecss": "^8.0.0",
     "wawoff2": "^2.0.1"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "overrides": {
+    "@sveltejs/vite-plugin-svelte": "npm:@rsvelte/vite-plugin-svelte@^0.5.4"
+  }
 }
