@@ -27,8 +27,11 @@ interface RippleOptions {
   effectTarget?: string;
 }
 
-const TRIGGER_EVENTS = ["pointerdown", "touchstart", "keydown"] as const;
-const CANCEL_EVENTS = ["mouseleave", "dragleave", "touchmove", "touchcancel", "pointerup", "keyup"];
+// Pointer events cover mouse, touch and pen; a separate touch listener would add a second ripple.
+const TRIGGER_EVENTS = ["pointerdown", "keydown"] as const;
+const POINTER_CANCEL_EVENTS = ["pointerup", "pointercancel", "pointerleave", "dragleave"];
+// Focus can leave before the key is released, for example into a dialog the key opened.
+const KEY_CANCEL_EVENTS = ["keyup", "focusout"];
 
 const RIPPLE_CLASS = "q-ripple";
 const CENTER_CLASS = `${RIPPLE_CLASS}--center`;
@@ -84,40 +87,35 @@ export function ripple(options: RippleOptions = {}): Attachment<HTMLElement> {
     return rippleContainer;
   }
 
-  function createRipple(
-    el: HTMLElement,
-    event: PointerEvent | KeyboardEvent | TouchEvent,
-    center = false
-  ) {
+  function getPressOrigin(event: PointerEvent | KeyboardEvent, rect: DOMRect, isCentered: boolean) {
+    if (event instanceof KeyboardEvent || (options.effectTarget && isCentered)) {
+      return { x: rect.width / 2, y: rect.height / 2 };
+    }
+
+    return { x: event.clientX - rect.left, y: event.clientY - rect.top };
+  }
+
+  function createRipple(el: HTMLElement, event: PointerEvent | KeyboardEvent) {
     if (isDisabled(el, options)) {
       return;
     }
 
-    if (event instanceof KeyboardEvent) {
-      if (!isActivationKey(event)) {
-        return;
-      }
+    const isKeyPress = event instanceof KeyboardEvent;
 
-      const click = new PointerEvent("pointerdown");
-      createRipple(el, click, true);
-
+    // A held key repeats keydown while its first ripple is still showing.
+    if (isKeyPress && (event.repeat || !isActivationKey(event))) {
       return;
     }
 
     const rippleContainer = getRippleContainer(el);
-    addClasses(rippleContainer, center);
+    addClasses(rippleContainer, isKeyPress);
 
-    const rect = options.effectTarget
-      ? rippleContainer.getBoundingClientRect()
-      : el.getBoundingClientRect();
-
-    const { clientX, clientY } =
-      window.TouchEvent && event instanceof TouchEvent ? event.touches[0] : (event as PointerEvent);
-
-    const localX =
-      options.effectTarget && (center || options.center) ? rect.width / 2 : clientX - rect.left;
-    const localY =
-      options.effectTarget && (center || options.center) ? rect.height / 2 : clientY - rect.top;
+    // Key presses have no pointer position: their ripple grows from the middle of its container.
+    const rect =
+      options.effectTarget || isKeyPress
+        ? rippleContainer.getBoundingClientRect()
+        : el.getBoundingClientRect();
+    const { x: localX, y: localY } = getPressOrigin(event, rect, isKeyPress || !!options.center);
     const x = localX > rect.width / 2 ? 0 : rect.width;
     const y = localY > rect.height / 2 ? 0 : rect.height;
     const radius = Math.hypot(x - localX, y - localY);
@@ -131,8 +129,9 @@ export function ripple(options: RippleOptions = {}): Attachment<HTMLElement> {
 
     rippleContainer.appendChild(ripple);
 
-    const removeCancelListeners = CANCEL_EVENTS.map((event) =>
-      on(el, event, removeRipple, { passive: true })
+    const cancelEvents = isKeyPress ? KEY_CANCEL_EVENTS : POINTER_CANCEL_EVENTS;
+    const removeCancelListeners = cancelEvents.map((cancelEvent) =>
+      on(el, cancelEvent, removeRipple, { passive: true })
     );
 
     function removeRipple() {
@@ -156,7 +155,7 @@ export function ripple(options: RippleOptions = {}): Attachment<HTMLElement> {
     }
 
     const removeTriggerListeners = TRIGGER_EVENTS.map((event) =>
-      on(element, event, (e) => createRipple(element, e), { passive: event === "touchstart" })
+      on(element, event, (e) => createRipple(element, e))
     );
 
     return () => {
