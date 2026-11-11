@@ -495,9 +495,16 @@ $shape-count: list.length($-sequence);
 }
 
 @keyframes q-loading-indicator-morph {
-  @for $step from 0 through $shape-count {
-    #{math.div($step, $shape-count) * 100%} {
-      clip-path: list.nth($-sequence, ($step % $shape-count) + 1);
+  @for $step from 0 to $shape-count {
+    $offset: math.div($step, $shape-count) * 100%;
+
+    // The cycle ends on its first shape; sharing the keyframe avoids emitting that outline twice.
+    @if $step == 0 {
+      $offset: "0%, 100%";
+    }
+
+    #{$offset} {
+      clip-path: list.nth($-sequence, $step + 1);
     }
   }
 }
