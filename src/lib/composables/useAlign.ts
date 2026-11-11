@@ -13,10 +13,6 @@ export interface UseAlignProps {
   align?: UseAlignOptions;
 }
 
-export const UseAlignPropsDefaults: UseAlignProps = {
-  align: "top left",
-};
-
 const alignMap = {
   left: "start",
   center: "center",
