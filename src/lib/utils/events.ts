@@ -29,10 +29,6 @@ export function isArrowKey(
   return e.code.startsWith("Arrow");
 }
 
-export function isTabKey(e: KeyboardEvent): e is KeyboardEvent & { code: "Tab" } {
-  return e.code === "Tab";
-}
-
 export function getDirection(
   e: KeyboardEvent & { code: "ArrowUp" | "ArrowDown" | "ArrowLeft" | "ArrowRight" }
 ): Direction {

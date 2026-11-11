@@ -5,7 +5,6 @@ export * from "./context";
 export * from "./dom";
 export * from "./events";
 export * from "./number";
-export * from "./props";
 export * from "./router";
 export * from "./string";
 export * from "./types";
