@@ -8,13 +8,14 @@ The QItem component is generally used inside lists to display related pieces of 
 
   interface QItemContext {
     readonly activeClass: string | undefined;
-    lineCount: number;
+    readonly registerSectionLineCount: (count: number) => () => void;
   }
 
   export const itemCtx = QContext<QItemContext>("QItem");
 </script>
 
 <script lang="ts">
+  import { SvelteMap } from "svelte/reactivity";
   import { ripple } from "#helpers";
   import { getRouterInfo, handleActivationKeydown } from "#utils";
   import QSeparator from "../separator/QSeparator.svelte";
@@ -44,13 +45,14 @@ The QItem component is generally used inside lists to display related pieces of 
   // #endregion: --- Props
 
   // #region:    --- Reactive variables
-  let lineCount = $state(1);
+  const sectionLineCounts = new SvelteMap<symbol, number>();
   let nativeDragged = $state(false);
 
   const ctx = listCtx.assertGet("QItem should be used inside QList");
   // #endregion: --- Reactive variables
 
   // #region:    --- Derived values
+  const lineCount = $derived(Math.max(0, ...sectionLineCounts.values()));
   const routerInfo = $derived(getRouterInfo(props));
 
   const isActive = $derived(active ?? routerInfo.isActive ?? false);
@@ -102,8 +104,8 @@ The QItem component is generally used inside lists to display related pieces of 
 
   // #region:    --- Context
   itemCtx.set({
-    lineCount,
     activeClass,
+    registerSectionLineCount,
   });
   // #endregion: --- Context
 
@@ -121,6 +123,13 @@ The QItem component is generally used inside lists to display related pieces of 
   });
 
   // #region:    --- Functions
+  function registerSectionLineCount(count: number) {
+    const section = Symbol();
+    sectionLineCounts.set(section, count);
+
+    return () => sectionLineCounts.delete(section);
+  }
+
   function handleClick(event: MouseEvent & { currentTarget: HTMLElement }) {
     if (disabled) {
       event.preventDefault();

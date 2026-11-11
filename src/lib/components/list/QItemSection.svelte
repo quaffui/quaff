@@ -30,10 +30,17 @@ The QItemSection component is used inside QItem to separate different types of i
   const list = listCtx.assertGet();
   // #endregion: --- Reactive variables
 
+  // #region:    --- Derived values
+  const lineCount = $derived(
+    type === "content" ? [headline, line1, line2, line3].filter(Boolean).length : 0
+  );
+  // #endregion: --- Derived values
+
   // #region:    --- Effects
   $effect(() => {
-    if (type === "content") {
-      itemCtx.updateEntry(ctx, "lineCount", [headline, line1, line2, line3].filter(Boolean).length);
+    // Keep the row modifiers available after hydration, including in nested lists.
+    if (lineCount > 1) {
+      return ctx.registerSectionLineCount(lineCount);
     }
   });
 
@@ -63,6 +70,8 @@ The QItemSection component is used inside QItem to separate different types of i
       "drag-handle": dragHandle,
       "has-leading": action && !!leading,
       trailing: type === "trailingText",
+      multiline: lineCount > 1,
+      "three-line": lineCount > 2,
     },
     classes: [props.class],
   });

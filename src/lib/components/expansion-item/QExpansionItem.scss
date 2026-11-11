@@ -323,8 +323,8 @@
     }
 
     :where(&--regular#{&}--expressive > .q-list.q-list--expressive:only-child)
-      > .q-item:not(.q-item--multiline, .q-item--dense) {
-      min-height: 60px;
+      > .q-item:not(.q-item--dense) {
+      --q-item-single-line-min-height: 60px;
     }
   }
 

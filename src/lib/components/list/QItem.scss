@@ -2,20 +2,51 @@
 @use "$css/mixins";
 @use "$css/variables";
 
+@mixin -style-lines($modifier) {
+  $section: ".q-item__section--#{$modifier}";
+
+  // Size direct and unambiguous wrapped sections in browsers without CSS scopes.
+  &--#{$modifier},
+  &:where(:has(> #{$section}), :has(#{$section}):not(:has(.q-item #{$section}))) {
+    @content;
+  }
+
+  @at-root {
+    // Match each section against its nearest row. Use the ownership check as a scope
+    // start so :scope inside the relative selector resolves to that row across engines.
+    @scope (.q-item) {
+      @scope (:scope:has(#{$section}:not(:scope .q-item *))) {
+        :scope {
+          @content;
+        }
+      }
+    }
+  }
+}
+
 .q-item {
   --ripple-color: var(--on-surface);
   --q-item-end-padding: 24px;
+  --q-item-single-line-min-height: 56px;
+  --q-item-multiline-min-height: initial;
+  --q-item-three-line-min-height: initial;
+  --q-item-lines-align-items: initial;
+  --q-item-lines-padding-block: initial;
+  --q-item-lines-white-space: initial;
 
   display: flex;
-  align-items: center;
+  align-items: var(--q-item-lines-align-items, center);
   justify-content: flex-start;
-  white-space: nowrap;
+  white-space: var(--q-item-lines-white-space, nowrap);
   gap: 16px;
 
   min-width: 100%;
   max-width: 100%;
-  min-height: 56px;
-  padding-block: 8px;
+  min-height: var(
+    --q-item-three-line-min-height,
+    var(--q-item-multiline-min-height, var(--q-item-single-line-min-height))
+  );
+  padding-block: var(--q-item-lines-padding-block, 8px);
   padding-inline: 16px var(--q-item-end-padding);
 
   border-radius: 0;
@@ -85,15 +116,16 @@
     }
   }
 
-  &--multiline {
-    min-height: 72px;
-    white-space: normal;
+  @include -style-lines("multiline") {
+    --q-item-multiline-min-height: 72px;
+    --q-item-lines-white-space: normal;
   }
 
-  &--three-line {
-    align-items: flex-start;
-    min-height: 88px;
-    padding-block: 12px;
+  @include -style-lines("three-line") {
+    --q-item-lines-align-items: flex-start;
+    --q-item-three-line-min-height: 88px;
+    --q-item-lines-padding-block: 12px;
+    --q-item-lines-white-space: normal;
 
     > .q-item__section--video {
       padding-block: 0;
