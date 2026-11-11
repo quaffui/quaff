@@ -1,4 +1,5 @@
 import { on } from "svelte/events";
+import { useColor } from "#composables/useColor.js";
 import { isActivationKey } from "#utils";
 import type { Attachment } from "svelte/attachments";
 
@@ -8,9 +9,7 @@ interface RippleOptions {
    */
   center?: boolean;
   /**
-   * The color of the ripple. This should be in a format that can be used in CSS, such as hex, rgb, hsl, or named colors.
-   *
-   * For variables, no need to wrap in `var(--xx)` e.g. pass `primary` not `var(--primary)`.
+   * The color of the ripple: a theme color name such as `primary`, or any CSS color such as hex, rgb, hsl, or named colors.
    */
   color?: string;
   /**
@@ -78,10 +77,7 @@ export function ripple(options: RippleOptions = {}): Attachment<HTMLElement> {
     }
 
     if (options.color) {
-      rippleContainer.style.setProperty(
-        COLOR_PROPERTY,
-        `var(--${options.color}, ${options.color})`
-      );
+      rippleContainer.style.setProperty(COLOR_PROPERTY, useColor(options.color));
     }
 
     return rippleContainer;
