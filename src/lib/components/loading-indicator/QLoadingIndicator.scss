@@ -58,6 +58,7 @@ $morph-duration: 650ms;
     place-items: center;
     width: calc(100% * 38 / 48);
     height: calc(100% * 38 / 48);
+    rotate: var(--q-loading-indicator-spin-angle, none);
     animation: q-loading-indicator-rotation 4666ms linear infinite;
   }
 
@@ -69,7 +70,8 @@ $morph-duration: 650ms;
     width: 100%;
     height: 100%;
     background-color: currentColor;
-    rotate: 90deg;
+    rotate: var(--q-loading-indicator-turn-angle, 90deg);
+    scale: var(--q-loading-indicator-bounce-scale, none);
     animation:
       q-loading-indicator-morph ($morph-duration * shapes.$shape-count) -spring-easing(true)
         infinite,
@@ -78,40 +80,77 @@ $morph-duration: 650ms;
   }
 }
 
-// Resize the outline to keep the bounce sharp instead of scaling a cached clip mask.
-@keyframes q-loading-indicator-bounce {
-  0%,
-  15%,
-  100% {
-    width: 100%;
-    height: 100%;
-  }
-  40% {
-    width: 106%;
-    height: 106%;
-  }
-  65% {
-    width: 99%;
-    height: 99%;
-  }
-  82% {
-    width: 100.5%;
-    height: 100.5%;
-  }
-}
+@mixin -bounce-keyframes($shouldScale) {
+  $BOUNCE_STEPS: (
+    (0%, 15%, 100%): 1,
+    40%: 1.06,
+    65%: 0.99,
+    82%: 1.005,
+  );
 
-// Four spring-driven quarter turns repeat independently of the seven-shape cycle.
-@keyframes q-loading-indicator-turn {
-  @for $step from 0 through 4 {
-    #{$step * 25%} {
-      rotate: #{90 + $step * 90}deg;
+  @keyframes q-loading-indicator-bounce {
+    @each $offsets, $scale in $BOUNCE_STEPS {
+      #{$offsets} {
+        @if $shouldScale {
+          --q-loading-indicator-bounce-scale: #{$scale};
+        } @else {
+          width: math.percentage($scale);
+          height: math.percentage($scale);
+        }
+      }
     }
   }
 }
 
+// Four spring-driven quarter turns repeat independently of the seven-shape cycle.
+@mixin -turn-keyframes($property) {
+  @keyframes q-loading-indicator-turn {
+    @for $step from 0 through 4 {
+      #{$step * 25%} {
+        #{$property}: #{90 + $step * 90}deg;
+      }
+    }
+  }
+}
+
+// Resize the fallback ellipse instead of scaling its composited clip.
+@include -bounce-keyframes($shouldScale: false);
+@include -turn-keyframes(rotate);
+
 @keyframes q-loading-indicator-rotation {
   to {
     transform: rotate(360deg);
+  }
+}
+
+// Paint the outline at its animated angle and scale to avoid resampling a cached clip mask.
+// Scaling here also avoids rounding the bounce to layout dimensions.
+@supports (clip-path: shape(from 0 0, line to 100% 0, close)) {
+  @property --q-loading-indicator-spin-angle {
+    syntax: "<angle>";
+    inherits: false;
+    initial-value: 0deg;
+  }
+
+  @property --q-loading-indicator-turn-angle {
+    syntax: "<angle>";
+    inherits: false;
+    initial-value: 90deg;
+  }
+
+  @property --q-loading-indicator-bounce-scale {
+    syntax: "<number>";
+    inherits: false;
+    initial-value: 1;
+  }
+
+  @include -bounce-keyframes($shouldScale: true);
+  @include -turn-keyframes(--q-loading-indicator-turn-angle);
+
+  @keyframes q-loading-indicator-rotation {
+    to {
+      --q-loading-indicator-spin-angle: 360deg;
+    }
   }
 }
 
