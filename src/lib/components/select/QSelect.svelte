@@ -147,19 +147,35 @@ Select fields let users choose one or more values from a dropdown. Typing and fi
       return;
     }
 
-    if (useInput) {
-      void showMenu();
-    } else if (isMenuOpen) {
+    if (!useInput && isMenuOpen) {
       hideMenu();
-    } else {
-      void showMenu();
+      return;
     }
+
+    void showMenu();
   }
 
-  function handleBackgroundMousedown(event: QEvent<MouseEvent, HTMLElement>) {
-    if (event.target === event.currentTarget) {
-      handleMousedown();
+  function handleTriggerMousedown(event: QEvent<MouseEvent, HTMLElement>) {
+    if (event.target !== event.currentTarget) {
+      return;
     }
+
+    // The menu can cover the trigger before the click arrives.
+    if (event.button === 0) {
+      focusTriggerInput(event);
+    }
+
+    handleMousedown();
+  }
+
+  function focusTriggerInput(event: QEvent<MouseEvent, HTMLElement>) {
+    if (useInput || disabled || event.defaultPrevented || event.target !== event.currentTarget) {
+      return;
+    }
+
+    // Native label activation can select the read-only value in Firefox.
+    event.preventDefault();
+    menuTarget?.control?.focus({ preventScroll: true });
   }
 
   function handleFocus(e: QSelectEvent<FocusEvent>) {
@@ -368,19 +384,21 @@ Select fields let users choose one or more values from a dropdown. Typing and fi
 
   <div class="q-field__inner">
     <div class="q-field__control">
-      <!-- svelte-ignore a11y_no_noninteractive_element_interactions (The associated input provides keyboard interaction.) -->
+      <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_noninteractive_element_interactions (The associated input provides keyboard interaction.) -->
       <label
         bind:this={menuTarget}
         for={inputId}
         class="q-field__wrapper"
-        onmousedown={handleBackgroundMousedown}
+        onmousedown={handleTriggerMousedown}
+        onclick={focusTriggerInput}
       >
         {#if prepend}
-          <!-- svelte-ignore a11y_no_static_element_interactions (Only background clicks activate the associated combobox.) -->
+          <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions (Only background clicks activate the associated combobox.) -->
           <div
             class="q-field__snippet-prepend"
             bind:clientWidth={snippetPrependWidth}
-            onmousedown={handleBackgroundMousedown}
+            onmousedown={handleTriggerMousedown}
+            onclick={focusTriggerInput}
           >
             {@render prepend()}
           </div>
@@ -388,7 +406,7 @@ Select fields let users choose one or more values from a dropdown. Typing and fi
 
         <input
           id={inputId}
-          class="q-field__input"
+          class="q-field__input q-select__input"
           value={inputValue}
           placeholder=""
           role="combobox"
@@ -413,14 +431,19 @@ Select fields let users choose one or more values from a dropdown. Typing and fi
 
         <span class="q-field__label"><span class="q-field__label-text">{label}</span></span>
 
-        <!-- svelte-ignore a11y_no_static_element_interactions (Only background clicks activate the associated combobox.) -->
-        <div class="q-field__snippet-append" onmousedown={handleBackgroundMousedown}>
+        <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions (Only background clicks activate the associated combobox.) -->
+        <div
+          class="q-field__snippet-append"
+          onmousedown={handleTriggerMousedown}
+          onclick={focusTriggerInput}
+        >
           {@render append?.()}
 
           <QIcon
             class="q-select__arrow-toggle {append ? 'q-select__arrow-toggle--has-append' : ''}"
             name={`arrow_drop_${isMenuOpen ? "up" : "down"}`}
-            onmousedown={handleMousedown}
+            onmousedown={handleTriggerMousedown}
+            onclick={focusTriggerInput}
           />
         </div>
       </label>
