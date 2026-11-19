@@ -10,6 +10,18 @@
     caret-color: transparent;
   }
 
+  @media (pointer: coarse) {
+    // Long presses hit the wrapper in select-only mode.
+    .q-field__wrapper:has(> .q-select__input[readonly]) {
+      user-select: none;
+    }
+
+    &__input[readonly] {
+      // Let the wrapping label handle taps without moving the input's caret.
+      pointer-events: none;
+    }
+  }
+
   &.q-field--use-input {
     .q-field__input {
       caret-color: auto;
