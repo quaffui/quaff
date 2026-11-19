@@ -12,13 +12,11 @@
   }
 
   @at-root {
-    // Match each section against its nearest row. Use the ownership check as a scope
-    // start so :scope inside the relative selector resolves to that row across engines.
+    // Match each section against its nearest row. Keep :has() in the rule to avoid
+    // a Firefox crash when a nested scope uses it in its start selector.
     @scope (.q-item) {
-      @scope (:scope:has(#{$section}:not(:scope .q-item *))) {
-        :scope {
-          @content;
-        }
+      :scope:where(:has(#{$section}:not(:scope .q-item *))) {
+        @content;
       }
     }
   }
