@@ -70,9 +70,16 @@ describe("CSS helpers", () => {
     expect(css).not.toMatch(/padding(?:-[\w-]+)?:\s*auto/);
     expect(readDeclarations(".q-ma-auto")).toEqual({ margin: "auto" });
     expect(readDeclarations(".q-mx-auto")).toEqual({ "margin-inline": "auto" });
-    expect(readDeclarations(".q-pa-md")).toEqual({ padding: "16px" });
-    expect(readDeclarations(".q-gap-md")).toEqual({ gap: "16px" });
-    expect(readDeclarations(".q-gap-x-md")).toEqual({ "column-gap": "16px" });
+    expect(readDeclarations(".q-pa-md")).toEqual({
+      padding: "16px",
+      "--q-inline-padding-compensation": "0px",
+    });
+    expect(readDeclarations(".q-gap-none")).toEqual({ gap: "0px", "--q-column-gap": "0px" });
+    expect(readDeclarations(".q-gap-md")).toEqual({ gap: "16px", "--q-column-gap": "16px" });
+    expect(readDeclarations(".q-gap-x-md")).toEqual({
+      "column-gap": "16px",
+      "--q-column-gap": "16px",
+    });
     expect(readDeclarations(".q-gap-y-sm")).toEqual({ "row-gap": "8px" });
   });
 

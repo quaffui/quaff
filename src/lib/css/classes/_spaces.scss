@@ -1,5 +1,11 @@
+@use "sass:list";
 @use "../mixins";
 @use "../variables";
+
+// Horizontal padding utilities override the component's built-in padding balance.
+%-reset-inline-padding-compensation {
+  --q-inline-padding-compensation: 0px;
+}
 
 @each $spaceName, $spaceVal in variables.$spaces {
   @each $posName, $_ in variables.$positions {
@@ -7,6 +13,10 @@
     @if $spaceName != "auto" {
       .q-p#{$posName}-#{$spaceName} {
         @include mixins.padding("#{$posName}-#{$spaceName}");
+
+        @if list.index(("a", "x", "l", "r"), $posName) {
+          @extend %-reset-inline-padding-compensation;
+        }
       }
     }
 
@@ -18,12 +28,19 @@
 
   // Gap
   @if $spaceName != "auto" {
+    // A zero used in gap calculations needs a length unit.
+    @if $spaceVal == 0 {
+      $spaceVal: 0px;
+    }
+
     .q-gap-#{$spaceName} {
       gap: $spaceVal;
+      --q-column-gap: #{$spaceVal};
     }
 
     .q-gap-x-#{$spaceName} {
       column-gap: $spaceVal;
+      --q-column-gap: #{$spaceVal};
     }
 
     .q-gap-y-#{$spaceName} {

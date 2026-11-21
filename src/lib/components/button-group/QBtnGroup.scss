@@ -120,13 +120,15 @@
 
     > .q-btn {
       --q-btn-border-width: 1px;
+      --q-btn-content-gap: 8px;
+      --q-inline-padding-compensation: 0px;
 
       width: auto;
       height: auto;
       min-height: var(--q-btn-height, 40px);
       min-width: 48px;
       padding-inline: 12px;
-      gap: 8px;
+      gap: var(--q-btn-content-gap);
       @include mixins.border(var(--outline));
       border-radius: 0;
       box-shadow: none;
