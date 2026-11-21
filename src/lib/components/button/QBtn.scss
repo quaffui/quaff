@@ -13,6 +13,9 @@
     --q-btn-line-height: 20px;
     --q-btn-content-height: var(--q-btn-line-height);
     --q-btn-border-width: 0px;
+    --q-btn-content-gap: 8px;
+    --q-column-gap: var(--q-btn-content-gap);
+    --q-inline-padding-compensation: 0px;
 
     position: relative;
     isolation: isolate;
@@ -25,7 +28,7 @@
     min-width: var(--q-btn-height, 40px);
     max-width: 100%;
     padding-inline: 24px;
-    gap: 8px;
+    gap: var(--q-btn-content-gap);
 
     border: none;
     border-radius: 9999px;
@@ -85,11 +88,35 @@
     }
 
     &:not(.q-btn--expressive):has(> :is(.q-btn__icon, .q-btn__loader)):has(> .q-btn__label) {
+      --q-inline-padding-compensation: 8px;
       padding-inline-start: 16px;
     }
 
     &:not(.q-btn--expressive):has(> .q-btn__img):has(> .q-btn__label) {
+      --q-inline-padding-compensation: 20px;
       padding-inline-start: 4px;
+    }
+
+    &:not(.q-fab):has(
+        > :is(.q-btn__icon, .q-btn__loader, .q-btn__img) + .q-btn__label > .q-menu__helper
+      ):not(:has(> .q-btn__label > :not(.q-menu__helper, .q-menu))) {
+      // Move the gap and extra end padding inside the label so they take space only beside text.
+      > .q-btn__label {
+        display: flex;
+        position: relative;
+        inset-inline-end: var(--q-inline-padding-compensation);
+        margin-inline-start: calc(-1 * var(--q-column-gap));
+        column-gap: calc(var(--q-column-gap) + var(--q-inline-padding-compensation));
+
+        &::before {
+          content: "";
+          flex: none;
+        }
+      }
+
+      &:not(.q-btn--expressive) {
+        padding-inline-end: calc(24px - var(--q-inline-padding-compensation));
+      }
     }
 
     &--xs,
@@ -127,7 +154,7 @@
       &.q-btn--xs {
         --q-btn-height: 32px;
         --q-btn-padding-inline: 12px;
-        gap: 4px;
+        --q-btn-content-gap: 4px;
       }
 
       &.q-btn--sm {
@@ -147,7 +174,7 @@
         --q-btn-line-height: 32px;
         --q-btn-outline-width: 2px;
         --q-btn-padding-inline: 48px;
-        gap: 12px;
+        --q-btn-content-gap: 12px;
         @include mixins.typography(headline-small);
       }
 
@@ -156,7 +183,7 @@
         --q-btn-line-height: 40px;
         --q-btn-outline-width: 3px;
         --q-btn-padding-inline: 64px;
-        gap: 16px;
+        --q-btn-content-gap: 16px;
         @include mixins.typography(headline-large);
       }
 

@@ -130,6 +130,19 @@ describe("component styles", () => {
 });
 
 describe("optional pruning", () => {
+  it("keeps spacing values with their utilities when pruning base CSS", async () => {
+    const fixture = await createCssFixture(
+      { "App.svelte": `${createComponentSource("QBtn")}<QBtn class="q-gap-none q-px-sm" />` },
+      { css: { stripUnused: true } }
+    );
+    const css = await fixture.getStylesheet();
+
+    expectSelectors(css, [".q-gap-none", ".q-px-sm"], [".q-gap-xl", ".q-px-xl"]);
+    expect(css).toContain("--q-column-gap: 0px");
+    expect(css).toContain("--q-inline-padding-compensation: 0px");
+    expect(css).not.toContain("--q-column-gap: 48px");
+  });
+
   it("keeps API heading spacing from generated docs outside the scanned directories", async () => {
     const fixture = await createCssFixture(
       {
@@ -155,6 +168,7 @@ describe("optional pruning", () => {
       expectSelectors(css, [".q-ripple__effect", ".q-ripple--center .q-ripple"]);
       expect(css).toMatch(/@keyframes ripple\s*\{/);
       expect(hasSelector(css, ".q-pa-xl")).toBe(!stripUnused);
+      expect(css.includes("--q-column-gap: 48px")).toBe(!stripUnused);
       expectSelectors(css, [], [".q-table", ".q-railbar"]);
     }
   );
