@@ -35,8 +35,21 @@
     padding-block: 8px;
 
     > .q-item {
+      --q-menu-item-padding: 12px;
+      --q-item-action-start-padding: var(--q-menu-item-padding);
+
       min-height: 48px;
-      padding-inline: 12px;
+      padding-inline: var(--q-menu-item-padding);
+
+      > .q-item__section--content.q-item__section--action:first-child {
+        margin-inline-start: calc(-1 * var(--q-menu-item-padding));
+      }
+
+      > .q-item__section--side.q-item__section--action:last-child {
+        box-sizing: content-box;
+        margin-inline-end: calc(-1 * var(--q-menu-item-padding));
+        padding-inline-end: var(--q-menu-item-padding);
+      }
 
       .q-item__section--headline {
         @include mixins.typography("label-large");
@@ -61,8 +74,9 @@
       padding: 2px;
 
       > .q-item {
+        --q-menu-item-padding: 16px;
+
         min-height: 44px;
-        padding-inline: 16px;
         gap: 12px;
         border-radius: 4px;
 

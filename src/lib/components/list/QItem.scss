@@ -24,6 +24,7 @@
 
 .q-item {
   --ripple-color: var(--on-surface);
+  --q-item-action-start-padding: 0;
   --q-item-end-padding: 24px;
   --q-item-single-line-min-height: 56px;
   --q-item-multiline-min-height: initial;
@@ -57,7 +58,7 @@
 
   &:has(> .q-item__section--content.q-item__section--action) {
     padding-block: 0;
-    padding-inline-start: 0;
+    padding-inline-start: var(--q-item-action-start-padding);
   }
 
   &:has(> .q-item__section--content.q-item__section--action:only-child) {
