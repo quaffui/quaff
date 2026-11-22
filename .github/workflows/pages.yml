@@ -31,10 +31,10 @@ jobs:
       - name: Install Bun
         uses: oven-sh/setup-bun@v2.2.0
         with:
-          bun-version: 1.4.4
+          bun-version: 1.4.5
 
       - name: Install Rust
-        uses: dtolnay/rust-toolchain@1.99.0
+        uses: dtolnay/rust-toolchain@1.100.0
 
       - name: Install Dependencies
         run: bun install --frozen-lockfile

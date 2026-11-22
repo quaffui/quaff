@@ -21,7 +21,7 @@ jobs:
 
       - uses: ./.github/actions/setup-project
 
-      - uses: dtolnay/rust-toolchain@1.99.0
+      - uses: dtolnay/rust-toolchain@1.100.0
         with:
           components: clippy, rustfmt
 
@@ -78,7 +78,7 @@ jobs:
       - uses: ./.github/actions/setup-project
 
       # Docgen tests run the release build of the Rust generator.
-      - uses: dtolnay/rust-toolchain@1.99.0
+      - uses: dtolnay/rust-toolchain@1.100.0
 
       - name: Cache Rust builds
         uses: actions/cache@v6.1.0
