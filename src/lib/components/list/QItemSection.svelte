@@ -5,6 +5,7 @@ The QItemSection component is used inside QItem to separate different types of i
 
 <script lang="ts">
   import { ripple } from "#helpers";
+  import { menuCtx } from "#internal/menuContext.js";
   import { itemCtx } from "./QItem.svelte";
   import { listCtx } from "./QList.svelte";
   import type { Snippet } from "svelte";
@@ -26,6 +27,7 @@ The QItemSection component is used inside QItem to separate different types of i
   // #endregion: --- Props
 
   // #region:    --- Reactive variables
+  const inMenu = menuCtx.get();
   const ctx = itemCtx.assertGet();
   const list = listCtx.assertGet();
   // #endregion: --- Reactive variables
@@ -82,9 +84,15 @@ The QItemSection component is used inside QItem to separate different types of i
   {...props}
   class="q-item__section"
   type={action ? "button" : undefined}
-  {@attach ripple({ disabled: !action })}
+  {@attach ripple({
+    disabled: !action,
+    effectTarget: inMenu ? ".q-item__action-surface" : undefined,
+  })}
   data-quaff
 >
+  {#if action && inMenu}
+    <span class="q-item__action-surface" aria-hidden="true"></span>
+  {/if}
   {#if type === "content"}
     {#if action && leading}
       <div class="q-item__section--action-leading">{@render leading()}</div>

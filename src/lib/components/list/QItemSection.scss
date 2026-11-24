@@ -140,3 +140,9 @@
     justify-content: center;
   }
 }
+
+.q-item__action-surface {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
