@@ -97,11 +97,11 @@
     &:is(:focus-visible, :active):not([aria-disabled="true"], .q-item--dragged)::after {
       opacity: 0.1;
     }
+  }
 
-    &:focus-visible:not([aria-disabled="true"]) {
-      outline: 3px solid var(--secondary);
-      outline-offset: -3px;
-    }
+  &:is(.q-link, &--clickable:not(label), &--dragged):focus-visible:not([aria-disabled="true"]) {
+    outline: 3px solid var(--secondary);
+    outline-offset: -3px;
   }
 
   &--dragged {

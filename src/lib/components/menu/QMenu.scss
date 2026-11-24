@@ -1,5 +1,15 @@
 @use "$css/mixins";
 
+// On each side, compare the near edge of the button with the far edge of the
+// gutter. The row and the button can have different text directions.
+@function -action-inset($side) {
+  $button: anchor(--q-menu-action inside, 0px);
+  $gutter: --q-menu-#{$side};
+  $inner-edge: anchor($gutter outside, 0px);
+  $touches: calc(1 - sign(abs($button - $inner-edge)));
+  @return calc($button - $touches * anchor-size($gutter inline, 0px));
+}
+
 .q-menu {
   display: block;
   inset: auto;
@@ -35,8 +45,9 @@
     padding-block: 8px;
 
     > .q-item {
+      --q-menu-item-inset: 12px;
       min-height: 48px;
-      padding-inline: 12px;
+      padding-inline: var(--q-menu-item-inset);
 
       .q-item__section--headline {
         @include mixins.typography("label-large");
@@ -62,7 +73,7 @@
 
       > .q-item {
         min-height: 44px;
-        padding-inline: 16px;
+        --q-menu-item-inset: 16px;
         gap: 12px;
         border-radius: 4px;
 
@@ -102,4 +113,65 @@
 
 .q-menu__helper {
   display: none;
+}
+
+@supports (anchor-scope: --q-menu-action) and (width: calc(1px * sign(1))) {
+  // A clickable row already owns a single state layer over its entire surface.
+  .q-menu
+    > .q-list
+    > .q-item:has(> .q-item__section--action):where(
+      :not(.q-link, .q-item--clickable, .q-item--dragged)
+    ) {
+    padding-inline: var(--q-menu-item-inset);
+    anchor-scope: --q-menu-start, --q-menu-end;
+
+    // These boxes expose the two computed gutters, including asymmetric
+    // padding utilities and inline styles, without taking up space in the row.
+    @each $side, $pseudo in (start: before, end: after) {
+      &::#{$pseudo} {
+        content: "";
+        position: absolute;
+        block-size: 0;
+        inset-inline-#{$side}: 0;
+        padding-inline-#{$side}: inherit;
+        anchor-name: --q-menu-#{$side};
+        pointer-events: none;
+      }
+    }
+
+    > .q-item__section--action {
+      anchor-name: --q-menu-action;
+      anchor-scope: --q-menu-action;
+      align-self: stretch;
+
+      &.q-item__section--content {
+        padding-inline: 0;
+      }
+      &.q-item__section--side {
+        align-items: center;
+      }
+
+      // QMenu's translate provides the containing block. The button remains a
+      // positioning ancestor for badges and other user-provided content.
+      > .q-item__action-surface,
+      &::after {
+        position: fixed;
+        inset-block: anchor(--q-menu-action inside, 0px);
+        // Either logical gutter can meet this edge when the row changes direction.
+        inset-inline: min(-action-inset(start), -action-inset(end));
+      }
+
+      > .q-item__action-surface {
+        pointer-events: inherit;
+      }
+
+      &:focus-visible {
+        outline: none;
+        > .q-item__action-surface {
+          outline: 3px solid var(--secondary);
+          outline-offset: -3px;
+        }
+      }
+    }
+  }
 }
